@@ -30,7 +30,7 @@ public class WmsApp {
     private static final Logger log = LoggerFactory.getLogger(WmsApp.class);
 
     @Inject
-    private Environment env;
+    private Environment env; 
 
     /**
      * Initializes wms.
