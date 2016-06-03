@@ -1,0 +1,22 @@
+version: '2'
+services:
+    wms-app:
+        image: wms
+        external_links:
+            - wms-mariadb:mariadb
+            - wms-elasticsearch:elasticsearch
+        environment:
+            - SPRING_PROFILES_ACTIVE=prod
+            - SPRING_DATASOURCE_URL=jdbc:mariadb://mariadb:3306/wms
+            - JHIPSTER_SLEEP=10 # gives time for the database to boot before the application
+            - SPRING_DATA_ELASTICSEARCH_CLUSTER_NODES=elasticsearch:9300
+        ports:
+            - 8080:8080
+    wms-mariadb:
+        extends:
+            file: mariadb.yml
+            service: wms-mariadb
+    wms-elasticsearch:
+        extends:
+            file: elasticsearch.yml
+            service: wms-elasticsearch
