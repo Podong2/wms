@@ -11,7 +11,6 @@
         var service = {
             open: open
         };
-
         var modalInstance = null;
         var resetModal = function () {
             modalInstance = null;
