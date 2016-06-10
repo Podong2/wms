@@ -1,8 +1,10 @@
 package kr.wisestone.wms.web.rest;
 
+import com.mysema.query.BooleanBuilder;
 import kr.wisestone.wms.config.Constants;
 import com.codahale.metrics.annotation.Timed;
 import kr.wisestone.wms.domain.Authority;
+import kr.wisestone.wms.domain.QUser;
 import kr.wisestone.wms.domain.User;
 import kr.wisestone.wms.repository.AuthorityRepository;
 import kr.wisestone.wms.repository.UserRepository;
@@ -150,6 +152,7 @@ public class UserResource {
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserDTO.getId()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("userManagement", "userexists", "Login already in use")).body(null);
         }
+
         return userRepository
             .findOneById(managedUserDTO.getId())
             .map(user -> {
@@ -175,7 +178,7 @@ public class UserResource {
 
     /**
      * GET  /users : get all users.
-     * 
+     *
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and with body all users
      * @throws URISyntaxException if the pagination headers couldnt be generated

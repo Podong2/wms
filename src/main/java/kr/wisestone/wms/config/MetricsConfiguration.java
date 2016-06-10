@@ -11,6 +11,7 @@ import com.codahale.metrics.jvm.*;
 import com.ryantenney.metrics.spring.config.annotation.EnableMetrics;
 import com.ryantenney.metrics.spring.config.annotation.MetricsConfigurerAdapter;
 import fr.ippon.spark.metrics.SparkReporter;
+import kr.wisestone.wms.config.metric.CustomHealthCheck;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -50,6 +51,9 @@ public class MetricsConfiguration extends MetricsConfigurerAdapter {
     @Override
     @Bean
     public HealthCheckRegistry getHealthCheckRegistry() {
+
+        healthCheckRegistry.register("customHealthCheck", new CustomHealthCheck());
+
         return healthCheckRegistry;
     }
 
