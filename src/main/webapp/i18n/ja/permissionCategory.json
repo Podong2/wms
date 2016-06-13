@@ -1,0 +1,23 @@
+{
+    "wmsApp": {
+        "permissionCategory" : {
+            "home": {
+                "title": "PermissionCategories",
+                "createLabel": "Permission Category を追加",
+                "createOrEditLabel": "Permission Categoryを追加または編集",
+                "search": "Search for Permission Category"
+            },
+            "created": "A new Permission Category is created with identifier {{ param }}",
+            "updated": "A Permission Category is updated with identifier {{ param }}",
+            "deleted": "A Permission Category is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Permission Category {{ id }}を削除してもよろしいですか？"
+            },
+            "detail": {
+                "title": "Permission Category"
+            },
+            "name": "Name",
+            "description": "Description"
+        }
+    }
+}

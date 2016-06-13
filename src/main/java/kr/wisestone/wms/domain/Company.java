@@ -15,7 +15,7 @@ import java.util.Objects;
 @Table(name = "owl_company")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "company")
-public class Company implements Serializable {
+public class Company extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

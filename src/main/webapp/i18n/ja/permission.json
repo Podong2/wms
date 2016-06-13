@@ -1,0 +1,29 @@
+{
+    "wmsApp": {
+        "permission" : {
+            "home": {
+                "title": "Permissions",
+                "createLabel": "Permission を追加",
+                "createOrEditLabel": "Permissionを追加または編集",
+                "search": "Search for Permission"
+            },
+            "created": "A new Permission is created with identifier {{ param }}",
+            "updated": "A Permission is updated with identifier {{ param }}",
+            "deleted": "A Permission is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Permission {{ id }}を削除してもよろしいですか？"
+            },
+            "detail": {
+                "title": "Permission"
+            },
+            "name": "Name",
+            "description": "Description",
+            "status": "Status",
+            "action": "Action",
+            "roleGubun": "Role Gubun",
+            "rolePermissionYn": "Role Permission Yn",
+            "permissionCategory": "Permission Category",
+            "parent": "Parent"
+        }
+    }
+}

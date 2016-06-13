@@ -67,6 +67,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
     @Column(length = 100, unique = true)
     private String email;
 
+    @ManyToOne
+    @JoinColumn(name = "company_id")
+    private Company company;
+
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    private Department department;
+
     @NotNull
     @Column(nullable = false)
     private Boolean activated = false;

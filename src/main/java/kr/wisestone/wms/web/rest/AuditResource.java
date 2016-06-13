@@ -52,10 +52,9 @@ public class AuditResource {
      * @param fromDate the start of the time period of AuditEvents to get
      * @param toDate the end of the time period of AuditEvents to get
      * @param pageable the pagination information
-     * @return the ResponseEntity with status 200 (OK) and the list of AuditEvents in body1
+     * @return the ResponseEntity with status 200 (OK) and the list of AuditEvents in body
      * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
      */
-
     @RequestMapping(method = RequestMethod.GET,
         params = {"fromDate", "toDate"})
     public ResponseEntity<List<AuditEvent>> getByDates(
