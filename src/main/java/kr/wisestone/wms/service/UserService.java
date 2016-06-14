@@ -3,6 +3,7 @@ package kr.wisestone.wms.service;
 import kr.wisestone.wms.domain.Authority;
 import kr.wisestone.wms.domain.User;
 import kr.wisestone.wms.repository.AuthorityRepository;
+import kr.wisestone.wms.repository.CompanyRepository;
 import kr.wisestone.wms.repository.PersistentTokenRepository;
 import kr.wisestone.wms.repository.UserRepository;
 import kr.wisestone.wms.repository.search.UserSearchRepository;
@@ -42,6 +43,12 @@ public class UserService {
 
     @Inject
     private UserSearchRepository userSearchRepository;
+
+    @Inject
+    private CompanyRepository companyRepository;
+
+    @Inject
+    private DepartmentService departmentService;
 
 
     @Inject
@@ -141,6 +148,13 @@ public class UserService {
         user.setResetKey(RandomUtil.generateResetKey());
         user.setResetDate(ZonedDateTime.now());
         user.setActivated(true);
+
+        if(managedUserDTO.getCompanyId() != null)
+            user.setCompany(this.companyRepository.findOne(managedUserDTO.getCompanyId()));
+
+        if(managedUserDTO.getDepartmentId() != null)
+            user.setDepartment(this.departmentService.findOne(managedUserDTO.getDepartmentId()));
+
         userRepository.save(user);
         userSearchRepository.save(user);
         log.debug("Created Information for User: {}", user);

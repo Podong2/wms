@@ -1,15 +1,16 @@
 package kr.wisestone.wms.web.rest.dto;
 
 import kr.wisestone.wms.config.Constants;
-
 import kr.wisestone.wms.domain.Authority;
+import kr.wisestone.wms.domain.Company;
+import kr.wisestone.wms.domain.Department;
 import kr.wisestone.wms.domain.User;
-
 import lombok.Data;
-import lombok.Getter;
 import org.hibernate.validator.constraints.Email;
 
-import javax.validation.constraints.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.Set;
 import java.util.stream.Collectors;
 /**
@@ -40,6 +41,10 @@ public class UserDTO {
 
     private Set<String> authorities;
 
+    private Long companyId;
+
+    private Long departmentId;
+
     public UserDTO() {
     }
 
@@ -47,11 +52,11 @@ public class UserDTO {
         this(user.getLogin(), user.getFirstName(), user.getLastName(),
             user.getEmail(), user.getActivated(), user.getLangKey(),
             user.getAuthorities().stream().map(Authority::getName)
-                .collect(Collectors.toSet()));
+                .collect(Collectors.toSet()), user.getCompany(), user.getDepartment());
     }
 
     public UserDTO(String login, String firstName, String lastName,
-        String email, boolean activated, String langKey, Set<String> authorities) {
+                   String email, boolean activated, String langKey, Set<String> authorities) {
 
         this.login = login;
         this.firstName = firstName;
@@ -60,6 +65,23 @@ public class UserDTO {
         this.activated = activated;
         this.langKey = langKey;
         this.authorities = authorities;
+    }
+
+    public UserDTO(String login, String firstName, String lastName,
+                   String email, boolean activated, String langKey, Set<String> authorities, Company company, Department department) {
+
+        this.login = login;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
+        this.activated = activated;
+        this.langKey = langKey;
+        this.authorities = authorities;
+        if(company != null)
+            this.companyId = company.getId();
+
+        if(department != null)
+            this.departmentId = department.getId();
     }
 
     @Override

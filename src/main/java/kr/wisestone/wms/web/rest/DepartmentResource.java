@@ -131,7 +131,7 @@ public class DepartmentResource {
     @Timed
     public ResponseEntity<DepartmentDTO> getDepartment(@PathVariable Long id) {
         log.debug("REST request to get Department : {}", id);
-        DepartmentDTO departmentDTO = departmentService.findOne(id);
+        DepartmentDTO departmentDTO = departmentService.findOneDTO(id);
         return Optional.ofNullable(departmentDTO)
             .map(result -> new ResponseEntity<>(
                 result,

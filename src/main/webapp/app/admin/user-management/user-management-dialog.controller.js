@@ -5,9 +5,9 @@
         .module('wmsApp')
         .controller('UserManagementDialogController',UserManagementDialogController);
 
-    UserManagementDialogController.$inject = ['$stateParams', '$uibModalInstance', 'entity', 'User', 'JhiLanguageService'];
+    UserManagementDialogController.$inject = ['$stateParams', '$uibModalInstance', 'entity', 'User', 'JhiLanguageService', 'Department', 'Company'];
 
-    function UserManagementDialogController ($stateParams, $uibModalInstance, entity, User, JhiLanguageService) {
+    function UserManagementDialogController ($stateParams, $uibModalInstance, entity, User, JhiLanguageService, Department, Company) {
         var vm = this;
 
         vm.authorities = ['ROLE_USER', 'ROLE_ADMIN'];
@@ -15,6 +15,8 @@
         vm.languages = null;
         vm.save = save;
         vm.user = entity;
+        vm.departments = Department.query();
+        vm.companies = Company.query();
 
 
         JhiLanguageService.getAll().then(function (languages) {

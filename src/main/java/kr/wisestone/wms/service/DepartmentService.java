@@ -28,19 +28,19 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 public class DepartmentService {
 
     private final Logger log = LoggerFactory.getLogger(DepartmentService.class);
-    
+
     @Inject
     private DepartmentRepository departmentRepository;
-    
+
     @Inject
     private DepartmentMapper departmentMapper;
-    
+
     @Inject
     private DepartmentSearchRepository departmentSearchRepository;
-    
+
     /**
      * Save a department.
-     * 
+     *
      * @param departmentDTO the entity to save
      * @return the persisted entity
      */
@@ -55,14 +55,14 @@ public class DepartmentService {
 
     /**
      *  Get all the departments.
-     *  
+     *
      *  @param pageable the pagination information
      *  @return the list of entities
      */
-    @Transactional(readOnly = true) 
+    @Transactional(readOnly = true)
     public Page<Department> findAll(Pageable pageable) {
         log.debug("Request to get all Departments");
-        Page<Department> result = departmentRepository.findAll(pageable); 
+        Page<Department> result = departmentRepository.findAll(pageable);
         return result;
     }
 
@@ -72,8 +72,21 @@ public class DepartmentService {
      *  @param id the id of the entity
      *  @return the entity
      */
-    @Transactional(readOnly = true) 
-    public DepartmentDTO findOne(Long id) {
+    @Transactional(readOnly = true)
+    public Department findOne(Long id) {
+        log.debug("Request to get Department : {}", id);
+        Department department = departmentRepository.findOne(id);
+        return department;
+    }
+
+    /**
+     *  Get one department by id.
+     *
+     *  @param id the id of the entity
+     *  @return the entity
+     */
+    @Transactional(readOnly = true)
+    public DepartmentDTO findOneDTO(Long id) {
         log.debug("Request to get Department : {}", id);
         Department department = departmentRepository.findOne(id);
         DepartmentDTO departmentDTO = departmentMapper.departmentToDepartmentDTO(department);
@@ -82,7 +95,7 @@ public class DepartmentService {
 
     /**
      *  Delete the  department by id.
-     *  
+     *
      *  @param id the id of the entity
      */
     public void delete(Long id) {
