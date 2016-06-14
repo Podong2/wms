@@ -25,10 +25,7 @@ public class UserDTO {
     private String login;
 
     @Size(max = 50)
-    private String firstName;
-
-    @Size(max = 50)
-    private String lastName;
+    private String name;
 
     @Email
     @Size(min = 5, max = 100)
@@ -49,30 +46,28 @@ public class UserDTO {
     }
 
     public UserDTO(User user) {
-        this(user.getLogin(), user.getFirstName(), user.getLastName(),
-            user.getEmail(), user.getActivated(), user.getLangKey(),
+        this(user.getLogin(), user.getName(), user.getEmail()
+            , user.getActivated(), user.getLangKey(),
             user.getAuthorities().stream().map(Authority::getName)
                 .collect(Collectors.toSet()), user.getCompany(), user.getDepartment());
     }
 
-    public UserDTO(String login, String firstName, String lastName,
-                   String email, boolean activated, String langKey, Set<String> authorities) {
+    public UserDTO(String login, String name, String email
+                , boolean activated, String langKey, Set<String> authorities) {
 
         this.login = login;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.name = name;
         this.email = email;
         this.activated = activated;
         this.langKey = langKey;
         this.authorities = authorities;
     }
 
-    public UserDTO(String login, String firstName, String lastName,
-                   String email, boolean activated, String langKey, Set<String> authorities, Company company, Department department) {
+    public UserDTO(String login, String name, String email, boolean activated
+        , String langKey, Set<String> authorities, Company company, Department department) {
 
         this.login = login;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.name = name;
         this.email = email;
         this.activated = activated;
         this.langKey = langKey;
@@ -88,8 +83,7 @@ public class UserDTO {
     public String toString() {
         return "UserDTO{" +
             "login='" + login + '\'' +
-            ", firstName='" + firstName + '\'' +
-            ", lastName='" + lastName + '\'' +
+            ", name='" + name + '\'' +
             ", email='" + email + '\'' +
             ", activated=" + activated +
             ", langKey='" + langKey + '\'' +

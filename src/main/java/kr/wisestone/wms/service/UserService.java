@@ -99,7 +99,7 @@ public class UserService {
             });
     }
 
-    public User createUserInformation(String login, String password, String firstName, String lastName, String email,
+    public User createUserInformation(String login, String password, String name, String email,
         String langKey) {
 
         User newUser = new User();
@@ -109,8 +109,7 @@ public class UserService {
         newUser.setLogin(login);
         // new user gets initially a generated password
         newUser.setPassword(encryptedPassword);
-        newUser.setFirstName(firstName);
-        newUser.setLastName(lastName);
+        newUser.setName(name);
         newUser.setEmail(email);
         newUser.setLangKey(langKey);
         // new user is not active
@@ -128,8 +127,7 @@ public class UserService {
     public User createUser(ManagedUserDTO managedUserDTO) {
         User user = new User();
         user.setLogin(managedUserDTO.getLogin());
-        user.setFirstName(managedUserDTO.getFirstName());
-        user.setLastName(managedUserDTO.getLastName());
+        user.setName(managedUserDTO.getName());
         user.setEmail(managedUserDTO.getEmail());
         if (managedUserDTO.getLangKey() == null) {
             user.setLangKey("ko"); // default language
@@ -161,10 +159,9 @@ public class UserService {
         return user;
     }
 
-    public void updateUserInformation(String firstName, String lastName, String email, String langKey) {
+    public void updateUserInformation(String name, String email, String langKey) {
         userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).ifPresent(u -> {
-            u.setFirstName(firstName);
-            u.setLastName(lastName);
+            u.setName(name);
             u.setEmail(email);
             u.setLangKey(langKey);
             userRepository.save(u);
@@ -246,5 +243,34 @@ public class UserService {
             userRepository.delete(user);
             userSearchRepository.delete(user);
         }
+    }
+
+    public User updateUser(ManagedUserDTO managedUserDTO) {
+
+        User user = userRepository.findOne(managedUserDTO.getId());
+
+        user.setLogin(managedUserDTO.getLogin());
+        user.setName(managedUserDTO.getName());
+        user.setEmail(managedUserDTO.getEmail());
+        user.setActivated(managedUserDTO.isActivated());
+        user.setLangKey(managedUserDTO.getLangKey());
+
+        if(managedUserDTO.getCompanyId() != null)
+            user.setCompany(this.companyRepository.findOne(managedUserDTO.getCompanyId()));
+
+        if(managedUserDTO.getDepartmentId() != null)
+            user.setDepartment(this.departmentService.findOne(managedUserDTO.getDepartmentId()));
+
+        Set<Authority> authorities = user.getAuthorities();
+        authorities.clear();
+        managedUserDTO.getAuthorities().stream().forEach(
+            authority -> authorities.add(authorityRepository.findOne(authority))
+        );
+        user.setAuthorities(authorities);
+
+        userRepository.save(user);
+        userSearchRepository.save(user);
+
+        return user;
     }
 }

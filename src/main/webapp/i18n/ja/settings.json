@@ -2,10 +2,8 @@
     "settings": {
         "title": "[<b>{{username}}</b>]の設定",
         "form": {
-            "firstname": "名",
-            "firstname.placeholder": "名",
-            "lastname": "姓",
-            "lastname.placeholder": "姓",
+            "name": "名",
+            "name.placeholder": "名",
             "language": "言語",
             "button": "保存する"
         },
@@ -20,11 +18,6 @@
                     "required": "名を入力してください",
                     "minlength": "名は1文字以上で入力してください",
                     "maxlength": "名は50文字以下で入力してください"
-                },
-                "lastname": {
-                    "required": "姓を入力してください",
-                    "minlength": "姓は1文字以上で入力してください",
-                    "maxlength": "姓は50文字以下で入力してください"
                 }
             }
         }

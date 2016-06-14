@@ -115,8 +115,7 @@ public class AccountResourceIntTest {
 
         User user = new User();
         user.setLogin("test");
-        user.setFirstName("john");
-        user.setLastName("doe");
+        user.setName("john");
         user.setEmail("john.doe@jhipter.com");
         user.setAuthorities(authorities);
         when(mockUserService.getUserWithAuthorities()).thenReturn(user);
@@ -127,7 +126,6 @@ public class AccountResourceIntTest {
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON))
                 .andExpect(jsonPath("$.login").value("test"))
                 .andExpect(jsonPath("$.firstName").value("john"))
-                .andExpect(jsonPath("$.lastName").value("doe"))
                 .andExpect(jsonPath("$.email").value("john.doe@jhipter.com"))
                 .andExpect(jsonPath("$.authorities").value(AuthoritiesConstants.ADMIN));
     }
@@ -149,7 +147,6 @@ public class AccountResourceIntTest {
             "joe",                  // login
             "password",             // password
             "Joe",                  // firstName
-            "Shmoe",                // lastName
             "joe@example.com",      // e-mail
             true,                   // activated
             "ko",               // langKey
@@ -177,7 +174,6 @@ public class AccountResourceIntTest {
             "funky-log!n",          // login <-- invalid
             "password",             // password
             "Funky",                // firstName
-            "One",                  // lastName
             "funky@example.com",    // e-mail
             true,                   // activated
             "ko",               // langKey
@@ -205,7 +201,6 @@ public class AccountResourceIntTest {
             "bob",              // login
             "password",         // password
             "Bob",              // firstName
-            "Green",            // lastName
             "invalid",          // e-mail <-- invalid
             true,               // activated
             "ko",               // langKey
@@ -233,7 +228,6 @@ public class AccountResourceIntTest {
             "bob",              // login
             "123",              // password with only 3 digits
             "Bob",              // firstName
-            "Green",            // lastName
             "bob@example.com",  // e-mail
             true,               // activated
             "ko",               // langKey
@@ -262,7 +256,6 @@ public class AccountResourceIntTest {
             "alice",                // login
             "password",             // password
             "Alice",                // firstName
-            "Something",            // lastName
             "alice@example.com",    // e-mail
             true,                   // activated
             "ko",               // langKey
@@ -273,7 +266,7 @@ public class AccountResourceIntTest {
         );
 
         // Duplicate login, different e-mail
-        ManagedUserDTO duplicatedUser = new ManagedUserDTO(validUser.getId(), validUser.getLogin(), validUser.getPassword(), validUser.getLogin(), validUser.getLastName(),
+        ManagedUserDTO duplicatedUser = new ManagedUserDTO(validUser.getId(), validUser.getLogin(), validUser.getPassword(), validUser.getName(),
             "alicejr@example.com", true, validUser.getLangKey(), validUser.getAuthorities(), validUser.getCreatedDate(), validUser.getLastModifiedBy(), validUser.getLastModifiedDate());
 
         // Good user
@@ -303,7 +296,6 @@ public class AccountResourceIntTest {
             "john",                 // login
             "password",             // password
             "John",                 // firstName
-            "Doe",                  // lastName
             "john@example.com",     // e-mail
             true,                   // activated
             "ko",               // langKey
@@ -314,7 +306,7 @@ public class AccountResourceIntTest {
         );
 
         // Duplicate e-mail, different login
-        ManagedUserDTO duplicatedUser = new ManagedUserDTO(validUser.getId(), "johnjr", validUser.getPassword(), validUser.getLogin(), validUser.getLastName(),
+        ManagedUserDTO duplicatedUser = new ManagedUserDTO(validUser.getId(), "johnjr", validUser.getPassword(), validUser.getName(),
             validUser.getEmail(), true, validUser.getLangKey(), validUser.getAuthorities(), validUser.getCreatedDate(), validUser.getLastModifiedBy(), validUser.getLastModifiedDate());
 
         // Good user
@@ -343,7 +335,6 @@ public class AccountResourceIntTest {
             "badguy",               // login
             "password",             // password
             "Bad",                  // firstName
-            "Guy",                  // lastName
             "badguy@example.com",   // e-mail
             true,                   // activated
             "ko",               // langKey
@@ -371,7 +362,6 @@ public class AccountResourceIntTest {
         UserDTO invalidUser = new UserDTO(
             "funky-log!n",          // login <-- invalid
             "Funky",                // firstName
-            "One",                  // lastName
             "funky@example.com",    // e-mail
             true,                   // activated
             "ko",               // langKey

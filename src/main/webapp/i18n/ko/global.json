@@ -9,6 +9,13 @@
                 "main": "Entities",
                 "department": "Department",
                 "company": "Company",
+                "menu": "Menu",
+                "permission": "Permission",
+                "permissionCategory": "Permission Category",
+                "menuPermission": "Menu Permission",
+                "systemRole": "System Role",
+                "systemRolePermission": "System Role Permission",
+                "systemRoleUser": "System Role User",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {

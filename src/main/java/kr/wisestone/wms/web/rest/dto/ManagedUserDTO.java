@@ -7,6 +7,7 @@ import java.util.Set;
 import kr.wisestone.wms.domain.User;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -45,9 +46,9 @@ public class ManagedUserDTO extends UserDTO {
         this.password = null;
     }
 
-    public ManagedUserDTO(Long id, String login, String password, String firstName, String lastName,
+    public ManagedUserDTO(Long id, String login, String password, String name,
                           String email, boolean activated, String langKey, Set<String> authorities , ZonedDateTime createdDate, String lastModifiedBy, ZonedDateTime lastModifiedDate ) {
-        super(login, firstName, lastName, email, activated, langKey, authorities);
+        super(login, name, email, activated, langKey, authorities);
         this.id = id;
         this.createdDate = createdDate;
         this.lastModifiedBy = lastModifiedBy;

@@ -2,10 +2,8 @@
     "settings": {
         "title": "[<b>{{username}}</b>] 사용자 설정",
         "form": {
-            "firstname": "이름",
-            "firstname.placeholder": "이름",
-            "lastname": "성",
-            "lastname.placeholder": "성",
+            "name": "이름",
+            "name.placeholder": "이름",
             "language": "언어",
             "button": "저장"
         },
@@ -20,11 +18,6 @@
                     "required": "이름을 입력해 주세요.",
                     "minlength": "이름은 최소 1자 이상이어야 합니다",
                     "maxlength": "이름은 최대 50자 까지입니다"
-                },
-                "lastname": {
-                    "required": "성을 입력해 주세요.",
-                    "minlength": "성은 최소 1자 이상이어야 합니다",
-                    "maxlength": "성은 최대 50자 까지입니다"
                 }
             }
         }
