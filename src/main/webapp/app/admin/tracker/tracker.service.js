@@ -31,18 +31,18 @@
             var loc = $window.location;
             var url = '//' + loc.host + loc.pathname + 'websocket/tracker';
             var socket = new SockJS(url);
-            stompClient = Stomp.over(socket);
+            stompClient = Stomp.over(socket); // 해당 url의 웹소켓에 접속한다.
             var stateChangeStart;
             var headers = {};
             headers['X-CSRF-TOKEN'] = $cookies[$http.defaults.xsrfCookieName];
-            stompClient.connect(headers, function() {
-                connected.resolve('success');
+            stompClient.connect(headers, function() { //연결
+                connected.resolve('success'); // 연결 성공 시
                 sendActivity();
-                if (!alreadyConnectedOnce) {
+                if (!alreadyConnectedOnce) { // 이전에 연결된 정보가 없을 시 연결상태를 설정한다?
                     stateChangeStart = $rootScope.$on('$stateChangeStart', function () {
                         sendActivity();
                     });
-                    alreadyConnectedOnce = true;
+                    alreadyConnectedOnce = true; // 한번 연결했다는 true 값으로 변경
                 }
             });
             $rootScope.$on('$destroy', function () {

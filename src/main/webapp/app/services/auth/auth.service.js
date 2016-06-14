@@ -4,6 +4,10 @@
     angular
         .module('wmsApp')
         .factory('Auth', Auth);
+    // service : 싱글톤의 특성을 가지고 있고 컨트롤러간 통신을 제어하거나, 리소스 접근 권한을 가진
+    // 객체를 리턴해서 컨트롤러에서 이 객체로 CRUD 임무를 수행하는등의 방식으로 사용된다.
+    // factory : 일반적으로 사용하는 서비스로서 비지니스 로직 또는 모듈 제공자로 사용한다.
+    // 객체나 클로저를 반환한다.
 
     Auth.$inject = ['$rootScope', '$state', '$sessionStorage', '$q', '$translate', 'Principal', 'AuthServerProvider', 'Account', 'LoginService', 'Register', 'Activate', 'Password', 'PasswordResetInit', 'PasswordResetFinish', 'JhiTrackerService'];
 
@@ -99,12 +103,12 @@
                 }.bind(this)).$promise;
         }
 
-        function login (credentials, callback) {
+        function login (credentials, callback) { // login controller에서 login요청을 받아서 수행한다
             var cb = callback || angular.noop;
             var deferred = $q.defer();
 
-            AuthServerProvider.login(credentials)
-                .then(loginThen)
+            AuthServerProvider.login(credentials)// AuthServerProvider 를 이용하여 login을 요청한다.
+                .then(loginThen)// 로그인 결과값을 리턴받아서 loginThen function에 값을 전달한다.
                 .catch(function (err) {
                     this.logout();
                     deferred.reject(err);
@@ -113,14 +117,13 @@
 
             function loginThen (data) {
                 Principal.identity(true).then(function(account) {
-                    // After the login the language will be changed to
-                    // the language selected by the user during his registration
-                    if (account!== null) {
+
+                    if (account!== null) { // 로그인 후에 사용자의 선택된 언어로 변경된다.
                         $translate.use(account.langKey).then(function () {
                             $translate.refresh();
                         });
                     }
-                    JhiTrackerService.sendActivity();
+                    JhiTrackerService.sendActivity(); // 해당사용자의 활동상태를 websocket에 전달한다.
                     deferred.resolve(data);
                 });
                 return cb();
@@ -131,8 +134,8 @@
 
 
         function logout () {
-            AuthServerProvider.logout();
-            Principal.authenticate(null);
+            AuthServerProvider.logout(); // 로그아웃
+            Principal.authenticate(null); // 인증실패
         }
 
         function resetPasswordFinish (keyAndPassword, callback) {

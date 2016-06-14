@@ -1,0 +1,145 @@
+<!--
+  ~ Copyright (c) 2016. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
+  -->
+
+<div ng-cloak>
+    <div class="row" id="wrapper">
+        <h3><b>side nav</b></h3>
+        <div style="margin-bottom: 60px">
+            <div>
+                <!--<div class="navbar-header fixed-brand" style="z-index: 1000;">-->
+                    <!--<button type="button" class="navbar-toggle collapsed" data-toggle="collapse"  id="menu-toggle" style="margin-bottom: 0" menu-toggle-close>-->
+                        <!--<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>-->
+                    <!--</button>-->
+                <!--</div>&lt;!&ndash; navbar-header&ndash;&gt;-->
+                <div class="collapse navbar-collapse navbar-header" id="bs-example-navbar-collapse-1" style="z-index: 1000;" >
+                    <ul class="nav navbar-nav">
+                        <li class="active" >
+                            <button class="navbar-toggle collapse in" data-toggle="collapse" id="menu-toggle-2" style="margin-bottom: 0" menu-toggle>
+                            <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+                            </button>
+                        </li>
+                    </ul>
+                </div><!-- bs-example-navbar-collapse-1 -->
+            </div>
+        </div>
+
+        <!-- Sidebar -->
+        <div id="sidebar-wrapper" style="margin-top: -146px;">
+            <ul class="sidebar-nav nav-pills nav-stacked" id="menu" style="margin-top: 5px;">
+
+                <li class="active">
+                    <a href=""><span class="fa-stack fa-lg pull-left"><i class="fa fa-dashboard fa-stack-1x "></i></span> Dashboard</a>
+                    <ul class="nav-pills nav-stacked" style="list-style-type:none;">
+                        <li><a ui-sref="register">link1</a></li>
+                        <li><a href="#">link2</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-flag fa-stack-1x "></i></span> Shortcut</a>
+                    <ul class="nav-pills nav-stacked" style="list-style-type:none;">
+                        <li><a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-flag fa-stack-1x "></i></span>link1</a></li>
+                        <li><a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-flag fa-stack-1x "></i></span>link2</a></li>
+
+                    </ul>
+                </li>
+                <li>
+                    <a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-cloud-download fa-stack-1x "></i></span>Overview</a>
+                </li>
+                <li>
+                    <a href="#"> <span class="fa-stack fa-lg pull-left"><i class="fa fa-cart-plus fa-stack-1x "></i></span>Events</a>
+                </li>
+                <li>
+                    <a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-youtube-play fa-stack-1x "></i></span>About</a>
+                </li>
+                <li>
+                    <a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-wrench fa-stack-1x "></i></span>Services</a>
+                </li>
+                <li>
+                    <a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-server fa-stack-1x "></i></span>Contact</a>
+                </li>
+            </ul>
+        </div><!-- /#sidebar-wrapper -->
+        <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
+
+
+        <h3><b>select box</b></h3>
+        <!-- title on nya-bs-option -->
+        value : {{vm.selectedValue}}<br/>
+        <ol class="nya-bs-select" ng-model="vm.selectedValue">
+            <li nya-bs-option="option in vm.selectValue" title="{{option.key}}">
+                <a>
+                    {{ option.name }}
+                    <span class="glyphicon glyphicon-ok check-mark"></span>
+                </a>
+            </li>
+        </ol>
+        <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
+
+        <h3><b>multi select box</b></h3>
+        <!-- title on nya-bs-select -->
+        values : {{vm.multipleValue}}<br/>
+        <button class="btn btn-default" ng-click="disable=!disable">
+            {{ disable ? "Enable select" : "Disable select" }}
+        </button>
+        <ol class="nya-bs-select" ng-model="vm.multipleValue" actions-box="true" multiple data-size="5" data-live-search="true" disabled="disable">
+            <li nya-bs-option="option in vm.arrayCollection">
+                <a>
+                    <span><span class="glyphicon" ng-class="option.icon"></span> {{ option.name }}</span>
+                    <span class="glyphicon glyphicon-ok check-mark"></span>
+                </a>
+            </li>
+        </ol>
+        <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
+
+        <h3><b>Input box</b></h3>
+        <!--<div class="" >-->
+            <!--<input type="text" class="form-control" id="inputSuccess2" data-ng-model="vm.inputCheck" aria-describedby="inputSuccess2Status" input-check checkType="vm.inputCheck">-->
+
+        <!--</div>-->
+        <input type="text" id="inputHelpBlock" class="form-control" aria-describedby="helpBlock">
+        <div class="form-group has-success">
+            <label class="control-label" for="inputSuccess1">Input with success</label>
+            <input type="text" class="form-control" id="inputSuccess1" aria-describedby="helpBlock2">
+        </div>
+        <div class="form-group has-warning">
+            <label class="control-label" for="inputWarning1">Input with warning</label>
+            <input type="text" class="form-control" id="inputWarning1">
+        </div>
+        <div class="form-group has-error">
+            <label class="control-label" for="inputError1">Input with error</label>
+            <input type="text" class="form-control" id="inputError1">
+        </div>
+
+
+
+    </div>
+</div>
+
+
+<script type="text/javascript">
+
+    function initMenu() {
+        $('#menu ul').hide();
+        $('#menu ul').children('.current').parent().show();
+        //$('#menu ul:first').show();
+        $('#menu li a').click(
+            function() {
+                var checkElement = $(this).next();
+                if((checkElement.is('ul')) && (checkElement.is(':visible'))) {
+                    return false;
+                }
+                if((checkElement.is('ul')) && (!checkElement.is(':visible'))) {
+                    $('#menu ul:visible').slideUp('normal');
+                    checkElement.slideDown('normal');
+                    return false;
+                }
+            }
+        );
+    }
+    $(document).ready(function() {initMenu();});
+</script>
