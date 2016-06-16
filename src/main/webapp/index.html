@@ -29,20 +29,78 @@
         <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
     <!--<page-ribbon></page-ribbon>-->
+
     <div ui-view="navbar" ng-cloak></div>
     <!-- Brand and toggle get grouped for better mobile display -->
-
-    <div class="container" >
-
-        <div class="well" ui-view="content">
-            <!-- Angular views -->
-        </div>
-
-        <div class="footer" ng-cloak>
-            <p translate="footer">This is your footer</p>
+    <div style="position: absolute; top:0; left: 200px;">
+        <div>
+            <!--<div class="navbar-header fixed-brand" style="z-index: 1000;">-->
+            <!--<button type="button" class="navbar-toggle collapsed" data-toggle="collapse"  id="menu-toggle" style="margin-bottom: 0" menu-toggle-close>-->
+            <!--<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>-->
+            <!--</button>-->
+            <!--</div>&lt;!&ndash; navbar-header&ndash;&gt;-->
+            <div class="collapse navbar-collapse navbar-header" id="bs-example-navbar-collapse-1" style="z-index: 1000;" >
+                <ul class="nav navbar-nav">
+                    <li class="active" >
+                        <button class="navbar-toggle collapse in" data-toggle="collapse" id="menu-toggle-2" style="margin-bottom: 0" menu-toggle>
+                            <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+                        </button>
+                    </li>
+                </ul>
+            </div><!-- bs-example-navbar-collapse-1 -->
         </div>
     </div>
+    <div class="content-wrapper toggled-3">
+        <div class="side-menu sidebar-inverse " id="wrapper">
+            <!-- Sidebar -->
+            <div id="sidebar-wrapper" style="margin-top: 0px;">
+                <ul class="sidebar-nav nav-pills nav-stacked" id="menu" style="margin-top: 5px;">
 
+                    <li class="active">
+                        <a href="" depth-toggle><span class="fa-stack fa-lg pull-left"><i class="fa fa-dashboard fa-stack-1x "></i></span> <span class="menu-name">Dashboard</span></a>
+                        <ul class="nav-pills nav-stacked" style="list-style-type:none;">
+                            <li><a ui-sref="register">link1</a></li>
+                            <li><a href="#">link2</a></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#" depth-toggle><span class="fa-stack fa-lg pull-left"><i class="fa fa-flag fa-stack-1x "></i></span> <span class="menu-name">Shortcut</span></a>
+                        <ul class="nav-pills nav-stacked" style="list-style-type:none;">
+                            <li><a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-flag fa-stack-1x "></i></span><span class="menu-name">link1</span></a></li>
+                            <li><a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-flag fa-stack-1x "></i></span><span class="menu-name">link2</span></a></li>
+
+                        </ul>
+                    </li>
+                    <li>
+                        <a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-cloud-download fa-stack-1x "></i></span><span class="menu-name">Overview</span></a>
+                    </li>
+                    <li>
+                        <a href="#"> <span class="fa-stack fa-lg pull-left"><i class="fa fa-cart-plus fa-stack-1x "></i></span><span class="menu-name">Events</span></a>
+                    </li>
+                    <li>
+                        <a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-youtube-play fa-stack-1x "></i></span><span class="menu-name">About</span></a>
+                    </li>
+                    <li>
+                        <a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-wrench fa-stack-1x "></i></span><span class="menu-name">Services</span></a>
+                    </li>
+                    <li>
+                        <a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-server fa-stack-1x "></i></span><span class="menu-name">Contact</span></a>
+                    </li>
+                </ul>
+            </div><!-- /#sidebar-wrapper -->
+        </div>
+
+        <div class="container-fluid" >
+
+            <div class="well side-body toggled-3" ui-view="content">
+                <!-- Angular views -->
+            </div>
+
+            <div class="footer" ng-cloak>
+                <p translate="footer">This is your footer</p>
+            </div>
+        </div>
+    </div>
     <!-- Google Analytics: uncomment and change UA-XXXXX-X to be your site's ID.
     <script>
         (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
@@ -83,6 +141,7 @@
     <script src="bower_components/angular-animate/angular-animate.js"></script>
     <script src="bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.min.js"></script>
     <script src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
+    <script src="bower_components/bootstrap/js/tooltip.js"></script>
     <!-- endinject -->
     <!-- endbuild -->
 

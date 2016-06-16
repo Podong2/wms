@@ -379,10 +379,10 @@ Social Buttons
 /* side nav Toggle Styles  START */
 #wrapper {
     padding-left: 0;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 #wrapper.toggled {
@@ -392,17 +392,17 @@ Social Buttons
 
 #sidebar-wrapper {
     z-index: 1000;
-    position: absolute;
-    left: 200px;
+    /*position: absolute;*/
+    /*left: 200px;*/
     width: 0;
     height: 100%;
-    margin-left: -200px;
+    /*margin-left: -200px;*/
     overflow-y: auto;
     background: #efefef;
-    -webkit-transition: all 0.5s ease;
-    -moz-transition: all 0.5s ease;
-    -o-transition: all 0.5s ease;
-    transition: all 0.5s ease;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
 }
 #wrapper.toggled #sidebar-wrapper {
     width: 200px;
@@ -481,7 +481,7 @@ Social Buttons
 @media(min-width:768px) {
     #wrapper {
         /*padding-left: 40px;*/
-        margin: 5px;
+        /*margin: 5px;*/
     }
     .fixed-brand{
         width: 200px;
@@ -516,10 +516,10 @@ Social Buttons
     #page-content-wrapper {
         padding: 20px;
         position: relative;
-        -webkit-transition: all 0.5s ease;
-        -moz-transition: all 0.5s ease;
-        -o-transition: all 0.5s ease;
-        transition: all 0.5s ease;
+        -webkit-transition: all 0.3s ease;
+        -moz-transition: all 0.3s ease;
+        -o-transition: all 0.3s ease;
+        transition: all 0.3s ease;
     }
 
     #wrapper.toggled #page-content-wrapper {
@@ -531,10 +531,10 @@ Social Buttons
         position: relative;
         margin-right: 0;
         margin-left: -200px;
-        -webkit-transition: all 0.5s ease;
-        -moz-transition: all 0.5s ease;
-        -o-transition: all 0.5s ease;
-        transition: all 0.5s ease;
+        -webkit-transition: all 0.3s ease;
+        -moz-transition: all 0.3s ease;
+        -o-transition: all 0.3s ease;
+        transition: all 0.3s ease;
         width: auto;
 
     }
@@ -632,3 +632,69 @@ Social Buttons
 }
 
 /*  :::::::::::::: bootstrap style ::::::::::::::  */
+
+
+.side-menu {
+    overflow-y: none;
+    z-index: 100000;
+    position: fixed;
+    width: 60px;
+    height: 100%;
+    -webkit-transition: all 0.25s;
+    transition: all 0.25s;
+}
+
+.content-wrapper.toggled-3 .side-menu {
+    width: 200px;
+}
+.container{
+    padding-left: 0;
+    padding-right: 0;
+}
+.side-body {
+    margin-top: 20px;
+    margin-left: 60px;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+.content-wrapper.toggled-3 .side-body {
+    margin-left: 200px;
+    -webkit-transition: all 0.3s ease;
+    -moz-transition: all 0.3s ease;
+    -o-transition: all 0.3s ease;
+    transition: all 0.3s ease;
+}
+.navbar{
+    margin-bottom : 0;
+}
+
+.content-wrapper .side-menu .sidebar-nav li .menu-name{
+    width: 0px;
+    white-space: nowrap;
+    padding-left: 6px;
+    display: none;
+}
+.content-wrapper .side-menu .sidebar-nav {
+    width: 60px;
+}
+.content-wrapper.toggled-3 .side-menu .sidebar-nav li .menu-name{
+    display: inline-block;
+}
+.content-wrapper.toggled-3 .side-menu .sidebar-nav {
+    width: 200px;
+}
+.content-wrapper .side-menu:hover .sidebar-nav {
+    width: 200px;
+}
+.content-wrapper .side-menu:hover .sidebar-nav li .menu-name{
+    display: inline-block;
+}
+.content-wrapper .side-menu .sidebar-nav li a{
+    height: 40px;
+}
+li.active > a{
+    color: #337ab7 !important;
+    background-color: #fff !important;
+}

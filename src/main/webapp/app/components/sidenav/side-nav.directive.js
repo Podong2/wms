@@ -18,6 +18,8 @@
             element.on('click', function(e) {
                 e.preventDefault();
                 $("#wrapper").toggleClass("toggled-2");
+                $(".content-wrapper").toggleClass("toggled-3");
+                $(".side-body").toggleClass("toggled-3");
                 $('#menu ul').hide();
             });
         }

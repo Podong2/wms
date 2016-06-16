@@ -271,10 +271,34 @@
                 closeHtml: "<a ng-click='test()'>이벤트 버튼</a>"
             });
             toastrConfig.timeOut = 3000;
+            toastrConfig.positionClass = 'toast-bottom-right';
             toastr.success('Hello world!', 'Toastr fun!');
+            toastr.error('Your credentials are gone', 'Error');
+            toastr.warning('Your computer is about to explode!', 'Warning');
 
 
         }
+
+        $scope.$watchCollection('vm.options', function(newValue) {
+            //toastrConfig.autoDismiss = newValue.autoDismiss;
+            //toastrConfig.allowHtml = newValue.html;
+            //toastrConfig.extendedTimeOut = parseInt(newValue.extendedTimeout, 10);
+            toastrConfig.positionClass = newValue.position;
+            toastrConfig.timeOut = parseInt(newValue.timeout, 10);
+            //toastrConfig.closeButton = newValue.closeButton;
+            //toastrConfig.tapToDismiss = newValue.tapToDismiss;
+            //toastrConfig.progressBar = newValue.progressBar;
+            //toastrConfig.closeHtml = newValue.closeHtml;
+            //toastrConfig.newestOnTop = newValue.newestOnTop;
+            //toastrConfig.maxOpened = newValue.maxOpened;
+            //toastrConfig.preventDuplicates = newValue.preventDuplicates;
+            //toastrConfig.preventOpenDuplicates = newValue.preventOpenDuplicates;
+            //if (newValue.customTemplate) {
+            //    toastrConfig.templates.toast = 'custom';
+            //} else {
+            //    toastrConfig.templates.toast = 'directives/toast/toast.html';
+            //}
+        });
 
         // Disable weekend selection
         function isDisabledDate(currentDate, mode) {
