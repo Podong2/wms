@@ -7,7 +7,7 @@
   -->
 
 <div ng-cloak>
-    <div class="row">
+    <div class="row" style="padding: 10px;">
         <h3><b>side nav</b></h3>
         <ul>
             <li>사용자는 숨어있는 side menu를 특정버튼을 눌러 노출시킬 수 있다.</li>
@@ -706,14 +706,39 @@
     </div>
 </div>
         </xmp>
-        <hr />
+        <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
 
-        <h3><b>xeditable</b></h3>
-         text 형식 : <a href="#" editable-text="vm.user.name">{{ vm.user.name || "empty" }}</a>
 
         <h3><b>Modal</b></h3>
+        <ul>
+            <li>기존 owl과 동일한 modal이 적용되야한다.</li>
+            <li>드래그로 창을 이동 가능해야한다.</li>
+            <li>엔터키 입력 시 창의 전송기능 작동 가능해야한다.</li>
+            <li>esc 입력시 창이 닫힌다.</li>
+            <li>배경색은 투명색으로 유지한다.</li>
+            <li>내용이 많을 시 화면이 벗어나지 않는 선에서 스크롤 생성되야 한다.</li>
+        </ul>
         <button type="button" ng-click="vm.modalOpen()">모달 오픈</button>
+        <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
 
+
+        <h3><b>xeditable</b></h3>
+        <ul>
+            <li>사용자는 요약정보등의 특정 text 정보들을 클릭하여 변경 할 수 있다.</li>
+            <li>text, select, datepicker 등등 다양한 입력요소들을 변경할 수 있다.</li>
+        </ul>
+        text 형식 : <a href="#" editable-text="vm.user.name">{{ vm.user.name || "empty" }}</a><br/>
+        check box : <a href="#" editable-checkbox="vm.user.remember" e-title="Remember?"> {{ vm.user.remember && "Remember me!" || "Don't remember" }} </a><br/>
+        <!--radio box : <a href="#" editable-radiolist="vm.user.status" e-ng-options="s.value as s.text for s in vm.statuses">{{ vm.showStatus() }}</a><br/>-->
+        date type :
+        <a  editable-bsdate="vm.user.dob" e-is-open="opened.$data" e-ng-click="vm.open($event,'$data')" e-datepicker-popup="dd-MMMM-yyyy">
+            {{ vm.picker15.date }}
+        </a><br/>
+        select :
+        <a editable-select="vm.statusId" e-ng-options="s.id as s.name for s in vm.statuses">
+            {{ vm.showStatus(vm.statusId) }}
+        </a>
+        <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
 
     </div>
 </div>

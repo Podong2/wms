@@ -23,10 +23,8 @@
         vm.openCalendar = openCalendar;
         vm.getTimeStamp = getTimeStamp;
         vm.modalOpen = modalOpen;
+        vm.open = open;
 
-        function modalOpen(){
-            LoginService.open("title1", "content1", "alertModal.html");
-        }
 
         //select box
         vm.selectValue = [
@@ -56,8 +54,6 @@
         vm.inputCheck = "success";
         vm.errorMsg = "오류오류오류";
 
-        vm.testDate = "";
-
         // toastr option
         vm.options = {
             autoDismiss: false,
@@ -78,10 +74,22 @@
 
         //xeditble
         vm.user = {
-            name: 'awesome user'
+            name: 'awesome user', // input
+            "remember": true, // checkbox
+            "status": 2,
+            "dob": "1984-05-14T15:00:00.000Z"
         };
+        // xeditble radio, select
+        vm.statuses = [
+            {id: 1, name: 'status1'},
+            {id: 2, name: 'status2'},
+            {id: 3, name: 'status3'},
+            {id: 4, name: 'status4'}
+        ];
+        vm.statusId = '2'; // select box 기본값
+        vm.opened = {};
 
-        // date picker
+        // date picker start //////////////////////////////////////////////////////////////////////////
         this.picker1 = {
             date: new Date(),
             datepickerOptions: {
@@ -92,7 +100,16 @@
                 }
             }
         };
-
+        this.picker15 = {
+            date: new Date(),
+            datepickerOptions: {
+                showWeeks: false,
+                startingDay: 1,
+                dateDisabled: function(data) {
+                    return (data.mode === 'day' && (new Date().toDateString() == data.date.toDateString()));
+                }
+            }
+        };
         // time picker
         this.picker2 = {
             date: new Date('2015-03-01T12:30:00Z'),
@@ -101,12 +118,10 @@
                 showMeridian: false
             }
         };
-
         // date and time picker
         this.picker3 = {
             date: new Date()
         };
-
         // min date picker
         this.picker4 = {
             date: new Date(),
@@ -114,7 +129,6 @@
                 maxDate: null
             }
         };
-
         // max date picker
         this.picker5 = {
             date: new Date(),
@@ -122,20 +136,16 @@
                 minDate: null
             }
         };
-
         // set date for max picker, 10 days in future
         this.picker5.date.setDate(this.picker5.date.getDate() + 10);
-
         // global config picker
         this.picker6 = {
             date: new Date()
         };
-
         // dropdown up picker
         this.picker7 = {
             date: new Date()
         };
-
         // view mode picker
         this.picker8 = {
             date: new Date(),
@@ -145,12 +155,10 @@
                 maxMode: 'year'
             }
         };
-
         // dropdown up picker
         this.picker9 = {
             date: null
         };
-
         // min time picker
         this.picker10 = {
             date: new Date('2016-03-01T09:00:00Z'),
@@ -158,7 +166,6 @@
                 max: null
             }
         };
-
         // max time picker
         this.picker11 = {
             date: new Date('2016-03-01T10:00:00Z'),
@@ -166,7 +173,6 @@
                 min: null
             }
         };
-
         // button bar
         this.picker12 = {
             date: new Date(),
@@ -198,7 +204,6 @@
                 }
             }
         };
-
         // when closed picker
         this.picker13 = {
             date: new Date(),
@@ -206,12 +211,13 @@
                 vm.closedArgs = args;
             }
         };
-
         // saveAs - ISO
         this.picker14 = {
             date: new Date().toISOString()
         }
+        ///////////////////////////////////////////////////////////////////////// date picker end
 
+        // date 포멧 변경
         function getTimeStamp() {
             var d = vm.picker1.date;
             var formatDate =
@@ -226,6 +232,7 @@
             return formatDate;
         }
 
+        // date 포멧 변경
         function datePickerFormat(n, digits) {
             var zero = '';
             n = n.toString();
@@ -238,11 +245,10 @@
         }
 
 
-
+        // 달력 오픈 function ///////////////////////////////
         function openCalendar(e, picker) {
             vm[picker].open = true;
         };
-
         // watch min and max dates to calculate difference
         var unwatchMinMaxValues = $scope.$watch(function() {
             return [vm.picker4, vm.picker5, vm.picker10, vm.picker11];
@@ -262,13 +268,12 @@
             vm.picker10.timepickerOptions.max = vm.picker11.date;
             vm.picker11.timepickerOptions.min = vm.picker10.date;
         }, true);
-
-
         // destroy watcher
         $scope.$on('$destroy', function() {
             unwatchMinMaxValues();
-        });
+        });////////////////////////////////////////////////////////
 
+        // toast 제어 function
         vm.openedToasts = [];
         function openToast(){
             toastr.info('What a nice apple button', 'Button spree', {
@@ -283,7 +288,7 @@
 
 
         }
-
+        // toast 설정 watch function
         $scope.$watchCollection('vm.options', function(newValue) {
             //toastrConfig.autoDismiss = newValue.autoDismiss;
             //toastrConfig.allowHtml = newValue.html;
@@ -305,10 +310,39 @@
             //}
         });
 
-        // Disable weekend selection
+        // select box disabled 처리 function
         function isDisabledDate(currentDate, mode) {
             return mode === 'day' && (currentDate.getDay() === 0 || currentDate.getDay() === 6);
         };
+
+
+
+        // modal open
+        function modalOpen(){
+            LoginService.open("title1", "content1", "alertModal.html");
+        }
+
+        // xeditable datePicker open
+        function open($event, elementOpened) {
+            $event.preventDefault();
+            $event.stopPropagation();
+            vm.opened[elementOpened] = !vm.opened[elementOpened];
+        };
+
+        // xeditable select box value return
+        vm.showStatus = function(value, name, id) {
+            vm.selectArray = [];
+            vm.selectArray = vm.statuses;
+            var result = "";
+            for (var count in vm.selectArray) {
+                if (vm.selectArray[count].id == value) {
+                    result = vm.selectArray[count].name;
+                    break;
+                }
+            }
+            return result;
+        };
+
 
     }
 })();
