@@ -16,17 +16,32 @@
     function inputCheck () {
         var directive = {
             restrict: 'A',
-            scope: "=data",
             link: linkFunc
         };
 
         return directive;
 
         function linkFunc (scope, element, attrs) {
+
             var checkIcon;
             var checkClass;
-                //var checkType = tAttrs['checkType'];
 
+            var checktype = scope.$eval(attrs.checktype);
+            var massage = scope.$eval(attrs.massage);
+            if (checktype == "success") {
+                checkIcon = "glyphicon-ok";
+                checkClass = "has-success";
+            }
+            element.attr("class", checkClass);
+            element.append("<span class='glyphicon " + checkIcon + " form-control-feedback' aria-hidden='true'></span>");
+
+
+
+
+
+
+
+/*
             scope.$watch(function() {
 
                 //if (checkType == "success") {
@@ -36,6 +51,7 @@
                 element.attr("class", checkClass);
                 element.append("<span class='glyphicon " + checkIcon + " form-control-feedback' aria-hidden='true'></span>");
             });
+*/
 
 
 //<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
