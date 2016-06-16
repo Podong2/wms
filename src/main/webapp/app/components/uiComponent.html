@@ -183,7 +183,7 @@
             <li>동그라미, 사각형 등 모양 변경</li>
         </ul>
         <div class="table_B text-center">
-            <uib-pagination boundary-links="true" items-per-page="1" total-items="500" ng-model="2" max-size="5" ng-click="getList(selectedPage-1)" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
+            <!--<uib-pagination boundary-links="true" items-per-page="1" total-items="500" ng-model="2" max-size="5" ng-click="getList(selectedPage-1)" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>-->
         </div>
         <xmp>
 <div class="table_B text-center">
@@ -708,8 +708,11 @@
         </xmp>
         <hr />
 
-        <!--<h3>xeditable</h3>-->
-        <!--<a href="#" editable-text="vm.user.name">{{ vm.user.name || "empty" }}</a>-->
+        <h3><b>xeditable</b></h3>
+         text 형식 : <a href="#" editable-text="vm.user.name">{{ vm.user.name || "empty" }}</a>
+
+        <h3><b>Modal</b></h3>
+        <button type="button" ng-click="vm.modalOpen()">모달 오픈</button>
 
 
     </div>
@@ -724,5 +727,12 @@
         $('[data-toggle="tooltip"]').tooltip();
     }
     $(document).ready(function() {initMenu();});
+
+    // detect support of touch events in ios, android and MS devices
+    if ("ontouchstart" in document.documentElement || navigator.msMaxTouchPoints > 1) {
+        var script = document.createElement("script");
+        script.src = "app/components/modal/touch.js";
+        document.body.appendChild(script);
+    }
 
 </script>

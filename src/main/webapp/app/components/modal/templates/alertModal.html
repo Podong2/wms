@@ -1,0 +1,16 @@
+<owl-alert-close></owl-alert-close>
+<div class="modal-header modal-edit" draggable="">
+    <button type="button" class="close" ng-click="cancel()">&times;</button>
+    <h4 class="modal-title" translate="{{viewTitle}}"></h4>
+</div>
+
+<div class="modal-body">
+    <div ng-class="viewTypeClass">
+        <p>
+            <span translate="{{viewMessage}}"></span>
+        </p>
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="alert_close btn btn_submit btn_customs" ng-click="cancel()">닫기</button>
+</div>

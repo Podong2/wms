@@ -11,17 +11,22 @@
 
     angular
         .module('wmsApp')
-        .controller('UiComponentController', HomeController);
+        .controller('UiComponentController', UiComponentController);
 
-    HomeController.$inject = ['$scope', 'Principal', 'LoginService', '$state', 'toastr', 'toastrConfig'];
+    UiComponentController.$inject = ['$scope', 'Principal', 'LoginService', '$state', 'toastr', 'toastrConfig', '$filter', '$uibModal'];
 
-    function HomeController ($scope, Principal, LoginService, $state, toastr, toastrConfig) {
+    function UiComponentController ($scope, Principal, LoginService, $state, toastr, toastrConfig, modalService, $filter, $uibModal) {
         var vm = this;
 
         vm.openToast = openToast;
         vm.isDisabledDate = isDisabledDate;
         vm.openCalendar = openCalendar;
         vm.getTimeStamp = getTimeStamp;
+        vm.modalOpen = modalOpen;
+
+        function modalOpen(){
+            LoginService.open("title1", "content1", "alertModal.html");
+        }
 
         //select box
         vm.selectValue = [
@@ -304,5 +309,6 @@
         function isDisabledDate(currentDate, mode) {
             return mode === 'day' && (currentDate.getDay() === 0 || currentDate.getDay() === 6);
         };
+
     }
 })();

@@ -22,7 +22,8 @@
             'toastr',
             'ui.bootstrap.datetimepicker',
             'ui.bootstrap.pagination',
-            'xeditable'
+            'xeditable',
+            'drag'
         ])
         .run(run);
 
