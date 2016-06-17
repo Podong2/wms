@@ -24,6 +24,7 @@
         vm.getTimeStamp = getTimeStamp;
         vm.modalOpen = modalOpen;
         vm.open = open;
+        vm.showStateArray = showStateArray;
 
 
         //select box
@@ -74,9 +75,10 @@
 
         //xeditble
         vm.user = {
-            name: 'awesome user', // input
+            name: '홍길동', // input
             "remember": true, // checkbox
             "status": 2,
+            "stateArray": [2, 4],
             "dob": "1984-05-14T15:00:00.000Z"
         };
         // xeditble radio, select
@@ -341,6 +343,17 @@
                 }
             }
             return result;
+        };
+
+        // xeditable multi select box value return
+        function showStateArray() {
+            var selected = [];
+            angular.forEach(vm.statuses, function(s) {
+                if (vm.user.stateArray.indexOf(s.id) >= 0) {
+                    selected.push(s.name);
+                }
+            });
+            return selected.length ? selected.join(', ') : 'Not set';
         };
 
 

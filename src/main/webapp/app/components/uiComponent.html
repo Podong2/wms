@@ -728,7 +728,7 @@
             <li>text, select, datepicker 등등 다양한 입력요소들을 변경할 수 있다.</li>
         </ul>
         text 형식 : <a href="#" editable-text="vm.user.name">{{ vm.user.name || "empty" }}</a><br/>
-        check box : <a href="#" editable-checkbox="vm.user.remember" e-title="Remember?"> {{ vm.user.remember && "Remember me!" || "Don't remember" }} </a><br/>
+        check box : <a href="#" editable-checkbox="vm.user.remember" e-title="Remember?"> {{ vm.user.remember && "선택" || "미선택" }} </a><br/>
         <!--radio box : <a href="#" editable-radiolist="vm.user.status" e-ng-options="s.value as s.text for s in vm.statuses">{{ vm.showStatus() }}</a><br/>-->
         date type :
         <a  editable-bsdate="vm.user.dob" e-is-open="opened.$data" e-ng-click="vm.open($event,'$data')" e-datepicker-popup="dd-MMMM-yyyy">
@@ -737,6 +737,10 @@
         select :
         <a editable-select="vm.statusId" e-ng-options="s.id as s.name for s in vm.statuses">
             {{ vm.showStatus(vm.statusId) }}
+        </a><br/>
+        multi select :
+        <a href="#" editable-select="vm.user.stateArray" e-multiple e-ng-options="s.id as s.name for s in vm.statuses">
+            {{ vm.showStateArray() }}
         </a>
         <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
 
