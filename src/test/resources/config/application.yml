@@ -14,23 +14,28 @@ spring:
     application:
         name: wms
     datasource:
-        url: jdbc:h2:mem:wms;DB_CLOSE_DELAY=-1
-        name:
-        username:
-        password:
+            url: jdbc:mariadb://211.238.12.102:3306/owl_wms_dev
+            name:
+            username: root
+            password: tjdrhdrldnjs^^
+            hikari:
+                data-source-properties:
+                    cachePrepStmts: true
+                    prepStmtCacheSize: 250
+                    prepStmtCacheSqlLimit: 2048
+                    useServerPrepStmts: true
     jpa:
-        database-platform: kr.wisestone.wms.domain.util.FixedH2Dialect
-        database: H2
-        open-in-view: false
+        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+        database: MYSQL
         show_sql: true
-        hibernate:
-            ddl-auto: create
-            naming-strategy: org.springframework.boot.orm.jpa.hibernate.SpringNamingStrategy
         properties:
-            hibernate.cache.use_second_level_cache: false
+            hibernate.cache.use_second_level_cache: true
             hibernate.cache.use_query_cache: false
             hibernate.generate_statistics: true
-            hibernate.hbm2ddl.auto: validate
+            hibernate.cache.region.factory_class: kr.wisestone.wms.config.hazelcast.HazelcastCacheRegionFactory
+            hibernate.cache.use_minimal_puts: true
+            hibernate.cache.hazelcast.use_lite_member: true
+            hibernate.jdbc.use_streams_for_binary: true
     data:
         elasticsearch:
             cluster-name:
