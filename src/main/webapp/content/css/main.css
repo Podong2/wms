@@ -1,5 +1,5 @@
 body {
-    background: #fafafa;
+    background: #fcfcfc;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
     color: #333;
 }
@@ -398,7 +398,7 @@ Social Buttons
     height: 100%;
     /*margin-left: -200px;*/
     overflow-y: auto;
-    background: #efefef;
+    background: #f8f8f8;
     -webkit-transition: all 0.3s ease;
     -moz-transition: all 0.3s ease;
     -o-transition: all 0.3s ease;
@@ -476,6 +476,22 @@ Social Buttons
 }
 .no-margin{
     margin:0;
+}
+
+#sidebar-wrapper {
+    margin-top: 0px; border-right: 1px solid #eaeaea;
+}
+#sidebar-wrapper .sidebar-nav {
+    margin-top: 5px;
+}
+.content-wrapper{
+    margin-top: 50px;
+}
+.navbar-collapse {
+    z-index: 1000;
+}
+.side-nav-btn {
+    position: fixed; top:0; left: 200px; z-index: 1060
 }
 
 @media(min-width:768px) {

@@ -200,9 +200,9 @@
             <li>마우스가 요소 영역에서 벗어날 시 툴팁이 사라진다.</li>
             <li>표현되는 text는 개행되지 않아야한다.</li>
         </ul>
-        <a href="#" data-toggle="tooltip" title="Hooray123123123123123123!">Hover over me</a>
+        <a href="#" uib-tooltip="Hooray123123123123123123!">Hover over me</a>
         <xmp>
-<a href="#" data-toggle="tooltip" title="Hooray!">Hover over me</a>
+<a href="#" uib-tooltip="Hooray123123123123123123!">Hover over me</a>
         </xmp>
 
         <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
@@ -743,6 +743,56 @@
             {{ vm.showStateArray() }}
         </a>
         <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
+
+        <h3><b>button</b></h3>
+        <ul>
+            <li>버튼의 명확한 디자인과 크기조절이 어렵지않아야한다.</li>
+            <li>다양한 버튼 테마를 지원해야한다.</li>
+            <li>아이콘 삽입 및 손쉬은 커스텀이 가능해야한다.</li>
+        </ul>
+        <button type="button" class="btn btn_icon btn_customs" owl-btn-update></button>
+        <button type="button" class="btn btn_icon btn_customs" owl-btn-save></button>
+        <button type="button" class="btn btn_icon btn_customs2" owl-btn-cancel></button>
+        <button type="button" class="btn btn_icon btn_cons2" owl-btn-init></button>
+        <button type="button" owl-btn-next></button>
+        <button type="button" owl-btn-before></button>
+        <button type="button" class="btn btn_icon btn_color3 hidden-xs" owl-btn-download></button>
+        <button type="button" class="btn btn_icon btn_color4" owl-btn-remove></button>
+        <button type="button" owl-btn-add></button>
+        <button type="button" owl-btn-delete></button>
+        <button type="button" class="btn btn_icon btn_color5" owl-btn-state-change></button>
+        <button type="button" owl-btn-list></button>
+        <button type="button" owl-btn-detail></button>
+        <button type="button" class="alert_close btn btn_submit btn_customs" owl-btn-check></button>
+        <button type="button" class="btn btn_submit btn_customs" owl-btn-select></button>
+        <button type="button" class="btn btn_icon btn_color8" owl-btn-position-save></button>
+        <button type="button" class="btn btn_icon btn_color8" owl-btn-decision></button>
+        <button type="button" owl-btn-etc-func></button>
+        <br/>
+        <a owl-btn-link link-type="compare"></a>
+        <a owl-btn-link link-type="revert"></a>
+        <a owl-btn-link link-type="detail"></a>
+        <a owl-btn-link link-type="edit"></a>
+        <a owl-btn-link link-type="config"></a>
+        <a owl-btn-link link-type="rolePermission"></a>
+        <a owl-btn-link link-type="roleUser"></a>
+        <a owl-btn-link link-type="history"></a>
+        <a owl-btn-link link-type="fieldLink"></a>
+        <a owl-btn-link link-type="version"></a>
+        <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
+
+        <h3><b>ngGallery</b></h3>
+        <ul>
+            <li>이미지 확장자명의 파일은 갤러리로 표현이 가능해야한다.</li>
+            <li>이미지 리스트는 해당 이미지의 썸네일로 표시되고 이미지를 클릭 시 겔러리 화면에서 해당 이미지의 원본 이미지를 볼 수 있다.</li>
+            <li>갤러리에서는 다음 이미지 혹은 이전 이미지로 이동할수있는 링크가 존재한다.</li>
+            <li>바로 이동가능한 썸네일 이미지 목록이 존재해야한다.</li>
+        </ul>
+        <ng-gallery images="vm.images" thumbs-num="4">
+        </ng-gallery>
+        <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
+
+
 
     </div>
 </div>

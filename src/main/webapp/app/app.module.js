@@ -23,7 +23,8 @@
             'ui.bootstrap.datetimepicker',
             'ui.bootstrap.pagination',
             'xeditable',
-            'drag'
+            'drag',
+            'jkuri.gallery'
         ])
         .run(run);
 

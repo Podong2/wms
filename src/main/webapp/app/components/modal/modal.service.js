@@ -11,11 +11,11 @@
 
     angular
         .module('wmsApp')
-        .factory('LoginService', LoginService);
+        .factory('ModalService', ModalService);
 
-    LoginService.$inject = ['$uibModal'];
+    ModalService.$inject = ['$uibModal'];
 
-    function LoginService ($uibModal) {
+    function ModalService ($uibModal) {
         var service = {
             open: open
         };

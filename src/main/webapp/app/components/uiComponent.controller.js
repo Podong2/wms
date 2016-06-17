@@ -13,9 +13,9 @@
         .module('wmsApp')
         .controller('UiComponentController', UiComponentController);
 
-    UiComponentController.$inject = ['$scope', 'Principal', 'LoginService', '$state', 'toastr', 'toastrConfig', '$filter', '$uibModal'];
+    UiComponentController.$inject = ['$scope', 'Principal', 'ModalService', '$state', 'toastr', 'toastrConfig', '$filter', '$uibModal'];
 
-    function UiComponentController ($scope, Principal, LoginService, $state, toastr, toastrConfig, modalService, $filter, $uibModal) {
+    function UiComponentController ($scope, Principal, ModalService, $state, toastr, toastrConfig, modalService, $filter, $uibModal) {
         var vm = this;
 
         vm.openToast = openToast;
@@ -90,6 +90,15 @@
         ];
         vm.statusId = '2'; // select box 기본값
         vm.opened = {};
+
+        // ngGallery
+        vm.images = [
+            {thumb: 'content/images/hipster.png', img: 'content/images/hipster.png', description: 'Image 1'},
+            {thumb: 'content/images/logo-jhipster.png', img: 'content/images/logo-jhipster.png', description: 'Image 2'},
+            {thumb: 'content/images/hipster2x.png', img: 'content/images/hipster2x.png', description: 'Image 3'},
+            {thumb: 'content/images/logo-jhipster.png', img: 'content/images/logo-jhipster.png', description: 'Image 4'}
+        ];
+
 
         // date picker start //////////////////////////////////////////////////////////////////////////
         this.picker1 = {
@@ -321,7 +330,7 @@
 
         // modal open
         function modalOpen(){
-            LoginService.open("title1", "content1", "alertModal.html");
+            ModalService.open("title1", "content1", "alertModal.html");
         }
 
         // xeditable datePicker open

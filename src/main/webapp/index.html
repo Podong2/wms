@@ -21,6 +21,7 @@
     <!-- endbuild -->
     <!-- build:css content/css/main.css -->
     <link rel="stylesheet" href="content/css/main.css">
+    <link rel="stylesheet" href="app/components/ngGallery/src/css/ngGallery.css">
     <!-- endbuild -->
 </head>
 <body ng-app="wmsApp" ng-strict-di dynamic-view-scroll>
@@ -31,14 +32,14 @@
 
     <div ui-view="navbar" ng-cloak></div>
     <!-- Brand and toggle get grouped for better mobile display -->
-    <div style="position: absolute; top:0; left: 200px;">
+    <div class="side-nav-btn">
         <div>
             <!--<div class="navbar-header fixed-brand" style="z-index: 1000;">-->
             <!--<button type="button" class="navbar-toggle collapsed" data-toggle="collapse"  id="menu-toggle" style="margin-bottom: 0" menu-toggle-close>-->
             <!--<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>-->
             <!--</button>-->
             <!--</div>&lt;!&ndash; navbar-header&ndash;&gt;-->
-            <div class="collapse navbar-collapse navbar-header" id="bs-example-navbar-collapse-1" style="z-index: 1000;" >
+            <div class="collapse navbar-collapse navbar-header" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li class="active" >
                         <button class="navbar-toggle collapse in" data-toggle="collapse" id="menu-toggle-2" style="margin-bottom: 0" menu-toggle>
@@ -52,8 +53,8 @@
     <div class="content-wrapper toggled-3">
         <div class="side-menu sidebar-inverse " id="wrapper">
             <!-- Sidebar -->
-            <div id="sidebar-wrapper" style="margin-top: 0px;">
-                <ul class="sidebar-nav nav-pills nav-stacked" id="menu" style="margin-top: 5px;">
+            <div id="sidebar-wrapper">
+                <ul class="sidebar-nav nav-pills nav-stacked" id="menu">
 
                     <li class="active">
                         <a href="" depth-toggle><span class="fa-stack fa-lg pull-left"><i class="fa fa-dashboard fa-stack-1x "></i></span> <span class="menu-name">Dashboard</span></a>
@@ -265,6 +266,12 @@
     <script src="app/components/modal/commonModal.controller.js"></script>
     <script src="app/components/modal/script.js"></script>
     <script src="app/components/modal/dynamicScroll.directive.js"></script>
+
+    <!-- button -->
+    <script src="app/components/button/button.directive.js"></script>
+
+    <!-- ngGallery -->
+    <script src="app/components/ngGallery/src/js/ngGallery.js"></script>
 
 
     <!-- endinject -->
