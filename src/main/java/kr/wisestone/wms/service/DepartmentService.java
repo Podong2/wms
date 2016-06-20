@@ -89,8 +89,7 @@ public class DepartmentService {
     public DepartmentDTO findOneDTO(Long id) {
         log.debug("Request to get Department : {}", id);
         Department department = departmentRepository.findOne(id);
-        DepartmentDTO departmentDTO = departmentMapper.departmentToDepartmentDTO(department);
-        return departmentDTO;
+        return departmentMapper.departmentToDepartmentDTO(department);
     }
 
     /**

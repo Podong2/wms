@@ -38,16 +38,16 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 public class PermissionCategoryResource {
 
     private final Logger log = LoggerFactory.getLogger(PermissionCategoryResource.class);
-        
+
     @Inject
     private PermissionCategoryRepository permissionCategoryRepository;
-    
+
     @Inject
     private PermissionCategoryMapper permissionCategoryMapper;
-    
+
     @Inject
     private PermissionCategorySearchRepository permissionCategorySearchRepository;
-    
+
     /**
      * POST  /permission-categories : Create a new permissionCategory.
      *
@@ -115,7 +115,7 @@ public class PermissionCategoryResource {
     public ResponseEntity<List<PermissionCategoryDTO>> getAllPermissionCategories(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of PermissionCategories");
-        Page<PermissionCategory> page = permissionCategoryRepository.findAll(pageable); 
+        Page<PermissionCategory> page = permissionCategoryRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/permission-categories");
         return new ResponseEntity<>(permissionCategoryMapper.permissionCategoriesToPermissionCategoryDTOs(page.getContent()), headers, HttpStatus.OK);
     }
@@ -173,7 +173,7 @@ public class PermissionCategoryResource {
     public ResponseEntity<List<PermissionCategoryDTO>> searchPermissionCategories(@RequestParam String query, Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to search for a page of PermissionCategories for query {}", query);
-        Page<PermissionCategory> page = permissionCategorySearchRepository.search(queryStringQuery(query), pageable);
+        Page<PermissionCategory> page = permissionCategorySearchRepository.search(queryStringQuery("*"+query+"*"), pageable);
         HttpHeaders headers = PaginationUtil.generateSearchPaginationHttpHeaders(query, page, "/api/_search/permission-categories");
         return new ResponseEntity<>(permissionCategoryMapper.permissionCategoriesToPermissionCategoryDTOs(page.getContent()), headers, HttpStatus.OK);
     }
