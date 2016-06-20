@@ -46,6 +46,9 @@ module.exports = function (config) {
             'src/main/webapp/bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.js',
             'src/main/webapp/bower_components/ng-file-upload/ng-file-upload.js',
             'src/main/webapp/bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js',
+            'src/main/webapp/bower_components/nya-bootstrap-select/dist/js/nya-bs-select.js',
+            'src/main/webapp/bower_components/angular-toastr/dist/angular-toastr.tpls.js',
+            'src/main/webapp/bower_components/angular-xeditable/dist/js/xeditable.js',
             'src/main/webapp/bower_components/angular-mocks/angular-mocks.js',
             // endbower
             'src/main/webapp/app/app.module.js',
