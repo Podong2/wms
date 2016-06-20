@@ -35,7 +35,10 @@
     "nya-bootstrap-select": "^2.1.6",
     "font-awesome": "^4.6.3",
     "angular-toastr": "^1.7.0",
-    "angular-xeditable": "^0.1.12"
+    "angular-xeditable": "^0.1.12",
+    "ngReact": "^0.3.0",
+    "react": "^15.1.0",
+    "babel": "*"
   },
   "devDependencies": {
     "angular-mocks": "1.5.5"

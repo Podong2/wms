@@ -68,5 +68,10 @@
   "scripts": {
     "test": "gulp test",
     "postinstall": "webdriver-manager update"
+  },
+  "dependencies": {
+    "react": "^0.14.8",
+    "react-data-grid": "^0.14.45",
+    "react-dom": "^0.14.8"
   }
 }
