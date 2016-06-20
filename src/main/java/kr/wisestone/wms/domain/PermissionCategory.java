@@ -15,7 +15,7 @@ import java.util.Objects;
 @Table(name = "owl_permission_category")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "permissioncategory")
-public class PermissionCategory extends AbstractAuditingEntity implements Serializable {
+public class PermissionCategory extends AbstractAuditingEntity implements Serializable, Traceable {
 
     private static final long serialVersionUID = 1L;
 
@@ -36,6 +36,7 @@ public class PermissionCategory extends AbstractAuditingEntity implements Serial
     @Column(name = "description")
     private String description;
 
+    @Override
     public Long getId() {
         return id;
     }
@@ -87,5 +88,18 @@ public class PermissionCategory extends AbstractAuditingEntity implements Serial
             ", name='" + name + "'" +
             ", description='" + description + "'" +
             '}';
+    }
+
+    @Override
+    public TraceLog getTraceLog(String persisType) {
+        TraceLog logRecord = TraceLog.builder(this, persisType);
+
+        if (Traceable.PERSIST_TYPE_INSERT.equals(persisType)) {
+            logRecord.setNewValue(this.getName());
+        } else if (Traceable.PERSIST_TYPE_DELETE.equals(persisType)) {
+            logRecord.setOldValue(this.getName());
+        }
+
+        return logRecord;
     }
 }
