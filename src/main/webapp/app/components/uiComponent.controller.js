@@ -25,6 +25,7 @@
         vm.modalOpen = modalOpen;
         vm.open = open;
         vm.showStateArray = showStateArray;
+        vm.tabDisplay = tabDisplay;
 
 
         //select box
@@ -99,6 +100,16 @@
             {thumb: 'content/images/logo-jhipster.png', img: 'content/images/logo-jhipster.png', description: 'Image 4'}
         ];
 
+        //  탭 메뉴 표시 여부 결정
+        vm.tabArea = [
+            { status: true },
+            { status: false },
+            { status: false },
+            { status: false },
+            { status: false },
+            { status: false },
+            { status: false }
+        ];
 
         // date picker start //////////////////////////////////////////////////////////////////////////
         this.picker1 = {
@@ -365,6 +376,106 @@
             return selected.length ? selected.join(', ') : 'Not set';
         };
 
+        //  탭메뉴 영역 표시 여부 지정
+        function tabDisplay (number) {
+            angular.forEach(vm.tabArea, function (tab, index) {
+                if (number == index) {
+                    tab.status = true;
+                }
+                else {
+                    tab.status = false;
+                }
+            });
+        }
+
+        vm.state1 = { name: 'New' },
+        vm.state2 = { name: 'In progress', areNewItemButtonsHidden: true },
+        vm.state3 = { name: 'Done', isCollapsedByDefaultForGroups: true, areNewItemButtonsHidden: true };
+        vm.states = [vm.state1, vm.state2, vm.state3];
+        vm.resource1 = { name: 'Resource 1', imageUrl: 'Images/Resource1.png' },
+        vm.resource2 = { name: 'Resource 2', imageUrl: 'Images/Resource2.png' };
+        vm.assignableResources = [vm.resource1, vm.resource2];
+        vm.group1 = { name: 'Story 1', state: vm.state2, assignedResource: vm.resource1 },
+        vm.group2 = { name: 'Story 2', state: vm.state3, assignedResource: vm.resource2 };
+        vm.groups = [vm.group1, vm.group2];
+        vm.items = [
+            { name: 'Task 1', group: vm.group1, state: vm.state1, assignedResource: vm.resource1 },
+            { name: 'Task 2', group: vm.group1, state: vm.state2, assignedResource: vm.resource1 },
+            { name: 'Bug 1', group: vm.group1, state: vm.state2, assignedResource: vm.resource1 },
+            { name: 'Task 3', group: vm.group1, state: vm.state1, assignedResource: vm.resource2 },
+            { name: 'Task 4', group: vm.group1, state: vm.state1, assignedResource: vm.resource1 },
+            { name: 'Task 5', group: vm.group2, state: vm.state1, assignedResource: vm.resource2 },
+            { name: 'Task 6', group: vm.group2, state: vm.state2, assignedResource: vm.resource2 },
+            { name: 'Task 7', group: vm.group2, state: vm.state2, assignedResource: vm.resource1 },
+            { name: 'Task 8', group: vm.group2, state: vm.state3, assignedResource: vm.resource2 }
+        ];
+
+// Bind data to the user interface.
+        vm.states = vm.states;
+        vm.groups = vm.groups;
+        vm.items = vm.items;
+        vm.assignableResources = vm.assignableResources;
+        vm.initializeNewItem = initializeNewItem;
+        vm.deleteItem = deleteItem;
+        vm.onItemStateChanged = onItemStateChanged;
+        vm.onItemGroupChanged = onItemGroupChanged;
+        vm.moveItemToNextIteration = moveItemToNextIteration;
+            // Initialize a newly created item before adding it to the user interface.
+        function initializeNewItem(item) {
+            item.assignedResource = resource1;
+            console.log('A new item was created.');
+        };
+        // Allow item deletion by clicking a button in the user interface.
+        function deleteItem(item) {
+            items.splice(items.indexOf(item), 1);
+            console.log('Item ' + item.name + ' was deleted.');
+        };
+        // Handle changes.
+        function onItemStateChanged(item, state) {
+            console.log('State of ' + item.name + ' was changed to: ' + state.name);
+        };
+        function onItemGroupChanged(item, group) {
+            console.log('Group of ' + item.name + ' was changed to: ' + group.name);
+        };
+        // Move items to the next iteration.
+        vm.nextIteration = vm.nextIteration;
+        function moveItemToNextIteration(type, index) {
+            if (type === DlhSoft.Controls.KanbanBoard.types.group) {
+                // Move an entire group (story) and all its items.
+                var group = vm.groups[index];
+                for (var i = 0; i < items.length; i++) {
+                    var item = vm.items[i];
+                    if (item.group === group) {
+                        vm.items.splice(i--, 1);
+                        nextIteration.items.push(item);
+                    }
+                }
+                vm.groups.splice(index, 1);
+                if (nextIteration.groups.indexOf(group) < 0)
+                    nextIteration.groups.push(group);
+                console.log('Group ' + group.name + ' and its items were moved to next iteration.');
+            }
+            else {
+                // Move a single item, and copy the group (story) if needed.
+                var item = vm.items[index];
+                vm.items.splice(index, 1);
+                nextIteration.items.push(item);
+                var group = item.group;
+                if (nextIteration.groups.indexOf(group) < 0)
+                    nextIteration.groups.push(group);
+                console.log('Item ' + item.name + ' was moved to next iteration.');
+            }
+        };
+
+
+        vm.changeName = changeName;
+        vm.person = {
+            fname: 'Clark', lname: 'Kent'
+        }
+        // add function to scope
+        function changeName() {
+            vm.person = { fname: 'Bruce', lname: 'Banner' };
+        };
 
     }
 })();

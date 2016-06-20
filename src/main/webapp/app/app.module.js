@@ -24,7 +24,8 @@
             'ui.bootstrap.pagination',
             'xeditable',
             'drag',
-            'jkuri.gallery'
+            'jkuri.gallery',
+            'react'
         ])
         .run(run);
 

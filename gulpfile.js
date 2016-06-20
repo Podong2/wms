@@ -24,7 +24,8 @@ var gulp = require('gulp'),
     inject = require('gulp-inject'),
     angularFilesort = require('gulp-angular-filesort'),
     naturalSort = require('gulp-natural-sort'),
-    bowerFiles = require('main-bower-files');
+    bowerFiles = require('main-bower-files'),
+    babel = require("gulp-babel");
 
 var handleErrors = require('./gulp/handleErrors'),
     serve = require('./gulp/serve'),
@@ -40,36 +41,36 @@ gulp.task('clean', function () {
 });
 
 gulp.task('copy', function () {
-    return es.merge( 
+    return es.merge(
         gulp.src(config.app + 'i18n/**')
-        .pipe(plumber({errorHandler: handleErrors}))
-        .pipe(changed(config.dist + 'i18n/'))
-        .pipe(gulp.dest(config.dist + 'i18n/')),
+            .pipe(plumber({errorHandler: handleErrors}))
+            .pipe(changed(config.dist + 'i18n/'))
+            .pipe(gulp.dest(config.dist + 'i18n/')),
         gulp.src(config.bower + 'bootstrap/fonts/*.*')
-        .pipe(plumber({errorHandler: handleErrors}))
-        .pipe(changed(config.dist + 'content/fonts/'))
-        .pipe(rev())
-        .pipe(gulp.dest(config.dist + 'content/fonts/'))
-        .pipe(rev.manifest(config.revManifest, {
-            base: config.dist,
-            merge: true
-        }))
-        .pipe(gulp.dest(config.dist)),
+            .pipe(plumber({errorHandler: handleErrors}))
+            .pipe(changed(config.dist + 'content/fonts/'))
+            .pipe(rev())
+            .pipe(gulp.dest(config.dist + 'content/fonts/'))
+            .pipe(rev.manifest(config.revManifest, {
+                base: config.dist,
+                merge: true
+            }))
+            .pipe(gulp.dest(config.dist)),
         gulp.src(config.app + 'content/**/*.{woff,woff2,svg,ttf,eot,otf}')
-        .pipe(plumber({errorHandler: handleErrors}))
-        .pipe(changed(config.dist + 'content/fonts/'))
-        .pipe(flatten())
-        .pipe(rev())
-        .pipe(gulp.dest(config.dist + 'content/fonts/'))
-        .pipe(rev.manifest(config.revManifest, {
-            base: config.dist,
-            merge: true
-        }))
-        .pipe(gulp.dest(config.dist)),
+            .pipe(plumber({errorHandler: handleErrors}))
+            .pipe(changed(config.dist + 'content/fonts/'))
+            .pipe(flatten())
+            .pipe(rev())
+            .pipe(gulp.dest(config.dist + 'content/fonts/'))
+            .pipe(rev.manifest(config.revManifest, {
+                base: config.dist,
+                merge: true
+            }))
+            .pipe(gulp.dest(config.dist)),
         gulp.src([config.app + 'robots.txt', config.app + 'favicon.ico', config.app + '.htaccess'], { dot: true })
-        .pipe(plumber({errorHandler: handleErrors}))
-        .pipe(changed(config.dist))
-        .pipe(gulp.dest(config.dist))
+            .pipe(plumber({errorHandler: handleErrors}))
+            .pipe(changed(config.dist))
+            .pipe(gulp.dest(config.dist))
     );
 });
 
@@ -111,6 +112,7 @@ gulp.task('inject:app', function () {
     return gulp.src(config.app + 'index.html')
         .pipe(inject(gulp.src(config.app + 'app/**/*.js')
             .pipe(naturalSort())
+            .pipe(babel())
             .pipe(angularFilesort()), {relative: true}))
         .pipe(gulp.dest(config.app));
 });
@@ -178,8 +180,8 @@ gulp.task('ngconstant:dev', function () {
         template: config.constantTemplate,
         stream: true
     })
-    .pipe(rename('app.constants.js'))
-    .pipe(gulp.dest(config.app + 'app/'));
+        .pipe(rename('app.constants.js'))
+        .pipe(gulp.dest(config.app + 'app/'));
 });
 
 gulp.task('ngconstant:prod', function () {
@@ -192,8 +194,8 @@ gulp.task('ngconstant:prod', function () {
         template: config.constantTemplate,
         stream: true
     })
-    .pipe(rename('app.constants.js'))
-    .pipe(gulp.dest(config.app + 'app/'));
+        .pipe(rename('app.constants.js'))
+        .pipe(gulp.dest(config.app + 'app/'));
 });
 
 // check app for eslint errors
@@ -201,6 +203,7 @@ gulp.task('eslint', function () {
     return gulp.src(['gulpfile.js', config.app + 'app/**/*.js'])
         .pipe(plumber({errorHandler: handleErrors}))
         .pipe(eslint())
+        .pipe(babel())
         .pipe(eslint.format())
         .pipe(eslint.failOnError());
 });
@@ -213,6 +216,7 @@ gulp.task('eslint:fix', function () {
             fix: true
         }))
         .pipe(eslint.format())
+        .pipe(babel())
         .pipe(gulpIf(util.isLintFixed, gulp.dest(config.app + 'app')));
 });
 

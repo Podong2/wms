@@ -156,7 +156,7 @@ Generic styles
 make sure browsers use the pointer cursor for anchors, even with no href
 ========================================================================== */
 a:hover {
-  cursor: pointer;
+    cursor: pointer;
 }
 
 .hand {
@@ -269,12 +269,12 @@ entity tables helpers
 /* Makes toolbar not wrap on smaller screens
  http://www.sketchingwithcss.com/samplechapter/cheatsheet.html#right */
 .flex-btn-group-container {
-   display: -webkit-flex;
-   display: flex;
-   -webkit-flex-direction: row;
-   flex-direction: row;
-   -webkit-justify-content: flex-end;
-   justify-content: flex-end;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-direction: row;
+    flex-direction: row;
+    -webkit-justify-content: flex-end;
+    justify-content: flex-end;
 }
 
 .jh-table > tbody > tr > td {
@@ -493,8 +493,37 @@ Social Buttons
 .side-nav-btn {
     position: fixed; top:0; left: 200px; z-index: 1060
 }
+/* side nav Toggle Styles  END */
+
+@media (max-width:767px) {
+    .slideBtnArea {
+        display: block !important;
+        top: 5px !important;
+    }
+    .slideMenu{
+        overflow-x: hidden;
+        overflow-y: hidden;
+        margin: 15px 30px 0px 45px;
+    }
+    .slideMenu ul{
+        white-space: nowrap;
+        width: 737px !important;
+    }
+    .slideMenu ul li{
+        margin-left: -4px;
+        float: none;
+        display: inline-block;
+    }
+    .slideMenu ul li:first-child{
+        margin-left: 0;
+    }
+    .slideBody{
+        padding-left: 0
+    }
+}
 
 @media(min-width:768px) {
+    /* side nav Toggle Styles  START */
     #wrapper {
         /*padding-left: 40px;*/
         /*margin: 5px;*/
@@ -528,7 +557,6 @@ Social Buttons
         width: 200px;
     }
 
-
     #page-content-wrapper {
         padding: 20px;
         position: relative;
@@ -554,8 +582,53 @@ Social Buttons
         width: auto;
 
     }
+    /* side nav Toggle Styles  END */
 }
-/* side nav Toggle Styles  END */
+@media screen and (min-width: 768px) and (max-width: 991px) {
+    .slideBtnArea {
+        display: block !important;
+        top: 5px !important;
+    }
+    .slideMenu{
+        overflow-x: hidden;
+        overflow-y: hidden;
+        margin: 15px 30px 0px 45px;
+    }
+    .slideMenu ul{
+        white-space: nowrap;
+        width: 737px !important;
+    }
+    .slideMenu ul li{
+        margin-left: -4px;
+        float: none;
+        display: inline-block;
+    }
+    .slideMenu ul li:first-child{
+        margin-left: 0;
+    }
+    .slideBody{
+        padding-left: 0
+    }
+}
+@media screen and (min-width: 992px) and (max-width: 1366px) {
+    .slideBtnArea {
+        display: none !important;
+    }
+    .slideMenu ul{
+        white-space: nowrap;
+        width: 100% !important;
+    }
+}
+@media (min-width: 1250px) {
+    .slideBtnArea {
+        display: none !important;
+    }
+    .slideMenu ul{
+        white-space: nowrap;
+        width: 100% !important;
+    }
+}
+
 
 .date-picker-name {
     color: #818181;
@@ -716,5 +789,65 @@ li.active > a{
 }
 .modal-backdrop {
     background-color: transparent !important;
+}
+
+/*  :::::::::::::: tabs style ::::::::::::::  */
+.nav-tabs {
+    border-bottom: 5px solid #E1BD82;
+    color: #8693a0;
+    font: bold 13px "맑은 고딕", NanumGothic, "나눔고딕", "Apple SD Gothic Neo";
+}
+
+.nav-tabs > li {
+    float: left;
+    padding-rigth: 2px
+}
+
+.nav-tabs > li > span {
+    display: block;
+    padding: 10px 15px 7px 15px;
+    cursor: pointer;
+    margin-bottom: 1px;
+    line-height: 1.8;
+    border-radius: 4px 4px 0 0;
+    background-color: #e0e0e0;
+    margin-right: 2px;
+}
+
+.nav-tabs > li.active > span,
+.nav-tabs > li.active > span:hover,
+.nav-tabs > li.active > span:focus {
+    border-radius: 4px 4px 0 0;
+    color: #fff;
+    cursor: default;
+    background-color: #E1BD82;
+}
+
+.nav-tabs > li > span:hover,
+.nav-tabs > li > span:focus {
+    color: #fff;
+    background-color: #E1BD82;
+}
+
+/* 슬라이드 css */
+.slideBtnArea {
+    position: absolute;
+    top: 5px;
+    padding: 0 15px;
+    z-index: 10;
+    color : #aaa;
+}
+.slideBtnArea:hover {
+    color : #4677f8;
+}
+.slideBtnArea:active {
+    color : #2aabd2;
+}
+.slideMenu ul {
+    width : 100%;
+}
+.slideBody {
+    padding-right: 0;
+    padding-left: 0;
 }
 
