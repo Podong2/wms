@@ -1,5 +1,6 @@
 package kr.wisestone.wms.security;
 
+import kr.wisestone.wms.domain.User;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -35,6 +36,25 @@ public final class SecurityUtils {
             }
         }
         return userName;
+    }
+
+    /**
+     * Get the login of the current user.
+     *
+     * @return the login of the current user
+     */
+    public static User getCurrentUser() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        Authentication authentication = securityContext.getAuthentication();
+        User user = null;
+        if (authentication != null) {
+            if (authentication.getPrincipal() instanceof UserDetails) {
+                user = (User) authentication.getPrincipal();
+            } else if (authentication.getPrincipal() instanceof String) {
+                user = (User) authentication.getPrincipal();
+            }
+        }
+        return user;
     }
 
     /**

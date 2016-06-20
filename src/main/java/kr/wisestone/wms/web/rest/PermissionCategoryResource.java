@@ -4,10 +4,11 @@ import com.codahale.metrics.annotation.Timed;
 import kr.wisestone.wms.domain.PermissionCategory;
 import kr.wisestone.wms.repository.PermissionCategoryRepository;
 import kr.wisestone.wms.repository.search.PermissionCategorySearchRepository;
-import kr.wisestone.wms.web.rest.util.HeaderUtil;
-import kr.wisestone.wms.web.rest.util.PaginationUtil;
+import kr.wisestone.wms.service.PushService;
 import kr.wisestone.wms.web.rest.dto.PermissionCategoryDTO;
 import kr.wisestone.wms.web.rest.mapper.PermissionCategoryMapper;
+import kr.wisestone.wms.web.rest.util.HeaderUtil;
+import kr.wisestone.wms.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -22,13 +23,10 @@ import org.springframework.web.bind.annotation.*;
 import javax.inject.Inject;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing PermissionCategory.
@@ -68,6 +66,7 @@ public class PermissionCategoryResource {
         permissionCategory = permissionCategoryRepository.save(permissionCategory);
         PermissionCategoryDTO result = permissionCategoryMapper.permissionCategoryToPermissionCategoryDTO(permissionCategory);
         permissionCategorySearchRepository.save(permissionCategory);
+
         return ResponseEntity.created(new URI("/api/permission-categories/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("permissionCategory", result.getId().toString()))
             .body(result);

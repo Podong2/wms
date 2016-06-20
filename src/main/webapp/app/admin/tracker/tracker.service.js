@@ -53,6 +53,8 @@
                     stateChangeStart();
                 }
             });
+
+            service.subscribe();
         }
 
         function disconnect () {
@@ -78,6 +80,15 @@
         function subscribe () {
             connected.promise.then(function() {
                 subscriber = stompClient.subscribe('/app/topic/tracker', function(data) {
+                    listener.notify(angular.fromJson(data.body));
+                });
+            }, null, null);
+
+            connected.promise.then(function() {
+                subscriber = stompClient.subscribe('/user/notification/subscribe', function(data) {
+
+                    console.log("recv");
+
                     listener.notify(angular.fromJson(data.body));
                 });
             }, null, null);

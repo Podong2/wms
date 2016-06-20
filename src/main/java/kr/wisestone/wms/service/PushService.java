@@ -16,6 +16,7 @@ import org.thymeleaf.spring4.SpringTemplateEngine;
 
 import java.util.Locale;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class PushService {
@@ -29,6 +30,9 @@ public class PushService {
     @Autowired
     private SpringTemplateEngine templateEngine;
 
+    @Autowired
+    private UserService userService;
+
     @Async
     public void sendPush(NotificationParameterDTO notificationParameterDTO) {
 
@@ -37,21 +41,22 @@ public class PushService {
 
         NotificationConfig notificationConfig = notificationParameterDTO.getNotificationConfig();
 
-        String content = templateEngine.process(notificationConfig.getPushTemplate(), context);
-        String subject = messageSource.getMessage(notificationConfig.getTitle(), null, locale);
+        String content = templateEngine.process("commonPush", context);
+        String subject = notificationConfig.getTitle();
 
         if(StringUtils.hasText(notificationParameterDTO.getTitle()))
             subject = notificationParameterDTO.getTitle();
 
         Map<String, Object> pushObject = Maps.newHashMap(ImmutableMap.<String, Object>builder().
             put("id", notificationParameterDTO.getId()).
-            put("receiveUsers", notificationParameterDTO.getToUsers()).
             put("message", content).
             put("title", subject).
             build());
 
+        Optional<User> userOptional = userService.getUserWithAuthoritiesByLogin(notificationParameterDTO.getFromUser());
+
         if(notificationParameterDTO.getFromUser() != null) {
-            pushObject.put("sendUser", notificationParameterDTO.getFromUser());
+            pushObject.put("sendUser", userOptional.get());
         }
 
         for(User toUser : notificationParameterDTO.getToUsers())

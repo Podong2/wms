@@ -22,7 +22,7 @@ public class NotificationParameterDTO {
 
     private Long linkedIssueId;
 
-    private User fromUser;
+    private String fromUser;
 
     private List<User> toUsers = new ArrayList<>();
 
@@ -31,7 +31,7 @@ public class NotificationParameterDTO {
     NotificationParameterDTO() {}
 
     public NotificationParameterDTO(NotificationConfig notificationConfig, String notificationMethod, Map<String, Object> contents
-        , User fromUser, List<User> toUsers) {
+        , String fromUser, List<User> toUsers) {
 
         this.notificationConfig = notificationConfig;
         this.notificationMethod = notificationMethod;
@@ -52,7 +52,7 @@ public class NotificationParameterDTO {
 
     public NotificationParameterDTO(NotificationConfig notificationConfig, String notificationMethod
         , String title, Map<String, Object> contents, Long linkedIssueId
-        , User fromUser, List<User> toUsers) {
+        , String fromUser, List<User> toUsers) {
 
         this.notificationConfig = notificationConfig;
         this.notificationMethod = notificationMethod;
