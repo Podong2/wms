@@ -1,0 +1,23 @@
+{
+  "relationships": [
+    {
+      "relationshipId": 1,
+      "relationshipName": "systemRole",
+      "otherEntityName": "systemRole",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "id"
+    },
+    {
+      "relationshipId": 2,
+      "relationshipName": "permission",
+      "otherEntityName": "permission",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "id"
+    }
+  ],
+  "fields": [],
+  "changelogDate": "20160613052944",
+  "dto": "no",
+  "pagination": "no",
+  "service": "serviceClass"
+}

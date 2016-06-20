@@ -1,0 +1,34 @@
+
+<div>
+    <h2><span translate="wmsApp.department.detail.title">Department</span> {{vm.department.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span translate="wmsApp.department.name">Name</span></dt>
+        <dd>
+            <span>{{vm.department.name}}</span>
+        </dd>
+        <dt><span translate="wmsApp.department.description">Description</span></dt>
+        <dd>
+            <span>{{vm.department.description}}</span>
+        </dd>
+        <dt><span translate="wmsApp.department.status">Status</span></dt>
+        <dd>
+            <span>{{vm.department.status}}</span>
+        </dd>
+        <dt><span translate="wmsApp.department.company">Company</span></dt>
+        <dd>
+            <a ui-sref="company-detail({id:vm.department.companyId})">{{vm.department.companyId}}</a>
+        </dd>
+        <dt><span translate="wmsApp.department.parent">Parent</span></dt>
+        <dd>
+            <a ui-sref="department-detail({id:vm.department.parentId})">{{vm.department.parentId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>

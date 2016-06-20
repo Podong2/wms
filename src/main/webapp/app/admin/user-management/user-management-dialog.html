@@ -32,27 +32,28 @@
                 </p>
             </div>
         </div>
-        <div class="form-group">
-            <label class="control-label" translate="userManagement.firstName">First Name</label>
-            <input type="text" class="form-control" name="firstName"
-                   ng-model="vm.user.firstName" ng-maxlength="50">
 
-            <div ng-show="editForm.firstName.$invalid">
-                <p class="help-block"
-                   ng-show="editForm.firstName.$error.maxlength" translate="entity.validation.maxlength"
-                   translate-value-max="50">
-                    This field cannot be longer than 50 characters.
-                </p>
-            </div>
+        <div class="form-group">
+            <label translate="userManagement.company" for="field_company">Company</label>
+            <select class="form-control" id="field_company" name="company" ng-model="vm.user.companyId" ng-options="company.id as company.id for company in vm.companies">
+                <option value=""></option>
+            </select>
         </div>
         <div class="form-group">
-            <label translate="userManagement.lastName">Last Name</label>
-            <input type="text" class="form-control" name="lastName"
-                   ng-model="vm.user.lastName" ng-maxlength="50">
+            <label translate="userManagement.department" for="field_department">Parent</label>
+            <select class="form-control" id="field_department" name="department" ng-model="vm.user.departmentId" ng-options="department.id as department.id for department in vm.departments">
+                <option value=""></option>
+            </select>
+        </div>
 
-            <div ng-show="editForm.lastName.$invalid">
+        <div class="form-group">
+            <label class="control-label" translate="userManagement.name">Name</label>
+            <input type="text" class="form-control" name="name"
+                   ng-model="vm.user.name" ng-maxlength="50">
+
+            <div ng-show="editForm.name.$invalid">
                 <p class="help-block"
-                   ng-show="editForm.lastName.$error.maxlength" translate="entity.validation.maxlength"
+                   ng-show="editForm.name.$error.maxlength" translate="entity.validation.maxlength"
                    translate-value-max="50">
                     This field cannot be longer than 50 characters.
                 </p>

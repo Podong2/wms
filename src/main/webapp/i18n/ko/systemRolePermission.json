@@ -1,0 +1,23 @@
+{
+    "wmsApp": {
+        "systemRolePermission" : {
+            "home": {
+                "title": "System Role Permissions",
+                "createLabel": "Create a new System Role Permission",
+                "createOrEditLabel": "Create or edit a System Role Permission",
+                "search": "Search for System Role Permission"
+            },
+            "created": "A new System Role Permission is created with identifier {{ param }}",
+            "updated": "A System Role Permission is updated with identifier {{ param }}",
+            "deleted": "A System Role Permission is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete System Role Permission {{ id }}?"
+            },
+            "detail": {
+                "title": "System Role Permission"
+            },
+            "systemRole": "System Role",
+            "permission": "Permission"
+        }
+    }
+}

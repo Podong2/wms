@@ -1,0 +1,32 @@
+{
+    "wmsApp": {
+        "menu" : {
+            "home": {
+                "title": "Menus",
+                "createLabel": "Create a new Menu",
+                "createOrEditLabel": "Create or edit a Menu",
+                "search": "Search for Menu"
+            },
+            "created": "A new Menu is created with identifier {{ param }}",
+            "updated": "A Menu is updated with identifier {{ param }}",
+            "deleted": "A Menu is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Menu {{ id }}?"
+            },
+            "detail": {
+                "title": "Menu"
+            },
+            "name": "Name",
+            "description": "Description",
+            "area": "Area",
+            "position": "Position",
+            "status": "Status",
+            "projectYn": "Project Yn",
+            "systemYn": "System Yn",
+            "mobileYn": "Mobile Yn",
+            "hrIncludeYn": "Hr Include Yn",
+            "urlPath": "Url Path",
+            "parent": "Parent"
+        }
+    }
+}

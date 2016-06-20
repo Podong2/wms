@@ -1,0 +1,23 @@
+{
+    "wmsApp": {
+        "systemRolePermission" : {
+            "home": {
+                "title": "SystemRolePermissions",
+                "createLabel": "System Role Permission を追加",
+                "createOrEditLabel": "System Role Permissionを追加または編集",
+                "search": "Search for System Role Permission"
+            },
+            "created": "A new System Role Permission is created with identifier {{ param }}",
+            "updated": "A System Role Permission is updated with identifier {{ param }}",
+            "deleted": "A System Role Permission is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "System Role Permission {{ id }}を削除してもよろしいですか？"
+            },
+            "detail": {
+                "title": "System Role Permission"
+            },
+            "systemRole": "System Role",
+            "permission": "Permission"
+        }
+    }
+}

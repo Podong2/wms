@@ -87,8 +87,7 @@ public class SocialService {
         User newUser = new User();
         newUser.setLogin(login);
         newUser.setPassword(encryptedPassword);
-        newUser.setFirstName(userProfile.getFirstName());
-        newUser.setLastName(userProfile.getLastName());
+        newUser.setName(userProfile.getName());
         newUser.setEmail(email);
         newUser.setActivated(true);
         newUser.setAuthorities(authorities);

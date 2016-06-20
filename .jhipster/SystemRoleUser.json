@@ -1,0 +1,16 @@
+{
+  "relationships": [
+    {
+      "relationshipId": 1,
+      "relationshipName": "systemRole",
+      "otherEntityName": "systemRole",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "id"
+    }
+  ],
+  "fields": [],
+  "changelogDate": "20160613053821",
+  "dto": "no",
+  "pagination": "no",
+  "service": "serviceClass"
+}

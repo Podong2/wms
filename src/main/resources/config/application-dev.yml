@@ -16,7 +16,7 @@ spring:
         restart:
             enabled: true
         livereload:
-            enabled: false # we use gulp + BrowserSync for livereload
+            enabled: true # we use gulp + BrowserSync for livereload
     datasource:
         url: jdbc:mariadb://211.238.12.102:3306/owl_wms_dev
         name:
@@ -39,6 +39,8 @@ spring:
             hibernate.cache.region.factory_class: kr.wisestone.wms.config.hazelcast.HazelcastCacheRegionFactory
             hibernate.cache.use_minimal_puts: true
             hibernate.cache.hazelcast.use_lite_member: true
+            hibernate.jdbc.use_streams_for_binary: true
+            hibernate.ejb.interceptor: kr.wisestone.wms.domain.support.interceptor.TraceLogInterceptor
     data:
         elasticsearch:
             cluster-name:
@@ -90,7 +92,7 @@ jhipster:
             port: 2003
             prefix: wms
         logs: # Reports Dropwizard metrics in the logs
-            enabled: false
+            enabled: true
             reportFrequency: 60 # in seconds
     logging:
         logstash: # Forward logs to logstash over a socket, used by LoggingConfiguration

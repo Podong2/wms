@@ -1,0 +1,23 @@
+{
+    "wmsApp": {
+        "permissionCategory" : {
+            "home": {
+                "title": "Permission Categories",
+                "createLabel": "Create a new Permission Category",
+                "createOrEditLabel": "Create or edit a Permission Category",
+                "search": "Search for Permission Category"
+            },
+            "created": "A new Permission Category is created with identifier {{ param }}",
+            "updated": "A Permission Category is updated with identifier {{ param }}",
+            "deleted": "A Permission Category is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Permission Category {{ id }}?"
+            },
+            "detail": {
+                "title": "Permission Category"
+            },
+            "name": "Name",
+            "description": "Description"
+        }
+    }
+}

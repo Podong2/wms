@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<databaseChangeLog
+    xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <!--
+        Added the constraints for entity SystemRoleUser.
+    -->
+    <changeSet id="20160613053821-2" author="jhipster">
+        
+        <addForeignKeyConstraint baseColumnNames="system_role_id"
+                                 baseTableName="system_role_user"
+                                 constraintName="fk_systemroleuser_systemrole_id"
+                                 referencedColumnNames="id"
+                                 referencedTableName="system_role"/>
+
+    </changeSet>
+</databaseChangeLog>

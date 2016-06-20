@@ -4,6 +4,7 @@ import kr.wisestone.wms.domain.User;
 
 import java.time.ZonedDateTime;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 
 import java.util.List;
 import java.util.Optional;
@@ -11,7 +12,7 @@ import java.util.Optional;
 /**
  * Spring Data JPA repository for the User entity.
  */
-public interface UserRepository extends JpaRepository<User, Long> {
+public interface UserRepository extends JpaRepository<User, Long>, QueryDslPredicateExecutor<User> {
 
     Optional<User> findOneByActivationKey(String activationKey);
 

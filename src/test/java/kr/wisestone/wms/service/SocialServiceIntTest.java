@@ -77,7 +77,6 @@ public class SocialServiceIntTest {
         Connection<?> connection = createConnection("@LOGIN",
             "mail@mail.com",
             "FIRST_NAME",
-            "LAST_NAME",
             "PROVIDER");
         socialService.createSocialUser(connection, "fr");
         MultiValueMap<String, Connection<?>> connectionsByProviderId = new LinkedMultiValueMap<>();
@@ -103,7 +102,6 @@ public class SocialServiceIntTest {
         Connection<?> connection = createConnection("",
             "",
             "FIRST_NAME",
-            "LAST_NAME",
             "PROVIDER");
 
         // Exercise
@@ -115,12 +113,10 @@ public class SocialServiceIntTest {
         // Setup
         User user = createExistingUser("@LOGIN",
             "mail@mail.com",
-            "OTHER_FIRST_NAME",
-            "OTHER_LAST_NAME");
+            "OTHER_FIRST_NAME");
         Connection<?> connection = createConnection("@LOGIN",
             "",
             "FIRST_NAME",
-            "LAST_NAME",
             "PROVIDER");
 
         // Exercise
@@ -139,7 +135,6 @@ public class SocialServiceIntTest {
         Connection<?> connection = createConnection("@LOGIN",
             "mail@mail.com",
             "FIRST_NAME",
-            "LAST_NAME",
             "PROVIDER");
 
         // Exercise
@@ -159,7 +154,6 @@ public class SocialServiceIntTest {
         Connection<?> connection = createConnection("@LOGIN",
             "mail@mail.com",
             "FIRST_NAME",
-            "LAST_NAME",
             "PROVIDER");
 
         // Exercise
@@ -167,8 +161,7 @@ public class SocialServiceIntTest {
 
         //Verify
         User user = userRepository.findOneByEmail("mail@mail.com").get();
-        assertThat(user.getFirstName()).isEqualTo("FIRST_NAME");
-        assertThat(user.getLastName()).isEqualTo("LAST_NAME");
+        assertThat(user.getName()).isEqualTo("FIRST_NAME");
 
         // Teardown
         userRepository.delete(user);
@@ -180,7 +173,6 @@ public class SocialServiceIntTest {
         Connection<?> connection = createConnection("@LOGIN",
             "mail@mail.com",
             "FIRST_NAME",
-            "LAST_NAME",
             "PROVIDER");
 
         // Exercise
@@ -203,7 +195,6 @@ public class SocialServiceIntTest {
         Connection<?> connection = createConnection("@LOGIN",
             "mail@mail.com",
             "FIRST_NAME",
-            "LAST_NAME",
             "PROVIDER");
 
         // Exercise
@@ -223,7 +214,6 @@ public class SocialServiceIntTest {
         Connection<?> connection = createConnection("@LOGIN",
             "mail@mail.com",
             "FIRST_NAME",
-            "LAST_NAME",
             "PROVIDER_OTHER_THAN_TWITTER");
 
         // Exercise
@@ -243,7 +233,6 @@ public class SocialServiceIntTest {
         Connection<?> connection = createConnection("@LOGIN",
             "mail@mail.com",
             "FIRST_NAME",
-            "LAST_NAME",
             "twitter");
 
         // Exercise
@@ -263,7 +252,6 @@ public class SocialServiceIntTest {
         Connection<?> connection = createConnection("@LOGIN",
             "mail@mail.com",
             "FIRST_NAME",
-            "LAST_NAME",
             "PROVIDER");
 
         // Exercise
@@ -282,13 +270,11 @@ public class SocialServiceIntTest {
         // Setup
         createExistingUser("@OTHER_LOGIN",
             "mail@mail.com",
-            "OTHER_FIRST_NAME",
-            "OTHER_LAST_NAME");
+            "OTHER_FIRST_NAME");
         long initialUserCount = userRepository.count();
         Connection<?> connection = createConnection("@LOGIN",
             "mail@mail.com",
             "FIRST_NAME",
-            "LAST_NAME",
             "PROVIDER");
 
         // Exercise
@@ -307,12 +293,10 @@ public class SocialServiceIntTest {
         // Setup
         createExistingUser("@OTHER_LOGIN",
             "mail@mail.com",
-            "OTHER_FIRST_NAME",
-            "OTHER_LAST_NAME");
+            "OTHER_FIRST_NAME");
         Connection<?> connection = createConnection("@LOGIN",
             "mail@mail.com",
             "FIRST_NAME",
-            "LAST_NAME",
             "PROVIDER");
 
         // Exercise
@@ -321,8 +305,7 @@ public class SocialServiceIntTest {
         //Verify
         User userToVerify = userRepository.findOneByEmail("mail@mail.com").get();
         assertThat(userToVerify.getLogin()).isEqualTo("@other_login");
-        assertThat(userToVerify.getFirstName()).isEqualTo("OTHER_FIRST_NAME");
-        assertThat(userToVerify.getLastName()).isEqualTo("OTHER_LAST_NAME");
+        assertThat(userToVerify.getName()).isEqualTo("OTHER_FIRST_NAME");
 
         // Teardown
         userRepository.delete(userToVerify);
@@ -334,7 +317,6 @@ public class SocialServiceIntTest {
         Connection<?> connection = createConnection("@LOGIN",
             "mail@mail.com",
             "FIRST_NAME",
-            "LAST_NAME",
             "PROVIDER");
 
         // Exercise
@@ -351,13 +333,11 @@ public class SocialServiceIntTest {
     private Connection<?> createConnection(String login,
                                            String email,
                                            String firstName,
-                                           String lastName,
                                            String providerId) {
         UserProfile userProfile = mock(UserProfile.class);
         when(userProfile.getEmail()).thenReturn(email);
         when(userProfile.getUsername()).thenReturn(login);
         when(userProfile.getFirstName()).thenReturn(firstName);
-        when(userProfile.getLastName()).thenReturn(lastName);
 
         Connection<?> connection = mock(Connection.class);
         ConnectionKey key = new ConnectionKey(providerId, "PROVIDER_USER_ID");
@@ -369,14 +349,12 @@ public class SocialServiceIntTest {
 
     private User createExistingUser(String login,
                                     String email,
-                                    String firstName,
-                                    String lastName) {
+                                    String firstName) {
         User user = new User();
         user.setLogin(login);
         user.setPassword(passwordEncoder.encode("password"));
         user.setEmail(email);
-        user.setFirstName(firstName);
-        user.setLastName(lastName);
+        user.setName(firstName);
         return userRepository.saveAndFlush(user);
     }
 }

@@ -1,0 +1,23 @@
+{
+    "wmsApp": {
+        "systemRoleUser" : {
+            "home": {
+                "title": "SystemRoleUsers",
+                "createLabel": "System Role User を追加",
+                "createOrEditLabel": "System Role Userを追加または編集",
+                "search": "Search for System Role User"
+            },
+            "created": "A new System Role User is created with identifier {{ param }}",
+            "updated": "A System Role User is updated with identifier {{ param }}",
+            "deleted": "A System Role User is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "System Role User {{ id }}を削除してもよろしいですか？"
+            },
+            "detail": {
+                "title": "System Role User"
+            },
+            "systemRole": "System Role",
+            "user": "User"
+        }
+    }
+}

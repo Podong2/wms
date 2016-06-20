@@ -1,0 +1,92 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myMenuLabel" translate="wmsApp.menu.home.createOrEditLabel">Create or edit a Menu</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.menu.id">
+            <label for="id" translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.menu.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="wmsApp.menu.name" for="field_name">Name</label>
+            <input type="text" class="form-control" name="name" id="field_name"
+                    ng-model="vm.menu.name"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="wmsApp.menu.description" for="field_description">Description</label>
+            <input type="text" class="form-control" name="description" id="field_description"
+                    ng-model="vm.menu.description"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="wmsApp.menu.area" for="field_area">Area</label>
+            <input type="text" class="form-control" name="area" id="field_area"
+                    ng-model="vm.menu.area"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="wmsApp.menu.position" for="field_position">Position</label>
+            <input type="number" class="form-control" name="position" id="field_position"
+                    ng-model="vm.menu.position"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="wmsApp.menu.status" for="field_status">Status</label>
+            <input type="text" class="form-control" name="status" id="field_status"
+                    ng-model="vm.menu.status"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="wmsApp.menu.projectYn" for="field_projectYn">Project Yn</label>
+            <input type="checkbox" class="form-control" name="projectYn" id="field_projectYn"
+                    ng-model="vm.menu.projectYn"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="wmsApp.menu.systemYn" for="field_systemYn">System Yn</label>
+            <input type="checkbox" class="form-control" name="systemYn" id="field_systemYn"
+                    ng-model="vm.menu.systemYn"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="wmsApp.menu.mobileYn" for="field_mobileYn">Mobile Yn</label>
+            <input type="checkbox" class="form-control" name="mobileYn" id="field_mobileYn"
+                    ng-model="vm.menu.mobileYn"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="wmsApp.menu.hrIncludeYn" for="field_hrIncludeYn">Hr Include Yn</label>
+            <input type="checkbox" class="form-control" name="hrIncludeYn" id="field_hrIncludeYn"
+                    ng-model="vm.menu.hrIncludeYn"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="wmsApp.menu.urlPath" for="field_urlPath">Url Path</label>
+            <input type="text" class="form-control" name="urlPath" id="field_urlPath"
+                    ng-model="vm.menu.urlPath"
+                     />
+        </div>
+
+        <div class="form-group">
+            <label translate="wmsApp.menu.parent" for="field_parent">Parent</label>
+            <select class="form-control" id="field_parent" name="parent" ng-model="vm.menu.parentId" ng-options="menu.id as menu.id for menu in vm.menus"            >
+                <option value=""></option>
+            </select>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

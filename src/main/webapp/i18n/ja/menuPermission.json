@@ -1,0 +1,23 @@
+{
+    "wmsApp": {
+        "menuPermission" : {
+            "home": {
+                "title": "MenuPermissions",
+                "createLabel": "Menu Permission を追加",
+                "createOrEditLabel": "Menu Permissionを追加または編集",
+                "search": "Search for Menu Permission"
+            },
+            "created": "A new Menu Permission is created with identifier {{ param }}",
+            "updated": "A Menu Permission is updated with identifier {{ param }}",
+            "deleted": "A Menu Permission is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Menu Permission {{ id }}を削除してもよろしいですか？"
+            },
+            "detail": {
+                "title": "Menu Permission"
+            },
+            "menu": "Menu",
+            "permission": "Permission"
+        }
+    }
+}

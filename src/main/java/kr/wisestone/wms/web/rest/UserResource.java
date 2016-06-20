@@ -1,8 +1,10 @@
 package kr.wisestone.wms.web.rest;
 
+import com.mysema.query.BooleanBuilder;
 import kr.wisestone.wms.config.Constants;
 import com.codahale.metrics.annotation.Timed;
 import kr.wisestone.wms.domain.Authority;
+import kr.wisestone.wms.domain.QUser;
 import kr.wisestone.wms.domain.User;
 import kr.wisestone.wms.repository.AuthorityRepository;
 import kr.wisestone.wms.repository.UserRepository;
@@ -24,6 +26,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.inject.Inject;
 import java.net.URI;
@@ -150,32 +153,39 @@ public class UserResource {
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserDTO.getId()))) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("userManagement", "userexists", "Login already in use")).body(null);
         }
-        return userRepository
-            .findOneById(managedUserDTO.getId())
-            .map(user -> {
-                user.setLogin(managedUserDTO.getLogin());
-                user.setFirstName(managedUserDTO.getFirstName());
-                user.setLastName(managedUserDTO.getLastName());
-                user.setEmail(managedUserDTO.getEmail());
-                user.setActivated(managedUserDTO.isActivated());
-                user.setLangKey(managedUserDTO.getLangKey());
-                Set<Authority> authorities = user.getAuthorities();
-                authorities.clear();
-                managedUserDTO.getAuthorities().stream().forEach(
-                    authority -> authorities.add(authorityRepository.findOne(authority))
-                );
-                return ResponseEntity.ok()
-                    .headers(HeaderUtil.createAlert("userManagement.updated", managedUserDTO.getLogin()))
-                    .body(new ManagedUserDTO(userRepository
-                        .findOne(managedUserDTO.getId())));
-            })
-            .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
 
+        userService.updateUser(managedUserDTO);
+
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createAlert("userManagement.updated", managedUserDTO.getLogin()))
+            .body(new ManagedUserDTO(userRepository
+                .findOne(managedUserDTO.getId())));
+
+//        return userRepository
+//            .findOneById(managedUserDTO.getId())
+//            .map(user -> {
+//                user.setLogin(managedUserDTO.getLogin());
+//                user.setFirstName(managedUserDTO.getFirstName());
+//                user.setLastName(managedUserDTO.getLastName());
+//                user.setEmail(managedUserDTO.getEmail());
+//                user.setActivated(managedUserDTO.isActivated());
+//                user.setLangKey(managedUserDTO.getLangKey());
+//                Set<Authority> authorities = user.getAuthorities();
+//                authorities.clear();
+//                managedUserDTO.getAuthorities().stream().forEach(
+//                    authority -> authorities.add(authorityRepository.findOne(authority))
+//                );
+//                return ResponseEntity.ok()
+//                    .headers(HeaderUtil.createAlert("userManagement.updated", managedUserDTO.getLogin()))
+//                    .body(new ManagedUserDTO(userRepository
+//                        .findOne(managedUserDTO.getId())));
+//            })
+//            .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
     /**
      * GET  /users : get all users.
-     * 
+     *
      * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and with body all users
      * @throws URISyntaxException if the pagination headers couldnt be generated

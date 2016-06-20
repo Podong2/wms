@@ -1,0 +1,67 @@
+{
+  "relationships": [
+    {
+      "relationshipId": 1,
+      "relationshipName": "parent",
+      "otherEntityName": "menu",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "id"
+    }
+  ],
+  "fields": [
+    {
+      "fieldId": 1,
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 2,
+      "fieldName": "description",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 3,
+      "fieldName": "area",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 4,
+      "fieldName": "position",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldId": 5,
+      "fieldName": "status",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 6,
+      "fieldName": "projectYn",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldId": 7,
+      "fieldName": "systemYn",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldId": 8,
+      "fieldName": "mobileYn",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldId": 9,
+      "fieldName": "hrIncludeYn",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldId": 10,
+      "fieldName": "urlPath",
+      "fieldType": "String"
+    }
+  ],
+  "changelogDate": "20160613052939",
+  "dto": "mapstruct",
+  "pagination": "pagination",
+  "service": "no"
+}
