@@ -1,28 +1,29 @@
 package kr.wisestone.wms.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import kr.wisestone.wms.common.constant.Constants;
 import kr.wisestone.wms.domain.AttachedFile;
-import kr.wisestone.wms.domain.Menu;
 import kr.wisestone.wms.repository.AttachedFileRepository;
 import kr.wisestone.wms.service.AttachedFileService;
-import kr.wisestone.wms.web.rest.dto.MenuDTO;
 import kr.wisestone.wms.web.rest.util.HeaderUtil;
+import kr.wisestone.wms.web.view.AttachedFileDownloadView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * 특정도메인과 연계되어 처리되므로 컨트롤러가 필요없으나 현재 단계에서 첨부파일 테스트를 위해 등록함, 추후 삭제 예정
@@ -40,6 +41,9 @@ public class AttachedFileResource {
 
     @Inject
     private AttachedFileService attachedFileService;
+
+    @Inject
+    private AttachedFileDownloadView attachedFileDownloadView;
 
     /**
      * POST  /attachedFile : Create a new attachedFile.
@@ -68,20 +72,17 @@ public class AttachedFileResource {
      * GET  /attachedFile/:id : get the "id" attachedFIle.
      *
      * @param id the id of the attachedFile to get
-     * @return the ResponseEntity with status 200 (OK) or 404(Not Found)
+     * @return ModelAndView - AttachedFileDownloadView
      */
-    @RequestMapping(value = "/attachedFile/{id:.+}",
-        method = RequestMethod.GET,
-        produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/attachedFile/{id:.+}", method = RequestMethod.GET)
     @Timed
-    public ResponseEntity<AttachedFile> getAttachedFile(@PathVariable Long id) {
+    public ModelAndView getAttachedFile(@PathVariable Long id, Model model) {
         log.debug("REST request to delete AttachedFile : {}", id);
         AttachedFile attachedFile = attachedFileRepository.findOne(id);
-        return Optional.ofNullable(attachedFile)
-            .map(result -> new ResponseEntity<>(
-                result,
-                HttpStatus.OK))
-            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
+        model.addAttribute(Constants.FILE_DOWNLOAD_TARGET, attachedFile);
+
+        return new ModelAndView(attachedFileDownloadView);
     }
 
     /**

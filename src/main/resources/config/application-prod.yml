@@ -33,6 +33,7 @@ spring:
             hibernate.cache.region.factory_class: kr.wisestone.wms.config.hazelcast.HazelcastCacheRegionFactory
             hibernate.cache.use_minimal_puts: true
             hibernate.cache.hazelcast.use_lite_member: true
+            hibernate.ejb.interceptor: kr.wisestone.wms.domain.support.interceptor.TraceLogInterceptor
     data:
         elasticsearch:
             cluster-name:
