@@ -13,25 +13,27 @@
 (function() {
     'use strict';
 
-    var LIST = React.createClass({displayName: 'LIST',
-        render: function() {
+    var WmsDataComponent = React.createClass({
+        displayName: 'LIST',
+        render: function () {
 
-            var data = this.props.data;
+            var data = this.props;
+            data = [{"0": "1", "1": "1", "2": "1", "3": "1", "4": "1"}];
 
-            var rows = data.map(function(datum) {
-                var clickHandler = function(ev){
+            var rows = data.map(function (datum) {
+                var clickHandler = function (ev) {
                     console.log("Still in reactJs");
                     console.log(ev);
                 }
 
                 return (
-                    React.DOM.tr( {onClick:clickHandler},
-                        React.DOM.td(null, datum['0']),
-                        React.DOM.td(null, datum['1']),
-                        React.DOM.td(null, datum['2']),
-                        React.DOM.td(null, datum['3']),
-                        React.DOM.td(null, datum['4'])
-                    )
+                    React.DOM.tr({onClick: clickHandler},
+                    React.DOM.td(null, datum['0']),
+                    React.DOM.td(null, datum['1']),
+                    React.DOM.td(null, datum['2']),
+                    React.DOM.td(null, datum['3']),
+                    React.DOM.td(null, datum['4'])
+                )
                 );
             });
 
@@ -45,23 +47,6 @@
 
     angular
         .module('wmsApp')
-        .directive('fastRepeat', fastRepeat)
-fastRepeat.$inject=[];
-            function fastRepeat(){
-            return{
-                restrict: 'E',
-                scope:{
-                    data: '=data'
-                },
-                link:function(scope, el, attrs){
-                    scope.$watch('data', function(newValue, oldValue){
-                        React.renderComponent(
-                            LIST({data:newValue}),
-                            el[0]);
-                    })
-                }
-            }
-        }
+        .value('WmsDataComponent', WmsDataComponent);
 })();
-
 
