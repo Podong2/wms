@@ -25,7 +25,8 @@
             'xeditable',
             'drag',
             'jkuri.gallery',
-            'react'
+            'react',
+            'ui.tree'
         ])
         .run(run);
 

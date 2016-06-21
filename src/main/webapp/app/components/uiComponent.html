@@ -5,14 +5,8 @@
   ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
   ~ Vestibulum commodo. Ut rhoncus gravida arcu.
   -->
-
 <div ng-cloak>
-
-    <!--<div><hello entering="vm.newPerson"/></div>-->
-    <!--<div><bye leaving="vm.oldPerson"/></div>-->
     <div class="row" style="padding: 10px;">
-        <!--<table class="table" ng-react-component="Repeater" data="data"></table>-->
-
 
         <!-- 탭부분 -->
         <div class="col-md-12 mgt10 slideBody">
@@ -818,6 +812,21 @@
             </ng-gallery>
             <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
 
+            <h3><b>Tree</b></h3>
+            <div class="col-md-12">
+                <div class="col-md-4">
+                    <div ui-tree class="ui-tree">
+                        <ol ui-tree-nodes="" ng-model="vm.list" id="tree-root">
+                            <li ng-repeat="node in vm.list" ui-tree-node ng-include="'nodes_renderer.html'" collapsed="false"></li>
+                        </ol>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <input ng-model="query" ng-change="findNodes()" class="ng-valid ng-touched ng-dirty ng-valid-parse">
+                </div>
+            </div>
+            <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
+
 
         </div>
         <div ng-show="vm.tabArea[1].status">
@@ -841,6 +850,23 @@
     </div>
 </div>
 
+<!-- Nested node template -->
+<script type="text/ng-template" id="nodes_renderer.html">
+    <div ui-tree-handle>
+        <!-- ngIf: node.nodes && node.nodes.length > 0 -->
+        <a class="btn btn-success btn-xs ng-scope" ng-if="node.items &amp;&amp; node.items.length > 0" data-nodrag="" ng-click="vm.toggle(this)">
+            <span class="glyphicon glyphicon-chevron-down" ng-class="{ 'glyphicon-chevron-right': collapsed, 'glyphicon-chevron-down': !collapsed }"></span>
+        </a><!-- end ngIf: node.nodes && node.nodes.length > 0 -->
+        {{node.title}}
+        <a class="pull-right btn btn-danger btn-xs" data-nodrag="" ng-click="vm.remove(this)"><span class="glyphicon glyphicon-remove"></span></a>
+        <a class="pull-right btn btn-primary btn-xs" data-nodrag="" ng-click="vm.newSubItem(this)" style="margin-right: 8px;"><span class="glyphicon glyphicon-plus"></span></a>
+    </div>
+    <ol ui-tree-nodes="" ng-model="node.items" ng-class="{hidden: collapsed}">
+        <li ng-repeat="node in node.items" ui-tree-node ng-include="'nodes_renderer.html'" collapsed="false">
+
+        </li>
+    </ol>
+</script>
 
 <script type="text/javascript">
 
