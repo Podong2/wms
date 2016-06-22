@@ -6,9 +6,9 @@
         .controller('RegisterController', RegisterController);
 
 
-    RegisterController.$inject = ['$translate', '$timeout', 'Auth', 'LoginService'];
+    RegisterController.$inject = ['$translate', '$timeout', 'Auth', 'LoginService', 'Department', 'Company'];
 
-    function RegisterController ($translate, $timeout, Auth, LoginService) {
+    function RegisterController ($translate, $timeout, Auth, LoginService, Department, Company) {
         var vm = this;
 
         vm.doNotMatch = null;
@@ -18,6 +18,8 @@
         vm.register = register;
         vm.registerAccount = {};
         vm.success = null;
+        vm.departments = Department.query();
+        vm.companies = Company.query();
 
         $timeout(function (){angular.element('#login').focus();});
 

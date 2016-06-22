@@ -5,9 +5,9 @@
         .module('wmsApp')
         .factory('Principal', Principal);
 
-    Principal.$inject = ['$q', 'Account', 'JhiTrackerService'];
+    Principal.$inject = ['$q', 'Account', 'JhiTrackerService', '$log'];
 
-    function Principal ($q, Account, JhiTrackerService) {
+    function Principal ($q, Account, JhiTrackerService, $log) {
         var _identity,
             _authenticated = false;
 
@@ -17,7 +17,8 @@
             hasAuthority: hasAuthority,
             identity: identity,
             isAuthenticated: isAuthenticated,
-            isIdentityResolved: isIdentityResolved
+            isIdentityResolved: isIdentityResolved,
+            getIdentity : getIdentity
         };
 
         return service;
@@ -80,6 +81,7 @@
 
             function getAccountThen (account) { // 사용자 정보를 받아서
                 _identity = account.data; // _identity에 사용자 정보 주입
+                $log.debug("_identity : ", _identity);
                 _authenticated = true; // 인증 true
                 deferred.resolve(_identity); // 값을 promise 에 전달
                 JhiTrackerService.connect(); // 접속중인 url 정보의 websocket으로 연결한다.
@@ -98,6 +100,9 @@
 
         function isIdentityResolved () {
             return angular.isDefined(_identity);
+        }
+        function getIdentity () {
+            return _identity;
         }
     }
 })();

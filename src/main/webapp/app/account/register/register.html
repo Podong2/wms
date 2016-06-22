@@ -112,6 +112,19 @@
                     </div>
                 </div>
 
+                <div class="form-group">
+                    <label translate="userManagement.company" for="field_company">Company</label>
+                    <select class="form-control" id="field_company" name="company" ng-model="vm.user.companyId" ng-options="company.id as company.id for company in vm.companies">
+                        <option value=""></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label translate="userManagement.department" for="field_department">Parent</label>
+                    <select class="form-control" id="field_department" name="department" ng-model="vm.user.departmentId" ng-options="department.id as department.id for department in vm.departments">
+                        <option value=""></option>
+                    </select>
+                </div>
+
                 <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary" translate="register.form.button">Register</button>
             </form>
             <p></p>

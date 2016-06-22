@@ -123,8 +123,8 @@ only screen and (                min-resolution: 2dppx) {
 Generic styles
 ========================================================================== */
 .error {
-    color: white;
-    background-color: red;
+    color: red;
+    background-color: white;
 }
 
 .pad {
