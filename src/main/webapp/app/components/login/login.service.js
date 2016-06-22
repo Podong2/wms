@@ -29,6 +29,8 @@
                     translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                         $translatePartialLoader.addPart('login');
                         $translatePartialLoader.addPart('error');
+                        $translatePartialLoader.addPart('register');
+                        $translatePartialLoader.addPart('global');
                         return $translate.refresh();
                     }]
                 }
