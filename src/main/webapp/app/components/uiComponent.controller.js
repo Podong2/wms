@@ -111,6 +111,57 @@
             { status: false }
         ];
 
+
+        //Tree values start ///////////////////////////////////////////////////////////////////////////
+        vm.list = [
+            {
+                "id": 1,
+                "title": "QSD팀",
+                "items": [
+                    {
+                        "id": 11,
+                        "title": "오지영 이사",
+                        "items": [
+                            {
+                                "id": 111,
+                                "title": "장원호 선임",
+                                "items": []
+                            },
+                            {
+                                "id": 111,
+                                "title": "이정선 주임",
+                                "items": []
+                            },
+                            {
+                                "id": 111,
+                                "title": "한성용 연구원",
+                                "items": []
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                "id": 2,
+                "title": "QA팀",
+                "nodrop": true,
+                "items": [
+                    {
+                        "id": 21,
+                        "title": "홍길동 팀장",
+                        "items": []
+                    },
+                    {
+                        "id": 22,
+                        "title": "김철수 주임",
+                        "items": []
+                    }
+                ]
+            }
+        ]
+        //Tree values end ///////////////////////////////////////////////////////////////////////////
+
+
         // date picker start //////////////////////////////////////////////////////////////////////////
         this.picker1 = {
             date: new Date(),
@@ -468,14 +519,30 @@
         };
 
 
-        vm.changeName = changeName;
-        vm.person = {
-            fname: 'Clark', lname: 'Kent'
-        }
-        // add function to scope
-        function changeName() {
-            vm.person = { fname: 'Bruce', lname: 'Banner' };
+        // Tree - 트리 노드 삭제 버튼 이벤트
+        vm.remove = function (scope) {
+            scope.remove();
         };
+        // Tree - 트리 노드 접기 버튼 이벤트
+        vm.toggle = function (scope) {
+            scope.toggle();
+        };
+        //$scope.moveLastToTheBeginning = function () {
+        //    var a = $scope.data.pop();
+        //    $scope.data.splice(0, 0, a);
+        //};
+        // Tree - 트리 노드 추가 버튼 이벤트
+        vm.newSubItem = function (scope) {
+            var nodeData = scope.$modelValue;
+            nodeData.items.push({
+                id: nodeData.id * 10 + nodeData.items.length,
+                title: nodeData.title + '.' + (nodeData.items.length + 1),
+                nodes: []
+            });
+        };
+        // Tree - filter
+        $scope.findNodes = function () {
 
+        };
     }
 })();
