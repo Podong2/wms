@@ -20,6 +20,7 @@
             resolve: {
                 authorize: ['Auth',
                     function (Auth) {
+                        Auth.connectedUserList(); // 임시 위치
                         return Auth.authorize();
                     }
                 ],

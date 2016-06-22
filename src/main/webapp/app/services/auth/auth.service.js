@@ -9,9 +9,9 @@
     // factory : 일반적으로 사용하는 서비스로서 비지니스 로직 또는 모듈 제공자로 사용한다.
     // 객체나 클로저를 반환한다.
 
-    Auth.$inject = ['$rootScope', '$state', '$sessionStorage', '$q', '$translate', 'Principal', 'AuthServerProvider', 'Account', 'LoginService', 'Register', 'Activate', 'Password', 'PasswordResetInit', 'PasswordResetFinish', 'JhiTrackerService'];
+    Auth.$inject = ['$rootScope', '$state', '$sessionStorage', '$q', '$translate', 'Principal', 'AuthServerProvider', 'Account', 'LoginService', 'Register', 'Activate', 'Password', 'PasswordResetInit', 'PasswordResetFinish', 'JhiTrackerService', '$http', '$log'];
 
-    function Auth ($rootScope, $state, $sessionStorage, $q, $translate, Principal, AuthServerProvider, Account, LoginService, Register, Activate, Password, PasswordResetInit, PasswordResetFinish, JhiTrackerService) {
+    function Auth ($rootScope, $state, $sessionStorage, $q, $translate, Principal, AuthServerProvider, Account, LoginService, Register, Activate, Password, PasswordResetInit, PasswordResetFinish, JhiTrackerService, $http, $log) {
         var service = {
             activateAccount: activateAccount,
             authorize: authorize,
@@ -24,7 +24,7 @@
             resetPasswordInit: resetPasswordInit,
             resetPreviousState: resetPreviousState,
             storePreviousState: storePreviousState,
-            updateAccount: updateAccount
+            connectedUserList: connectedUserList
         };
 
         return service;
@@ -182,6 +182,14 @@
         function storePreviousState(previousStateName, previousStateParams) {
             var previousState = { "name": previousStateName, "params": previousStateParams };
             $sessionStorage.previousState = previousState;
+        }
+
+        function connectedUserList() {
+            $http.get("/api/account/connected-principals").success(function (response) {
+                $log.debug("response : ", response)
+                $rootScope.connectedUser = response;
+                $log.debug("$rootScope.connectedUser : ", $rootScope.connectedUser)
+            });
         }
     }
 })();

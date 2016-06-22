@@ -114,13 +114,13 @@
 
                 <div class="form-group">
                     <label translate="userManagement.company" for="field_company">Company</label>
-                    <select class="form-control" id="field_company" name="company" ng-model="vm.user.companyId" ng-options="company.id as company.name for company in vm.companies">
+                    <select class="form-control" id="field_company" name="company" ng-model="vm.registerAccount.companyId" ng-options="company.id as company.name for company in vm.companies">
                         <option value="" translate="entity.action.select"></option>
                     </select>
                 </div>
                 <div class="form-group">
                     <label translate="userManagement.department" for="field_department">Parent</label>
-                    <select class="form-control" id="field_department" name="department" ng-model="vm.user.departmentId" ng-options="department.id as department.name for department in vm.departments">
+                    <select class="form-control" id="field_department" name="department" ng-model="vm.registerAccount.departmentId" ng-options="department.id as department.name for department in vm.departments">
                         <option value="" translate="entity.action.select"></option>
                     </select>
                 </div>
