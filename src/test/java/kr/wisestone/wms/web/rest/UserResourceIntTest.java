@@ -68,7 +68,7 @@ public class UserResourceIntTest {
 
     @Test
     public void testGetExistingUserWithAnEmailLogin() throws Exception {
-        User user = userService.createUserInformation("john.doe@localhost.com", "johndoe", "John", "john.doe@localhost.com", "en-US");
+        User user = userService.createUserInformation("john.doe@localhost.com", "johndoe", "John", "john.doe@localhost.com", "en-US", null, null);
 
         restUserMockMvc.perform(get("/api/users/john.doe@localhost.com")
                 .accept(MediaType.APPLICATION_JSON))
@@ -81,7 +81,7 @@ public class UserResourceIntTest {
 
     @Test
     public void testDeleteExistingUserWithAnEmailLogin() throws Exception {
-        User user = userService.createUserInformation("john.doe@localhost.com", "johndoe", "John", "john.doe@localhost.com", "en-US");
+        User user = userService.createUserInformation("john.doe@localhost.com", "johndoe", "John", "john.doe@localhost.com", "en-US", null, null);
 
         restUserMockMvc.perform(delete("/api/users/john.doe@localhost.com")
                 .accept(MediaType.APPLICATION_JSON))
