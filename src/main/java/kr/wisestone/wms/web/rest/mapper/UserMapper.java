@@ -18,6 +18,8 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring", uses = {})
 public interface UserMapper {
 
+    @Mapping(source = "company.name", target = "companyName")
+    @Mapping(source = "department.name", target = "departmentName")
     @Mapping(source = "company.id", target = "companyId")
     @Mapping(source = "department.id", target = "departmentId")
     UserDTO userToUserDTO(User user);

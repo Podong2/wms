@@ -43,6 +43,10 @@ public class UserDTO {
 
     private Long departmentId;
 
+    private String companyName;
+
+    private String departmentName;
+
     private String status;
 
     private Integer failCount = 0;
@@ -82,11 +86,15 @@ public class UserDTO {
         this.activated = activated;
         this.langKey = langKey;
         this.authorities = authorities;
-        if(company != null)
+        if(company != null) {
             this.companyId = company.getId();
+            this.companyName = company.getName();
+        }
 
-        if(department != null)
+        if(department != null) {
             this.departmentId = department.getId();
+            this.departmentName = department.getName();
+        }
 
         this.status = status;
     }
@@ -193,6 +201,22 @@ public class UserDTO {
 
     public void setResetKey(String resetKey) {
         this.resetKey = resetKey;
+    }
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
+    public String getDepartmentName() {
+        return departmentName;
+    }
+
+    public void setDepartmentName(String departmentName) {
+        this.departmentName = departmentName;
     }
 
     @Override

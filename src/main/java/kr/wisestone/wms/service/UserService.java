@@ -16,6 +16,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 
 import java.time.LocalDate;
@@ -158,6 +159,11 @@ public class UserService {
         user.setActivated(true);
         user.setStatus(User.USER_STATUS_ADD);
 
+        if(StringUtils.hasText(managedUserDTO.getPassword())) {
+            user.setPassword(passwordEncoder.encode(managedUserDTO.getPassword()));
+            user.setStatus(User.USER_STATUS_ACTIVE);
+        }
+
         if(managedUserDTO.getCompanyId() != null)
             user.setCompany(this.companyRepository.findOne(managedUserDTO.getCompanyId()));
 
@@ -278,6 +284,11 @@ public class UserService {
             authority -> authorities.add(authorityRepository.findOne(authority))
         );
         user.setAuthorities(authorities);
+
+        user.setPassword(passwordEncoder.encode(managedUserDTO.getPassword()));
+        user.setResetKey(null);
+        user.setResetDate(null);
+        user.setStatus(managedUserDTO.getStatus());
 
         userRepository.save(user);
         userSearchRepository.save(user);

@@ -184,7 +184,11 @@ public class User extends AbstractAuditingEntity implements UserDetails, Seriali
     }
 
     public Boolean getActivated() {
-        return activated;
+
+        if(status == null)
+            return false;
+
+        return status.equals(USER_STATUS_ACTIVE);
     }
 
     public void setActivated(Boolean activated) {
