@@ -26,7 +26,7 @@ public class AjaxAuthenticationFailureHandler extends SimpleUrlAuthenticationFai
         } else if(exception instanceof SessionAuthenticationException) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "error.authentication.maximumSessionExceeded");
         } else {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "error.authentication.failed");
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, exception.getMessage());
         }
     }
 }
