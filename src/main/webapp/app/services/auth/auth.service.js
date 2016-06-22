@@ -186,9 +186,9 @@
 
         function connectedUserList() {
             $http.get("/api/account/connected-principals").success(function (response) {
-                $log.debug("response : ", response)
+                //$log.debug("response : ", response)
                 $rootScope.connectedUser = response;
-                $log.debug("$rootScope.connectedUser : ", $rootScope.connectedUser)
+                //$log.debug("$rootScope.connectedUser : ", $rootScope.connectedUser)
             });
         }
     }
