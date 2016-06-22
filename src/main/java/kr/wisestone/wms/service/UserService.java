@@ -100,7 +100,7 @@ public class UserService {
     }
 
     public User createUserInformation(String login, String password, String name, String email,
-        String langKey) {
+        String langKey, Long companyId, Long departmentId) {
 
         User newUser = new User();
         Authority authority = authorityRepository.findOne("ROLE_USER");
@@ -118,6 +118,13 @@ public class UserService {
         newUser.setActivationKey(RandomUtil.generateActivationKey());
         authorities.add(authority);
         newUser.setAuthorities(authorities);
+
+        if(companyId != null)
+            newUser.setCompany(this.companyRepository.findOne(companyId));
+
+        if(departmentId != null)
+            newUser.setDepartment(this.departmentService.findOne(departmentId));
+
         userRepository.save(newUser);
         userSearchRepository.save(newUser);
         log.debug("Created Information for User: {}", newUser);

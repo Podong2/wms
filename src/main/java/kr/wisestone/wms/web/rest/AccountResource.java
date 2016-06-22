@@ -74,7 +74,7 @@ public class AccountResource {
                 .orElseGet(() -> {
                     User user = userService.createUserInformation(managedUserDTO.getLogin(), managedUserDTO.getPassword(),
                     managedUserDTO.getName(), managedUserDTO.getEmail().toLowerCase(),
-                    managedUserDTO.getLangKey());
+                    managedUserDTO.getLangKey(), managedUserDTO.getCompanyId(), managedUserDTO.getDepartmentId());
                     String baseUrl = request.getScheme() + // "http"
                     "://" +                                // "://"
                     request.getServerName() +              // "myhost"
