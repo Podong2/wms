@@ -82,6 +82,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
             .sessionManagement()
             .maximumSessions(1) // maximum number of concurrent sessions for one user
+            .maxSessionsPreventsLogin(true)
             .expiredUrl("/")
             .sessionRegistry(sessionRegistry)
             .and().and()
@@ -118,19 +119,24 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .disable()
         .and()
             .authorizeRequests()
-            .antMatchers("/api/register").permitAll()
-            .antMatchers("/api/activate").permitAll()
-            .antMatchers("/api/authenticate").permitAll()
-            .antMatchers("/api/account/reset_password/init").permitAll()
-            .antMatchers("/api/account/reset_password/finish").permitAll()
-            .antMatchers("/api/profile-info").permitAll()
-            .antMatchers("/api/**").authenticated()
+            .antMatchers("/api/register"
+                       , "/api/activate"
+                       , "/api/authenticate"
+                       , "/api/account/reset_password/init"
+                       , "/api/account/reset_password/finish"
+                       , "/api/profile-info"
+                       , "/api/**"
+                       , "/owl-socket/**"
+                       , "/v2/api-docs/**"
+                       , "/configuration/ui"
+                ).permitAll()
+            .antMatchers("/users/session-check"
+                       , "/users/{id}"
+                       ).permitAll()
             .antMatchers("/owl-socket/tracker").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/owl-socket/**").permitAll()
             .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN)
-            .antMatchers("/v2/api-docs/**").permitAll()
-            .antMatchers("/configuration/ui").permitAll()
-            .antMatchers("/swagger-ui/index.html").hasAuthority(AuthoritiesConstants.ADMIN);
+            .antMatchers("/swagger-ui/index.html").hasAuthority(AuthoritiesConstants.ADMIN)
+        ;
 
     }
 

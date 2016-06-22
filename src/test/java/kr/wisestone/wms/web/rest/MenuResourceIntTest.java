@@ -139,10 +139,10 @@ public class MenuResourceIntTest {
         assertThat(testMenu.getArea()).isEqualTo(DEFAULT_AREA);
         assertThat(testMenu.getPosition()).isEqualTo(DEFAULT_POSITION);
         assertThat(testMenu.getStatus()).isEqualTo(DEFAULT_STATUS);
-        assertThat(testMenu.isProjectYn()).isEqualTo(DEFAULT_PROJECT_YN);
-        assertThat(testMenu.isSystemYn()).isEqualTo(DEFAULT_SYSTEM_YN);
-        assertThat(testMenu.isMobileYn()).isEqualTo(DEFAULT_MOBILE_YN);
-        assertThat(testMenu.isHrIncludeYn()).isEqualTo(DEFAULT_HR_INCLUDE_YN);
+        assertThat(testMenu.getProjectYn()).isEqualTo(DEFAULT_PROJECT_YN);
+        assertThat(testMenu.getSystemYn()).isEqualTo(DEFAULT_SYSTEM_YN);
+        assertThat(testMenu.getMobileYn()).isEqualTo(DEFAULT_MOBILE_YN);
+        assertThat(testMenu.getHrIncludeYn()).isEqualTo(DEFAULT_HR_INCLUDE_YN);
         assertThat(testMenu.getUrlPath()).isEqualTo(DEFAULT_URL_PATH);
 
         // Validate the Menu in ElasticSearch
@@ -241,10 +241,10 @@ public class MenuResourceIntTest {
         assertThat(testMenu.getArea()).isEqualTo(UPDATED_AREA);
         assertThat(testMenu.getPosition()).isEqualTo(UPDATED_POSITION);
         assertThat(testMenu.getStatus()).isEqualTo(UPDATED_STATUS);
-        assertThat(testMenu.isProjectYn()).isEqualTo(UPDATED_PROJECT_YN);
-        assertThat(testMenu.isSystemYn()).isEqualTo(UPDATED_SYSTEM_YN);
-        assertThat(testMenu.isMobileYn()).isEqualTo(UPDATED_MOBILE_YN);
-        assertThat(testMenu.isHrIncludeYn()).isEqualTo(UPDATED_HR_INCLUDE_YN);
+        assertThat(testMenu.getProjectYn()).isEqualTo(UPDATED_PROJECT_YN);
+        assertThat(testMenu.getSystemYn()).isEqualTo(UPDATED_SYSTEM_YN);
+        assertThat(testMenu.getMobileYn()).isEqualTo(UPDATED_MOBILE_YN);
+        assertThat(testMenu.getHrIncludeYn()).isEqualTo(UPDATED_HR_INCLUDE_YN);
         assertThat(testMenu.getUrlPath()).isEqualTo(UPDATED_URL_PATH);
 
         // Validate the Menu in ElasticSearch

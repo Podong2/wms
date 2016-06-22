@@ -12,6 +12,7 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {})
 public interface MenuMapper {
 
+    @Mapping(source = "childMenus", target = "childMenus")
     @Mapping(source = "parent.id", target = "parentId")
     MenuDTO menuToMenuDTO(Menu menu);
 

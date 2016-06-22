@@ -10,6 +10,7 @@ import kr.wisestone.wms.repository.AuthorityRepository;
 import kr.wisestone.wms.repository.UserRepository;
 import kr.wisestone.wms.repository.search.UserSearchRepository;
 import kr.wisestone.wms.security.AuthoritiesConstants;
+import kr.wisestone.wms.security.SecurityUtils;
 import kr.wisestone.wms.service.MailService;
 import kr.wisestone.wms.service.UserService;
 import kr.wisestone.wms.web.rest.dto.ManagedUserDTO;
@@ -25,6 +26,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -237,6 +239,27 @@ public class UserResource {
         log.debug("REST request to delete User: {}", login);
         userService.deleteUserInformation(login);
         return ResponseEntity.ok().headers(HeaderUtil.createAlert( "userManagement.deleted", login)).build();
+    }
+
+    /**
+     * GET Session status
+     *
+     * @return the ResponseEntity with status 200 (OK)
+     */
+    @RequestMapping(value = "/users/session-check",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<Boolean> sessionAliveCheck() {
+        log.debug("REST request for session check");
+
+        String login = SecurityUtils.getCurrentUserLogin();
+
+        if(StringUtils.isEmpty(login)) {
+            return new ResponseEntity<>(Boolean.FALSE, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(Boolean.TRUE, HttpStatus.OK);
     }
 
     /**

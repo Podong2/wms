@@ -1,12 +1,13 @@
 package kr.wisestone.wms.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * A Menu.
@@ -46,23 +47,33 @@ public class Menu extends AbstractAuditingEntity implements Serializable {
     private String status;
 
     @Column(name = "project_yn")
-    private Boolean projectYn;
+    private Boolean projectYn = Boolean.FALSE;
 
     @Column(name = "system_yn")
-    private Boolean systemYn;
+    private Boolean systemYn = Boolean.FALSE;
 
     @Column(name = "mobile_yn")
-    private Boolean mobileYn;
+    private Boolean mobileYn = Boolean.FALSE;
 
     @Column(name = "hr_include_yn")
-    private Boolean hrIncludeYn;
+    private Boolean hrIncludeYn = Boolean.FALSE;
 
     @Column(name = "url_path")
     private String urlPath;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Menu parent;
+
+    /** 자식 메뉴들 */
+    @OneToMany(mappedBy="parent", cascade={CascadeType.ALL}, orphanRemoval=true)
+    @OrderColumn(name="position")
+    private List<Menu> childMenus = new ArrayList<Menu>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy="menu", cascade={CascadeType.ALL}, orphanRemoval=true)
+    private Set<MenuPermission> menuPermissions = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -112,7 +123,7 @@ public class Menu extends AbstractAuditingEntity implements Serializable {
         this.status = status;
     }
 
-    public Boolean isProjectYn() {
+    public Boolean getProjectYn() {
         return projectYn;
     }
 
@@ -120,7 +131,7 @@ public class Menu extends AbstractAuditingEntity implements Serializable {
         this.projectYn = projectYn;
     }
 
-    public Boolean isSystemYn() {
+    public Boolean getSystemYn() {
         return systemYn;
     }
 
@@ -128,7 +139,7 @@ public class Menu extends AbstractAuditingEntity implements Serializable {
         this.systemYn = systemYn;
     }
 
-    public Boolean isMobileYn() {
+    public Boolean getMobileYn() {
         return mobileYn;
     }
 
@@ -136,7 +147,7 @@ public class Menu extends AbstractAuditingEntity implements Serializable {
         this.mobileYn = mobileYn;
     }
 
-    public Boolean isHrIncludeYn() {
+    public Boolean getHrIncludeYn() {
         return hrIncludeYn;
     }
 
@@ -156,8 +167,24 @@ public class Menu extends AbstractAuditingEntity implements Serializable {
         return parent;
     }
 
-    public void setParent(Menu menu) {
-        this.parent = menu;
+    public void setParent(Menu parent) {
+        this.parent = parent;
+    }
+
+    public List<Menu> getChildMenus() {
+        return childMenus;
+    }
+
+    public void setChildMenus(List<Menu> childMenus) {
+        this.childMenus = childMenus;
+    }
+
+    public Set<MenuPermission> getMenuPermissions() {
+        return menuPermissions;
+    }
+
+    public void setMenuPermissions(Set<MenuPermission> menuPermissions) {
+        this.menuPermissions = menuPermissions;
     }
 
     @Override

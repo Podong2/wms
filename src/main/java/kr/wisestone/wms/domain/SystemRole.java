@@ -6,7 +6,9 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A SystemRole.
@@ -39,6 +41,12 @@ public class SystemRole extends AbstractAuditingEntity implements Serializable {
     @Column(name = "role_gubun")
     private String roleGubun;
 
+    @OneToMany(mappedBy="systemRole", cascade={CascadeType.ALL}, orphanRemoval=true)
+    private Set<SystemRoleUser> systemRoleUsers = new HashSet<>();
+
+    @OneToMany(mappedBy="systemRole", cascade={CascadeType.ALL}, orphanRemoval=true)
+    private Set<SystemRolePermission> systemRolePermissions = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -69,6 +77,22 @@ public class SystemRole extends AbstractAuditingEntity implements Serializable {
 
     public void setRoleGubun(String roleGubun) {
         this.roleGubun = roleGubun;
+    }
+
+    public Set<SystemRolePermission> getSystemRolePermissions() {
+        return systemRolePermissions;
+    }
+
+    public void setSystemRolePermissions(Set<SystemRolePermission> systemRolePermissions) {
+        this.systemRolePermissions = systemRolePermissions;
+    }
+
+    public Set<SystemRoleUser> getSystemRoleUsers() {
+        return systemRoleUsers;
+    }
+
+    public void setSystemRoleUsers(Set<SystemRoleUser> systemRoleUsers) {
+        this.systemRoleUsers = systemRoleUsers;
     }
 
     @Override

@@ -2,6 +2,7 @@ package kr.wisestone.wms.web.rest.dto;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Objects;
 
@@ -33,9 +34,10 @@ public class MenuDTO implements Serializable {
 
     private String urlPath;
 
-
     private Long parentId;
-    
+
+    private List<MenuDTO> childMenus;
+
     public Long getId() {
         return id;
     }
@@ -120,6 +122,14 @@ public class MenuDTO implements Serializable {
 
     public void setParentId(Long menuId) {
         this.parentId = menuId;
+    }
+
+    public List<MenuDTO> getChildMenus() {
+        return childMenus;
+    }
+
+    public void setChildMenus(List<MenuDTO> childMenus) {
+        this.childMenus = childMenus;
     }
 
     @Override

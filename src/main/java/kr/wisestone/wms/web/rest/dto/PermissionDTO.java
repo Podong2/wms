@@ -1,5 +1,7 @@
 package kr.wisestone.wms.web.rest.dto;
 
+import lombok.Data;
+
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
@@ -25,18 +27,22 @@ public class PermissionDTO implements Serializable {
 
     private Boolean rolePermissionYn;
 
-
     private Long permissionCategoryId;
-    
+
     private Long parentId;
-    
-    public Long getId() {
-        return id;
+
+    private Boolean activeYn;
+
+    private Set<PermissionDTO> childPermissions;
+
+    public Set<PermissionDTO> getChildPermissions() {
+        return childPermissions;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setChildPermissions(Set<PermissionDTO> childPermissions) {
+        this.childPermissions = childPermissions;
     }
+
     public String getName() {
         return name;
     }
@@ -44,6 +50,7 @@ public class PermissionDTO implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
     public String getDescription() {
         return description;
     }
@@ -51,6 +58,7 @@ public class PermissionDTO implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
+
     public String getStatus() {
         return status;
     }
@@ -58,6 +66,7 @@ public class PermissionDTO implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
+
     public String getAction() {
         return action;
     }
@@ -65,6 +74,7 @@ public class PermissionDTO implements Serializable {
     public void setAction(String action) {
         this.action = action;
     }
+
     public String getRoleGubun() {
         return roleGubun;
     }
@@ -72,6 +82,7 @@ public class PermissionDTO implements Serializable {
     public void setRoleGubun(String roleGubun) {
         this.roleGubun = roleGubun;
     }
+
     public Boolean getRolePermissionYn() {
         return rolePermissionYn;
     }
@@ -92,8 +103,24 @@ public class PermissionDTO implements Serializable {
         return parentId;
     }
 
-    public void setParentId(Long permissionId) {
-        this.parentId = permissionId;
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
+
+    public Boolean getActiveYn() {
+        return activeYn;
+    }
+
+    public void setActiveYn(Boolean activeYn) {
+        this.activeYn = activeYn;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     @Override

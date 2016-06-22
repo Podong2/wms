@@ -9,6 +9,8 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.validator.constraints.Email;
 
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
@@ -26,7 +28,7 @@ import java.time.ZonedDateTime;
 @Table(name = "owl_user")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "user")
-public class User extends AbstractAuditingEntity implements Serializable {
+public class User extends AbstractAuditingEntity implements UserDetails, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -91,7 +93,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
     private ZonedDateTime resetDate = null;
 
     @JsonIgnore
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "owl_user_authority",
         joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
@@ -116,8 +118,14 @@ public class User extends AbstractAuditingEntity implements Serializable {
         return login;
     }
 
+    @Override
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return getLogin();
     }
 
     public void setPassword(String password) {
@@ -196,6 +204,7 @@ public class User extends AbstractAuditingEntity implements Serializable {
         this.resetDate = resetDate;
     }
 
+    @Override
     public Set<Authority> getAuthorities() {
         return authorities;
     }
@@ -215,6 +224,26 @@ public class User extends AbstractAuditingEntity implements Serializable {
     //Lowercase the login before saving it in database
     public void setLogin(String login) {
         this.login = login.toLowerCase(Locale.ENGLISH);
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
     }
 
     @Override

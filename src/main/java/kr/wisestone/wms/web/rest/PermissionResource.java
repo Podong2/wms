@@ -37,13 +37,13 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 public class PermissionResource {
 
     private final Logger log = LoggerFactory.getLogger(PermissionResource.class);
-        
+
     @Inject
     private PermissionService permissionService;
-    
+
     @Inject
     private PermissionMapper permissionMapper;
-    
+
     /**
      * POST  /permissions : Create a new permission.
      *
@@ -105,9 +105,27 @@ public class PermissionResource {
     public ResponseEntity<List<PermissionDTO>> getAllPermissions(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Permissions");
-        Page<Permission> page = permissionService.findAll(pageable); 
+        Page<Permission> page = permissionService.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/permissions");
         return new ResponseEntity<>(permissionMapper.permissionsToPermissionDTOs(page.getContent()), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /permissions/user : get all the permissions of login user.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of permissions in body
+     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
+     */
+    @RequestMapping(value = "/permissions/user",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    @Transactional(readOnly = true)
+    public ResponseEntity<List<PermissionDTO>> getAllPermissionOfUser()
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Permissions");
+
+        return new ResponseEntity<>(permissionService.getAllPermissionOfUser(), HttpStatus.OK);
     }
 
     /**

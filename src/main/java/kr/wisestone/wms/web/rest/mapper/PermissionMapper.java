@@ -14,6 +14,7 @@ public interface PermissionMapper {
 
     @Mapping(source = "permissionCategory.id", target = "permissionCategoryId")
     @Mapping(source = "parent.id", target = "parentId")
+    @Mapping(source = "childPermissions", target = "childPermissions")
     PermissionDTO permissionToPermissionDTO(Permission permission);
 
     List<PermissionDTO> permissionsToPermissionDTOs(List<Permission> permissions);

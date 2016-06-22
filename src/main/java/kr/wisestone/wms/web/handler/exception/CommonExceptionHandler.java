@@ -37,7 +37,7 @@ public class CommonExceptionHandler extends ResponseEntityExceptionHandler {
         Map<String, Object> resJsonData = new HashMap<String, Object>();
         resJsonData.put(Constants.RES_KEY_MESSAGE, MsgConstants.ERR_NON_UNIQUE_RESULT);
 
-        return this.handleExceptionInternal(ex, resJsonData, new HttpHeaders(), HttpStatus.OK, request);
+        return this.handleExceptionInternal(ex, resJsonData, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
     @ExceptionHandler({ NonUniqueResultException.class })
@@ -46,7 +46,7 @@ public class CommonExceptionHandler extends ResponseEntityExceptionHandler {
         Map<String, Object> resJsonData = new HashMap<String, Object>();
         resJsonData.put(Constants.RES_KEY_MESSAGE, MsgConstants.ERR_NON_UNIQUE_RESULT);
 
-        return this.handleExceptionInternal(ex, resJsonData, new HttpHeaders(), HttpStatus.OK, request);
+        return this.handleExceptionInternal(ex, resJsonData, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
     @ExceptionHandler({ CommonRuntimeException.class })
@@ -55,7 +55,7 @@ public class CommonExceptionHandler extends ResponseEntityExceptionHandler {
         Map<String, Object> resJsonData = new HashMap<String, Object>();
         resJsonData.put(Constants.RES_KEY_MESSAGE, MsgConstants.ERR_BAD_REQUEST);
 
-        return this.handleExceptionInternal(ex, resJsonData, new HttpHeaders(), HttpStatus.OK, request);
+        return this.handleExceptionInternal(ex, resJsonData, new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler({ JpaObjectRetrievalFailureException.class })
@@ -64,14 +64,14 @@ public class CommonExceptionHandler extends ResponseEntityExceptionHandler {
         Map<String, Object> resJsonData = new HashMap<String, Object>();
         resJsonData.put(Constants.RES_KEY_MESSAGE, MsgConstants.ERR_INVALID_ENTITY);
 
-        return this.handleExceptionInternal(ex, resJsonData, new HttpHeaders(), HttpStatus.OK, request);
+        return this.handleExceptionInternal(ex, resJsonData, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
     @ExceptionHandler({ ConstraintViolationException.class })
     public ResponseEntity<Object> handleBadRequest(final ConstraintViolationException ex,
                                                    final WebRequest request) {
         final String bodyOfResponse = "This should be application specific1";
-        return this.handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.OK,
+        return this.handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR,
             request);
     }
 
@@ -81,14 +81,14 @@ public class CommonExceptionHandler extends ResponseEntityExceptionHandler {
         Map<String, Object> resJsonData = new HashMap<String, Object>();
         resJsonData.put(Constants.RES_KEY_MESSAGE, MsgConstants.ERR_DATA_INTEGRITY_VIOLATION);
 
-        return this.handleExceptionInternal(ex, resJsonData, new HttpHeaders(), HttpStatus.OK, request);
+        return this.handleExceptionInternal(ex, resJsonData, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
     @ExceptionHandler({ InvalidDataAccessApiUsageException.class, DataAccessException.class })
     protected ResponseEntity<Object> handleConflict(final RuntimeException ex,
                                                     final WebRequest request) {
         final String bodyOfResponse = "This should be application specific409";
-        return this.handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.OK,
+        return this.handleExceptionInternal(ex, bodyOfResponse, new HttpHeaders(), HttpStatus.CONFLICT,
             request);
     }
 
@@ -98,7 +98,7 @@ public class CommonExceptionHandler extends ResponseEntityExceptionHandler {
         Map<String, Object> resJsonData = new HashMap<String, Object>();
         resJsonData.put(Constants.RES_KEY_MESSAGE, MsgConstants.NOT_READABLE_JSON_DATA);
 
-        return this.handleExceptionInternal(ex, resJsonData, new HttpHeaders(), HttpStatus.OK, request);
+        return this.handleExceptionInternal(ex, resJsonData, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
     @ExceptionHandler({ Exception.class })
@@ -106,7 +106,7 @@ public class CommonExceptionHandler extends ResponseEntityExceptionHandler {
         Map<String, Object> resJsonData = new HashMap<String, Object>();
         resJsonData.put(Constants.RES_KEY_MESSAGE, MsgConstants.NOT_READABLE_JSON_DATA);
 
-        return this.handleExceptionInternal(ex, resJsonData, new HttpHeaders(), HttpStatus.OK, request);
+        return this.handleExceptionInternal(ex, resJsonData, new HttpHeaders(), HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
     @Override
@@ -116,7 +116,7 @@ public class CommonExceptionHandler extends ResponseEntityExceptionHandler {
         Map<String, Object> resJsonData = new HashMap<String, Object>();
         resJsonData.put(Constants.RES_KEY_MESSAGE, MsgConstants.NOT_READABLE_JSON_DATA);
 
-        return this.handleExceptionInternal(ex, resJsonData, headers, HttpStatus.OK, request);
+        return this.handleExceptionInternal(ex, resJsonData, headers, HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
     @Override
@@ -124,7 +124,7 @@ public class CommonExceptionHandler extends ResponseEntityExceptionHandler {
         final MethodArgumentNotValidException ex, final HttpHeaders headers,
         final HttpStatus status, final WebRequest request) {
         final String bodyOfResponse = "This should be application specific4";
-        return this.handleExceptionInternal(ex, bodyOfResponse, headers, HttpStatus.OK, request);
+        return this.handleExceptionInternal(ex, bodyOfResponse, headers, HttpStatus.INTERNAL_SERVER_ERROR, request);
     }
 
     @Override

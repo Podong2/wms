@@ -2,6 +2,8 @@ package kr.wisestone.wms.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.springframework.security.core.GrantedAuthority;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -16,7 +18,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "owl_authority")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-public class Authority implements Serializable {
+public class Authority implements GrantedAuthority, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -62,5 +64,10 @@ public class Authority implements Serializable {
         return "Authority{" +
             "name='" + name + '\'' +
             "}";
+    }
+
+    @Override
+    public String getAuthority() {
+        return getName();
     }
 }

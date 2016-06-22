@@ -1,12 +1,13 @@
 package kr.wisestone.wms.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * A Permission.
@@ -52,9 +53,21 @@ public class Permission extends AbstractAuditingEntity implements Serializable {
     @JoinColumn(name = "permission_category_id")
     private PermissionCategory permissionCategory;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Permission parent;
+
+    @OneToMany(mappedBy="parent", cascade={CascadeType.ALL}, orphanRemoval=true)
+    private List<Permission> childPermissions = new ArrayList<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy="permission", cascade={CascadeType.ALL})
+    private Set<SystemRolePermission> systemRolePermissions = new HashSet<>();
+
+    @JsonIgnore
+    @OneToMany(mappedBy="permission", cascade={CascadeType.ALL})
+    private Set<MenuPermission> menuPermissions = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -104,10 +117,6 @@ public class Permission extends AbstractAuditingEntity implements Serializable {
         this.roleGubun = roleGubun;
     }
 
-    public Boolean isRolePermissionYn() {
-        return rolePermissionYn;
-    }
-
     public void setRolePermissionYn(Boolean rolePermissionYn) {
         this.rolePermissionYn = rolePermissionYn;
     }
@@ -126,6 +135,34 @@ public class Permission extends AbstractAuditingEntity implements Serializable {
 
     public void setParent(Permission permission) {
         this.parent = permission;
+    }
+
+    public Set<MenuPermission> getMenuPermissions() {
+        return menuPermissions;
+    }
+
+    public void setMenuPermissions(Set<MenuPermission> menuPermissions) {
+        this.menuPermissions = menuPermissions;
+    }
+
+    public Boolean getRolePermissionYn() {
+        return rolePermissionYn;
+    }
+
+    public List<Permission> getChildPermissions() {
+        return childPermissions;
+    }
+
+    public void setChildPermissions(List<Permission> childPermissions) {
+        this.childPermissions = childPermissions;
+    }
+
+    public Set<SystemRolePermission> getSystemRolePermissions() {
+        return systemRolePermissions;
+    }
+
+    public void setSystemRolePermissions(Set<SystemRolePermission> systemRolePermissions) {
+        this.systemRolePermissions = systemRolePermissions;
     }
 
     @Override

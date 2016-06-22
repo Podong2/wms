@@ -38,16 +38,16 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 public class MenuResource {
 
     private final Logger log = LoggerFactory.getLogger(MenuResource.class);
-        
+
     @Inject
     private MenuRepository menuRepository;
-    
+
     @Inject
     private MenuMapper menuMapper;
-    
+
     @Inject
     private MenuSearchRepository menuSearchRepository;
-    
+
     /**
      * POST  /menus : Create a new menu.
      *
@@ -115,7 +115,7 @@ public class MenuResource {
     public ResponseEntity<List<MenuDTO>> getAllMenus(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Menus");
-        Page<Menu> page = menuRepository.findAll(pageable); 
+        Page<Menu> page = menuRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/menus");
         return new ResponseEntity<>(menuMapper.menusToMenuDTOs(page.getContent()), headers, HttpStatus.OK);
     }

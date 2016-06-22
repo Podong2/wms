@@ -126,7 +126,7 @@ public class PermissionResourceIntTest {
         assertThat(testPermission.getStatus()).isEqualTo(DEFAULT_STATUS);
         assertThat(testPermission.getAction()).isEqualTo(DEFAULT_ACTION);
         assertThat(testPermission.getRoleGubun()).isEqualTo(DEFAULT_ROLE_GUBUN);
-        assertThat(testPermission.isRolePermissionYn()).isEqualTo(DEFAULT_ROLE_PERMISSION_YN);
+        assertThat(testPermission.getRolePermissionYn()).isEqualTo(DEFAULT_ROLE_PERMISSION_YN);
 
         // Validate the Permission in ElasticSearch
         Permission permissionEs = permissionSearchRepository.findOne(testPermission.getId());
@@ -212,7 +212,7 @@ public class PermissionResourceIntTest {
         assertThat(testPermission.getStatus()).isEqualTo(UPDATED_STATUS);
         assertThat(testPermission.getAction()).isEqualTo(UPDATED_ACTION);
         assertThat(testPermission.getRoleGubun()).isEqualTo(UPDATED_ROLE_GUBUN);
-        assertThat(testPermission.isRolePermissionYn()).isEqualTo(UPDATED_ROLE_PERMISSION_YN);
+        assertThat(testPermission.getRolePermissionYn()).isEqualTo(UPDATED_ROLE_PERMISSION_YN);
 
         // Validate the Permission in ElasticSearch
         Permission permissionEs = permissionSearchRepository.findOne(testPermission.getId());
