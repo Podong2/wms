@@ -58,7 +58,7 @@ public class UserDTO {
         this(user.getLogin(), user.getName(), user.getEmail()
             , user.getActivated(), user.getLangKey(),
             user.getAuthorities().stream().map(Authority::getName)
-                .collect(Collectors.toSet()), user.getCompany(), user.getDepartment());
+                .collect(Collectors.toSet()), user.getCompany(), user.getDepartment(), user.getStatus());
     }
 
     public UserDTO(String login, String name, String email
@@ -73,7 +73,8 @@ public class UserDTO {
     }
 
     public UserDTO(String login, String name, String email, boolean activated
-        , String langKey, Set<String> authorities, Company company, Department department) {
+        , String langKey, Set<String> authorities, Company company, Department department
+        , String status) {
 
         this.login = login;
         this.name = name;
@@ -86,6 +87,8 @@ public class UserDTO {
 
         if(department != null)
             this.departmentId = department.getId();
+
+        this.status = status;
     }
 
     public Long getId() {
