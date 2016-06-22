@@ -1,7 +1,9 @@
 package kr.wisestone.wms.security;
 
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
+import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.ServletException;
@@ -19,6 +21,12 @@ public class AjaxAuthenticationFailureHandler extends SimpleUrlAuthenticationFai
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
         AuthenticationException exception) throws IOException, ServletException {
 
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication failed");
+        if(exception instanceof BadCredentialsException) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "error.authentication.badCredential");
+        } else if(exception instanceof SessionAuthenticationException) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "error.authentication.maximumSessionExceeded");
+        } else {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "error.authentication.failed");
+        }
     }
 }
