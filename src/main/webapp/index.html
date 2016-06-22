@@ -11,13 +11,12 @@
     <!-- build:css content/css/vendor.css -->
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.css">
     <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css">
-    <link rel="stylesheet" href="bower_components/font-awesome/css/font-awesome.css"/>
-    <link rel="stylesheet" href="bower_components/nya-bootstrap-select/dist/css/nya-bs-select.css"/>
-    <link rel="stylesheet" href="bower_components/angular-toastr/dist/angular-toastr.css"/>
-    <link href="bower_components/angular-xeditable/dist/css/xeditable.css" rel="stylesheet">
+    <link rel="stylesheet" href="bower_components/nya-bootstrap-select/dist/css/nya-bs-select.css">
+    <link rel="stylesheet" href="bower_components/angular-toastr/dist/angular-toastr.css">
+    <link rel="stylesheet" href="bower_components/angular-xeditable/dist/css/xeditable.css">
     <link rel="stylesheet" href="bower_components/angular-ui-tree/dist/angular-ui-tree.css">
-
     <!-- endinject -->
     <!-- endbuild -->
     <!-- build:css content/css/main.css -->
@@ -118,6 +117,8 @@
 <script src="bower_components/json3/lib/json3.js"></script>
 <script src="bower_components/sockjs-client/dist/sockjs.js"></script>
 <script src="bower_components/stomp-websocket/lib/stomp.min.js"></script>
+<script src="bower_components/react/react.js"></script>
+<script src="bower_components/react/react-dom.js"></script>
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/angular-aria/angular-aria.js"></script>
 <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
@@ -133,19 +134,14 @@
 <script src="bower_components/angular-translate-loader-partial/angular-translate-loader-partial.js"></script>
 <script src="bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
 <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+<script src="bower_components/angular-animate/angular-animate.js"></script>
 <script src="bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.js"></script>
 <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
 <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
 <script src="bower_components/nya-bootstrap-select/dist/js/nya-bs-select.js"></script>
 <script src="bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
-<script src="bower_components/angular-animate/angular-animate.js"></script>
-<script src="bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.min.js"></script>
 <script src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
-<script src="bower_components/bootstrap/js/tooltip.js"></script>
-<script src="bower_components/react/react.js"></script>
-<script src="bower_components/react/react-dom.js"></script>
-<script src="bower_components/ngReact/ngReact.min.js"></script>
-<script src="bower_components/babel/browser.min.js"></script>
+<script src="bower_components/ngReact/ngReact.js"></script>
 <script src="bower_components/angular-ui-tree/dist/angular-ui-tree.js"></script>
 <!-- endinject -->
 <!-- endbuild -->
@@ -249,16 +245,35 @@
 <script src="app/components/util/data-util.service.js"></script>
 <script src="app/components/util/capitalize.filter.js"></script>
 <script src="app/components/util/base64.service.js"></script>
+<script src="app/components/uiComponent.js"></script>
+<script src="app/components/uiComponent.controller.js"></script>
+<script src="app/components/sidenav/side-nav.directive.js"></script>
+<script src="app/components/sideBar/horizontalAnimateScroll.directive.js"></script>
+<script src="app/components/reactGrid/react-directive.js"></script>
+<script src="app/components/reactGrid/react.js"></script>
+<script src="app/components/reactGrid/react.controller.js"></script>
+<script src="app/components/ngGallery/src/js/ngGallery.js"></script>
+<script src="app/components/modal/touch.js"></script>
+<script src="app/components/modal/script.js"></script>
+<script src="app/components/modal/modal.service.js"></script>
+<script src="app/components/modal/dynamicScroll.directive.js"></script>
+<script src="app/components/modal/commonModal.controller.js"></script>
 <script src="app/components/login/login.service.js"></script>
 <script src="app/components/login/login.controller.js"></script>
 <script src="app/components/language/language.service.js"></script>
 <script src="app/components/language/language.filter.js"></script>
 <script src="app/components/language/language.controller.js"></script>
 <script src="app/components/language/language.constants.js"></script>
+<script src="app/components/input/input.directive.js"></script>
+<script src="app/components/horizontalAnimateScroll/horizontalAnimateScroll.directive.js"></script>
 <script src="app/components/form/show-validation.directive.js"></script>
 <script src="app/components/form/pagination.constants.js"></script>
 <script src="app/components/form/minbytes.directive.js"></script>
 <script src="app/components/form/maxbytes.directive.js"></script>
+<script src="app/components/datePicker/script.js"></script>
+<script src="app/components/datePicker/datetimepicker.js"></script>
+<script src="app/components/datePicker/datetime-picker.js"></script>
+<script src="app/components/button/button.directive.js"></script>
 <script src="app/components/alert/alert-error.directive.js"></script>
 <script src="app/components/alert/alert.service.js"></script>
 <script src="app/components/alert/alert.directive.js"></script>
@@ -324,32 +339,6 @@
 <script src="app/account/activate/activate.state.js"></script>
 <script src="app/account/activate/activate.controller.js"></script>
 <script src="app/account/account.state.js"></script>
-
-<script src="app/components/uiComponent.js"></script>
-<script src="app/components/uiComponent.controller.js"></script>
-<script src="app/components/sidenav/side-nav.directive.js"></script>
-<script src="app/components/input/input.directive.js"></script>
-<script src="app/components/horizontalAnimateScroll/horizontalAnimateScroll.directive.js"></script>
-
-<script src="app/components/reactGrid/react-directive.js"></script>
-<script src="app/components/reactGrid/react.controller.js"></script>
-<script src="app/components/reactGrid/react.js"></script>
-
-
-<!-- modal -->
-<script src="app/components/modal/modal.service.js"></script>
-<script src="app/components/modal/commonModal.controller.js"></script>
-<script src="app/components/modal/script.js"></script>
-<script src="app/components/modal/dynamicScroll.directive.js"></script>
-
-<!-- button -->
-<script src="app/components/button/button.directive.js"></script>
-
-<!-- ngGallery -->
-<script src="app/components/ngGallery/src/js/ngGallery.js"></script>
-
-
-
 <!-- endinject -->
 <!-- endbuild -->
 

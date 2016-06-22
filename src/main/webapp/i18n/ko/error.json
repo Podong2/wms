@@ -1,6 +1,18 @@
 {
     "error": {
         "title": "에러 페이지!",
-        "403": "이 페이지에 접근할 권한이 없습니다."
+        "403": "이 페이지에 접근할 권한이 없습니다.",
+        "requestId": "아이디를 입력하세요.",
+        "idMinlength": "아이디는 최소 3글자를 입력하세요.",
+        "idMaxlength": "아이디는 최대 20글자까지 입력하세요.",
+        "idPattern": "아이디는 영문자로 시작, 영문 또는 숫자만 입력하세요.",
+        "pwdMaxlength": "비밀번호는 최대 30글자까지 입력하세요.",
+        "requestPwd": "비밀번호를 입력하세요.",
+        "authentication" : {
+            "badCredential" : "사용자 정보가 일치하지않습니다.",
+            "maximumSessionExceeded" : "중복된 로그인 사용자가 발생했습니다.",
+            "userNotFound" : "사용자 정보가 없습니다.",
+            "userNotActivated" : "비활성 회원은 로그인 할 수 없습니다."
+        }
     }
 }

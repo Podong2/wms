@@ -1,6 +1,18 @@
 {
     "error": {
         "title": "Error page!",
-        "403": "You are not authorized to access the page."
+        "403": "You are not authorized to access the page.",
+        "requestId": "Please enter the ID.",
+        "idMinlength": "Please enter at least three letters of the user ID.",
+        "idMaxlength": "Please enter up to a maximum of 20 letters of the ID.",
+        "idPattern": "ID start with a letter, enter English or numbers.",
+        "pwdMaxlength": "Password please enter up to 30 characters.",
+        "requestPwd": "Please enter a password.",
+        "authentication" : {
+            "badCredential" : "사용자 정보가 일치하지않습니다.",
+            "maximumSessionExceeded" : "중복된 로그인 사용자가 발생했습니다.",
+            "userNotFound" : "사용자 정보가 없습니다.",
+            "userNotActivated" : "비활성 회원은 로그인 할 수 없습니다."
+        }
     }
 }

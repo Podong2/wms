@@ -9,20 +9,56 @@
             <h1 translate="login.title">Sign in</h1>
         </div>
         <div class="col-md-8 col-md-offset-2">
-            <div class="alert alert-danger" ng-show="vm.authenticationError" translate="login.messages.error.authentication">
+            <div class="alert alert-danger" ng-show="vm.authenticationError" translate="{{vm.authenticationErrorMessage}}">
                 <strong>Failed to sign in!</strong> Please check your credentials and try again.
             </div>
         </div>
         <div class="col-md-6">
-            <form class="form" role="form" ng-submit="vm.login($event)">
+            <form class="form" name="loginForm" role="form" ng-submit="vm.login($event)" novalidate>
                 <div class="form-group">
                     <label for="username" translate="global.form.username">Login</label>
-                    <input type="text" class="form-control" id="username" placeholder="{{'global.form.username.placeholder' | translate}}" ng-model="vm.username">
+                    <input type="text" class="form-control" id="username" name="username"
+                           required
+                           ng-minlength="3"
+                           ng-maxlength="20"
+                           ng-pattern="/^[a-zA-Z][a-zA-Z0-9]{0,20}$/"
+                           maxlength="20"
+                           placeholder="{{'global.form.username.placeholder' | translate}}" ng-model="vm.username">
                 </div>
+
+                <div class="error ng-hide" ng-show="loginForm.username.$invalid &amp;&amp; loginForm.username.$dirty">
+                              <span ng-show="loginForm.username.$error.required" class="ng-hide" translate="error.requestId">
+                                  아이디를 입력하세요.
+                              </span>
+                              <span ng-show="loginForm.username.$error.minlength" class="ng-hide" translate="error.idMinlength">
+                                  아이디는 최소 3글자를 입력하세요.
+                              </span>
+                              <span ng-show="loginForm.username.$error.maxlength" class="ng-hide" translate="error.idMaxlength">
+                                  아이디는 최대 20글자까지 입력하세요.
+                              </span>
+                              <span ng-show="loginForm.username.$error.pattern" class="ng-hide" translate="error.idPattern">
+                                  아이디는 영문자로 시작, 영문 또는 숫자만 입력하세요.
+                              </span>
+                </div>
+
                 <div class="form-group">
                     <label for="password" translate="login.form.password">Password</label>
-                    <input type="password" class="form-control" id="password" placeholder="{{'login.form.password.placeholder' | translate}}"
+                    <input type="password" class="form-control"
+                           id="password"
+                           name="password"
+                           placeholder="{{'login.form.password.placeholder' | translate}}"
+                           ng-maxlength="30"
+                           maxlength="30"
+                           required
                            ng-model="vm.password">
+                </div>
+                <div class="error ng-hide" ng-show="loginForm.password.$invalid &amp;&amp; loginForm.password.$dirty">
+                              <span ng-show="loginForm.password.$error.required" class="ng-hide" translate="error.requestPwd">
+                                  비밀번호를 입력하세요.
+                              </span>
+                              <span ng-show="loginForm.password.$error.maxlength" class="ng-hide" translate="common.pwdMaxlength">
+                                  비밀번호는 최대 30글자까지 입력하세요.
+                              </span>
                 </div>
                 <div class="form-group">
                     <label for="rememberMe">
