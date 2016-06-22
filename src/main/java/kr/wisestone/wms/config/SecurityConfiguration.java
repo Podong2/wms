@@ -82,7 +82,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
             .sessionManagement()
             .maximumSessions(1) // maximum number of concurrent sessions for one user
-            .maxSessionsPreventsLogin(true)
+//            .maxSessionsPreventsLogin(true)
             .expiredUrl("/")
             .sessionRegistry(sessionRegistry)
             .and().and()

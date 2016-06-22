@@ -2,6 +2,9 @@ package kr.wisestone.wms.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
 import kr.wisestone.wms.domain.PersistentToken;
 import kr.wisestone.wms.domain.User;
 import kr.wisestone.wms.repository.PersistentTokenRepository;
@@ -12,23 +15,28 @@ import kr.wisestone.wms.service.UserService;
 import kr.wisestone.wms.web.rest.dto.KeyAndPasswordDTO;
 import kr.wisestone.wms.web.rest.dto.ManagedUserDTO;
 import kr.wisestone.wms.web.rest.dto.UserDTO;
+import kr.wisestone.wms.web.rest.mapper.UserMapper;
 import kr.wisestone.wms.web.rest.util.HeaderUtil;
 
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * REST controller for managing the current user's account.
@@ -50,6 +58,12 @@ public class AccountResource {
 
     @Inject
     private MailService mailService;
+
+    @Autowired
+    private SessionRegistry sessionRegistry;
+
+    @Autowired
+    private UserMapper userMapper;
 
     /**
      * POST  /register : register the user.
@@ -193,6 +207,27 @@ public class AccountResource {
                 persistentTokenRepository.findByUser(user),
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+    }
+
+    /**
+     * GET  /account/sessions : get the current open sessions.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the current open sessions in body,
+     *  or status 500 (Internal Server Error) if the current open sessions couldn't be retrieved
+     */
+    @RequestMapping(value = "/account/connected-principals",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<UserDTO>> getConnectedSessions() {
+
+        List<Object> principals = sessionRegistry.getAllPrincipals();
+
+        if(principals == null || principals.isEmpty())
+            return new ResponseEntity<>(Lists.newArrayList(), HttpStatus.OK);
+
+        return new ResponseEntity<>(
+            principals.stream().map(principal -> userMapper.userToUserDTO((User) principal)).collect(Collectors.toList()),
+            HttpStatus.OK);
     }
 
     /**

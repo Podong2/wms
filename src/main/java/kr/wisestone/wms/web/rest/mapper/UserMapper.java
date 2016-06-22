@@ -1,9 +1,12 @@
 package kr.wisestone.wms.web.rest.mapper;
 
 import kr.wisestone.wms.domain.Authority;
+import kr.wisestone.wms.domain.Company;
+import kr.wisestone.wms.domain.Department;
 import kr.wisestone.wms.domain.User;
 import kr.wisestone.wms.web.rest.dto.UserDTO;
-import org.mapstruct.*;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
 import java.util.List;
 import java.util.Set;
@@ -15,6 +18,8 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring", uses = {})
 public interface UserMapper {
 
+    @Mapping(source = "company.id", target = "companyId")
+    @Mapping(source = "department.id", target = "departmentId")
     UserDTO userToUserDTO(User user);
 
     List<UserDTO> usersToUserDTOs(List<User> users);
@@ -34,6 +39,24 @@ public interface UserMapper {
     User userDTOToUser(UserDTO userDTO);
 
     List<User> userDTOsToUsers(List<UserDTO> userDTOs);
+
+    default Company companyFromId(Long id) {
+        if (id == null) {
+            return null;
+        }
+        Company company = new Company();
+        company.setId(id);
+        return company;
+    }
+
+    default Department departmentFromId(Long id) {
+        if (id == null) {
+            return null;
+        }
+        Department department = new Department();
+        department.setId(id);
+        return department;
+    }
 
     default User userFromId(Long id) {
         if (id == null) {

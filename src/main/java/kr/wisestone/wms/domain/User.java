@@ -32,6 +32,19 @@ public class User extends AbstractAuditingEntity implements UserDetails, Seriali
 
     private static final long serialVersionUID = 1L;
 
+    /** 사용자 활성 */
+    public static final String USER_STATUS_ACTIVE = "01";
+    /** 사용자 비활성 */
+    public static final String USER_STATUS_DEACTIVE = "02";
+    /** 비밀번호 변경 대기 */
+    public static final String USER_STATUS_ADD = "03";
+    /** 사용자 탈퇴 및 삭제 */
+    public static final String USER_STATUS_DEL = "04";
+    /** 로그인 실패 */
+    public static final String USER_STATUS_LOGIN_FAIL = "05";
+    /** 승인대기 */
+    public static final String USER_STATUS_JOIN = "06";
+
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "userSeqGenerator")
     @TableGenerator(name = "userSeqGenerator"
@@ -71,6 +84,12 @@ public class User extends AbstractAuditingEntity implements UserDetails, Seriali
     @ManyToOne
     @JoinColumn(name = "department_id")
     private Department department;
+
+    @Column
+    private String status = USER_STATUS_DEACTIVE;
+
+    @Column(name="fail_count")
+    private Integer failCount = 0;
 
     @NotNull
     @Column(nullable = false)
@@ -224,6 +243,22 @@ public class User extends AbstractAuditingEntity implements UserDetails, Seriali
     //Lowercase the login before saving it in database
     public void setLogin(String login) {
         this.login = login.toLowerCase(Locale.ENGLISH);
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Integer getFailCount() {
+        return failCount;
+    }
+
+    public void setFailCount(Integer failCount) {
+        this.failCount = failCount;
     }
 
     @Override

@@ -83,6 +83,7 @@ public class UserService {
                 user.setPassword(passwordEncoder.encode(newPassword));
                 user.setResetKey(null);
                 user.setResetDate(null);
+                user.setStatus(User.USER_STATUS_ACTIVE);
                 userRepository.save(user);
                 return user;
            });
@@ -103,8 +104,7 @@ public class UserService {
         String langKey, Long companyId, Long departmentId) {
 
         User newUser = new User();
-        Authority authority = authorityRepository.findOne("ROLE_USER");
-        Set<Authority> authorities = new HashSet<>();
+
         String encryptedPassword = passwordEncoder.encode(password);
         newUser.setLogin(login);
         // new user gets initially a generated password
@@ -116,8 +116,11 @@ public class UserService {
         newUser.setActivated(false);
         // new user gets registration key
         newUser.setActivationKey(RandomUtil.generateActivationKey());
+        Authority authority = authorityRepository.findOne("ROLE_USER");
+        Set<Authority> authorities = new HashSet<>();
         authorities.add(authority);
         newUser.setAuthorities(authorities);
+        newUser.setStatus(User.USER_STATUS_JOIN);
 
         if(companyId != null)
             newUser.setCompany(this.companyRepository.findOne(companyId));
@@ -153,6 +156,7 @@ public class UserService {
         user.setResetKey(RandomUtil.generateResetKey());
         user.setResetDate(ZonedDateTime.now());
         user.setActivated(true);
+        user.setStatus(User.USER_STATUS_ADD);
 
         if(managedUserDTO.getCompanyId() != null)
             user.setCompany(this.companyRepository.findOne(managedUserDTO.getCompanyId()));
