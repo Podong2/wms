@@ -152,16 +152,19 @@ public class UserService {
             );
             user.setAuthorities(authorities);
         }
-        String encryptedPassword = passwordEncoder.encode(RandomUtil.generatePassword());
-        user.setPassword(encryptedPassword);
-        user.setResetKey(RandomUtil.generateResetKey());
-        user.setResetDate(ZonedDateTime.now());
-        user.setActivated(true);
-        user.setStatus(User.USER_STATUS_ADD);
 
-        if(StringUtils.hasText(managedUserDTO.getPassword())) {
-            user.setPassword(passwordEncoder.encode(managedUserDTO.getPassword()));
+        user.setActivated(true);
+
+        if((StringUtils.hasText(managedUserDTO.getStatus()) && managedUserDTO.getStatus().equals(User.USER_STATUS_ACTIVE))) {
+
+            user.setPassword(passwordEncoder.encode(user.getLogin()));
             user.setStatus(User.USER_STATUS_ACTIVE);
+        } else {
+
+            user.setPassword(passwordEncoder.encode(RandomUtil.generatePassword()));
+            user.setResetKey(RandomUtil.generateResetKey());
+            user.setResetDate(ZonedDateTime.now());
+            user.setStatus(User.USER_STATUS_ADD);
         }
 
         if(managedUserDTO.getCompanyId() != null)
@@ -285,10 +288,8 @@ public class UserService {
         );
         user.setAuthorities(authorities);
 
-        user.setPassword(passwordEncoder.encode(managedUserDTO.getPassword()));
-        user.setResetKey(null);
-        user.setResetDate(null);
-        user.setStatus(managedUserDTO.getStatus());
+        if(StringUtils.hasText(managedUserDTO.getStatus()))
+            user.setStatus(managedUserDTO.getStatus());
 
         userRepository.save(user);
         userSearchRepository.save(user);

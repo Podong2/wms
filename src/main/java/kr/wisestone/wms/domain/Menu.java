@@ -67,7 +67,7 @@ public class Menu extends AbstractAuditingEntity implements Serializable {
     private Menu parent;
 
     /** 자식 메뉴들 */
-    @OneToMany(mappedBy="parent", cascade={CascadeType.ALL}, orphanRemoval=true)
+    @OneToMany(mappedBy="parent", cascade={CascadeType.ALL}, orphanRemoval=true, fetch = FetchType.EAGER)
     @OrderColumn(name="position")
     private List<Menu> childMenus = new ArrayList<Menu>();
 

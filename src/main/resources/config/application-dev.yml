@@ -53,7 +53,10 @@ spring:
         host: mail.whoismail.net
         port: 25
         username: qsd1@wisestone.kr
-        password: 1q2w3e\!\!
+        password: 1q2w3e!!
+        properties:
+            mail.smtp.auth: true
+            mail.smtp.starttls.enable: true
     messages:
         cache-seconds: 1
     thymeleaf:

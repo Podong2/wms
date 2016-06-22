@@ -118,13 +118,19 @@ public class UserResource {
                 .body(null);
         } else {
             User newUser = userService.createUser(managedUserDTO);
-            String baseUrl = request.getScheme() + // "http"
-            "://" +                                // "://"
-            request.getServerName() +              // "myhost"
-            ":" +                                  // ":"
-            request.getServerPort() +              // "80"
-            request.getContextPath();              // "/myContextPath" or "" if deployed in root context
-            mailService.sendCreationEmail(newUser, baseUrl);
+
+            if(!(StringUtils.hasText(managedUserDTO.getStatus()) && managedUserDTO.getStatus().equals(User.USER_STATUS_ACTIVE))) {
+
+                String baseUrl = request.getScheme() + // "http"
+                                "://" +                                // "://"
+                                request.getServerName() +              // "myhost"
+                                ":" +                                  // ":"
+                                request.getServerPort() +              // "80"
+                                request.getContextPath();              // "/myContextPath" or "" if deployed in root context
+
+                mailService.sendCreationEmail(newUser, baseUrl);
+            }
+
             return ResponseEntity.created(new URI("/api/users/" + newUser.getLogin()))
                 .headers(HeaderUtil.createAlert( "userManagement.created", newUser.getLogin()))
                 .body(newUser);
