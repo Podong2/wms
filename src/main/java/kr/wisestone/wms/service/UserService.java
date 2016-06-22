@@ -296,4 +296,19 @@ public class UserService {
 
         return user;
     }
+
+    public User initPassword(ManagedUserDTO managedUserDTO) {
+
+        User user = userRepository.findOne(managedUserDTO.getId());
+
+        user.setPassword(passwordEncoder.encode(user.getLogin()));
+        user.setStatus(User.USER_STATUS_ACTIVE);
+        user.setResetDate(null);
+        user.setResetKey(null);
+
+        userRepository.save(user);
+        userSearchRepository.save(user);
+
+        return user;
+    }
 }

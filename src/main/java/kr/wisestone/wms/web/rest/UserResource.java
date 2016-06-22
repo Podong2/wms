@@ -191,6 +191,48 @@ public class UserResource {
 //            .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
     }
 
+    @RequestMapping(value = "/users/init-password",
+        method = RequestMethod.PUT,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    @Transactional
+    @Secured(AuthoritiesConstants.ADMIN)
+    public ResponseEntity<ManagedUserDTO> initPassword(@RequestBody ManagedUserDTO managedUserDTO) {
+        log.debug("REST request to update User : {}", managedUserDTO);
+        Optional<User> existingUser = userRepository.findOneById(managedUserDTO.getId());
+        if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserDTO.getId()))) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("userManagement", "userexists", "Login already in use")).body(null);
+        }
+
+        userService.initPassword(managedUserDTO);
+
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createAlert("userManagement.updated", managedUserDTO.getLogin()))
+            .body(new ManagedUserDTO(userRepository
+                .findOne(managedUserDTO.getId())));
+
+//        return userRepository
+//            .findOneById(managedUserDTO.getId())
+//            .map(user -> {
+//                user.setLogin(managedUserDTO.getLogin());
+//                user.setFirstName(managedUserDTO.getFirstName());
+//                user.setLastName(managedUserDTO.getLastName());
+//                user.setEmail(managedUserDTO.getEmail());
+//                user.setActivated(managedUserDTO.isActivated());
+//                user.setLangKey(managedUserDTO.getLangKey());
+//                Set<Authority> authorities = user.getAuthorities();
+//                authorities.clear();
+//                managedUserDTO.getAuthorities().stream().forEach(
+//                    authority -> authorities.add(authorityRepository.findOne(authority))
+//                );
+//                return ResponseEntity.ok()
+//                    .headers(HeaderUtil.createAlert("userManagement.updated", managedUserDTO.getLogin()))
+//                    .body(new ManagedUserDTO(userRepository
+//                        .findOne(managedUserDTO.getId())));
+//            })
+//            .orElseGet(() -> new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR));
+    }
+
     /**
      * GET  /users : get all users.
      *
