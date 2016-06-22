@@ -83,7 +83,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .sessionManagement()
             .maximumSessions(1) // maximum number of concurrent sessions for one user
 //            .maxSessionsPreventsLogin(true)
-            .expiredUrl("/")
             .sessionRegistry(sessionRegistry)
             .and().and()
             .csrf()
@@ -125,7 +124,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                        , "/api/account/reset_password/init"
                        , "/api/account/reset_password/finish"
                        , "/api/profile-info"
-                       , "/api/**"
                        , "/owl-socket/**"
                        , "/v2/api-docs/**"
                        , "/configuration/ui"
@@ -133,6 +131,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
             .antMatchers("/users/session-check"
                        , "/users/{id}"
                        ).permitAll()
+            .antMatchers("/api/**").authenticated()
             .antMatchers("/owl-socket/tracker").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/management/**").hasAuthority(AuthoritiesConstants.ADMIN)
             .antMatchers("/swagger-ui/index.html").hasAuthority(AuthoritiesConstants.ADMIN)
