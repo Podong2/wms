@@ -12,6 +12,8 @@ import java.util.List;
  * Spring Data JPA repository for the SystemRolePermission entity.
  */
 @SuppressWarnings("unused")
-public interface SystemRolePermissionRepository extends JpaRepository<SystemRolePermission,Long>, QueryDslPredicateExecutor<SystemRolePermission>, JPQLQueryPredicateExecutor<SystemRolePermission> {
+public interface SystemRolePermissionRepository extends JpaRepository<SystemRolePermission,Long>
+                                                        , QueryDslPredicateExecutor<SystemRolePermission>
+                                                        , JPQLQueryPredicateExecutor<SystemRolePermission> {
 
 }

@@ -7,6 +7,8 @@ import com.mysema.query.BooleanBuilder;
 import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.JPQLSubQuery;
 import kr.wisestone.wms.domain.*;
+import kr.wisestone.wms.repository.MenuPermissionRepository;
+import kr.wisestone.wms.repository.MenuRepository;
 import kr.wisestone.wms.repository.PermissionRepository;
 import kr.wisestone.wms.repository.SystemRolePermissionRepository;
 import kr.wisestone.wms.repository.search.PermissionSearchRepository;
@@ -39,6 +41,9 @@ public class PermissionService {
 
     @Inject
     private PermissionRepository permissionRepository;
+
+    @Inject
+    private MenuPermissionRepository menuPermissionRepository;
 
     @Inject
     private PermissionMapper permissionMapper;
@@ -117,7 +122,7 @@ public class PermissionService {
         return permissionSearchRepository.search(queryStringQuery(query), pageable);
     }
 
-    public List<PermissionDTO> findByUserId(String login) {
+    public List<Permission> findByUserId(String login) {
 
         QSystemRolePermission $systemRolePermission = QSystemRolePermission.systemRolePermission;
         QSystemRole $systemRole = QSystemRole.systemRole;
@@ -137,6 +142,35 @@ public class PermissionService {
                 SystemRolePermission::getPermission)
             .collect(Collectors.toList());
 
+        return permissions;
+    }
+
+    public List<PermissionDTO> findMenuPermissionByUserAndMenuUrl(String menuUrl) {
+
+        String login = SecurityUtils.getCurrentUserLogin();
+
+        List<Long> permissionIds = this.findByUserId(login).stream().map(permission -> permission.getId()).collect(Collectors.toList());
+
+        QMenuPermission $menuPermission = QMenuPermission.menuPermission;
+        QMenu $menu = QMenu.menu;
+        QPermission $permission = QPermission.permission;
+
+        JPQLQuery query = menuPermissionRepository.createQuery();
+        query.innerJoin($menuPermission.menu, $menu);
+        query.innerJoin($menuPermission.permission, $permission);
+
+        BooleanBuilder predicate = new BooleanBuilder();
+
+        predicate.and($permission.id.in(permissionIds));
+        predicate.and($menu.urlPath.eq(menuUrl));
+
+        List<MenuPermission> menuPermissions = menuPermissionRepository.findAll(query.where(predicate));
+
+        List<Permission> permissions = menuPermissions.stream()
+            .map(
+                MenuPermission::getPermission)
+            .collect(Collectors.toList());
+
         return permissionMapper.permissionsToPermissionDTOs(permissions);
     }
 
@@ -151,7 +185,7 @@ public class PermissionService {
         List<PermissionDTO> userPermissions = Lists.newArrayList();
 
         if(user != null)
-            userPermissions.addAll(this.findByUserId(user.getLogin()));
+            userPermissions.addAll(permissionMapper.permissionsToPermissionDTOs(this.findByUserId(user.getLogin())));
 
         for(PermissionDTO permission : allPermission) {
 
@@ -162,8 +196,12 @@ public class PermissionService {
                     input -> input.getId().equals(permissionId))
                 .findFirst().orElseGet(() -> null);
 
-            if(userPermission != null)
+            if(userPermission != null) {
                 permission.setActiveYn(Boolean.TRUE);
+            } else {
+                permission.setActiveYn(Boolean.FALSE);
+            }
+
         }
 
         return allPermission;

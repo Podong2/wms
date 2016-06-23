@@ -111,6 +111,40 @@ public class PermissionResource {
     }
 
     /**
+     * GET  /permissions : get all the permissions.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of permissions in body
+     */
+    @RequestMapping(value = "/permissions/user-permissions",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    @Transactional(readOnly = true)
+    public ResponseEntity<List<PermissionDTO>> getAllUserPermissions()
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Permissions");
+        List<PermissionDTO> userPermissions = permissionService.getAllPermissionOfUser();
+        return new ResponseEntity<>(userPermissions, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /permissions : get all the permissions.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of permissions in body
+     */
+    @RequestMapping(value = "/permissions/menu-permissions",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    @Transactional(readOnly = true)
+    public ResponseEntity<List<PermissionDTO>> getAllUserPermissions(@RequestParam(name="urlPath") String urlPath)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Permissions");
+        List<PermissionDTO> userPermissions = permissionService.findMenuPermissionByUserAndMenuUrl(urlPath);
+        return new ResponseEntity<>(userPermissions, HttpStatus.OK);
+    }
+
+    /**
      * GET  /permissions/user : get all the permissions of login user.
      *
      * @return the ResponseEntity with status 200 (OK) and the list of permissions in body

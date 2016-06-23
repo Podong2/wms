@@ -1,9 +1,9 @@
 package kr.wisestone.wms.repository;
 
 import kr.wisestone.wms.domain.Menu;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.jpa.repository.*;
+import kr.wisestone.wms.repository.executor.JPQLQueryPredicateExecutor;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.querydsl.QueryDslPredicateExecutor;
 
 import java.util.List;
 

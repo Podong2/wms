@@ -30,11 +30,11 @@ public class SystemRolePermission extends AbstractAuditingEntity implements Seri
         , allocationSize = 1)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "system_role_id")
     private SystemRole systemRole;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "permission_id")
     private Permission permission;
 
