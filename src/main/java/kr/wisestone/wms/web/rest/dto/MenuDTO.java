@@ -34,6 +34,10 @@ public class MenuDTO implements Serializable {
 
     private String urlPath;
 
+    private String permissionUrl;
+
+    private Boolean displayYn;
+
     private Long parentId;
 
     private List<MenuDTO> childMenus;
@@ -130,6 +134,22 @@ public class MenuDTO implements Serializable {
 
     public void setChildMenus(List<MenuDTO> childMenus) {
         this.childMenus = childMenus;
+    }
+
+    public String getPermissionUrl() {
+        return permissionUrl;
+    }
+
+    public void setPermissionUrl(String permissionUrl) {
+        this.permissionUrl = permissionUrl;
+    }
+
+    public Boolean getDisplayYn() {
+        return displayYn;
+    }
+
+    public void setDisplayYn(Boolean displayYn) {
+        this.displayYn = displayYn;
     }
 
     @Override

@@ -121,6 +121,23 @@ public class MenuResource {
     }
 
     /**
+     * GET  /menus : get all the menus.
+     *
+     * @return the ResponseEntity with status 200 (OK) and the list of menus in body
+     */
+    @RequestMapping(value = "/menus/top-menus",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    @Transactional(readOnly = true)
+    public ResponseEntity<List<MenuDTO>> getTopMenus()
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Menus");
+        List<Menu> topMenuList = menuRepository.findByParentIsNullAndDisplayYnIsTrueOrderByPosition();
+        return new ResponseEntity<>(menuMapper.menusToMenuDTOs(topMenuList), HttpStatus.OK);
+    }
+
+    /**
      * GET  /menus/:id : get the "id" menu.
      *
      * @param id the id of the menuDTO to retrieve

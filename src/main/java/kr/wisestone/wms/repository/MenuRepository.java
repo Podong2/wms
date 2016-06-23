@@ -2,6 +2,7 @@ package kr.wisestone.wms.repository;
 
 import kr.wisestone.wms.domain.Menu;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.*;
 
 import java.util.List;
@@ -12,4 +13,5 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface MenuRepository extends JpaRepository<Menu,Long> {
 
+    List<Menu> findByParentIsNullAndDisplayYnIsTrueOrderByPosition();
 }

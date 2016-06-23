@@ -61,6 +61,12 @@ public class Menu extends AbstractAuditingEntity implements Serializable {
     @Column(name = "url_path")
     private String urlPath;
 
+    @Column(name = "permission_url")
+    private String permissionUrl;
+
+    @Column(name = "display_yn")
+    private Boolean displayYn = Boolean.FALSE;
+
     @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
@@ -69,7 +75,7 @@ public class Menu extends AbstractAuditingEntity implements Serializable {
     /** 자식 메뉴들 */
     @OneToMany(mappedBy="parent", cascade={CascadeType.ALL}, orphanRemoval=true, fetch = FetchType.EAGER)
     @OrderColumn(name="position")
-    private List<Menu> childMenus = new ArrayList<Menu>();
+    private List<Menu> childMenus = new ArrayList<>();
 
     @JsonIgnore
     @OneToMany(mappedBy="menu", cascade={CascadeType.ALL}, orphanRemoval=true)
@@ -185,6 +191,22 @@ public class Menu extends AbstractAuditingEntity implements Serializable {
 
     public void setMenuPermissions(Set<MenuPermission> menuPermissions) {
         this.menuPermissions = menuPermissions;
+    }
+
+    public Boolean getDisplayYn() {
+        return displayYn;
+    }
+
+    public void setDisplayYn(Boolean displayYn) {
+        this.displayYn = displayYn;
+    }
+
+    public String getPermissionUrl() {
+        return permissionUrl;
+    }
+
+    public void setPermissionUrl(String permissionUrl) {
+        this.permissionUrl = permissionUrl;
     }
 
     @Override
