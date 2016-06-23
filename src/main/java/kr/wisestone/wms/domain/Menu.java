@@ -68,7 +68,7 @@ public class Menu extends AbstractAuditingEntity implements Serializable {
     private Boolean displayYn = Boolean.FALSE;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "parent_id")
     private Menu parent;
 
