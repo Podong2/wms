@@ -4,6 +4,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.mysema.query.BooleanBuilder;
+import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.JPQLSubQuery;
 import kr.wisestone.wms.domain.*;
@@ -122,56 +123,41 @@ public class PermissionService {
         return permissionSearchRepository.search(queryStringQuery(query), pageable);
     }
 
-    public List<Permission> findByUserId(String login) {
+    public List<PermissionDTO> findByUserId(String login) {
 
-        QSystemRolePermission $systemRolePermission = QSystemRolePermission.systemRolePermission;
-        QSystemRole $systemRole = QSystemRole.systemRole;
-        QSystemRoleUser $systemRoleUser = QSystemRoleUser.systemRoleUser;
-
-        JPQLQuery query = systemRolePermissionRepository.createQuery();
-        query.innerJoin($systemRolePermission.systemRole, $systemRole);
-        query.innerJoin($systemRole.systemRoleUsers, $systemRoleUser);
+        QPermission $permission = QPermission.permission;
 
         BooleanBuilder predicate = new BooleanBuilder();
-        predicate.and($systemRolePermission.systemRole.systemRoleUsers.any().user.login.eq(login));
 
-        List<SystemRolePermission> systemRolePermissions = systemRolePermissionRepository.findAll(query.where(predicate));
+        predicate.and($permission.id.in(new JPASubQuery()
+            .from(QSystemRolePermission.systemRolePermission)
+            .where(QSystemRolePermission.systemRolePermission.systemRole.systemRoleUsers.any().user.login.eq(login))
+            .list(QSystemRolePermission.systemRolePermission.permission.id)));
 
-        List<Permission> permissions = systemRolePermissions.stream()
-            .map(
-                SystemRolePermission::getPermission)
-            .collect(Collectors.toList());
+        List<Permission> permissions = Lists.newArrayList(permissionRepository.findAll(predicate));
 
-        return permissions;
+        return permissionMapper.permissionsToPermissionDTOs(permissions);
     }
 
     public List<PermissionDTO> findMenuPermissionByUserAndMenuUrl(String menuUrl) {
 
         String login = SecurityUtils.getCurrentUserLogin();
 
-        List<Long> permissionIds = this.findByUserId(login).stream().map(permission -> permission.getId()).collect(Collectors.toList());
-
-        QMenuPermission $menuPermission = QMenuPermission.menuPermission;
-        QMenu $menu = QMenu.menu;
         QPermission $permission = QPermission.permission;
-
-        JPQLQuery query = menuPermissionRepository.createQuery();
-        query.innerJoin($menuPermission.menu, $menu);
-        query.innerJoin($menuPermission.permission, $permission);
 
         BooleanBuilder predicate = new BooleanBuilder();
 
-        predicate.and($permission.id.in(permissionIds));
-        predicate.and($menu.urlPath.eq(menuUrl));
+        predicate.and($permission.id.in(new JPASubQuery()
+            .from(QSystemRolePermission.systemRolePermission)
+            .where(QSystemRolePermission.systemRolePermission.systemRole.systemRoleUsers.any().user.login.eq(login))
+            .list(QSystemRolePermission.systemRolePermission.permission.id)));
+        predicate.and($permission.menuPermissions.any().menu.urlPath.eq(menuUrl));
 
-        List<MenuPermission> menuPermissions = menuPermissionRepository.findAll(query.where(predicate));
+        List<PermissionDTO> permissions = permissionMapper.permissionsToPermissionDTOs(Lists.newArrayList(permissionRepository.findAll(predicate)));
 
-        List<Permission> permissions = menuPermissions.stream()
-            .map(
-                MenuPermission::getPermission)
-            .collect(Collectors.toList());
+        permissions.stream().forEach(permission -> permission.setActiveYn(Boolean.TRUE));
 
-        return permissionMapper.permissionsToPermissionDTOs(permissions);
+        return permissions;
     }
 
     public List<PermissionDTO> getAllPermissionOfUser() {
@@ -185,7 +171,7 @@ public class PermissionService {
         List<PermissionDTO> userPermissions = Lists.newArrayList();
 
         if(user != null)
-            userPermissions.addAll(permissionMapper.permissionsToPermissionDTOs(this.findByUserId(user.getLogin())));
+            userPermissions.addAll(this.findByUserId(user.getLogin()));
 
         for(PermissionDTO permission : allPermission) {
 
