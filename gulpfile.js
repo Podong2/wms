@@ -25,7 +25,8 @@ var gulp = require('gulp'),
     angularFilesort = require('gulp-angular-filesort'),
     naturalSort = require('gulp-natural-sort'),
     bowerFiles = require('main-bower-files'),
-    babel = require("gulp-babel");
+    babel = require("gulp-babel"),
+    react = require('gulp-react');
 
 var handleErrors = require('./gulp/handleErrors'),
     serve = require('./gulp/serve'),
@@ -112,7 +113,6 @@ gulp.task('inject:app', function () {
     return gulp.src(config.app + 'index.html')
         .pipe(inject(gulp.src(config.app + 'app/**/*.js')
             .pipe(naturalSort())
-            .pipe(babel())
             .pipe(angularFilesort()), {relative: true}))
         .pipe(gulp.dest(config.app));
 });
@@ -203,7 +203,6 @@ gulp.task('eslint', function () {
     return gulp.src(['gulpfile.js', config.app + 'app/**/*.js'])
         .pipe(plumber({errorHandler: handleErrors}))
         .pipe(eslint())
-        .pipe(babel())
         .pipe(eslint.format())
         .pipe(eslint.failOnError());
 });
@@ -216,7 +215,6 @@ gulp.task('eslint:fix', function () {
             fix: true
         }))
         .pipe(eslint.format())
-        .pipe(babel())
         .pipe(gulpIf(util.isLintFixed, gulp.dest(config.app + 'app')));
 });
 
@@ -244,6 +242,15 @@ gulp.task('protractor', function () {
         });
 });
 
+// check app for eslint errors
+gulp.task('react', function () {
+    return gulp.src([config.bower + 'react/**/*.js', config.bower + 'ngReact/**/*.js', config.app + 'component/reactGrid/*.js'])
+        .pipe(plumber({errorHandler: handleErrors}))
+        //.pipe(babel())
+        .pipe(react())
+        .pipe(gulp.dest(config.app + 'react/'));
+});
+
 gulp.task('itest', ['protractor']);
 
 gulp.task('watch', function () {
@@ -256,7 +263,7 @@ gulp.task('watch', function () {
 });
 
 gulp.task('install', function () {
-    runSequence(['inject:dep', 'ngconstant:dev'], 'languages', 'inject:app', 'inject:troubleshoot');
+    runSequence(['inject:dep', 'ngconstant:dev'], 'languages', 'react', 'inject:app', 'inject:troubleshoot');
 });
 
 gulp.task('serve', function () {
@@ -264,7 +271,7 @@ gulp.task('serve', function () {
 });
 
 gulp.task('build', ['clean'], function (cb) {
-    runSequence(['copy', 'inject:vendor', 'ngconstant:prod', 'languages'], 'inject:app', 'inject:troubleshoot', 'assets:prod', cb);
+    runSequence(['copy', 'inject:vendor', 'ngconstant:prod', 'languages', 'react'], 'inject:app', 'inject:troubleshoot', 'assets:prod', cb);
 });
 
 gulp.task('default', ['serve']);

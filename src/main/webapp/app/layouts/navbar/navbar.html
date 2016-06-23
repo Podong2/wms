@@ -14,24 +14,40 @@
         </div>
         <div class="navbar-collapse" uib-collapse="vm.isNavbarCollapsed" ng-switch="vm.isAuthenticated()">
             <ul class="nav navbar-nav navbar-right">
-                <li ui-sref-active="active">
-                    <a ui-sref="home" ng-click="vm.collapseNavbar()">
-                        <span class="glyphicon glyphicon-home"></span>
-                        <span class="hidden-sm" translate="global.menu.home">Home</span>
-                    </a>
-                </li>
-                <li>
-                    <a ui-sref="component" ng-click="vm.collapseNavbar()">
+                <!--<li ui-sref-active="active">-->
+                    <!--<a ui-sref="home" ng-click="vm.collapseNavbar()">-->
+                        <!--<span class="glyphicon glyphicon-home"></span>-->
+                        <!--<span class="hidden-sm" translate="global.menu.home">Home</span>-->
+                    <!--</a>-->
+                <!--</li>-->
+
+                <li ng-repeat="menu in vm.menu" uib-dropdown>
+                    <a ng-click="vm.collapseNavbar()" class="dropdown-toggle" uib-dropdown-toggle>
                         <span class="fa fa-flask"></span>
-                        <span class="hidden-sm" translate="ui-component">ui-component</span>
+                        <span class="hidden-sm" translate="{{menu.name}}">{{menu.name}}</span>
+                        <b class="caret"></b>
                     </a>
+                    <ul class="dropdown-menu" uib-dropdown-menu>
+                        <li ui-sref-active="active" ng-repeat="child in menu.childMenus track by $index" ng-include="'nodes_renderer.html'">
+
+                        </li>
+                    </ul>
                 </li>
-                <li>
-                    <a ui-sref="react" ng-click="vm.collapseNavbar()">
-                        <span class="fa fa-flask"></span>
-                        <span class="hidden-sm" translate="react">react</span>
-                    </a>
-                </li>
+
+                <!--<li>-->
+                    <!--<a ui-sref="component" ng-click="vm.collapseNavbar()">-->
+                        <!--<span class="fa fa-flask"></span>-->
+                        <!--<span class="hidden-sm" translate="ui-component">ui-component</span>-->
+                    <!--</a>-->
+                <!--</li>-->
+                <!--<li>-->
+                    <!--<a ui-sref="react" ng-click="vm.collapseNavbar()">-->
+                        <!--<span class="fa fa-flask"></span>-->
+                        <!--<span class="hidden-sm" translate="react">react</span>-->
+                    <!--</a>-->
+                <!--</li>-->
+
+
                 <!-- jhipster-needle-add-element-to-menu - JHipster will add new menu items here -->
                 <li ng-class="{active: vm.$state.includes('entity')}" ng-switch-when="true" uib-dropdown class="dropdown pointer">
                     <a class="dropdown-toggle" uib-dropdown-toggle href="" id="entity-menu">
@@ -224,7 +240,33 @@
                         </li>
                     </ul>
                 </li>
+                <li ui-sref-active="active" uib-dropdown class="dropdown pointer">
+                    <a class="dropdown-toggle" uib-dropdown-toggle href="">
+                        <span>
+                            <span class="glyphicon glyphicon-flag"></span>
+                            <span class="hidden-sm" translate="접속자">접속자</span>
+                            <b class="caret"></b>
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu" uib-dropdown-menu>
+                        <li ng-repeat="user in vm.connectedUser">
+                            <a href="">{{user.login}}</a>
+                        </li>
+                    </ul>
+                </li>
             </ul>
         </div>
     </div>
 </nav>
+
+<script type="text/ng-template" id="nodes_renderer.html">
+    <a ui-sref="test" ng-click="vm.collapseNavbar()" ng-if="child.name != null">
+        <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
+        <span translate="{{child.name}}">{{child.name}}</span>
+    </a>
+    <ul>
+        <li ng-repeat="child in child.childMenus track by $index" ng-if="child.name != null" ng-include="'nodes_renderer.html'"  style="list-style: none;">
+
+        </li>
+    </ul>
+</script>

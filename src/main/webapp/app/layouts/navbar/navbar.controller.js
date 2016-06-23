@@ -5,9 +5,9 @@
         .module('wmsApp')
         .controller('NavbarController', NavbarController);
 
-    NavbarController.$inject = ['$state', 'Auth', 'Principal', 'ProfileService', 'LoginService'];
+    NavbarController.$inject = ['$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', '$scope', '$rootScope', 'navbarService', '$log'];
 
-    function NavbarController ($state, Auth, Principal, ProfileService, LoginService) {
+    function NavbarController ($state, Auth, Principal, ProfileService, LoginService, $scope, $rootScope, navbarService, $log) {
         var vm = this;
 
         vm.isNavbarCollapsed = true;
@@ -23,6 +23,7 @@
         vm.toggleNavbar = toggleNavbar;
         vm.collapseNavbar = collapseNavbar;
         vm.$state = $state;
+        vm.getMenu = getMenu;
 
         function login() {
             collapseNavbar();
@@ -42,5 +43,55 @@
         function collapseNavbar() {
             vm.isNavbarCollapsed = true;
         }
+
+        $scope.$watch("$rootScope.connectedUser", function (){
+            vm.connectedUser  = $rootScope.connectedUser;
+        })
+
+        vm.menu = [];
+        function getMenu(){
+            navbarService.getMenu({
+            }).then(function (result) {
+                $log.debug("result : ", result)
+                vm.menu = result;
+            }).catch(function (err) {
+                $log.debug("menuErr : ", err)
+            });
+        }
+
+        vm.getMenu();
+
+        //vm.menu = [
+        //    {
+        //        name: "tet1",
+        //        url: "test/test",
+        //        child : [
+        //            {
+        //                name: "tet1-1",
+        //                url: "test/test"
+        //            },
+        //            {
+        //                name: "tet1-2",
+        //                url: "test/test"
+        //            },
+        //            {
+        //                name: "tet1-3",
+        //                url: "test/test"
+        //            },
+        //        ]
+        //    },
+        //    {
+        //        name : "tet2",
+        //        url : "test/test"
+        //    },
+        //    {
+        //        name : "tet3",
+        //        url : "test/test"
+        //    },
+        //    {
+        //        name : "tet4",
+        //        url : "test/test"
+        //    }
+        //];
     }
 })();
