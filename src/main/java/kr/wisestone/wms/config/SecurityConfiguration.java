@@ -58,11 +58,35 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public ExtensibleDaoAuthenticationProvider authenticationProvider() {
+
+        ExtensibleDaoAuthenticationProvider authenticationProvider = new ExtensibleDaoAuthenticationProvider();
+        authenticationProvider.setUserDetailsService(userDetailsService);
+        authenticationProvider.setPasswordEncoder(passwordEncoder());
+        authenticationProvider.setPreAuthenticationChecks(defaultPreAuthenticationChecks());
+        authenticationProvider.setPostAuthenticationChecks(defaultPostAuthenticationChecks());
+
+        return authenticationProvider;
+    }
+
+    @Bean
+    public DefaultPreAuthenticationChecks defaultPreAuthenticationChecks() {
+        return new DefaultPreAuthenticationChecks();
+    }
+
+    @Bean
+    public DefaultPostAuthenticationChecks defaultPostAuthenticationChecks() {
+        return new DefaultPostAuthenticationChecks();
+    }
+
     @Inject
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-            .userDetailsService(userDetailsService)
-                .passwordEncoder(passwordEncoder());
+        auth.authenticationProvider(authenticationProvider());
+
+//        auth
+//            .userDetailsService(userDetailsService)
+//                .passwordEncoder(passwordEncoder());
     }
 
     @Override

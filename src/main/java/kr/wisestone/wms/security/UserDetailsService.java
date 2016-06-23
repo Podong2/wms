@@ -1,10 +1,9 @@
 package kr.wisestone.wms.security;
 import kr.wisestone.wms.domain.User;
 import kr.wisestone.wms.repository.UserRepository;
+import kr.wisestone.wms.security.exception.UserNotActivatedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
@@ -12,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Authenticate a user from the database.
@@ -32,12 +30,11 @@ public class UserDetailsService implements org.springframework.security.core.use
         String lowercaseLogin = login.toLowerCase(Locale.ENGLISH);
         Optional<User> userFromDatabase = userRepository.findOneByLogin(lowercaseLogin);
 
-        if(userFromDatabase.get() == null)
+        if(!userFromDatabase.isPresent())
             throw new UsernameNotFoundException("error.authentication.userNotFound");
 
-        if (!userFromDatabase.get().getActivated()) {
+        if(!userFromDatabase.isPresent())
             throw new UserNotActivatedException("error.authentication.userNotActivated");
-        }
 
         return userFromDatabase.get();
     }

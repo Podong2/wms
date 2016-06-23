@@ -1,4 +1,4 @@
-package kr.wisestone.wms.security;
+package kr.wisestone.wms.security.exception;
 
 import org.springframework.security.core.AuthenticationException;
 

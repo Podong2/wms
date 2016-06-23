@@ -137,7 +137,7 @@ public class PermissionResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Transactional(readOnly = true)
-    public ResponseEntity<List<PermissionDTO>> getAllUserPermissions(@RequestParam(name="urlPath") String urlPath)
+    public ResponseEntity<List<PermissionDTO>> getMenuUserPermissions(@RequestParam(name="urlPath") String urlPath)
         throws URISyntaxException {
         log.debug("REST request to get a page of Permissions");
         List<PermissionDTO> userPermissions = permissionService.findMenuPermissionByUserAndMenuUrl(urlPath);
