@@ -19,6 +19,7 @@ public interface MenuMapper {
     List<MenuDTO> menusToMenuDTOs(List<Menu> menus);
 
     @Mapping(source = "parentId", target = "parent")
+    @Mapping(target = "childMenus", ignore = true)
     Menu menuDTOToMenu(MenuDTO menuDTO);
 
     List<Menu> menuDTOsToMenus(List<MenuDTO> menuDTOs);

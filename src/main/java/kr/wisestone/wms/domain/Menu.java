@@ -1,6 +1,7 @@
 package kr.wisestone.wms.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import kr.wisestone.wms.web.rest.dto.MenuDTO;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -68,12 +69,12 @@ public class Menu extends AbstractAuditingEntity implements Serializable {
     private Boolean displayYn = Boolean.FALSE;
 
     @JsonIgnore
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Menu parent;
 
     /** 자식 메뉴들 */
-    @OneToMany(mappedBy="parent", cascade={CascadeType.ALL}, orphanRemoval=true, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy="parent", fetch = FetchType.EAGER)
     @OrderColumn(name="position")
     private List<Menu> childMenus = new ArrayList<>();
 
@@ -207,6 +208,25 @@ public class Menu extends AbstractAuditingEntity implements Serializable {
 
     public void setPermissionUrl(String permissionUrl) {
         this.permissionUrl = permissionUrl;
+    }
+
+    public Menu update(MenuDTO menuDTO) {
+
+        this.setId( menuDTO.getId() );
+        this.setName( menuDTO.getName() );
+        this.setDescription( menuDTO.getDescription() );
+        this.setArea( menuDTO.getArea() );
+        this.setPosition( menuDTO.getPosition() );
+        this.setStatus( menuDTO.getStatus() );
+        this.setProjectYn( menuDTO.getProjectYn() );
+        this.setSystemYn( menuDTO.getSystemYn() );
+        this.setMobileYn( menuDTO.getMobileYn() );
+        this.setHrIncludeYn( menuDTO.getHrIncludeYn() );
+        this.setUrlPath( menuDTO.getUrlPath() );
+        this.setDisplayYn( menuDTO.getDisplayYn() );
+        this.setPermissionUrl( menuDTO.getPermissionUrl() );
+
+        return this;
     }
 
     @Override

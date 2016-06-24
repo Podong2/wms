@@ -1,6 +1,8 @@
 package kr.wisestone.wms.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import kr.wisestone.wms.domain.Menu;
 import kr.wisestone.wms.repository.MenuRepository;
 import kr.wisestone.wms.repository.search.MenuSearchRepository;
@@ -8,6 +10,7 @@ import kr.wisestone.wms.web.rest.util.HeaderUtil;
 import kr.wisestone.wms.web.rest.util.PaginationUtil;
 import kr.wisestone.wms.web.rest.dto.MenuDTO;
 import kr.wisestone.wms.web.rest.mapper.MenuMapper;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -19,6 +22,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -91,10 +95,18 @@ public class MenuResource {
         if (menuDTO.getId() == null) {
             return createMenu(menuDTO);
         }
-        Menu menu = menuMapper.menuDTOToMenu(menuDTO);
-        menu = menuRepository.save(menu);
-        MenuDTO result = menuMapper.menuToMenuDTO(menu);
-        menuSearchRepository.save(menu);
+        Menu origin = menuRepository.findOne(menuDTO.getId());
+        origin.update(menuDTO);
+
+        if(menuDTO.getParentId() != null) {
+            origin.setParent(menuRepository.findOne(menuDTO.getParentId()));
+        } else {
+            origin.setParent(null);
+        }
+
+        origin = menuRepository.save(origin);
+        MenuDTO result = menuMapper.menuToMenuDTO(origin);
+        menuSearchRepository.save(origin);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("menu", menuDTO.getId().toString()))
             .body(result);
@@ -147,6 +159,7 @@ public class MenuResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
+    @Transactional(readOnly = true)
     public ResponseEntity<MenuDTO> getMenu(@PathVariable Long id) {
         log.debug("REST request to get Menu : {}", id);
         Menu menu = menuRepository.findOne(id);
@@ -170,6 +183,19 @@ public class MenuResource {
     @Timed
     public ResponseEntity<Void> deleteMenu(@PathVariable Long id) {
         log.debug("REST request to delete Menu : {}", id);
+
+        Menu origin = menuRepository.findOne(id);
+
+        if(origin.getChildMenus() != null && !origin.getChildMenus().isEmpty()) {
+
+            for(Menu childMenu : origin.getChildMenus().stream().filter(menu -> menu != null).collect(Collectors.toList())) {
+                childMenu.setParent(null);
+
+                menuRepository.save(childMenu);
+                menuSearchRepository.save(childMenu);
+            }
+        }
+
         menuRepository.delete(id);
         menuSearchRepository.delete(id);
         return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("menu", id.toString())).build();
