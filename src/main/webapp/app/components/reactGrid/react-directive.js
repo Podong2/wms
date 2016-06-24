@@ -27,13 +27,19 @@
                 }
 
                 return (
-                    React.DOM.tr({onClick: clickHandler},
-                    React.DOM.td(null, datum['0']),
-                    React.DOM.td(null, datum['1']),
-                    React.DOM.td(null, datum['2']),
-                    React.DOM.td(null, datum['3']),
-                    React.DOM.td(null, datum['4'])
-                )
+                    //React.DOM.tr({onClick: clickHandler},
+                    //React.DOM.td(null, datum['0']),
+                    //React.DOM.td(null, datum['1']),
+                    //React.DOM.td(null, datum['2']),
+                    //React.DOM.td(null, datum['3']),
+                    //React.DOM.td(null, datum['4']))
+                    <tr onclick={clickHandler}>
+                        <td>datum['0']</td>
+                        <td>datum['1']</td>
+                        <td>datum['2']</td>
+                        <td>datum['3']</td>
+                        <td>datum['4']</td>
+                    </tr>
                 );
             });
 
