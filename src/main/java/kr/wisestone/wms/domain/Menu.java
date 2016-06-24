@@ -9,6 +9,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * A Menu.
@@ -179,7 +180,7 @@ public class Menu extends AbstractAuditingEntity implements Serializable {
     }
 
     public List<Menu> getChildMenus() {
-        return childMenus;
+        return this.childMenus.stream().filter(menu -> menu != null).collect(Collectors.toList());
     }
 
     public void setChildMenus(List<Menu> childMenus) {

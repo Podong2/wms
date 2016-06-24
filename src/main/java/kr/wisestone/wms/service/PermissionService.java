@@ -73,6 +73,29 @@ public class PermissionService {
         return result;
     }
 
+    public PermissionDTO update(PermissionDTO permissionDTO) {
+        log.debug("Request to save Permission : {}", permissionDTO);
+
+        Permission origin = permissionRepository.findOne(permissionDTO.getId());
+        origin.update(permissionDTO);
+
+        if(permissionDTO.getParentId() != null) {
+            origin.setParent(permissionRepository.findOne(permissionDTO.getParentId()));
+        } else {
+            origin.setParent(null);
+        }
+
+        if(permissionDTO.getPermissionCategoryId() != null) {
+            origin.setPermissionCategory(permissionMapper.permissionCategoryFromId(permissionDTO.getPermissionCategoryId()));
+        }
+
+        origin = permissionRepository.save(origin);
+        PermissionDTO result = permissionMapper.permissionToPermissionDTO(origin);
+        permissionSearchRepository.save(origin);
+
+        return result;
+    }
+
     /**
      *  Get all the permissions.
      *
@@ -107,6 +130,20 @@ public class PermissionService {
      */
     public void delete(Long id) {
         log.debug("Request to delete Permission : {}", id);
+
+
+        Permission origin = permissionRepository.findOne(id);
+
+        if(origin.getChildPermissions() != null && !origin.getChildPermissions().isEmpty()) {
+
+            for(Permission childPermission : origin.getChildPermissions()) {
+                childPermission.setParent(null);
+
+                permissionRepository.save(childPermission);
+                permissionSearchRepository.save(childPermission);
+            }
+        }
+
         permissionRepository.delete(id);
         permissionSearchRepository.delete(id);
     }

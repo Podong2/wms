@@ -84,7 +84,7 @@ public class PermissionResource {
         if (permissionDTO.getId() == null) {
             return createPermission(permissionDTO);
         }
-        PermissionDTO result = permissionService.save(permissionDTO);
+        PermissionDTO result = permissionService.update(permissionDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("permission", permissionDTO.getId().toString()))
             .body(result);

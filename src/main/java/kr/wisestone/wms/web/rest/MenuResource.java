@@ -188,7 +188,7 @@ public class MenuResource {
 
         if(origin.getChildMenus() != null && !origin.getChildMenus().isEmpty()) {
 
-            for(Menu childMenu : origin.getChildMenus().stream().filter(menu -> menu != null).collect(Collectors.toList())) {
+            for(Menu childMenu : origin.getChildMenus()) {
                 childMenu.setParent(null);
 
                 menuRepository.save(childMenu);

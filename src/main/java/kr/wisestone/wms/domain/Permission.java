@@ -1,6 +1,7 @@
 package kr.wisestone.wms.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import kr.wisestone.wms.web.rest.dto.PermissionDTO;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -8,6 +9,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * A Permission.
@@ -58,7 +60,7 @@ public class Permission extends AbstractAuditingEntity implements Serializable {
     @JoinColumn(name = "parent_id")
     private Permission parent;
 
-    @OneToMany(mappedBy="parent", cascade={CascadeType.ALL}, orphanRemoval=true)
+    @OneToMany(mappedBy="parent")
     private List<Permission> childPermissions = new ArrayList<>();
 
     @JsonIgnore
@@ -150,7 +152,7 @@ public class Permission extends AbstractAuditingEntity implements Serializable {
     }
 
     public List<Permission> getChildPermissions() {
-        return childPermissions;
+        return this.childPermissions.stream().filter(menu -> menu != null).collect(Collectors.toList());
     }
 
     public void setChildPermissions(List<Permission> childPermissions) {
@@ -196,5 +198,18 @@ public class Permission extends AbstractAuditingEntity implements Serializable {
             ", roleGubun='" + roleGubun + "'" +
             ", rolePermissionYn='" + rolePermissionYn + "'" +
             '}';
+    }
+
+    public Permission update(PermissionDTO permissionDTO) {
+
+        this.setId( permissionDTO.getId() );
+        this.setName( permissionDTO.getName() );
+        this.setDescription( permissionDTO.getDescription() );
+        this.setStatus( permissionDTO.getStatus() );
+        this.setAction( permissionDTO.getAction() );
+        this.setRoleGubun( permissionDTO.getRoleGubun() );
+        this.setRolePermissionYn( permissionDTO.getRolePermissionYn() );
+
+        return this;
     }
 }
