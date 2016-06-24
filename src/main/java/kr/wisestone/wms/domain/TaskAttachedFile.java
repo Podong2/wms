@@ -15,21 +15,31 @@ import java.util.Objects;
  * A TaskAttachedFile.
  */
 @Entity
-@Table(name = "task_attached_file")
+@Table(name = "owl_task_attached_file")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "taskattachedfile")
-public class TaskAttachedFile implements Serializable {
+public class TaskAttachedFile extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "taskAttachedFileSeqGenerator")
+    @TableGenerator(name = "taskAttachedFileSeqGenerator"
+        , table = "owl_sequence"
+        , initialValue = 10000
+        , pkColumnValue = "owl_task_attached_file_id"
+        , pkColumnName = "seq_id"
+        , valueColumnName = "seq_value"
+        , allocationSize = 1)
     private Long id;
 
-    @OneToMany(mappedBy = "taskAttachedFiles")
-    @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Task> tasks = new HashSet<>();
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "task_id")
+    private Task task;
+
+    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "attached_file_id")
+    private AttachedFile attachedFile;
 
     public Long getId() {
         return id;
@@ -39,12 +49,20 @@ public class TaskAttachedFile implements Serializable {
         this.id = id;
     }
 
-    public Set<Task> getTasks() {
-        return tasks;
+    public Task getTask() {
+        return task;
     }
 
-    public void setTasks(Set<Task> tasks) {
-        this.tasks = tasks;
+    public void setTask(Task task) {
+        this.task = task;
+    }
+
+    public AttachedFile getAttachedFile() {
+        return attachedFile;
+    }
+
+    public void setAttachedFile(AttachedFile attachedFile) {
+        this.attachedFile = attachedFile;
     }
 
     @Override

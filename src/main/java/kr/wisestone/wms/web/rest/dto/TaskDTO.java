@@ -19,11 +19,8 @@ public class TaskDTO implements Serializable {
 
     private String contents;
 
-
     private Long severityId;
-    
-    private Long taskAttachedFilesId;
-    
+
     public Long getId() {
         return id;
     }
@@ -59,14 +56,6 @@ public class TaskDTO implements Serializable {
 
     public void setSeverityId(Long codeId) {
         this.severityId = codeId;
-    }
-
-    public Long getTaskAttachedFilesId() {
-        return taskAttachedFilesId;
-    }
-
-    public void setTaskAttachedFilesId(Long taskAttachedFileId) {
-        this.taskAttachedFilesId = taskAttachedFileId;
     }
 
     @Override

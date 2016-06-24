@@ -13,13 +13,11 @@ import java.util.List;
 public interface TaskMapper {
 
     @Mapping(source = "severity.id", target = "severityId")
-    @Mapping(source = "taskAttachedFiles.id", target = "taskAttachedFilesId")
     TaskDTO taskToTaskDTO(Task task);
 
     List<TaskDTO> tasksToTaskDTOs(List<Task> tasks);
 
     @Mapping(source = "severityId", target = "severity")
-    @Mapping(source = "taskAttachedFilesId", target = "taskAttachedFiles")
     Task taskDTOToTask(TaskDTO taskDTO);
 
     List<Task> taskDTOsToTasks(List<TaskDTO> taskDTOs);

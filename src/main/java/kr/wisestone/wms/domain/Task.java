@@ -6,21 +6,30 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 /**
  * A Task.
  */
 @Entity
-@Table(name = "task")
+@Table(name = "owl_task")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "task")
-public class Task implements Serializable {
+public class Task extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "taskSeqGenerator")
+    @TableGenerator(name = "taskSeqGenerator"
+        , table = "owl_sequence"
+        , initialValue = 10000
+        , pkColumnValue = "owl_task_id"
+        , pkColumnName = "seq_id"
+        , valueColumnName = "seq_value"
+        , allocationSize = 1)
     private Long id;
 
     @Column(name = "name")
@@ -32,11 +41,12 @@ public class Task implements Serializable {
     @Column(name = "contents")
     private String contents;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "severity_id")
     private Code severity;
 
-    @ManyToOne
-    private TaskAttachedFile taskAttachedFiles;
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<TaskAttachedFile> taskAttachedFiles = new HashSet<>();
 
     public Long getId() {
         return id;
@@ -78,12 +88,12 @@ public class Task implements Serializable {
         this.severity = code;
     }
 
-    public TaskAttachedFile getTaskAttachedFiles() {
+    public Set<TaskAttachedFile> getTaskAttachedFiles() {
         return taskAttachedFiles;
     }
 
-    public void setTaskAttachedFiles(TaskAttachedFile taskAttachedFile) {
-        this.taskAttachedFiles = taskAttachedFile;
+    public void setTaskAttachedFiles(Set<TaskAttachedFile> taskAttachedFiles) {
+        this.taskAttachedFiles = taskAttachedFiles;
     }
 
     @Override

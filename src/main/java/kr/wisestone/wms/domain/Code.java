@@ -12,15 +12,22 @@ import java.util.Objects;
  * A Code.
  */
 @Entity
-@Table(name = "code")
+@Table(name = "owl_code")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "code")
-public class Code implements Serializable {
+public class Code extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "codeSeqGenerator")
+    @TableGenerator(name = "codeSeqGenerator"
+        , table = "owl_sequence"
+        , initialValue = 10000
+        , pkColumnValue = "owl_code_id"
+        , pkColumnName = "seq_id"
+        , valueColumnName = "seq_value"
+        , allocationSize = 1)
     private Long id;
 
     @Column(name = "name")
