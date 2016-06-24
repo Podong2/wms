@@ -5,16 +5,16 @@
         .module('wmsApp')
         .controller('MenuController', MenuController);
 
-    MenuController.$inject = ['$scope', '$state', 'Menu', 'MenuSearch', 'ParseLinks', 'AlertService', 'pagingParams', 'paginationConstants'];
+    MenuController.$inject = ['$scope', '$state', 'Menu', 'MenuSearch', 'ParseLinks', 'AlertService', 'pagingParams', 'paginationConstants', 'permissionCheck'];
 
-    function MenuController ($scope, $state, Menu, MenuSearch, ParseLinks, AlertService, pagingParams, paginationConstants) {
+    function MenuController ($scope, $state, Menu, MenuSearch, ParseLinks, AlertService, pagingParams, paginationConstants, permissionCheck) {
         var vm = this;
-        
         vm.loadPage = loadPage;
         vm.predicate = pagingParams.predicate;
         vm.reverse = pagingParams.ascending;
         vm.transition = transition;
         vm.clear = clear;
+        vm.permissionCheck = permissionCheck;
         vm.search = search;
         vm.searchQuery = pagingParams.search;
         vm.currentSearch = pagingParams.search;

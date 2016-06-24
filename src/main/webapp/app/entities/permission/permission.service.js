@@ -60,6 +60,14 @@
                 else {
                     return false;
                 }
+            },
+            pagePermissionCheck : function(actionUrl){
+                if ($rootScope.pagePermission[actionUrl] !== undefined) {
+                    return $rootScope.pagePermission[actionUrl];
+                }
+                else {
+                    return false;
+                }
             }
         }
 

@@ -47,6 +47,19 @@ gulp.task('copy', function () {
             .pipe(plumber({errorHandler: handleErrors}))
             .pipe(changed(config.dist + 'i18n/'))
             .pipe(gulp.dest(config.dist + 'i18n/')),
+        gulp.src(config.app + 'app/components/reactGrid/*.js')
+            .pipe(babel({
+                presets: ['es2015', 'react']
+            }))
+            .pipe(plumber({errorHandler: handleErrors}))
+            .pipe(babel())
+            .pipe(react())
+            .pipe(changed(config.dist + 'react/'))
+            .pipe(rev.manifest(config.revManifest, {
+                base: config.dist,
+                merge: true
+            }))
+            .pipe(gulp.dest(config.dist + 'react/')),
         gulp.src(config.bower + 'bootstrap/fonts/*.*')
             .pipe(plumber({errorHandler: handleErrors}))
             .pipe(changed(config.dist + 'content/fonts/'))
@@ -242,14 +255,30 @@ gulp.task('protractor', function () {
         });
 });
 
-// check app for eslint errors
 gulp.task('react', function () {
-    return gulp.src([config.bower + 'react/**/*.js', config.bower + 'ngReact/**/*.js', config.app + 'component/reactGrid/*.js'])
+    return gulp.src([config.app + 'app/components/reactGrid/react-directive.js'])  // config.bower + 'react/**/*.js', config.bower + 'ngReact/**/*.js',
+        .pipe(babel({
+            presets: ['es2015', 'react']
+        }))
         .pipe(plumber({errorHandler: handleErrors}))
-        //.pipe(babel())
+        .pipe(babel())
         .pipe(react())
-        .pipe(gulp.dest(config.app + 'react/'));
+        .pipe(gulp.dest(config.app + 'app/react/'));
 });
+//gulp.task('ngReact', function () {
+//    return gulp.src([config.bower + 'react/**/*.js', config.bower + 'ngReact/**/*.js'])
+//        .pipe(plumber({errorHandler: handleErrors}))
+//        .pipe(babel())
+//        .pipe(react())
+//        .pipe(gulp.dest(config.dist + 'react/'));
+//});
+//gulp.task('replaceHTML', function(){
+//    gulp.src(config.app + 'index.html')
+//        .pipe(htmlreplace({
+//            'js': 'react/react-directive.js'
+//        }))
+//        .pipe(gulp.dest(config.dist  + 'react/'));
+//});
 
 gulp.task('itest', ['protractor']);
 
@@ -259,6 +288,7 @@ gulp.task('watch', function () {
     gulp.watch(config.app + 'content/css/**/*.css', ['styles']);
     gulp.watch(config.app + 'content/images/**', ['images']);
     gulp.watch(config.app + 'app/**/*.js', ['inject:app']);
+    gulp.watch(config.app + 'app/components/reactGrid/*.js', ['react']);
     gulp.watch([config.app + '*.html', config.app + 'app/**', config.app + 'i18n/**']).on('change', browserSync.reload);
 });
 

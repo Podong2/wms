@@ -36,7 +36,7 @@
             },
             resolve: {
                 permissionLoader : function (PagePermission) {
-                    return PagePermission.getPagePermission();
+                    return PagePermission.getPagePermission('menu');
                 },
                 pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
                     return {

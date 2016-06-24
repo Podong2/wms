@@ -33,13 +33,15 @@
         }
         return service;
 
-        function getPagePermission(){
+        function getPagePermission(permissionName){
             $http({
                 url :'/api/permissions/menu-permissions',
-                params : {urlPath : '/menu'}
+                params : {urlPath : permissionName}
             }).success(function (permission) {
-                //$log.debug("response : ", response)
-                $rootScope.pagePermission = permission;
+                $rootScope.pagePermission = {};
+                angular.forEach(permission, function (permission, index) {
+                    $rootScope.pagePermission[permission.action] = permission.activeYn;
+                });
                 $log.debug("$rootScope.pagePermission : ", $rootScope.pagePermission)
             });
         }
