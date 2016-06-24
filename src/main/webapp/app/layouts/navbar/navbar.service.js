@@ -20,7 +20,6 @@
         function getMenu() {
             var deferred = $q.defer();
             $http.get("/api/menus/top-menus").success(function (response) {
-                //$log.debug("response : ", response)
                 $log.debug("menuList : ", response);
                 deferred.resolve(response);
             });

@@ -18,6 +18,9 @@
                 }
             },
             resolve: {
+                //permissionLoader : function (PagePermission) {
+                //    return PagePermission.getPagePermission();
+                //},
                 authorize: ['Auth',
                     function (Auth) {
                         Auth.connectedUserList(); // 임시 위치

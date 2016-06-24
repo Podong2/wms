@@ -9,9 +9,9 @@
     // factory : 일반적으로 사용하는 서비스로서 비지니스 로직 또는 모듈 제공자로 사용한다.
     // 객체나 클로저를 반환한다.
 
-    Auth.$inject = ['$rootScope', '$state', '$sessionStorage', '$q', '$translate', 'Principal', 'AuthServerProvider', 'Account', 'LoginService', 'Register', 'Activate', 'Password', 'PasswordResetInit', 'PasswordResetFinish', 'JhiTrackerService', '$http', '$log'];
+    Auth.$inject = ['$rootScope', '$state', '$sessionStorage', '$q', '$translate', 'Principal', 'AuthServerProvider', 'Account', 'LoginService', 'Register', 'Activate', 'Password', 'PasswordResetInit', 'PasswordResetFinish', 'JhiTrackerService', '$http', '$log', 'UserPermission', 'PagePermission'];
 
-    function Auth ($rootScope, $state, $sessionStorage, $q, $translate, Principal, AuthServerProvider, Account, LoginService, Register, Activate, Password, PasswordResetInit, PasswordResetFinish, JhiTrackerService, $http, $log) {
+    function Auth ($rootScope, $state, $sessionStorage, $q, $translate, Principal, AuthServerProvider, Account, LoginService, Register, Activate, Password, PasswordResetInit, PasswordResetFinish, JhiTrackerService, $http, $log, UserPermission, PagePermission) {
         var service = {
             activateAccount: activateAccount,
             authorize: authorize,
@@ -61,22 +61,41 @@
                     $state.go(previousState.name, previousState.params);
                 }
 
-                if ($rootScope.toState.data.authorities && $rootScope.toState.data.authorities.length > 0 && !Principal.hasAnyAuthority($rootScope.toState.data.authorities)) {
-                    if (isAuthenticated) {
-                        // user is signed in but not authorized for desired state
-                        $state.go('accessdenied');
-                    }
-                    else {
-                        // user is not authenticated. stow the state they wanted before you
-                        // send them to the login service, so you can return them when you're done
-                        storePreviousState($rootScope.toState.name, $rootScope.toStateParams);
+                if (!angular.isDefined($rootScope.authorities)) {
+                    $rootScope.authorities = {};
+                }
 
-                        // now, send them to the signin state so they can log in
-                        $state.go('accessdenied').then(function() {
-                            LoginService.open();
-                        });
+                if (Principal.isIdentityResolved() && Principal.isAuthenticated()) {
+                    if ($rootScope.authorities[''] === undefined) {
+                        //  전체 권한 업데이트
+                        UserPermission.getUserPermission();
+
                     }
                 }
+
+                //  권한이 없을 경우 새로고침한 상태로 인식하여 서버에서 전체 권한을 요청한다.
+                if (angular.isDefined($rootScope.authorities[""])) {
+                    $log.debug("권한 정의 : " , $rootScope.authorities);
+                    if ($rootScope.toState.data.authorities && $rootScope.toState.data.authorities.length > 0 && !Principal.hasAnyAuthority($rootScope.toState.data.authorities)) {
+                        if (isAuthenticated) {
+                            // user is signed in but not authorized for desired state
+                            $log.error("페이지 거부 - 권한이 없음, 이전 화면으로 이동");
+                            $state.go($state.current, {}, {reload: true});
+                        }
+                        else {
+                            // user is not authenticated. stow the state they wanted before you
+                            // send them to the login service, so you can return them when you're done
+                            storePreviousState($rootScope.toState.name, $rootScope.toStateParams);
+
+                            // now, send them to the signin state so they can log in
+                            $state.go('accessdenied').then(function() {
+                                LoginService.open();
+                            });
+                        }
+                    }
+                }
+
+
             }
         }
 
@@ -135,6 +154,7 @@
 
         function logout () {
             AuthServerProvider.logout(); // 로그아웃
+
             Principal.authenticate(null); // 인증실패
         }
 
@@ -184,6 +204,7 @@
             $sessionStorage.previousState = previousState;
         }
 
+        // 현재 접속중인 사용자 목록
         function connectedUserList() {
             $http.get("/api/account/connected-principals").success(function (response) {
                 //$log.debug("response : ", response)

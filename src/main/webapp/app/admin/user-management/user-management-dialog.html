@@ -105,10 +105,9 @@
 
         <div class="form-group">
             <label translate="상태">상태</label>
-            <select class="form-control" name="authority" ng-model="vm.user.status">
-                <option value="" selected>선택</option>
-                <option value="01">활성</option>
-                <option value="02">비활성</option>
+            <select class="form-control" name="authority" ng-model="vm.user.status" ng-disabled="vm.user.id == null">
+                <option value="01" ng-selected="vm.user.id == null" >활성</option>
+                <option value="02" ng-if="vm.user.id != null">비활성</option>
                 <option value="03" ng-if="vm.user.id != null">비밀번호 변경 대기</option>
                 <option value="04" ng-if="vm.user.id != null">사용자 탈퇴 및 삭제</option>
                 <option value="05" ng-if="vm.user.id != null">로그인 실패</option>

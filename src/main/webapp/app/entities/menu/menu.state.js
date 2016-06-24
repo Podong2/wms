@@ -35,6 +35,9 @@
                 search: null
             },
             resolve: {
+                permissionLoader : function (PagePermission) {
+                    return PagePermission.getPagePermission();
+                },
                 pagingParams: ['$stateParams', 'PaginationUtil', function ($stateParams, PaginationUtil) {
                     return {
                         page: PaginationUtil.parsePage($stateParams.page),

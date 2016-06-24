@@ -14,9 +14,9 @@
             </div>
         </div>
         <div class="col-md-6">
-            <form class="form" name="loginForm" role="form" ng-submit="vm.login($event)" novalidate>
+            <form class="form" name="loginForm" role="form" ng-submit="vm.login($event)" show-validation>
                 <div class="form-group">
-                    <label for="username" translate="global.form.username">Login</label>
+                    <label class="control-label" for="username" translate="global.form.username">Login</label>
                     <input type="text" class="form-control" id="username" name="username"
                            required
                            ng-minlength="1"
@@ -27,18 +27,18 @@
                 </div>
 
                 <div class="error ng-hide" ng-show="loginForm.username.$invalid &amp;&amp; loginForm.username.$dirty">
-                              <span ng-show="loginForm.username.$error.required" class="ng-hide" translate="register.messages.validate.login.required">
-                            Your username is required.
-                              </span>
-                              <span ng-show="loginForm.username.$error.minlength" class="ng-hide" translate="register.messages.validate.login.minlength">
-                            Your username is required to be at least 1 character.
-                              </span>
-                              <span ng-show="loginForm.username.$error.maxlength" class="ng-hide" translate="register.messages.validate.login.maxlength">
-                            Your username cannot be longer than 50 characters.
-                              </span>
-                              <span ng-show="loginForm.username.$error.pattern" class="ng-hide" translate="register.messages.validate.login.pattern">
-                            Your username can only contain lower-case letters and digits.
-                              </span>
+                    <p class="help-block" ng-show="loginForm.username.$error.required" class="ng-hide" translate="register.messages.validate.login.required">
+                        Your username is required.
+                    </p>
+                    <p ng-show="loginForm.username.$error.minlength" class="ng-hide" translate="register.messages.validate.login.minlength">
+                        Your username is required to be at least 1 character.
+                    </p>
+                    <p ng-show="loginForm.username.$error.maxlength" class="ng-hide" translate="register.messages.validate.login.maxlength">
+                        Your username cannot be longer than 50 characters.
+                    </p>
+                    <p ng-show="loginForm.username.$error.pattern" class="ng-hide" translate="register.messages.validate.login.pattern">
+                        Your username can only contain lower-case letters and digits.
+                    </p>
                 </div>
 
                 <div class="form-group">

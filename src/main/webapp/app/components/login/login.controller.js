@@ -62,6 +62,7 @@
                     Auth.resetPreviousState();
                     $state.go(previousState.name, previousState.params);
                 }
+                $state.reload();
             }).catch(function (err) {
                 $log.debug("err : ", err.data.message);
                 vm.authenticationError = true;

@@ -5,13 +5,16 @@
         .module('wmsApp')
         .controller('NavbarController', NavbarController);
 
-    NavbarController.$inject = ['$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', '$scope', '$rootScope', 'navbarService', '$log'];
+    NavbarController.$inject = ['$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', '$scope', '$rootScope', 'navbarService', '$log', 'permissionCheck'];
 
-    function NavbarController ($state, Auth, Principal, ProfileService, LoginService, $scope, $rootScope, navbarService, $log) {
+    function NavbarController ($state, Auth, Principal, ProfileService, LoginService, $scope, $rootScope, navbarService, $log, permissionCheck) {
         var vm = this;
-
+        //$log.debug("NavbarController 탔다");
         vm.isNavbarCollapsed = true;
+        $scope.permissionCheck = permissionCheck;
         vm.isAuthenticated = Principal.isAuthenticated;
+
+        //$log.debug(!$scope.permissionCheck.check("/menu"));
 
         ProfileService.getProfileInfo().then(function(response) {
             vm.inProduction = response.inProduction;
@@ -52,7 +55,7 @@
         function getMenu(){
             navbarService.getMenu({
             }).then(function (result) {
-                $log.debug("result : ", result)
+                $log.debug("menuList : ", result)
                 vm.menu = result;
             }).catch(function (err) {
                 $log.debug("menuErr : ", err)
