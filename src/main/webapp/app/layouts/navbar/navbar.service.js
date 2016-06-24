@@ -6,9 +6,9 @@
         .factory('navbarService', navbarService);
 
 
-    navbarService.$inject = ['$http', '$log', '$q'];
+    navbarService.$inject = ['$http', '$log', '$q', '$rootScope'];
 
-    function navbarService ($http, $log, $q) {
+    function navbarService ($http, $log, $q, $rootScope) {
         var service = {
             getMenu: getMenu
         };
@@ -21,6 +21,7 @@
             var deferred = $q.defer();
             $http.get("/api/menus/top-menus").success(function (response) {
                 $log.debug("menuList : ", response);
+                $rootScope.menuList = response;
                 deferred.resolve(response);
             });
             return deferred.promise;

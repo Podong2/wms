@@ -17,7 +17,7 @@
 
 
                 <!-- 동적 navbar -->
-                <li ng-repeat="menu in vm.menu track by $index" uib-dropdown ng-show="menu.displayYn ? (!permissionCheck.check(menu.permissionUrl) ? menu.displayYn : false) : false">
+                <li ng-repeat="menu in vm.menu track by $index" uib-dropdown ng-show="menu.displayYn ? (permissionCheck.check(menu.permissionUrl) ? menu.displayYn : false) : false">
                     <a ng-click="vm.collapseNavbar()" class="dropdown-toggle" uib-dropdown-toggle>
                         <span class="fa fa-flask"></span>
                         <span class="hidden-sm" translate="{{menu.name}}">{{menu.name}}</span>
@@ -257,7 +257,7 @@
 </nav>
 
 <script type="text/ng-template" id="nodes_renderer.html">
-    <a ui-sref="{{child.urlPath}}" ng-click="vm.collapseNavbar()" ng-show="child.name != null && child.displayYn ? (!permissionCheck.check(child.permissionUrl) ? child.displayYn : false) : false">
+    <a ui-sref="{{child.urlPath}}" ng-click="vm.collapseNavbar()" ng-show="child.name != null && child.displayYn ? (permissionCheck.check(child.permissionUrl) ? child.displayYn : false) : false">
         <span class="glyphicon glyphicon-asterisk"></span>&nbsp;
         <span translate="{{child.name}}">{{child.name}}</span>
     </a>

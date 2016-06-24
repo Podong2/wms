@@ -62,6 +62,10 @@
             });
         }
 
+        //$scope.watch("$rootScope.menuList", function(){
+        //
+        //});
+
         vm.getMenu();
 
         //vm.menu = [
