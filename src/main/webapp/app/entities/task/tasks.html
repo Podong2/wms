@@ -1,20 +1,20 @@
 <div>
-    <h2 translate="wmsApp.systemRoleUser.home.title">System Role Users</h2>
+    <h2 translate="wmsApp.task.home.title">Tasks</h2>
     <jhi-alert></jhi-alert>
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="system-role-user.new" >
+                <button class="btn btn-primary" ui-sref="task.new" >
                     <span class="glyphicon glyphicon-plus"></span>
-                    <span class="hidden-xs"  translate="wmsApp.systemRoleUser.home.createLabel">
-                        Create new System Role User
+                    <span class="hidden-xs"  translate="wmsApp.task.home.createLabel">
+                        Create new Task
                     </span>
                 </button>
             </div>
             <div class="col-xs-8 no-padding-right">
                 <form name="searchForm" class="form-inline">
                     <div class="input-group pull-right" >
-                        <input type="text" class="form-control" ng-model="vm.searchQuery" id="searchQuery" placeholder="{{ 'wmsApp.systemRoleUser.home.search' | translate }}">
+                        <input type="text" class="form-control" ng-model="vm.searchQuery" id="searchQuery" placeholder="{{ 'wmsApp.task.home.search' | translate }}">
                         <span  class="input-group-btn width-min" >
                             <button class="btn btn-info" ng-click="vm.search(vm.searchQuery)">
                                 <span class="glyphicon glyphicon-search"></span>
@@ -34,34 +34,44 @@
     <div class="table-responsive">
         <table class="jh-table table table-striped">
             <thead>
-                <tr>
-                    <th><span translate="global.field.id">ID</span></th>
-                    <th><span translate="wmsApp.systemRoleUser.systemRole">System Role</span></th>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="name"><span translate="wmsApp.task.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="dueDate"><span translate="wmsApp.task.dueDate">Due Date</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="contents"><span translate="wmsApp.task.contents">Contents</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="severityId"><span translate="wmsApp.task.severity">Severity</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="taskAttachedFilesId"><span translate="wmsApp.task.taskAttachedFiles">Task Attached Files</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="systemRoleUser in vm.systemRoleUsers track by systemRoleUser.id">
-                    <td><a ui-sref="system-role-user-detail({id:systemRoleUser.id})">{{systemRoleUser.id}}</a></td>
+                <tr ng-repeat="task in vm.tasks track by task.id">
+                    <td><a ui-sref="task-detail({id:task.id})">{{task.id}}</a></td>
+                    <td>{{task.name}}</td>
+                    <td>{{task.dueDate}}</td>
+                    <td>{{task.contents}}</td>
                     <td>
-                        <a ui-sref="system-role-detail({id:systemRoleUser.systemRole.id})">{{systemRoleUser.systemRole.id}}</a>
+                        <a ui-sref="code-detail({id:task.severityId})">{{task.severityId}}</a>
+                    </td>
+                    <td>
+                        <a ui-sref="task-attached-file-detail({id:task.taskAttachedFilesId})">{{task.taskAttachedFilesId}}</a>
                     </td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit"
-                                    ui-sref="system-role-user-detail({id:systemRoleUser.id})"
+                                    ui-sref="task-detail({id:task.id})"
                                     class="btn btn-info btn-sm">
                                 <span class="glyphicon glyphicon-eye-open"></span>
                                 <span class="hidden-xs hidden-sm" translate="entity.action.view"></span>
                             </button>
                             <button type="submit"
-                                    ui-sref="system-role-user.edit({id:systemRoleUser.id})"
+                                    ui-sref="task.edit({id:task.id})"
                                     class="btn btn-primary btn-sm">
                                 <span class="glyphicon glyphicon-pencil"></span>
                                 <span class="hidden-xs hidden-sm" translate="entity.action.edit"></span>
                             </button>
                             <button type="submit"
-                                    ui-sref="system-role-user.delete({id:systemRoleUser.id})"
+                                    ui-sref="task.delete({id:task.id})"
                                     class="btn btn-danger btn-sm">
                                 <span class="glyphicon glyphicon-remove-circle"></span>
                                 <span class="hidden-xs hidden-sm" translate="entity.action.delete"></span>
@@ -71,5 +81,9 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount"></jhi-item-count>
+        <uib-pagination class="pagination-sm" total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
     </div>
 </div>

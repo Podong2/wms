@@ -1,0 +1,34 @@
+
+<div>
+    <h2><span translate="wmsApp.task.detail.title">Task</span> {{vm.task.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span translate="wmsApp.task.name">Name</span></dt>
+        <dd>
+            <span>{{vm.task.name}}</span>
+        </dd>
+        <dt><span translate="wmsApp.task.dueDate">Due Date</span></dt>
+        <dd>
+            <span>{{vm.task.dueDate}}</span>
+        </dd>
+        <dt><span translate="wmsApp.task.contents">Contents</span></dt>
+        <dd>
+            <span>{{vm.task.contents}}</span>
+        </dd>
+        <dt><span translate="wmsApp.task.severity">Severity</span></dt>
+        <dd>
+            <a ui-sref="code-detail({id:vm.task.severityId})">{{vm.task.severityId}}</a>
+        </dd>
+        <dt><span translate="wmsApp.task.taskAttachedFiles">Task Attached Files</span></dt>
+        <dd>
+            <a ui-sref="task-attached-file-detail({id:vm.task.taskAttachedFilesId})">{{vm.task.taskAttachedFilesId}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>

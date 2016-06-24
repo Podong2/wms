@@ -1,20 +1,20 @@
 <div>
-    <h2 translate="wmsApp.systemRoleUser.home.title">System Role Users</h2>
+    <h2 translate="wmsApp.code.home.title">Codes</h2>
     <jhi-alert></jhi-alert>
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-4 no-padding-left">
-                <button class="btn btn-primary" ui-sref="system-role-user.new" >
+                <button class="btn btn-primary" ui-sref="code.new" >
                     <span class="glyphicon glyphicon-plus"></span>
-                    <span class="hidden-xs"  translate="wmsApp.systemRoleUser.home.createLabel">
-                        Create new System Role User
+                    <span class="hidden-xs"  translate="wmsApp.code.home.createLabel">
+                        Create new Code
                     </span>
                 </button>
             </div>
             <div class="col-xs-8 no-padding-right">
                 <form name="searchForm" class="form-inline">
                     <div class="input-group pull-right" >
-                        <input type="text" class="form-control" ng-model="vm.searchQuery" id="searchQuery" placeholder="{{ 'wmsApp.systemRoleUser.home.search' | translate }}">
+                        <input type="text" class="form-control" ng-model="vm.searchQuery" id="searchQuery" placeholder="{{ 'wmsApp.code.home.search' | translate }}">
                         <span  class="input-group-btn width-min" >
                             <button class="btn btn-info" ng-click="vm.search(vm.searchQuery)">
                                 <span class="glyphicon glyphicon-search"></span>
@@ -34,34 +34,40 @@
     <div class="table-responsive">
         <table class="jh-table table table-striped">
             <thead>
-                <tr>
-                    <th><span translate="global.field.id">ID</span></th>
-                    <th><span translate="wmsApp.systemRoleUser.systemRole">System Role</span></th>
+                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
+                    <th jh-sort-by="id"><span translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="name"><span translate="wmsApp.code.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="defaultYn"><span translate="wmsApp.code.defaultYn">Default Yn</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="position"><span translate="wmsApp.code.position">Position</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="color"><span translate="wmsApp.code.color">Color</span> <span class="glyphicon glyphicon-sort"></span></th>
+                    <th jh-sort-by="codeType"><span translate="wmsApp.code.codeType">Code Type</span> <span class="glyphicon glyphicon-sort"></span></th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
-                <tr ng-repeat="systemRoleUser in vm.systemRoleUsers track by systemRoleUser.id">
-                    <td><a ui-sref="system-role-user-detail({id:systemRoleUser.id})">{{systemRoleUser.id}}</a></td>
-                    <td>
-                        <a ui-sref="system-role-detail({id:systemRoleUser.systemRole.id})">{{systemRoleUser.systemRole.id}}</a>
-                    </td>
+                <tr ng-repeat="code in vm.codes track by code.id">
+                    <td><a ui-sref="code-detail({id:code.id})">{{code.id}}</a></td>
+                    <td>{{code.name}}</td>
+                    <td>{{code.defaultYn}}</td>
+                    <td>{{code.position}}</td>
+                    <td>{{code.color}}</td>
+                    <td>{{code.codeType}}</td>
                     <td class="text-right">
                         <div class="btn-group flex-btn-group-container">
                             <button type="submit"
-                                    ui-sref="system-role-user-detail({id:systemRoleUser.id})"
+                                    ui-sref="code-detail({id:code.id})"
                                     class="btn btn-info btn-sm">
                                 <span class="glyphicon glyphicon-eye-open"></span>
                                 <span class="hidden-xs hidden-sm" translate="entity.action.view"></span>
                             </button>
                             <button type="submit"
-                                    ui-sref="system-role-user.edit({id:systemRoleUser.id})"
+                                    ui-sref="code.edit({id:code.id})"
                                     class="btn btn-primary btn-sm">
                                 <span class="glyphicon glyphicon-pencil"></span>
                                 <span class="hidden-xs hidden-sm" translate="entity.action.edit"></span>
                             </button>
                             <button type="submit"
-                                    ui-sref="system-role-user.delete({id:systemRoleUser.id})"
+                                    ui-sref="code.delete({id:code.id})"
                                     class="btn btn-danger btn-sm">
                                 <span class="glyphicon glyphicon-remove-circle"></span>
                                 <span class="hidden-xs hidden-sm" translate="entity.action.delete"></span>
@@ -71,5 +77,9 @@
                 </tr>
             </tbody>
         </table>
+    </div>
+    <div class="text-center">
+        <jhi-item-count page="vm.page" total="vm.queryCount"></jhi-item-count>
+        <uib-pagination class="pagination-sm" total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
     </div>
 </div>

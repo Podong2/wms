@@ -1,0 +1,26 @@
+{
+    "wmsApp": {
+        "code" : {
+            "home": {
+                "title": "Codes",
+                "createLabel": "Code を追加",
+                "createOrEditLabel": "Codeを追加または編集",
+                "search": "Search for Code"
+            },
+            "created": "A new Code is created with identifier {{ param }}",
+            "updated": "A Code is updated with identifier {{ param }}",
+            "deleted": "A Code is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Code {{ id }}を削除してもよろしいですか？"
+            },
+            "detail": {
+                "title": "Code"
+            },
+            "name": "Name",
+            "defaultYn": "Default Yn",
+            "position": "Position",
+            "color": "Color",
+            "codeType": "Code Type"
+        }
+    }
+}

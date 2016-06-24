@@ -1,0 +1,22 @@
+{
+    "wmsApp": {
+        "taskAttachedFile" : {
+            "home": {
+                "title": "Task Attached Files",
+                "createLabel": "Create a new Task Attached File",
+                "createOrEditLabel": "Create or edit a Task Attached File",
+                "search": "Search for Task Attached File"
+            },
+            "created": "A new Task Attached File is created with identifier {{ param }}",
+            "updated": "A Task Attached File is updated with identifier {{ param }}",
+            "deleted": "A Task Attached File is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Task Attached File {{ id }}?"
+            },
+            "detail": {
+                "title": "Task Attached File"
+            },
+            "task": "Task"
+        }
+    }
+}

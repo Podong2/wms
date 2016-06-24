@@ -1,0 +1,34 @@
+
+<div>
+    <h2><span translate="wmsApp.code.detail.title">Code</span> {{vm.code.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span translate="wmsApp.code.name">Name</span></dt>
+        <dd>
+            <span>{{vm.code.name}}</span>
+        </dd>
+        <dt><span translate="wmsApp.code.defaultYn">Default Yn</span></dt>
+        <dd>
+            <span>{{vm.code.defaultYn}}</span>
+        </dd>
+        <dt><span translate="wmsApp.code.position">Position</span></dt>
+        <dd>
+            <span>{{vm.code.position}}</span>
+        </dd>
+        <dt><span translate="wmsApp.code.color">Color</span></dt>
+        <dd>
+            <span>{{vm.code.color}}</span>
+        </dd>
+        <dt><span translate="wmsApp.code.codeType">Code Type</span></dt>
+        <dd>
+            <span>{{vm.code.codeType}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>

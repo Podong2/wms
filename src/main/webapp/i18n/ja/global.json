@@ -16,6 +16,9 @@
                 "systemRole": "System Role",
                 "systemRolePermission": "System Role Permission",
                 "systemRoleUser": "System Role User",
+                "task": "Task",
+                "code": "Code",
+                "taskAttachedFile": "Task Attached File",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
