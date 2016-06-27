@@ -283,7 +283,7 @@ public class UserResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<ManagedUserDTO> findByName(@ModelAttribute String name) {
+    public ResponseEntity<ManagedUserDTO> findByName(@RequestParam String name) {
         log.debug("REST request to get User name : {}", name);
         return userService.findByName(name)
                 .map(ManagedUserDTO::new)
