@@ -3,6 +3,7 @@ package kr.wisestone.wms.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import kr.wisestone.wms.domain.Task;
 import kr.wisestone.wms.service.TaskService;
+import kr.wisestone.wms.web.rest.condition.TaskCondition;
 import kr.wisestone.wms.web.rest.util.HeaderUtil;
 import kr.wisestone.wms.web.rest.util.PaginationUtil;
 import kr.wisestone.wms.web.rest.dto.TaskDTO;
@@ -37,13 +38,13 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 public class TaskResource {
 
     private final Logger log = LoggerFactory.getLogger(TaskResource.class);
-        
+
     @Inject
     private TaskService taskService;
-    
+
     @Inject
     private TaskMapper taskMapper;
-    
+
     /**
      * POST  /tasks : Create a new task.
      *
@@ -102,10 +103,10 @@ public class TaskResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Transactional(readOnly = true)
-    public ResponseEntity<List<TaskDTO>> getAllTasks(Pageable pageable)
+    public ResponseEntity<List<TaskDTO>> getAllTasks(@RequestBody TaskCondition taskCondition, Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Tasks");
-        Page<Task> page = taskService.findAll(pageable); 
+        Page<Task> page = taskService.findAll(taskCondition, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/tasks");
         return new ResponseEntity<>(taskMapper.tasksToTaskDTOs(page.getContent()), headers, HttpStatus.OK);
     }

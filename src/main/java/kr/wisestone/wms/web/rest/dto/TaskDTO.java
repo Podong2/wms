@@ -21,6 +21,8 @@ public class TaskDTO implements Serializable {
 
     private Long severityId;
 
+    private Long assigneeId;
+
     public Long getId() {
         return id;
     }
@@ -56,6 +58,14 @@ public class TaskDTO implements Serializable {
 
     public void setSeverityId(Long codeId) {
         this.severityId = codeId;
+    }
+
+    public Long getAssigneeId() {
+        return assigneeId;
+    }
+
+    public void setAssigneeId(Long assigneeId) {
+        this.assigneeId = assigneeId;
     }
 
     @Override

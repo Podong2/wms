@@ -17,7 +17,7 @@ import java.util.Set;
 @Table(name = "owl_task")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "task")
-public class Task extends AbstractAuditingEntity implements Serializable {
+public class Task extends AbstractAuditingEntity implements Serializable, Traceable {
 
     private static final long serialVersionUID = 1L;
 
@@ -48,6 +48,11 @@ public class Task extends AbstractAuditingEntity implements Serializable {
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
     private Set<TaskAttachedFile> taskAttachedFiles = new HashSet<>();
 
+    @ManyToOne
+    @JoinColumn(name = "assignee_id")
+    private User assignee;
+
+    @Override
     public Long getId() {
         return id;
     }
@@ -94,6 +99,28 @@ public class Task extends AbstractAuditingEntity implements Serializable {
 
     public void setTaskAttachedFiles(Set<TaskAttachedFile> taskAttachedFiles) {
         this.taskAttachedFiles = taskAttachedFiles;
+    }
+
+    public User getAssignee() {
+        return assignee;
+    }
+
+    public void setAssignee(User assignee) {
+        this.assignee = assignee;
+    }
+
+    @Override
+    public TraceLog getTraceLog(String persisType) {
+
+        TraceLog logRecord = TraceLog.builder(this, persisType);
+
+        if (Traceable.PERSIST_TYPE_INSERT.equals(persisType)) {
+            logRecord.setNewValue(this.getName());
+        } else if (Traceable.PERSIST_TYPE_DELETE.equals(persisType)) {
+            logRecord.setOldValue(this.getName());
+        }
+
+        return logRecord;
     }
 
     @Override

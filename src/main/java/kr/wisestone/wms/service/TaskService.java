@@ -1,8 +1,11 @@
 package kr.wisestone.wms.service;
 
+import com.mysema.query.BooleanBuilder;
+import kr.wisestone.wms.domain.QTask;
 import kr.wisestone.wms.domain.Task;
 import kr.wisestone.wms.repository.TaskRepository;
 import kr.wisestone.wms.repository.search.TaskSearchRepository;
+import kr.wisestone.wms.web.rest.condition.TaskCondition;
 import kr.wisestone.wms.web.rest.dto.TaskDTO;
 import kr.wisestone.wms.web.rest.mapper.TaskMapper;
 import org.slf4j.Logger;
@@ -11,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import javax.inject.Inject;
 import java.util.LinkedList;
@@ -28,19 +32,19 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 public class TaskService {
 
     private final Logger log = LoggerFactory.getLogger(TaskService.class);
-    
+
     @Inject
     private TaskRepository taskRepository;
-    
+
     @Inject
     private TaskMapper taskMapper;
-    
+
     @Inject
     private TaskSearchRepository taskSearchRepository;
-    
+
     /**
      * Save a task.
-     * 
+     *
      * @param taskDTO the entity to save
      * @return the persisted entity
      */
@@ -55,14 +59,38 @@ public class TaskService {
 
     /**
      *  Get all the tasks.
-     *  
+     *
      *  @param pageable the pagination information
      *  @return the list of entities
      */
-    @Transactional(readOnly = true) 
-    public Page<Task> findAll(Pageable pageable) {
-        log.debug("Request to get all Tasks");
-        Page<Task> result = taskRepository.findAll(pageable); 
+    @Transactional(readOnly = true)
+    public Page<Task> findAll(TaskCondition taskCondition, Pageable pageable) {
+        log.debug("Request to get all Tasks by condition");
+
+        QTask $task = QTask.task;
+
+        BooleanBuilder predicate = new BooleanBuilder();
+
+        if(StringUtils.hasText(taskCondition.getName()))
+            predicate.and($task.name.contains(taskCondition.getName()));
+
+        if(StringUtils.hasText(taskCondition.getDueDateFrom()))
+            predicate.and($task.dueDate.goe(taskCondition.getDueDateFrom()));
+
+        if(StringUtils.hasText(taskCondition.getDueDateTo()))
+            predicate.and($task.dueDate.loe(taskCondition.getDueDateTo()));
+
+        if(!taskCondition.getSeverities().isEmpty())
+            predicate.and($task.severity.id.in(taskCondition.getSeverities()));
+
+        if(StringUtils.hasText(taskCondition.getContents()))
+            predicate.and($task.contents.contains(taskCondition.getContents()));
+
+        if(!taskCondition.getAssignees().isEmpty())
+            predicate.and($task.assignee.id.in(taskCondition.getAssignees()));
+
+        Page<Task> result = taskRepository.findAll(predicate, pageable);
+
         return result;
     }
 
@@ -72,7 +100,7 @@ public class TaskService {
      *  @param id the id of the entity
      *  @return the entity
      */
-    @Transactional(readOnly = true) 
+    @Transactional(readOnly = true)
     public TaskDTO findOne(Long id) {
         log.debug("Request to get Task : {}", id);
         Task task = taskRepository.findOne(id);
@@ -81,8 +109,17 @@ public class TaskService {
     }
 
     /**
+     *  Delete the task by ids.
+     *
+     *  @param ids the id list of the entity
+     */
+    public void delete(List<Long> ids) {
+        ids.stream().forEach(this::delete);
+    }
+
+    /**
      *  Delete the  task by id.
-     *  
+     *
      *  @param id the id of the entity
      */
     public void delete(Long id) {
