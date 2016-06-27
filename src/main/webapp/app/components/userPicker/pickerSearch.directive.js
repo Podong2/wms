@@ -83,7 +83,6 @@ pickerSearch.$inject=['$document', '$log']
                         for (var userCount in $scope.serverList) {
                             if ($scope.serverList[userCount].id != target.id) {
                                 temp.push($scope.serverList[userCount]);
-                                $scope.$parent.vm.searchQuery.assigneeName.push($scope.save[count].name)
                             }
                         }
                         $scope.serverList = temp;

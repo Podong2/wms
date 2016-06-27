@@ -12,18 +12,18 @@
 
 
 (function() {
-    var ReactBsTable = require('react-bootstrap-table');
-    var BootstrapTable = ReactBsTable.BootstrapTable;
-    var TableHeaderColumn = ReactBsTable.TableHeaderColumn;
+    //var ReactBsTable = require('react-bootstrap-table');
+    var BootstrapTable = window.BootstrapTable;
+    var TableHeaderColumn = window.TableHeaderColumn;
     var WmsDataComponent = React.createClass({
 
 
-        displayName: 'LIST',
+        //displayName: 'LIST',
         render: function () {
 
             var data = this.props;
             data = [{"0": "1", "1": "2", "2": "3", "3": "4", "4": "5"}];
-            var products = [
+            var data = [
                 {
                     id: 1,
                     name: "Product1",
@@ -51,7 +51,7 @@
                 }
             ];
 
-            var rows = products.map(function (products) {
+            var rows = data.map(function (datum) {
                 var clickHandler = function (ev) {
                     console.log("Still in reactJs");
                     console.log(ev);
@@ -64,7 +64,7 @@
                     //    <td>{datum[3]}</td>
                     //    <td>{datum[4]}</td>
                     //</tr>
-                        <BootstrapTable data={products} striped={true} hover={true}>
+                        <BootstrapTable data={datum} striped={true} hover={true}>
                             <TableHeaderColumn isKey={true} dataField="id">Product ID</TableHeaderColumn>
                             <TableHeaderColumn dataField="name">Product Name</TableHeaderColumn>
                             <TableHeaderColumn dataField="price">Product Price</TableHeaderColumn>

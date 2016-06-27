@@ -61,10 +61,20 @@
         vm.searchQuery = {
             dueDateFrom : "",
             dueDateTo : "",
-            assigneeName : []
+            assignee : [],
+            name : ""
         };
 
         vm.multipleValue=[];
+
+        // 담당자 변경
+        $scope.$watchCollection("vm.assigneeUsers", function(newValue, oldValue){
+            vm.searchQuery.assignee =[];
+            angular.forEach(newValue, function(value){
+                vm.searchQuery.assignee.push(value.name);
+            });
+
+        });
 
         // date 포멧 변경
         $scope.$watch("vm.dueDateFrom.date", function(newValue, oldValue){
@@ -202,6 +212,34 @@
             }); //user search
             return deferred.promise;
         }
+
+        vm.products = [
+            {
+                id: 1,
+                name: "Product1",
+                price: 120
+            },{
+                id: 2,
+                name: "Product2",
+                price: 80
+            },{
+                id: 3,
+                name: "Product3",
+                price: 207
+            },{
+                id: 4,
+                name: "Product4",
+                price: 100
+            },{
+                id: 5,
+                name: "Product5",
+                price: 150
+            },{
+                id: 6,
+                name: "Product1",
+                price: 160
+            }
+        ];
 
     }
 })();
