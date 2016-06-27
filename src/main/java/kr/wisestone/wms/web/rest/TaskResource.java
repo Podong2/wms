@@ -103,7 +103,7 @@ public class TaskResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Transactional(readOnly = true)
-    public ResponseEntity<List<TaskDTO>> getAllTasks(@RequestBody TaskCondition taskCondition, Pageable pageable)
+    public ResponseEntity<List<TaskDTO>> getAllTasks(@ModelAttribute TaskCondition taskCondition, Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Tasks");
         Page<Task> page = taskService.findAll(taskCondition, pageable);
