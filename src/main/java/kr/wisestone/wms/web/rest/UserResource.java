@@ -272,6 +272,25 @@ public class UserResource {
                 .map(managedUserDTO -> new ResponseEntity<>(managedUserDTO, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
+    /**
+     * GET  /users/findByName : get the user by name.
+     *
+     * @param name the name of the user to find
+     * @return the ResponseEntity with status 200 (OK) and with body the "login" user, or with status 404 (Not Found)
+     */
+    @RequestMapping(value = "/users/findByName",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<ManagedUserDTO> findByName(@ModelAttribute String name) {
+        log.debug("REST request to get User name : {}", name);
+        return userService.findByName(name)
+                .map(ManagedUserDTO::new)
+                .map(managedUserDTO -> new ResponseEntity<>(managedUserDTO, HttpStatus.OK))
+                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
     /**
      * DELETE  USER :login : delete the "login" User.
      *

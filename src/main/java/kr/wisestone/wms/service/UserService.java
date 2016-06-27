@@ -311,4 +311,14 @@ public class UserService {
 
         return user;
     }
+
+    public Optional<User> findByName(String name) {
+
+        Optional<User> user = this.userRepository.findOneByName(name);
+
+        return user.map(u -> {
+            u.getAuthorities().size();
+            return u;
+        });
+    }
 }

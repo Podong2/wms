@@ -22,6 +22,8 @@ public interface UserRepository extends JpaRepository<User, Long>, QueryDslPredi
 
     Optional<User> findOneByEmail(String email);
 
+    Optional<User> findOneByName(String name);
+
     Optional<User> findOneByLogin(String login);
 
     Optional<User> findOneById(Long userId);
