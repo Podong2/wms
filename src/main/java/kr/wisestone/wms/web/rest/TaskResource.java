@@ -8,10 +8,17 @@ import kr.wisestone.wms.web.rest.util.HeaderUtil;
 import kr.wisestone.wms.web.rest.util.PaginationUtil;
 import kr.wisestone.wms.web.rest.dto.TaskDTO;
 import kr.wisestone.wms.web.rest.mapper.TaskMapper;
+import org.elasticsearch.common.unit.Fuzziness;
+import org.elasticsearch.index.query.MoreLikeThisQueryBuilder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
+import org.springframework.data.elasticsearch.core.query.MoreLikeThisQuery;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
+import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
+import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -44,6 +51,9 @@ public class TaskResource {
 
     @Inject
     private TaskMapper taskMapper;
+
+    @Inject
+    private ElasticsearchTemplate elasticsearchTemplate;
 
     /**
      * POST  /tasks : Create a new task.
@@ -167,4 +177,17 @@ public class TaskResource {
         return new ResponseEntity<>(taskMapper.tasksToTaskDTOs(page.getContent()), headers, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/tasks/findSimilar",
+                    method = RequestMethod.GET,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<TaskDTO>> findSimilar(@RequestParam String name) throws URISyntaxException {
+
+        SearchQuery query = new NativeSearchQueryBuilder().withQuery(
+                                    fuzzyLikeThisQuery("name").likeText(name).maxQueryTerms(12)
+                                ).build();
+
+        List<Task> tasks = elasticsearchTemplate.queryForList(query, Task.class);
+
+        return new ResponseEntity<>(taskMapper.tasksToTaskDTOs(tasks), HttpStatus.OK);
+    }
 }

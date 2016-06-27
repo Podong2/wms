@@ -13,11 +13,15 @@ import java.util.List;
 public interface TaskMapper {
 
     @Mapping(source = "severity.id", target = "severityId")
+    @Mapping(source = "severity.name", target = "severityName")
+    @Mapping(source = "assignee.id", target = "assigneeId")
+    @Mapping(source = "assignee.name", target = "assigneeName")
     TaskDTO taskToTaskDTO(Task task);
 
     List<TaskDTO> tasksToTaskDTOs(List<Task> tasks);
 
     @Mapping(source = "severityId", target = "severity")
+    @Mapping(source = "assigneeId", target = "assignee")
     Task taskDTOToTask(TaskDTO taskDTO);
 
     List<Task> taskDTOsToTasks(List<TaskDTO> taskDTOs);
@@ -31,12 +35,12 @@ public interface TaskMapper {
         return code;
     }
 
-    default TaskAttachedFile taskAttachedFileFromId(Long id) {
+    default User userFromId(Long id) {
         if (id == null) {
             return null;
         }
-        TaskAttachedFile taskAttachedFile = new TaskAttachedFile();
-        taskAttachedFile.setId(id);
-        return taskAttachedFile;
+        User user = new User();
+        user.setId(id);
+        return user;
     }
 }

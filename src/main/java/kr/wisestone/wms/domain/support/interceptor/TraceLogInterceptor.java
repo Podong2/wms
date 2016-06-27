@@ -1,5 +1,6 @@
 package kr.wisestone.wms.domain.support.interceptor;
 
+import kr.wisestone.wms.domain.Code;
 import kr.wisestone.wms.domain.TraceLog;
 import kr.wisestone.wms.domain.Traceable;
 import kr.wisestone.wms.domain.User;
@@ -40,7 +41,7 @@ public class TraceLogInterceptor extends EmptyInterceptor {
 
         if (entity instanceof Traceable) {
 
-            String[] ignoreFields = new String[] { "id", "createdBy", "createdDate", "lastModifiedBy", "lastModifiedDate"};
+            String[] ignoreFields = new String[] { "id", "attachedFiles", "createdBy", "createdDate", "lastModifiedBy", "lastModifiedDate"};
             Field[] allFields = this.getAllFields(entity.getClass(), null);
 
             fieldIteration: for (Field field : allFields) {
@@ -117,21 +118,23 @@ public class TraceLogInterceptor extends EmptyInterceptor {
      * @return
      */
     private String getPropertyState(Object objProperty) {
-        String propertyOldState = null;
+        String propertyState = null;
         try {
             if (objProperty != null) {
                 if (objProperty instanceof User) {
-                    propertyOldState = ((User) objProperty).getName();
+                    propertyState = ((User) objProperty).getName();
+                } else if (objProperty instanceof Code) {
+                    propertyState = ((Code) objProperty).getName();
                 } else {
-                    propertyOldState = objProperty.toString();
+                    propertyState = objProperty.toString();
                 }
             } else {
-                propertyOldState = "";
+                propertyState = "";
             }
         } catch (Exception e) {
-            propertyOldState = "";
+            propertyState = "";
         }
-        return propertyOldState;
+        return propertyState;
     }
 
     @Override
