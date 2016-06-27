@@ -38,16 +38,16 @@ import static org.elasticsearch.index.query.QueryBuilders.*;
 public class CodeResource {
 
     private final Logger log = LoggerFactory.getLogger(CodeResource.class);
-        
+
     @Inject
     private CodeRepository codeRepository;
-    
+
     @Inject
     private CodeMapper codeMapper;
-    
+
     @Inject
     private CodeSearchRepository codeSearchRepository;
-    
+
     /**
      * POST  /codes : Create a new code.
      *
@@ -115,9 +115,28 @@ public class CodeResource {
     public ResponseEntity<List<CodeDTO>> getAllCodes(Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Codes");
-        Page<Code> page = codeRepository.findAll(pageable); 
+        Page<Code> page = codeRepository.findAll(pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/codes");
         return new ResponseEntity<>(codeMapper.codesToCodeDTOs(page.getContent()), headers, HttpStatus.OK);
+    }
+
+    /**
+     * GET  /codes : get all the codes.
+     *
+     * @param codeType the code's type
+     * @return the ResponseEntity with status 200 (OK) and the list of codes in body
+     * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
+     */
+    @RequestMapping(value = "/codes/findByCodeType",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    @Transactional(readOnly = true)
+    public ResponseEntity<List<CodeDTO>> findByCodeType(@RequestParam String codeType)
+        throws URISyntaxException {
+        log.debug("REST request to get a page of Codes");
+        List<Code> list = codeRepository.findByCodeType(codeType);
+        return new ResponseEntity<>(codeMapper.codesToCodeDTOs(list), HttpStatus.OK);
     }
 
     /**

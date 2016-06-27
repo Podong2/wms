@@ -12,4 +12,5 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface CodeRepository extends JpaRepository<Code,Long> {
 
+    List<Code> findByCodeType(String codeType);
 }

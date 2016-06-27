@@ -19,6 +19,10 @@ public class Code extends AbstractAuditingEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private static final String CODE_TYPE_SEVERITY = "severity";
+    private static final String CODE_TYPE_PRIORITY = "priority";
+    private static final String CODE_TYPE_RESOLUTION = "resolution";
+
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "codeSeqGenerator")
     @TableGenerator(name = "codeSeqGenerator"
