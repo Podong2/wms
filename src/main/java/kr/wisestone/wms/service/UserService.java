@@ -1,6 +1,9 @@
 package kr.wisestone.wms.service;
 
+import com.google.common.collect.Lists;
+import com.mysema.query.BooleanBuilder;
 import kr.wisestone.wms.domain.Authority;
+import kr.wisestone.wms.domain.QUser;
 import kr.wisestone.wms.domain.User;
 import kr.wisestone.wms.repository.AuthorityRepository;
 import kr.wisestone.wms.repository.CompanyRepository;
@@ -312,13 +315,14 @@ public class UserService {
         return user;
     }
 
-    public Optional<User> findByNameLike(String name) {
+    public List<User> findByNameLike(String name) {
 
-        Optional<User> user = this.userRepository.findOneByNameLike(name);
+        BooleanBuilder predicate = new BooleanBuilder();
 
-        return user.map(u -> {
-            u.getAuthorities().size();
-            return u;
-        });
+        predicate.and(QUser.user.name.contains(name));
+
+        List<User> users = Lists.newArrayList(this.userRepository.findAll(predicate));
+
+        return users;
     }
 }

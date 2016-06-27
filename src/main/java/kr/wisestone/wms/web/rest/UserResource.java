@@ -283,12 +283,16 @@ public class UserResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<ManagedUserDTO> findByName(@RequestParam String name) {
+    public ResponseEntity<List<ManagedUserDTO>> findByName(@RequestParam("name") String name) {
         log.debug("REST request to get User name : {}", name);
-        return userService.findByNameLike(name)
-                .map(ManagedUserDTO::new)
-                .map(managedUserDTO -> new ResponseEntity<>(managedUserDTO, HttpStatus.OK))
-                .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+
+        List<User> users = userService.findByNameLike(name);
+
+        List<ManagedUserDTO> managedUserDTOs = users.stream()
+            .map(ManagedUserDTO::new)
+            .collect(Collectors.toList());
+
+        return new ResponseEntity<>(managedUserDTOs, HttpStatus.OK);
     }
 
     /**

@@ -29,5 +29,5 @@ public interface UserRepository extends JpaRepository<User, Long>, QueryDslPredi
     @Override
     void delete(User t);
 
-    Optional<User> findOneByNameLike(String name);
+    List<User> findByNameLike(String name);
 }
