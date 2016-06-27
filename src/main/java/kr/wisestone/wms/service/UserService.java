@@ -312,9 +312,9 @@ public class UserService {
         return user;
     }
 
-    public Optional<User> findByName(String name) {
+    public Optional<User> findByNameLike(String name) {
 
-        Optional<User> user = this.userRepository.findOneByName(name);
+        Optional<User> user = this.userRepository.findOneByNameLike(name);
 
         return user.map(u -> {
             u.getAuthorities().size();

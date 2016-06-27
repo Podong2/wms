@@ -285,7 +285,7 @@ public class UserResource {
     @Timed
     public ResponseEntity<ManagedUserDTO> findByName(@RequestParam String name) {
         log.debug("REST request to get User name : {}", name);
-        return userService.findByName(name)
+        return userService.findByNameLike(name)
                 .map(ManagedUserDTO::new)
                 .map(managedUserDTO -> new ResponseEntity<>(managedUserDTO, HttpStatus.OK))
                 .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));

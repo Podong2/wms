@@ -22,8 +22,6 @@ public interface UserRepository extends JpaRepository<User, Long>, QueryDslPredi
 
     Optional<User> findOneByEmail(String email);
 
-    Optional<User> findOneByName(String name);
-
     Optional<User> findOneByLogin(String login);
 
     Optional<User> findOneById(Long userId);
@@ -31,4 +29,5 @@ public interface UserRepository extends JpaRepository<User, Long>, QueryDslPredi
     @Override
     void delete(User t);
 
+    Optional<User> findOneByNameLike(String name);
 }
