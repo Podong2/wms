@@ -4,6 +4,10 @@ body {
     color: #333;
 }
 
+p{
+    margin: 0;
+}
+
 /* ==========================================================================
 Hide ng-cloak on page load, https://docs.angularjs.org/api/ng/directive/ngCloak
 ========================================================================== */
@@ -916,5 +920,65 @@ tr.angular-ui-tree-empty {
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
+}
+/* ------------------------ Tree end -------------------------- */
+
+/* ----------- datePicker custom ----------- */
+.form-group{
+    width: 210px;
+}
+.sectionDatePicker{
+    position: absolute;
+    border: 1px solid #ccc;
+    z-index: 1060;
+    max-width: 276px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.42857143;
+    text-align: start;
+    text-decoration: none;
+    text-shadow: none;
+    text-transform: none;
+    letter-spacing: normal;
+    word-break: normal;
+    word-spacing: normal;
+    word-wrap: normal;
+    white-space: normal;
+    background-color: #fafafa;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 6px;
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    display: none;
+}
+.sectionDatePicker.on {
+    display: block;
+}
+.sectionDatePicker .pickerBtnArea{
+    margin: 6px;
+}
+.sectionDatePicker .pickerArea{
+    margin: 6px;
+}
+.sectionDatePicker .title{
+    padding: 8px;
+    color : #fff;
+    font-weight: 600;
+    background-color: #89A7FF;
+    border-bottom: 1px solid #ccc;
+}
+.form-group .dueDateValues{
+    position: absolute;
+    width: 100%;
+    z-index: 10;
+    right: -10px;
+    top: 8px;
+    cursor: pointer;
+}
+
+.nya-bs-select{
+    width: 196px;
 }
 

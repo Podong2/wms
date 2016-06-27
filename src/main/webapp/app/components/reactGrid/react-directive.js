@@ -10,32 +10,65 @@
  * Created by 와이즈스톤 on 2016-06-19.
  */
 
+
 (function() {
+    var ReactBsTable = require('react-bootstrap-table');
+    var BootstrapTable = ReactBsTable.BootstrapTable;
+    var TableHeaderColumn = ReactBsTable.TableHeaderColumn;
     var WmsDataComponent = React.createClass({
+
+
         displayName: 'LIST',
         render: function () {
 
             var data = this.props;
             data = [{"0": "1", "1": "2", "2": "3", "3": "4", "4": "5"}];
-            var rows = data.map(function (datum) {
+            var products = [
+                {
+                    id: 1,
+                    name: "Product1",
+                    price: 120
+                },{
+                    id: 2,
+                    name: "Product2",
+                    price: 80
+                },{
+                    id: 3,
+                    name: "Product3",
+                    price: 207
+                },{
+                    id: 4,
+                    name: "Product4",
+                    price: 100
+                },{
+                    id: 5,
+                    name: "Product5",
+                    price: 150
+                },{
+                    id: 6,
+                    name: "Product1",
+                    price: 160
+                }
+            ];
+
+            var rows = products.map(function (products) {
                 var clickHandler = function (ev) {
                     console.log("Still in reactJs");
                     console.log(ev);
                 }
                 return (
-                    //React.DOM.tr({onClick: clickHandler},
-                    //React.DOM.td(null, datum['0']),
-                    //React.DOM.td(null, datum['1']),
-                    //React.DOM.td(null, datum['2']),
-                    //React.DOM.td(null, datum['3']),
-                    //React.DOM.td(null, datum['4']))
-                    <tr onclick={clickHandler}>
-                        <td>{datum[0]}</td>
-                        <td>{datum[1]}</td>
-                        <td>{datum[2]}</td>
-                        <td>{datum[3]}</td>
-                        <td>{datum[4]}</td>
-                    </tr>
+                    //<tr onclick={clickHandler}>
+                    //    <td>{datum[0]}</td>
+                    //    <td>{datum[1]}</td>
+                    //    <td>{datum[2]}</td>
+                    //    <td>{datum[3]}</td>
+                    //    <td>{datum[4]}</td>
+                    //</tr>
+                        <BootstrapTable data={products} striped={true} hover={true}>
+                            <TableHeaderColumn isKey={true} dataField="id">Product ID</TableHeaderColumn>
+                            <TableHeaderColumn dataField="name">Product Name</TableHeaderColumn>
+                            <TableHeaderColumn dataField="price">Product Price</TableHeaderColumn>
+                        </BootstrapTable>
                 );
             });
 
