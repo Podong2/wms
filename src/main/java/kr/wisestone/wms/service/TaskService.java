@@ -2,6 +2,7 @@ package kr.wisestone.wms.service;
 
 import com.google.common.collect.Lists;
 import com.mysema.query.BooleanBuilder;
+import kr.wisestone.wms.domain.AttachedFile;
 import kr.wisestone.wms.domain.QTask;
 import kr.wisestone.wms.domain.Task;
 import kr.wisestone.wms.domain.User;
@@ -17,6 +18,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
 import java.util.LinkedList;
@@ -50,16 +52,29 @@ public class TaskService {
     @Inject
     private UserService userService;
 
+    @Inject
+    private  AttachedFileService attachedFileService;
+
     /**
      * Save a task.
      *
      * @param taskDTO the entity to save
+     * @param files
      * @return the persisted entity
      */
     @Transactional
-    public TaskDTO save(TaskDTO taskDTO) {
+    public TaskDTO save(TaskDTO taskDTO, List<MultipartFile> files) {
         log.debug("Request to save Task : {}", taskDTO);
+
         Task task = taskMapper.taskDTOToTask(taskDTO);
+
+        for(MultipartFile multipartFile : files) {
+
+            AttachedFile attachedFile = this.attachedFileService.saveFile(multipartFile);
+
+            task.addAttachedFile(attachedFile);
+        }
+
         task = taskRepository.save(task);
         taskSearchRepository.save(task);
 
@@ -164,9 +179,17 @@ public class TaskService {
         return taskSearchRepository.search(queryStringQuery(query), pageable);
     }
 
-    public TaskDTO update(TaskDTO taskDTO) {
+    public TaskDTO update(TaskDTO taskDTO, List<MultipartFile> files) {
 
         Task task = taskMapper.taskDTOToTask(taskDTO);
+
+        for(MultipartFile multipartFile : files) {
+
+            AttachedFile attachedFile = this.attachedFileService.saveFile(multipartFile);
+
+            task.addAttachedFile(attachedFile);
+        }
+
         task = taskRepository.save(task);
         taskSearchRepository.save(task);
         TaskDTO result = taskMapper.taskToTaskDTO(task);

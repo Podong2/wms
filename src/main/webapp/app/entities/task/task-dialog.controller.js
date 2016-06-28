@@ -43,7 +43,9 @@
             } else {
                 //Task.save(vm.task, onSaveSuccess, onSaveError);
 
-                $log.debug("files : ", $scope.files);
+                if (vm.task.id === null) {
+                    vm.task.id = "";
+                }
 
                 TaskEdit.addTask({
                     method : "POST",

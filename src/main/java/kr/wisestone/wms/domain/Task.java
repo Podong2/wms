@@ -1,5 +1,6 @@
 package kr.wisestone.wms.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -46,6 +47,7 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
     private Code severity;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
     private Set<TaskAttachedFile> taskAttachedFiles = new HashSet<>();
 
     @ManyToOne
@@ -151,5 +153,18 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
             ", dueDate='" + dueDate + "'" +
             ", contents='" + contents + "'" +
             '}';
+    }
+
+    public TaskAttachedFile addAttachedFile(AttachedFile attachedFile) {
+
+        if(attachedFile == null) {
+            return null;
+        }
+
+        TaskAttachedFile taskAttachedFile = new TaskAttachedFile(this, attachedFile);
+
+        this.taskAttachedFiles.add(taskAttachedFile);
+
+        return taskAttachedFile;
     }
 }

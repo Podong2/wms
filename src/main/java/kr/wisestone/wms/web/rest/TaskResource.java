@@ -68,17 +68,15 @@ public class TaskResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<TaskDTO> createTask(MultipartHttpServletRequest request) throws URISyntaxException {
-//        log.debug("REST request to save Task : {}", taskDTO);
-//        if (taskDTO.getId() != null) {
-//            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("task", "idexists", "A new task cannot already have an ID")).body(null);
-//        }
+    public ResponseEntity<TaskDTO> createTask(TaskDTO taskDTO, MultipartHttpServletRequest request) throws URISyntaxException {
+        log.debug("REST request to save Task : {}", taskDTO);
+        if (taskDTO.getId() != null) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("task", "idexists", "A new task cannot already have an ID")).body(null);
+        }
 
-        List<MultipartFile> multipartFiles = request.getFiles("file");
+        List<MultipartFile> files = request.getFiles("file");
 
-        String name = request.getParameter("name");
-
-        TaskDTO result = null;
+        TaskDTO result = taskService.save(taskDTO, files);
         return ResponseEntity.created(new URI("/api/tasks/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("task", result.getId().toString()))
             .body(result);
@@ -97,12 +95,15 @@ public class TaskResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<TaskDTO> updateTask(@RequestBody TaskDTO taskDTO, MultipartHttpServletRequest request) throws URISyntaxException {
+    public ResponseEntity<TaskDTO> updateTask(TaskDTO taskDTO, MultipartHttpServletRequest request) throws URISyntaxException {
         log.debug("REST request to update Task : {}", taskDTO);
         if (taskDTO.getId() == null) {
-            return createTask(request);
+            return createTask(taskDTO, request);
         }
-        TaskDTO result = taskService.update(taskDTO);
+
+        List<MultipartFile> files = request.getFiles("file");
+
+        TaskDTO result = taskService.update(taskDTO, files);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("task", taskDTO.getId().toString()))
             .body(result);

@@ -41,6 +41,15 @@ public class TaskAttachedFile extends AbstractAuditingEntity implements Serializ
     @JoinColumn(name = "attached_file_id")
     private AttachedFile attachedFile;
 
+    public TaskAttachedFile() {
+
+    }
+
+    public TaskAttachedFile(Task task, AttachedFile attachedFile) {
+        this.setTask(task);
+        this.setAttachedFile(attachedFile);
+    }
+
     public Long getId() {
         return id;
     }
