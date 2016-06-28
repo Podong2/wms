@@ -26,7 +26,9 @@
             'drag',
             'jkuri.gallery',
             'react',
-            'ui.tree'
+            'ui.tree',
+            'pasvaz.bindonce',
+            'smart-table'
         ])
         .run(run);
 

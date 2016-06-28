@@ -1,0 +1,56 @@
+<div class="table_C">
+    <div bindonce bo-class="vm.scrollMode == true ? 'table-scroll' : ''" style="box-shadow: none;">
+        <table st-safe-src="getData()" st-table="displayCollection" class="table table-bordered" bindonce>
+            <thead>
+            <tr>
+                <th bindonce ng-repeat="tableConfig in tableConfigs"
+                    bo-class="[tableConfig.hAlign, tableConfig.hWidth, tableConfig.visible]">
+                    <div bo-switch="tableConfig.dType">
+                        <div bo-switch-when="check">
+                            <input type="checkbox"
+                                   ng-model="tableConfig.hChecked"
+                                   ng-click="tableService.toggleChecked(tableConfig.hChecked, displayCollection)">
+                        </div>
+                        <div bo-switch-default st-sort="{{tableConfig.dAttr}}" style="margin-bottom: 4px;">
+                            <span translate="{{tableConfig.hName}}"></span>
+                        </div>
+                    </div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr bindonce ng-repeat="row in displayCollection" ng-init="selectIndex = $index" bo-class="row.checked == true ? 'table-active' : ''">
+                <td bindonce ng-repeat="tableConfig in tableConfigs" bo-class="[tableConfig.dAlign, tableConfig.visible]">
+                    <div bo-switch="tableConfig.dType">
+                        <div bo-switch-when="check">
+                            <input type="checkbox" style="top:0px;" ng-model="row.checked" ng-disabled="row.readOnly">
+                        </div>
+                        <div bo-switch-when="renderer">
+                            <custom-renderer table-attr="{{tableConfig.dRendererAttr}}" index="{{selectIndex}}" data="row" property="{{tableConfig.dRenderer}}"></custom-renderer>
+                        </div>
+                        <div bo-switch-when="date">
+                            {{ ::row[tableConfig.dAttr] | date: tableService.getDateFormat(tableConfig.dDateFormat, row[tableConfig.dAttr]) }}
+                        </div>
+                        <div bo-switch-default>
+                            <div bo-switch="tableConfig.dHtmlConverter">
+                                <div bo-switch-when="true">
+                                    <span ng-bind-html="tableService.convertHtml(row[tableConfig.dAttr])"></span>
+                                </div>
+                                <div bo-switch-when="false" translate="{{::row[tableConfig.dAttr]}}">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr ng-if="getData().length == 0 || getData() == null">
+                <td colspan="{{tableConfigs.length}}">
+                    <span translate="common.dataNull">데이터가 없습니다.</span>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+

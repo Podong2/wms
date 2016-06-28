@@ -5,9 +5,9 @@
         .module('wmsApp')
         .controller('TaskController', TaskController);
 
-    TaskController.$inject = ['$scope', '$state', 'Task', 'TaskSearch', 'ParseLinks', 'AlertService', 'pagingParams', 'paginationConstants', 'FIndCode', 'User', '$log', '$rootScope', 'findUser', '$q'];
+    TaskController.$inject = ['$scope', '$state', 'Task', 'TaskSearch', 'ParseLinks', 'AlertService', 'pagingParams', 'paginationConstants', 'FIndCode', 'User', '$log', '$rootScope', 'findUser', '$q', 'TaskListSearch', 'tableService'];
 
-    function TaskController ($scope, $state, Task, TaskSearch, ParseLinks, AlertService, pagingParams, paginationConstants, FIndCode, User, $log, $rootScope, findUser, $q) {
+    function TaskController ($scope, $state, Task, TaskSearch, ParseLinks, AlertService, pagingParams, paginationConstants, FIndCode, User, $log, $rootScope, findUser, $q, TaskListSearch, tableService) {
         var vm = this;
 
 
@@ -18,11 +18,20 @@
         vm.transition = transition;
         vm.clear = clear;
         vm.search = search;
-        vm.searchQuery = pagingParams.search;
+        //vm.searchQuery = pagingParams.search;
         vm.currentSearch = pagingParams.search;
         vm.openCalendar = openCalendar;
         vm.assigneeUsers = [];
         vm.userLoad = userLoad;
+        vm.getList = getList;
+
+        //	목록 데이터 저장
+        $scope.responseData = {
+            data : [],
+            page : {
+                totalPage : 1
+            }
+        };
 
         // 중요도 요청
         FIndCode.findByCodeType("severity").then(function(result){
@@ -45,24 +54,25 @@
         };
 
 
-        //검색 데이터 - 임시
-        vm.searchData = {
-            id : "",
-            name : "",
-            dueDateFrom :  "",
-            dueDateTo : "",
-            Severities : "",
-            assignees : "",
-            assigneeName : "",
-            contents : ""
-        };
-
+        ////검색 데이터 - 임시
+        //vm.searchData = {
+        //    id : "",
+        //    name : "",
+        //    dueDateFrom :  "",
+        //    dueDateTo : "",
+        //    Severities : "",
+        //    assignees : "",
+        //    assigneeName : "",
+        //    contents : ""
+        //};
+        vm.severities = [];
         // 검색 form data
         vm.searchQuery = {
             dueDateFrom : "",
             dueDateTo : "",
             assignee : [],
-            name : ""
+            name : "",
+            severities : []
         };
 
         vm.multipleValue=[];
@@ -71,7 +81,7 @@
         $scope.$watchCollection("vm.assigneeUsers", function(newValue, oldValue){
             vm.searchQuery.assignee =[];
             angular.forEach(newValue, function(value){
-                vm.searchQuery.assignee.push(value.name);
+                vm.searchQuery.assignee.push(value.id);
             });
 
         });
@@ -139,7 +149,10 @@
                 vm.links = ParseLinks.parse(headers('link'));
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
+
                 vm.tasks = data;
+                $scope.responseData.data = data;
+                $log.debug("data : ", $scope.responseData);
                 vm.page = pagingParams.page;
             }
             function onError(error) {
@@ -213,33 +226,63 @@
             return deferred.promise;
         }
 
-        vm.products = [
-            {
-                id: 1,
-                name: "Product1",
-                price: 120
-            },{
-                id: 2,
-                name: "Product2",
-                price: 80
-            },{
-                id: 3,
-                name: "Product3",
-                price: 207
-            },{
-                id: 4,
-                name: "Product4",
-                price: 100
-            },{
-                id: 5,
-                name: "Product5",
-                price: 150
-            },{
-                id: 6,
-                name: "Product1",
-                price: 160
-            }
-        ];
+        function getList(){
+            vm.searchQuery.s
+            TaskListSearch.findTaskList(vm.searchQuery).then(function(result){
+                //$log.debug("vm.tasks : ", result);
+                //vm.tasks = result;
+                $scope.responseData = result;
+            })
+        }
+
+
+        $scope.changPageRowCount = changPageRowCount;
+
+        // 페이지 로우 변경 감지
+        function changPageRowCount (selectedPageRowCount) {
+            $scope.selectedPageRowCount = selectedPageRowCount;
+            //변경된 페이지 숫자 쿠키 기록
+            //cookieService.setCookie("/selectedPageRowCount", $scope.selectedPageRowCount);
+
+            vm.getList(0);
+        }
+
+        $scope.makeTableConfig = makeTableConfig;
+        // 테이블 설정
+        $scope.tableConfigs = [];
+        function makeTableConfig () {
+            $scope.tableConfigs.push(tableService.getConfig("", "checked")
+                .setHWidth("width-30-p")
+                .setDAlign("text-center")
+                .setHAlign("text-center")
+                .setDType("check"));
+            $scope.tableConfigs.push(tableService.getConfig("이슈 명", "name"));
+            $scope.tableConfigs.push(tableService.getConfig("담당자", "assigneeName"));
+            $scope.tableConfigs.push(tableService.getConfig("종료일", "name"));
+
+            /**
+             *
+             .setDType(uiConstant.common.RENDERER)
+             .setDRenderer(uiConstant.renderType.PROJECT_ROLE_DETAIL)
+             */
+
+            $scope.tableConfigs.push(tableService.getConfig("중요도", "severityId")
+                .setHWidth("width-80-p")
+                .setDAlign("text-center"));
+            $scope.tableConfigs.push(tableService.getConfig("설정")
+                .setHWidth("width-80-p")
+                .setDAlign("text-center")
+                .setHAlign("text-center")
+                .setDType("renderer")
+                .setDRenderer("test"));
+        }
+
+        $scope.getData = getData;
+        function getData () {
+            return $scope.responseData.data;
+        };
+
+        $scope.makeTableConfig();
 
     }
 })();

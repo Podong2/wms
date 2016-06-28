@@ -72,8 +72,8 @@
                         <div class="form-group">
                             <label class="control-label">중요도</label>
                             <div class="">
-                                <ol class="nya-bs-select" ng-model="vm.multipleValue" actions-box="true" multiple data-size="5" data-live-search="true" disabled="disable">
-                                    <li nya-bs-option="option in vm.code">
+                                <ol class="nya-bs-select" ng-model="vm.searchQuery.severities" actions-box="true" multiple data-size="5" data-live-search="true" disabled="disable">
+                                    <li nya-bs-option="option in vm.code" data-value="option.id">
                                         <a>
                                             <span><span class="glyphicon" ng-class="option.icon"></span> {{ option.name }}</span>
                                             <span class="glyphicon glyphicon-ok check-mark"></span>
@@ -96,7 +96,13 @@
                         <!-- 검색 영역 -->
                         <span  class="input-group-btn width-min" >
                             <button class="btn btn-info" ng-click="vm.search(vm.searchQuery)">
-                                <span class="glyphicon glyphicon-search"></span>
+                                <span class="glyphicon glyphicon-search">엘라스틱서치</span>
+                            </button>
+                        </span>
+                        <!-- 검색 영역 -->
+                        <span  class="input-group-btn width-min" >
+                            <button class="btn btn-info" ng-click="vm.getList()">
+                                <span class="glyphicon glyphicon-search">목록검색</span>
                             </button>
                         </span>
                         <span class="input-group-btn width-min" ng-if="vm.currentSearch">
@@ -118,58 +124,60 @@
     </div>
     <br/>
     <div class="table-responsive">
-        <table class="jh-table table table-striped">
-            <thead>
-                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                    <th jh-sort-by="id"><span translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="name"><span translate="wmsApp.task.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="dueDate"><span translate="wmsApp.task.dueDate">Due Date</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="contents"><span translate="wmsApp.task.contents">Contents</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="severityId"><span translate="wmsApp.task.severity">Severity</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="taskAttachedFilesId"><span translate="wmsApp.task.taskAttachedFiles">Task Attached Files</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="task in vm.tasks track by task.id">
-                    <td><a ui-sref="task-detail({id:task.id})">{{task.id}}</a></td>
-                    <td>{{task.name}}</td>
-                    <td>{{task.dueDate}}</td>
-                    <td>{{task.contents}}</td>
-                    <td>
-                        <a ui-sref="code-detail({id:task.severityId})">{{task.severityId}}</a>
-                    </td>
-                    <td>
-                        <a ui-sref="task-attached-file-detail({id:task.taskAttachedFilesId})">{{task.taskAttachedFilesId}}</a>
-                    </td>
-                    <td class="text-right">
-                        <div class="btn-group flex-btn-group-container">
-                            <button type="submit"
-                                    ui-sref="task-detail({id:task.id})"
-                                    class="btn btn-info btn-sm">
-                                <span class="glyphicon glyphicon-eye-open"></span>
-                                <span class="hidden-xs hidden-sm" translate="entity.action.view"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="task.edit({id:task.id})"
-                                    class="btn btn-primary btn-sm">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                                <span class="hidden-xs hidden-sm" translate="entity.action.edit"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="task.delete({id:task.id})"
-                                    class="btn btn-danger btn-sm">
-                                <span class="glyphicon glyphicon-remove-circle"></span>
-                                <span class="hidden-xs hidden-sm" translate="entity.action.delete"></span>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        <!--<table class="jh-table table table-striped">-->
+            <!--<thead>-->
+                <!--<tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">-->
+                    <!--<th jh-sort-by="id"><span translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+                    <!--<th jh-sort-by="name"><span translate="wmsApp.task.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+                    <!--<th jh-sort-by="dueDate"><span translate="wmsApp.task.dueDate">Due Date</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+                    <!--<th jh-sort-by="contents"><span translate="wmsApp.task.contents">Contents</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+                    <!--<th jh-sort-by="severityId"><span translate="wmsApp.task.severity">Severity</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+                    <!--<th jh-sort-by="taskAttachedFilesId"><span translate="wmsApp.task.taskAttachedFiles">Task Attached Files</span> <span class="glyphicon glyphicon-sort"></span></th>-->
+                    <!--<th></th>-->
+                <!--</tr>-->
+            <!--</thead>-->
+            <!--<tbody>-->
+                <!--<tr ng-repeat="task in vm.tasks track by task.id">-->
+                    <!--<td><a ui-sref="task-detail({id:task.id})">{{task.id}}</a></td>-->
+                    <!--<td>{{task.name}}</td>-->
+                    <!--<td>{{task.dueDate}}</td>-->
+                    <!--<td>{{task.contents}}</td>-->
+                    <!--<td>-->
+                        <!--<a ui-sref="code-detail({id:task.severityId})">{{task.severityId}}</a>-->
+                    <!--</td>-->
+                    <!--<td>-->
+                        <!--<a ui-sref="task-attached-file-detail({id:task.taskAttachedFilesId})">{{task.taskAttachedFilesId}}</a>-->
+                    <!--</td>-->
+                    <!--<td class="text-right">-->
+                        <!--<div class="btn-group flex-btn-group-container">-->
+                            <!--<button type="submit"-->
+                                    <!--ui-sref="task-detail({id:task.id})"-->
+                                    <!--class="btn btn-info btn-sm">-->
+                                <!--<span class="glyphicon glyphicon-eye-open"></span>-->
+                                <!--<span class="hidden-xs hidden-sm" translate="entity.action.view"></span>-->
+                            <!--</button>-->
+                            <!--<button type="submit"-->
+                                    <!--ui-sref="task.edit({id:task.id})"-->
+                                    <!--class="btn btn-primary btn-sm">-->
+                                <!--<span class="glyphicon glyphicon-pencil"></span>-->
+                                <!--<span class="hidden-xs hidden-sm" translate="entity.action.edit"></span>-->
+                            <!--</button>-->
+                            <!--<button type="submit"-->
+                                    <!--ui-sref="task.delete({id:task.id})"-->
+                                    <!--class="btn btn-danger btn-sm">-->
+                                <!--<span class="glyphicon glyphicon-remove-circle"></span>-->
+                                <!--<span class="hidden-xs hidden-sm" translate="entity.action.delete"></span>-->
+                            <!--</button>-->
+                        <!--</div>-->
+                    <!--</td>-->
+                <!--</tr>-->
+            <!--</tbody>-->
+        <!--</table>-->
+
+        <ng-include src="'app/components/common/smartBody.html'"></ng-include>
     </div>
     <div class="text-center">
         <jhi-item-count page="vm.page" total="vm.queryCount"></jhi-item-count>
-        <uib-pagination class="pagination-sm" total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.transition()"></uib-pagination>
+        <uib-pagination boundary-links="true" items-per-page="selectedPageRowCount" total-items="responseData.page.totalCount" ng-model="selectedPage" max-size="10" ng-click="getList(selectedPage-1)" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
     </div>
 </div>
