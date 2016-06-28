@@ -1,0 +1,14 @@
+{
+  "name": "taylorcode-angular-file-upload",
+  "homepage": "https://github.com/taylorcode/ng-file-upload",
+  "version": "3.1.2",
+  "_release": "3.1.2",
+  "_resolution": {
+    "type": "version",
+    "tag": "3.1.2",
+    "commit": "b1a8e737d08bfb362b35911799c57aed836ad390"
+  },
+  "_source": "git://github.com/taylorcode/ng-file-upload.git",
+  "_target": "3.1.2",
+  "_originalSource": "taylorcode-angular-file-upload"
+}

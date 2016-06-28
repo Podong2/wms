@@ -5,9 +5,9 @@
         .module('wmsApp')
         .controller('TaskDialogController', TaskDialogController);
 
-    TaskDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Task', 'Code', 'TaskAttachedFile', 'User'];
+    TaskDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Task', 'Code', 'TaskAttachedFile', 'User', '$log', 'TaskEdit'];
 
-    function TaskDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Task, Code, TaskAttachedFile, User) {
+    function TaskDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Task, Code, TaskAttachedFile, User, $log, TaskEdit) {
         var vm = this;
 
         vm.task = entity;
@@ -17,6 +17,13 @@
         vm.taskattachedfiles = TaskAttachedFile.query();
         vm.users = User.query();
         vm.taskFindSimilar = taskFindSimilar;
+
+        $scope.files = [];
+        // 파일 목록 라이브러리에서 가져오기
+        $scope.$on('setFiles', function (event, args) {
+            $scope.files = args;
+            $log.debug("파일 목록 : ", $scope.files);
+        });
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
@@ -31,7 +38,18 @@
             if (vm.task.id !== null) {
                 Task.update(vm.task, onSaveSuccess, onSaveError);
             } else {
-                Task.save(vm.task, onSaveSuccess, onSaveError);
+                //Task.save(vm.task, onSaveSuccess, onSaveError);
+                TaskEdit.addTask({
+                    method : "POST",
+                        file : $scope.files,
+                        //	data 속성으로 별도의 데이터 전송
+                        fields : {
+                        content : vm.task
+                    },
+                    fileFormDataName : "file"
+                }).then(function (response) {
+                    $log.debug("task 생성 성공")
+                });
             }
         }
 
@@ -49,7 +67,6 @@
         function taskFindSimilar(){
 
         }
-
 
     }
 })();

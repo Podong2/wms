@@ -29,7 +29,8 @@
             'ui.tree',
             'pasvaz.bindonce',
             'smart-table',
-            'summernote'
+            'summernote',
+            'angularFileUpload'
         ])
         .run(run);
 
