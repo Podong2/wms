@@ -158,6 +158,21 @@ public class TaskResource {
     }
 
     /**
+     * DELETE  /tasks : delete the "targetIds" task.
+     *
+     * @param targetIds the id of the taskDTO to delete
+     * @return the ResponseEntity with status 200 (OK)
+     */
+    @RequestMapping(value = "/tasks",
+        method = RequestMethod.DELETE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<Void> deleteTask(@RequestParam(value = "targetIds", required = true) List<Long> targetIds) {
+        taskService.delete(targetIds);
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("task", targetIds.size()+"")).build();
+    }
+
+    /**
      * SEARCH  /_search/tasks?query=:query : search for the task corresponding
      * to the query.
      *
