@@ -28,7 +28,8 @@
             'react',
             'ui.tree',
             'pasvaz.bindonce',
-            'smart-table'
+            'smart-table',
+            'summernote'
         ])
         .run(run);
 

@@ -70,7 +70,7 @@
         vm.searchQuery = {
             dueDateFrom : "",
             dueDateTo : "",
-            assignee : [],
+            assignees : [],
             name : "",
             severities : []
         };

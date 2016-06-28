@@ -25,11 +25,16 @@
                     ng-model="vm.task.dueDate"
                      />
         </div>
-        <div class="form-group">
-            <label class="control-label" translate="wmsApp.task.contents" for="field_contents">Contents</label>
-            <input type="text" class="form-control" name="contents" id="field_contents"
-                    ng-model="vm.task.contents"
-                     />
+        <div class="form-group" > <!-- ng-controller="uploadCtrl" -->
+            <label class="control-label" translate="wmsApp.task.contents">Contents</label>
+            <!--<input type="text" class="form-control" name="contents" id="field_contents"-->
+                    <!--ng-model="vm.task.contents"-->
+                     <!--/>-->
+            <summernote config="dataService.getSummerNoteOptions(true)"
+                        lang="ko-KR" ng-model="vm.task.contents"
+                        data-editor="editor"
+                        data-editable="editable"
+                        data-on-image-upload="imageUpload(files)"></summernote>
         </div>
 
         <div class="form-group">

@@ -47,7 +47,7 @@ angular.module('wmsApp')
 
                     switch (rendererType) {
                         case "test" :
-                            customTag = "<a owl-btn-link link-type='edit' ui-sref='task.edit(id:" + scope.data.id + ")' href='#/task/" + scope.data.id + "/edit'></a>";
+                            customTag = "<a owl-btn-link link-type='edit' ui-sref='task.edit({id \: " + scope.data.id + "})' href='#/task/" + scope.data.id + "/edit'></a>";
                             break;
 
                     }

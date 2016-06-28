@@ -16,6 +16,7 @@
         vm.codes = Code.query();
         vm.taskattachedfiles = TaskAttachedFile.query();
         vm.users = User.query();
+        vm.taskFindSimilar = taskFindSimilar;
 
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
@@ -42,6 +43,11 @@
 
         function onSaveError () {
             vm.isSaving = false;
+        }
+
+        // 유사 타스크 검색
+        function taskFindSimilar(){
+
         }
 
 
