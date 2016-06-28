@@ -21,7 +21,10 @@
         $scope.files = [];
         // 파일 목록 라이브러리에서 가져오기
         $scope.$on('setFiles', function (event, args) {
-            $scope.files = args;
+            $scope.files = [];
+            angular.forEach(args, function(value){
+                $scope.files.push(value)
+            });
             $log.debug("파일 목록 : ", $scope.files);
         });
 
