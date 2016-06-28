@@ -1,0 +1,30 @@
+{
+    "wmsApp": {
+        "notification" : {
+            "home": {
+                "title": "Notifications",
+                "createLabel": "Create a new Notification",
+                "createOrEditLabel": "Create or edit a Notification",
+                "search": "Search for Notification"
+            },
+            "created": "A new Notification is created with identifier {{ param }}",
+            "updated": "A Notification is updated with identifier {{ param }}",
+            "deleted": "A Notification is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Notification {{ id }}?"
+            },
+            "detail": {
+                "title": "Notification"
+            },
+            "notificationMethod": "Notification Method",
+            "notificationConfig": "Notification Config",
+            "notificationType": "Notification Type",
+            "notificationLevelName": "Notification Level Name",
+            "notificationLevelDisplayTime": "Notification Level Display Time",
+            "notificationLevelColor": "Notification Level Color",
+            "notificationTitle": "Notification Title",
+            "notificationContents": "Notification Contents",
+            "notificationRecipient": "Notification Recipient"
+        }
+    }
+}

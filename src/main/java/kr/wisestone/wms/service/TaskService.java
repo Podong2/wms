@@ -1,8 +1,10 @@
 package kr.wisestone.wms.service;
 
+import com.google.common.collect.Lists;
 import com.mysema.query.BooleanBuilder;
 import kr.wisestone.wms.domain.QTask;
 import kr.wisestone.wms.domain.Task;
+import kr.wisestone.wms.domain.User;
 import kr.wisestone.wms.repository.TaskRepository;
 import kr.wisestone.wms.repository.search.TaskSearchRepository;
 import kr.wisestone.wms.web.rest.condition.TaskCondition;
@@ -42,18 +44,31 @@ public class TaskService {
     @Inject
     private TaskSearchRepository taskSearchRepository;
 
+    @Inject
+    private NotificationService notificationService;
+
+    @Inject
+    private UserService userService;
+
     /**
      * Save a task.
      *
      * @param taskDTO the entity to save
      * @return the persisted entity
      */
+    @Transactional
     public TaskDTO save(TaskDTO taskDTO) {
         log.debug("Request to save Task : {}", taskDTO);
         Task task = taskMapper.taskDTOToTask(taskDTO);
         task = taskRepository.save(task);
-        TaskDTO result = taskMapper.taskToTaskDTO(task);
         taskSearchRepository.save(task);
+
+        TaskDTO result = taskMapper.taskToTaskDTO(task);
+
+        User user = userService.getUserWithAuthorities(task.getAssignee().getId());
+
+        notificationService.sendIssueCreatedNotification(result, Lists.newArrayList(user), "04");
+
         return result;
     }
 
@@ -113,6 +128,7 @@ public class TaskService {
      *
      *  @param ids the id list of the entity
      */
+    @Transactional
     public void delete(List<Long> ids) {
         ids.stream().forEach(this::delete);
     }
@@ -122,8 +138,16 @@ public class TaskService {
      *
      *  @param id the id of the entity
      */
+    @Transactional
     public void delete(Long id) {
         log.debug("Request to delete Task : {}", id);
+
+        Task targetTask = taskRepository.findOne(id);
+
+        User user = userService.getUserWithAuthorities(targetTask.getAssignee().getId());
+
+        notificationService.sendIssueRemovedNotification(taskMapper.taskToTaskDTO(targetTask), Lists.newArrayList(user), "04");
+
         taskRepository.delete(id);
         taskSearchRepository.delete(id);
     }

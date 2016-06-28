@@ -27,12 +27,12 @@ public class ThymeleafConfiguration {
     @Bean
     @Description("Thymeleaf template resolver serving HTML 5 pushes")
     public ClassLoaderTemplateResolver pushTemplateResolver() {
-        ClassLoaderTemplateResolver emailTemplateResolver = new ClassLoaderTemplateResolver();
-        emailTemplateResolver.setPrefix("/push/");
-        emailTemplateResolver.setSuffix(".html");
-        emailTemplateResolver.setTemplateMode("HTML5");
-        emailTemplateResolver.setCharacterEncoding(CharEncoding.UTF_8);
-        emailTemplateResolver.setOrder(1);
-        return emailTemplateResolver;
+        ClassLoaderTemplateResolver pushTemplateResolver = new ClassLoaderTemplateResolver();
+        pushTemplateResolver.setPrefix("push/");
+        pushTemplateResolver.setSuffix(".html");
+        pushTemplateResolver.setTemplateMode("HTML5");
+        pushTemplateResolver.setCharacterEncoding(CharEncoding.UTF_8);
+        pushTemplateResolver.setOrder(1);
+        return pushTemplateResolver;
     }
 }

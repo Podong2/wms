@@ -1,0 +1,23 @@
+{
+    "wmsApp": {
+        "notificationRecipient" : {
+            "home": {
+                "title": "Notification Recipients",
+                "createLabel": "Create a new Notification Recipient",
+                "createOrEditLabel": "Create or edit a Notification Recipient",
+                "search": "Search for Notification Recipient"
+            },
+            "created": "A new Notification Recipient is created with identifier {{ param }}",
+            "updated": "A Notification Recipient is updated with identifier {{ param }}",
+            "deleted": "A Notification Recipient is deleted with identifier {{ param }}",
+            "delete": {
+                "question": "Are you sure you want to delete Notification Recipient {{ id }}?"
+            },
+            "detail": {
+                "title": "Notification Recipient"
+            },
+            "readYn": "Read Yn",
+            "notification": "Notification"
+        }
+    }
+}

@@ -1,0 +1,22 @@
+
+<div>
+    <h2><span translate="wmsApp.notificationRecipient.detail.title">Notification Recipient</span> {{vm.notificationRecipient.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span translate="wmsApp.notificationRecipient.readYn">Read Yn</span></dt>
+        <dd>
+            <span>{{vm.notificationRecipient.readYn}}</span>
+        </dd>
+        <dt><span translate="wmsApp.notificationRecipient.notification">Notification</span></dt>
+        <dd>
+            <a ui-sref="notification-detail({id:vm.notificationRecipient.notification.id})">{{vm.notificationRecipient.notification.id}}</a>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>

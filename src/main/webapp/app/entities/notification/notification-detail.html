@@ -1,0 +1,46 @@
+
+<div>
+    <h2><span translate="wmsApp.notification.detail.title">Notification</span> {{vm.notification.id}}</h2>
+    <hr>
+    <jhi-alert-error></jhi-alert-error>
+    <dl class="dl-horizontal jh-entity-details">
+        <dt><span translate="wmsApp.notification.notificationMethod">Notification Method</span></dt>
+        <dd>
+            <span>{{vm.notification.notificationMethod}}</span>
+        </dd>
+        <dt><span translate="wmsApp.notification.notificationConfig">Notification Config</span></dt>
+        <dd>
+            <span>{{vm.notification.notificationConfig}}</span>
+        </dd>
+        <dt><span translate="wmsApp.notification.notificationType">Notification Type</span></dt>
+        <dd>
+            <span>{{vm.notification.notificationType}}</span>
+        </dd>
+        <dt><span translate="wmsApp.notification.notificationLevelName">Notification Level Name</span></dt>
+        <dd>
+            <span>{{vm.notification.notificationLevelName}}</span>
+        </dd>
+        <dt><span translate="wmsApp.notification.notificationLevelDisplayTime">Notification Level Display Time</span></dt>
+        <dd>
+            <span>{{vm.notification.notificationLevelDisplayTime}}</span>
+        </dd>
+        <dt><span translate="wmsApp.notification.notificationLevelColor">Notification Level Color</span></dt>
+        <dd>
+            <span>{{vm.notification.notificationLevelColor}}</span>
+        </dd>
+        <dt><span translate="wmsApp.notification.notificationTitle">Notification Title</span></dt>
+        <dd>
+            <span>{{vm.notification.notificationTitle}}</span>
+        </dd>
+        <dt><span translate="wmsApp.notification.notificationContents">Notification Contents</span></dt>
+        <dd>
+            <span>{{vm.notification.notificationContents}}</span>
+        </dd>
+    </dl>
+
+    <button type="submit"
+            onclick="window.history.back()"
+            class="btn btn-info">
+        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+    </button>
+</div>

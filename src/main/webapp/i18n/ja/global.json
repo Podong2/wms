@@ -19,6 +19,8 @@
                 "task": "Task",
                 "code": "Code",
                 "taskAttachedFile": "Task Attached File",
+                "notification": "Notification",
+                "notificationRecipient": "Notification Recipient",
                 "jhipster-needle-menu-add-entry": "JHipster will add additional entities here (do not translate!)"
             },
             "account": {
