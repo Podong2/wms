@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <title th:text="#{task.created.title}">task created</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    </head>
+    <body>
+        <p th:text="${task.assigneeName}">
+            assigneeName
+        </p>
+        <p th:text="${task.name}">
+            assigneeName
+        </p>
+        <p>
+          <a th:href="@{|${baseUrl}/#/task/${task.id}|}"
+             th:text="|${task.name}|">login</a>
+        </p>
+    </body>
+</html>

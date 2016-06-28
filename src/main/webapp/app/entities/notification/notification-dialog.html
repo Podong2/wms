@@ -1,0 +1,74 @@
+
+<form name="editForm" role="form" novalidate ng-submit="vm.save()">
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
+                ng-click="vm.clear()">&times;</button>
+        <h4 class="modal-title" id="myNotificationLabel" translate="wmsApp.notification.home.createOrEditLabel">Create or edit a Notification</h4>
+    </div>
+    <div class="modal-body">
+        <jhi-alert-error></jhi-alert-error>
+        <div class="form-group" ng-show="vm.notification.id">
+            <label for="id" translate="global.field.id">ID</label>
+            <input type="text" class="form-control" id="id" name="id"
+                    ng-model="vm.notification.id" readonly />
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="wmsApp.notification.notificationMethod" for="field_notificationMethod">Notification Method</label>
+            <input type="text" class="form-control" name="notificationMethod" id="field_notificationMethod"
+                    ng-model="vm.notification.notificationMethod"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="wmsApp.notification.notificationConfig" for="field_notificationConfig">Notification Config</label>
+            <input type="text" class="form-control" name="notificationConfig" id="field_notificationConfig"
+                    ng-model="vm.notification.notificationConfig"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="wmsApp.notification.notificationType" for="field_notificationType">Notification Type</label>
+            <input type="text" class="form-control" name="notificationType" id="field_notificationType"
+                    ng-model="vm.notification.notificationType"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="wmsApp.notification.notificationLevelName" for="field_notificationLevelName">Notification Level Name</label>
+            <input type="text" class="form-control" name="notificationLevelName" id="field_notificationLevelName"
+                    ng-model="vm.notification.notificationLevelName"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="wmsApp.notification.notificationLevelDisplayTime" for="field_notificationLevelDisplayTime">Notification Level Display Time</label>
+            <input type="number" class="form-control" name="notificationLevelDisplayTime" id="field_notificationLevelDisplayTime"
+                    ng-model="vm.notification.notificationLevelDisplayTime"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="wmsApp.notification.notificationLevelColor" for="field_notificationLevelColor">Notification Level Color</label>
+            <input type="text" class="form-control" name="notificationLevelColor" id="field_notificationLevelColor"
+                    ng-model="vm.notification.notificationLevelColor"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="wmsApp.notification.notificationTitle" for="field_notificationTitle">Notification Title</label>
+            <input type="text" class="form-control" name="notificationTitle" id="field_notificationTitle"
+                    ng-model="vm.notification.notificationTitle"
+                     />
+        </div>
+        <div class="form-group">
+            <label class="control-label" translate="wmsApp.notification.notificationContents" for="field_notificationContents">Notification Contents</label>
+            <input type="text" class="form-control" name="notificationContents" id="field_notificationContents"
+                    ng-model="vm.notification.notificationContents"
+                     />
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
+            <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
+        </button>
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+            <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
+        </button>
+    </div>
+</form>

@@ -1,8 +1,11 @@
 package kr.wisestone.wms.service;
 
+import kr.wisestone.wms.common.constant.NotificationConfig;
+import kr.wisestone.wms.common.util.StringTemplateUtil;
 import kr.wisestone.wms.config.JHipsterProperties;
 import kr.wisestone.wms.domain.User;
 
+import kr.wisestone.wms.service.dto.NotificationParameterDTO;
 import org.apache.commons.lang.CharEncoding;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,7 +33,7 @@ import java.util.Locale;
 public class MailService {
 
     private final Logger log = LoggerFactory.getLogger(MailService.class);
-    
+
     private static final String USER = "user";
     private static final String BASE_URL = "baseUrl";
 
@@ -64,6 +67,28 @@ public class MailService {
         } catch (Exception e) {
             log.warn("E-mail could not be sent to user '{}', exception is: {}", to, e.getMessage());
         }
+    }
+
+    @Async
+    public String sendEmail(NotificationParameterDTO notificationParameterDTO, boolean isMultipart, boolean isHtml) {
+
+        Locale locale = Locale.KOREA;
+        Context context = StringTemplateUtil.makeContext(notificationParameterDTO.getContents(), locale);
+
+        NotificationConfig notificationConfig = notificationParameterDTO.getNotificationConfig();
+
+        String content = templateEngine.process(notificationConfig.getMailTemplate(), context);
+        String subject = notificationParameterDTO.getTitle();
+
+        for(User receiver : notificationParameterDTO.getToUsers())
+            this.sendEmail(receiver.getEmail(), subject, content, isMultipart, isHtml);
+
+        return content;
+    }
+
+    @Async
+    public String sendEmail(NotificationParameterDTO notificationParameterDTO) {
+        return this.sendEmail(notificationParameterDTO, false, true);
     }
 
     @Async
@@ -101,7 +126,7 @@ public class MailService {
         String subject = messageSource.getMessage("email.reset.title", null, locale);
         sendEmail(user.getEmail(), subject, content, false, true);
     }
-    
+
     @Async
     public void sendSocialRegistrationValidationEmail(User user, String provider) {
         log.debug("Sending social registration validation e-mail to '{}'", user.getEmail());
