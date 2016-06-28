@@ -3,7 +3,7 @@
     <jhi-alert></jhi-alert>
     <div class="container-fluid">
         <div class="row">
-            <div class="col-xs-4 no-padding-left">
+            <div class="col-xs-12 no-padding-left">
                 <button class="btn btn-primary" ui-sref="task.new" >
                     <span class="glyphicon glyphicon-plus"></span>
                     <span class="hidden-xs"  translate="wmsApp.task.home.createLabel">
@@ -11,10 +11,89 @@
                     </span>
                 </button>
             </div>
-            <div class="col-xs-8 no-padding-right">
+
+            <!-- 구간검색 -->
+            {{vm.searchQuery}}
+            <div class="col-xs-12 no-padding-right">
                 <form name="searchForm" class="form-inline">
                     <div class="input-group pull-right" >
-                        <input type="text" class="form-control" ng-model="vm.searchQuery" id="searchQuery" placeholder="{{ 'wmsApp.task.home.search' | translate }}">
+                        <div class="form-group">
+                            <label class="control-label">이슈</label>
+                            <div class="">
+                                <p class="input-group">
+                                    <input type="text" class="form-control col-xs-2" ng-model="vm.searchQuery.name" id="searchQuery" placeholder="{{ 'wmsApp.task.home.search' | translate }}">
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">구간 검색</label>
+                            <div class="">
+                                <p class="input-group">
+                                    <input type="text" class="form-control col-xs-2" ng-model="vm.dueDate" id="dueDate" picker-toggle>
+                                    <span class="dueDateValues" picker-toggle>{{vm.searchQuery.dueDateFrom + " ~ " + vm.searchQuery.dueDateTo}}</span>
+                                </p>
+                            </div>
+
+                            <div class="sectionDatePicker">
+                                <div class="title">
+                                    구간검색
+                                </div>
+                                <div class="pickerArea">
+
+                                    <label class="control-label">From</label>
+                                    <div class="">
+                                        <p class="input-group">
+                                            <input type="text" class="form-control" datetime-picker="dd MMM yyyy" ng-model="vm.dueDateFrom.date" is-open="vm.dueDateFrom.open"
+                                                   enable-time="false" datepicker-options="vm.dueDateFrom.datepickerOptions" />
+                                      <span class="input-group-btn">
+                                          <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDateFrom')"><i class="fa fa-calendar"></i></button>
+                                      </span>
+                                        </p>
+                                    </div>
+
+                                    <label class="control-label">To</label>
+                                    <div class="">
+                                        <p class="input-group">
+                                            <input type="text" class="form-control" datetime-picker="dd MMM yyyy" ng-model="vm.dueDateTo.date" is-open="vm.dueDateTo.open"
+                                                   enable-time="false" datepicker-options="vm.dueDateTo.datepickerOptions" />
+                                      <span class="input-group-btn">
+                                          <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDateTo')"><i class="fa fa-calendar"></i></button>
+                                      </span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="text-right pickerBtnArea">
+                                    <button type="button" class="alert_close btn btn_submit btn_customs" owl-btn-check picker-toggle></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">중요도</label>
+                            <div class="">
+                                <ol class="nya-bs-select" ng-model="vm.multipleValue" actions-box="true" multiple data-size="5" data-live-search="true" disabled="disable">
+                                    <li nya-bs-option="option in vm.code">
+                                        <a>
+                                            <span><span class="glyphicon" ng-class="option.icon"></span> {{ option.name }}</span>
+                                            <span class="glyphicon glyphicon-ok check-mark"></span>
+                                        </a>
+                                    </li>
+                                </ol>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="control-label">담당자</label>
+                                <picker-search source="vm.userLoad(vm.searchData.assigneeName, vm.assigneeUsers)"
+                                                   search="vm.searchData.assigneeName"
+                                                   ng-model="vm.assigneeUsers"></picker-search>
+                        </div>
+
+
+                        <br/>
+
+                        <!-- 검색 영역 -->
                         <span  class="input-group-btn width-min" >
                             <button class="btn btn-info" ng-click="vm.search(vm.searchQuery)">
                                 <span class="glyphicon glyphicon-search"></span>
@@ -25,7 +104,14 @@
                                 <span class="glyphicon glyphicon-trash"></span>
                             </button>
                         </span>
+                        <!--<div class="form-group">-->
+                            <!--<label class="col-sm-2 control-label">Difference</label>-->
+                            <!--<div class="col-sm-10">-->
+                                <!--<p class="form-control-static">10 (days)</p>-->
+                            <!--</div>-->
+                        <!--</div>-->
                     </div>
+
                 </form>
             </div>
         </div>

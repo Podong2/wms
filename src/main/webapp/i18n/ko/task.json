@@ -2,25 +2,25 @@
     "wmsApp": {
         "task" : {
             "home": {
-                "title": "Tasks",
-                "createLabel": "Create a new Task",
-                "createOrEditLabel": "Create or edit a Task",
-                "search": "Search for Task"
+                "title": "이슈",
+                "createLabel": "이슈 생성",
+                "createOrEditLabel": "이슈 생성 및 수정",
+                "search": "이슈 검색"
             },
-            "created": "A new Task is created with identifier {{ param }}",
-            "updated": "A Task is updated with identifier {{ param }}",
-            "deleted": "A Task is deleted with identifier {{ param }}",
+            "created": "[이슈번호 - {{ param }}] 이슈가 생성되었습니다.",
+            "updated": "[이슈번호 - {{ param }}] 이슈가 수정되었습니다.",
+            "deleted": "[이슈번호 - {{ param }}] 이슈가 삭제되었습니다.",
             "delete": {
-                "question": "Are you sure you want to delete Task {{ id }}?"
+                "question": "이슈 {{ id }}번을 정말로 삭제하시겠습니까?"
             },
             "detail": {
-                "title": "Task"
+                "title": "이슈"
             },
-            "name": "Name",
-            "dueDate": "Due Date",
-            "contents": "Contents",
-            "severity": "Severity",
-            "taskAttachedFiles": "Task Attached Files"
+            "name": "이슈 명",
+            "dueDate": "종료 날짜",
+            "contents": "내용",
+            "severity": "중요도",
+            "taskAttachedFiles": "이슈 첨부파일"
         }
     }
 }

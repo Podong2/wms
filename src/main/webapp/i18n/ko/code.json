@@ -2,25 +2,25 @@
     "wmsApp": {
         "code" : {
             "home": {
-                "title": "Codes",
-                "createLabel": "Create a new Code",
-                "createOrEditLabel": "Create or edit a Code",
-                "search": "Search for Code"
+                "title": "코드",
+                "createLabel": "코드 생성",
+                "createOrEditLabel": "코드 생성 및 수정",
+                "search": "코드 검색"
             },
-            "created": "A new Code is created with identifier {{ param }}",
-            "updated": "A Code is updated with identifier {{ param }}",
-            "deleted": "A Code is deleted with identifier {{ param }}",
+            "created": "[코드번호 - {{ param }}] 코드가 생성되었습니다.",
+            "updated": "[코드번호 - {{ param }}] 코드가 수정되었습니다.",
+            "deleted": "[코드번호 - {{ param }}] 코드가 삭제되었습니다.",
             "delete": {
-                "question": "Are you sure you want to delete Code {{ id }}?"
+                "question": "코드 {{ id }}번을 정말로 삭제하시겠습니까?"
             },
             "detail": {
-                "title": "Code"
+                "title": "코드"
             },
-            "name": "Name",
-            "defaultYn": "Default Yn",
-            "position": "Position",
-            "color": "Color",
-            "codeType": "Code Type"
+            "name": "코드 명",
+            "defaultYn": "기본 여부",
+            "position": "순서",
+            "color": "컬러",
+            "codeType": "코드 타입"
         }
     }
 }
