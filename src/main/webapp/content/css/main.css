@@ -924,7 +924,7 @@ tr.angular-ui-tree-empty {
 /* ------------------------ Tree end -------------------------- */
 
 /* ----------- datePicker custom ----------- */
-.form-group{
+.searchForm .form-group{
     width: 210px;
 }
 .sectionDatePicker{

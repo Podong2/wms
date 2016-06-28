@@ -9,7 +9,7 @@
     FIndCode.$inject = ['$http', '$log', '$rootScope', '$q'];
 
     function Code ($resource) {
-        var resourceUrl =  'api/codes/findByCodeType';
+        var resourceUrl =  '/api/codes';
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
