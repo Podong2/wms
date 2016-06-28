@@ -1,9 +1,15 @@
 package kr.wisestone.wms.web.rest.errors;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import kr.wisestone.wms.common.constant.Constants;
+import kr.wisestone.wms.common.constant.MsgConstants;
+import kr.wisestone.wms.common.exception.CommonRuntimeException;
 import org.springframework.core.annotation.AnnotationUtils;
 import org.springframework.dao.ConcurrencyFailureException;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.ResponseEntity.BodyBuilder;
@@ -13,6 +19,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.context.request.WebRequest;
 
 /**
  * Controller advice to translate the server side exceptions to client-friendly json structures.
@@ -80,6 +87,16 @@ public class ExceptionTranslator {
             builder = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
             errorDTO = new ErrorDTO(ErrorConstants.ERR_INTERNAL_SERVER_ERROR, "Internal server error");
         }
+        return builder.body(errorDTO);
+    }
+
+    @ExceptionHandler({ CommonRuntimeException.class })
+    public ResponseEntity<Object> handleBadRequest(final CommonRuntimeException ex,
+                                                   final WebRequest request) {
+
+        BodyBuilder builder = ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR);
+        ErrorDTO errorDTO = new ErrorDTO(ex.getCode(), ex.getCode());
+
         return builder.body(errorDTO);
     }
 }

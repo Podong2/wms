@@ -25,6 +25,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.inject.Inject;
 import java.net.URI;
@@ -66,12 +68,17 @@ public class TaskResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<TaskDTO> createTask(@RequestBody TaskDTO taskDTO) throws URISyntaxException {
-        log.debug("REST request to save Task : {}", taskDTO);
-        if (taskDTO.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("task", "idexists", "A new task cannot already have an ID")).body(null);
-        }
-        TaskDTO result = taskService.save(taskDTO);
+    public ResponseEntity<TaskDTO> createTask(MultipartHttpServletRequest request) throws URISyntaxException {
+//        log.debug("REST request to save Task : {}", taskDTO);
+//        if (taskDTO.getId() != null) {
+//            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("task", "idexists", "A new task cannot already have an ID")).body(null);
+//        }
+
+        List<MultipartFile> multipartFiles = request.getFiles("file");
+
+        String name = request.getParameter("name");
+
+        TaskDTO result = null;
         return ResponseEntity.created(new URI("/api/tasks/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("task", result.getId().toString()))
             .body(result);
@@ -90,12 +97,12 @@ public class TaskResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<TaskDTO> updateTask(@RequestBody TaskDTO taskDTO) throws URISyntaxException {
+    public ResponseEntity<TaskDTO> updateTask(@RequestBody TaskDTO taskDTO, MultipartHttpServletRequest request) throws URISyntaxException {
         log.debug("REST request to update Task : {}", taskDTO);
         if (taskDTO.getId() == null) {
-            return createTask(taskDTO);
+            return createTask(request);
         }
-        TaskDTO result = taskService.save(taskDTO);
+        TaskDTO result = taskService.update(taskDTO);
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("task", taskDTO.getId().toString()))
             .body(result);

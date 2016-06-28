@@ -163,4 +163,14 @@ public class TaskService {
         log.debug("Request to search for a page of Tasks for query {}", query);
         return taskSearchRepository.search(queryStringQuery(query), pageable);
     }
+
+    public TaskDTO update(TaskDTO taskDTO) {
+
+        Task task = taskMapper.taskDTOToTask(taskDTO);
+        task = taskRepository.save(task);
+        taskSearchRepository.save(task);
+        TaskDTO result = taskMapper.taskToTaskDTO(task);
+
+        return result;
+    }
 }

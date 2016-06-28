@@ -39,13 +39,14 @@
                 Task.update(vm.task, onSaveSuccess, onSaveError);
             } else {
                 //Task.save(vm.task, onSaveSuccess, onSaveError);
+
+                $log.debug("files : ", $scope.files);
+
                 TaskEdit.addTask({
                     method : "POST",
                         file : $scope.files,
                         //	data 속성으로 별도의 데이터 전송
-                        fields : {
-                        content : vm.task
-                    },
+                        fields : vm.task,
                     fileFormDataName : "file"
                 }).then(function (response) {
                     $log.debug("task 생성 성공")
