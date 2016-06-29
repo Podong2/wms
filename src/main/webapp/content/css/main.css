@@ -1214,3 +1214,7 @@ table th {
     line-height: 1.8;
     text-align: center !important
 }
+
+.table-active {
+    background: #cefeff;
+}
