@@ -158,5 +158,12 @@
         "emailexists": "E-mail is already in use!",
         "idexists": "A new {{entityName}} cannot already have an ID"
     },
-    "footer": "フッターです"
+    "footer": "フッターです",
+    "common": {
+        "attachedFile" : {
+            "fileName":"File Name",
+            "fileType":"Content Type",
+            "config":"Config"
+        }
+    }
 }
