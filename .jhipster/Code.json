@@ -1,0 +1,34 @@
+{
+  "relationships": [],
+  "fields": [
+    {
+      "fieldId": 1,
+      "fieldName": "name",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 2,
+      "fieldName": "defaultYn",
+      "fieldType": "Boolean"
+    },
+    {
+      "fieldId": 3,
+      "fieldName": "position",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldId": 4,
+      "fieldName": "color",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 5,
+      "fieldName": "codeType",
+      "fieldType": "String"
+    }
+  ],
+  "changelogDate": "20160624062424",
+  "dto": "mapstruct",
+  "pagination": "pagination",
+  "service": "no"
+}

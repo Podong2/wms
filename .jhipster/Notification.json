@@ -1,0 +1,57 @@
+{
+  "relationships": [
+    {
+      "relationshipId": 1,
+      "relationshipName": "notificationRecipient",
+      "otherEntityName": "notificationRecipient",
+      "relationshipType": "one-to-many",
+      "otherEntityRelationshipName": "notification"
+    }
+  ],
+  "fields": [
+    {
+      "fieldId": 1,
+      "fieldName": "notificationMethod",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 2,
+      "fieldName": "notificationConfig",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 3,
+      "fieldName": "notificationType",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 4,
+      "fieldName": "notificationLevelName",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 5,
+      "fieldName": "notificationLevelDisplayTime",
+      "fieldType": "Integer"
+    },
+    {
+      "fieldId": 6,
+      "fieldName": "notificationLevelColor",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 7,
+      "fieldName": "notificationTitle",
+      "fieldType": "String"
+    },
+    {
+      "fieldId": 8,
+      "fieldName": "notificationContents",
+      "fieldType": "String"
+    }
+  ],
+  "changelogDate": "20160627072808",
+  "dto": "mapstruct",
+  "pagination": "pagination",
+  "service": "serviceClass"
+}
