@@ -13,7 +13,9 @@
             convertDateTimeFromServer : convertDateTimeFromServer,
             convertLocalDateFromServer : convertLocalDateFromServer,
             convertLocalDateToServer : convertLocalDateToServer,
-            dateformat : dateformat
+            dateformat : dateformat,
+            toDate : toDate,
+            datePickerFormat : datePickerFormat
         };
 
         return service;
@@ -45,6 +47,27 @@
         function dateformat () {
             return 'yyyy-MM-dd';
         }
+
+        function toDate(date) {
+            var yyyyMMdd = String(date);
+            var sYear = yyyyMMdd.substring(0,4);
+            var sMonth = yyyyMMdd.substring(5,7);
+            var sDate = yyyyMMdd.substring(8,10);
+            return new Date(Number(sYear), Number(sMonth)-1, Number(sDate));
+        }
+
+        // date 포멧 변경
+        function datePickerFormat(n, digits) {
+            var zero = '';
+            n = n.toString();
+
+            if (n.length < digits) {
+                for (var i = 0; i < digits - n.length; i++)
+                    zero += '0';
+            }
+            return zero + n;
+        }
+
     }
 
 })();

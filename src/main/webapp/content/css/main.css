@@ -931,6 +931,12 @@ tr.angular-ui-tree-empty {
 .searchForm .form-group{
     width: 210px;
 }
+.searchForm .picker-name{
+    width: 200px; height: 34px;
+}
+.modal-body .picker-name{
+    width: 100%; height: 34px;
+}
 .sectionDatePicker{
     position: absolute;
     border: 1px solid #ccc;

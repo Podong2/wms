@@ -161,7 +161,7 @@ owlBtnAdd.$inject=['btnService'];
             restrict: 'A',
             compile: function (tElement, tAttrs) {
                 var btnName = "add";
-                var btnClass = "btn btn_icon";
+                var btnClass = "btn btn_icon btn-sm";
                 var btnIcon = "fa fa-plus";
                 var i18n = "entity.action.add";
 
@@ -175,7 +175,7 @@ owlBtnDelete.$inject=['btnService'];
             restrict: 'A',
             compile: function (tElement, tAttrs) {
                 var btnName = "delete";
-                var btnClass = "btn btn_icon btn_color1_3";
+                var btnClass = "btn btn_icon btn_color1_3 btn-sm";
                 var btnIcon = "fa fa-minus";
                 var i18n = "entity.action.delete";
 
@@ -189,7 +189,7 @@ owlBtnStateChange.$inject=['btnService'];
             restrict: 'A',
             compile: function (tElement, tAttrs) {
                 var btnName = "stateChange";
-                var btnClass = "btn btn_icon btn_color5";
+                var btnClass = "btn btn_icon btn_color5 btn-sm";
                 var btnIcon = "fa fa-check-square-o";
                 var i18n = "entity.action.stateChange";
 
@@ -203,7 +203,7 @@ owlBtnList.$inject=['btnService'];
             restrict: 'A',
             compile: function (tElement, tAttrs) {
                 var btnName = "list";
-                var btnClass = "btn btn_iconT btn_color5";
+                var btnClass = "btn btn_iconT btn_color5 btn-sm";
                 var btnIcon = "fa fa-list";
                 var i18n = "entity.action.list";
 
@@ -217,7 +217,7 @@ owlBtnDetail.$inject=['btnService'];
             restrict: 'A',
             compile: function (tElement, tAttrs) {
                 var btnName = "detail";
-                var btnClass = "btn btn_iconT btn_cons";
+                var btnClass = "btn btn_iconT btn_cons btn-sm";
                 var btnIcon = "fa fa-th";
                 var i18n = "entity.action.detail";
 
@@ -231,7 +231,7 @@ owlBtnSave.$inject=['btnService'];
             restrict: 'A',
             compile: function (tElement, tAttrs) {
                 var btnName = "save";
-                var btnClass = "btn btn-submit btn_customs";
+                var btnClass = "btn btn-submit btn_customs btn-sm";
                 var btnIcon = "fa fa-floppy-o";
                 var i18n = "entity.action.save";
 
@@ -245,7 +245,7 @@ owlBtnCheck.$inject=['btnService'];
             restrict: 'A',
             compile: function (tElement, tAttrs) {
                 var btnName = "check";
-                var btnClass = "btn btn-submit btn_customs";
+                var btnClass = "btn btn-submit btn_customs btn-sm";
                 var btnIcon = "fa fa-check";
                 var i18n = "entity.action.check";
 
@@ -259,7 +259,7 @@ owlBtnSelect.$inject=['btnService'];
             restrict: 'A',
             compile: function (tElement, tAttrs) {
                 var btnName = "select";
-                var btnClass = "btn btn-submit btn_customs";
+                var btnClass = "btn btn-submit btn_customs btn-sm";
                 var btnIcon = "fa fa-check";
                 var i18n = "entity.action.select";
 
@@ -273,7 +273,7 @@ owlBtnPositionSave.$inject=['btnService'];
             restrict: 'A',
             compile: function (tElement, tAttrs) {
                 var btnName = "positionSave";
-                var btnClass = "btn btn_icon btn_color8";
+                var btnClass = "btn btn_icon btn_color8 btn-sm";
                 var btnIcon = "fa fa-flag";
                 var i18n = "entity.action.positionSave";
 
@@ -287,7 +287,7 @@ owlBtnUpdate.$inject=['btnService'];
             restrict: 'A',
             compile: function (tElement, tAttrs) {
                 var btnName = "update";
-                var btnClass = "btn btn_icon btn_color5";
+                var btnClass = "btn btn_icon btn_color5 btn-sm";
                 var btnIcon = "fa fa-pencil-square-o";
                 var i18n = "entity.action.edit";
 
@@ -301,7 +301,7 @@ owlBtnDecision.$inject=['btnService'];
             restrict: 'A',
             compile: function (tElement, tAttrs) {
                 var btnName = "decision";
-                var btnClass = "btn btn_icon btn_color8";
+                var btnClass = "btn btn_icon btn_color8 btn-sm";
                 var btnIcon = "fa fa-credit-card";
                 var i18n = "entity.action.decisionTitle";
 
@@ -316,7 +316,7 @@ owlBtnCancel.$inject=['btnService'];
             restrict: 'A',
             compile: function (tElement, tAttrs) {
                 var btnName = "cancel";
-                var btnClass = "btn btn-submit btn_customs2";
+                var btnClass = "btn btn-submit btn_customs2 btn-sm";
                 var btnIcon = "fa fa-times";
                 var i18n = "entity.action.cancel";
 
@@ -331,7 +331,7 @@ owlBtnEtcFunc.$inject=['btnService'];
             restrict: 'A',
             compile: function (tElement, tAttrs) {
                 var btnName = "etcFunc";
-                var btnClass = "btn btn_iconT btn_cons dropdown-toggle";
+                var btnClass = "btn btn_iconT btn_cons dropdown-toggle btn-sm";
                 var btnIcon = "fa fa-bolt";
                 var i18n = "entity.action.functionAdd";
 

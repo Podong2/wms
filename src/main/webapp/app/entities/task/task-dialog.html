@@ -1,5 +1,5 @@
 
-<form name="editForm" role="form" novalidate ng-submit="vm.save()">
+<form name="editForm" role="form" novalidate ng-submit="vm.save()" >
 
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
@@ -14,26 +14,20 @@
                     ng-model="vm.task.id" readonly />
         </div>
         <div class="form-group">
-            <label class="control-label" translate="wmsApp.task.name" for="field_name">Name</label>
-            <input type="text" class="form-control" name="name" id="field_name"
+            <label class="control-label" translate="wmsApp.task.name" for="field_name" >Name</label>
+            <input type="text" class="form-control" name="name" id="field_name" enter-submit="vm.save()"
                     ng-model="vm.task.name"
                      />
         </div>
         <div class="form-group">
             <label class="control-label" translate="wmsApp.task.dueDate" for="field_dueDate">Due Date</label>
-            <input type="text" class="form-control" name="dueDate" id="field_dueDate"
-                    ng-model="vm.task.dueDate"
-                     />
-        </div>
-<!--        <div class="form-group">
-            <label class="control-label" translate="wmsApp.task.dueDate" for="field_dueDate">Due Date</label>
-            <p class="input-group">
-                <input type="text" class="form-control" datetime-picker="MM/dd/yyyy HH:mm" ng-model="vm.picker3.date" is-open="vm.picker3.open" id="field_dueDate"/>
+            <p class="input-group width-200-p">
+                <input type="text" class="form-control" datetime-picker="yyyy-MM-dd HH:mm" ng-model="vm.dueDate.date" is-open="vm.dueDate.open" id="field_dueDate" value="{{vm.dueDate.date}}" enter-submit="vm.save()"/>
                 <span class="input-group-btn">
-                  <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker3')"><i class="fa fa-calendar"></i></button>
+                  <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDate')"><i class="fa fa-calendar"></i></button>
                 </span>
             </p>
-        </div>-->
+        </div>
         <div class="form-group">
             <label class="control-label">중요도</label>
             <div class="">
@@ -48,10 +42,13 @@
             </div>
         </div>
         <div class="form-group">
-            <label translate="wmsApp.task.assignee" for="field_assignee">담당자</label>
-            <select class="form-control" id="field_assignee" name="assignee" ng-model="vm.task.assigneeId" ng-options="user.id as user.id for user in vm.users"            >
+            <label translate="global.assignee">담당자</label>
+            <select class="form-control" id="field_assignee" name="assignee" ng-model="vm.task.assigneeId" ng-options="user.id as user.name for user in vm.assigneeUsers" >
                 <option value=""></option>
             </select>
+            <!--<picker-search source="vm.userLoad(vm.task.assigneeName, vm.assigneeUsers)"-->
+                           <!--search="vm.task.assigneeName"-->
+                           <!--ng-model="vm.assigneeUsers"></picker-search>-->
         </div>
         <div class="form-group" > <!-- ng-controller="uploadCtrl" -->
             <label class="control-label" translate="wmsApp.task.contents">Contents</label>
@@ -65,22 +62,49 @@
                         data-on-image-upload="imageUpload(files)"></summernote>
         </div>
         <div class="form-group">
-            <label translate="wmsApp.task.taskAttachedFiles" for="field_taskAttachedFiles">Task Attached Files</label>
-            <select class="form-control" id="field_taskAttachedFiles" name="taskAttachedFiles" ng-model="vm.task.taskAttachedFilesId" ng-options="taskAttachedFile.id as taskAttachedFile.id for taskAttachedFile in vm.taskattachedfiles"            >
-                <option value=""></option>
-            </select>
+            <label translate="wmsApp.task.taskAttachedFiles">Task Attached Files</label>
+            <!--<select class="form-control" id="field_taskAttachedFiles" name="taskAttachedFiles" ng-model="vm.task.taskAttachedFilesId" ng-options="taskAttachedFile.id as taskAttachedFile.id for taskAttachedFile in vm.task.attachedFiles"            >-->
+                <!--<option value=""></option>-->
+            <!--</select>-->
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th class="text-center thbrl_no width-200-p">
+                        <span translate="common.fileName">파일 명</span>
+                    </th>
+                    <th class="text-center width-160-p"><span translate="common.filePath">파일 타입</span>
+                    </th>
+                    <th class="text-center width-60-p"><span
+                        translate="common.config">설정</span></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="file in vm.task.attachedFiles">
+                    <td class="width-200-p">
+                        <span style="color:#428bca; cursor:pointer; white-space: normal;"
+                        class="btn btn-blue btn-sm">{{file.attachedFile.name}}</span> <!-- ng-click="downloadFile(file)" -->
+                    </td>
+                    <td class="width-160-p">{{file.attachedFile.contentType}}</td>
+                    <td class="text-center width-60-p">
+                        <button type='button' class='btn'
+                                ng-click='vm.fileRemove(file, $index)' owl-btn-delete>
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <input id="input-4" name="input4[]" type="file" multiple class="file-loading" get-files>
         </div>
     </div>
     <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="vm.clear()">
             <span class="glyphicon glyphicon-ban-circle"></span>&nbsp;<span translate="entity.action.cancel">Cancel</span>
         </button>
-        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" class="btn btn-primary">
+        <button type="submit" ng-disabled="editForm.$invalid || vm.isSaving" id="submit" class="btn btn-primary">
             <span class="glyphicon glyphicon-save"></span>&nbsp;<span translate="entity.action.save">Save</span>
         </button>
     </div>
 </form>
-<input id="input-4" name="input4[]" type="file" multiple class="file-loading" get-files>
 <script>
-        $("#input-4").fileinput({showCaption: false, showUpload: false});
+    $("#input-4").fileinput({showCaption: false, showUpload: false, uploadUrl: true});
 </script>

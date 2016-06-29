@@ -5,9 +5,9 @@
         .module('wmsApp')
         .controller('TaskController', TaskController);
 
-    TaskController.$inject = ['$scope', '$state', 'Task', 'TaskSearch', 'ParseLinks', 'AlertService', 'pagingParams', 'paginationConstants', 'FIndCode', 'User', '$log', '$rootScope', 'findUser', '$q', 'TaskListSearch', 'tableService'];
+    TaskController.$inject = ['$scope', '$state', 'Task', 'TaskSearch', 'ParseLinks', 'AlertService', 'pagingParams', 'paginationConstants', 'FIndCode', 'User', '$log', '$rootScope', 'findUser', '$q', 'TaskListSearch', 'tableService', 'DateUtils'];
 
-    function TaskController ($scope, $state, Task, TaskSearch, ParseLinks, AlertService, pagingParams, paginationConstants, FIndCode, User, $log, $rootScope, findUser, $q, TaskListSearch, tableService) {
+    function TaskController ($scope, $state, Task, TaskSearch, ParseLinks, AlertService, pagingParams, paginationConstants, FIndCode, User, $log, $rootScope, findUser, $q, TaskListSearch, tableService,DateUtils) {
         var vm = this;
 
 
@@ -91,7 +91,7 @@
             if(oldValue != newValue){
                 var d = newValue;
                 var formatDate =
-                    datePickerFormat(d.getFullYear(), 4) + '-' +  datePickerFormat(d.getMonth() + 1, 2) + '-' + datePickerFormat(d.getDate(), 2)
+                    DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' +  DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
                 //datePickerFormat(d.getHours(), 2) + ':' + datePickerFormat(d.getMinutes(), 2) + ':' + datePickerFormat(d.getSeconds(), 2);
                 vm.searchQuery.dueDateFrom = formatDate;
             }
@@ -102,24 +102,11 @@
             if(oldValue != newValue){
                 var d = newValue;
                 var formatDate =
-                    datePickerFormat(d.getFullYear(), 4) + '-' + datePickerFormat(d.getMonth() + 1, 2) + '-' + datePickerFormat(d.getDate(), 2)
+                    DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
                 //datePickerFormat(d.getHours(), 2) + ':' + datePickerFormat(d.getMinutes(), 2) + ':' + datePickerFormat(d.getSeconds(), 2);
                 vm.searchQuery.dueDateTo = formatDate;
             }
         });
-
-        // date 포멧 변경
-        function datePickerFormat(n, digits) {
-            var zero = '';
-            n = n.toString();
-
-            if (n.length < digits) {
-                for (var i = 0; i < digits - n.length; i++)
-                    zero += '0';
-            }
-            return zero + n;
-        }
-
 
         loadAll();
 
@@ -227,7 +214,6 @@
         }
 
         function getList(){
-            vm.searchQuery.s
             TaskListSearch.findTaskList(vm.searchQuery).then(function(result){
                 //$log.debug("vm.tasks : ", result);
                 //vm.tasks = result;
@@ -256,7 +242,9 @@
                 .setDAlign("text-center")
                 .setHAlign("text-center")
                 .setDType("check"));
-            $scope.tableConfigs.push(tableService.getConfig("이슈 명", "name"));
+            $scope.tableConfigs.push(tableService.getConfig("이슈 명", "name")
+                .setDType("renderer")
+                .setDRenderer("issue_detail"));
             $scope.tableConfigs.push(tableService.getConfig("담당자", "assigneeName"));
             $scope.tableConfigs.push(tableService.getConfig("종료일", "dueDate"));
 
@@ -274,7 +262,7 @@
                 .setDAlign("text-center")
                 .setHAlign("text-center")
                 .setDType("renderer")
-                .setDRenderer("test"));
+                .setDRenderer("config"));
         }
 
         $scope.getData = getData;

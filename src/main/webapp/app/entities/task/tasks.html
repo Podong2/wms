@@ -47,7 +47,7 @@
                                     <label class="control-label">시작일</label>
                                     <div class="">
                                         <p class="input-group">
-                                            <input type="text" class="form-control" datetime-picker="dd MMM yyyy" ng-model="vm.dueDateFrom.date" is-open="vm.dueDateFrom.open"
+                                            <input type="text" class="form-control" datetime-picker="yyyy-dd-MM" ng-model="vm.dueDateFrom.date" is-open="vm.dueDateFrom.open"
                                                    enable-time="false" datepicker-options="vm.dueDateFrom.datepickerOptions" />
                                       <span class="input-group-btn">
                                           <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDateFrom')"><i class="fa fa-calendar"></i></button>
@@ -58,7 +58,7 @@
                                     <label class="control-label">종료일</label>
                                     <div class="">
                                         <p class="input-group">
-                                            <input type="text" class="form-control" datetime-picker="dd MMM yyyy" ng-model="vm.dueDateTo.date" is-open="vm.dueDateTo.open"
+                                            <input type="text" class="form-control" datetime-picker="yyyy-dd-MM" ng-model="vm.dueDateTo.date" is-open="vm.dueDateTo.open"
                                                    enable-time="false" datepicker-options="vm.dueDateTo.datepickerOptions" />
                                       <span class="input-group-btn">
                                           <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDateTo')"><i class="fa fa-calendar"></i></button>
@@ -97,11 +97,11 @@
                         <br/>
 
                         <!-- 검색 영역 -->
-                        <span  class="input-group-btn width-min" >
-                            <button class="btn btn-info" ng-click="vm.search(vm.searchQuery)">
-                                <span class="glyphicon glyphicon-search">엘라스틱서치</span>
-                            </button>
-                        </span>
+                        <!--<span  class="input-group-btn width-min" >-->
+                            <!--<button class="btn btn-info" ng-click="vm.search(vm.searchQuery)">-->
+                                <!--<span class="glyphicon glyphicon-search">엘라스틱서치</span>-->
+                            <!--</button>-->
+                        <!--</span>-->
                         <!-- 검색 영역 -->
                         <span  class="input-group-btn width-min" >
                             <button class="btn btn-info" ng-click="vm.getList()">
