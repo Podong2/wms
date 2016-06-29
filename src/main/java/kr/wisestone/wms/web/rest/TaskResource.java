@@ -186,7 +186,7 @@ public class TaskResource {
     public ResponseEntity<Void> deleteTask(@PathVariable Long id) {
         log.debug("REST request to delete Task : {}", id);
         taskService.delete(id);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("task", id.toString())).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntitySingleDeletionAlert("task", id.toString())).build();
     }
 
     /**
@@ -201,7 +201,7 @@ public class TaskResource {
     @Timed
     public ResponseEntity<Void> deleteTask(@RequestParam(value = "targetIds", required = true) List<Long> targetIds) {
         taskService.delete(targetIds);
-        return ResponseEntity.ok().headers(HeaderUtil.createEntityDeletionAlert("task", targetIds.size()+"")).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityMultipleDeletionAlert("task", targetIds.size()+"")).build();
     }
 
     /**

@@ -5,9 +5,9 @@
         .module('wmsApp')
         .controller('TaskController', TaskController);
 
-    TaskController.$inject = ['$scope', '$state', 'Task', 'TaskSearch', 'ParseLinks', 'AlertService', 'pagingParams', 'paginationConstants', 'FIndCode', 'User', '$log', '$rootScope', 'findUser', '$q', 'TaskListSearch', 'tableService', 'DateUtils'];
+    TaskController.$inject = ['$scope', '$state', 'Task', 'TaskRemove', 'TaskSearch', 'ParseLinks', 'AlertService', 'pagingParams', 'paginationConstants', 'FIndCode', 'User', '$log', '$rootScope', 'findUser', '$q', 'TaskListSearch', 'tableService', 'DateUtils'];
 
-    function TaskController ($scope, $state, Task, TaskSearch, ParseLinks, AlertService, pagingParams, paginationConstants, FIndCode, User, $log, $rootScope, findUser, $q, TaskListSearch, tableService,DateUtils) {
+    function TaskController ($scope, $state, Task, TaskRemove, TaskSearch, ParseLinks, AlertService, pagingParams, paginationConstants, FIndCode, User, $log, $rootScope, findUser, $q, TaskListSearch, tableService,DateUtils) {
         var vm = this;
 
 
@@ -24,6 +24,7 @@
         vm.assigneeUsers = [];
         vm.userLoad = userLoad;
         vm.getList = getList;
+        vm.removeTasks = removeTasks;
 
         //	목록 데이터 저장
         $scope.responseData = {
@@ -219,6 +220,29 @@
                 //vm.tasks = result;
                 $scope.responseData = result;
             })
+        }
+
+        function removeTasks() {
+            $log.debug("tasks : ", vm.tasks);
+
+            var removeTargetIds = [];
+
+            angular.forEach(vm.tasks, function(task){
+
+                if(task.checked)
+                    removeTargetIds.push(task.id);
+            });
+
+            $log.debug("removeTargetIds.length : ", removeTargetIds.length);
+
+            if(removeTargetIds.length == 0)
+                return;
+
+            if(removeTargetIds.length == 1) {
+                Task.delete({id:removeTargetIds[0]});
+            } else {
+                TaskRemove.delete({targetIds : removeTargetIds.join(",")});
+            }
         }
 
 

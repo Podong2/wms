@@ -31,6 +31,14 @@ public class HeaderUtil {
         return createAlert("wmsApp." + entityName + ".deleted", param);
     }
 
+    public static HttpHeaders createEntityMultipleDeletionAlert(String entityName, String param) {
+        return createAlert("wmsApp." + entityName + ".deleted.multiple", param);
+    }
+
+    public static HttpHeaders createEntitySingleDeletionAlert(String entityName, String param) {
+        return createAlert("wmsApp." + entityName + ".deleted.single", param);
+    }
+
     public static HttpHeaders createFailureAlert(String entityName, String errorKey, String defaultMessage) {
         log.error("Entity creation failed, {}", defaultMessage);
         HttpHeaders headers = new HttpHeaders();

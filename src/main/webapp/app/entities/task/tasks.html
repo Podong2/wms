@@ -21,7 +21,7 @@
                 <form name="searchForm" class="form-inline searchForm">
                     <div class="input-group pull-right" >
                         <div class="form-group">
-                            <label class="control-label">이슈</label>
+                            <label class="control-label">태스크</label>
                             <div class="">
                                 <p class="input-group">
                                     <input type="text" class="form-control col-xs-2" ng-model="vm.searchQuery.name" id="searchQuery" placeholder="{{ 'wmsApp.task.home.search' | translate }}">
@@ -75,7 +75,7 @@
                         <div class="form-group">
                             <label class="control-label">중요도</label>
                             <div class="">
-                                <ol class="nya-bs-select  col-xs-2" ng-model="vm.searchQuery.severities" actions-box="true" multiple data-size="5" data-live-search="true" disabled="disable">
+                                <ol class="nya-bs-select col-xs-2" ng-model="vm.searchQuery.severities" actions-box="true" multiple data-size="5" data-live-search="true" disabled="disable">
                                     <li nya-bs-option="option in vm.code" data-value="option.id">
                                         <a>
                                             <span><span class="glyphicon" ng-class="option.icon"></span> {{ option.name }}</span>
@@ -125,7 +125,16 @@
             </div>
         </div>
     </div>
-    <div class="table-responsive">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xs-12 no-padding-right">
+                <button class="btn btn-danger pull-right" ng-click="vm.removeTasks()">
+                    <span class="glyphicon glyphicon-trash"> 삭제</span>
+                </button>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive voffset3">
 <!--        <table class="jh-table table table-striped">
             <thead>
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">

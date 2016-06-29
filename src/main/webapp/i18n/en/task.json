@@ -9,7 +9,10 @@
             },
             "created": "A new Task is created with identifier {{ param }}",
             "updated": "A Task is updated with identifier {{ param }}",
-            "deleted": "A Task is deleted with identifier {{ param }}",
+            "deleted": {
+                "single": "A Task is deleted with identifier {{ param }}",
+                "multiple": "{{ param }} tasks is deleted"
+            },
             "delete": {
                 "question": "Are you sure you want to delete Task {{ id }}?"
             },

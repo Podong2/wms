@@ -3,13 +3,33 @@
     angular
         .module('wmsApp')
         .factory('Task', Task)
+        .factory('TaskRemove', TaskRemove)
         .factory('TaskEdit', TaskEdit);
 
     Task.$inject = ['$resource'];
+    TaskRemove.$inject = ['$resource'];
     TaskEdit.$inject = ['$log', '$upload'];
 
     function Task ($resource) {
         var resourceUrl =  'api/tasks/:id';
+
+        return $resource(resourceUrl, {}, {
+            'query': { method: 'GET', isArray: true},
+            'get': {
+                method: 'GET',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    return data;
+                }
+            },
+            'update': { method:'PUT' }
+        });
+    }
+
+    function TaskRemove ($resource) {
+        var resourceUrl =  'api/tasks?targetIds=:targetIds';
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},

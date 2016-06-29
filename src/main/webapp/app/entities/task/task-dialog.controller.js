@@ -87,6 +87,7 @@
                     fileFormDataName : "file"
                 }).then(function (response) {
                     $log.debug("task 생성 성공")
+                    $uibModalInstance.dismiss('cancel');
                 });
             } else {
 
@@ -104,6 +105,7 @@
                     fileFormDataName : "file"
                 }).then(function (response) {
                     $log.debug("task 생성 성공")
+                    $uibModalInstance.dismiss('cancel');
                 });
             }
         }
