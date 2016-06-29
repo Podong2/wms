@@ -41,8 +41,12 @@
             });
         }
 
-        function uploadTask(){
-
+        function uploadTask(parameter){
+            parameter.url = "api/tasks";
+            return $upload.upload(parameter).then(function (response) {
+                $log.debug("프로젝트 자료실 수정 결과 : ", response);
+                return response;
+            });
         }
     }
 

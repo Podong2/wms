@@ -74,7 +74,7 @@
             vm.isSaving = true;
             if (vm.task.id !== null) {
                 //Task.update(vm.task, onSaveSuccess, onSaveError);
-                TaskEdit.addTask({
+                TaskEdit.uploadTask({
                     method : "PUT",
                     file : $scope.files,
                     //	data 속성으로 별도의 데이터 전송
@@ -135,8 +135,8 @@
 
         //	파일 삭제 클릭 시
         function fileRemove (data, fileIndex) {
-            var tempFiles = new Array();
-            angular.forEach($scope.files, function (file, index) {
+            var tempFiles = [];
+            angular.forEach(vm.task.attachedFiles, function (file, index) {
                 //	클라이언트에서 등록한 파일인 경우
                 if (data.id === undefined) {
                     if (fileIndex != index) {
@@ -152,7 +152,7 @@
                     }
                 }
             });
-
+$log.debug("vm.removeTargetFiles : ", vm.removeTargetFiles);
             vm.task.attachedFiles = tempFiles;
         }
 
