@@ -32,9 +32,23 @@
             'summernote',
             'angularFileUpload'
         ])
+        .config(config)
         .run(run);
 
+    config.$inject = ['nyaBsConfigProvider'];
     run.$inject = ['stateHandler', 'translationHandler', 'editableOptions'];
+
+    function config(nyaBsConfigProvider) {
+        nyaBsConfigProvider.setLocalizedText('ko-kr', {
+            defaultNoneSelection: '선택 해주세요',
+            noSearchResult: '검색 결과가 존재하지 않습니다',
+            numberItemSelected: '%d개 선택 되었습니다',
+            selectAll: '전체 선택',
+            deselectAll: '전체 해제'
+        });
+
+        nyaBsConfigProvider.useLocale('ko-kr');
+    }
 
     function run(stateHandler, translationHandler, editableOptions) {
         stateHandler.initialize();
