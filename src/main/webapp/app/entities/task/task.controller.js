@@ -79,9 +79,9 @@
 
         // 담당자 변경
         $scope.$watchCollection("vm.assigneeUsers", function(newValue, oldValue){
-            vm.searchQuery.assignee =[];
+            vm.searchQuery.assignees =[];
             angular.forEach(newValue, function(value){
-                vm.searchQuery.assignee.push(value.id);
+                vm.searchQuery.assignees.push(value.id);
             });
 
         });

@@ -1,0 +1,22 @@
+{
+  "relationships": [
+    {
+      "relationshipId": 1,
+      "relationshipName": "notification",
+      "otherEntityName": "notification",
+      "relationshipType": "many-to-one",
+      "otherEntityField": "id"
+    }
+  ],
+  "fields": [
+    {
+      "fieldId": 1,
+      "fieldName": "readYn",
+      "fieldType": "Boolean"
+    }
+  ],
+  "changelogDate": "20160627072809",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no"
+}

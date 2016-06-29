@@ -1,0 +1,16 @@
+{
+  "relationships": [
+    {
+      "relationshipId": 1,
+      "relationshipName": "task",
+      "otherEntityName": "task",
+      "relationshipType": "one-to-many",
+      "otherEntityRelationshipName": "taskAttachedFiles"
+    }
+  ],
+  "fields": [],
+  "changelogDate": "20160624062425",
+  "dto": "no",
+  "pagination": "no",
+  "service": "no"
+}

@@ -135,6 +135,10 @@ Generic styles
     padding: 10px;
 }
 
+.pad20 {
+    padding: 20px;
+}
+
 .break {
     white-space: normal;
     word-break:break-all;
