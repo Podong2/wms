@@ -5,9 +5,9 @@
         .module('wmsApp')
         .controller('TaskDialogController', TaskDialogController);
 
-    TaskDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Task', 'Code', 'TaskAttachedFile', 'User', '$log', 'TaskEdit', 'findUser', '$q', 'DateUtils'];
+    TaskDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Task', 'Code', 'TaskAttachedFile', 'User', '$log', 'TaskEdit', 'findUser', '$q', 'DateUtils', 'AlertService'];
 
-    function TaskDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Task, Code, TaskAttachedFile, User, $log, TaskEdit, findUser, $q, DateUtils) {
+    function TaskDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Task, Code, TaskAttachedFile, User, $log, TaskEdit, findUser, $q, DateUtils, AlertService) {
         var vm = this;
 
         vm.task = entity;
@@ -21,6 +21,8 @@
         vm.openCalendar = openCalendar;
         vm.userLoad = userLoad;
         vm.fileRemove = fileRemove;
+        vm.onWarning = onWarning;
+        vm.validationCheck = validationCheck;
 
         $log.debug("vm.task : ", vm.task);
 
@@ -65,7 +67,7 @@
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });
-        
+
         function clear () {
             $uibModalInstance.dismiss('cancel');
         }
@@ -96,17 +98,18 @@
                 if (vm.task.id === null) {
                     vm.task.id = "";
                 }
-
-                TaskEdit.addTask({
-                    method : "POST",
+                //if(validationCheck()){
+                    TaskEdit.addTask({
+                        method : "POST",
                         file : $scope.files,
                         //	data 속성으로 별도의 데이터 전송
                         fields : vm.task,
-                    fileFormDataName : "file"
-                }).then(function (response) {
-                    $log.debug("task 생성 성공")
-                    $uibModalInstance.dismiss('cancel');
-                });
+                        fileFormDataName : "file"
+                    }).then(function (response) {
+                        $log.debug("task 생성 성공")
+                        $uibModalInstance.dismiss('cancel');
+                    });
+                //}
             }
         }
 
@@ -162,5 +165,17 @@
 
             vm.task.attachedFiles = tempFiles;
         }
+
+        function validationCheck(){
+            if(angular.isUndefined(vm.task.name)){
+                onWarning("태스크 명을 입력하세요.");
+                return false;
+            }
+        }
+
+        function onWarning(error) {
+            AlertService.warning(error);
+        }
+
     }
 })();
