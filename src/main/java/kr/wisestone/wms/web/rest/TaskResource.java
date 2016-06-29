@@ -92,8 +92,8 @@ public class TaskResource {
      * or with status 500 (Internal Server Error) if the taskDTO couldnt be updated
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-    @RequestMapping(value = "/tasks",
-        method = RequestMethod.PUT,
+    @RequestMapping(value = "/tasks/update",
+        method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<TaskDTO> updateTask(TaskForm taskForm, MultipartHttpServletRequest request) throws URISyntaxException {

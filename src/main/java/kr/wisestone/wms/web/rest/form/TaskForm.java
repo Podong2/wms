@@ -35,7 +35,6 @@ public class TaskForm {
         severity.setId(this.severityId);
         task.setSeverity(severity);
 
-
         User assignee = new User();
         assignee.setId(this.assigneeId);
         task.setAssignee(assignee);

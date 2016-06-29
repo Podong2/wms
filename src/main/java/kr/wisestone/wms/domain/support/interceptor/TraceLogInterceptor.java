@@ -41,7 +41,7 @@ public class TraceLogInterceptor extends EmptyInterceptor {
 
         if (entity instanceof Traceable) {
 
-            String[] ignoreFields = new String[] { "id", "attachedFiles", "createdBy", "createdDate", "lastModifiedBy", "lastModifiedDate"};
+            String[] ignoreFields = new String[] { "id", "taskAttachedFiles", "attachedFiles", "createdBy", "createdDate", "lastModifiedBy", "lastModifiedDate"};
             Field[] allFields = this.getAllFields(entity.getClass(), null);
 
             fieldIteration: for (Field field : allFields) {
@@ -63,7 +63,8 @@ public class TraceLogInterceptor extends EmptyInterceptor {
 
                 String propertyNewState = this.getPropertyState(currentState[index]);
                 String propertyOldState = this.getPropertyState(previousState[index]);
-                if (propertyNewState.equals(propertyOldState)) {
+
+                if (propertyNewState == null || propertyNewState.equals(propertyOldState)) {
                     continue fieldIteration;
                 }
 

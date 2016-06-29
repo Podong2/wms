@@ -39,15 +39,29 @@
     run.$inject = ['stateHandler', 'translationHandler', 'editableOptions'];
 
     function config(nyaBsConfigProvider) {
-        nyaBsConfigProvider.setLocalizedText('ko-kr', {
+        nyaBsConfigProvider.setLocalizedText('ko', {
             defaultNoneSelection: '선택 해주세요',
             noSearchResult: '검색 결과가 존재하지 않습니다',
             numberItemSelected: '%d개 선택 되었습니다',
             selectAll: '전체 선택',
             deselectAll: '전체 해제'
         });
+        nyaBsConfigProvider.setLocalizedText('en', {
+            defaultNoneSelection: 'Nothing selected',
+            noSearchResult: 'NO SEARCH RESULT',
+            numberItemSelected: '%d items selected',
+            selectAll: 'Select All',
+            deselectAll: 'Deselect All'
+        });
+        nyaBsConfigProvider.setLocalizedText('ja', {
+            defaultNoneSelection: '選択してください',
+            noSearchResult: '検索結果が存在しません',
+            numberItemSelected: '%d個の選択されました',
+            selectAll: '全選択',
+            deselectAll: '全解除'
+        });
 
-        nyaBsConfigProvider.useLocale('ko-kr');
+        nyaBsConfigProvider.useLocale('ko');
     }
 
     function run(stateHandler, translationHandler, editableOptions) {

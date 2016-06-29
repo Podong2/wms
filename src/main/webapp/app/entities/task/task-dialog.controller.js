@@ -74,8 +74,13 @@
             vm.isSaving = true;
             if (vm.task.id !== null) {
                 //Task.update(vm.task, onSaveSuccess, onSaveError);
+
+                $log.debug("vm.task : ", vm.task);
+
+                vm.task.removeTargetFiles = vm.removeTargetFiles.join(',');
+
                 TaskEdit.uploadTask({
-                    method : "PUT",
+                    method : "POST",
                     file : $scope.files,
                     //	data 속성으로 별도의 데이터 전송
                     fields : vm.task,
@@ -148,13 +153,12 @@
                         tempFiles.push(file);
                     }
                     else {
-                        vm.removeTargetFiles.push({ id : file.id});
+                        vm.removeTargetFiles.push(file.id);
                     }
                 }
             });
-$log.debug("vm.removeTargetFiles : ", vm.removeTargetFiles);
+
             vm.task.attachedFiles = tempFiles;
         }
-
     }
 })();
