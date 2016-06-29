@@ -1228,6 +1228,10 @@ table th {
     text-align: center !important
 }
 
+.table-active {
+    background: #cefeff;
+}
+
 /* 상세 요약정보 테이블 css */
 .detail-info-area > .row .row div:first-child{
     font-weight: bold;

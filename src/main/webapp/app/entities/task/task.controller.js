@@ -242,11 +242,13 @@
                 .setDAlign("text-center")
                 .setHAlign("text-center")
                 .setDType("check"));
-            $scope.tableConfigs.push(tableService.getConfig("이슈 명", "name")
-                .setDType("renderer")
-                .setDRenderer("issue_detail"));
-            $scope.tableConfigs.push(tableService.getConfig("담당자", "assigneeName"));
-            $scope.tableConfigs.push(tableService.getConfig("종료일", "dueDate"));
+            $scope.tableConfigs.push(tableService.getConfig("이슈 명", "name"));
+            $scope.tableConfigs.push(tableService.getConfig("담당자", "assigneeName")
+                .setHWidth("width-160-p")
+                .setDAlign("text-center"));
+            $scope.tableConfigs.push(tableService.getConfig("종료일", "dueDate")
+                .setHWidth("width-160-p")
+                .setDAlign("text-center"));
 
             /**
              *
