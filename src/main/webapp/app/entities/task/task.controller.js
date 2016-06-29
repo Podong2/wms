@@ -258,7 +258,7 @@
                 .setDType("check"));
             $scope.tableConfigs.push(tableService.getConfig("이슈 명", "name"));
             $scope.tableConfigs.push(tableService.getConfig("담당자", "assigneeName"));
-            $scope.tableConfigs.push(tableService.getConfig("종료일", "name"));
+            $scope.tableConfigs.push(tableService.getConfig("종료일", "dueDate"));
 
             /**
              *
@@ -266,7 +266,7 @@
              .setDRenderer(uiConstant.renderType.PROJECT_ROLE_DETAIL)
              */
 
-            $scope.tableConfigs.push(tableService.getConfig("중요도", "severityId")
+            $scope.tableConfigs.push(tableService.getConfig("중요도", "severityName")
                 .setHWidth("width-80-p")
                 .setDAlign("text-center"));
             $scope.tableConfigs.push(tableService.getConfig("설정")

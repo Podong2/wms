@@ -1,19 +1,22 @@
 <div>
     <h2 translate="wmsApp.task.home.title">Tasks</h2>
-    <jhi-alert></jhi-alert>
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-xs-12 no-padding-left">
-                <button class="btn btn-primary" ui-sref="task.new" >
+        <div class="row no-padding-left">
+            <div class="col-xs-12 no-padding-right">
+                <button class="btn btn-primary pull-right" ui-sref="task.new" >
                     <span class="glyphicon glyphicon-plus"></span>
                     <span class="hidden-xs"  translate="wmsApp.task.home.createLabel">
                         Create new Task
                     </span>
                 </button>
             </div>
-
+        </div>
+    </div>
+    <jhi-alert></jhi-alert>
+    <div class="container-fluid voffset3">
+        <div class="row panel panel-default pad">
             <!-- 구간검색 -->
-            {{vm.searchQuery}}
+            <!--{{vm.searchQuery}}-->
             <div class="col-xs-12 no-padding-right">
                 <form name="searchForm" class="form-inline searchForm">
                     <div class="input-group pull-right" >
@@ -72,7 +75,7 @@
                         <div class="form-group">
                             <label class="control-label">중요도</label>
                             <div class="">
-                                <ol class="nya-bs-select" ng-model="vm.searchQuery.severities" actions-box="true" multiple data-size="5" data-live-search="true" disabled="disable">
+                                <ol class="nya-bs-select  col-xs-2" ng-model="vm.searchQuery.severities" actions-box="true" multiple data-size="5" data-live-search="true" disabled="disable">
                                     <li nya-bs-option="option in vm.code" data-value="option.id">
                                         <a>
                                             <span><span class="glyphicon" ng-class="option.icon"></span> {{ option.name }}</span>
@@ -122,7 +125,6 @@
             </div>
         </div>
     </div>
-    <br/>
     <div class="table-responsive">
 <!--        <table class="jh-table table table-striped">
             <thead>
