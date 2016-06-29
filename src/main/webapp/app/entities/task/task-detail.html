@@ -3,7 +3,22 @@
     <h2><span translate="wmsApp.task.detail.title">Task</span> {{vm.task.id}}</h2>
     <hr>
     <jhi-alert-error></jhi-alert-error>
-    <dl class="dl-horizontal jh-entity-details">
+
+    <!-- 탭부분 -->
+    <div class="col-md-12 mgt10 slideBody">
+        <i class="fa fa-chevron-right fa-3x cursor float-right slideBtnArea"
+           style="right: 0;" slide-scroll-right></i>
+        <i class="fa fa-chevron-left fa-3x cursor float-left slideBtnArea"
+           slide-scroll-left></i>
+        <div class="slideMenu">
+            <ul class="nav nav-tabs">
+                <li ng-class="vm.tabArea[0].status == true ? 'active' : ''" ng-click="vm.tabDisplay(0)"><span translate="">요약정보</span></li>
+                <li ng-class="vm.tabArea[1].status == true ? 'active' : ''" ng-click="vm.tabDisplay(1)"><span translate="">Audit log</span></li>
+                <li ng-class="vm.tabArea[2].status == true ? 'active' : ''" ng-click="vm.tabDisplay(2)"><span translate="">테스트</span></li>
+            </ul>
+        </div>
+    </div>
+<!--    <dl class="dl-horizontal jh-entity-details">
         <dt><span translate="wmsApp.task.name">Name</span></dt>
         <dd>
             <span>{{vm.task.name}}</span>
@@ -24,7 +39,47 @@
         <dd>
             <a ui-sref="task-attached-file-detail({id:vm.task.taskAttachedFilesId})">{{vm.task.taskAttachedFilesId}}</a>
         </dd>
-    </dl>
+    </dl>-->
+
+
+    <!-- 상세 정보영역 -->
+    <div class="col-md-12">
+        <div class="ibox">
+            <div class="ibox_content">
+                <div ng-repeat="summary in summaryConfigs" class="detail-info-area">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class=" col-md-6" ng-show="summary[0].name != ''" translate="{{ summary[0].name }}"></div>
+                                <div class="col-md-6" ng-show="summary[0].name != '' && !summary[0].renderer">{{ vm.responseData[summary[0].key] }}</div>
+                                <div class="col-md-6" ng-show="summary[0].name != '' && summary[0].renderer">
+                                    <owl-custom-renderer index="0" property="{{summary[0].renderer}}"></owl-custom-renderer>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="row">
+                                <div class=" col-md-6" ng-show="summary[1].name != ''" translate="{{ summary[1].name }}"></div>
+                                <div class="col-md-6" ng-show="summary[1].name != '' && !summary[1].renderer">{{ vm.responseData[summary[1].key] }}</div>
+                                <div class="col-md-6" ng-show="summary[1].name != '' && summary[1].renderer">
+                                    <owl-custom-renderer index="0" property="{{summary[1].renderer}}"></owl-custom-renderer>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 설명영역 -->
+    <div class="col-md-12">
+        <div class="ibox">
+            <div class="ibox_content">{{vm.responseData.contents}}
+                <span ng-bind-html="renderHtml(vm.responseData.contents)"></span>
+            </div>
+        </div>
+    </div>
 
     <button type="submit"
             onclick="window.history.back()"

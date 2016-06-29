@@ -8,7 +8,7 @@ getFiles.$inject=['$log', '$rootScope'];
             restrict: 'A',
             link: function(scope, element) {
                 element.bind("change", function (changeEvent) {
-                    $rootScope.$broadcast('setFiles', changeEvent.currentTarget.files);
+                    $rootScope.$broadcast('setFiles', changeEvent.target.files);
                 });
             }
         }

@@ -528,6 +528,12 @@ Social Buttons
     .slideBody{
         padding-left: 0
     }
+    .detail-info-area > .row > div .row:first-child{
+        border-bottom: 1px solid #cfcfcf;
+    }
+    .detail-info-area{
+        border-bottom-width: 0px !important;
+    }
 }
 
 @media(min-width:768px) {
@@ -616,6 +622,12 @@ Social Buttons
     }
     .slideBody{
         padding-left: 0
+    }
+    .detail-info-area > .row > div .row:first-child{
+        border-bottom: 1px solid #cfcfcf;
+    }
+    .detail-info-area{
+        border-bottom-width: 0px !important;
     }
 }
 @media screen and (min-width: 992px) and (max-width: 1366px) {
@@ -857,6 +869,7 @@ li.active > a{
 .slideBody {
     padding-right: 0;
     padding-left: 0;
+    margin-bottom: 10px;
 }
 
 
@@ -1213,4 +1226,25 @@ table th {
     background-color: #5bc0de;
     line-height: 1.8;
     text-align: center !important
+}
+
+/* 상세 요약정보 테이블 css */
+.detail-info-area > .row .row div:first-child{
+    font-weight: bold;
+    color: #fff;
+    background-color: #5bc0de;
+}
+.detail-info-area > .row .row div{
+    padding:10px;
+}
+.detail-info-area{
+    border: 0 solid #ddd;
+    border-bottom-width: 1px;
+    overflow: hidden;
+}
+.detail-info-area > .row{
+    margin: 0;
+}
+.detail-info-area:first-child {
+    border-top : 1px solid #ddd;
 }

@@ -50,7 +50,7 @@ angular.module('wmsApp')
                             customTag = "<a owl-btn-link link-type='edit' ui-sref='task.edit({id \: " + scope.data.id + "})' href='#/task/" + scope.data.id + "/edit'></a>";
                             break;
                         case "issue_detail" :
-                            customTag = "<a ui-sref='task-detail({id \: " + scope.data.id + "})' href='#/task/" + scope.data.id + "/edit'>"+  +"</a>";
+                            customTag = "<a ui-sref='task-detail({id \: " + scope.data.id + "})' href='#/task/" + scope.data.id + "/edit'>"+ scope.data.name +"</a>";
                             break;
 
                     }

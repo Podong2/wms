@@ -1,5 +1,5 @@
 
-<form name="editForm" role="form" novalidate ng-submit="vm.save()" >
+<form name="editForm" class="editForm" role="form" novalidate ng-submit="vm.save()" >
 
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
@@ -8,16 +8,23 @@
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
+        <jhi-alert></jhi-alert>
         <div class="form-group" ng-show="vm.task.id">
             <label for="id" translate="global.field.id">ID</label>
             <input type="text" class="form-control" id="id" name="id"
                     ng-model="vm.task.id" readonly />
         </div>
         <div class="form-group">
-            <label class="control-label" translate="wmsApp.task.name" for="field_name" >Name</label>
-            <input type="text" class="form-control" name="name" id="field_name" enter-submit="vm.save()"
+            <label class="control-label" translate="wmsApp.task.name" for="name" >Name</label>
+            <input type="text" class="form-control" name="name" id="name" enter-submit="vm.save()"
+                   required
                     ng-model="vm.task.name"
                      />
+            <div class="error ng-hide" ng-show="editForm.name.$invalid &amp;&amp; editForm.name.$dirty">
+                <p class="help-block" ng-show="editForm.name.$error.required" class="ng-hide" translate="태스크 명을 입력하세요.">
+                    태스크 명을 입력하세요.
+                </p>
+            </div>
         </div>
         <div class="form-group">
             <label class="control-label" translate="wmsApp.task.dueDate" for="field_dueDate">Due Date</label>
