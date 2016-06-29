@@ -1,5 +1,6 @@
 {
     "global": {
+        "assignee" : "assignee",
         "title": "Wms",
         "browsehappy": "<strong>古い</strong>ブラウザーが使われています。より良い体験を得るために<a href=\"http://browsehappy.com/?locale=en\">ブラウザをアップデート</a>してください。",
         "menu": {

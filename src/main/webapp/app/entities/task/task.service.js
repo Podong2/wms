@@ -28,7 +28,8 @@
 
     function TaskEdit($log, $upload){
         var service = {
-            addTask : addTask
+            addTask : addTask,
+            uploadTask : uploadTask
         }
         return service;
 
@@ -38,6 +39,10 @@
                 $log.debug("프로젝트 자료실 생성 결과 : ", response);
                 return response;
             });
+        }
+
+        function uploadTask(){
+
         }
     }
 
