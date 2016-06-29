@@ -156,5 +156,12 @@
         "emailexists": "E-mail is already in use!",
         "idexists": "A new {{entityName}} cannot already have an ID"
     },
-    "footer": "하단영역"
+    "footer": "하단영역",
+    "common": {
+        "attachedFile" : {
+            "fileName":"파일명",
+            "fileType":"파일유형",
+            "config":"설정"
+        }
+    }
 }

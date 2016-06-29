@@ -8,17 +8,11 @@
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
-        <jhi-alert></jhi-alert>
-        <div class="form-group" ng-show="vm.task.id">
-            <label for="id" translate="global.field.id">ID</label>
-            <input type="text" class="form-control" id="id" name="id"
-                    ng-model="vm.task.id" readonly />
-        </div>
         <div class="form-group">
-            <label class="control-label" translate="wmsApp.task.name" for="name" >Name</label>
-            <input type="text" class="form-control" name="name" id="name" enter-submit="vm.save()"
-                   required
-                    ng-model="vm.task.name"
+            <label class="control-label" translate="wmsApp.task.name" for="field_name" >Name</label>
+            <input type="hidden" class="form-control" id="id" name="id" ng-model="vm.task.id" readonly />
+            <input type="text" class="form-control" name="name" id="field_name" enter-submit="vm.save()"
+                    ng-model="vm.task.name" required
                      />
             <div class="error ng-hide" ng-show="editForm.name.$invalid &amp;&amp; editForm.name.$dirty">
                 <p class="help-block" ng-show="editForm.name.$error.required" class="ng-hide" translate="태스크 명을 입력하세요.">
@@ -77,19 +71,19 @@
                 <thead>
                 <tr>
                     <th class="text-center thbrl_no width-200-p">
-                        <span translate="common.fileName">파일 명</span>
+                        <span translate="common.attachedFile.fileName">파일 명</span>
                     </th>
-                    <th class="text-center width-160-p"><span translate="common.filePath">파일 타입</span>
+                    <th class="text-center width-160-p"><span translate="common.attachedFile.fileType">파일 타입</span>
                     </th>
                     <th class="text-center width-60-p"><span
-                        translate="common.config">설정</span></th>
+                        translate="common.attachedFile.config">설정</span></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="file in vm.task.attachedFiles">
                     <td class="width-200-p">
                         <span style="color:#428bca; cursor:pointer; white-space: normal;"
-                        class="btn btn-blue btn-sm">{{file.attachedFile.name}}</span> <!-- ng-click="downloadFile(file)" -->
+                        class="btn btn-blue btn-sm" ng-click="downloadFile(file)">{{file.attachedFile.name}}</span> <!-- ng-click="downloadFile(file)" -->
                     </td>
                     <td class="width-160-p">{{file.attachedFile.contentType}}</td>
                     <td class="text-center width-60-p">
@@ -113,5 +107,5 @@
     </div>
 </form>
 <script>
-    $("#input-4").fileinput({showCaption: false, showUpload: false, uploadUrl: true});
+    $("#input-4").fileinput({showCaption: false, showUpload: false, uploadUrl:"1", uploadAsync: false});
 </script>

@@ -1,6 +1,7 @@
 package kr.wisestone.wms.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.google.common.collect.Lists;
 import kr.wisestone.wms.domain.Task;
 import kr.wisestone.wms.service.TaskService;
 import kr.wisestone.wms.web.rest.condition.TaskCondition;
@@ -84,7 +85,7 @@ public class TaskResource {
     }
 
     /**
-     * PUT  /tasks : Updates an existing task.
+     * POST  /tasks/update : Updates an existing task.
      *
      * @param taskForm the taskForm to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated taskDTO,
@@ -105,6 +106,28 @@ public class TaskResource {
         List<MultipartFile> files = request.getFiles("file");
 
         TaskDTO result = taskService.update(taskForm, files);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert("task", taskForm.getId().toString()))
+            .body(result);
+    }
+
+    /**
+     * PUT  /tasks : Updates an existing task.
+     *
+     * @param taskForm the taskForm to update
+     * @return the ResponseEntity with status 200 (OK) and with body the updated taskDTO,
+     * or with status 400 (Bad Request) if the taskDTO is not valid,
+     * or with status 500 (Internal Server Error) if the taskDTO couldnt be updated
+     * @throws URISyntaxException if the Location URI syntax is incorrect
+     */
+    @RequestMapping(value = "/tasks",
+        method = RequestMethod.PUT,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<TaskDTO> updateTask(TaskForm taskForm) throws URISyntaxException {
+        log.debug("REST request to update Task : {}", taskForm);
+
+        TaskDTO result = taskService.update(taskForm, Lists.newArrayList());
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("task", taskForm.getId().toString()))
             .body(result);

@@ -67,7 +67,7 @@
         $timeout(function (){
             angular.element('.form-group:eq(1)>input').focus();
         });
-
+        
         function clear () {
             $uibModalInstance.dismiss('cancel');
         }
