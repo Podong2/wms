@@ -1,7 +1,12 @@
 package kr.wisestone.wms.web.rest.dto;
 
+import kr.wisestone.wms.domain.AttachedFile;
+import kr.wisestone.wms.domain.Task;
+import kr.wisestone.wms.domain.TaskAttachedFile;
+
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.Objects;
 
@@ -26,6 +31,8 @@ public class TaskDTO implements Serializable {
     private Long assigneeId;
 
     private String assigneeName;
+
+    private List<TaskAttachedFile> attachedFiles;
 
     public Long getId() {
         return id;
@@ -86,6 +93,14 @@ public class TaskDTO implements Serializable {
 
     public void setAssigneeName(String assigneeName) {
         this.assigneeName = assigneeName;
+    }
+
+    public List<TaskAttachedFile> getAttachedFiles() {
+        return attachedFiles;
+    }
+
+    public void setAttachedFiles(List<TaskAttachedFile> attachedFiles) {
+        this.attachedFiles = attachedFiles;
     }
 
     @Override

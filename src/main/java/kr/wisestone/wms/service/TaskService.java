@@ -2,14 +2,12 @@ package kr.wisestone.wms.service;
 
 import com.google.common.collect.Lists;
 import com.mysema.query.BooleanBuilder;
-import kr.wisestone.wms.domain.AttachedFile;
-import kr.wisestone.wms.domain.QTask;
-import kr.wisestone.wms.domain.Task;
-import kr.wisestone.wms.domain.User;
+import kr.wisestone.wms.domain.*;
 import kr.wisestone.wms.repository.TaskRepository;
 import kr.wisestone.wms.repository.search.TaskSearchRepository;
 import kr.wisestone.wms.web.rest.condition.TaskCondition;
 import kr.wisestone.wms.web.rest.dto.TaskDTO;
+import kr.wisestone.wms.web.rest.form.TaskForm;
 import kr.wisestone.wms.web.rest.mapper.TaskMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,15 +56,15 @@ public class TaskService {
     /**
      * Save a task.
      *
-     * @param taskDTO the entity to save
+     * @param taskForm the entity to save
      * @param files
      * @return the persisted entity
      */
     @Transactional
-    public TaskDTO save(TaskDTO taskDTO, List<MultipartFile> files) {
-        log.debug("Request to save Task : {}", taskDTO);
+    public TaskDTO save(TaskForm taskForm, List<MultipartFile> files) {
+        log.debug("Request to save Task : {}", taskForm);
 
-        Task task = taskMapper.taskDTOToTask(taskDTO);
+        Task task = taskForm.bind(new Task());
 
         for(MultipartFile multipartFile : files) {
 
@@ -135,6 +133,11 @@ public class TaskService {
         log.debug("Request to get Task : {}", id);
         Task task = taskRepository.findOne(id);
         TaskDTO taskDTO = taskMapper.taskToTaskDTO(task);
+
+        if(!task.getTaskAttachedFiles().isEmpty()) {
+            taskDTO.setAttachedFiles(Lists.newArrayList(task.getTaskAttachedFiles()));
+        }
+
         return taskDTO;
     }
 
@@ -179,20 +182,31 @@ public class TaskService {
         return taskSearchRepository.search(queryStringQuery(query), pageable);
     }
 
-    public TaskDTO update(TaskDTO taskDTO, List<MultipartFile> files) {
+    @Transactional
+    public TaskDTO update(TaskForm taskForm, List<MultipartFile> files) {
 
-        Task task = taskMapper.taskDTOToTask(taskDTO);
+        Task origin = taskRepository.findOne(taskForm.getId());
+
+        origin = taskForm.bind(origin);
 
         for(MultipartFile multipartFile : files) {
 
             AttachedFile attachedFile = this.attachedFileService.saveFile(multipartFile);
 
-            task.addAttachedFile(attachedFile);
+            origin.addAttachedFile(attachedFile);
         }
 
-        task = taskRepository.save(task);
-        taskSearchRepository.save(task);
-        TaskDTO result = taskMapper.taskToTaskDTO(task);
+        if(!taskForm.getRemoveTargetFiles().isEmpty()) {
+
+            for(Long targetFileId : taskForm.getRemoveTargetFiles()) {
+
+                origin.removeAttachedFile(targetFileId);
+            }
+        }
+
+        origin = taskRepository.save(origin);
+        taskSearchRepository.save(origin);
+        TaskDTO result = taskMapper.taskToTaskDTO(origin);
 
         return result;
     }

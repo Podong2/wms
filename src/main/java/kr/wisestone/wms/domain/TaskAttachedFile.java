@@ -35,6 +35,7 @@ public class TaskAttachedFile extends AbstractAuditingEntity implements Serializ
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "task_id")
+    @JsonIgnore
     private Task task;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)

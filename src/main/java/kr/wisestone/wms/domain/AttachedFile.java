@@ -1,5 +1,6 @@
 package kr.wisestone.wms.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -35,6 +36,7 @@ public class AttachedFile extends AbstractAuditingEntity implements Serializable
 
     @Column(name="content")
     @Lob
+    @JsonIgnore
     private byte[] content;
 
     private Long size;

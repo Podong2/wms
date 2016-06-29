@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import kr.wisestone.wms.domain.Task;
 import kr.wisestone.wms.service.TaskService;
 import kr.wisestone.wms.web.rest.condition.TaskCondition;
+import kr.wisestone.wms.web.rest.form.TaskForm;
 import kr.wisestone.wms.web.rest.util.HeaderUtil;
 import kr.wisestone.wms.web.rest.util.PaginationUtil;
 import kr.wisestone.wms.web.rest.dto.TaskDTO;
@@ -60,7 +61,7 @@ public class TaskResource {
     /**
      * POST  /tasks : Create a new task.
      *
-     * @param taskDTO the taskDTO to create
+     * @param taskForm the taskForm to create
      * @return the ResponseEntity with status 201 (Created) and with body the new taskDTO, or with status 400 (Bad Request) if the task has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
@@ -68,15 +69,15 @@ public class TaskResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<TaskDTO> createTask(TaskDTO taskDTO, MultipartHttpServletRequest request) throws URISyntaxException {
-        log.debug("REST request to save Task : {}", taskDTO);
-        if (taskDTO.getId() != null) {
+    public ResponseEntity<TaskDTO> createTask(TaskForm taskForm, MultipartHttpServletRequest request) throws URISyntaxException {
+        log.debug("REST request to save Task : {}", taskForm);
+        if (taskForm.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("task", "idexists", "A new task cannot already have an ID")).body(null);
         }
 
         List<MultipartFile> files = request.getFiles("file");
 
-        TaskDTO result = taskService.save(taskDTO, files);
+        TaskDTO result = taskService.save(taskForm, files);
         return ResponseEntity.created(new URI("/api/tasks/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("task", result.getId().toString()))
             .body(result);
@@ -85,7 +86,7 @@ public class TaskResource {
     /**
      * PUT  /tasks : Updates an existing task.
      *
-     * @param taskDTO the taskDTO to update
+     * @param taskForm the taskForm to update
      * @return the ResponseEntity with status 200 (OK) and with body the updated taskDTO,
      * or with status 400 (Bad Request) if the taskDTO is not valid,
      * or with status 500 (Internal Server Error) if the taskDTO couldnt be updated
@@ -95,17 +96,17 @@ public class TaskResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<TaskDTO> updateTask(TaskDTO taskDTO, MultipartHttpServletRequest request) throws URISyntaxException {
-        log.debug("REST request to update Task : {}", taskDTO);
-        if (taskDTO.getId() == null) {
-            return createTask(taskDTO, request);
+    public ResponseEntity<TaskDTO> updateTask(TaskForm taskForm, MultipartHttpServletRequest request) throws URISyntaxException {
+        log.debug("REST request to update Task : {}", taskForm);
+        if (taskForm.getId() == null) {
+            return createTask(taskForm, request);
         }
 
         List<MultipartFile> files = request.getFiles("file");
 
-        TaskDTO result = taskService.update(taskDTO, files);
+        TaskDTO result = taskService.update(taskForm, files);
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("task", taskDTO.getId().toString()))
+            .headers(HeaderUtil.createEntityUpdateAlert("task", taskForm.getId().toString()))
             .body(result);
     }
 

@@ -14,6 +14,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.Map;
 
@@ -34,7 +35,13 @@ public class AttachedFileDownloadView extends AbstractView {
 
         byte[] targetFile = attachedFile.getContent();
 
-        response.setContentType(super.getContentType());
+        String mimeType= URLConnection.guessContentTypeFromName(attachedFile.getName());
+        if(mimeType==null){
+            System.out.println("mimetype is not detectable, will take default");
+            mimeType = "application/octet-stream";
+        }
+
+        response.setContentType(mimeType);
         response.setContentLength(attachedFile.getContent().length);
         response.setHeader("Content-Transfer-Encoding", "binary");
 

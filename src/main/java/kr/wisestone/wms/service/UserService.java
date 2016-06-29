@@ -222,6 +222,10 @@ public class UserService {
     @Transactional(readOnly = true)
     public User getUserWithAuthorities(Long id) {
         User user = userRepository.findOne(id);
+
+        if(user == null)
+            return null;
+
         user.getAuthorities().size(); // eagerly load the association
         return user;
     }

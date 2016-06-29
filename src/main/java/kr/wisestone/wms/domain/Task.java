@@ -1,10 +1,13 @@
 package kr.wisestone.wms.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -166,5 +169,21 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
         this.taskAttachedFiles.add(taskAttachedFile);
 
         return taskAttachedFile;
+    }
+
+    public TaskAttachedFile findAttachedFile(Long attachedFileId) {
+        return this.taskAttachedFiles.stream().filter(
+            taskAttachedFile -> taskAttachedFile.getId().equals(attachedFileId)
+        ).findFirst().get();
+    }
+
+    public Task removeAttachedFile(Long attachedFileId) {
+
+        TaskAttachedFile taskAttachedFile = this.findAttachedFile(attachedFileId);
+
+        if(taskAttachedFile != null)
+            this.taskAttachedFiles.remove(taskAttachedFile);
+
+        return this;
     }
 }
