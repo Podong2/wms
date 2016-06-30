@@ -8,7 +8,7 @@
 
     Task.$inject = ['$resource'];
     TaskRemove.$inject = ['$resource'];
-    TaskEdit.$inject = ['$log', '$upload'];
+    TaskEdit.$inject = ['$log', '$upload', '$http'];
 
     function Task ($resource) {
         var resourceUrl =  'api/tasks/:id';
@@ -46,10 +46,11 @@
         });
     }
 
-    function TaskEdit($log, $upload){
+    function TaskEdit($log, $upload, $http){
         var service = {
             addTask : addTask,
-            uploadTask : uploadTask
+            uploadTask : uploadTask,
+            singleUpload : singleUpload
         }
         return service;
 
@@ -66,6 +67,13 @@
             return $upload.upload(parameter).then(function (response) {
                 $log.debug("프로젝트 자료실 수정 결과 : ", response);
                 return response;
+            });
+        }
+        function singleUpload(parameter){
+            $log.debug("task 싱글 업로드 data : ", parameter)
+            return $http.put( '/api/tasks', {}, {params : parameter}).then(function (result) {
+                $log.debug("taskList : ", result);
+                return result;
             });
         }
     }

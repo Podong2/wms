@@ -7,7 +7,7 @@
         .factory('TaskListSearch', TaskListSearch);
 
     TaskSearch.$inject = ['$resource'];
-    TaskListSearch.$inject = ['$http', '$log'];
+    TaskListSearch.$inject = ['$http', '$log', '$q'];
 
     function TaskSearch($resource) {
         var resourceUrl =  'api/_search/tasks/:id';
@@ -18,10 +18,11 @@
     }
 
     // 타스크 목록 검색
-    function TaskListSearch($http, $log){
+    function TaskListSearch($http, $log, $q){
         var service = {
             findTaskList : findTaskList,
-            TaskFindSimilar : TaskFindSimilar
+            TaskFindSimilar : TaskFindSimilar,
+            TaskAudigLog : TaskAudigLog
         }
         return service;
 
@@ -45,6 +46,18 @@
                 $log.debug("taskList : ", result);
                 return result;
             });
+        }
+
+        function TaskAudigLog(params){
+            var deferred = $q.defer();
+            $http.get( '/api/trace-log/findByTask', {
+                params : params
+            } ).then(function (result) {
+                deferred.resolve(result);
+                $log.debug("TaskAudigLogList : ", result);
+            });
+            return deferred.promise;
+
         }
     }
 
