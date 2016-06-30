@@ -198,6 +198,9 @@ Generic styles
 .voffset8 { margin-top: 100px; }
 .voffset9 { margin-top: 150px; }
 
+.voffset-bottom0 { margin-bottom: 0px;}
+.voffset-bottom { margin-bottom: 2px;}
+
 .readonly {
     background-color: #eee;
     opacity: 1;
@@ -911,8 +914,8 @@ li.active > a{
     cursor: auto;
 }
 .slideBody {
-    padding-right: 0;
-    padding-left: 0;
+    padding-right: 15px;
+    padding-left: 15px;
     margin-bottom: 10px;
 }
 
@@ -1262,6 +1265,18 @@ tr.angular-ui-tree-empty {
     width: 352px;
 }
 
+.min-height-100-p {
+    min-height: 100px;
+}
+
+.min-height-200-p {
+    min-height: 200px;
+}
+
+.min-height-300-p {
+    min-height: 300px;
+}
+
 .cursor {
     cursor: pointer;
 }
@@ -1300,6 +1315,10 @@ table th {
     border-top : 1px solid #ddd;
 }
 /* 상세 요약정보 테이블 css end */
+
+/* 상세 기타 css start */
+
+/* 상세 기타 css end */
 
 /* ng gallery start */
 .galleryBtnArea {

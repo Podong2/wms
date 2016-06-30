@@ -127,7 +127,10 @@
             "changeVersion": "変更バージョン",
             "decisionTitle": "意思決定",
             "config": "設定",
-            "userLink": "ユーザーの接続"
+            "userLink": "ユーザーの接続",
+            "INSERT": "Insert",
+            "UPDATE": "Update",
+            "DELETE": "Delete"
         },
         "detail": {
             "field": "フィールド",

@@ -1,6 +1,6 @@
 
-<div>
-    <h2><span translate="wmsApp.task.detail.title">Task</span> {{vm.task.id}}</h2>
+<div class="container-fluid">
+    <h2><span translate="wmsApp.task.detail.title">Task</span> {{vm.task.name}}</h2>
     <hr>
     <jhi-alert-error></jhi-alert-error>
 
@@ -20,58 +20,58 @@
 
     <!-- 상세 정보영역 -->
     <div class="col-md-12" ng-show="vm.tabArea[0].status">
-        <div class="ibox">
-            <div class="ibox_content">
-                <div ng-repeat="summary in summaryConfigs" class="detail-info-area">
-                    <div class="row">
+        <div class="panel panel-default">
+            <div class="ibox">
+                <div class="ibox_content">
+                    <div ng-repeat="summary in summaryConfigs" class="detail-info-area">
+                        <div class="row">
 
-                        <!-- 태스크 명 -->
-                        <div class="col-md-6" ng-if="summary[0].key == 'name'">
-                            <div class="row">
-                                <div class=" col-md-6" ng-show="summary[0].name != ''" translate="{{ summary[0].name }}"></div>
-                                <div class="col-md-6" ng-show="summary[0].name != '' && !summary[0].renderer">
-                                    <a editable-text="vm.responseData.name" buttons="no"> {{ vm.responseData[summary[0].key] }}</a>
-                                </div>
-                                <div class="col-md-6" ng-show="summary[0].name != '' && summary[0].renderer">
-                                    <owl-custom-renderer index="0" property="{{summary[0].renderer}}"></owl-custom-renderer>
+                            <!-- 태스크 명 -->
+                            <div class="col-md-6" ng-if="summary[0].key == 'name'">
+                                <div class="row">
+                                    <div class=" col-md-6" ng-show="summary[0].name != ''" translate="{{ summary[0].name }}"></div>
+                                    <div class="col-md-6" ng-show="summary[0].name != '' && !summary[0].renderer">
+                                        <a editable-text="vm.responseData.name" buttons="no"> {{ vm.responseData[summary[0].key] }}</a>
+                                    </div>
+                                    <div class="col-md-6" ng-show="summary[0].name != '' && summary[0].renderer">
+                                        <owl-custom-renderer index="0" property="{{summary[0].renderer}}"></owl-custom-renderer>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- 중요도 -->
-                        <div class="col-md-6" ng-if="summary[0].key == 'severityName'">
-                            <div class="row">
-                                <div class=" col-md-6" ng-show="summary[0].name != ''" translate="{{ summary[0].name }}"></div>
-                                <div class="col-md-6" ng-show="summary[0].name != '' && !summary[0].renderer">
-                                    <a editable-select="vm.responseData.severityId" e-ng-options="s.id as s.name for s in vm.code">
-                                        {{ vm.showStatus(vm.responseData[summary[0].value]) }}
-                                    </a>
-                                </div>
-                                <div class="col-md-6" ng-show="summary[0].name != '' && summary[0].renderer">
-                                    <owl-custom-renderer index="0" property="{{summary[0].renderer}}"></owl-custom-renderer>
+                            <!-- 중요도 -->
+                            <div class="col-md-6" ng-if="summary[0].key == 'severityName'">
+                                <div class="row">
+                                    <div class=" col-md-6" ng-show="summary[0].name != ''" translate="{{ summary[0].name }}"></div>
+                                    <div class="col-md-6" ng-show="summary[0].name != '' && !summary[0].renderer">
+                                        <a editable-select="vm.responseData.severityId" e-ng-options="s.id as s.name for s in vm.code">
+                                            {{ vm.showStatus(vm.responseData[summary[0].value]) }}
+                                        </a>
+                                    </div>
+                                    <div class="col-md-6" ng-show="summary[0].name != '' && summary[0].renderer">
+                                        <owl-custom-renderer index="0" property="{{summary[0].renderer}}"></owl-custom-renderer>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <!-- 종료날짜 -->
-                        <div class="col-md-6" ng-if="summary[1].key == 'dueDate'">
-                            <div class="row">
-                                <div class=" col-md-6" ng-show="summary[1].name != ''" translate="{{ summary[1].name }}"></div>
-                                <div class="col-md-6" ng-show="summary[1].name != '' && !summary[1].renderer">
-                                    <a editable-bsdate="vm.responseData.dueDate" e-is-open="opened.$data" e-ng-click="vm.open($event,'$data')" e-datepicker-popup="yyyy-MM-dd">{{ vm.responseData[summary[1].key] }}</a>
-                                </div>
-                                <div class="col-md-6" ng-show="summary[1].name != '' && summary[1].renderer">
-                                    <owl-custom-renderer index="0" property="{{summary[1].renderer}}"></owl-custom-renderer>
+                            <!-- 종료날짜 -->
+                            <div class="col-md-6" ng-if="summary[1].key == 'dueDate'">
+                                <div class="row">
+                                    <div class=" col-md-6" ng-show="summary[1].name != ''" translate="{{ summary[1].name }}"></div>
+                                    <div class="col-md-6" ng-show="summary[1].name != '' && !summary[1].renderer">
+                                        <a editable-bsdate="vm.responseData.dueDate" e-is-open="opened.$data" e-ng-click="vm.open($event,'$data')" e-datepicker-popup="yyyy-MM-dd">{{ vm.responseData[summary[1].key] }}</a>
+                                    </div>
+                                    <div class="col-md-6" ng-show="summary[1].name != '' && summary[1].renderer">
+                                        <owl-custom-renderer index="0" property="{{summary[1].renderer}}"></owl-custom-renderer>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
                         <!-- 담당자 -->
                         <div class="col-md-6" ng-if="summary[1].key == 'assigneeName'">
                             <div class="row">
                                 <div class=" col-md-6" ng-show="summary[1].name != ''" translate="{{ summary[1].name }}"></div>
                                 <div class="col-md-6" ng-show="summary[1].name != '' && !summary[1].renderer">
-                                    <!--{{ vm.responseData[summary[1].key] }}-->
                                     <span ng-click="vm.assigneeEditing()" ng-show="vm.assigneeEditingConfig">{{vm.responseData.assigneeName}}</span>
                                     <div ng-show="!vm.assigneeEditingConfig">
 
@@ -86,79 +86,94 @@
                             </div>
                         </div>
 
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
 
     <!-- 설명영역 -->
-    <div class="col-md-12"  ng-show="vm.tabArea[0].status">
-        <label translate="">내용</label>
-        <div class="ibox">
-            <div class="ibox_content">
-                <span ng-bind-html="vm.renderHtml(vm.responseData.contents)"></span>
+    <div class="col-md-12" ng-show="vm.tabArea[0].status">
+        <h4>내용</h4>
+        <div class="panel panel-default min-height-100-p">
+            <div class="ibox">
+                <div class="ibox_content">
+                    <span ng-bind-html="vm.renderHtml(vm.responseData.contents)"></span>
+                </div>
             </div>
         </div>
     </div>
 
     <!-- 파일 목록 및 겔러리 -->
     <div class="col-md-12"  ng-show="vm.tabArea[0].status">
-        <i class="fa fa-chevron-right fa-3x cursor float-right galleryBtnArea"
-           style="right: 10px;" scroll-right></i>
-        <i class="fa fa-chevron-left fa-3x cursor float-left galleryBtnArea"
-           scroll-left></i>
-        <div class="IssueGallery float-left" style="">
-            <ng-gallery images="vm.images" thumbs-num="10">
-            </ng-gallery>
+        <h4>첨부파일</h4>
+        <div class="panel panel-default col-md-12 voffset-bottom0">
+                <i class="fa fa-chevron-right fa-3x cursor float-right galleryBtnArea"
+                   style="right: 10px;" scroll-right></i>
+                <i class="fa fa-chevron-left fa-3x cursor float-left galleryBtnArea"
+                   scroll-left></i>
+                <div class="IssueGallery float-left" style="">
+                    <ng-gallery images="vm.images" thumbs-num="10">
+                    </ng-gallery>
+                </div>
         </div>
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th class="text-center thbrl_no width-200-p">
-                    <span translate="common.attachedFile.fileName">파일 명</span>
-                </th>
-                <th class="text-center width-160-p"><span translate="common.attachedFile.fileType">파일 타입</span>
-                </th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="file in vm.task.attachedFiles">
-                <td class="width-200-p">
-                        <span style="color:#428bca; cursor:pointer; white-space: normal;"
-                              class="btn btn-blue btn-sm" ng-click="downloadFile(file)">{{file.attachedFile.name}}</span> <!-- ng-click="downloadFile(file)" -->
-                </td>
-                <td class="width-160-p">{{file.attachedFile.contentType}}</td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="panel panel-default">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th class="text-center thbrl_no width-200-p">
+                        <span translate="common.attachedFile.fileName">파일 명</span>
+                    </th>
+                    <th class="text-center width-160-p"><span translate="common.attachedFile.fileType">파일 타입</span>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="file in vm.task.attachedFiles">
+                    <td class="width-200-p">
+                            <span style="color:#428bca; cursor:pointer; white-space: normal;"
+                                  class="btn btn-blue btn-sm" ng-click="downloadFile(file)">{{file.attachedFile.name}}</span> <!-- ng-click="downloadFile(file)" -->
+                    </td>
+                    <td class="width-160-p">{{file.attachedFile.contentType}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <!-- Audit Log List - 변경 내역 -->
     <div class="col-md-12" ng-show="vm.tabArea[1].status">
-        <table class="table table-bordered">
-            <thead>
-            <tr>
-                <th class="text-center thbrl_no width-10"><span translate="">필드 명</span></th>
-                <th class="text-center thbrl_no width-40"><span translate="">변경 전</span></th>
-                <th class="text-center thbrl_no width-40"><span translate="">변경 후</span></th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr ng-repeat="log in vm.TaskAuditLog.data">
-                <td class="width-200-p">{{log.entityField}}</td>
-                <td class="width-200-p" ng-if="log.entityField == 'contents'"><span ng-bind-html="vm.renderHtml(log.oldValue)"></span></td>
-                <td class="width-200-p" ng-if="log.entityField != 'contents'">{{log.oldValue}}</td>
-                <td class="width-200-p" ng-if="log.entityField == 'contents'"><span ng-bind-html="vm.renderHtml(log.newValue)"></span></td>
-                <td class="width-200-p" ng-if="log.entityField != 'contents'">{{log.newValue}}</td>
-            </tr>
-            </tbody>
-        </table>
+        <div class="panel panel-default">
+            <table class="table table-bordered">
+                <thead>
+                <tr>
+                    <th class="text-center thbrl_no width-10"><span translate="">필드 명</span></th>
+                    <th class="text-center thbrl_no width-10"><span translate="">액션</span></th>
+                    <th class="text-center thbrl_no width-40"><span translate="">변경 전</span></th>
+                    <th class="text-center thbrl_no width-40"><span translate="">변경 후</span></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="log in vm.TaskAuditLog.data track by log.id">
+                    <td class="width-200-p text-center"><span translate="wmsApp.task.{{log.entityField}}" ng-show="log.entityField != ''">field</span></td>
+                    <td class="width-200-p text-center" translate="entity.action.{{log.persistType}}">persist type</td>
+                    <td class="width-200-p" ng-if="log.entityField == 'contents'"><span ng-bind-html="vm.renderHtml(log.oldValue)"></span></td>
+                    <td class="width-200-p" ng-if="log.entityField != 'contents'">{{log.oldValue}}</td>
+                    <td class="width-200-p" ng-if="log.entityField == 'contents'"><span ng-bind-html="vm.renderHtml(log.newValue)"></span></td>
+                    <td class="width-200-p" ng-if="log.entityField != 'contents'">{{log.newValue}}</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <button type="submit"
-            onclick="window.history.back()"
-            class="btn btn-info">
-        <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
-    </button>
+    <div class="col-md-12">
+        <button type="submit"
+                onclick="window.history.back()"
+                class="btn btn-info">
+            <span class="glyphicon glyphicon-arrow-left"></span>&nbsp;<span translate="entity.action.back"> Back</span>
+        </button>
+    </div>
 </div>

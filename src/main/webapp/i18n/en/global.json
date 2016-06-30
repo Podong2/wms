@@ -127,7 +127,10 @@
             "changeVersion": "change version",
             "decisionTitle": "Decision",
             "config": "Set",
-            "userLink": "User Connections"
+            "userLink": "User Connections",
+            "INSERT": "Insert",
+            "UPDATE": "Update",
+            "DELETE": "Delete"
         },
         "detail": {
             "field": "Field",

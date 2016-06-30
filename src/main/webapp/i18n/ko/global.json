@@ -125,7 +125,10 @@
             "changeVersion": "버전 변경",
             "decisionTitle": "의사결정",
             "config": "설정",
-            "userLink": "사용자 연결"
+            "userLink": "사용자 연결",
+            "INSERT": "생성",
+            "UPDATE": "수정",
+            "DELETE": "삭제"
         },
         "detail": {
             "field": "필드",
