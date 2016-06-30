@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -76,11 +77,13 @@ public class AttachedFileResource {
      */
     @RequestMapping(value = "/attachedFile/{id:.+}", method = RequestMethod.GET)
     @Timed
-    public ModelAndView getAttachedFile(@PathVariable Long id, Model model) {
+    @Transactional(readOnly = true)
+    public ModelAndView downloadFile(@PathVariable Long id, Model model) {
         log.debug("REST request to delete AttachedFile : {}", id);
         AttachedFile attachedFile = attachedFileRepository.findOne(id);
 
         model.addAttribute(Constants.FILE_DOWNLOAD_TARGET, attachedFile);
+        model.addAttribute(Constants.FILE_DOWNLOAD_CONTENT, attachedFile.getContent());
 
         return new ModelAndView(attachedFileDownloadView);
     }

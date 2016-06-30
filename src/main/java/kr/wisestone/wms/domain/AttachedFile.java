@@ -35,7 +35,7 @@ public class AttachedFile extends AbstractAuditingEntity implements Serializable
     private String name;
 
     @Column(name="content")
-    @Lob
+    @Lob @Basic(fetch=FetchType.LAZY)
     @JsonIgnore
     private byte[] content;
 

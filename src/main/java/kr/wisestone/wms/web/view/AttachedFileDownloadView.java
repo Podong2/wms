@@ -32,8 +32,7 @@ public class AttachedFileDownloadView extends AbstractView {
                                         , HttpServletResponse response) throws Exception {
 
         AttachedFile attachedFile = (AttachedFile) model.get(Constants.FILE_DOWNLOAD_TARGET);
-
-        byte[] targetFile = attachedFile.getContent();
+        byte[] fileContent = (byte[]) model.get(Constants.FILE_DOWNLOAD_CONTENT);
 
         String mimeType= URLConnection.guessContentTypeFromName(attachedFile.getName());
         if(mimeType==null){
@@ -64,7 +63,7 @@ public class AttachedFileDownloadView extends AbstractView {
 
         try {
             outputStream = response.getOutputStream();
-            inputStream = new ByteArrayInputStream(targetFile);
+            inputStream = new ByteArrayInputStream(fileContent);
 
             FileCopyUtils.copy(inputStream, outputStream);
         } catch(IOException ioe) {
