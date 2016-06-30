@@ -2,6 +2,7 @@ package kr.wisestone.wms.service;
 
 import com.google.common.collect.Lists;
 import com.mysema.query.BooleanBuilder;
+import kr.wisestone.wms.common.exception.CommonRuntimeException;
 import kr.wisestone.wms.domain.*;
 import kr.wisestone.wms.repository.TaskRepository;
 import kr.wisestone.wms.repository.search.TaskSearchRepository;
@@ -148,6 +149,10 @@ public class TaskService {
      */
     @Transactional
     public void delete(List<Long> ids) {
+
+        if(ids == null || ids.isEmpty())
+            throw new CommonRuntimeException("error.task.targetIdIsNull");
+
         ids.stream().forEach(this::delete);
     }
 
@@ -158,6 +163,10 @@ public class TaskService {
      */
     @Transactional
     public void delete(Long id) {
+
+        if(id == null)
+            throw new CommonRuntimeException("error.task.targetIdIsNull");
+
         log.debug("Request to delete Task : {}", id);
 
         Task targetTask = taskRepository.findOne(id);

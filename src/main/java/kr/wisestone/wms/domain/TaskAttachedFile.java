@@ -33,7 +33,7 @@ public class TaskAttachedFile extends AbstractAuditingEntity implements Serializ
         , allocationSize = 1)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "task_id")
     @JsonIgnore
     private Task task;
