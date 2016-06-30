@@ -36,7 +36,6 @@ public class AttachedFileDownloadView extends AbstractView {
 
         String mimeType= URLConnection.guessContentTypeFromName(attachedFile.getName());
         if(mimeType==null){
-            System.out.println("mimetype is not detectable, will take default");
             mimeType = "application/octet-stream";
         }
 

@@ -11,14 +11,40 @@
         <div class="form-group">
             <label class="control-label" translate="wmsApp.task.name" for="field_name" >Name</label>
             <input type="hidden" class="form-control" id="id" name="id" ng-model="vm.task.id" readonly />
-            <input type="text" class="form-control" name="name" id="field_name" enter-submit="vm.save()"
-                    ng-model="vm.task.name" required
-                     />
+            <div class="input-group">
+                <input type="text" class="form-control" name="name" id="field_name" enter-submit="vm.save()"
+                       ng-model="vm.task.name" required
+                />
+                <span class="input-group-btn">
+                    <button type="button" class="btn btn-primary" ng-click="vm.taskFindSimilar()">
+                        <span class="glyphicon glyphicon-search"> 유사 태스크 검색</span>
+                    </button>
+                </span>
+            </div>
             <div class="error ng-hide" ng-show="editForm.name.$invalid &amp;&amp; editForm.name.$dirty">
                 <p class="help-block" ng-show="editForm.name.$error.required" class="ng-hide" translate="태스크 명을 입력하세요.">
                     태스크 명을 입력하세요.
                 </p>
             </div>
+            <table class="table table-bordered voffset2" ng-show="vm.similarTasks.length > 0">
+                <thead>
+                <tr>
+                    <th class="text-center thbrl_no width-200-p">
+                        <span translate="wmsApp.task.name">태스크 명</span>
+                    </th>
+                    <th class="text-center width-160-p"><span translate="global.assignee">담당자</span>
+                    </th>
+                    <th class="text-center width-60-p"><span translate="wmsApp.task.dueDate">Due Date</span></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="task in vm.similarTasks">
+                    <td class="width-200-p">{{task.name}}</td>
+                    <td class="text-center width-160-p">{{task.assigneeName}}</td>
+                    <td class="text-center width-60-p">{{task.dueDate}}</td>
+                </tr>
+                </tbody>
+            </table>
         </div>
         <div class="form-group">
             <label class="control-label" translate="wmsApp.task.dueDate" for="field_dueDate">Due Date</label>
@@ -67,7 +93,7 @@
             <!--<select class="form-control" id="field_taskAttachedFiles" name="taskAttachedFiles" ng-model="vm.task.taskAttachedFilesId" ng-options="taskAttachedFile.id as taskAttachedFile.id for taskAttachedFile in vm.task.attachedFiles"            >-->
                 <!--<option value=""></option>-->
             <!--</select>-->
-            <table class="table table-bordered">
+            <table class="table table-bordered" ng-show="vm.task.attachedFiles.length > 0">
                 <thead>
                 <tr>
                     <th class="text-center thbrl_no width-200-p">

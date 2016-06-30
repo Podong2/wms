@@ -246,7 +246,11 @@ public class User extends AbstractAuditingEntity implements UserDetails, Seriali
 
     //Lowercase the login before saving it in database
     public void setLogin(String login) {
-        this.login = login.toLowerCase(Locale.ENGLISH);
+        if(login == null)
+            this.login = "";
+        else {
+            this.login = login.toLowerCase(Locale.ENGLISH);
+        }
     }
 
     public String getStatus() {

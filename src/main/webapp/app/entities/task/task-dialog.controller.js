@@ -5,9 +5,9 @@
         .module('wmsApp')
         .controller('TaskDialogController', TaskDialogController);
 
-    TaskDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Task', 'Code', 'TaskAttachedFile', 'User', '$log', 'TaskEdit', 'findUser', '$q', 'DateUtils', 'AlertService'];
+    TaskDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Task', 'Code', 'TaskAttachedFile', 'User', '$log', 'TaskEdit', 'findUser', '$q', 'DateUtils', 'AlertService', 'toastr', '$http'];
 
-    function TaskDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Task, Code, TaskAttachedFile, User, $log, TaskEdit, findUser, $q, DateUtils, AlertService) {
+    function TaskDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Task, Code, TaskAttachedFile, User, $log, TaskEdit, findUser, $q, DateUtils, AlertService, toastr, $http) {
         var vm = this;
 
         vm.task = entity;
@@ -23,6 +23,7 @@
         vm.fileRemove = fileRemove;
         vm.onWarning = onWarning;
         vm.validationCheck = validationCheck;
+        vm.similarTasks = [];
 
         $log.debug("vm.task : ", vm.task);
 
@@ -78,6 +79,7 @@
                 //Task.update(vm.task, onSaveSuccess, onSaveError);
 
                 $log.debug("vm.task : ", vm.task);
+                $log.debug("$scope.files : ", $scope.files);
 
                 vm.task.removeTargetFiles = vm.removeTargetFiles.join(',');
 
@@ -89,9 +91,12 @@
                     fileFormDataName : "file"
                 }).then(function (response) {
                     $log.debug("task 생성 성공")
+                    toastr.success('태스크 수정 완료', '태스크 수정 완료');
                     $uibModalInstance.dismiss('cancel');
                 });
             } else {
+
+                $log.debug("$scope.files : ", $scope.files);
 
                 //Task.save(vm.task, onSaveSuccess, onSaveError);
 
@@ -106,7 +111,10 @@
                         fields : vm.task,
                         fileFormDataName : "file"
                     }).then(function (response) {
-                        $log.debug("task 생성 성공")
+                        $log.debug("response : ", response);
+                        $log.debug("task 생성 성공");
+                        $scope.$emit('wmsApp:taskUpdate', result);
+                        toastr.success('태스크 생성 완료', '태스크 생성 완료');
                         $uibModalInstance.dismiss('cancel');
                     });
                 //}
@@ -126,6 +134,19 @@
         // 유사 타스크 검색
         function taskFindSimilar(){
 
+            var parameter = {name : vm.task.name};
+
+            $log.debug("parameter : ", parameter);
+
+            return $http.get( '/api/tasks/findSimilar', {
+                params : parameter
+            } ).then(function (result) {
+                $log.debug("taskList : ", result.data);
+
+                vm.similarTasks = result.data;
+                
+                return result;
+            });
         }
 
         // 달력 오픈 function ///////////////////////////////
