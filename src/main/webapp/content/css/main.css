@@ -198,9 +198,6 @@ Generic styles
 .voffset8 { margin-top: 100px; }
 .voffset9 { margin-top: 150px; }
 
-.voffset-bottom0 { margin-bottom: 0px;}
-.voffset-bottom { margin-bottom: 2px;}
-
 .readonly {
     background-color: #eee;
     opacity: 1;
@@ -433,10 +430,10 @@ Social Buttons
 /* side nav Toggle Styles  START */
 #wrapper {
     padding-left: 0;
-    -webkit-transition: all 0.3s ease;
-    -moz-transition: all 0.3s ease;
-    -o-transition: all 0.3s ease;
-    transition: all 0.3s ease;
+    /*-webkit-transition: all 0.3s ease;*/
+    /*-moz-transition: all 0.3s ease;*/
+    /*-o-transition: all 0.3s ease;*/
+    /*transition: all 0.3s ease;*/
 }
 
 #wrapper.toggled {
@@ -453,13 +450,13 @@ Social Buttons
     /*margin-left: -200px;*/
     overflow-y: auto;
     background: #f8f8f8;
-    -webkit-transition: all 0.3s ease;
-    -moz-transition: all 0.3s ease;
-    -o-transition: all 0.3s ease;
-    transition: all 0.3s ease;
+    /*-webkit-transition: all 0.3s ease;*/
+    /*-moz-transition: all 0.3s ease;*/
+    /*-o-transition: all 0.3s ease;*/
+    /*transition: all 0.3s ease;*/
 }
 #wrapper.toggled #sidebar-wrapper {
-    width: 200px;
+    width: 300px;
 }
 
 #page-content-wrapper {
@@ -547,6 +544,24 @@ Social Buttons
 .side-nav-btn {
     position: fixed; top:0; left: 200px; z-index: 1060
 }
+.side-contents .users.on, .side-contents .test.on, .side-icon .users.on, .side-icon .test.on{
+    display: block;
+}
+.side-menu.toggled-2 .side-contents .users, .side-menu.toggled-2 .side-contents .test{
+    display: none !important;
+}
+.side-menu.toggled-2 .side-icon{
+    width: 100% !important;
+}
+.side-contents .users, .side-contents .test{
+    display: none;
+}
+.side-icon .users.on, .side-icon .test.on{
+    background: #9EB8F1;
+    border-radius: 4px;
+    padding-top: 5px;
+}
+
 /* side nav Toggle Styles  END */
 
 @media (max-width:767px) {
@@ -596,11 +611,11 @@ Social Buttons
     }
 
     #sidebar-wrapper {
-        width: 200px;
+        width: 300px;
     }
 
     #wrapper.toggled #sidebar-wrapper {
-        width: 200px;
+        width: 300px;
     }
     #wrapper.toggled-2 #sidebar-wrapper {
         width: 60px;
@@ -614,31 +629,31 @@ Social Buttons
     }
 
     #wrapper.toggled-2 #sidebar-wrapper:hover {
-        width: 200px;
+        /*width: 300px;*/
     }
 
     #page-content-wrapper {
         padding: 20px;
         position: relative;
-        -webkit-transition: all 0.3s ease;
-        -moz-transition: all 0.3s ease;
-        -o-transition: all 0.3s ease;
-        transition: all 0.3s ease;
+        /*-webkit-transition: all 0.3s ease;*/
+        /*-moz-transition: all 0.3s ease;*/
+        /*-o-transition: all 0.3s ease;*/
+        /*transition: all 0.3s ease;*/
     }
 
     #wrapper.toggled #page-content-wrapper {
         position: relative;
         margin-right: 0;
-        padding-left: 200px;
+        padding-left: 300px;
     }
     #wrapper.toggled-2 #page-content-wrapper {
         position: relative;
         margin-right: 0;
-        margin-left: -200px;
-        -webkit-transition: all 0.3s ease;
-        -moz-transition: all 0.3s ease;
-        -o-transition: all 0.3s ease;
-        transition: all 0.3s ease;
+        margin-left: -300px;
+        /*-webkit-transition: all 0.3s ease;*/
+        /*-moz-transition: all 0.3s ease;*/
+        /*-o-transition: all 0.3s ease;*/
+        /*transition: all 0.3s ease;*/
         width: auto;
 
     }
@@ -809,17 +824,17 @@ Social Buttons
 .side-body {
     margin-top: 20px;
     margin-left: 60px;
-    -webkit-transition: all 0.3s ease;
-    -moz-transition: all 0.3s ease;
-    -o-transition: all 0.3s ease;
-    transition: all 0.3s ease;
+    /*-webkit-transition: all 0.3s ease;*/
+    /*-moz-transition: all 0.3s ease;*/
+    /*-o-transition: all 0.3s ease;*/
+    /*transition: all 0.3s ease;*/
 }
 .content-wrapper.toggled-3 .side-body {
-    margin-left: 200px;
-    -webkit-transition: all 0.3s ease;
-    -moz-transition: all 0.3s ease;
-    -o-transition: all 0.3s ease;
-    transition: all 0.3s ease;
+    margin-left: 300px;
+    /*-webkit-transition: all 0.3s ease;*/
+    /*-moz-transition: all 0.3s ease;*/
+    /*-o-transition: all 0.3s ease;*/
+    /*transition: all 0.3s ease;*/
 }
 .navbar{
     margin-bottom : 0;
@@ -914,8 +929,8 @@ li.active > a{
     cursor: auto;
 }
 .slideBody {
-    padding-right: 15px;
-    padding-left: 15px;
+    padding-right: 0;
+    padding-left: 0;
     margin-bottom: 10px;
 }
 
@@ -1265,18 +1280,6 @@ tr.angular-ui-tree-empty {
     width: 352px;
 }
 
-.min-height-100-p {
-    min-height: 100px;
-}
-
-.min-height-200-p {
-    min-height: 200px;
-}
-
-.min-height-300-p {
-    min-height: 300px;
-}
-
 .cursor {
     cursor: pointer;
 }
@@ -1315,10 +1318,6 @@ table th {
     border-top : 1px solid #ddd;
 }
 /* 상세 요약정보 테이블 css end */
-
-/* 상세 기타 css start */
-
-/* 상세 기타 css end */
 
 /* ng gallery start */
 .galleryBtnArea {

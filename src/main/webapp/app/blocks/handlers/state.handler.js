@@ -32,6 +32,7 @@
                     Auth.authorize();
                 }
 
+                Auth.connectedUserList(); // 임시 위치
 
                 // Update the language
                 JhiLanguageService.getCurrent().then(function (language) {

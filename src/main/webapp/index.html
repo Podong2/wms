@@ -28,7 +28,7 @@
     <link rel="stylesheet" href="app/components/summernote/summernote.css">
     <!-- endbuild -->
 </head>
-<body ng-app="wmsApp" ng-strict-di dynamic-view-scroll>
+<body ng-app="wmsApp" ng-strict-di dynamic-view-scroll ng-controller="MainController as vm">
 <!--[if lt IE 9]>
 <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
 <![endif]-->
@@ -43,53 +43,54 @@
         <!--<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>-->
         <!--</button>-->
         <!--</div>&lt;!&ndash; navbar-header&ndash;&gt;-->
-        <div class="collapse navbar-collapse navbar-header" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li class="active" >
-                    <button class="navbar-toggle collapse in" data-toggle="collapse" id="menu-toggle-2" style="margin-bottom: 0" menu-toggle>
-                        <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
-                    </button>
-                </li>
-            </ul>
-        </div><!-- bs-example-navbar-collapse-1 -->
     </div>
 </div>
-<div class="content-wrapper toggled-3">
-    <div class="side-menu sidebar-inverse " id="wrapper">
+<div class="content-wrapper">
+    <div class="side-menu sidebar-inverse toggled-2" id="wrapper">
         <!-- Sidebar -->
         <div id="sidebar-wrapper">
-            <ul class="sidebar-nav nav-pills nav-stacked" id="menu">
+            <button class="navbar-toggle collapse in" data-toggle="collapse" id="menu-toggle-2" style="margin-bottom: 0; padding: 5px" menu-toggle>
+                <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
+            </button><br/>
+            <div class="side-icon col-xs-2" style="margin-top: 10px;">
+                <div class="users" depth-toggle menuType="users" style="width: 100%; height: 30px;  cursor: pointer">
+                    <i class="fa fa-users fa-stack-1x"></i>
+                </div>
+                <div class="test" depth-toggle menuType="test" style="width: 100%; height: 30px; cursor: pointer">
+                    <i class="fa fa-calendar fa-stack-1x"></i>
+                </div>
+            </div>
+            <div class="side-contents col-xs-10" style="margin-top: 20px">
+                <div class="users">
+                    접속중인 사용자
+                    <table class="table table-bordered">
+                        <thead>
+                        <tr>
+                            <th class="text-center thbrl_no width-200-p">
+                                <span translate="">아이디</span>
+                            </th>
+                            <th class="text-center width-160-p"><span translate="">이메일</span>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="user in vm.connectedUsers">
+                            <td class="width-200-p">
+                            <span style="color:#428bca; cursor:pointer; white-space: normal;"
+                                  class="btn btn-blue btn-sm">{{user.login}}}</span>
+                            </td>
+                            <td class="width-160-p">{{user.email}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="test">
+                    테스트 페이지
+                </div>
 
-                <li class="active">
-                    <a href="" depth-toggle><span class="fa-stack fa-lg pull-left"><i class="fa fa-dashboard fa-stack-1x "></i></span> <span class="menu-name">Dashboard</span></a>
-                    <ul class="nav-pills nav-stacked" style="list-style-type:none;">
-                        <li><a ui-sref="register">link1</a></li>
-                        <li><a href="#">link2</a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#" depth-toggle><span class="fa-stack fa-lg pull-left"><i class="fa fa-flag fa-stack-1x "></i></span> <span class="menu-name">Shortcut</span></a>
-                    <ul class="nav-pills nav-stacked" style="list-style-type:none;">
-                        <li><a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-flag fa-stack-1x "></i></span><span class="menu-name">link1</span></a></li>
-                        <li><a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-flag fa-stack-1x "></i></span><span class="menu-name">link2</span></a></li>
-                    </ul>
-                </li>
-                <li>
-                    <a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-cloud-download fa-stack-1x "></i></span><span class="menu-name">Overview</span></a>
-                </li>
-                <li>
-                    <a href="#"> <span class="fa-stack fa-lg pull-left"><i class="fa fa-cart-plus fa-stack-1x "></i></span><span class="menu-name">Events</span></a>
-                </li>
-                <li>
-                    <a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-youtube-play fa-stack-1x "></i></span><span class="menu-name">About</span></a>
-                </li>
-                <li>
-                    <a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-wrench fa-stack-1x "></i></span><span class="menu-name">Services</span></a>
-                </li>
-                <li>
-                    <a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-server fa-stack-1x "></i></span><span class="menu-name">Contact</span></a>
-                </li>
-            </ul>
+
+            </div>
+
         </div><!-- /#sidebar-wrapper -->
     </div>
 
@@ -406,6 +407,8 @@
 <script src="app/components/common/filter/textLineLimit.filter.js"></script>
 <script src="app/components/common/service/summary.service.js"></script>
 <script src="app/components/common/directive/toggleBtnEvent.directive.js"></script>
+<script src="app/main/main.controller.js"></script>
+
 <!-- endinject -->
 <!-- endbuild -->
 
