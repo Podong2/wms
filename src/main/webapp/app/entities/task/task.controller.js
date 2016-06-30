@@ -5,9 +5,9 @@
         .module('wmsApp')
         .controller('TaskController', TaskController);
 
-    TaskController.$inject = ['$scope', '$state', 'Task', 'TaskRemove', 'TaskSearch', 'ParseLinks', 'AlertService', 'pagingParams', 'paginationConstants', 'FIndCode', 'User', '$log', '$rootScope', 'findUser', '$q', 'TaskListSearch', 'tableService', 'DateUtils', 'TaskEdit'];
+    TaskController.$inject = ['$scope', '$state', 'Task', 'TaskRemove', 'TaskSearch', 'ParseLinks', 'AlertService', 'pagingParams', 'paginationConstants', 'FIndCode', 'User', '$log', '$rootScope', 'findUser', '$q', 'TaskListSearch', 'tableService', 'DateUtils', 'TaskEdit', 'toastr', '$http'];
 
-    function TaskController ($scope, $state, Task, TaskRemove, TaskSearch, ParseLinks, AlertService, pagingParams, paginationConstants, FIndCode, User, $log, $rootScope, findUser, $q, TaskListSearch, tableService,DateUtils, TaskEdit) {
+    function TaskController ($scope, $state, Task, TaskRemove, TaskSearch, ParseLinks, AlertService, pagingParams, paginationConstants, FIndCode, User, $log, $rootScope, findUser, $q, TaskListSearch, tableService,DateUtils, TaskEdit, toastr, $http) {
         var vm = this;
 
 
@@ -240,9 +240,19 @@
                 return;
 
             if(removeTargetIds.length == 1) {
-                Task.delete({id:removeTargetIds[0]});
+
+                return $http.delete( '/api/tasks/'+removeTargetIds[0], {}, {}).then(function (result) {
+
+                    toastr.success('태스크 삭제 완료', '태스크 삭제 완료');
+                    return result;
+                });
             } else {
-                TaskRemove.delete({targetIds : removeTargetIds.join(",")});
+
+                return $http.delete( '/api/tasks?targetIds='+removeTargetIds.join(","), {}, {}).then(function (result) {
+
+                    toastr.success('태스크 삭제 완료', '태스크 삭제 완료');
+                    return result;
+                });
             }
         }
 
