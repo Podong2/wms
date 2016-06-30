@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.google.common.collect.Lists;
 import kr.wisestone.wms.domain.Task;
 import kr.wisestone.wms.service.TaskService;
+import kr.wisestone.wms.service.UserService;
 import kr.wisestone.wms.web.rest.condition.TaskCondition;
 import kr.wisestone.wms.web.rest.form.TaskForm;
 import kr.wisestone.wms.web.rest.util.HeaderUtil;
@@ -11,7 +12,11 @@ import kr.wisestone.wms.web.rest.util.PaginationUtil;
 import kr.wisestone.wms.web.rest.dto.TaskDTO;
 import kr.wisestone.wms.web.rest.mapper.TaskMapper;
 import org.elasticsearch.common.unit.Fuzziness;
+import org.elasticsearch.index.query.FilteredQueryBuilder;
+import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.elasticsearch.index.query.MoreLikeThisQueryBuilder;
+import org.elasticsearch.index.query.QueryBuilder;
+import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -60,6 +65,9 @@ public class TaskResource {
 
     @Inject
     private ElasticsearchTemplate elasticsearchTemplate;
+
+    @Inject
+    private UserService userService;
 
     /**
      * POST  /tasks : Create a new task.
@@ -229,13 +237,21 @@ public class TaskResource {
     @RequestMapping(value = "/tasks/findSimilar",
                     method = RequestMethod.GET,
                     produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional(readOnly = true)
     public ResponseEntity<List<TaskDTO>> findSimilar(@RequestParam String name) throws URISyntaxException {
 
-        SearchQuery query = new NativeSearchQueryBuilder().withQuery(
-                                    matchQuery("name", name).boost(2).prefixLength(0).slop(3)
-                                ).build();
+        SearchQuery searchQuery = new NativeSearchQueryBuilder()
+            .withQuery(matchQuery("name", name)
+                .operator(MatchQueryBuilder.Operator.AND)
+                .fuzziness(Fuzziness.AUTO)
+                .prefixLength(0))
+            .build();
 
-        List<Task> tasks = elasticsearchTemplate.queryForList(query, Task.class);
+        List<Task> tasks = elasticsearchTemplate.queryForList(searchQuery, Task.class);
+
+        for(Task task : tasks) {
+            task.setAssignee(this.userService.getUserWithAuthorities(task.getAssignee().getId()));
+        }
 
         return new ResponseEntity<>(taskMapper.tasksToTaskDTOs(tasks), HttpStatus.OK);
     }

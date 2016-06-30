@@ -6,9 +6,9 @@
         .module('wmsApp')
         .factory('JhiTrackerService', JhiTrackerService);
 
-    JhiTrackerService.$inject = ['$rootScope', '$window', '$cookies', '$http', '$q'];
+    JhiTrackerService.$inject = ['$rootScope', '$window', '$cookies', '$http', '$q', 'toastr', '$log'];
 
-    function JhiTrackerService ($rootScope, $window, $cookies, $http, $q) {
+    function JhiTrackerService ($rootScope, $window, $cookies, $http, $q, toastr, $log) {
         var stompClient = null;
         var subscriber = null;
         var listener = $q.defer();
@@ -87,9 +87,14 @@
             connected.promise.then(function() {
                 subscriber = stompClient.subscribe('/user/notification/subscribe', function(data) {
 
-                    console.log("recv");
+                    $log.debug("data : ", data);
 
-                    listener.notify(angular.fromJson(data.body));
+                    var notification = JSON.parse(data.body);
+
+                    toastr.info(notification.title, notification.sendUser.name, {
+                        closeButton: true,
+                        closeHtml: "<a ng-click='test()'>버튼</a>"
+                    });
                 });
             }, null, null);
         }
