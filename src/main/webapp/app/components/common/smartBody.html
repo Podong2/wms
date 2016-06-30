@@ -1,6 +1,6 @@
 <div>
     <div class="panel panel-default" bindonce bo-class="vm.scrollMode == true ? 'table-scroll' : ''" style="box-shadow: none;">
-        <table st-safe-src="getData()" st-table="displayCollection" class="table table-bordered" bindonce>
+        <table st-safe-src="vm.getData()" st-table="displayCollection" class="table table-bordered" bindonce>
             <thead>
             <tr>
                 <th bindonce ng-repeat="tableConfig in tableConfigs"
@@ -44,7 +44,7 @@
                     </div>
                 </td>
             </tr>
-            <tr ng-if="getData().length == 0 || getData() == null">
+            <tr ng-if="vm.getData().length == 0 || vm.getData() == null">
                 <td colspan="{{tableConfigs.length}}">
                     <span translate="common.dataNull">데이터가 없습니다.</span>
                 </td>

@@ -28,7 +28,7 @@
         vm.singleUpload = singleUpload;
 
         //	목록 데이터 저장
-        $scope.responseData = {
+        vm.responseData = {
             data : [],
             page : {
                 totalPage : 1
@@ -140,8 +140,8 @@
                 vm.queryCount = vm.totalItems;
 
                 vm.tasks = data;
-                $scope.responseData.data = data;
-                $log.debug("data : ", $scope.responseData);
+                vm.responseData.data = data;
+                $log.debug("data : ", vm.responseData);
                 vm.page = pagingParams.page;
             }
             function onError(error) {
@@ -219,7 +219,7 @@
             TaskListSearch.findTaskList(vm.searchQuery).then(function(result){
                 //$log.debug("vm.tasks : ", result);
                 //vm.tasks = result;
-                $scope.responseData = result;
+                vm.responseData = result;
             })
         }
 
@@ -257,13 +257,14 @@
             vm.getList(0);
         }
 
+        /* 이슈 명 단일 변경 이벤트 */
         function singleUpload(taskInfo){
             $log.debug("taskInfo :", taskInfo);
             TaskEdit.singleUpload(taskInfo).then(function (response) {
                 $log.debug("Task single upload success.");
             });
-            $scope.tableConfigs = [];
-            makeTableConfig();
+            $scope.tableConfigs = []; // 테이블 초기화
+            makeTableConfig(); // 테이블 다시 그리기
         }
 
         $scope.makeTableConfig = makeTableConfig;
@@ -302,9 +303,9 @@
                 .setDRenderer("config"));
         }
 
-        $scope.getData = getData;
+        vm.getData = getData;
         function getData () {
-            return $scope.responseData.data;
+            return vm.responseData.data;
         };
 
         $scope.makeTableConfig();
