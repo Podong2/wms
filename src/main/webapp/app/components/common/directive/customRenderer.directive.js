@@ -23,8 +23,8 @@ angular.module('wmsApp')
 
                     element.empty();
                     if (scope.data === undefined) {
-                        if (scope.responseData.data != null) {
-                            scope.data = scope.responseData.data[index];
+                        if (scope.vm.responseData.data != null) {
+                            scope.data = scope.vm.responseData.data[index];
                         }
                     }
 
