@@ -143,7 +143,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="log in vm.TaskAuditLog.data">
+            <tr ng-repeat="log in vm.TaskAuditLog.data track by log.entityField">
                 <td class="width-200-p">{{log.entityField}}</td>
                 <td class="width-200-p" ng-if="log.entityField == 'contents'"><span ng-bind-html="vm.renderHtml(log.oldValue)"></span></td>
                 <td class="width-200-p" ng-if="log.entityField != 'contents'">{{log.oldValue}}</td>

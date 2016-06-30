@@ -113,12 +113,6 @@
                                 <span class="glyphicon glyphicon-trash"></span>
                             </button>
                         </span>
-                        <!--<div class="form-group">-->
-                            <!--<label class="col-sm-2 control-label">Difference</label>-->
-                            <!--<div class="col-sm-10">-->
-                                <!--<p class="form-control-static">10 (days)</p>-->
-                            <!--</div>-->
-                        <!--</div>-->
                     </div>
 
                 </form>
@@ -135,55 +129,6 @@
         </div>
     </div>
     <div class="table-responsive voffset3">
-<!--        <table class="jh-table table table-striped">
-            <thead>
-                <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
-                    <th jh-sort-by="id"><span translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="name"><span translate="wmsApp.task.name">Name</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="dueDate"><span translate="wmsApp.task.dueDate">Due Date</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="contents"><span translate="wmsApp.task.contents">Contents</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="severityId"><span translate="wmsApp.task.severity">Severity</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th jh-sort-by="taskAttachedFilesId"><span translate="wmsApp.task.taskAttachedFiles">Task Attached Files</span> <span class="glyphicon glyphicon-sort"></span></th>
-                    <th></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr ng-repeat="task in vm.tasks track by task.id">
-                    <td><a ui-sref="task-detail({id:task.id})">{{task.id}}</a></td>
-                    <td>{{task.name}}</td>
-                    <td>{{task.dueDate}}</td>
-                    <td>{{task.contents}}</td>
-                    <td>
-                        <a ui-sref="code-detail({id:task.severityId})">{{task.severityId}}</a>
-                    </td>
-                    <td>
-                        <a ui-sref="task-attached-file-detail({id:task.taskAttachedFilesId})">{{task.taskAttachedFilesId}}</a>
-                    </td>
-                    <td class="text-right">
-                        <div class="btn-group flex-btn-group-container">
-                            <button type="submit"
-                                    ui-sref="task-detail({id:task.id})"
-                                    class="btn btn-info btn-sm">
-                                <span class="glyphicon glyphicon-eye-open"></span>
-                                <span class="hidden-xs hidden-sm" translate="entity.action.view"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="task.edit({id:task.id})"
-                                    class="btn btn-primary btn-sm">
-                                <span class="glyphicon glyphicon-pencil"></span>
-                                <span class="hidden-xs hidden-sm" translate="entity.action.edit"></span>
-                            </button>
-                            <button type="submit"
-                                    ui-sref="task.delete({id:task.id})"
-                                    class="btn btn-danger btn-sm">
-                                <span class="glyphicon glyphicon-remove-circle"></span>
-                                <span class="hidden-xs hidden-sm" translate="entity.action.delete"></span>
-                            </button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>-->
 
         <ng-include src="'app/components/common/smartBody.html'"></ng-include>
     </div>

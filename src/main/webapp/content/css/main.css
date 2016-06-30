@@ -1312,3 +1312,15 @@ table th {
     overflow-x: auto; overflow-y: hidden; margin: 15px 60px 20px 60px; padding: 5px; display: flex;
 }
 /* ng gallery end */
+.taskEdit input{
+    display : none !important;
+}
+.taskEdit a, .taskEdit button{
+    display: block !important;
+}
+.taskEdit.on a, .taskEdit.on button{
+    display : none !important;
+}
+.taskEdit.on input{
+    display: block !important;
+}

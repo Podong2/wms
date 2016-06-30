@@ -5,9 +5,9 @@
         .module('wmsApp')
         .controller('TaskController', TaskController);
 
-    TaskController.$inject = ['$scope', '$state', 'Task', 'TaskRemove', 'TaskSearch', 'ParseLinks', 'AlertService', 'pagingParams', 'paginationConstants', 'FIndCode', 'User', '$log', '$rootScope', 'findUser', '$q', 'TaskListSearch', 'tableService', 'DateUtils'];
+    TaskController.$inject = ['$scope', '$state', 'Task', 'TaskRemove', 'TaskSearch', 'ParseLinks', 'AlertService', 'pagingParams', 'paginationConstants', 'FIndCode', 'User', '$log', '$rootScope', 'findUser', '$q', 'TaskListSearch', 'tableService', 'DateUtils', 'TaskEdit'];
 
-    function TaskController ($scope, $state, Task, TaskRemove, TaskSearch, ParseLinks, AlertService, pagingParams, paginationConstants, FIndCode, User, $log, $rootScope, findUser, $q, TaskListSearch, tableService,DateUtils) {
+    function TaskController ($scope, $state, Task, TaskRemove, TaskSearch, ParseLinks, AlertService, pagingParams, paginationConstants, FIndCode, User, $log, $rootScope, findUser, $q, TaskListSearch, tableService,DateUtils, TaskEdit) {
         var vm = this;
 
 
@@ -25,6 +25,7 @@
         vm.userLoad = userLoad;
         vm.getList = getList;
         vm.removeTasks = removeTasks;
+        vm.singleUpload = singleUpload;
 
         //	목록 데이터 저장
         $scope.responseData = {
@@ -245,7 +246,6 @@
             }
         }
 
-
         $scope.changPageRowCount = changPageRowCount;
 
         // 페이지 로우 변경 감지
@@ -255,6 +255,15 @@
             //cookieService.setCookie("/selectedPageRowCount", $scope.selectedPageRowCount);
 
             vm.getList(0);
+        }
+
+        function singleUpload(taskInfo){
+            $log.debug("taskInfo :", taskInfo);
+            TaskEdit.singleUpload(taskInfo).then(function (response) {
+                $log.debug("Task single upload success.");
+            });
+            $scope.tableConfigs = [];
+            makeTableConfig();
         }
 
         $scope.makeTableConfig = makeTableConfig;
