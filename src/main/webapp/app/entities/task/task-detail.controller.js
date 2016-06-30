@@ -19,6 +19,7 @@
         vm.assigneeUsers = [];
         vm.renderHtml = renderHtml;
         vm.userLoad = userLoad;
+        vm.assigneeEditing = assigneeEditing;
         TaskListSearch.TaskAudigLog({'entityId' : vm.task.id, 'entityName' : 'Task'}).then(function(result){ vm.TaskAuditLog = result; }); // Audit Log List call
         FIndCode.findByCodeType("severity").then(function(result){ vm.code = result; }); // 중요도 요청
 
@@ -66,6 +67,7 @@
             TaskEdit.singleUpload(vm.task).then(function (response) {
                 $log.debug("Task single upload success.");
             });
+            vm.responseData = vm.task;
         }
 
         //  탭메뉴 영역 표시 여부 지정
@@ -132,7 +134,22 @@
         //	설명 html 형식으로 표현
         function renderHtml (data) {
             return $sce.trustAsHtml(data);
-        };
+        }
+
+        // 담당자 변경 picker 오픈/닫기
+        vm.assigneeEditingConfig = true;
+        function assigneeEditing(){
+            vm.assigneeEditingConfig = !vm.assigneeEditingConfig;
+
+        }
+        $scope.$on("assigneeEditingConfig", function(event, arg){
+            $log.debug("arg : " , arg)
+            angular.forEach( arg, function(assingee){
+                vm.task.assigneeId = assingee.id;
+            });
+            singleUpload();
+            //vm.assigneeEditingConfig = !vm.assigneeEditingConfig;
+        });
 
         function makeTableConfig(){
             $scope.tempConfigs.push(summaryService.getConfig()

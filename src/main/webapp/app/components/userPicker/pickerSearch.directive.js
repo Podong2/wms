@@ -32,7 +32,7 @@ pickerSearch.$inject=['$document', '$log']
             },
             replace : false,
             templateUrl : 'app/components/userPicker/pickerSearch.html',
-            controller : ['$scope', '$element', '$attrs', function ($scope, $element, $attrs) {
+            controller : ['$scope', '$element', '$attrs', '$rootScope', function ($scope, $element, $attrs, $rootScope) {
                 $scope.serverList = [];    //  전체 목록
                 $scope.text = "";
 
@@ -64,8 +64,10 @@ pickerSearch.$inject=['$document', '$log']
                         if (!parentFound) {
                             $scope.$apply(function () {
                                 $scope.open = false;
+                                $rootScope.$broadcast("assigneeEditingConfig", $scope.save);
                             });
                         }
+
                     });
                 }
 

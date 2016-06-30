@@ -71,12 +71,14 @@
                             <div class="row">
                                 <div class=" col-md-6" ng-show="summary[1].name != ''" translate="{{ summary[1].name }}"></div>
                                 <div class="col-md-6" ng-show="summary[1].name != '' && !summary[1].renderer">
-                                    {{ vm.responseData[summary[1].key] }}
-                                    // {{vm.responseData.assigneeName}}
-                                    <picker-search source="vm.userLoad(vm.responseData.assigneeName, vm.assigneeUsers)"
-                                        search="vm.responseData.assigneeName"
-                                        ng-model="vm.assigneeUsers"></picker-search>
+                                    <!--{{ vm.responseData[summary[1].key] }}-->
+                                    <span ng-click="vm.assigneeEditing()" ng-show="vm.assigneeEditingConfig">{{vm.responseData.assigneeName}}</span>
+                                    <div ng-show="!vm.assigneeEditingConfig">
 
+                                        <picker-search source="vm.userLoad(vm.responseData.assigneeName, vm.assigneeUsers)"
+                                                       search="vm.responseData.assigneeName"
+                                                       ng-model="vm.assigneeUsers"></picker-search>
+                                    </div>
                                 </div>
                                 <div class="col-md-6" ng-show="summary[1].name != '' && summary[1].renderer">
                                     <owl-custom-renderer index="0" property="{{summary[1].renderer}}"></owl-custom-renderer>
@@ -143,7 +145,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr ng-repeat="log in vm.TaskAuditLog.data track by log.entityField">
+            <tr ng-repeat="log in vm.TaskAuditLog.data">
                 <td class="width-200-p">{{log.entityField}}</td>
                 <td class="width-200-p" ng-if="log.entityField == 'contents'"><span ng-bind-html="vm.renderHtml(log.oldValue)"></span></td>
                 <td class="width-200-p" ng-if="log.entityField != 'contents'">{{log.oldValue}}</td>
