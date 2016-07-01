@@ -53,13 +53,14 @@
 
         vm.menu = [];
         function getMenu(){
-            navbarService.getMenu({
-            }).then(function (result) {
-                $log.debug("menuList : ", result)
-                vm.menu = result;
-            }).catch(function (err) {
-                $log.debug("menuErr : ", err)
-            });
+            if(Principal.isIdentityResolved()) { // 로그인 정보 있으면 요청
+                navbarService.getMenu({}).then(function (result) {
+                    $log.debug("menuList : ", result)
+                    vm.menu = result;
+                }).catch(function (err) {
+                    $log.debug("menuErr : ", err)
+                });
+            }
         }
 
         //$scope.watch("$rootScope.menuList", function(){

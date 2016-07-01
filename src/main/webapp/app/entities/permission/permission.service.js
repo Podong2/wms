@@ -8,7 +8,7 @@
 
     Permission.$inject = ['$resource'];
     UserPermission.$inject = ['$http', '$log', '$rootScope', '$q'];
-    permissionCheck.$inject = ['$log', '$rootScope'];
+    permissionCheck.$inject = ['$log', '$rootScope', 'Principal'];
 
     function Permission ($resource) {
         var resourceUrl =  'api/permissions/:id';
@@ -51,14 +51,16 @@
     }
 
     // 권한 체크
-    function permissionCheck($log, $rootScope) {
+    function permissionCheck($log, $rootScope, Principal) {
         return {
             check : function(actionUrl){
-                if ($rootScope.authorities[actionUrl] !== undefined) {
-                    return $rootScope.authorities[actionUrl];
-                }
-                else {
-                    return false;
+                if(Principal.isIdentityResolved()){ // 로그인 정보 있으면 요청
+                    if ($rootScope.authorities[actionUrl] !== undefined) {
+                        return $rootScope.authorities[actionUrl];
+                    }
+                    else {
+                        return false;
+                    }
                 }
             },
             pagePermissionCheck : function(actionUrl){

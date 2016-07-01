@@ -5,9 +5,9 @@
         .module('wmsApp')
         .factory('AuthServerProvider', AuthServerProvider);
 
-    AuthServerProvider.$inject = ['$http', '$localStorage' , 'JhiTrackerService'];
+    AuthServerProvider.$inject = ['$http', '$localStorage' , 'JhiTrackerService', 'Principal'];
 
-    function AuthServerProvider ($http, $localStorage , JhiTrackerService) {
+    function AuthServerProvider ($http, $localStorage , JhiTrackerService, Principal) {
         var service = {
             getToken: getToken,
             hasValidToken: hasValidToken,
@@ -48,6 +48,7 @@
             // logout from the server
             $http.post('api/logout').success(function (response) { // 서버 사용자 연결 종료
                 delete $localStorage.authenticationToken;
+                Principal.logout(); // 전역 로그인 정보 초기화 및 인증 false 처리
                 // to get a new csrf token call the api (csrf : Cross-site request forgery)
                 $http.get('api/account');
                 return response;

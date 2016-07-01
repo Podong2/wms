@@ -206,11 +206,13 @@
 
         // 현재 접속중인 사용자 목록
         function connectedUserList() {
-            $http.get("/api/account/connected-principals").success(function (response) {
-                //$log.debug("response : ", response)
-                $rootScope.connectedUser = response;
-                //$log.debug("$rootScope.connectedUser : ", $rootScope.connectedUser)
-            });
+            if(Principal.isIdentityResolved()) { // 로그인 정보 있으면 요청
+                $http.get("/api/account/connected-principals").success(function (response) {
+                    //$log.debug("response : ", response)
+                    $rootScope.connectedUser = response;
+                    //$log.debug("$rootScope.connectedUser : ", $rootScope.connectedUser)
+                });
+            }
         }
     }
 })();
