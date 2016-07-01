@@ -4,6 +4,7 @@
             "home": {
                 "title": "Tasks",
                 "createLabel": "Create a new Task",
+                "editLabel": "Edit a Task",
                 "createOrEditLabel": "Create or edit a Task",
                 "search": "Search for Task"
             },

@@ -104,20 +104,19 @@
                 }
                 $log.debug("vm.task :", vm.task);
                 if(validationCheck()){
-
-                    //TaskEdit.addTask({
-                    //    method : "POST",
-                    //    file : $scope.files,
-                    //    //	data 속성으로 별도의 데이터 전송
-                    //    fields : vm.task,
-                    //    fileFormDataName : "file"
-                    //}).then(function (response) {
-                    //    $log.debug("response : ", response);
-                    //    $log.debug("task 생성 성공");
-                    //    $scope.$emit('wmsApp:taskUpdate', result);
-                    //    toastr.success('태스크 생성 완료', '태스크 생성 완료');
-                    //    $uibModalInstance.dismiss('cancel');
-                    //});
+                    TaskEdit.addTask({
+                        method : "POST",
+                        file : $scope.files,
+                        //	data 속성으로 별도의 데이터 전송
+                        fields : vm.task,
+                        fileFormDataName : "file"
+                    }).then(function (response) {
+                        $log.debug("response : ", response);
+                        $log.debug("task 생성 성공");
+                        $scope.$emit('wmsApp:taskUpdate', response);
+                        toastr.success('태스크 생성 완료', '태스크 생성 완료');
+                        $uibModalInstance.dismiss('cancel');
+                    });
                 }
             }
         }
@@ -191,17 +190,22 @@
         function validationCheck(){
             if(angular.isUndefined(vm.task.name)){
                 onWarning("태스크 명을 입력하세요.");
+                $log.debug("태스크 명 오류");
                 return false;
             }else if(angular.isUndefined(vm.task.dueDate)){
                 onWarning("종료날짜를 입력하세요.");
+                $log.debug("종료날짜 오류");
                 return false;
             }else if(angular.isUndefined(vm.task.severityId)){
                 onWarning("중요도를 입력하세요.");
+                $log.debug("중요도 오류");
                 return false;
             }else if(angular.isUndefined(vm.task.assigneeId)){
                 onWarning("담당자를 선택하세요.");
+                $log.debug("담당자 오류");
                 return false;
-            }
+            }else return true;
+
         }
 
         function onWarning(error) {

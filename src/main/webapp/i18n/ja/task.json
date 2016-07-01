@@ -4,6 +4,7 @@
             "home": {
                 "title": "Tasks",
                 "createLabel": "Task を追加",
+                "editLabel": "タスクの変更",
                 "createOrEditLabel": "Taskを追加または編集",
                 "search": "Search for Task"
             },
