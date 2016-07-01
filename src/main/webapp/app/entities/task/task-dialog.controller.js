@@ -76,7 +76,6 @@
         function save () {
             vm.isSaving = true;
             if (vm.task.id !== null) {
-                //Task.update(vm.task, onSaveSuccess, onSaveError);
 
                 $log.debug("vm.task : ", vm.task);
                 $log.debug("$scope.files : ", $scope.files);
@@ -103,21 +102,23 @@
                 if (vm.task.id === null) {
                     vm.task.id = "";
                 }
-                //if(validationCheck()){
-                    TaskEdit.addTask({
-                        method : "POST",
-                        file : $scope.files,
-                        //	data 속성으로 별도의 데이터 전송
-                        fields : vm.task,
-                        fileFormDataName : "file"
-                    }).then(function (response) {
-                        $log.debug("response : ", response);
-                        $log.debug("task 생성 성공");
-                        $scope.$emit('wmsApp:taskUpdate', result);
-                        toastr.success('태스크 생성 완료', '태스크 생성 완료');
-                        $uibModalInstance.dismiss('cancel');
-                    });
-                //}
+                $log.debug("vm.task :", vm.task);
+                if(validationCheck()){
+
+                    //TaskEdit.addTask({
+                    //    method : "POST",
+                    //    file : $scope.files,
+                    //    //	data 속성으로 별도의 데이터 전송
+                    //    fields : vm.task,
+                    //    fileFormDataName : "file"
+                    //}).then(function (response) {
+                    //    $log.debug("response : ", response);
+                    //    $log.debug("task 생성 성공");
+                    //    $scope.$emit('wmsApp:taskUpdate', result);
+                    //    toastr.success('태스크 생성 완료', '태스크 생성 완료');
+                    //    $uibModalInstance.dismiss('cancel');
+                    //});
+                }
             }
         }
 
@@ -144,7 +145,7 @@
                 $log.debug("taskList : ", result.data);
 
                 vm.similarTasks = result.data;
-                
+
                 return result;
             });
         }
@@ -190,6 +191,15 @@
         function validationCheck(){
             if(angular.isUndefined(vm.task.name)){
                 onWarning("태스크 명을 입력하세요.");
+                return false;
+            }else if(angular.isUndefined(vm.task.dueDate)){
+                onWarning("종료날짜를 입력하세요.");
+                return false;
+            }else if(angular.isUndefined(vm.task.severityId)){
+                onWarning("중요도를 입력하세요.");
+                return false;
+            }else if(angular.isUndefined(vm.task.assigneeId)){
+                onWarning("담당자를 선택하세요.");
                 return false;
             }
         }

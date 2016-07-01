@@ -1336,10 +1336,10 @@ table th {
 .taskEdit input{
     display : none !important;
 }
-.taskEdit a, .taskEdit button{
+.taskEdit a, .taskEdit .edit-btn{
     display: block !important;
 }
-.taskEdit.on a, .taskEdit.on button{
+.taskEdit.on a, .taskEdit.on .edit-btn{
     display : none !important;
 }
 .taskEdit.on input{
