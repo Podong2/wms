@@ -22,7 +22,7 @@ pickerToggle.$inject=['$timeout'];
             restrict: 'A',
             link: function(scope, element) {
                 $('body').click(function (e) {
-                    if ($('.sectionDatePicker').toggleClass("on")) {
+                    if ($('.sectionDatePicker').addClass("on")) {
                         if (!$('#sectionDatePicker').has(e.target).length) {
                             $('.sectionDatePicker').removeClass("on");
                         }
