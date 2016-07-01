@@ -2,7 +2,11 @@ package kr.wisestone.wms.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.collect.Lists;
+import kr.wisestone.wms.domain.Code;
 import kr.wisestone.wms.domain.Task;
+import kr.wisestone.wms.domain.User;
+import kr.wisestone.wms.repository.TaskRepository;
+import kr.wisestone.wms.repository.search.TaskSearchRepository;
 import kr.wisestone.wms.service.TaskService;
 import kr.wisestone.wms.service.UserService;
 import kr.wisestone.wms.web.rest.condition.TaskCondition;
@@ -20,7 +24,9 @@ import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.MoreLikeThisQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
@@ -59,6 +65,12 @@ public class TaskResource {
 
     @Inject
     private TaskService taskService;
+
+    @Inject
+    private TaskRepository taskRepository;
+
+    @Inject
+    private TaskSearchRepository taskSearchRepository;
 
     @Inject
     private TaskMapper taskMapper;
@@ -158,7 +170,8 @@ public class TaskResource {
     public ResponseEntity<List<TaskDTO>> getAllTasks(@ModelAttribute TaskCondition taskCondition, Pageable pageable)
         throws URISyntaxException {
         log.debug("REST request to get a page of Tasks");
-        Page<Task> page = taskService.findAll(taskCondition, pageable);
+
+        Page<Task> page = taskService.findAll(taskCondition, PaginationUtil.applySort(pageable, Sort.Direction.DESC, "id"));
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/tasks");
         return new ResponseEntity<>(taskMapper.tasksToTaskDTOs(page.getContent()), headers, HttpStatus.OK);
     }
@@ -254,5 +267,33 @@ public class TaskResource {
         }
 
         return new ResponseEntity<>(taskMapper.tasksToTaskDTOs(tasks), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/tasks/bulkInsert",
+                    method = RequestMethod.GET,
+                    produces = MediaType.APPLICATION_JSON_VALUE)
+    @Transactional
+    public ResponseEntity<Void> findSimilar() throws URISyntaxException {
+
+        Code code = new Code();
+        code.setId(10002L);
+
+        User user = new User();
+        user.setId(3L);
+
+        for(int i=0; i<100;i++) {
+
+            Task task = new Task();
+            task.setName("task-"+i);
+            task.setDueDate("2016-07-01");
+            task.setContents("1231231234123");
+            task.setSeverity(code);
+            task.setAssignee(user);
+
+            this.taskRepository.save(task);
+            this.taskSearchRepository.save(task);
+        }
+
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
