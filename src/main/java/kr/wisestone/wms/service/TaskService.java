@@ -40,10 +40,10 @@ public class TaskService {
     private TaskRepository taskRepository;
 
     @Inject
-    private TaskMapper taskMapper;
+    private TaskSearchRepository taskSearchRepository;
 
     @Inject
-    private TaskSearchRepository taskSearchRepository;
+    private TaskMapper taskMapper;
 
     @Inject
     private NotificationService notificationService;

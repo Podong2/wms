@@ -134,6 +134,7 @@
     </div>
     <div class="text-center">
         <jhi-item-count page="vm.page" total="vm.queryCount"></jhi-item-count>
-        <uib-pagination boundary-links="true" items-per-page="selectedPageRowCount" total-items="responseData.page.totalCount" ng-model="selectedPage" max-size="10" ng-click="getList(selectedPage-1)" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
+        <uib-pagination class="pagination-sm" total-items="vm.totalItems" ng-model="vm.page" ng-change="vm.getList()"></uib-pagination>
+        <!--<uib-pagination boundary-links="true" items-per-page="selectedPageRowCount" total-items="responseData.page.totalCount" ng-model="selectedPage" max-size="10" ng-click="getList(selectedPage-1)" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>-->
     </div>
 </div>

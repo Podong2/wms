@@ -26,6 +26,8 @@
         vm.getList = getList;
         vm.removeTasks = removeTasks;
         vm.singleUpload = singleUpload;
+        vm.page = 1;
+        vm.totalItems = null;
 
         //	목록 데이터 저장
         vm.responseData = {
@@ -216,9 +218,26 @@
         }
 
         function getList(){
+
+            $log.debug("vm.searchQuery : ", vm.searchQuery);
+
+            // TODO 페이지 처리 공통 처리 할것
+            vm.searchQuery.page = (vm.page -1);
+            vm.searchQuery.size = 20;
+            vm.searchQuery.sort = "desc";
+            vm.searchQuery.sortField = "id";
+
+            // {page: vm.page - 1, size: paginationConstants.itemsPerPage}
             TaskListSearch.findTaskList(vm.searchQuery).then(function(result){
-                //$log.debug("vm.tasks : ", result);
+                $log.debug("vm.tasks : ", result);
                 //vm.tasks = result;
+
+                vm.links = ParseLinks.parse(result.headers('link'));
+                vm.totalItems = result.headers('X-Total-Count');
+
+                $log.debug("vm.links : ", vm.links);
+                $log.debug("vm.totalItems : ", vm.totalItems);
+
                 vm.responseData = result;
             })
         }
