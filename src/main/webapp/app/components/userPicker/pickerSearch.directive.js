@@ -65,7 +65,7 @@ pickerSearch.$inject=['$document', '$log']
                             $scope.$apply(function () {
                                 $scope.open = false;
 
-                                if($scope.save != null){
+                                if($scope.save.length != 0){
                                     $log.debug("$scope.save : ", $scope.save);
                                     $rootScope.$broadcast("assigneeEditingConfig", $scope.save);
                                 }
