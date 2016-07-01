@@ -12,7 +12,7 @@
             <label class="control-label" translate="wmsApp.task.name" for="field_name" >Name</label>
             <input type="hidden" class="form-control" id="id" name="id" ng-model="vm.task.id" readonly />
             <div class="input-group">
-                <input type="text" class="form-control" name="name" id="field_name" enter-submit="vm.save()"
+                <input type="text" class="form-control" name="name" id="field_name" enter-submit="vm.save()" auto-focus
                        ng-model="vm.task.name" required
                 />
                 <span class="input-group-btn">

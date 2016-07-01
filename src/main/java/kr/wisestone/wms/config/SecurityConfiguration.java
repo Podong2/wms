@@ -152,6 +152,8 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                        , "/owl-socket/**"
                        , "/v2/api-docs/**"
                        , "/configuration/ui"
+                       , "/api/departments"
+                       , "/api/companies"
                 ).permitAll()
             .antMatchers("/users/session-check"
                        , "/users/{id}"

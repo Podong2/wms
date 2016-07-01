@@ -30,7 +30,8 @@
             'pasvaz.bindonce',
             'smart-table',
             'summernote',
-            'angularFileUpload'
+            'angularFileUpload',
+            'ui.mask'
         ])
         .config(config)
         .run(run);

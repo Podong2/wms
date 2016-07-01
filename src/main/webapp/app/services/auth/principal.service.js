@@ -18,7 +18,8 @@
             identity: identity,
             isAuthenticated: isAuthenticated,
             isIdentityResolved: isIdentityResolved,
-            getIdentity : getIdentity
+            getIdentity : getIdentity,
+            logout : logout
         };
 
         return service;
@@ -103,6 +104,11 @@
         }
         function getIdentity () {
             return _identity;
+        }
+
+        function logout () { // 로그아웃 시 전역 사용자 정보 초기화
+            _identity = null;
+            _authenticated = false;
         }
     }
 })();

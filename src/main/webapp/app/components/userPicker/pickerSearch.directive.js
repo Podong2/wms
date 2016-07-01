@@ -64,7 +64,11 @@ pickerSearch.$inject=['$document', '$log']
                         if (!parentFound) {
                             $scope.$apply(function () {
                                 $scope.open = false;
-                                $rootScope.$broadcast("assigneeEditingConfig", $scope.save);
+
+                                if($scope.save.length != 0){
+                                    $log.debug("$scope.save : ", $scope.save);
+                                    $rootScope.$broadcast("assigneeEditingConfig", $scope.save);
+                                }
                             });
                         }
 

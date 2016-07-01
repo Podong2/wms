@@ -15,16 +15,24 @@
 'use strict';
 
 angular.module('wmsApp')
-    .directive('pickerToggle', function() {
+    .directive('pickerToggle', pickerToggle);
+pickerToggle.$inject=['$timeout'];
+        function pickerToggle($timeout) {
         return {
             restrict: 'A',
             link: function(scope, element) {
+                $('body').click(function (e) {
+                    if ($('.sectionDatePicker').toggleClass("on")) {
+                        if (!$('#sectionDatePicker').has(e.target).length) {
+                            $('.sectionDatePicker').removeClass("on");
+                        }
+                    }
+                });
                 element.on('click', function(_this) {
-                    console.log(scope) // sectionDatePicker
-                    console.log(element) // sectionDatePicker
-
-                    $(".sectionDatePicker").toggleClass("on")
+                    $timeout(function () {
+                        $(".startDate").focus();
+                    }, 400);
                 });
             }
         }
-    });
+    }

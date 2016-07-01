@@ -52,7 +52,7 @@ angular.module('wmsApp')
                         case "issue_detail" :
                             customTag =
                                 "<div class='taskEdit'>" +
-                                    "<button class='btn btn-default pull-right' toggle-event><span class='glyphicon glyphicon-pencil'></span> </button>" +
+                                    "<div class='btn btn-default pull-right glyphicon glyphicon-pencil edit-btn' toggle-event></div>" +
                                     "<a ui-sref='task-detail({id \: " + scope.data.id + "})' href='#/task/" + scope.data.id + "/edit'>"+ scope.data.name +"</a>" +
                                     "<input type='text' class='form-control col-xs-2' ng-model='row.name' id='searchQuery' placeholder='태스크 검색' aria-invalid='false' enter-submit='vm.singleUpload(row)' ng-blur='vm.singleUpload(row)'>" +
                                 "</div>";
