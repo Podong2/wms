@@ -90,7 +90,7 @@
 
         });
 
-        // date 포멧 변경
+/*        // date 포멧 변경
         $scope.$watch("vm.dueDateFrom.date", function(newValue, oldValue){
             if(oldValue != newValue){
                 var d = newValue;
@@ -110,7 +110,7 @@
                 //datePickerFormat(d.getHours(), 2) + ':' + datePickerFormat(d.getMinutes(), 2) + ':' + datePickerFormat(d.getSeconds(), 2);
                 vm.searchQuery.dueDateTo = formatDate;
             }
-        });
+        });*/
 
         loadAll();
 

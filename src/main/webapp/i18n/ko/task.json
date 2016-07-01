@@ -4,6 +4,7 @@
             "home": {
                 "title": "태스크",
                 "createLabel": "태스크 생성",
+                "editLabel": "태스크 수정",
                 "createOrEditLabel": "태스크 생성 및 수정",
                 "search": "태스크 검색"
             },
