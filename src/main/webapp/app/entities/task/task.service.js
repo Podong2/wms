@@ -8,7 +8,7 @@
 
     Task.$inject = ['$resource'];
     TaskRemove.$inject = ['$resource'];
-    TaskEdit.$inject = ['$log', '$upload', '$http'];
+    TaskEdit.$inject = ['$log', '$upload', '$http', '$q'];
 
     function Task ($resource) {
         var resourceUrl =  'api/tasks/:id';
@@ -46,7 +46,7 @@
         });
     }
 
-    function TaskEdit($log, $upload, $http){
+    function TaskEdit($log, $upload, $http, $q){
         var service = {
             addTask : addTask,
             uploadTask : uploadTask,
@@ -70,11 +70,13 @@
             });
         }
         function singleUpload(parameter){
+            var deferred = $q.defer();
             $log.debug("task 싱글 업로드 data : ", parameter)
-            return $http.put( '/api/tasks', {}, {params : parameter}).then(function (result) {
+            $http.put( '/api/tasks', {}, {params : parameter}).then(function (result) {
                 $log.debug("taskList : ", result);
-                return result;
+                deferred.resolve(result);
             });
+            return deferred.promise;
         }
     }
 

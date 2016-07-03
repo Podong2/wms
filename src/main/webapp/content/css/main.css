@@ -1345,3 +1345,6 @@ table th {
 .taskEdit.on input{
     display: block !important;
 }
+.detail-content {
+    padding: 10px;
+}

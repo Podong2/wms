@@ -5,9 +5,9 @@
         .module('wmsApp')
         .controller('TaskDialogController', TaskDialogController);
 
-    TaskDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Task', 'Code', 'TaskAttachedFile', 'User', '$log', 'TaskEdit', 'findUser', '$q', 'DateUtils', 'AlertService', 'toastr', '$http'];
+    TaskDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Task', 'Code', 'TaskAttachedFile', 'User', '$log', 'TaskEdit', 'findUser', '$q', 'DateUtils', 'AlertService', 'toastr', '$http', '$state'];
 
-    function TaskDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Task, Code, TaskAttachedFile, User, $log, TaskEdit, findUser, $q, DateUtils, AlertService, toastr, $http) {
+    function TaskDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Task, Code, TaskAttachedFile, User, $log, TaskEdit, findUser, $q, DateUtils, AlertService, toastr, $http, $state) {
         var vm = this;
 
         vm.task = entity;
@@ -89,15 +89,15 @@
                     fields : vm.task,
                     fileFormDataName : "file"
                 }).then(function (response) {
-                    $log.debug("task 생성 성공")
                     toastr.success('태스크 수정 완료', '태스크 수정 완료');
-                    $uibModalInstance.dismiss('cancel');
+                    $state.go("task", {}, {reload : true});
+                    $timeout(function(){ // state reload 명령과 충돌하는 문제 때문에 설정
+                        $uibModalInstance.dismiss('cancel');
+                    }, 100);
                 });
             } else {
 
                 $log.debug("$scope.files : ", $scope.files);
-
-                //Task.save(vm.task, onSaveSuccess, onSaveError);
 
                 if (vm.task.id === null) {
                     vm.task.id = "";
@@ -111,11 +111,13 @@
                         fields : vm.task,
                         fileFormDataName : "file"
                     }).then(function (response) {
-                        $log.debug("response : ", response);
-                        $log.debug("task 생성 성공");
                         $scope.$emit('wmsApp:taskUpdate', response);
                         toastr.success('태스크 생성 완료', '태스크 생성 완료');
-                        $uibModalInstance.dismiss('cancel');
+                        $state.go("task", {}, {reload : true});
+                        $timeout(function(){ // state reload 명령과 충돌하는 문제 때문에 설정
+                            $uibModalInstance.dismiss('cancel');
+                        }, 100);
+
                     });
                 }
             }

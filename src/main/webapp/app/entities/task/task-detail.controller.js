@@ -5,9 +5,9 @@
         .module('wmsApp')
         .controller('TaskDetailController', TaskDetailController);
 
-    TaskDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'entity', 'Task', 'Code', 'TaskAttachedFile', 'summaryService', '$log', 'TaskEdit', 'DateUtils', 'FIndCode', 'User', 'findUser', '$q', '$sce', 'TaskListSearch'];
+    TaskDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'entity', 'Task', 'Code', 'TaskAttachedFile', 'summaryService', '$log', 'TaskEdit', 'DateUtils', 'FIndCode', 'User', 'findUser', '$q', '$sce', 'TaskListSearch', '$state', 'toastr'];
 
-    function TaskDetailController($scope, $rootScope, $stateParams, entity, Task, Code, TaskAttachedFile, summaryService, $log, TaskEdit, DateUtils, FIndCode, User, findUser, $q, $sce, TaskListSearch) {
+    function TaskDetailController($scope, $rootScope, $stateParams, entity, Task, Code, TaskAttachedFile, summaryService, $log, TaskEdit, DateUtils, FIndCode, User, findUser, $q, $sce, TaskListSearch, $state, toastr) {
         var vm = this;
 
         vm.task = entity;
@@ -20,8 +20,19 @@
         vm.renderHtml = renderHtml;
         vm.userLoad = userLoad;
         vm.assigneeEditing = assigneeEditing;
+        vm.dueDateEditing = dueDateEditing;
         TaskListSearch.TaskAudigLog({'entityId' : vm.task.id, 'entityName' : 'Task'}).then(function(result){ vm.TaskAuditLog = result; }); // Audit Log List call
         FIndCode.findByCodeType("severity").then(function(result){ vm.code = result; }); // 중요도 요청
+
+
+        vm.responseData = vm.task;
+        vm.dueDate = {
+            date: vm.task.dueDate == null ? null : DateUtils.toDate(vm.task.dueDate) ,
+            datepickerOptions: {
+                maxDate: null
+            }
+        };
+        vm.responseData.dueDate = vm.task.dueDate == null ? null : DateUtils.toDate(vm.task.dueDate);
 
         // 갤러리 썸네일 이미지
         vm.images = [];
@@ -33,25 +44,31 @@
             { status: false }
         ];
 
+
         // 요약정보 영역 데이터
         $scope.summaryConfigs = [];
         $scope.tempConfigs = [];
 
-        // 담당자 변경
-        $scope.$watchCollection("vm.assigneeUsers", function(newValue, oldValue){
-            vm.task.assignee =[];
-            angular.forEach(newValue, function(value){
-                vm.task.assignee.push(value.id);
+        // -------------------  broadcast start ------------------- //
+        $scope.$on("dateUpload", function(event, date){
+            $log.debug(date)
+            var d = date;
+            var formatDate =
+                DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' +  DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
+                //DateUtils.datePickerFormat(d.getHours(), 2) + ':' + DateUtils.datePickerFormat(d.getMinutes(), 2);
+            vm.responseData.dueDate = DateUtils.toDate(formatDate);
+            vm.task.dueDate = formatDate;
+            dueDateEditing(); // date picker 창 닫기
+            singleUpload(); // date picker 업로드
+        });
+        $scope.$on("assigneeEditingConfig", function(event, arg){
+            $log.debug("arg : " , arg)
+            angular.forEach( arg, function(assingee){
+                vm.task.assigneeId = assingee.id;
             });
+            singleUpload();
+            assigneeEditing();
         });
-
-        var unsubscribe = $rootScope.$on('wmsApp:taskUpdate', function(event, result) {
-            vm.task = result;
-        });
-        $scope.$on('$destroy', unsubscribe);
-
-        vm.responseData = vm.task;
-        $log.debug("vm.responseData : ", vm.responseData);
 
         // xeditable 데이터 변경 체크
         $scope.$on('taskDetailInfoChange', function (event, args) {
@@ -61,13 +78,33 @@
             }
             singleUpload();
         });
+        $scope.$on('$destroy', unsubscribe);
+
+        var unsubscribe = $rootScope.$on('wmsApp:taskUpdate', function(event, result) {
+            vm.task = result;
+        });
+        // -------------------  broadcast end ------------------- //
+
+
+        // ------------------- watch start ------------------ //
+        // 담당자 변경
+        $scope.$watchCollection("vm.assigneeUsers", function(newValue, oldValue){
+            vm.task.assignee =[];
+            angular.forEach(newValue, function(value){
+                vm.task.assignee.push(value.id);
+            });
+        });
+        // ------------------- watch end ------------------ //
+
 
         // xeditable single upload
         function singleUpload(){
             TaskEdit.singleUpload(vm.task).then(function (response) {
                 $log.debug("Task single upload success.");
+                toastr.success('태스크 수정을 성공하였습니다.', '태스크 수정');
+                $state.reload();
             });
-            vm.responseData = vm.task;
+
         }
 
         //  탭메뉴 영역 표시 여부 지정
@@ -136,20 +173,18 @@
             return $sce.trustAsHtml(data);
         }
 
+        // 종료날짜 오픈/닫기
+        vm.dueDateEditingConfig = true;
+        function dueDateEditing(){
+            vm.dueDateEditingConfig = !vm.dueDateEditingConfig;
+
+        }
         // 담당자 변경 picker 오픈/닫기
         vm.assigneeEditingConfig = true;
         function assigneeEditing(){
             vm.assigneeEditingConfig = !vm.assigneeEditingConfig;
 
         }
-        $scope.$on("assigneeEditingConfig", function(event, arg){
-            $log.debug("arg : " , arg)
-            angular.forEach( arg, function(assingee){
-                vm.task.assigneeId = assingee.id;
-            });
-            singleUpload();
-            //vm.assigneeEditingConfig = !vm.assigneeEditingConfig;
-        });
 
         function makeTableConfig(){
             $scope.tempConfigs.push(summaryService.getConfig()
@@ -174,5 +209,7 @@
         }
         makeTableConfig(); // 테이블 그리기
         setAttachedFiles(vm.task.attachedFiles); // 첨부파일목록 겔러리 세팅
+
+
     }
 })();

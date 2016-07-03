@@ -445,6 +445,10 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
             $scope.close = function (closePressed) {
                 $scope.isOpen = false;
 
+                if($scope.editState){
+                    $rootScope.$broadcast("dateUpload", $scope.date);
+                }
+
                 // if enableDate and enableTime are true, reopen the picker in date mode first
                 if ($scope.enableDate && $scope.enableTime)
                     $scope.showPicker = $scope.reOpenDefault === false ? 'date' : $scope.reOpenDefault;
@@ -596,7 +600,8 @@ angular.module('ui.bootstrap.datetimepicker', ['ui.bootstrap.dateparser', 'ui.bo
                 enableTime: '=?',
                 initialPicker: '=?',
                 reOpenDefault: '=?',
-                whenClosed: '&'
+                whenClosed: '&',
+                editState : '=?'
             },
             link: function (scope, element, attrs, ctrls) {
                 var ngModel = ctrls[0],

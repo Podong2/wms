@@ -68,6 +68,7 @@ pickerSearch.$inject=['$document', '$log']
                                 if($scope.save.length != 0){
                                     $log.debug("$scope.save : ", $scope.save);
                                     $rootScope.$broadcast("assigneeEditingConfig", $scope.save);
+                                    $scope.save = [];
                                 }
                             });
                         }

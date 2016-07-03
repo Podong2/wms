@@ -44,7 +44,7 @@
                                 <div class="row">
                                     <div class=" col-md-6" ng-show="summary[0].name != ''" translate="{{ summary[0].name }}"></div>
                                     <div class="col-md-6" ng-show="summary[0].name != '' && !summary[0].renderer">
-                                        <a editable-select="vm.responseData.severityId" e-ng-options="s.id as s.name for s in vm.code">
+                                        <a editable-select="vm.responseData.severityId" e-ng-options="s.id as s.name for s in vm.code" button="no">
                                             {{ vm.showStatus(vm.responseData[summary[0].value]) }}
                                         </a>
                                     </div>
@@ -59,7 +59,13 @@
                                 <div class="row">
                                     <div class=" col-md-6" ng-show="summary[1].name != ''" translate="{{ summary[1].name }}"></div>
                                     <div class="col-md-6" ng-show="summary[1].name != '' && !summary[1].renderer">
-                                        <a editable-bsdate="vm.responseData.dueDate" e-is-open="opened.$data" e-ng-click="vm.open($event,'$data')" e-datepicker-popup="yyyy-MM-dd">{{ vm.responseData[summary[1].key] }}</a>
+                                        <a ng-click="vm.dueDateEditing()" ng-show="vm.dueDateEditingConfig">{{ (vm.responseData[summary[1].key] | date:"yyyy-MM-dd HH:mm") || 'empty' }}</a>
+                                        <div class="input-group" ng-show="!vm.dueDateEditingConfig">
+                                            <input type="text" class="form-control" datetime-picker="yyyy-MM-dd HH:mm" edit-state="true" ng-model="vm.responseData.dueDate" is-open="vm.dueDate.open" id="field_dueDate" value="{{vm.dueDate.date}}" enter-submit="vm.save()"/>
+                                            <span class="input-group-btn">
+                                              <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDate')"><i class="fa fa-calendar"></i></button>
+                                            </span>
+                                        </div>
                                     </div>
                                     <div class="col-md-6" ng-show="summary[1].name != '' && summary[1].renderer">
                                         <owl-custom-renderer index="0" property="{{summary[1].renderer}}"></owl-custom-renderer>
@@ -72,7 +78,7 @@
                             <div class="row">
                                 <div class=" col-md-6" ng-show="summary[1].name != ''" translate="{{ summary[1].name }}"></div>
                                 <div class="col-md-6" ng-show="summary[1].name != '' && !summary[1].renderer">
-                                    <span ng-click="vm.assigneeEditing()" ng-show="vm.assigneeEditingConfig">{{vm.responseData.assigneeName}}</span>
+                                    <span ng-click="vm.assigneeEditing()" ng-show="vm.assigneeEditingConfig">{{vm.task.assigneeName}}</span>
                                     <div ng-show="!vm.assigneeEditingConfig">
 
                                         <picker-search source="vm.userLoad(vm.responseData.assigneeName, vm.assigneeUsers)"
@@ -97,7 +103,7 @@
     <!-- 설명영역 -->
     <div class="col-md-12" ng-show="vm.tabArea[0].status">
         <h4>내용</h4>
-        <div class="panel panel-default min-height-100-p">
+        <div class="panel panel-default min-height-100-p detail-content">
             <div class="ibox">
                 <div class="ibox_content">
                     <span ng-bind-html="vm.renderHtml(vm.responseData.contents)"></span>
@@ -110,9 +116,9 @@
     <div class="col-md-12"  ng-show="vm.tabArea[0].status">
         <h4>첨부파일</h4>
         <div class="panel panel-default col-md-12 voffset-bottom0">
-                <i class="fa fa-chevron-right fa-3x cursor float-right galleryBtnArea"
+                <i class="fa fa-chevron-right fa-3x cursor float-right galleryBtnArea" ng-show="vm.images.length > 0"
                    style="right: 10px;" scroll-right></i>
-                <i class="fa fa-chevron-left fa-3x cursor float-left galleryBtnArea"
+                <i class="fa fa-chevron-left fa-3x cursor float-left galleryBtnArea" ng-show="vm.images.length > 0"
                    scroll-left></i>
                 <div class="IssueGallery float-left" style="">
                     <ng-gallery images="vm.images" thumbs-num="10">

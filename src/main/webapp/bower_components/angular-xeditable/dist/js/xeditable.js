@@ -97,7 +97,7 @@ angular.module('xeditable').directive('editableBsdate', ['editableDirectiveFacto
                  **/
                 this.parent.render.call(this);
 
-                var inputDatePicker = angular.element('<input type="text" class="form-control" datetime-picker="mediumDate" ng-model="vm.responseData.dueDate" is-open="vm.dueDate.open" enable-time="false" datepicker-options="vm.dueDate.datepickerOptions" close-on-date-selection="false" datepicker-append-to-body="true" />');
+                var inputDatePicker = angular.element('<input type="text" class="form-control" datetime-picker="mediumDate" ng-model="vm.dueDate.date" datetime-picker="yyyy-MM-dd" is-open="vm.dueDate.open" enable-time="false" datepicker-options="vm.dueDate.datepickerOptions" close-on-date-selection="false" datepicker-append-to-body="true" />');
                 var buttonDatePicker = angular.element('<button type="button" class="btn btn-default" ng-click="vm.openCalendar($event,\'dueDate\')"><i class="glyphicon glyphicon-calendar"></i></button>');
                 var buttonWrapper = angular.element('<span class="input-group-btn"></span>');
 
