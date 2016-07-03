@@ -79,6 +79,11 @@
             singleUpload();
         });
         $scope.$on('$destroy', unsubscribe);
+        // xeditable 데이터 변경 체크
+        $scope.$on('editingUpload', function (event, args) {
+            singleUpload();
+        });
+
 
         var unsubscribe = $rootScope.$on('wmsApp:taskUpdate', function(event, result) {
             vm.task = result;

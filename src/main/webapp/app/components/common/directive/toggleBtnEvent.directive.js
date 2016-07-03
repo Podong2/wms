@@ -1,6 +1,8 @@
 angular.module('wmsApp')
-    .directive('toggleEvent', toggleEvent);
+    .directive('toggleEvent', toggleEvent)
+    .directive('sectionToggle', sectionToggle);
 toggleEvent.$inject=['$compile', '$filter', '$log', '$sce'];
+sectionToggle.$inject=['$timeout', '$rootScope'];
 function toggleEvent($compile, $filter, $log, $sce) {
 
     return {
@@ -20,3 +22,26 @@ function toggleEvent($compile, $filter, $log, $sce) {
         }
     }
 }
+function sectionToggle($timeout, $rootScope) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attr) {
+            var className = attr['className'];
+            $('body').click(function (e) {
+                if ($('.editingSection').addClass("on"), $('.elementSection').addClass("on")) {
+                    if (!$('#editingSection').has(e.target).length) {
+                        $('.editingSection').removeClass("on");
+                        $('.elementSection').removeClass("on");
+                        $rootScope.$broadcast("editingUpload")
+                    }
+                }
+            });
+            element.on('click', function(_this) {
+                $timeout(function () {
+                    $(".focusing").focus();
+                }, 400);
+            });
+        }
+    }
+}
+
