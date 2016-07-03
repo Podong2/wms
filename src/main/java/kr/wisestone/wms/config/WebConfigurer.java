@@ -60,7 +60,7 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
             log.info("Web application configuration, using profiles: {}", Arrays.toString(env.getActiveProfiles()));
         }
         EnumSet<DispatcherType> disps = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD, DispatcherType.ASYNC);
-        initClusteredHttpSessionFilter(servletContext, disps);
+//        initClusteredHttpSessionFilter(servletContext, disps);
         initMetrics(servletContext, disps);
         if (env.acceptsProfiles(Constants.SPRING_PROFILE_PRODUCTION)) {
             initCachingHttpHeadersFilter(servletContext, disps);
@@ -89,7 +89,7 @@ public class WebConfigurer implements ServletContextInitializer, EmbeddedServlet
         // on a node, entries for this session on all other nodes are invalidated.
         // You have to know how your load-balancer is configured before
         // setting this parameter. Default is true.
-        parameters.put("sticky-session", "true");
+        parameters.put("sticky-session", "false");
 
         // Name of session id cookie
         parameters.put("cookie-name", "hazelcast.sessionId");

@@ -104,12 +104,12 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-//            .sessionManagement()
-//            .maximumSessions(1) // maximum number of concurrent sessions for one user
-//            .expiredUrl("/")
-////            .maxSessionsPreventsLogin(true)
-//            .sessionRegistry(sessionRegistry)
-//            .and().and()
+            .sessionManagement()
+            .maximumSessions(1) // maximum number of concurrent sessions for one user
+//            .maxSessionsPreventsLogin(true)
+            .expiredUrl("/")
+            .sessionRegistry(sessionRegistry)
+            .and().and()
             .csrf()
             .ignoringAntMatchers("/api/authentication", "/api/register")
             .ignoringAntMatchers("/websocket/**")
