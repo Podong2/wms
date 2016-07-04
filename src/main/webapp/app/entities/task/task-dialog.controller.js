@@ -191,10 +191,9 @@
         }
 
         function fileDownLoad(key){
-            alert(key)
-            $http.get("/api/attachedFile/", {params :  key
-            }).then(function(){
-            });
+            var iframe = $("<iframe/>").hide().appendTo("body").load(function() {
+                iframe.remove();
+            }).attr("src", "/api/attachedFile/" + key);
         }
 
         function validationCheck(){
