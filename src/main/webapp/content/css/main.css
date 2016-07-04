@@ -1354,3 +1354,6 @@ table th {
 .editingSection.on, .elementSection{
     display: block;
 }
+.tooltip-inner {
+    padding: 3px 4px !important;
+}
