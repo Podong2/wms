@@ -1041,7 +1041,7 @@ tr.angular-ui-tree-empty {
     box-shadow: 0 5px 10px rgba(0,0,0,.2);
     display: none;
 }
-.editSection.on {
+.editSection.on{
     display: block;
 }
 .editSection .pickerBtnArea{
@@ -1336,9 +1336,9 @@ table th {
 .taskEdit input{
     display : none !important;
 }
-.taskEdit a, .taskEdit .edit-btn{
-    display: block !important;
-}
+/*.taskEdit a, .taskEdit .edit-btn{*/
+    /**/
+/*}*/
 .taskEdit.on a, .taskEdit.on .edit-btn{
     display : none !important;
 }
@@ -1354,6 +1354,18 @@ table th {
 .editingSection.on, .elementSection{
     display: block;
 }
+.datePickerSection, .dateValueSection.on{
+    display: none;
+}
+.datePickerSection.on, .dateValueSection{
+    display: table;
+}
 .tooltip-inner {
     padding: 3px 4px !important;
+}
+.edit-btn {
+    display: none;
+}
+.taskEdit:hover .edit-btn{
+    display: block;
 }

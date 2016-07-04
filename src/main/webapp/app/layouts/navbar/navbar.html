@@ -17,7 +17,7 @@
 
 
                 <!-- 동적 navbar -->
-                <li ng-class="{active: vm.$state.includes('entity')}" ng-repeat="menu in vm.menu track by $index" uib-dropdown ng-show="menu.displayYn ? (permissionCheck.check(menu.permissionUrl) ? menu.displayYn : false) : false">
+                <li ng-class="{active: vm.$state.includes('entity')}" ng-switch-when="true" ng-repeat="menu in vm.menu track by $index" uib-dropdown ng-show="menu.displayYn ? (permissionCheck.check(menu.permissionUrl) ? menu.displayYn : false) : false">
                     <a ng-click="vm.collapseNavbar()" class="dropdown-toggle" uib-dropdown-toggle>
                         <span class="glyphicon glyphicon-th-list"></span>
                         <span class="hidden-sm" translate="{{menu.name}}">{{menu.name}}</span>

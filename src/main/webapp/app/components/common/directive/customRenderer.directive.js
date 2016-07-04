@@ -54,7 +54,7 @@ angular.module('wmsApp')
                                 "<div class='taskEdit'>" +
                                     "<div class='btn btn-default pull-right glyphicon glyphicon-pencil edit-btn' toggle-event></div>" +
                                     "<a ui-sref='task-detail({id \: " + scope.data.id + "})' href='#/task/" + scope.data.id + "/edit'>"+ scope.data.name +"</a>" +
-                                    "<input type='text' class='form-control col-xs-2' ng-model='row.name' id='searchQuery' placeholder='태스크 검색' aria-invalid='false' enter-submit='vm.singleUpload(row)' ng-blur='vm.singleUpload(row)'>" +
+                                    "<input type='text' class='form-control col-xs-2 title-focus' ng-model='row.name' id='searchQuery' placeholder='태스크 검색' aria-invalid='false' enter-submit='vm.singleUpload(row)' ng-blur='vm.singleUpload(row)'>" +
                                 "</div>";
                             break;
 

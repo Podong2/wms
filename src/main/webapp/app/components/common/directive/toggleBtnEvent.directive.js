@@ -1,15 +1,18 @@
 angular.module('wmsApp')
     .directive('toggleEvent', toggleEvent)
-    .directive('sectionToggle', sectionToggle);
-toggleEvent.$inject=['$compile', '$filter', '$log', '$sce'];
+    .directive('sectionToggle', sectionToggle)
+    .directive('datePickerEditToggle', datePickerEditToggle);
+toggleEvent.$inject=['$compile', '$filter', '$log', '$sce', '$timeout'];
 sectionToggle.$inject=['$timeout', '$rootScope'];
-function toggleEvent($compile, $filter, $log, $sce) {
+datePickerEditToggle.$inject=['$timeout'];
+function toggleEvent($compile, $filter, $log, $sce, $timeout) {
 
     return {
         restrict : "A",
         link : function (scope, element, attrs) {
             var toggleStatus = true;
             element.on("click", function (event) {
+                var _this = this;
                 if(toggleStatus){
                     event.target.parentElement.classList.add("on");
                     toggleStatus = false;
@@ -17,6 +20,9 @@ function toggleEvent($compile, $filter, $log, $sce) {
                     event.target.parentElement.classList.remove("on");
                     toggleStatus = true;
                 }
+                $timeout(function () {
+                    _this.nextElementSibling.nextElementSibling.focus()
+                }, 400);
 
             });
         }
@@ -38,6 +44,26 @@ function sectionToggle($timeout, $rootScope) {
             element.on('click', function(_this) {
                 $timeout(function () {
                     $(".focusing").focus();
+                }, 400);
+            });
+        }
+    }
+}
+function datePickerEditToggle($timeout) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attr) {
+            $('body').click(function (e) {
+                if ($('.datePickerSection').addClass("on"), $('.dateValueSection').addClass("on")) {
+                    if (!$('#datePickerSection').has(e.target).length) {
+                        $('.datePickerSection').removeClass("on");
+                        $('.dateValueSection').removeClass("on");
+                    }
+                }
+            });
+            element.on('click', function(_this) {
+                $timeout(function () {
+                    $(".date-focusing").focus();
                 }, 400);
             });
         }
