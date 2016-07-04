@@ -9,7 +9,7 @@
                         <div bo-switch-when="check">
                             <input type="checkbox"
                                    ng-model="tableConfig.hChecked"
-                                   ng-click="tableService.toggleChecked(tableConfig.hChecked, displayCollection)">
+                                   ng-click="vm.tableService.toggleChecked(tableConfig.hChecked, displayCollection)">
                         </div>
                         <div bo-switch-default st-sort="{{tableConfig.dAttr}}" style="margin-bottom: 4px;" class="cursor">
                             <span translate="{{tableConfig.hName}}"></span>
