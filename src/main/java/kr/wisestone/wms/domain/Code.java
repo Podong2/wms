@@ -2,6 +2,7 @@ package kr.wisestone.wms.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
@@ -38,6 +39,7 @@ public class Code extends AbstractAuditingEntity implements Serializable {
     private String name;
 
     @Column(name = "default_yn")
+    @Type(type="yes_no")
     private Boolean defaultYn;
 
     @Column(name = "position")
@@ -66,6 +68,10 @@ public class Code extends AbstractAuditingEntity implements Serializable {
     }
 
     public Boolean isDefaultYn() {
+        return defaultYn;
+    }
+
+    public Boolean getDefaultYn() {
         return defaultYn;
     }
 

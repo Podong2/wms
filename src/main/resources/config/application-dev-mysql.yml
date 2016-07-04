@@ -18,13 +18,10 @@ spring:
         livereload:
             enabled: true # we use gulp + BrowserSync for livereload
     datasource:
-#        url: jdbc:mariadb://211.238.12.102:3306/owl_wms_dev
-        url: jdbc:postgresql://211.238.12.101:5432/wms
+        url: jdbc:mariadb://211.238.12.102:3306/owl_wms_dev
         name:
-#        username: root
-        username: wms
-#        password: tjdrhdrldnjs^^
-        password: wisestone
+        username: root
+        password: tjdrhdrldnjs^^
         hikari:
             data-source-properties:
                 cachePrepStmts: true
@@ -32,10 +29,8 @@ spring:
                 prepStmtCacheSqlLimit: 2048
                 useServerPrepStmts: true
     jpa:
-#        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-        database-platform: org.hibernate.dialect.PostgreSQLDialect
-#        database: MYSQL
-        database: PostgreSQL
+        database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
+        database: MYSQL
         show_sql: false
         properties:
             hibernate.cache.use_second_level_cache: true

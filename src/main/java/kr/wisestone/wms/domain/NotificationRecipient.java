@@ -2,6 +2,7 @@ package kr.wisestone.wms.domain;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
@@ -31,6 +32,7 @@ public class NotificationRecipient extends AbstractAuditingEntity implements Ser
     private Long id;
 
     @Column(name = "read_yn")
+    @Type(type="yes_no")
     private Boolean readYn = Boolean.FALSE;
 
     @ManyToOne

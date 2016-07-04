@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import kr.wisestone.wms.web.rest.dto.MenuDTO;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
@@ -49,15 +50,19 @@ public class Menu extends AbstractAuditingEntity implements Serializable {
     private String status;
 
     @Column(name = "project_yn")
+    @Type(type="yes_no")
     private Boolean projectYn = Boolean.FALSE;
 
     @Column(name = "system_yn")
+    @Type(type="yes_no")
     private Boolean systemYn = Boolean.FALSE;
 
     @Column(name = "mobile_yn")
+    @Type(type="yes_no")
     private Boolean mobileYn = Boolean.FALSE;
 
     @Column(name = "hr_include_yn")
+    @Type(type="yes_no")
     private Boolean hrIncludeYn = Boolean.FALSE;
 
     @Column(name = "url_path")
@@ -67,6 +72,7 @@ public class Menu extends AbstractAuditingEntity implements Serializable {
     private String permissionUrl;
 
     @Column(name = "display_yn")
+    @Type(type="yes_no")
     private Boolean displayYn = Boolean.FALSE;
 
     @JsonIgnore

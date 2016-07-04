@@ -36,6 +36,7 @@
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <javax.inject.version>1</javax.inject.version>
         <mariadb.version>1.4.4</mariadb.version>
+        <postgresql.version>9.4.1208.jre7</postgresql.version>
         <flyway.version>4.0</flyway.version>
         <mapstruct.version>1.0.0.Final</mapstruct.version>
         <maven.build.timestamp.format>yyyyMMddHHmmss</maven.build.timestamp.format>
@@ -255,6 +256,11 @@
             <groupId>org.mariadb.jdbc</groupId>
             <artifactId>mariadb-java-client</artifactId>
             <version>${mariadb.version}</version>
+        </dependency>
+        <dependency>
+        <groupId>org.postgresql</groupId>
+        <artifactId>postgresql</artifactId>
+        <version>${postgresql.version}</version>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>

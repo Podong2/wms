@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Email;
 
 import org.springframework.data.elasticsearch.annotations.Document;
@@ -93,6 +94,7 @@ public class User extends AbstractAuditingEntity implements UserDetails, Seriali
 
     @NotNull
     @Column(nullable = false)
+    @Type(type="yes_no")
     private Boolean activated = false;
 
     @Size(min = 2, max = 5)

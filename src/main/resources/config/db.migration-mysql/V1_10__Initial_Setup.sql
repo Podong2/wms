@@ -11,14 +11,14 @@ CREATE TABLE owl_task
     name                 varchar(1000)  NULL ,
     contents             text  NULL ,
     assignee_id          bigint NULL,
-    severity_id              bigint NULL,
+    code_id              bigint NULL,
     due_date             timestamp NULL,
     created_by           varchar(50)  NOT NULL,
     created_date         timestamp  NULL,
     last_modified_by     varchar(50)  NULL,
     last_modified_date   timestamp  NULL
-);
-
+)
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE owl_task_attached_file
 (
@@ -29,20 +29,20 @@ CREATE TABLE owl_task_attached_file
     created_date         timestamp  NULL,
     last_modified_by     varchar(50)  NULL,
     last_modified_date   timestamp  NULL
-);
-
+)
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE owl_code
 (
     id                   bigint,
     name                 varchar(1000)  NULL ,
     default_yn           char(1)  NULL ,
-    position             integer NULL,
+    position             integer(10) NULL,
     color                varchar(255)  NULL ,
     code_type            varchar(50)  NULL ,
     created_by           varchar(50)  NOT NULL,
     created_date         timestamp  NULL,
     last_modified_by     varchar(50)  NULL,
     last_modified_date   timestamp  NULL
-);
-
+)
+ENGINE=InnoDB DEFAULT CHARSET=utf8;

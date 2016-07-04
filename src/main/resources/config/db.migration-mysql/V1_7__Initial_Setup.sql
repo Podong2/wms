@@ -1,0 +1,1 @@
+ALTER TABLE owl_user ADD COLUMN status VARCHAR(50);

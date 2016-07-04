@@ -2,7 +2,7 @@ CREATE TABLE owl_sequence
 (
   seq_id varchar(255),
   seq_value bigint
-);
+)
 
 
 
@@ -11,7 +11,8 @@ CREATE TABLE owl_user
 	id                   bigint,
 	login                varchar(100) NOT NULL,
 	password_hash        varchar(60) NOT NULL,
-	name                 varchar(100) NULL,
+	first_name           varchar(50) NULL,
+	last_name            varchar(50) NULL,
 	email                varchar(100) NULL,
 	activated            bit(1) NOT NULL,
 	lang_key             varchar(5) NOT NULL,
@@ -22,7 +23,7 @@ CREATE TABLE owl_user
 	created_date         timestamp  NULL ,
 	last_modified_by     varchar(50)  NULL ,
 	last_modified_date   timestamp  NULL
-);
+)
 
 
 CREATE INDEX idx_owl_user_login ON owl_user (login);
@@ -32,14 +33,14 @@ CREATE INDEX idx_owl_user_email ON owl_user (email);
 CREATE TABLE owl_authority
 (
 	name                varchar(50) NOT NULL
-);
+)
 
 
 CREATE TABLE owl_user_authority
 (
 	user_id             bigint NOT NULL,
 	authority_name      varchar(50) NOT NULL
-);
+)
 
 
 CREATE TABLE owl_persistent_token
@@ -50,7 +51,7 @@ CREATE TABLE owl_persistent_token
     token_date         date,
     ip_address         varchar(39),
     user_agent         varchar(255)
-);
+)
 
 
 CREATE TABLE owl_persistent_audit_event
@@ -59,7 +60,7 @@ CREATE TABLE owl_persistent_audit_event
     principal          varchar(255) NOT NULL,
     event_date         timestamp,
     event_type         varchar(255)
-);
+)
 
 
 CREATE TABLE owl_persistent_audit_evt_data
@@ -67,7 +68,7 @@ CREATE TABLE owl_persistent_audit_evt_data
     event_id           bigint NOT NULL,
     name               varchar(255) NOT NULL,
     value              varchar(255)
-);
+)
 
 
 CREATE TABLE owl_social_user_connection
@@ -84,7 +85,7 @@ CREATE TABLE owl_social_user_connection
     secret             varchar(255),
     referesh_token     varchar(255),
     expire_time        bigint
-);
+)
 
 
 INSERT INTO owl_sequence (seq_id, seq_value)
@@ -109,11 +110,11 @@ VALUES
     (4, 'ROLE_USER')
 ;
 
-INSERT INTO owl_user (id, login, password_hash, name, email, activated, lang_key, created_by)
+INSERT INTO owl_user (id, login, password_hash, first_name, last_name, email, activated, lang_key, created_by)
 VALUES
-    (1,'system','$2a$10$mE.qmcV0mFU5NcKh73TZx.z4ueI/.bDWbj0T1BYyqP481kGGarKLG','System','system@localhost',B'1'::bit(1),'ko','system'),
-    (2,'anonymoususer','$2a$10$j8S5d7Sr7.8VTOYNviDPOeWX8KcYILUVJBsYV83Y5NtECayypx9lO','Anonymous','anonymous@localhost',B'1'::bit(1),'ko','system'),
-    (3,'admin','$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC','Administrator','admin@localhost',B'1'::bit(1),'ko','system'),
-    (4,'user','$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K','User','user@localhost',B'1'::bit(1),'ko','system')
+    (1,'system','$2a$10$mE.qmcV0mFU5NcKh73TZx.z4ueI/.bDWbj0T1BYyqP481kGGarKLG','System','System','system@localhost',true,'ko','system'),
+    (2,'anonymoususer','$2a$10$j8S5d7Sr7.8VTOYNviDPOeWX8KcYILUVJBsYV83Y5NtECayypx9lO','Anonymous','User','anonymous@localhost',true,'ko','system'),
+    (3,'admin','$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC','Administrator','Administrator','admin@localhost',true,'ko','system'),
+    (4,'user','$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K','User','User','user@localhost',true,'ko','system')
 
 ;

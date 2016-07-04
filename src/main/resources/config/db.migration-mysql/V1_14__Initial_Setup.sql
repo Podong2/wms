@@ -14,14 +14,14 @@ CREATE TABLE owl_notification
     notification_config             varchar(255) NULL,
     notification_type               varchar(255) NULL,
     notification_level_name         varchar(255) NULL,
-    notification_level_display_time integer NULL,
+    notification_level_display_time int(3) NULL,
     notification_level_color        varchar(255) NULL,
     created_by                      varchar(50)  NOT NULL,
     created_date                    timestamp  NULL,
     last_modified_by                varchar(50)  NULL,
     last_modified_date              timestamp  NULL
-);
-
+)
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE owl_notification_recipient
 (
@@ -33,6 +33,6 @@ CREATE TABLE owl_notification_recipient
     created_date         timestamp  NULL,
     last_modified_by     varchar(50)  NULL,
     last_modified_date   timestamp  NULL
-);
-
+)
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

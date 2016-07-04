@@ -29,8 +29,8 @@ CREATE TABLE owl_menu
     created_date         timestamp  NULL,
     last_modified_by     varchar(50)  NULL,
     last_modified_date   timestamp  NULL
-);
-
+)
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE owl_menu_permission
 (
@@ -42,8 +42,8 @@ CREATE TABLE owl_menu_permission
     created_date         timestamp  NULL,
     last_modified_by     varchar(50)  NULL,
     last_modified_date   timestamp  NULL
-);
-
+)
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE owl_permission
 (
@@ -60,8 +60,8 @@ CREATE TABLE owl_permission
     created_date         timestamp  NULL,
     last_modified_by     varchar(50)  NULL,
     last_modified_date   timestamp  NULL
-);
-
+)
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE owl_permission_category
 (
@@ -72,8 +72,8 @@ CREATE TABLE owl_permission_category
     created_date         timestamp  NULL,
     last_modified_by     varchar(50)  NULL,
     last_modified_date   timestamp  NULL
-);
-
+)
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE owl_system_role
 (
@@ -85,8 +85,8 @@ CREATE TABLE owl_system_role
     created_date         timestamp  NULL,
     last_modified_by     varchar(50)  NULL,
     last_modified_date   timestamp  NULL
-);
-
+)
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE owl_system_role_permission
 (
@@ -97,8 +97,8 @@ CREATE TABLE owl_system_role_permission
     created_date         timestamp  NULL,
     last_modified_by     varchar(50)  NULL,
     last_modified_date   timestamp  NULL
-);
-
+)
+ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE owl_system_role_user
 (
@@ -109,5 +109,5 @@ CREATE TABLE owl_system_role_user
     created_date         timestamp  NULL,
     last_modified_by     varchar(50)  NULL,
     last_modified_date   timestamp  NULL
-);
-
+)
+ENGINE=InnoDB DEFAULT CHARSET=utf8;

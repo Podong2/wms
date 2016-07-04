@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -35,7 +36,9 @@ public class AttachedFile extends AbstractAuditingEntity implements Serializable
     private String name;
 
     @Column(name="content")
-    @Lob @Basic(fetch=FetchType.LAZY)
+    //@Lob
+    @Type(type="org.hibernate.type.BinaryType") // postgresql 의 bytea 타입을 위해 추가
+    @Basic(fetch=FetchType.LAZY)
     @JsonIgnore
     private byte[] content;
 

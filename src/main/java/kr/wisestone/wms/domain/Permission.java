@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import kr.wisestone.wms.web.rest.dto.PermissionDTO;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
@@ -49,6 +50,7 @@ public class Permission extends AbstractAuditingEntity implements Serializable {
     private String roleGubun;
 
     @Column(name = "role_permission_yn")
+    @Type(type="yes_no")
     private Boolean rolePermissionYn;
 
     @ManyToOne(fetch = FetchType.LAZY)
