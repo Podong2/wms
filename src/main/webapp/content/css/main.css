@@ -548,7 +548,7 @@ Social Buttons
     display: block;
 }
 .side-menu.toggled-2 .side-contents .users, .side-menu.toggled-2 .side-contents .test{
-    display: none !important;
+    display: none ;
 }
 .side-menu.toggled-2 .side-icon{
     width: 100% !important;
@@ -628,8 +628,15 @@ Social Buttons
         white-space: nowrap;
     }
 
+    #wrapper.toggled-2 #sidebar-wrapper:hover .side-icon,     #wrapper.toggled-2 #sidebar-wrapper:hover .side-icon{
+        width: 16.66666667% !important;
+    }
+    #wrapper.toggled-2 #sidebar-wrapper:hover .side-contents .users.on,     #wrapper.toggled-2 #sidebar-wrapper:hover .side-contents .test.on{
+        display: block;
+
+    }
     #wrapper.toggled-2 #sidebar-wrapper:hover {
-        /*width: 300px;*/
+        width: 300px;
     }
 
     #page-content-wrapper {
@@ -1375,6 +1382,7 @@ table th {
 }
 .edit-btn {
     display: none;
+    padding: 0px 8px;
 }
 .taskEdit:hover .edit-btn{
     display: block;

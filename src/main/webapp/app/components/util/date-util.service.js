@@ -53,7 +53,9 @@
             var sYear = yyyyMMdd.substring(0,4);
             var sMonth = yyyyMMdd.substring(5,7);
             var sDate = yyyyMMdd.substring(8,10);
-            return new Date(Number(sYear), Number(sMonth)-1, Number(sDate));
+            var sHours = yyyyMMdd.substring(11,13);
+            var sMinutes = yyyyMMdd.substring(14,16);
+            return new Date(Number(sYear), Number(sMonth)-1, Number(sDate), Number(sHours), Number(sMinutes));
         }
 
         // date 포멧 변경

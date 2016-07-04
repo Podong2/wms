@@ -90,27 +90,27 @@
 
         });
 
-/*        // date 포멧 변경
-        $scope.$watch("vm.dueDateFrom.date", function(newValue, oldValue){
-            if(oldValue != newValue){
-                var d = newValue;
-                var formatDate =
-                    DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' +  DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
-                //datePickerFormat(d.getHours(), 2) + ':' + datePickerFormat(d.getMinutes(), 2) + ':' + datePickerFormat(d.getSeconds(), 2);
-                vm.searchQuery.dueDateFrom = formatDate;
-            }
-
-        });
         // date 포멧 변경
-        $scope.$watch("vm.dueDateTo.date", function(newValue, oldValue){
-            if(oldValue != newValue){
-                var d = newValue;
-                var formatDate =
-                    DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
-                //datePickerFormat(d.getHours(), 2) + ':' + datePickerFormat(d.getMinutes(), 2) + ':' + datePickerFormat(d.getSeconds(), 2);
-                vm.searchQuery.dueDateTo = formatDate;
-            }
-        });*/
+        //$scope.$watchCollection("vm.dueDateFrom.date", function(newValue, oldValue){
+        //    if(oldValue != newValue){
+        //        var d = newValue;
+        //        var formatDate =
+        //            DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' +  DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
+        //        //datePickerFormat(d.getHours(), 2) + ':' + datePickerFormat(d.getMinutes(), 2) + ':' + datePickerFormat(d.getSeconds(), 2);
+        //        vm.searchQuery.dueDateFrom = formatDate;
+        //    }
+        //
+        //});
+        //// date 포멧 변경
+        //$scope.$watchCollection("vm.dueDateTo.date", function(newValue, oldValue){
+        //    if(oldValue != newValue){
+        //        var d = newValue;
+        //        var formatDate =
+        //            DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
+        //        //datePickerFormat(d.getHours(), 2) + ':' + datePickerFormat(d.getMinutes(), 2) + ':' + datePickerFormat(d.getSeconds(), 2);
+        //        vm.searchQuery.dueDateTo = formatDate;
+        //    }
+        //});
 
         loadAll();
 
@@ -191,21 +191,21 @@
             vm[picker].open = true;
         };
         // watch min and max dates to calculate difference
-        var unwatchMinMaxValues = $scope.$watch(function() {
-            return [vm.dueDateFrom, vm.dueDateTo];
-        }, function() {
-            // min max dates
-            vm.dueDateFrom.datepickerOptions.maxDate = vm.dueDateTo.date;
-            vm.dueDateTo.datepickerOptions.minDate = vm.dueDateFrom.date;
-
-            if (vm.dueDateFrom.date && vm.dueDateTo.date) {
-                var diff = vm.dueDateFrom.date.getTime() - vm.dueDateTo.date.getTime();
-                vm.dayRange = Math.round(Math.abs(diff/(1000*60*60*24)))
-            } else {
-                vm.dayRange = 'n/a';
-            }
-
-        }, true);
+        //var unwatchMinMaxValues = $scope.$watch(function() {
+        //    return [vm.dueDateFrom, vm.dueDateTo];
+        //}, function() {
+        //    // min max dates
+        //    vm.dueDateFrom.datepickerOptions.maxDate = vm.dueDateTo.date;
+        //    vm.dueDateTo.datepickerOptions.minDate = vm.dueDateFrom.date;
+        //
+        //    if (vm.dueDateFrom.date && vm.dueDateTo.date) {
+        //        var diff = vm.dueDateFrom.date.getTime() - vm.dueDateTo.date.getTime();
+        //        vm.dayRange = Math.round(Math.abs(diff/(1000*60*60*24)))
+        //    } else {
+        //        vm.dayRange = 'n/a';
+        //    }
+        //
+        //}, true);
 
         // 사용자 검색
         function userLoad(name, excludeList){
@@ -338,7 +338,7 @@
         vm.getData = getData;
         function getData () {
             return vm.responseData.data;
-        };
+        }
 
         $scope.makeTableConfig();
 

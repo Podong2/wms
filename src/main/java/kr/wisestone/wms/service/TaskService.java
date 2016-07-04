@@ -75,7 +75,7 @@ public class TaskService {
         }
 
         task = taskRepository.save(task);
-        taskSearchRepository.save(task);
+//        taskSearchRepository.save(task);
 
         TaskDTO result = taskMapper.taskToTaskDTO(task);
 
@@ -214,7 +214,7 @@ public class TaskService {
         }
 
         origin = taskRepository.save(origin);
-        taskSearchRepository.save(origin);
+//        taskSearchRepository.save(origin);
         TaskDTO result = taskMapper.taskToTaskDTO(origin);
 
         return result;

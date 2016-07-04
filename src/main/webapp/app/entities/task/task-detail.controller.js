@@ -24,7 +24,7 @@
         TaskListSearch.TaskAudigLog({'entityId' : vm.task.id, 'entityName' : 'Task'}).then(function(result){ vm.TaskAuditLog = result; }); // Audit Log List call
         FIndCode.findByCodeType("severity").then(function(result){ vm.code = result; }); // 중요도 요청
 
-
+        $log.debug("vm.task : ", vm.task);
         vm.responseData = _.clone(vm.task);
 
         vm.responseData.dueDate = vm.task.dueDate == null ? null : DateUtils.toDate(vm.responseData.dueDate); //날짜 변환값
@@ -57,8 +57,8 @@
         $scope.$on("dateUpload", function(event, date){
             $("body").unbind("click");
             var d = date;
-            var formatDate = DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' +  DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2);
-                //DateUtils.datePickerFormat(d.getHours(), 2) + ':' + DateUtils.datePickerFormat(d.getMinutes(), 2);
+            var formatDate = DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' +  DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2) + ' ' +
+                DateUtils.datePickerFormat(d.getHours(), 2) + ':' + DateUtils.datePickerFormat(d.getMinutes(), 2);
             vm.task.dueDate = formatDate;
             dueDateEditing(); // date picker 창 닫기
             singleUpload(); // date picker 업로드
