@@ -739,6 +739,7 @@ angular.module('xeditable').factory('editableController',
     // cancel
     self.cancel = function() {
       // oncancel
+        self.save();
       self.oncancel();
       // don't call hide() here as it called in form's code
     };

@@ -31,7 +31,7 @@
                                 <div class="row">
                                     <div class=" col-md-6" ng-show="summary[0].name != ''" translate="{{ summary[0].name }}"></div>
                                     <div class="col-md-6" ng-show="summary[0].name != '' && !summary[0].renderer">
-                                        <a editable-text="vm.responseData.name" buttons="no"> {{ vm.responseData[summary[0].key] }}</a>
+                                        <a editable-text="vm.task.name" buttons="no"> {{ vm.responseData[summary[0].key] }}</a>
                                     </div>
                                     <div class="col-md-6" ng-show="summary[0].name != '' && summary[0].renderer">
                                         <owl-custom-renderer index="0" property="{{summary[0].renderer}}"></owl-custom-renderer>
@@ -44,8 +44,8 @@
                                 <div class="row">
                                     <div class=" col-md-6" ng-show="summary[0].name != ''" translate="{{ summary[0].name }}"></div>
                                     <div class="col-md-6" ng-show="summary[0].name != '' && !summary[0].renderer">
-                                        <a editable-select="vm.responseData.severityId" e-ng-options="s.id as s.name for s in vm.code" button="no">
-                                            {{ vm.showStatus(vm.responseData[summary[0].value]) }}
+                                        <a editable-select="vm.task.severityId" e-ng-options="s.id as s.name for s in vm.code" buttons="no">
+                                            {{ vm.showStatus(vm.task.severityId) }}
                                         </a>
                                     </div>
                                     <div class="col-md-6" ng-show="summary[0].name != '' && summary[0].renderer">
@@ -61,7 +61,7 @@
                                     <div class="col-md-6" ng-show="summary[1].name != '' && !summary[1].renderer" id="editSection">
                                         <a picker-toggle>{{ (vm.responseData[summary[1].key] | date:"yyyy-MM-dd HH:mm") || 'empty' }}</a>
                                         <div class="input-group editSection">
-                                            <input type="text" class="form-control" datetime-picker="yyyy-MM-dd HH:mm" edit-state="true" ng-model="vm.responseData.dueDate" is-open="vm.dueDate.open" id="field_dueDate" value="{{vm.dueDate.date}}" enter-submit="vm.save()"/>
+                                            <input type="text" class="form-control" datetime-picker="yyyy-MM-dd HH:mm" edit-state="true" ng-model="vm.responseData.dueDate" is-open="vm.dueDate.open" id="field_dueDate" enter-submit="vm.save()"/>
                                             <span class="input-group-btn">
                                               <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDate')"><i class="fa fa-calendar"></i></button>
                                             </span>
@@ -97,9 +97,10 @@
                 </div>
             </div>
         </div>
-
     </div>
-
+    {{vm.responseData}}
+    <br/>
+    {{vm.task}}
     <!-- 설명영역 -->
     <div class="col-md-12" ng-show="vm.tabArea[0].status">
         <h4>내용</h4>
@@ -108,6 +109,7 @@
                 <div class="ibox_content elementSection">
                     <span ng-bind-html="vm.renderHtml(vm.responseData.contents)" section-toggle class-name="contentSection"></span>
                 </div>
+
                 <div class="content-edit editingSection" >
                     <summernote config="dataService.getSummerNoteOptions(true)"
                                 lang="ko-KR" ng-model="vm.task.contents"

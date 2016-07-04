@@ -5,9 +5,9 @@
         .module('wmsApp')
         .controller('TaskDetailController', TaskDetailController);
 
-    TaskDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'entity', 'Task', 'Code', 'TaskAttachedFile', 'summaryService', '$log', 'TaskEdit', 'DateUtils', 'FIndCode', 'User', 'findUser', '$q', '$sce', 'TaskListSearch', '$state', 'toastr'];
+    TaskDetailController.$inject = ['$scope', '$rootScope', '$stateParams', 'entity', 'Task', 'Code', 'TaskAttachedFile', 'summaryService', '$log', 'TaskEdit', 'DateUtils', 'FIndCode', 'User', 'findUser', '$q', '$sce', 'TaskListSearch', '$state', 'toastr', 'DataUtils'];
 
-    function TaskDetailController($scope, $rootScope, $stateParams, entity, Task, Code, TaskAttachedFile, summaryService, $log, TaskEdit, DateUtils, FIndCode, User, findUser, $q, $sce, TaskListSearch, $state, toastr) {
+    function TaskDetailController($scope, $rootScope, $stateParams, entity, Task, Code, TaskAttachedFile, summaryService, $log, TaskEdit, DateUtils, FIndCode, User, findUser, $q, $sce, TaskListSearch, $state, toastr, DataUtils) {
         var vm = this;
 
         vm.task = entity;
@@ -25,14 +25,17 @@
         FIndCode.findByCodeType("severity").then(function(result){ vm.code = result; }); // 중요도 요청
 
 
-        vm.responseData = vm.task;
+        vm.responseData = _.clone(vm.task);
+
+        vm.responseData.dueDate = vm.task.dueDate == null ? null : DateUtils.toDate(vm.responseData.dueDate); //날짜 변환값
         vm.dueDate = {
-            date: vm.task.dueDate == null ? null : DateUtils.toDate(vm.task.dueDate) ,
+            date: vm.task.dueDate == null ? null : vm.task.dueDate ,
             datepickerOptions: {
                 maxDate: null
             }
         };
-        vm.responseData.dueDate = vm.task.dueDate == null ? null : DateUtils.toDate(vm.task.dueDate);
+
+
 
         // 갤러리 썸네일 이미지
         vm.images = [];
@@ -50,41 +53,42 @@
         $scope.tempConfigs = [];
 
         // -------------------  broadcast start ------------------- //
+        // 종료날짜 데이터 체크 변경
         $scope.$on("dateUpload", function(event, date){
             $log.debug(date)
             var d = date;
-            var formatDate =
-                DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' +  DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
+            var formatDate = DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' +  DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2);
                 //DateUtils.datePickerFormat(d.getHours(), 2) + ':' + DateUtils.datePickerFormat(d.getMinutes(), 2);
-            vm.responseData.dueDate = DateUtils.toDate(formatDate);
             vm.task.dueDate = formatDate;
             dueDateEditing(); // date picker 창 닫기
             singleUpload(); // date picker 업로드
         });
+
+        // 담당자 데이터 변경 체크
         $scope.$on("assigneeEditingConfig", function(event, arg){
             $log.debug("arg : " , arg)
             angular.forEach( arg, function(assingee){
                 vm.task.assigneeId = assingee.id;
             });
             singleUpload();
-            assigneeEditing();
+            assigneeEditing(); // user picker 창 닫기
         });
 
-        // xeditable 데이터 변경 체크
+        // xeditable 데이터 변경 체크 (input, select)
         $scope.$on('taskDetailInfoChange', function (event, args) {
             $log.debug("single upload data : ", vm.responseData);
-            if(args == "vm.responseData.dueDate"){
-                dataFormChage(vm.responseData.dueDate);
-            }
             singleUpload();
         });
-        $scope.$on('$destroy', unsubscribe);
-        // xeditable 데이터 변경 체크
+
+        // content 데이터 변경 체크
         $scope.$on('editingUpload', function (event, args) {
-            singleUpload();
+            if (!angular.equals(vm.responseData.contents, vm.task.contents)) {
+                singleUpload();
+            }
         });
 
 
+        $scope.$on('$destroy', unsubscribe);
         var unsubscribe = $rootScope.$on('wmsApp:taskUpdate', function(event, result) {
             vm.task = result;
         });
@@ -95,6 +99,7 @@
         // 담당자 변경
         $scope.$watchCollection("vm.assigneeUsers", function(newValue, oldValue){
             vm.task.assignee =[];
+            vm.responseData.assignee =[];
             angular.forEach(newValue, function(value){
                 vm.task.assignee.push(value.id);
             });
