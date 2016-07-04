@@ -37,7 +37,6 @@
                                     <span class="dueDateValues" picker-toggle>{{vm.searchQuery.dueDateFrom + " ~ " + vm.searchQuery.dueDateTo}}</span>
                                 </p>
                             </div>
-
                             <div class="editSection" >
                                 <div class="title">
                                     구간검색
@@ -47,7 +46,7 @@
                                     <label class="control-label">시작일</label>
                                     <div class="">
                                         <p class="input-group">
-                                            <input type="text" class="form-control startDate" ui-mask="9999-99-99" uib-datepicker-popup="yyyy-MM-dd" ng-model="vm.dueDateFrom.date" is-open="vm.dueDateFrom.open"
+                                            <input type="text" class="form-control startDate" edit-state="true" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.dueDateFrom.date" is-open="vm.dueDateFrom.open"
                                                    datepicker-options="vm.dueDateFrom.datepickerOptions" close-text="Close" />
                                             <!--<input type="text" class="form-control startDate" datetime-picker="yyyy-MM-dd" ng-model="vm.dueDateFrom.date" is-open="vm.dueDateFrom.open" datepicker-popup="yyyyMMdd"-->
                                                    <!--enable-time="false" datepicker-options="vm.dueDateFrom.datepickerOptions" />-->
@@ -60,7 +59,7 @@
                                     <label class="control-label">종료일</label>
                                     <div class="">
                                         <p class="input-group">
-                                            <input type="text" class="form-control" ui-mask="9999-99-99" uib-datepicker-popup="yyyy-MM-dd" ng-model="vm.dueDateTo.date" is-open="vm.dueDateTo.open"
+                                            <input type="text" class="form-control" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.dueDateTo.date" is-open="vm.dueDateTo.open"
                                                    datepicker-options="vm.dueDateTo.datepickerOptions" close-text="Close" />
                                             <!--<input type="text" class="form-control" datetime-picker="yyyy-dd-MM" ng-model="vm.dueDateTo.date" is-open="vm.dueDateTo.open"-->
                                                    <!--enable-time="false" datepicker-options="vm.dueDateTo.datepickerOptions" />-->

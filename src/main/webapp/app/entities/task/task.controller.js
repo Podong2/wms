@@ -91,26 +91,26 @@
         });
 
         // date 포멧 변경
-        //$scope.$watchCollection("vm.dueDateFrom.date", function(newValue, oldValue){
-        //    if(oldValue != newValue){
-        //        var d = newValue;
-        //        var formatDate =
-        //            DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' +  DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
-        //        //datePickerFormat(d.getHours(), 2) + ':' + datePickerFormat(d.getMinutes(), 2) + ':' + datePickerFormat(d.getSeconds(), 2);
-        //        vm.searchQuery.dueDateFrom = formatDate;
-        //    }
-        //
-        //});
-        //// date 포멧 변경
-        //$scope.$watchCollection("vm.dueDateTo.date", function(newValue, oldValue){
-        //    if(oldValue != newValue){
-        //        var d = newValue;
-        //        var formatDate =
-        //            DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
-        //        //datePickerFormat(d.getHours(), 2) + ':' + datePickerFormat(d.getMinutes(), 2) + ':' + datePickerFormat(d.getSeconds(), 2);
-        //        vm.searchQuery.dueDateTo = formatDate;
-        //    }
-        //});
+        $scope.$watch("vm.dueDateFrom.date", function(newValue, oldValue){
+            if(oldValue != newValue){
+                var d = newValue;
+                var formatDate =
+                    DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' +  DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
+                //datePickerFormat(d.getHours(), 2) + ':' + datePickerFormat(d.getMinutes(), 2) + ':' + datePickerFormat(d.getSeconds(), 2);
+                vm.searchQuery.dueDateFrom = formatDate;
+            }
+
+        });
+        // date 포멧 변경
+        $scope.$watch("vm.dueDateTo.date", function(newValue, oldValue){
+            if(oldValue != newValue){
+                var d = newValue;
+                var formatDate =
+                    DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
+                //datePickerFormat(d.getHours(), 2) + ':' + datePickerFormat(d.getMinutes(), 2) + ':' + datePickerFormat(d.getSeconds(), 2);
+                vm.searchQuery.dueDateTo = formatDate;
+            }
+        });
 
         loadAll();
 
