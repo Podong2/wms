@@ -190,6 +190,7 @@
             vm.task.attachedFiles = tempFiles;
         }
 
+        // 첨부파일 다운로드
         function fileDownLoad(key){
             var iframe = $("<iframe/>").hide().appendTo("body").load(function() {
                 iframe.remove();

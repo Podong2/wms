@@ -146,7 +146,7 @@
                 <tr ng-repeat="file in vm.task.attachedFiles">
                     <td class="width-200-p">
                             <span style="color:#428bca; cursor:pointer; white-space: normal;"
-                                  class="btn btn-blue btn-sm" ng-click="downloadFile(file)">{{file.attachedFile.name}}</span> <!-- ng-click="downloadFile(file)" -->
+                                  class="btn btn-blue btn-sm" ng-click="vm.fileDownLoad(file.attachedFile.id)">{{file.attachedFile.name}}</span> <!-- ng-click="downloadFile(file)" -->
                     </td>
                     <td class="width-160-p">{{file.attachedFile.contentType}}</td>
                 </tr>

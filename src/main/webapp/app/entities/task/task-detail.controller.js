@@ -21,6 +21,7 @@
         vm.userLoad = userLoad;
         vm.assigneeEditing = assigneeEditing;
         vm.dueDateEditing = dueDateEditing;
+        vm.fileDownLoad = fileDownLoad;
         TaskListSearch.TaskAudigLog({'entityId' : vm.task.id, 'entityName' : 'Task'}).then(function(result){ vm.TaskAuditLog = result; }); // Audit Log List call
         FIndCode.findByCodeType("severity").then(function(result){ vm.code = result; }); // 중요도 요청
 
@@ -165,12 +166,14 @@
         }
 
         //	겔러리 썸네일 정보 세팅
+        // 이미지 타입
         function setAttachedFiles(attachedFiles) {
             vm.files = [];
             vm.files = attachedFiles;
             $log.debug("attachedFile : ", attachedFiles);
             angular.forEach(attachedFiles, function(val, idx){
-                if(!angular.isUndefined(val)){
+                var fileType = val.attachedFile.contentType.split('/');
+                if(!angular.isUndefined(val) && fileType[0] == "image"){
                     vm.image = {
                         thumb: window.location.origin + "/api/attachedFile/" + val.attachedFile.id,
                         img: window.location.origin + "/api/attachedFile/" + val.attachedFile.id,
@@ -197,6 +200,13 @@
         function assigneeEditing(){
             vm.assigneeEditingConfig = !vm.assigneeEditingConfig;
 
+        }
+
+        // 첨부 파일 다운로드
+        function fileDownLoad(key){
+            var iframe = $("<iframe/>").hide().appendTo("body").load(function() {
+                iframe.remove();
+            }).attr("src", "/api/attachedFile/" + key);
         }
 
         function makeTableConfig(){
