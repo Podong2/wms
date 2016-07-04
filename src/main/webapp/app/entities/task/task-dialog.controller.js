@@ -23,6 +23,7 @@
         vm.fileRemove = fileRemove;
         vm.onWarning = onWarning;
         vm.validationCheck = validationCheck;
+        vm.fileDownLoad = fileDownLoad;
         vm.similarTasks = [];
 
         $log.debug("vm.task : ", vm.task);
@@ -187,6 +188,13 @@
             });
 
             vm.task.attachedFiles = tempFiles;
+        }
+
+        function fileDownLoad(key){
+            alert(key)
+            $http.get("/api/attachedFile/", {params :  key
+            }).then(function(){
+            });
         }
 
         function validationCheck(){

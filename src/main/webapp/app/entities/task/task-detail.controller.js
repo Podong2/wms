@@ -55,13 +55,14 @@
         // -------------------  broadcast start ------------------- //
         // 종료날짜 데이터 체크 변경
         $scope.$on("dateUpload", function(event, date){
-            $log.debug(date)
+            $("body").unbind("click");
             var d = date;
             var formatDate = DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' +  DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2);
                 //DateUtils.datePickerFormat(d.getHours(), 2) + ':' + DateUtils.datePickerFormat(d.getMinutes(), 2);
             vm.task.dueDate = formatDate;
             dueDateEditing(); // date picker 창 닫기
             singleUpload(); // date picker 업로드
+
         });
 
         // 담당자 데이터 변경 체크
@@ -70,19 +71,21 @@
             angular.forEach( arg, function(assingee){
                 vm.task.assigneeId = assingee.id;
             });
+            $("body").unbind("click");
             singleUpload();
             assigneeEditing(); // user picker 창 닫기
         });
 
         // xeditable 데이터 변경 체크 (input, select)
         $scope.$on('taskDetailInfoChange', function (event, args) {
-            $log.debug("single upload data : ", vm.responseData);
+            $("body").unbind("click");
             singleUpload();
         });
 
         // content 데이터 변경 체크
         $scope.$on('editingUpload', function (event, args) {
             if (!angular.equals(vm.responseData.contents, vm.task.contents)) {
+                $("body").unbind("click");
                 singleUpload();
             }
         });

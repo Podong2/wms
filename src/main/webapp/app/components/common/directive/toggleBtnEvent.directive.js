@@ -26,7 +26,6 @@ function sectionToggle($timeout, $rootScope) {
     return {
         restrict: 'A',
         link: function(scope, element, attr) {
-            var className = attr['className'];
             $('body').click(function (e) {
                 if ($('.editingSection').addClass("on"), $('.elementSection').addClass("on")) {
                     if (!$('#editingSection').has(e.target).length) {

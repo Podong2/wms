@@ -1,6 +1,5 @@
 
 <form name="editForm" class="editForm" role="form" novalidate ng-submit="vm.save()" show-validation>
-    {{vm.task}}
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="vm.clear()">&times;</button>
@@ -109,8 +108,8 @@
                 <tbody>
                 <tr ng-repeat="file in vm.task.attachedFiles">
                     <td class="width-200-p">
-                        <span style="color:#428bca; cursor:pointer; white-space: normal;"
-                        class="btn btn-blue btn-sm">{{file.attachedFile.name}}</span> <!-- ng-click="downloadFile(file)" -->
+                        <a style="color:#428bca; cursor:pointer; white-space: normal;"
+                        class="btn btn-blue btn-sm" ng-click="vm.fileDownLoad(file.attachedFile.id)">{{file.attachedFile.name}} // {{file.attachedFile.id}}</a> <!-- ng-click="downloadFile(file)" -->
                     </td>
                     <td class="text-center width-160-p">{{file.attachedFile.contentType}}</td>
                     <td class="text-center width-60-p">
