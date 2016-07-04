@@ -3,11 +3,12 @@
     <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true"
                 ng-click="vm.clear()">&times;</button>
-        <h4 class="modal-title" ng-show="vm.task.id == null" translate="wmsApp.task.home.createLabel">Create a Task</h4>
-        <h4 class="modal-title" ng-show="vm.task.id != null" translate="wmsApp.task.home.editLabel">edit a Task</h4>
+        <h4 class="modal-title" ng-show="vm.task.id == null || vm.task.id == ''" translate="wmsApp.task.home.createLabel">Create a Task</h4>
+        <h4 class="modal-title" ng-show="vm.task.id != '' && vm.task.id != null" translate="wmsApp.task.home.editLabel">edit a Task</h4>
     </div>
     <div class="modal-body">
         <jhi-alert-error></jhi-alert-error>
+        <jhi-alert></jhi-alert>
         <div class="form-group">
             <label class="control-label" translate="wmsApp.task.name" for="name" >Name</label>
             <div class="input-group">
