@@ -1387,3 +1387,9 @@ table th {
 .taskEdit:hover .edit-btn{
     display: block;
 }
+/*------------ btn css start -------------*/
+.btn{
+    border-radius: 2px !important;
+}
+/*------------ btn css end -------------*/
+

@@ -129,7 +129,8 @@
             "userLink": "사용자 연결",
             "INSERT": "생성",
             "UPDATE": "수정",
-            "DELETE": "삭제"
+            "DELETE": "삭제",
+            "search": "검색"
         },
         "detail": {
             "field": "필드",

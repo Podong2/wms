@@ -29,7 +29,9 @@ angular.module('wmsApp')
     .directive('owlBtnDecision', owlBtnDecision)
     .directive('owlBtnCancel', owlBtnCancel)
     .directive('owlBtnEtcFunc', owlBtnEtcFunc)
-    .directive('owlBtnLink', owlBtnLink);
+    .directive('owlBtnLink', owlBtnLink)
+    .directive('owlBtnSearch', owlBtnSearch)
+    .directive('owlBtnBack', owlBtnBack);
 
     btnService.$inject = [];
     function btnService() {
@@ -77,7 +79,7 @@ angular.module('wmsApp')
             restrict: 'A',
             compile: function (tElement, tAttrs) {
                 var btnName = "find";
-                var btnClass = "btn btn_icon btn_cons2";
+                var btnClass = "btn btn_icon btn_cons2 btn-sm";
                 var btnIcon = "fa fa-search txt_col02";
                 var i18n = "entity.action.search";
 
@@ -91,7 +93,7 @@ owlBtnInit.$inject=['btnService'];
             restrict: 'A',
             compile: function (tElement, tAttrs) {
                 var btnName = "init";
-                var btnClass = "btn btn_icon btn_cons2";
+                var btnClass = "btn btn_icon btn_cons2 btn-sm";
                 var btnIcon = "fa fa-refresh txt_col02";
                 var i18n = "entity.action.init";
 
@@ -105,7 +107,7 @@ owlBtnNext.$inject=['btnService'];
             restrict: 'A',
             compile: function (tElement, tAttrs) {
                 var btnName = "next";
-                var btnClass = "btn btn_submit btn_customs3";
+                var btnClass = "btn btn_submit btn_customs3 btn-sm";
                 var btnIcon = "fa fa-caret-right";
                 var i18n = "entity.action.next";
 
@@ -119,7 +121,7 @@ owlBtnBefore.$inject=['btnService'];
             restrict: 'A',
             compile: function (tElement, tAttrs) {
                 var btnName = "before";
-                var btnClass = "btn btn_submit btn_customs3";
+                var btnClass = "btn btn_submit btn_customs3 btn-sm";
                 var btnIcon = "fa fa-caret-left";
                 var i18n = "entity.action.before";
 
@@ -133,7 +135,7 @@ owlBtnDownload.$inject=['btnService'];
             restrict: 'A',
             compile: function (tElement, tAttrs) {
                 var btnName = "download";
-                var btnClass = "btn btn_icon btn_color3";
+                var btnClass = "btn btn_icon btn_color3 btn-sm";
                 var btnIcon = "fa fa-download";
                 var i18n = "entity.action.excel";
 
@@ -147,7 +149,7 @@ owlBtnRemove.$inject=['btnService'];
             restrict: 'A',
             compile: function (tElement, tAttrs) {
                 var btnName = "remove";
-                var btnClass = "btn btn_icon btn_color4";
+                var btnClass = "btn btn_icon btn_color4 btn-sm btn-danger";
                 var btnIcon = "fa fa-trash";
                 var i18n = "entity.action.remove";
 
@@ -161,7 +163,7 @@ owlBtnAdd.$inject=['btnService'];
             restrict: 'A',
             compile: function (tElement, tAttrs) {
                 var btnName = "add";
-                var btnClass = "btn btn_icon btn-sm";
+                var btnClass = "btn btn_icon btn-sm btn-sm";
                 var btnIcon = "fa fa-plus";
                 var i18n = "entity.action.add";
 
@@ -334,6 +336,36 @@ owlBtnEtcFunc.$inject=['btnService'];
                 var btnClass = "btn btn_iconT btn_cons dropdown-toggle btn-sm";
                 var btnIcon = "fa fa-bolt";
                 var i18n = "entity.action.functionAdd";
+
+                btnService.makeElement(tElement, tAttrs, btnName, btnClass, btnIcon, i18n);
+            }
+        };
+    }
+
+owlBtnSearch.$inject=['btnService'];
+     function owlBtnSearch(btnService) {
+        return {
+            restrict: 'A',
+            compile: function (tElement, tAttrs) {
+                var btnName = "etcFunc";
+                var btnClass = "btn btn_iconT btn_cons dropdown-toggle btn-sm btn-default";
+                var btnIcon = "fa fa-search";
+                var i18n = "entity.action.search";
+
+                btnService.makeElement(tElement, tAttrs, btnName, btnClass, btnIcon, i18n);
+            }
+        };
+    }
+
+owlBtnBack.$inject=['btnService'];
+     function owlBtnBack(btnService) {
+        return {
+            restrict: 'A',
+            compile: function (tElement, tAttrs) {
+                var btnName = "etcFunc";
+                var btnClass = "btn btn_iconT btn_cons dropdown-toggle btn-sm";
+                var btnIcon = "glyphicon glyphicon-arrow-left";
+                var i18n = "entity.action.back";
 
                 btnService.makeElement(tElement, tAttrs, btnName, btnClass, btnIcon, i18n);
             }

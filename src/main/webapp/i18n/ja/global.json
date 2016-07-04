@@ -130,7 +130,8 @@
             "userLink": "ユーザーの接続",
             "INSERT": "Insert",
             "UPDATE": "Update",
-            "DELETE": "Delete"
+            "DELETE": "Delete",
+            "search": "Search"
         },
         "detail": {
             "field": "フィールド",

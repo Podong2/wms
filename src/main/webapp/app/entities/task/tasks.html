@@ -47,7 +47,7 @@
                                     <label class="control-label">시작일</label>
                                     <div class="">
                                         <p class="input-group">
-                                            <input type="text" class="form-control" ui-mask="9999-99-99" uib-datepicker-popup="yyyy-MM-dd" ng-model="vm.dueDateFrom.date" is-open="vm.dueDateFrom.open"
+                                            <input type="text" class="form-control startDate" ui-mask="9999-99-99" uib-datepicker-popup="yyyy-MM-dd" ng-model="vm.dueDateFrom.date" is-open="vm.dueDateFrom.open"
                                                    datepicker-options="vm.dueDateFrom.datepickerOptions" close-text="Close" />
                                             <!--<input type="text" class="form-control startDate" datetime-picker="yyyy-MM-dd" ng-model="vm.dueDateFrom.date" is-open="vm.dueDateFrom.open" datepicker-popup="yyyyMMdd"-->
                                                    <!--enable-time="false" datepicker-options="vm.dueDateFrom.datepickerOptions" />-->
@@ -105,8 +105,7 @@
                         <!--</span>-->
                         <!-- 검색 영역 -->
                         <span  class="input-group-btn width-min" >
-                            <button class="btn btn-info" ng-click="vm.getList()">
-                                <span class="glyphicon glyphicon-search">검색</span>
+                            <button class="btn btn-search" ng-click="vm.getList()" owl-btn-search>
                             </button>
                         </span>
                         <span class="input-group-btn width-min" ng-if="vm.currentSearch">
@@ -123,8 +122,7 @@
     <div class="container-fluid">
         <div class="row">
             <div class="col-xs-12 no-padding-right">
-                <button class="btn btn-danger pull-right" ng-click="vm.removeTasks()">
-                    <span class="glyphicon glyphicon-trash">삭제</span>
+                <button class="btn btn_icon btn_color4 pull-right" owl-btn-remove ng-click="vm.removeTasks()">
                 </button>
             </div>
         </div>

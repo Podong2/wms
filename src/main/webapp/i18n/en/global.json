@@ -130,7 +130,8 @@
             "userLink": "User Connections",
             "INSERT": "Insert",
             "UPDATE": "Update",
-            "DELETE": "Delete"
+            "DELETE": "Delete",
+            "search": "Search"
         },
         "detail": {
             "field": "Field",
