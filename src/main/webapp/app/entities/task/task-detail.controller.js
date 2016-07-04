@@ -19,7 +19,6 @@
         vm.assigneeUsers = [];
         vm.renderHtml = renderHtml;
         vm.userLoad = userLoad;
-        vm.assigneeEditing = assigneeEditing;
         vm.dueDateEditing = dueDateEditing;
         vm.fileDownLoad = fileDownLoad;
         TaskListSearch.TaskAudigLog({'entityId' : vm.task.id, 'entityName' : 'Task'}).then(function(result){ vm.TaskAuditLog = result; }); // Audit Log List call
@@ -74,7 +73,6 @@
             });
             $("body").unbind("click");
             singleUpload();
-            assigneeEditing(); // user picker 창 닫기
         });
 
         // xeditable 데이터 변경 체크 (input, select)
@@ -193,12 +191,6 @@
         vm.dueDateEditingConfig = true;
         function dueDateEditing(){
             vm.dueDateEditingConfig = !vm.dueDateEditingConfig;
-
-        }
-        // 담당자 변경 picker 오픈/닫기
-        vm.assigneeEditingConfig = true;
-        function assigneeEditing(){
-            vm.assigneeEditingConfig = !vm.assigneeEditingConfig;
 
         }
 

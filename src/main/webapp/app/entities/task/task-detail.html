@@ -59,7 +59,7 @@
                                 <div class="row">
                                     <div class=" col-md-6" ng-show="summary[1].name != ''" translate="{{ summary[1].name }}"></div>
                                     <div class="col-md-6" ng-show="summary[1].name != '' && !summary[1].renderer" id="datePickerSection">
-                                        <a class="dateValueSection" date-picker-edit-toggle>{{ (vm.responseData[summary[1].key] | date:"yyyy-MM-dd HH:mm") || 'empty' }}</a>
+                                        <span class="dateValueSection cursor" date-picker-edit-toggle>{{ (vm.responseData[summary[1].key] | date:"yyyy-MM-dd HH:mm") || 'empty' }}</span>
                                         <div class="input-group datePickerSection">
                                             <input type="text" class="form-control date-focusing" datetime-picker="yyyy-MM-dd HH:mm" edit-state="true" ng-model="vm.responseData.dueDate" is-open="vm.dueDate.open" id="field_dueDate" enter-submit="vm.save()"/>
                                             <span class="input-group-btn">
@@ -77,9 +77,9 @@
                         <div class="col-md-6" ng-if="summary[1].key == 'assigneeName'">
                             <div class="row">
                                 <div class=" col-md-6" ng-show="summary[1].name != ''" translate="{{ summary[1].name }}"></div>
-                                <div class="col-md-6" ng-show="summary[1].name != '' && !summary[1].renderer">
-                                    <a ng-click="vm.assigneeEditing()" ng-show="vm.assigneeEditingConfig">{{vm.task.assigneeName}}</a>
-                                    <div ng-show="!vm.assigneeEditingConfig">
+                                <div class="col-md-6" ng-show="summary[1].name != '' && !summary[1].renderer" id="userPickerSection">
+                                    <span class="userValueSection cursor" user-picker-edit-toggle>{{vm.task.assigneeName}}</span>
+                                    <div class="userPickerSection">
 
                                         <picker-search source="vm.userLoad(vm.responseData.assigneeName, vm.assigneeUsers)"
                                                        search="vm.responseData.assigneeName"

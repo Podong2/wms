@@ -1,10 +1,12 @@
 angular.module('wmsApp')
     .directive('toggleEvent', toggleEvent)
     .directive('sectionToggle', sectionToggle)
-    .directive('datePickerEditToggle', datePickerEditToggle);
+    .directive('datePickerEditToggle', datePickerEditToggle)
+    .directive('userPickerEditToggle', userPickerEditToggle);
 toggleEvent.$inject=['$compile', '$filter', '$log', '$sce', '$timeout'];
 sectionToggle.$inject=['$timeout', '$rootScope'];
 datePickerEditToggle.$inject=['$timeout'];
+userPickerEditToggle.$inject=['$timeout'];
 function toggleEvent($compile, $filter, $log, $sce, $timeout) {
 
     return {
@@ -64,6 +66,26 @@ function datePickerEditToggle($timeout) {
             element.on('click', function(_this) {
                 $timeout(function () {
                     $(".date-focusing").focus();
+                }, 400);
+            });
+        }
+    }
+}
+function userPickerEditToggle($timeout) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attr) {
+            $('body').click(function (e) {
+                if ($('.userPickerSection').addClass("on"), $('.userValueSection').addClass("on")) {
+                    if (!$('#userPickerSection').has(e.target).length) {
+                        $('.userPickerSection').removeClass("on");
+                        $('.userValueSection').removeClass("on");
+                    }
+                }
+            });
+            element.on('click', function(_this) {
+                $timeout(function () {
+                    $(".user-focusing").focus();
                 }, 400);
             });
         }

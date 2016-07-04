@@ -1360,6 +1360,16 @@ table th {
 .datePickerSection.on, .dateValueSection{
     display: table;
 }
+.userPickerSection, .userValueSection.on{
+    display: none;
+}
+.userPickerSection.on, .userValueSection{
+    display: table;
+}
+.userValueSection, .dateValueSection{
+    color: #428bca;
+    border-bottom: dashed 1px #428bca;
+}
 .tooltip-inner {
     padding: 3px 4px !important;
 }
