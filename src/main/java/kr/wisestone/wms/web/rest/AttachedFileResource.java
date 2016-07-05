@@ -79,7 +79,7 @@ public class AttachedFileResource {
     @Timed
     @Transactional(readOnly = true)
     public ModelAndView downloadFile(@PathVariable Long id, Model model) {
-        log.debug("REST request to delete AttachedFile : {}", id);
+        log.debug("REST request to get AttachedFile : {}", id);
         AttachedFile attachedFile = attachedFileRepository.findOne(id);
 
         model.addAttribute(Constants.FILE_DOWNLOAD_TARGET, attachedFile);

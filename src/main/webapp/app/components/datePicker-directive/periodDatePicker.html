@@ -1,0 +1,22 @@
+<div class="">
+    <p class="input-group">
+        <input type="text" class="form-control col-xs-2" ng-model="dueDate" id="dueDate" />
+        <span class="dueDateValues">{{fromDate | date: "yyyy-MM-dd"}} ~ {{toDate | date: "yyyy-MM-dd"}}</span>
+    </p>
+</div>
+<div class="editSection">
+    <div class="title">
+        구간검색
+    </div>
+    <div class="pickerArea">
+        <label class="control-label">시작일</label>
+        <div class="">
+            <date-picker ng-model="fromDate" date-picker-model="fromDateModel" ></date-picker>
+        </div>
+
+        <label class="control-label">종료일</label>
+        <div class="">
+            <date-picker ng-model="toDate" date-picker-model="toDateModel" ></date-picker>
+        </div>
+    </div>
+</div>
