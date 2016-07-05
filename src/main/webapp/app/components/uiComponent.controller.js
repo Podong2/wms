@@ -201,6 +201,16 @@
                 minDate: new Date()
             }
         };
+        this.pickerDirective1 = {
+            id : 'pickerDirective',
+            date: new Date(),
+            option: {
+                maskFormat: '9999-99-99',
+                dateFormat: 'yyyy-MM-dd',
+                showWeeks: false,
+                startingDay: 1
+            }
+        };
         this.pickerDirective2 = {
             id : 'pickerDirective',
             date: new Date('2016-05-01'),
