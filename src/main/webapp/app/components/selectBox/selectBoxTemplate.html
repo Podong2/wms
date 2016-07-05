@@ -1,0 +1,15 @@
+selected : {{selectedValue}}<br/>
+title : {{title}}<br/>
+actionsBox : {{actionsBox}}<br/>
+multiple : {{multiple}}<br/>
+dataSize : {{dataSize}}<br/>
+dataLiveSearch : {{dataLiveSearch}}<br/>
+disabled : {{disabled}}<br/>
+<ol class="nya-bs-select" ng-model="selectedValue" actions-box="true" actions-box-link="{{actionsBox ? true : false}}" multiple data-size="5" data-live-search="true" disabled="disable">
+    <li nya-bs-option="option in save">
+        <a>
+            <span><span class="glyphicon" ng-class="option.icon"></span> {{ option.name }}</span>
+            <span class="glyphicon glyphicon-ok check-mark"></span>
+        </a>
+    </li>
+</ol>

@@ -29,6 +29,8 @@
                     <li ng-class="vm.tabArea[10].status == true ? 'active' : ''" ng-click="vm.tabDisplay(10)"><span translate="">button</span></li>
                     <li ng-class="vm.tabArea[11].status == true ? 'active' : ''" ng-click="vm.tabDisplay(11)"><span translate="">ngGallery</span></li>
                     <li ng-class="vm.tabArea[12].status == true ? 'active' : ''" ng-click="vm.tabDisplay(12)"><span translate="">Tree</span></li>
+                    <li ng-class="vm.tabArea[13].status == true ? 'active' : ''" ng-click="vm.tabDisplay(13)"><span translate="">Layout</span></li>
+                    <li ng-class="vm.tabArea[14].status == true ? 'active' : ''" ng-click="vm.tabDisplay(14)"><span translate="">ProgressBar</span></li>
                 </ul>
             </div>
         </div><br/><br/>
@@ -52,63 +54,72 @@
             <div ng-show="vm.tabArea[1].status">
                 <h3><b>select box</b></h3>
                 <!-- title on nya-bs-option -->
-                value : {{vm.selectedValue}}<br/>
-                <ol class="nya-bs-select" ng-model="vm.selectedValue">
-                    <li nya-bs-option="option in vm.selectValue" title="{{option.key}}">
-                        <a>
-                            {{ option.name }}
-                            <span class="glyphicon glyphicon-ok check-mark"></span>
-                        </a>
-                    </li>
-                </ol>
+                <pre>
+    - 옵션 설명 -
+    ng-model : select box에서 보여질 데이터 list
+    selectedValue :  select box에서 선택된값이 담길 scope명
+    actionsBox : 전체선택, 전체 해제를 선택할 수 있는 버튼 노출 유무 예) true - 노출
+    multiple : 해당 옵션을 주입하면 multi select 기능을 사용할 수 있다.
+    dataSize : option 창에서 화면에 노출될 data 개수
+    dataLiveSearch : filter 기능 사용 유무 선택 예) true - 노출
+    disabled : 해당 옵션 주입 시 특정 scope 값을 이용하여 사용/미사용을 선택할 수 있다. 예) true - 사용
+
+    * 아이콘 사용 시 array 형식 *
+        - 아이콘 사용시에는 "icon" key에 노출시킬 아이콘 class값을 주입한다.
+        vm.arrayCollection = [
+            {name: 'Alice', class: 'Class A', icon: 'glyphicon-euro'},
+            {name: 'Bob', class: 'Class B', icon: 'glyphicon-usd'}
+        ];
+                </pre>
+
+----------------------------------------------------------------------------------<br/>
+                <h4>단일 select box</h4>
+                <select-box
+                   ng-model="vm.arrayCollection"
+                   selectedValue="selectedValue"
+                   dataSize="5"
+                   dataLiveSearch="true"
+                ></select-box>
+
+                <h4>다중 select box</h4>
+                <select-box
+                   ng-model="vm.arrayCollection"
+                   selectedValue="multipleValue"
+                   actionsBox="true"
+                   multiple="true"
+                   dataSize="5"
+                   dataLiveSearch="true"
+                   disabled="false"
+                ></select-box>
+
+<br/>----------------------------------------------------------------------------------<br/>
+                value key : vm.multipleValue<br/>
+                values : {{vm.selectedValue}}<br/>
+                multi values : {{vm.multipleValue}}<br/>
+
                 <xmp>
-                    <ol class="nya-bs-select" ng-model="vm.selectedValue">
-                        <li nya-bs-option="option in vm.selectValue" title="{{option.key}}">
-                            <a>
-                                {{ option.name }}
-                                <span class="glyphicon glyphicon-ok check-mark"></span>
-                            </a>
-                        </li>
-                    </ol>
-                </xmp>
-                <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
-                <h3><b>multi select box</b></h3>
-                <ul>
-                    <li>단일 선택 및 다중선택이 가능해야한다.</li>
-                    <li>리스트들을 모두 선택과 선택 해제 기능이 제공되어야한다.</li>
-                    <li>선택된 요소들은 select 박스에 count 또는 선택된 요소들의 텍스트가 표시되어야한다.</li>
-                    <li>선택된 요소들의 해제를 option박스의 선택해제 기능과 선택된 요소를 직접클릭하여 해제하는 기능 그리고 select박스에서 해제하는기능이 제공되어야한다.</li>
-                    <li>요소들의 표현은 text 표현 및 아이콘으로도 표현이 가능해야 한다</li>
-                </ul>
-                <!-- title on nya-bs-select -->
-                values : {{vm.multipleValue}}<br/>
-                <button class="btn btn-default" ng-click="disable=!disable">
-                    {{ disable ? "Enable select" : "Disable select" }}
-                </button>
-                <ol class="nya-bs-select" ng-model="vm.multipleValue" actions-box="true" multiple data-size="5" data-live-search="true" disabled="disable">
-                    <li nya-bs-option="option in vm.arrayCollection">
-                        <a>
-                            <span><span class="glyphicon" ng-class="option.icon"></span> {{ option.name }}</span>
-                            <span class="glyphicon glyphicon-ok check-mark"></span>
-                        </a>
-                    </li>
-                </ol>
-                <xmp>
-                    <button class="btn btn-default" ng-click="disable=!disable">
-                        {{ disable ? "Enable select" : "Disable select" }}
-                    </button>
-                    <ol class="nya-bs-select" ng-model="vm.multipleValue" actions-box="true" multiple data-size="5" data-live-search="true" disabled="disable">
-                        <li nya-bs-option="option in vm.arrayCollection">
-                            <a>
-                                <span><span class="glyphicon" ng-class="option.icon"></span> {{ option.name }}</span>
-                                <span class="glyphicon glyphicon-ok check-mark"></span>
-                            </a>
-                        </li>
-                    </ol>
+                    단일 select
+                    <select-box
+                        ng-model="vm.arrayCollection"
+                        selectedValue="multipleValue"
+                        dataSize="5"
+                        dataLiveSearch="true"
+                    ></select-box>
+
+                    다중 select
+                    <select-box
+                        ng-model="vm.arrayCollection"
+                        selectedValue="multipleValue"
+                        actionsBox="true"
+                        multiple="true"
+                        dataSize="5"
+                        dataLiveSearch="true"
+                        disabled="false"
+                    ></select-box>
                 </xmp>
             </div>
 
-            <!-- input -->
+            <!-- input box -->
             <div ng-show="vm.tabArea[2].status">
                 <h3><b>Input box</b></h3>
                 <ul>
@@ -116,12 +127,32 @@
                     <li>size를 class로 간편하게 조절 가능해야한다.</li>
                     <li>success, warning, false 등 input 상태를 표현가능해야한다.</li>
                 </ul>
+
+                ------------------------------------------------------------------------<br/>
+
+                        <input-box
+                            formName="form"
+                            inputName="name"
+                            minlength="2"
+                            maxlength="10"
+                            pattern="/^[a-zA-Z][a-zA-Z0-9]{0,20}$/"
+                            modelName="vm.textValue"
+                            requiredText="이름을 입력하세요."
+                            minText="이름은 두자 이상 입력하세요."
+                            maxText="이름은 10자 이하로 입력하세요."
+                            patternText="특수문자를 제외한 영문, 숫자, 한글을 입력하세요."
+                            placeholderText="이름 입력"
+                        ></input-box>
+                        {{vm.textValue}}
+                ------------------------------------------------------------------------<br/>
+
+
                 <div ><!--input-check checkType="vm.inputCheck" massage="vm.errorMsg"-->
-                    <input type="text" class="form-control" id="inputSuccess2" data-ng-model="vm.inputCheck" aria-describedby="inputSuccess2Status">
+                    <input type="text" class="form-control" data-ng-model="vm.inputCheck" aria-describedby="inputSuccess2Status">
                 </div>
                 <xmp>
                     <div >
-                        <input type="text" class="form-control" id="inputSuccess2" data-ng-model="vm.inputCheck" aria-describedby="inputSuccess2Status">
+                        <input type="text" class="form-control" data-ng-model="vm.inputCheck" aria-describedby="inputSuccess2Status">
                     </div>
                 </xmp>
 
@@ -132,8 +163,8 @@
                 </div>
                 <xmp>
                     <div class="form-group has-success">
-                        <label class="control-label" for="inputSuccess1">Input with success</label>
-                        <input type="text" class="form-control" id="inputSuccess1" aria-describedby="helpBlock2">
+                        <label class="control-label" for="inputSuccess2">Input with success</label>
+                        <input type="text" class="form-control" id="inputSuccess2" aria-describedby="helpBlock2">
                     </div>
                 </xmp>
 
@@ -143,8 +174,8 @@
                 </div>
                 <xmp>
                     <div class="form-group has-warning">
-                        <label class="control-label" for="inputWarning1">Input with warning</label>
-                        <input type="text" class="form-control" id="inputWarning1">
+                        <label class="control-label" for="inputWarning2">Input with warning</label>
+                        <input type="text" class="form-control" id="inputWarning2">
                     </div>
                 </xmp>
 
@@ -154,8 +185,8 @@
                 </div>
                 <xmp>
                     <div class="form-group has-error">
-                        <label class="control-label" for="inputError1">Input with error</label>
-                        <input type="text" class="form-control" id="inputError1">
+                        <label class="control-label" for="inputError2">Input with error</label>
+                        <input type="text" class="form-control" id="inputError2">
                     </div>
                 </xmp>
             </div>
@@ -769,6 +800,7 @@
                 </xmp>
             </div>
 
+            <!-- Modal -->
             <div ng-show="vm.tabArea[8].status">
                 <h3><b>Modal</b></h3>
                 <ul>
@@ -782,6 +814,7 @@
                 <button type="button" ng-click="vm.modalOpen()">모달 오픈</button>
             </div>
 
+            <!-- xeditable -->
             <div ng-show="vm.tabArea[9].status">
                 <h3><b>xeditable</b></h3>
                 <ul>
@@ -805,6 +838,7 @@
                 </a>
             </div>
 
+            <!-- button -->
             <div ng-show="vm.tabArea[10].status">
                 <h3><b>button</b></h3>
                 <ul>
@@ -844,6 +878,7 @@
                 <a owl-btn-link link-type="version"></a>
             </div>
 
+            <!-- ngGallery -->
             <div ng-show="vm.tabArea[11].status">
                 <h3><b>ngGallery</b></h3>
                 <ul>
@@ -856,6 +891,7 @@
                 </ng-gallery>
             </div>
 
+            <!-- Tree -->
             <div ng-show="vm.tabArea[12].status">
                 <h3><b>Tree</b></h3>
                 <div class="col-md-12">
@@ -871,9 +907,46 @@
                     </div>
                 </div>
             </div>
+
+            <div ng-show="vm.tabArea[13].status">
+                <h3><b>Layout</b></h3>
+                <div class="ibox">
+                    <div class="ibox_content">
+                        <div ng-repeat="summary in summaryConfigs" class="detail-info-area">
+                            <div class="row">
+                                <div class="col-xs-12 col-sm-6 col-md-6">
+                                    <div class="row">
+                                        <div class="col-md-6" ng-show="summary[0].name != ''" translate="{{ summary[0].name }}"></div>
+                                        <div class="col-md-6" ng-show="summary[0].name != '' && !summary[0].renderer">{{ responseData.data[0][summary[0].key] }}</div>
+                                        <div class="col-md-6" ng-show="summary[0].name != '' && summary[0].renderer">
+                                            <owl-custom-renderer index="0" property="{{summary[0].renderer}}"></owl-custom-renderer>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-xs-12 col-sm-6 col-md-6" ng-if="responseData.data[0][summary[1].key] != null">
+                                    <div class="row">
+                                        <div class="col-md-6" ng-show="summary[1].name != ''" translate="{{ summary[1].name }}"></div>
+                                        <div class="col-md-6" ng-show="summary[1].name != '' && !summary[1].renderer">{{ responseData.data[0][summary[1].key] }}</div>
+                                        <div class="col-md-6" ng-show="summary[1].name != '' && summary[1].renderer">
+                                            <owl-custom-renderer index="0" property="{{summary[1].renderer}}"></owl-custom-renderer>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show="vm.tabArea[14].status">
+                <button ng-click="vm.submitConfig()" class="btn btn_icon btn_customs" owl-btn-save></button>
+            </div>
+
         </div>
     </div>
 </div>
+
+
 
 <!-- Nested node template -->
 <script type="text/ng-template" id="nodes_renderer.html">

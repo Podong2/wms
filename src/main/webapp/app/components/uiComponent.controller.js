@@ -13,9 +13,9 @@
         .module('wmsApp')
         .controller('UiComponentController', UiComponentController);
 
-    UiComponentController.$inject = ['$scope', 'Principal', 'ModalService', '$state', 'toastr', 'toastrConfig', '$filter', '$uibModal', '$log'];
+    UiComponentController.$inject = ['$scope', 'Principal', 'ModalService', '$state', 'toastr', 'summaryService', 'toastrConfig', 'FIndCode', '$log'];
 
-    function UiComponentController ($scope, Principal, ModalService, $state, toastr, toastrConfig, modalService, $filter, $uibModal, $log) {
+    function UiComponentController ($scope, Principal, ModalService, $state, toastr, summaryService, toastrConfig, FIndCode, $log) {
         var vm = this;
 
         vm.openToast = openToast;
@@ -26,8 +26,9 @@
         vm.open = open;
         vm.showStateArray = showStateArray;
         vm.tabDisplay = tabDisplay;
+        vm.submitConfig = submitConfig;
 
-
+        vm.textValue = "";
         //select box
         vm.selectValue = [
             {name: 'apple', key: 'c1: apple'},
@@ -102,8 +103,8 @@
 
         //  탭 메뉴 표시 여부 결정
         vm.tabArea = [
-            { status: true },   // side nav
-            { status: false },  // select box
+            { status: false },   // side nav
+            { status: true },  // select box
             { status: false },  // Input box
             { status: false },  // alerts
             { status: false },  // Toast
@@ -114,7 +115,9 @@
             { status: false },  // xeditable
             { status: false },  // button
             { status: false },  // ngGallery
-            { status: false }   // Tree
+            { status: false },   // Tree
+            { status: false },   // layout
+            { status: false }   // submit
         ];
 
 
@@ -164,7 +167,7 @@
                     }
                 ]
             }
-        ]
+        ];
         //Tree values end ///////////////////////////////////////////////////////////////////////////
 
 
@@ -326,7 +329,7 @@
         // saveAs - ISO
         this.picker14 = {
             date: new Date().toISOString()
-        }
+        };
         ///////////////////////////////////////////////////////////////////////// date picker end
 
         // date 포멧 변경
@@ -425,9 +428,7 @@
         // select box disabled 처리 function
         function isDisabledDate(currentDate, mode) {
             return mode === 'day' && (currentDate.getDay() === 0 || currentDate.getDay() === 6);
-        };
-
-
+        }
 
         // modal open
         function modalOpen(){
@@ -439,7 +440,7 @@
             $event.preventDefault();
             $event.stopPropagation();
             vm.opened[elementOpened] = !vm.opened[elementOpened];
-        };
+        }
 
         // xeditable select box value return
         vm.showStatus = function(value, name, id) {
@@ -464,7 +465,7 @@
                 }
             });
             return selected.length ? selected.join(', ') : 'Not set';
-        };
+        }
 
         //  탭메뉴 영역 표시 여부 지정
         function tabDisplay (number) {
@@ -580,8 +581,57 @@
             });
         };
         // Tree - filter
-        $scope.findNodes = function () {
+        //$scope.findNodes = function () {
+        //};
 
+
+        /*--------------------- layout - grid system --------------------*/
+        $scope.responseData = {
+            data : [{
+                assigneeName : "Administrator",
+                dueDate : "2016-07-04",
+                name : "bootstrap grid system",
+                severityName : "높음"
+            }]
         };
+
+        $scope.tempConfigs= [];
+        $scope.summaryConfigs = [];
+        function makeTableConfig(){
+            $scope.tempConfigs.push(summaryService.getConfig()
+                .setName("이름")
+                .setKey("name"));
+            $scope.tempConfigs.push(summaryService.getConfig()
+                .setName("날짜")
+                .setKey("dueDate"));
+
+            $scope.summaryConfigs.push($scope.tempConfigs);
+            $scope.tempConfigs = [];
+
+            $scope.tempConfigs.push(summaryService.getConfig()
+                .setName("중요도")
+                .setKey("severityName"));
+            $scope.tempConfigs.push(summaryService.getConfig()
+                .setName("담당자")
+                .setKey("assigneeName"));
+
+            $scope.summaryConfigs.push($scope.tempConfigs);
+        }
+        makeTableConfig(); // 테이블 그리기
+        /*--------------------- layout - grid system end --------------------*/
+
+
+        // submit 시 프로그래스 바 테스트
+        function submitConfig(){
+            FIndCode.findByCodeType("severity").then(function(result){ vm.code = result; }); // 중요도 요청
+            FIndCode.findByCodeType("severity").then(function(result){ vm.code = result; }); // 중요도 요청
+            FIndCode.findByCodeType("severity").then(function(result){ vm.code = result; }); // 중요도 요청
+            FIndCode.findByCodeType("severity").then(function(result){ vm.code = result; }); // 중요도 요청
+            FIndCode.findByCodeType("severity").then(function(result){ vm.code = result; }); // 중요도 요청
+            FIndCode.findByCodeType("severity").then(function(result){ vm.code = result; }); // 중요도 요청
+            FIndCode.findByCodeType("severity").then(function(result){ vm.code = result; }); // 중요도 요청
+            FIndCode.findByCodeType("severity").then(function(result){ vm.code = result; }); // 중요도 요청
+        }
+
     }
 })();
