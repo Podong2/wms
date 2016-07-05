@@ -16,45 +16,43 @@
                slide-scroll-left></i>
             <div class="slideMenu">
                 <ul class="nav nav-tabs">
-                    <li ng-class="vm.tabArea[0].status == true ? 'active' : ''" ng-click="vm.tabDisplay(0)"><span translate="">component</span></li>
-                    <li ng-class="vm.tabArea[1].status == true ? 'active' : ''" ng-click="vm.tabDisplay(1)"><span translate="">search form</span></li>
-                    <li ng-class="vm.tabArea[2].status == true ? 'active' : ''" ng-click="vm.tabDisplay(2)"><span translate="">add page</span></li>
-                    <li ng-class="vm.tabArea[3].status == true ? 'active' : ''" ng-click="vm.tabDisplay(3)"><span translate="">testtesttest</span></li>
-                    <li ng-class="vm.tabArea[4].status == true ? 'active' : ''" ng-click="vm.tabDisplay(4)"><span translate="">testtesttest</span></li>
-                    <li ng-class="vm.tabArea[5].status == true ? 'active' : ''" ng-click="vm.tabDisplay(5)"><span translate="">testtesttest</span></li>
-                    <li ng-class="vm.tabArea[6].status == true ? 'active' : ''" ng-click="vm.tabDisplay(6)"><span translate="">testtesttest</span></li>
+                    <li ng-class="vm.tabArea[0].status == true ? 'active' : ''" ng-click="vm.tabDisplay(0)"><span translate="">side nav</span></li>
+                    <li ng-class="vm.tabArea[1].status == true ? 'active' : ''" ng-click="vm.tabDisplay(1)"><span translate="">select&multi select box</span></li>
+                    <li ng-class="vm.tabArea[2].status == true ? 'active' : ''" ng-click="vm.tabDisplay(2)"><span translate="">Input box</span></li>
+                    <li ng-class="vm.tabArea[3].status == true ? 'active' : ''" ng-click="vm.tabDisplay(3)"><span translate="">alerts</span></li>
+                    <li ng-class="vm.tabArea[4].status == true ? 'active' : ''" ng-click="vm.tabDisplay(4)"><span translate="">Toast</span></li>
+                    <li ng-class="vm.tabArea[5].status == true ? 'active' : ''" ng-click="vm.tabDisplay(5)"><span translate="">pagination</span></li>
+                    <li ng-class="vm.tabArea[6].status == true ? 'active' : ''" ng-click="vm.tabDisplay(6)"><span translate="">tooltip</span></li>
+                    <li ng-class="vm.tabArea[7].status == true ? 'active' : ''" ng-click="vm.tabDisplay(7)"><span translate="">datePicker</span></li>
+                    <li ng-class="vm.tabArea[8].status == true ? 'active' : ''" ng-click="vm.tabDisplay(8)"><span translate="">Modal</span></li>
+                    <li ng-class="vm.tabArea[9].status == true ? 'active' : ''" ng-click="vm.tabDisplay(9)"><span translate="">xeditable</span></li>
+                    <li ng-class="vm.tabArea[10].status == true ? 'active' : ''" ng-click="vm.tabDisplay(10)"><span translate="">button</span></li>
+                    <li ng-class="vm.tabArea[11].status == true ? 'active' : ''" ng-click="vm.tabDisplay(11)"><span translate="">ngGallery</span></li>
+                    <li ng-class="vm.tabArea[12].status == true ? 'active' : ''" ng-click="vm.tabDisplay(12)"><span translate="">Tree</span></li>
                 </ul>
             </div>
         </div><br/><br/>
-        <div ng-show="vm.tabArea[0].status">
-            <h3><b>side nav</b></h3>
-            <ul>
-                <li>사용자는 숨어있는 side menu를 특정버튼을 눌러 노출시킬 수 있다.</li>
-                <li>노출된 side menu는 content영역을 밀어서 노출이 아닌 content위로 노출 되어야한다.</li>
-                <li>노출된 메뉴는 메뉴 이외의 영역을 누르거나 메뉴명을 누를 시 화면에서 사라진다.</li>
-                <li>메뉴는 트리형태의 구로조 표현 가능해야한다.</li>
-                <li>선택된 메뉴는 active 효과를 적용해야한다.</li>
-                <li>사이드 바를 고정도 가능해야한다.</li>
-                <li>jhipster처럼 메뉴 오픈 시 content영역이 밀리거나 덮히는 옵션이 있어야한다.</li>
-                <li>intellij의 우측메뉴와 동일하게 각 메뉴의 정보가 노출되어야한다.</li>
-            </ul>
+        <div>
+            <!-- side nav -->
+            <div ng-show="vm.tabArea[0].status">
+                <h3><b>side nav</b></h3>
+                <ul>
+                    <li>사용자는 숨어있는 side menu를 특정버튼을 눌러 노출시킬 수 있다.</li>
+                    <li>노출된 side menu는 content영역을 밀어서 노출이 아닌 content위로 노출 되어야한다.</li>
+                    <li>노출된 메뉴는 메뉴 이외의 영역을 누르거나 메뉴명을 누를 시 화면에서 사라진다.</li>
+                    <li>메뉴는 트리형태의 구로조 표현 가능해야한다.</li>
+                    <li>선택된 메뉴는 active 효과를 적용해야한다.</li>
+                    <li>사이드 바를 고정도 가능해야한다.</li>
+                    <li>jhipster처럼 메뉴 오픈 시 content영역이 밀리거나 덮히는 옵션이 있어야한다.</li>
+                    <li>intellij의 우측메뉴와 동일하게 각 메뉴의 정보가 노출되어야한다.</li>
+                </ul>
+            </div>
 
-
-            <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
-
-
-            <h3><b>select box</b></h3>
-            <!-- title on nya-bs-option -->
-            value : {{vm.selectedValue}}<br/>
-            <ol class="nya-bs-select" ng-model="vm.selectedValue">
-                <li nya-bs-option="option in vm.selectValue" title="{{option.key}}">
-                    <a>
-                        {{ option.name }}
-                        <span class="glyphicon glyphicon-ok check-mark"></span>
-                    </a>
-                </li>
-            </ol>
-            <xmp>
+            <!-- select&multi select box -->
+            <div ng-show="vm.tabArea[1].status">
+                <h3><b>select box</b></h3>
+                <!-- title on nya-bs-option -->
+                value : {{vm.selectedValue}}<br/>
                 <ol class="nya-bs-select" ng-model="vm.selectedValue">
                     <li nya-bs-option="option in vm.selectValue" title="{{option.key}}">
                         <a>
@@ -63,31 +61,27 @@
                         </a>
                     </li>
                 </ol>
-            </xmp>
-            <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
-
-            <h3><b>multi select box</b></h3>
-            <ul>
-                <li>단일 선택 및 다중선택이 가능해야한다.</li>
-                <li>리스트들을 모두 선택과 선택 해제 기능이 제공되어야한다.</li>
-                <li>선택된 요소들은 select 박스에 count 또는 선택된 요소들의 텍스트가 표시되어야한다.</li>
-                <li>선택된 요소들의 해제를 option박스의 선택해제 기능과 선택된 요소를 직접클릭하여 해제하는 기능 그리고 select박스에서 해제하는기능이 제공되어야한다.</li>
-                <li>요소들의 표현은 text 표현 및 아이콘으로도 표현이 가능해야 한다</li>
-            </ul>
-            <!-- title on nya-bs-select -->
-            values : {{vm.multipleValue}}<br/>
-            <button class="btn btn-default" ng-click="disable=!disable">
-                {{ disable ? "Enable select" : "Disable select" }}
-            </button>
-            <ol class="nya-bs-select" ng-model="vm.multipleValue" actions-box="true" multiple data-size="5" data-live-search="true" disabled="disable">
-                <li nya-bs-option="option in vm.arrayCollection">
-                    <a>
-                        <span><span class="glyphicon" ng-class="option.icon"></span> {{ option.name }}</span>
-                        <span class="glyphicon glyphicon-ok check-mark"></span>
-                    </a>
-                </li>
-            </ol>
-            <xmp>
+                <xmp>
+                    <ol class="nya-bs-select" ng-model="vm.selectedValue">
+                        <li nya-bs-option="option in vm.selectValue" title="{{option.key}}">
+                            <a>
+                                {{ option.name }}
+                                <span class="glyphicon glyphicon-ok check-mark"></span>
+                            </a>
+                        </li>
+                    </ol>
+                </xmp>
+                <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
+                <h3><b>multi select box</b></h3>
+                <ul>
+                    <li>단일 선택 및 다중선택이 가능해야한다.</li>
+                    <li>리스트들을 모두 선택과 선택 해제 기능이 제공되어야한다.</li>
+                    <li>선택된 요소들은 select 박스에 count 또는 선택된 요소들의 텍스트가 표시되어야한다.</li>
+                    <li>선택된 요소들의 해제를 option박스의 선택해제 기능과 선택된 요소를 직접클릭하여 해제하는 기능 그리고 select박스에서 해제하는기능이 제공되어야한다.</li>
+                    <li>요소들의 표현은 text 표현 및 아이콘으로도 표현이 가능해야 한다</li>
+                </ul>
+                <!-- title on nya-bs-select -->
+                values : {{vm.multipleValue}}<br/>
                 <button class="btn btn-default" ng-click="disable=!disable">
                     {{ disable ? "Enable select" : "Disable select" }}
                 </button>
@@ -99,754 +93,758 @@
                         </a>
                     </li>
                 </ol>
-            </xmp>
-            <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
-
-            <h3><b>Input box</b></h3>
-            <ul>
-                <li>input box의 깔끔한 디자인을 지원해야한다.</li>
-                <li>size를 class로 간편하게 조절 가능해야한다.</li>
-                <li>success, warning, false 등 input 상태를 표현가능해야한다.</li>
-            </ul>
-            <div ><!--input-check checkType="vm.inputCheck" massage="vm.errorMsg"-->
-                <input type="text" class="form-control" id="inputSuccess2" data-ng-model="vm.inputCheck" aria-describedby="inputSuccess2Status">
+                <xmp>
+                    <button class="btn btn-default" ng-click="disable=!disable">
+                        {{ disable ? "Enable select" : "Disable select" }}
+                    </button>
+                    <ol class="nya-bs-select" ng-model="vm.multipleValue" actions-box="true" multiple data-size="5" data-live-search="true" disabled="disable">
+                        <li nya-bs-option="option in vm.arrayCollection">
+                            <a>
+                                <span><span class="glyphicon" ng-class="option.icon"></span> {{ option.name }}</span>
+                                <span class="glyphicon glyphicon-ok check-mark"></span>
+                            </a>
+                        </li>
+                    </ol>
+                </xmp>
             </div>
-            <xmp>
-                <div >
+
+            <!-- input -->
+            <div ng-show="vm.tabArea[2].status">
+                <h3><b>Input box</b></h3>
+                <ul>
+                    <li>input box의 깔끔한 디자인을 지원해야한다.</li>
+                    <li>size를 class로 간편하게 조절 가능해야한다.</li>
+                    <li>success, warning, false 등 input 상태를 표현가능해야한다.</li>
+                </ul>
+                <div ><!--input-check checkType="vm.inputCheck" massage="vm.errorMsg"-->
                     <input type="text" class="form-control" id="inputSuccess2" data-ng-model="vm.inputCheck" aria-describedby="inputSuccess2Status">
                 </div>
-            </xmp>
+                <xmp>
+                    <div >
+                        <input type="text" class="form-control" id="inputSuccess2" data-ng-model="vm.inputCheck" aria-describedby="inputSuccess2Status">
+                    </div>
+                </xmp>
 
-            <!--<input type="text" id="inputHelpBlock" class="form-control" aria-describedby="helpBlock">-->
-            <div class="form-group has-success">
-                <label class="control-label" for="inputSuccess1">Input with success</label>
-                <input type="text" class="form-control" id="inputSuccess1" aria-describedby="helpBlock2">
-            </div>
-            <xmp>
+                <!--<input type="text" id="inputHelpBlock" class="form-control" aria-describedby="helpBlock">-->
                 <div class="form-group has-success">
                     <label class="control-label" for="inputSuccess1">Input with success</label>
                     <input type="text" class="form-control" id="inputSuccess1" aria-describedby="helpBlock2">
                 </div>
-            </xmp>
+                <xmp>
+                    <div class="form-group has-success">
+                        <label class="control-label" for="inputSuccess1">Input with success</label>
+                        <input type="text" class="form-control" id="inputSuccess1" aria-describedby="helpBlock2">
+                    </div>
+                </xmp>
 
-            <div class="form-group has-warning">
-                <label class="control-label" for="inputWarning1">Input with warning</label>
-                <input type="text" class="form-control" id="inputWarning1">
-            </div>
-            <xmp>
                 <div class="form-group has-warning">
                     <label class="control-label" for="inputWarning1">Input with warning</label>
                     <input type="text" class="form-control" id="inputWarning1">
                 </div>
-            </xmp>
+                <xmp>
+                    <div class="form-group has-warning">
+                        <label class="control-label" for="inputWarning1">Input with warning</label>
+                        <input type="text" class="form-control" id="inputWarning1">
+                    </div>
+                </xmp>
 
-            <div class="form-group has-error">
-                <label class="control-label" for="inputError1">Input with error</label>
-                <input type="text" class="form-control" id="inputError1">
-            </div>
-            <xmp>
                 <div class="form-group has-error">
                     <label class="control-label" for="inputError1">Input with error</label>
                     <input type="text" class="form-control" id="inputError1">
                 </div>
-            </xmp>
-            <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
-
-            <h3><b>alerts</b></h3>
-            <ul>
-                <li>alert은 오른쪽 상단, toast는 오른쪽하단 표시, 유효성 체크는 body영역</li>
-            </ul>
-            <div class="alert alert-success">
-                <strong>Success!</strong> Indicates a successful or positive action.
+                <xmp>
+                    <div class="form-group has-error">
+                        <label class="control-label" for="inputError1">Input with error</label>
+                        <input type="text" class="form-control" id="inputError1">
+                    </div>
+                </xmp>
             </div>
 
-            <div class="alert alert-info">
-                <strong>Info!</strong> Indicates a neutral informative change or action.
+            <!-- alert -->
+            <div ng-show="vm.tabArea[3].status">
+                <h3><b>alerts</b></h3>
+                <ul>
+                    <li>alert은 오른쪽 상단, toast는 오른쪽하단 표시, 유효성 체크는 body영역</li>
+                </ul>
+                <div class="alert alert-success">
+                    <strong>Success!</strong> Indicates a successful or positive action.
+                </div>
+
+                <div class="alert alert-info">
+                    <strong>Info!</strong> Indicates a neutral informative change or action.
+                </div>
+
+                <div class="alert alert-warning">
+                    <strong>Warning!</strong> Indicates a warning that might need attention.
+                </div>
+
+                <div class="alert alert-danger">
+                    <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
+                </div>
             </div>
 
-            <div class="alert alert-warning">
-                <strong>Warning!</strong> Indicates a warning that might need attention.
+            <div ng-show="vm.tabArea[4].status">
+                <h3><b>Toast</b></h3>
+                <ul>
+                    <li>시스템의 메시지 노출시에는 toast로 노출한다.</li>
+                    <li>노출 후 특정 시간이 지난 후 자동으로 닫힌다.</li>
+                    <li>오류 메시지는 자동닫힘이 없고 x 버튼을 눌러야 닫힌다.</li>
+                    <li>메시지별 각각의 컬러 테마가 적용된다.</li>
+                </ul>
+                <div class="form-group">
+                    <label>Toast position</label>
+                    <label class="radio">
+                        <input type="radio" ng-model="vm.options.position" value="toast-top-right" class="ng-pristine ng-untouched ng-valid" name="7">Top Right
+                    </label>
+                    <label class="radio">
+                        <input type="radio" ng-model="vm.options.position" value="toast-bottom-right" class="ng-valid ng-dirty ng-valid-parse ng-touched" name="8" style="">Bottom Right
+                    </label>
+                    <label class="radio">
+                        <input type="radio" ng-model="vm.options.position" value="toast-bottom-left" class="ng-pristine ng-untouched ng-valid" name="9">Bottom Left
+                    </label>
+                    <label class="radio">
+                        <input type="radio" ng-model="vm.options.position" value="toast-top-left" class="ng-pristine ng-untouched ng-valid" name="10">Top Left
+                    </label>
+                </div>
+                <button ng-click="vm.openToast()" class="btn btn-primary">Open Toast</button>
             </div>
 
-            <div class="alert alert-danger">
-                <strong>Danger!</strong> Indicates a dangerous or potentially negative action.
-            </div>
-            <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
-
-            <h3><b>Toast</b></h3>
-            <ul>
-                <li>시스템의 메시지 노출시에는 toast로 노출한다.</li>
-                <li>노출 후 특정 시간이 지난 후 자동으로 닫힌다.</li>
-                <li>오류 메시지는 자동닫힘이 없고 x 버튼을 눌러야 닫힌다.</li>
-                <li>메시지별 각각의 컬러 테마가 적용된다.</li>
-            </ul>
-            <div class="form-group">
-                <label>Toast position</label>
-                <label class="radio">
-                    <input type="radio" ng-model="vm.options.position" value="toast-top-right" class="ng-pristine ng-untouched ng-valid" name="7">Top Right
-                </label>
-                <label class="radio">
-                    <input type="radio" ng-model="vm.options.position" value="toast-bottom-right" class="ng-valid ng-dirty ng-valid-parse ng-touched" name="8" style="">Bottom Right
-                </label>
-                <label class="radio">
-                    <input type="radio" ng-model="vm.options.position" value="toast-bottom-left" class="ng-pristine ng-untouched ng-valid" name="9">Bottom Left
-                </label>
-                <label class="radio">
-                    <input type="radio" ng-model="vm.options.position" value="toast-top-left" class="ng-pristine ng-untouched ng-valid" name="10">Top Left
-                </label>
-            </div>
-            <button ng-click="vm.openToast()" class="btn btn-primary">Open Toast</button>
-            <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
-
-            <h3><b>pagination</b></h3>
-            <ul>
-                <li>동그라미, 사각형 등 모양 변경</li>
-            </ul>
-            <div class="table_B text-center">
-                <!--<uib-pagination boundary-links="true" items-per-page="1" total-items="500" ng-model="2" max-size="5" ng-click="getList(selectedPage-1)" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>-->
-            </div>
-            <xmp>
+            <!-- pagination -->
+            <div ng-show="vm.tabArea[5].status">
+                <h3><b>pagination</b></h3>
+                <ul>
+                    <li>동그라미, 사각형 등 모양 변경</li>
+                </ul>
                 <div class="table_B text-center">
-                    <uib-pagination boundary-links="true" items-per-page="1" total-items="500" ng-model="2" max-size="5" ng-click="getList(selectedPage-1)" class="pagination-sm"
-                                    previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
+                    <!--<uib-pagination boundary-links="true" items-per-page="1" total-items="500" ng-model="2" max-size="5" ng-click="getList(selectedPage-1)" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>-->
                 </div>
-            </xmp>
+                <xmp>
+                    <div class="table_B text-center">
+                        <uib-pagination boundary-links="true" items-per-page="1" total-items="500" ng-model="2" max-size="5" ng-click="getList(selectedPage-1)" class="pagination-sm"
+                                        previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
+                    </div>
+                </xmp>
+            </div>
 
-            <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
-
-            <h3><b>tooltip</b></h3>
-            <ul>
-                <li>버튼 혹은 특정요소를 마우스 오버 시 툴팁이 노출된다.</li>
-                <li>마우스가 요소 영역에서 벗어날 시 툴팁이 사라진다.</li>
-                <li>표현되는 text는 개행되지 않아야한다.</li>
-            </ul>
-            <a href="#" uib-tooltip="Hooray123123123123123123!">Hover over me</a>
-            <xmp>
+            <!-- tooltip -->
+            <div ng-show="vm.tabArea[6].status">
+                <h3><b>tooltip</b></h3>
+                <ul>
+                    <li>버튼 혹은 특정요소를 마우스 오버 시 툴팁이 노출된다.</li>
+                    <li>마우스가 요소 영역에서 벗어날 시 툴팁이 사라진다.</li>
+                    <li>표현되는 text는 개행되지 않아야한다.</li>
+                </ul>
                 <a href="#" uib-tooltip="Hooray123123123123123123!">Hover over me</a>
-            </xmp>
+                <xmp>
+                    <a href="#" uib-tooltip="Hooray123123123123123123!">Hover over me</a>
+                </xmp>
+            </div>
 
-            <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
+            <!-- datePicker -->
+            <div ng-show="vm.tabArea[7].status">
+                <h3><b>datePicker</b></h3>
+                <ul>
+                    <li>좌우 화살표 또는 월을 선택하여 원하는 달의 달력을 확인할 수 있다.</li>
+                    <li>달력은 자동으로 오늘날짜를 표시해야한다.</li>
+                    <li>월별로 날짜를 출력하고 해당 날짜를 클릭하여 달력값을 얻을 수 있어야한다.</li>
+                    <li>다국어 가능해야한다.</li>
+                    <li>input에서 바로 입력이 가능해야한다.</li>
+                    <li>구간검색이 가능해야한다</li>
+                    <li>단순 입력이 가능해야한다.</li>
+                    <li>년단위로 달력이동가능</li>
+                    <li>특정기간만 선택 가능하도록 가능</li>
+                    <li>구간검색이 가능해야한다</li>
+                    <li>시작일과 종료일에 대한 validation check를 하여 메세지 노출 혹은 자동 기입 </li>
+                    <li>시작일자는 종료일자보다 작아야한다.</li>
+                    <li>시작일자는 종료일자와 같을수있다.</li>
+                    <li>특정기간만 선택가능하다.</li>
+                </ul>
+                <h4>Pick a date</h4>
+                <button ng-click="vm.getTimeStamp()" class="btn btn-primary">포멧</button>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Date</label>
+                        <div class="col-sm-10">
+                            <p class="input-group">
+                                <input type="text" class="form-control" datetime-picker="mediumDate" ng-model="vm.picker1.date" is-open="vm.picker1.open"
+                                       enable-time="false" datepicker-options="vm.picker1.datepickerOptions" close-on-date-selection="false" datepicker-append-to-body="true" />
+                      <span class="input-group-btn">
+                          <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker1')"><i class="fa fa-calendar"></i></button>
+                      </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">model</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">{{ vm.picker1.date }}</p>
+                        </div>
+                    </div>
+                </form>
+                <xmp>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Date</label>
+                        <div class="col-sm-10">
+                            <p class="input-group">
+                                <input type="text" class="form-control" datetime-picker="mediumDate" ng-model="vm.picker1.date" is-open="vm.picker1.open"
+                                       enable-time="false" datepicker-options="vm.picker1.datepickerOptions" close-on-date-selection="false" datepicker-append-to-body="true" />
+                                  <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker1')"><i class="fa fa-calendar"></i></button>
+                                  </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">model</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">{{ vm.picker1.date }}</p>
+                        </div>
+                    </div>
+                </xmp>
 
-            <h3><b>datePicker</b></h3>
-            <ul>
-                <li>좌우 화살표 또는 월을 선택하여 원하는 달의 달력을 확인할 수 있다.</li>
-                <li>달력은 자동으로 오늘날짜를 표시해야한다.</li>
-                <li>월별로 날짜를 출력하고 해당 날짜를 클릭하여 달력값을 얻을 수 있어야한다.</li>
-                <li>다국어 가능해야한다.</li>
-                <li>input에서 바로 입력이 가능해야한다.</li>
-                <li>구간검색이 가능해야한다</li>
-                <li>단순 입력이 가능해야한다.</li>
-                <li>년단위로 달력이동가능</li>
-                <li>특정기간만 선택 가능하도록 가능</li>
-                <li>구간검색이 가능해야한다</li>
-                <li>시작일과 종료일에 대한 validation check를 하여 메세지 노출 혹은 자동 기입 </li>
-                <li>시작일자는 종료일자보다 작아야한다.</li>
-                <li>시작일자는 종료일자와 같을수있다.</li>
-                <li>특정기간만 선택가능하다.</li>
-            </ul>
-            <h4>Pick a date</h4>
-            <button ng-click="vm.getTimeStamp()" class="btn btn-primary">포멧</button>
-            <form class="form-horizontal">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Date</label>
-                    <div class="col-sm-10">
-                        <p class="input-group">
-                            <input type="text" class="form-control" datetime-picker="mediumDate" ng-model="vm.picker1.date" is-open="vm.picker1.open"
-                                   enable-time="false" datepicker-options="vm.picker1.datepickerOptions" close-on-date-selection="false" datepicker-append-to-body="true" />
-                  <span class="input-group-btn">
-                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker1')"><i class="fa fa-calendar"></i></button>
-                  </span>
-                        </p>
+                <hr />
+                <h4>Pick a time</h4>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Time</label>
+                        <div class="col-sm-10">
+                            <p class="input-group">
+                                <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="vm.picker2.date" is-open="vm.picker2.open" enable-date="false"
+                                       timepicker-options="vm.picker2.timepickerOptions" close-on-selection="true" />
+                                  <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker2')"><i class="fa fa-clock-o"></i></button>
+                                  </span>
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">model</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{ vm.picker1.date }}</p>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">model</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">{{ vm.picker2.date }}</p>
+                        </div>
                     </div>
-                </div>
-            </form>
-            <xmp>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Date</label>
-                    <div class="col-sm-10">
-                        <p class="input-group">
-                            <input type="text" class="form-control" datetime-picker="mediumDate" ng-model="vm.picker1.date" is-open="vm.picker1.open"
-                                   enable-time="false" datepicker-options="vm.picker1.datepickerOptions" close-on-date-selection="false" datepicker-append-to-body="true" />
-      <span class="input-group-btn">
-          <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker1')"><i class="fa fa-calendar"></i></button>
-      </span>
-                        </p>
+                </form>
+                <xmp>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Time</label>
+                        <div class="col-sm-10">
+                            <p class="input-group">
+                                <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="vm.picker2.date" is-open="vm.picker2.open" enable-date="false"
+                                       timepicker-options="vm.picker2.timepickerOptions" close-on-selection="true" />
+                                  <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker2')"><i class="fa fa-clock-o"></i></button>
+                                  </span>
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">model</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{ vm.picker1.date }}</p>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">model</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">{{ vm.picker2.date }}</p>
+                        </div>
                     </div>
-                </div>
-            </xmp>
+                </xmp>
+                <hr />
+                <h4>Pick a date and time</h4>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Both</label>
+                        <div class="col-sm-10">
+                            <p class="input-group">
+                                <input type="text" class="form-control" datetime-picker="MM/dd/yyyy HH:mm" ng-model="vm.picker3.date" is-open="vm.picker3.open" />
+                                  <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker3')"><i class="fa fa-calendar"></i></button>
+                                  </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">model</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">{{ vm.picker3.date }}</p>
+                        </div>
+                    </div>
+                </form>
+                <xmp>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Both</label>
+                        <div class="col-sm-10">
+                            <p class="input-group">
+                                <input type="text" class="form-control" datetime-picker="MM/dd/yyyy HH:mm" ng-model="vm.picker3.date" is-open="vm.picker3.open" />
+                                  <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker3')"><i class="fa fa-calendar"></i></button>
+                                  </span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">model</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">{{ vm.picker3.date }}</p>
+                        </div>
+                    </div>
+                </xmp>
 
-            <hr />
-            <h4>Pick a time</h4>
-            <form class="form-horizontal">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Time</label>
-                    <div class="col-sm-10">
-                        <p class="input-group">
-                            <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="vm.picker2.date" is-open="vm.picker2.open" enable-date="false"
-                                   timepicker-options="vm.picker2.timepickerOptions" close-on-selection="true" />
-                  <span class="input-group-btn">
-                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker2')"><i class="fa fa-clock-o"></i></button>
-                  </span>
-                        </p>
+                <hr />
+                <h4>Pick two dates to calculate difference</h4>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">From</label>
+                        <div class="col-sm-10">
+                            <p class="input-group">
+                                <input type="text" class="form-control" datetime-picker="dd MMM yyyy" ng-model="vm.picker4.date" is-open="vm.picker4.open"
+                                       enable-time="false" datepicker-options="vm.picker4.datepickerOptions" />
+                                  <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker4')"><i class="fa fa-calendar"></i></button>
+                                  </span>
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">model</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{ vm.picker2.date }}</p>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">To</label>
+                        <div class="col-sm-10">
+                            <p class="input-group">
+                                <input type="text" class="form-control" datetime-picker="dd MMM yyyy" ng-model="vm.picker5.date" is-open="vm.picker5.open" enable-time="false" datepicker-options="vm.picker5.datepickerOptions" />
+                                  <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker5')"><i class="fa fa-calendar"></i></button>
+                                  </span>
+                            </p>
+                        </div>
                     </div>
-                </div>
-            </form>
-            <xmp>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Time</label>
-                    <div class="col-sm-10">
-                        <p class="input-group">
-                            <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="vm.picker2.date" is-open="vm.picker2.open" enable-date="false"
-                                   timepicker-options="vm.picker2.timepickerOptions" close-on-selection="true" />
-      <span class="input-group-btn">
-          <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker2')"><i class="fa fa-clock-o"></i></button>
-      </span>
-                        </p>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Difference</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">{{ vm.dayRange }} (days)</p>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">model</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{ vm.picker2.date }}</p>
+                </form>
+                <xmp>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">From</label>
+                        <div class="col-sm-10">
+                            <p class="input-group">
+                                <input type="text" class="form-control" datetime-picker="dd MMM yyyy" ng-model="vm.picker4.date" is-open="vm.picker4.open"
+                                       enable-time="false" datepicker-options="vm.picker4.datepickerOptions" />
+                                  <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker4')"><i class="fa fa-calendar"></i></button>
+                                  </span>
+                            </p>
+                        </div>
                     </div>
-                </div>
-            </xmp>
-            <hr />
-            <h4>Pick a date and time</h4>
-            <form class="form-horizontal">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Both</label>
-                    <div class="col-sm-10">
-                        <p class="input-group">
-                            <input type="text" class="form-control" datetime-picker="MM/dd/yyyy HH:mm" ng-model="vm.picker3.date" is-open="vm.picker3.open" />
-                  <span class="input-group-btn">
-                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker3')"><i class="fa fa-calendar"></i></button>
-                  </span>
-                        </p>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">To</label>
+                        <div class="col-sm-10">
+                            <p class="input-group">
+                                <input type="text" class="form-control" datetime-picker="dd MMM yyyy" ng-model="vm.picker5.date" is-open="vm.picker5.open"
+                                       enable-time="false" datepicker-options="vm.picker5.datepickerOptions" />
+                                  <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker5')"><i class="fa fa-calendar"></i></button>
+                                  </span>
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">model</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{ vm.picker3.date }}</p>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Difference</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">{{ vm.dayRange }} (days)</p>
+                        </div>
                     </div>
-                </div>
-            </form>
-            <xmp>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Both</label>
-                    <div class="col-sm-10">
-                        <p class="input-group">
-                            <input type="text" class="form-control" datetime-picker="MM/dd/yyyy HH:mm" ng-model="vm.picker3.date" is-open="vm.picker3.open" />
-      <span class="input-group-btn">
-          <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker3')"><i class="fa fa-calendar"></i></button>
-      </span>
-                        </p>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">model</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{ vm.picker3.date }}</p>
-                    </div>
-                </div>
-            </xmp>
+                </xmp>
 
-            <hr />
-            <h4>Pick two dates to calculate difference</h4>
-            <form class="form-horizontal">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">From</label>
-                    <div class="col-sm-10">
-                        <p class="input-group">
-                            <input type="text" class="form-control" datetime-picker="dd MMM yyyy" ng-model="vm.picker4.date" is-open="vm.picker4.open"
-                                   enable-time="false" datepicker-options="vm.picker4.datepickerOptions" />
-                  <span class="input-group-btn">
-                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker4')"><i class="fa fa-calendar"></i></button>
-                  </span>
-                        </p>
+                <h4>Global Configured DateTime Picker</h4>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Both</label>
+                        <div class="col-sm-10">
+                            <p class="input-group">
+                                <input type="text" class="form-control" datetime-picker ng-model="vm.picker6.date" is-open="vm.picker6.open" />
+                                  <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker6')"><i class="fa fa-calendar"></i></button>
+                                  </span>
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">To</label>
-                    <div class="col-sm-10">
-                        <p class="input-group">
-                            <input type="text" class="form-control" datetime-picker="dd MMM yyyy" ng-model="vm.picker5.date" is-open="vm.picker5.open" enable-time="false" datepicker-options="vm.picker5.datepickerOptions" />
-                  <span class="input-group-btn">
-                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker5')"><i class="fa fa-calendar"></i></button>
-                  </span>
-                        </p>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">model</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">{{ vm.picker6.date }}</p>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Difference</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{ vm.dayRange }} (days)</p>
+                </form>
+                <xmp>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Both</label>
+                        <div class="col-sm-10">
+                            <p class="input-group">
+                                <input type="text" class="form-control" datetime-picker ng-model="vm.picker6.date" is-open="vm.picker6.open" />
+                                  <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker6')"><i class="fa fa-calendar"></i></button>
+                                  </span>
+                            </p>
+                        </div>
                     </div>
-                </div>
-            </form>
-            <xmp>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">From</label>
-                    <div class="col-sm-10">
-                        <p class="input-group">
-                            <input type="text" class="form-control" datetime-picker="dd MMM yyyy" ng-model="vm.picker4.date" is-open="vm.picker4.open"
-                                   enable-time="false" datepicker-options="vm.picker4.datepickerOptions" />
-      <span class="input-group-btn">
-          <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker4')"><i class="fa fa-calendar"></i></button>
-      </span>
-                        </p>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">model</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">{{ vm.picker6.date }}</p>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">To</label>
-                    <div class="col-sm-10">
-                        <p class="input-group">
-                            <input type="text" class="form-control" datetime-picker="dd MMM yyyy" ng-model="vm.picker5.date" is-open="vm.picker5.open"
-                                   enable-time="false" datepicker-options="vm.picker5.datepickerOptions" />
-      <span class="input-group-btn">
-          <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker5')"><i class="fa fa-calendar"></i></button>
-      </span>
-                        </p>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Difference</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{ vm.dayRange }} (days)</p>
-                    </div>
-                </div>
-            </xmp>
+                </xmp>
 
-            <h4>Global Configured DateTime Picker</h4>
-            <form class="form-horizontal">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Both</label>
-                    <div class="col-sm-10">
-                        <p class="input-group">
-                            <input type="text" class="form-control" datetime-picker ng-model="vm.picker6.date" is-open="vm.picker6.open" />
-                  <span class="input-group-btn">
-                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker6')"><i class="fa fa-calendar"></i></button>
-                  </span>
-                        </p>
+                <h4>Use bootstrap dropup class</h4>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Date</label>
+                        <div class="col-sm-10">
+                            <p class="input-group dropup">
+                                <input type="text" class="form-control" datetime-picker="mediumDate" ng-model="vm.picker7.date" is-open="vm.picker7.open" enable-time="false" />
+                                  <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker7')"><i class="fa fa-calendar"></i></button>
+                                  </span>
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">model</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{ vm.picker6.date }}</p>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">model</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">{{ vm.picker7.date }}</p>
+                        </div>
                     </div>
-                </div>
-            </form>
-            <xmp>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Both</label>
-                    <div class="col-sm-10">
-                        <p class="input-group">
-                            <input type="text" class="form-control" datetime-picker ng-model="vm.picker6.date" is-open="vm.picker6.open" />
-      <span class="input-group-btn">
-          <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker6')"><i class="fa fa-calendar"></i></button>
-      </span>
-                        </p>
+                </form>
+                <xmp>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Date</label>
+                        <div class="col-sm-10">
+                            <p class="input-group dropup">
+                                <input type="text" class="form-control" datetime-picker="mediumDate" ng-model="vm.picker7.date" is-open="vm.picker7.open" enable-time="false" />
+                                  <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker7')"><i class="fa fa-calendar"></i></button>
+                                  </span>
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">model</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{ vm.picker6.date }}</p>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">model</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">{{ vm.picker7.date }}</p>
+                        </div>
                     </div>
-                </div>
-            </xmp>
+                </xmp>
 
-            <h4>Use bootstrap dropup class</h4>
-            <form class="form-horizontal">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Date</label>
-                    <div class="col-sm-10">
-                        <p class="input-group dropup">
-                            <input type="text" class="form-control" datetime-picker="mediumDate" ng-model="vm.picker7.date" is-open="vm.picker7.open" enable-time="false" />
-                  <span class="input-group-btn">
-                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker7')"><i class="fa fa-calendar"></i></button>
-                  </span>
-                        </p>
+                <hr />
+                <h4>View Mode</h4>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Date</label>
+                        <div class="col-sm-10">
+                            <p class="input-group dropup">
+                                <input type="text" class="form-control" datepicker-mode="'year'" datetime-picker="yyyy" ng-model="vm.picker8.date" is-open="vm.picker8.open"
+                                       enable-time="false" datepicker-options="vm.picker8.datepickerOptions" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker8')"><i class="fa fa-calendar"></i></button>
+                                </span>
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">model</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{ vm.picker7.date }}</p>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">model</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">{{ vm.picker8.date }}</p>
+                        </div>
                     </div>
-                </div>
-            </form>
-            <xmp>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Date</label>
-                    <div class="col-sm-10">
-                        <p class="input-group dropup">
-                            <input type="text" class="form-control" datetime-picker="mediumDate" ng-model="vm.picker7.date" is-open="vm.picker7.open" enable-time="false" />
-      <span class="input-group-btn">
-          <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker7')"><i class="fa fa-calendar"></i></button>
-      </span>
-                        </p>
+                </form>
+                <xmp>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Date</label>
+                        <div class="col-sm-10">
+                            <p class="input-group dropup">
+                                <input type="text" class="form-control" datepicker-mode="'year'" datetime-picker="yyyy" ng-model="vm.picker8.date" is-open="vm.picker8.open"
+                                       enable-time="false" datepicker-options="vm.picker8.datepickerOptions" />
+                                  <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker8')"><i class="fa fa-calendar"></i></button>
+                                  </span>
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">model</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{ vm.picker7.date }}</p>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">model</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">{{ vm.picker8.date }}</p>
+                        </div>
                     </div>
-                </div>
-            </xmp>
+                </xmp>
+                <hr />
 
-            <hr />
-            <h4>View Mode</h4>
-            <form class="form-horizontal">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Date</label>
-                    <div class="col-sm-10">
-                        <p class="input-group dropup">
-                            <input type="text" class="form-control" datepicker-mode="'year'" datetime-picker="yyyy" ng-model="vm.picker8.date" is-open="vm.picker8.open"
-                                   enable-time="false" datepicker-options="vm.picker8.datepickerOptions" />
-                  <span class="input-group-btn">
-                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker8')"><i class="fa fa-calendar"></i></button>
-                  </span>
-                        </p>
+                <h4>Default Time</h4>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Both</label>
+                        <div class="col-sm-10">
+                            <p class="input-group">
+                                <input type="text" class="form-control" datetime-picker ng-model="vm.picker9.date" default-time="17:00" is-open="vm.picker9.open" />
+                                  <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker9')"><i class="fa fa-calendar"></i></button>
+                                  </span>
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">model</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{ vm.picker8.date }}</p>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">model</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">{{ vm.picker9.date }}</p>
+                        </div>
                     </div>
-                </div>
-            </form>
-            <xmp>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Date</label>
-                    <div class="col-sm-10">
-                        <p class="input-group dropup">
-                            <input type="text" class="form-control" datepicker-mode="'year'" datetime-picker="yyyy" ng-model="vm.picker8.date" is-open="vm.picker8.open"
-                                   enable-time="false" datepicker-options="vm.picker8.datepickerOptions" />
-      <span class="input-group-btn">
-          <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker8')"><i class="fa fa-calendar"></i></button>
-      </span>
-                        </p>
+                </form>
+                <xmp>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Both</label>
+                        <div class="col-sm-10">
+                            <p class="input-group">
+                                <input type="text" class="form-control" datetime-picker ng-model="vm.picker9.date" default-time="17:00" is-open="vm.picker9.open" />
+                                  <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker9')"><i class="fa fa-calendar"></i></button>
+                                  </span>
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">model</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{ vm.picker8.date }}</p>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">model</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">{{ vm.picker9.date }}</p>
+                        </div>
                     </div>
-                </div>
-            </xmp>
-            <hr />
+                </xmp>
 
-            <h4>Default Time</h4>
-            <form class="form-horizontal">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Both</label>
-                    <div class="col-sm-10">
-                        <p class="input-group">
-                            <input type="text" class="form-control" datetime-picker ng-model="vm.picker9.date" default-time="17:00" is-open="vm.picker9.open" />
-                  <span class="input-group-btn">
-                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker9')"><i class="fa fa-calendar"></i></button>
-                  </span>
-                        </p>
+                <h4>Min / Max times</h4>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Min</label>
+                        <div class="col-sm-10">
+                            <p class="input-group">
+                                <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="vm.picker10.date" is-open="vm.picker10.open"
+                                       timepicker-options="vm.picker10.timepickerOptions" enable-date="false" />
+                                  <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker10')"><i class="fa fa-clock-o"></i></button>
+                                  </span>
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">model</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{ vm.picker9.date }}</p>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Max</label>
+                        <div class="col-sm-10">
+                            <p class="input-group">
+                                <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="vm.picker11.date" is-open="vm.picker11.open"
+                                       timepicker-options="vm.picker11.timepickerOptions" enable-date="false" />
+                                  <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker11')"><i class="fa fa-clock-o"></i></button>
+                                  </span>
+                            </p>
+                        </div>
                     </div>
-                </div>
-            </form>
-            <xmp>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Both</label>
-                    <div class="col-sm-10">
-                        <p class="input-group">
-                            <input type="text" class="form-control" datetime-picker ng-model="vm.picker9.date" default-time="17:00" is-open="vm.picker9.open" />
-      <span class="input-group-btn">
-          <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker9')"><i class="fa fa-calendar"></i></button>
-      </span>
-                        </p>
+                </form>
+                <xmp>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Min</label>
+                        <div class="col-sm-10">
+                            <p class="input-group">
+                                <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="vm.picker10.date" is-open="vm.picker10.open"
+                                       timepicker-options="vm.picker10.timepickerOptions" enable-date="false" />
+                                  <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker10')"><i class="fa fa-clock-o"></i></button>
+                                  </span>
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">model</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{ vm.picker9.date }}</p>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Max</label>
+                        <div class="col-sm-10">
+                            <p class="input-group">
+                                <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="vm.picker11.date" is-open="vm.picker11.open"
+                                       timepicker-options="vm.picker11.timepickerOptions" enable-date="false" />
+                                  <span class="input-group-btn">
+                                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker11')"><i class="fa fa-clock-o"></i></button>
+                                  </span>
+                            </p>
+                        </div>
                     </div>
-                </div>
-            </xmp>
+                </xmp>
+                <hr />
 
-            <h4>Min / Max times</h4>
-            <form class="form-horizontal">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Min</label>
-                    <div class="col-sm-10">
-                        <p class="input-group">
-                            <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="vm.picker10.date" is-open="vm.picker10.open"
-                                   timepicker-options="vm.picker10.timepickerOptions" enable-date="false" />
-                  <span class="input-group-btn">
-                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker10')"><i class="fa fa-clock-o"></i></button>
-                  </span>
-                        </p>
+                <h4>Customize Button bar</h4>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Date</label>
+                        <div class="col-sm-10">
+                            <p class="input-group">
+                                <input type="text" class="form-control" datetime-picker="mediumDate" ng-model="vm.picker12.date" is-open="vm.picker12.open" enable-time="false" button-bar="vm.picker12.buttonBar" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker12')"><i class="fa fa-calendar"></i></button>
+                                </span>
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Max</label>
-                    <div class="col-sm-10">
-                        <p class="input-group">
-                            <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="vm.picker11.date" is-open="vm.picker11.open"
-                                   timepicker-options="vm.picker11.timepickerOptions" enable-date="false" />
-                  <span class="input-group-btn">
-                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker11')"><i class="fa fa-clock-o"></i></button>
-                  </span>
-                        </p>
+                </form>
+                <xmp>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Date</label>
+                        <div class="col-sm-10">
+                            <p class="input-group">
+                                <input type="text" class="form-control" datetime-picker="mediumDate" ng-model="vm.picker12.date" is-open="vm.picker12.open"
+                                       enable-time="false" button-bar="vm.picker12.buttonBar" />
+                                <span class="input-group-btn">
+                                    <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker12')"><i class="fa fa-calendar"></i></button>
+                                </span>
+                            </p>
+                        </div>
                     </div>
-                </div>
-            </form>
-            <xmp>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Min</label>
-                    <div class="col-sm-10">
-                        <p class="input-group">
-                            <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="vm.picker10.date" is-open="vm.picker10.open"
-                                   timepicker-options="vm.picker10.timepickerOptions" enable-date="false" />
-      <span class="input-group-btn">
-          <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker10')"><i class="fa fa-clock-o"></i></button>
-      </span>
-                        </p>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Max</label>
-                    <div class="col-sm-10">
-                        <p class="input-group">
-                            <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="vm.picker11.date" is-open="vm.picker11.open"
-                                   timepicker-options="vm.picker11.timepickerOptions" enable-date="false" />
-      <span class="input-group-btn">
-          <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker11')"><i class="fa fa-clock-o"></i></button>
-      </span>
-                        </p>
-                    </div>
-                </div>
-            </xmp>
-            <hr />
+                </xmp>
+                <hr />
 
-            <h4>Customize Button bar</h4>
-            <form class="form-horizontal">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Date</label>
-                    <div class="col-sm-10">
-                        <p class="input-group">
-                            <input type="text" class="form-control" datetime-picker="mediumDate" ng-model="vm.picker12.date" is-open="vm.picker12.open" enable-time="false" button-bar="vm.picker12.buttonBar" />
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker12')"><i class="fa fa-calendar"></i></button>
-                    </span>
-                        </p>
+                <h4>Call function when closed</h4>
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Date</label>
+                        <div class="col-sm-10">
+                            <p class="input-group">
+                                <input type="text" class="form-control" datetime-picker="dd/MM/yyyy HH:mm" ng-model="vm.picker13.date"
+                                       is-open="vm.picker13.open" when-closed="vm.picker13.closed(args)" />
+                                <span class="input-group-btn">
+                                 <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker13')"><i class="fa fa-calendar"></i></button>
+                                </span>
+                            </p>
+                        </div>
                     </div>
-                </div>
-            </form>
-            <xmp>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Date</label>
-                    <div class="col-sm-10">
-                        <p class="input-group">
-                            <input type="text" class="form-control" datetime-picker="mediumDate" ng-model="vm.picker12.date" is-open="vm.picker12.open"
-                                   enable-time="false" button-bar="vm.picker12.buttonBar" />
-        <span class="input-group-btn">
-            <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker12')"><i class="fa fa-calendar"></i></button>
-        </span>
-                        </p>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">On Close</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">{{ vm.closedArgs }}</p>
+                        </div>
                     </div>
-                </div>
-            </xmp>
-            <hr />
-
-            <h4>Call function when closed</h4>
-            <form class="form-horizontal">
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Date</label>
-                    <div class="col-sm-10">
-                        <p class="input-group">
-                            <input type="text" class="form-control" datetime-picker="dd/MM/yyyy HH:mm" ng-model="vm.picker13.date"
-                                   is-open="vm.picker13.open" when-closed="vm.picker13.closed(args)" />
-                    <span class="input-group-btn">
-                     <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker13')"><i class="fa fa-calendar"></i></button>
-                    </span>
-                        </p>
+                </form>
+                <xmp>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">Date</label>
+                        <div class="col-sm-10">
+                            <p class="input-group">
+                                <input type="text" class="form-control" datetime-picker="dd/MM/yyyy HH:mm" ng-model="vm.picker13.date"
+                                       is-open="vm.picker13.open" when-closed="vm.picker13.closed(args)" />
+                                <span class="input-group-btn">
+                                 <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker13')"><i class="fa fa-calendar"></i></button>
+                                </span>
+                            </p>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">On Close</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{ vm.closedArgs }}</p>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">On Close</label>
+                        <div class="col-sm-10">
+                            <p class="form-control-static">{{ vm.closedArgs }}</p>
+                        </div>
                     </div>
-                </div>
-            </form>
-            <xmp>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">Date</label>
-                    <div class="col-sm-10">
-                        <p class="input-group">
-                            <input type="text" class="form-control" datetime-picker="dd/MM/yyyy HH:mm" ng-model="vm.picker13.date"
-                                   is-open="vm.picker13.open" when-closed="vm.picker13.closed(args)" />
-        <span class="input-group-btn">
-         <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'picker13')"><i class="fa fa-calendar"></i></button>
-        </span>
-                        </p>
+                </xmp>
+            </div>
+
+            <div ng-show="vm.tabArea[8].status">
+                <h3><b>Modal</b></h3>
+                <ul>
+                    <li>기존 owl과 동일한 modal이 적용되야한다.</li>
+                    <li>드래그로 창을 이동 가능해야한다.</li>
+                    <li>엔터키 입력 시 창의 전송기능 작동 가능해야한다.</li>
+                    <li>esc 입력시 창이 닫힌다.</li>
+                    <li>배경색은 투명색으로 유지한다.</li>
+                    <li>내용이 많을 시 화면이 벗어나지 않는 선에서 스크롤 생성되야 한다.</li>
+                </ul>
+                <button type="button" ng-click="vm.modalOpen()">모달 오픈</button>
+            </div>
+
+            <div ng-show="vm.tabArea[9].status">
+                <h3><b>xeditable</b></h3>
+                <ul>
+                    <li>사용자는 요약정보등의 특정 text 정보들을 클릭하여 변경 할 수 있다.</li>
+                    <li>text, select, datepicker 등등 다양한 입력요소들을 변경할 수 있다.</li>
+                </ul>
+                text 형식 : <a href="#" editable-text="vm.user.name" buttons="no">{{ vm.user.name || "empty" }}</a><br/>
+                check box : <a href="#" editable-checkbox="vm.user.remember" e-title="Remember?"> {{ vm.user.remember && "선택" || "미선택" }} </a><br/>
+                <!--radio box : <a href="#" editable-radiolist="vm.user.status" e-ng-options="s.value as s.text for s in vm.statuses">{{ vm.showStatus() }}</a><br/>-->
+                date type :
+                <a  editable-bsdate="vm.user.dob" e-is-open="opened.$data" e-ng-click="vm.open($event,'$data')" e-datepicker-popup="dd-MMMM-yyyy">
+                    {{ vm.picker15.date }}
+                </a><br/>
+                select :
+                <a editable-select="vm.statusId" e-ng-options="s.id as s.name for s in vm.statuses">
+                    {{ vm.showStatus(vm.statusId) }}
+                </a><br/>
+                multi select :
+                <a href="#" editable-select="vm.user.stateArray" e-multiple e-ng-options="s.id as s.name for s in vm.statuses">
+                    {{ vm.showStateArray() }}
+                </a>
+            </div>
+
+            <div ng-show="vm.tabArea[10].status">
+                <h3><b>button</b></h3>
+                <ul>
+                    <li>버튼의 명확한 디자인과 크기조절이 어렵지않아야한다.</li>
+                    <li>다양한 버튼 테마를 지원해야한다.</li>
+                    <li>아이콘 삽입 및 손쉬은 커스텀이 가능해야한다.</li>
+                </ul>
+                <button type="button" class="btn btn_icon btn_customs" owl-btn-update></button>
+                <button type="button" class="btn btn_icon btn_customs" owl-btn-save></button>
+                <button type="button" class="btn btn_icon btn_customs2" owl-btn-cancel></button>
+                <button type="button" class="btn btn_icon btn_cons2" owl-btn-init></button>
+                <button type="button" owl-btn-next></button>
+                <button type="button" owl-btn-before></button>
+                <button type="button" class="btn btn_icon btn_color3 hidden-xs" owl-btn-download></button>
+                <button type="button" class="btn btn_icon btn_color4" owl-btn-remove></button>
+                <button type="button" owl-btn-add></button>
+                <br/><br/>
+                <button type="button" owl-btn-delete></button>
+                <button type="button" class="btn btn_icon btn_color5" owl-btn-state-change></button>
+                <button type="button" owl-btn-list></button>
+                <button type="button" owl-btn-detail></button>
+                <button type="button" class="alert_close btn btn_submit btn_customs" owl-btn-check></button>
+                <button type="button" class="btn btn_submit btn_customs" owl-btn-select></button>
+                <button type="button" class="btn btn_icon btn_color8" owl-btn-position-save></button>
+                <button type="button" class="btn btn_icon btn_color8" owl-btn-decision></button>
+                <button type="button" owl-btn-etc-func></button>
+                <br/><br/>
+                <a owl-btn-link link-type="compare"></a>
+                <a owl-btn-link link-type="revert"></a>
+                <a owl-btn-link link-type="detail"></a>
+                <a owl-btn-link link-type="edit"></a>
+                <a owl-btn-link link-type="config"></a>
+                <a owl-btn-link link-type="rolePermission"></a>
+                <a owl-btn-link link-type="roleUser"></a>
+                <a owl-btn-link link-type="history"></a>
+                <a owl-btn-link link-type="fieldLink"></a>
+                <a owl-btn-link link-type="version"></a>
+            </div>
+
+            <div ng-show="vm.tabArea[11].status">
+                <h3><b>ngGallery</b></h3>
+                <ul>
+                    <li>이미지 확장자명의 파일은 갤러리로 표현이 가능해야한다.</li>
+                    <li>이미지 리스트는 해당 이미지의 썸네일로 표시되고 이미지를 클릭 시 겔러리 화면에서 해당 이미지의 원본 이미지를 볼 수 있다.</li>
+                    <li>갤러리에서는 다음 이미지 혹은 이전 이미지로 이동할수있는 링크가 존재한다.</li>
+                    <li>바로 이동가능한 썸네일 이미지 목록이 존재해야한다.</li>
+                </ul>
+                <ng-gallery images="vm.images" thumbs-num="4">
+                </ng-gallery>
+            </div>
+
+            <div ng-show="vm.tabArea[12].status">
+                <h3><b>Tree</b></h3>
+                <div class="col-md-12">
+                    <div class="col-md-4">
+                        <div ui-tree class="ui-tree">
+                            <ol ui-tree-nodes="" ng-model="vm.list" id="tree-root">
+                                <li ng-repeat="node in vm.list" ui-tree-node ng-include="'nodes_renderer.html'" collapsed="false"></li>
+                            </ol>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label class="col-sm-2 control-label">On Close</label>
-                    <div class="col-sm-10">
-                        <p class="form-control-static">{{ vm.closedArgs }}</p>
+                    <div class="col-md-3">
+                        <input ng-model="query" ng-change="findNodes()" class="ng-valid ng-touched ng-dirty ng-valid-parse">
                     </div>
-                </div>
-            </xmp>
-            <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
-
-
-            <h3><b>Modal</b></h3>
-            <ul>
-                <li>기존 owl과 동일한 modal이 적용되야한다.</li>
-                <li>드래그로 창을 이동 가능해야한다.</li>
-                <li>엔터키 입력 시 창의 전송기능 작동 가능해야한다.</li>
-                <li>esc 입력시 창이 닫힌다.</li>
-                <li>배경색은 투명색으로 유지한다.</li>
-                <li>내용이 많을 시 화면이 벗어나지 않는 선에서 스크롤 생성되야 한다.</li>
-            </ul>
-            <button type="button" ng-click="vm.modalOpen()">모달 오픈</button>
-            <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
-
-
-            <h3><b>xeditable</b></h3>
-            <ul>
-                <li>사용자는 요약정보등의 특정 text 정보들을 클릭하여 변경 할 수 있다.</li>
-                <li>text, select, datepicker 등등 다양한 입력요소들을 변경할 수 있다.</li>
-            </ul>
-            text 형식 : <a href="#" editable-text="vm.user.name" buttons="no">{{ vm.user.name || "empty" }}</a><br/>
-            check box : <a href="#" editable-checkbox="vm.user.remember" e-title="Remember?"> {{ vm.user.remember && "선택" || "미선택" }} </a><br/>
-            <!--radio box : <a href="#" editable-radiolist="vm.user.status" e-ng-options="s.value as s.text for s in vm.statuses">{{ vm.showStatus() }}</a><br/>-->
-            date type :
-            <a  editable-bsdate="vm.user.dob" e-is-open="opened.$data" e-ng-click="vm.open($event,'$data')" e-datepicker-popup="dd-MMMM-yyyy">
-                {{ vm.picker15.date }}
-            </a><br/>
-            select :
-            <a editable-select="vm.statusId" e-ng-options="s.id as s.name for s in vm.statuses">
-                {{ vm.showStatus(vm.statusId) }}
-            </a><br/>
-            multi select :
-            <a href="#" editable-select="vm.user.stateArray" e-multiple e-ng-options="s.id as s.name for s in vm.statuses">
-                {{ vm.showStateArray() }}
-            </a>
-            <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
-
-            <h3><b>button</b></h3>
-            <ul>
-                <li>버튼의 명확한 디자인과 크기조절이 어렵지않아야한다.</li>
-                <li>다양한 버튼 테마를 지원해야한다.</li>
-                <li>아이콘 삽입 및 손쉬은 커스텀이 가능해야한다.</li>
-            </ul>
-            <button type="button" class="btn btn_icon btn_customs" owl-btn-update></button>
-            <button type="button" class="btn btn_icon btn_customs" owl-btn-save></button>
-            <button type="button" class="btn btn_icon btn_customs2" owl-btn-cancel></button>
-            <button type="button" class="btn btn_icon btn_cons2" owl-btn-init></button>
-            <button type="button" owl-btn-next></button>
-            <button type="button" owl-btn-before></button>
-            <button type="button" class="btn btn_icon btn_color3 hidden-xs" owl-btn-download></button>
-            <button type="button" class="btn btn_icon btn_color4" owl-btn-remove></button>
-            <button type="button" owl-btn-add></button>
-            <br/><br/>
-            <button type="button" owl-btn-delete></button>
-            <button type="button" class="btn btn_icon btn_color5" owl-btn-state-change></button>
-            <button type="button" owl-btn-list></button>
-            <button type="button" owl-btn-detail></button>
-            <button type="button" class="alert_close btn btn_submit btn_customs" owl-btn-check></button>
-            <button type="button" class="btn btn_submit btn_customs" owl-btn-select></button>
-            <button type="button" class="btn btn_icon btn_color8" owl-btn-position-save></button>
-            <button type="button" class="btn btn_icon btn_color8" owl-btn-decision></button>
-            <button type="button" owl-btn-etc-func></button>
-            <br/><br/>
-            <a owl-btn-link link-type="compare"></a>
-            <a owl-btn-link link-type="revert"></a>
-            <a owl-btn-link link-type="detail"></a>
-            <a owl-btn-link link-type="edit"></a>
-            <a owl-btn-link link-type="config"></a>
-            <a owl-btn-link link-type="rolePermission"></a>
-            <a owl-btn-link link-type="roleUser"></a>
-            <a owl-btn-link link-type="history"></a>
-            <a owl-btn-link link-type="fieldLink"></a>
-            <a owl-btn-link link-type="version"></a>
-            <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
-
-            <h3><b>ngGallery</b></h3>
-            <ul>
-                <li>이미지 확장자명의 파일은 갤러리로 표현이 가능해야한다.</li>
-                <li>이미지 리스트는 해당 이미지의 썸네일로 표시되고 이미지를 클릭 시 겔러리 화면에서 해당 이미지의 원본 이미지를 볼 수 있다.</li>
-                <li>갤러리에서는 다음 이미지 혹은 이전 이미지로 이동할수있는 링크가 존재한다.</li>
-                <li>바로 이동가능한 썸네일 이미지 목록이 존재해야한다.</li>
-            </ul>
-            <ng-gallery images="vm.images" thumbs-num="4">
-            </ng-gallery>
-            <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
-
-            <h3><b>Tree</b></h3>
-            <div class="col-md-12">
-                <div class="col-md-4">
-                    <div ui-tree class="ui-tree">
-                        <ol ui-tree-nodes="" ng-model="vm.list" id="tree-root">
-                            <li ng-repeat="node in vm.list" ui-tree-node ng-include="'nodes_renderer.html'" collapsed="false"></li>
-                        </ol>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <input ng-model="query" ng-change="findNodes()" class="ng-valid ng-touched ng-dirty ng-valid-parse">
                 </div>
             </div>
-            <hr style="height: 1px;margin-left: auto;margin-right: auto;background-color:#bbb;color:#bbb;border: 0 none;">
-
-
-        </div>
-        <div ng-show="vm.tabArea[1].status">
-            두번째 탭 영역
-        </div>
-        <div ng-show="vm.tabArea[2].status">
-            세번째 탭 영역
-        </div>
-        <div ng-show="vm.tabArea[3].status">
-            네번째 탭 영역
-        </div>
-        <div ng-show="vm.tabArea[4].status">
-            다섯번째 탭 영역
-        </div>
-        <div ng-show="vm.tabArea[5].status">
-            여섯번째 탭 영역
-        </div>
-        <div ng-show="vm.tabArea[6].status">
-            일곱번째 탭 영역
         </div>
     </div>
 </div>

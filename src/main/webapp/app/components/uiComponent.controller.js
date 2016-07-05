@@ -102,13 +102,19 @@
 
         //  탭 메뉴 표시 여부 결정
         vm.tabArea = [
-            { status: true },
-            { status: false },
-            { status: false },
-            { status: false },
-            { status: false },
-            { status: false },
-            { status: false }
+            { status: true },   // side nav
+            { status: false },  // select box
+            { status: false },  // Input box
+            { status: false },  // alerts
+            { status: false },  // Toast
+            { status: false },  // pagination
+            { status: false },  // tooltip
+            { status: false },  // datePicker
+            { status: false },  // Modal
+            { status: false },  // xeditable
+            { status: false },  // button
+            { status: false },  // ngGallery
+            { status: false }   // Tree
         ];
 
 
