@@ -29,28 +29,38 @@ function datePicker($log) {
             };
 
             $scope.validation = function() {
-                /*
-                 (2[0-3]|[01][0-9]):[0-5][0-9]
-                 */
-                
-                var regex = /[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/;
 
-                return regex.test($scope.selectedDate);
+                var regexDate = /[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])/;
+                var regexDateTime = /[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) (2[0-3]|[01][0-9]):[0-5][0-9]/;
+
+                return regexDate.test($scope.selectedDate);
             };
+
+            $scope.updateValue = function(value) {
+                $scope.selectedDate = value;
+                $scope.isValid = $scope.validation();
+
+                var linkedPicker = $scope.datePickerModel.linkedPicker;
+
+                if($scope.isValid) {
+                    if(linkedPicker.type == 'minDate') {
+                        linkedPicker.model.option.minDate = new Date(value);
+                    } else if(linkedPicker.type == 'maxDate') {
+                        linkedPicker.model.option.maxDate = new Date(value);
+                    }
+                }
+            }
         }],
         link: function (scope, element, attrs) {
 
             $(element).find("input").change(function() {
-                scope.selectedDate = $(this).val();
-                scope.isValid = scope.validation();
+                scope.updateValue($(this).val());
             });
             $(element).find("input").keyup(function() {
-                scope.selectedDate = $(this).val();
-                scope.isValid = scope.validation();
+                scope.updateValue($(this).val());
             });
             $(element).find("input").blur(function() {
-                scope.selectedDate = $(this).val();
-                scope.isValid = scope.validation();
+                scope.updateValue($(this).val());
             });
         }
     }
