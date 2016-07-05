@@ -48,11 +48,11 @@ function periodDatePicker($timeout, $log) {
                     }
                 }
             });
-            element.on('click', function(_this) {
-                $timeout(function () {
-                    $(element).find("input[name=datePicker]:eq(0)").focus();
-                }, 200);
-            });
+            // element.on('click', function(_this) {
+            //     $timeout(function () {
+            //         $(element).find("input[name=datePicker]:eq(0)").focus();
+            //     }, 200);
+            // });
         }
     }
 }

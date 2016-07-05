@@ -193,17 +193,7 @@
             }
         };
 
-        this.pickerDirective = {
-            id : 'pickerDirective',
-            date: new Date(),
-            option: {
-                maskFormat: '9999-99-99',
-                dateFormat: 'yyyy-MM-dd',
-                showWeeks: false,
-                startingDay: 1,
-                minDate: new Date()
-            }
-        };
+
         this.pickerDirective2 = {
             id : 'pickerDirective',
             date: new Date('2016-05-01'),
@@ -224,7 +214,21 @@
                 startingDay: 1
             }
         };
-
+        this.pickerDirective = {
+            id : 'pickerDirective',
+            date: new Date(),
+            option: {
+                maskFormat: '9999-99-99',
+                dateFormat: 'yyyy-MM-dd',
+                showWeeks: false,
+                startingDay: 1,
+                minDate: new Date()
+            },
+            linkedPicker : {
+                model : this.pickerDirective3,
+                type : 'maxDate'
+            }
+        };
         // time picker
         this.picker2 = {
             date: new Date('2015-03-01T12:30:00Z'),

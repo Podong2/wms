@@ -1,4 +1,4 @@
-<div class="input-group">
+<div class="input-group" ng-class="isValid == false ? 'has-error' : ''">
     <input type="text"
            name="datePicker"
            class="form-control"
@@ -15,4 +15,9 @@
             <i class="fa fa-calendar"></i>
         </button>
     </span>
+</div>
+<div class="has-error">
+    <p class="help-block" ng-show="isValid == false">
+        입력된 날짜가 유효하지 않습니다.
+    </p>
 </div>
