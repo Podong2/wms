@@ -8,8 +8,8 @@
 
 angular.module('wmsApp')
     .directive('autocomplete', autocomplete);
-autocomplete.$inject=['$document', '$log', '$compile', 'findUser']
-function autocomplete($document, $log, $compile, findUser) {
+autocomplete.$inject=['$document', '$log', '$compile', 'findUser', '$q']
+function autocomplete($document, $log, $compile, findUser, $q) {
 
     return {
         restrict: 'E',
@@ -17,7 +17,7 @@ function autocomplete($document, $log, $compile, findUser) {
         scope: {
             source : '&',
             ngModel : '=',
-            displayproperty : '=',
+            //displayproperty : '=',
             multiple : '=',
             maxresultstoshow : '='
         },
@@ -31,19 +31,21 @@ function autocomplete($document, $log, $compile, findUser) {
         link: function (scope, element, attrs) {
             scope.tagList=[];
             scope.test = function (value) {
-                scope.$apply(function(){
-                    scope.source(value).then(function (response) {
-                        scope.tagList = response;
-                    });
+                scope.$apply();
+                var deferred = $q.defer();
+                scope.$parent.loadData(value).then(function (response) {
+                    deferred.resolve(response);
                 });
+                return deferred.promise;
             }
+
 
             //scope.model = 'tags'
             //scope.displayproperty = 'name'
             //scope.multiple = 'true'
             //scope.maxresultstoshow = '20'
             //scope.model = attrs['ngModel'];
-            //scope.displayproperty = attrs['displayproperty'];
+            scope.displayproperty = attrs['displayproperty'];
             //scope.multiple = attrs['multiple'];
             //scope.maxresultstoshow = attrs['maxresultstoshow'];
             //var template = '<tags-input ng-model="'+ scope.model +'" display-property="'+ scope.displayproperty +'" multiple="'+ scope.multiple +'">' +
