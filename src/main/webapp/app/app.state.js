@@ -21,9 +21,9 @@
                 //permissionLoader : function (PagePermission) {
                 //    return PagePermission.getPagePermission();
                 //},
-                authorize: ['Auth', 'Principal',
-                    function (Auth, Principal) { // 사용자 정보가 있을 시 요청
-                        if(Principal.isIdentityResolved()) return Auth.authorize();
+                authorize: ['Auth',
+                    function (Auth) {
+                        return Auth.authorize();
                     }
                 ],
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {

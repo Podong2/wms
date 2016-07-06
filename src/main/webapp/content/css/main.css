@@ -702,9 +702,14 @@ Social Buttons
     .slideBtnArea {
         display: none !important;
     }
+    .slideMenu{
+        overflow-x: hidden;
+        overflow-y: hidden;
+        margin: 15px 45px 0px 45px;
+    }
     .slideMenu ul{
         white-space: nowrap;
-        width: 100% !important;
+        width: 1370px !important;
     }
 }
 @media (min-width: 1250px) {
@@ -713,7 +718,7 @@ Social Buttons
     }
     .slideMenu ul{
         white-space: nowrap;
-        width: 100% !important;
+        width: auto;
     }
 }
 
@@ -1380,16 +1385,18 @@ table th {
 .tooltip-inner {
     padding: 3px 4px !important;
 }
-.edit-btn {
-    display: none;
-    padding: 0px 8px;
-}
+
 .taskEdit:hover .edit-btn{
     display: block;
 }
+
 /*------------ btn css start -------------*/
-.btn{
+.btn-radius{
     border-radius: 2px !important;
+}
+.edit-btn { /* 수정 필요 */
+    display: none;
+    padding: 0px 8px;
 }
 /*------------ btn css end -------------*/
 

@@ -11,11 +11,13 @@
 
     angular
         .module('wmsApp')
-        .directive('inputCheck', inputCheck);
+        .directive('inputBox', inputBox);
+    inputBox.$inject=['$compile'];
 
-    function inputCheck () {
+    function inputBox ($compile) {
         var directive = {
-            restrict: 'A',
+            restrict: 'E',
+            //templateUrl : 'app/components/input/inputTemplate.html',
             link: linkFunc
         };
 
@@ -23,40 +25,38 @@
 
         function linkFunc (scope, element, attrs) {
 
-            var checkIcon;
-            var checkClass;
+            scope.formName = attrs['formname'];
+            scope.inputName = attrs['inputname'];
+            scope.minlength = attrs['minlength'];
+            scope.maxlength = attrs['maxlength'];
+            scope.pattern = attrs['pattern'];
+            scope.modelName = attrs['modelname'];
+            scope.requiredText = attrs['requiredtext'];
+            scope.minlengthText = attrs['mintext'];
+            scope.maxlengthText = attrs['maxtext'];
+            scope.patternText = attrs['patterntext'];
+            scope.placeholderText = attrs['placeholdertext'];
 
-            var checktype = scope.$eval(attrs.checktype);
-            var massage = scope.$eval(attrs.massage);
-            if (checktype == "success") {
-                checkIcon = "glyphicon-ok";
-                checkClass = "has-success";
-            }
-            element.attr("class", checkClass);
-            element.append("<span class='glyphicon " + checkIcon + " form-control-feedback' aria-hidden='true'></span>");
+            var template = '<form  name="'+ scope.formName +'" role="'+ scope.formName +'" novalidate show-validation>' +
+                '<div class="form-group">'+
+                                '<label class="control-label" for="'+ scope.inputName +'" translate="global.form.username">Username</label>'+
+                                '<input type="text" class="form-control" id="'+ scope.inputName +'" name="'+ scope.inputName +'" placeholder="{{\''+ scope.placeholderText +'\' | translate}}" ' +
+                                'ng-model="'+ scope.modelName +'" ng-minlength="'+ scope.minlength +'" ng-maxlength="'+ scope.maxlength +'" ng-pattern="'+ scope.pattern +'" required wms-kr-update>'+
+                                '<div ng-show="'+ scope.formName +'.'+ scope.inputName +'.$dirty && '+ scope.formName +'.'+ scope.inputName +'.$invalid">' +
+                                    '<p class="help-block" ng-show="'+ scope.formName +'.'+ scope.inputName +'.$error.required" translate="'+scope.requiredText+'"></p>' +
+                                    '<p class="help-block" ng-show="'+ scope.formName +'.'+ scope.inputName +'.$error.minlength" translate="'+scope.minlengthText+'"></p>' +
+                                    '<p class="help-block" ng-show="'+ scope.formName +'.'+ scope.inputName +'.$error.maxlength" translate="'+scope.maxlengthText+'"></p>' +
+                                    '<p class="help-block" ng-show="'+ scope.formName +'.'+ scope.inputName +'.$error.pattern" translate="'+scope.patternText+'"></p>' +
+                                '</div>' +
+                            '</div>';
+                            '</form>';
+            var linkFn = $compile(template);
+            var content = linkFn(scope);
+            element.append(content);
 
 
 
 
-
-
-
-/*
-            scope.$watch(function() {
-
-                //if (checkType == "success") {
-                //    checkIcon = "glyphicon-ok";
-                //    checkClass = "has-success";
-                //}
-                element.attr("class", checkClass);
-                element.append("<span class='glyphicon " + checkIcon + " form-control-feedback' aria-hidden='true'></span>");
-            });
-*/
-
-
-//<span class="glyphicon glyphicon-ok form-control-feedback" aria-hidden="true"></span>
-//<span class="glyphicon glyphicon-warning-sign form-control-feedback" aria-hidden="true"></span>
-//<span class="glyphicon glyphicon-remove form-control-feedback" aria-hidden="true"></span>
         }
     }
 })();
