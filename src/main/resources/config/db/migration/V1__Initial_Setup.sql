@@ -13,7 +13,7 @@ CREATE TABLE owl_user
 	password_hash        varchar(60) NOT NULL,
 	name                 varchar(100) NULL,
 	email                varchar(100) NULL,
-	activated            bit(1) NOT NULL,
+	activated            char(1) NOT NULL,
 	lang_key             varchar(5) NOT NULL,
 	activation_key       varchar(20) NULL,
 	reset_key            varchar(20) NULL,
