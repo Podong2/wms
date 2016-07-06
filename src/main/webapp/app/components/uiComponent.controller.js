@@ -13,9 +13,9 @@
         .module('wmsApp')
         .controller('UiComponentController', UiComponentController);
 
-    UiComponentController.$inject = ['$scope', 'Principal', 'ModalService', '$state', 'toastr', 'summaryService', 'toastrConfig', 'FIndCode', '$log', 'findUser', '$q', 'makeTableService'];
+    UiComponentController.$inject = ['$scope', 'Principal', 'ModalService', '$state', 'toastr', 'summaryService', 'toastrConfig', 'FIndCode', '$log', 'findUser', '$q', 'makeTableService', '$TreeDnDConvert'];
 
-    function UiComponentController ($scope, Principal, ModalService, $state, toastr, summaryService, toastrConfig, FIndCode, $log, findUser, $q, makeTableService) {
+    function UiComponentController ($scope, Principal, ModalService, $state, toastr, summaryService, toastrConfig, FIndCode, $log, findUser, $q, makeTableService, $TreeDnDConvert) {
         var vm = this;
 
         vm.openToast = openToast;
@@ -133,6 +133,7 @@
             { status: false },   // layout
             { status: false },   // submit
             { status: true }   // auto-complete
+            { status: false }   // tree
         ];
 
 
@@ -183,6 +184,36 @@
                 ]
             }
         ];
+
+        $scope.wmsTreeData = [{
+            "id": 1,
+            "parentId": null,
+            "name": "가가가가가가가가",
+            "icon": "glyphicon glyphicon-align-justify"
+        },
+        {
+            "id": 2,
+            "parentId": 1,
+            "name": "다다다다다다다다",
+            "icon": "glyphicon glyphicon-tag"
+        },
+        {
+            "id": 3,
+            "parentId": 2,
+            "name": "나나나나나나나나"
+        },
+        {
+            "id": 201,
+            "parentId": null,
+            "name": "라라라라라라라라",
+            "icon": "glyphicon glyphicon-cog"
+        },
+        {
+            "id": 301,
+            "parentId": null,
+            "name": "마마마마마마마마",
+            "icon": "glyphicon glyphicon-align-justify"
+        }];
         //Tree values end ///////////////////////////////////////////////////////////////////////////
 
 
