@@ -32,7 +32,8 @@
             'summernote',
             'angularFileUpload',
             'ui.mask',
-            'jsTree.directive'
+            'jsTree.directive',
+            'ngTagsInput'
         ])
         .config(config)
         .run(run);

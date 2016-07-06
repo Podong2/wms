@@ -697,6 +697,9 @@ Social Buttons
     .detail-info-area{
         border-bottom-width: 0px !important;
     }
+    .detail-info-area .header{
+        border-bottom: 1px solid #ddd;
+    }
 }
 @media screen and (min-width: 992px) and (max-width: 1366px) {
     .slideBtnArea {
@@ -1310,7 +1313,7 @@ table th {
 }
 
 /* 상세 요약정보 테이블 css start */
-.detail-info-area > .row .row > div:first-child{
+.detail-info-area > .row .row > .header-color{
     font-weight: bold;
     color: #fff;
     background-color: #5bc0de;
@@ -1318,16 +1321,15 @@ table th {
 .detail-info-area > .row .row > div{
     padding:10px;
 }
+.detail-info-area:first-child{
+    border-top : 1px solid #ddd;
+}
 .detail-info-area{
-    border: 0 solid #ddd;
-    border-bottom-width: 1px;
+    border-bottom: 1px solid #ddd;
     /*overflow: hidden;*/
 }
 .detail-info-area > .row{
     margin: 0;
-}
-.detail-info-area:first-child {
-    border-top : 1px solid #ddd;
 }
 /* 상세 요약정보 테이블 css end */
 

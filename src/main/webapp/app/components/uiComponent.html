@@ -31,6 +31,7 @@
                     <li ng-class="vm.tabArea[12].status == true ? 'active' : ''" ng-click="vm.tabDisplay(12)"><span translate="">Tree</span></li>
                     <li ng-class="vm.tabArea[13].status == true ? 'active' : ''" ng-click="vm.tabDisplay(13)"><span translate="">Layout</span></li>
                     <li ng-class="vm.tabArea[14].status == true ? 'active' : ''" ng-click="vm.tabDisplay(14)"><span translate="">ProgressBar</span></li>
+                    <li ng-class="vm.tabArea[15].status == true ? 'active' : ''" ng-click="vm.tabDisplay(15)"><span translate="">auto-complete</span></li>
                 </ul>
             </div>
         </div><br/><br/>
@@ -910,37 +911,21 @@
 
             <div ng-show="vm.tabArea[13].status">
                 <h3><b>Layout</b></h3>
-                <div class="ibox">
-                    <div class="ibox_content">
-                        <div ng-repeat="summary in summaryConfigs" class="detail-info-area">
-                            <div class="row">
-                                <div class="col-xs-12 col-sm-6 col-md-6">
-                                    <div class="row">
-                                        <div class="col-md-6" ng-show="summary[0].name != ''" translate="{{ summary[0].name }}"></div>
-                                        <div class="col-md-6" ng-show="summary[0].name != '' && !summary[0].renderer">{{ responseData.data[0][summary[0].key] }}</div>
-                                        <div class="col-md-6" ng-show="summary[0].name != '' && summary[0].renderer">
-                                            <owl-custom-renderer index="0" property="{{summary[0].renderer}}"></owl-custom-renderer>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-xs-12 col-sm-6 col-md-6" ng-if="responseData.data[0][summary[1].key] != null">
-                                    <div class="row">
-                                        <div class="col-md-6" ng-show="summary[1].name != ''" translate="{{ summary[1].name }}"></div>
-                                        <div class="col-md-6" ng-show="summary[1].name != '' && !summary[1].renderer">{{ responseData.data[0][summary[1].key] }}</div>
-                                        <div class="col-md-6" ng-show="summary[1].name != '' && summary[1].renderer">
-                                            <owl-custom-renderer index="0" property="{{summary[1].renderer}}"></owl-custom-renderer>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <ng-include src="'app/components/common/detailBody.html'"></ng-include>
             </div>
 
             <div ng-show="vm.tabArea[14].status">
                 <button ng-click="vm.submitConfig()" class="btn btn_icon btn_customs" owl-btn-save></button>
             </div>
+            <div ng-show="vm.tabArea[15].status">
+                <!--<tags-input ng-model="tags" display-property="name" multiple="false">-->
+                    <!--<auto-complete source="loadData($query)" multiple="false" max-results-to-show="20"></auto-complete>-->
+                <!--</tags-input>-->
+
+                <autocomplete source="loadData()" query="query" ng-model="tags" displayProperty="name" multiple="false" maxResultsToShow="20"></autocomplete>
+                {{tags}}
+            </div>
+
 
         </div>
     </div>

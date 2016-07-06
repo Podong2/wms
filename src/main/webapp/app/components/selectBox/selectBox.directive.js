@@ -11,17 +11,6 @@ angular.module('wmsApp')
 selectBox.$inject=['$document', '$log', '$compile']
 function selectBox($document, $log, $compile) {
 
-    function removeTarget (list, target) {
-        var tempList = [];
-
-        angular.forEach(list, function (listTarget, index) {
-            if (target.id != listTarget.id) {
-                tempList.push(listTarget);
-            }
-        });
-        return tempList;
-    }
-
     return {
         restrict: 'E',
         required : "ngModel",

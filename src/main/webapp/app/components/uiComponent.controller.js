@@ -13,9 +13,9 @@
         .module('wmsApp')
         .controller('UiComponentController', UiComponentController);
 
-    UiComponentController.$inject = ['$scope', 'Principal', 'ModalService', '$state', 'toastr', 'summaryService', 'toastrConfig', 'FIndCode', '$log'];
+    UiComponentController.$inject = ['$scope', 'Principal', 'ModalService', '$state', 'toastr', 'summaryService', 'toastrConfig', 'FIndCode', '$log', 'findUser', '$q', 'makeTableService'];
 
-    function UiComponentController ($scope, Principal, ModalService, $state, toastr, summaryService, toastrConfig, FIndCode, $log) {
+    function UiComponentController ($scope, Principal, ModalService, $state, toastr, summaryService, toastrConfig, FIndCode, $log, findUser, $q, makeTableService) {
         var vm = this;
 
         vm.openToast = openToast;
@@ -27,6 +27,20 @@
         vm.showStateArray = showStateArray;
         vm.tabDisplay = tabDisplay;
         vm.submitConfig = submitConfig;
+
+
+        $scope.tags = [];
+        $scope.loadData = function(name) {
+            $log.debug("name : ", name)
+            //var deferred = $q.defer();
+            return findUser.findByName(name).then(function(result){
+                deferred.resolve(result);
+                $log.debug("userList : ", result);
+                return result;
+            }); //user search
+            //return deferred.promise;
+        };
+
 
         vm.textValue = "";
         //select box
@@ -104,7 +118,7 @@
         //  탭 메뉴 표시 여부 결정
         vm.tabArea = [
             { status: false },   // side nav
-            { status: true },  // select box
+            { status: false },  // select box
             { status: false },  // Input box
             { status: false },  // alerts
             { status: false },  // Toast
@@ -117,7 +131,8 @@
             { status: false },  // ngGallery
             { status: false },   // Tree
             { status: false },   // layout
-            { status: false }   // submit
+            { status: false },   // submit
+            { status: true }   // auto-complete
         ];
 
 
@@ -590,6 +605,10 @@
 
 
         /*--------------------- layout - grid system --------------------*/
+        $scope.tempConfigs= [];
+        $scope.summaryConfigs = [];
+
+        // 테스트 데이타
         $scope.responseData = {
             data : [{
                 assigneeName : "Administrator",
@@ -599,29 +618,57 @@
             }]
         };
 
-        $scope.tempConfigs= [];
-        $scope.summaryConfigs = [];
-        function makeTableConfig(){
-            $scope.tempConfigs.push(summaryService.getConfig()
-                .setName("이름")
-                .setKey("name"));
-            $scope.tempConfigs.push(summaryService.getConfig()
-                .setName("날짜")
-                .setKey("dueDate"));
+        $scope.makeTableData = [
+            {
+                key : "name",
+                language : "이름",
+                renderer : "randerer",
+                rendererType : "text"
+            },
+            {
+                key : "dueDate",
+                language : "날짜",
+                renderer : "randerer",
+                rendererType : "date"
+            },
+            {
+                key : "severityName",
+                language : "중요도",
+                renderer : "randerer",
+                rendererType : "select"
+            },
+            {
+                key : "assigneeName",
+                language : "담당자",
+                renderer : "randerer",
+                rendererType : "userPicker"
+            }
+        ];
+        $scope.summaryConfigs = makeTableService.detailMultiTable($scope.makeTableData);
 
-            $scope.summaryConfigs.push($scope.tempConfigs);
-            $scope.tempConfigs = [];
-
-            $scope.tempConfigs.push(summaryService.getConfig()
-                .setName("중요도")
-                .setKey("severityName"));
-            $scope.tempConfigs.push(summaryService.getConfig()
-                .setName("담당자")
-                .setKey("assigneeName"));
-
-            $scope.summaryConfigs.push($scope.tempConfigs);
-        }
-        makeTableConfig(); // 테이블 그리기
+        //
+        //function makeTableConfig(){
+        //    $scope.tempConfigs.push(summaryService.getConfig()
+        //        .setName("이름")
+        //        .setKey("name"));
+        //    $scope.tempConfigs.push(summaryService.getConfig()
+        //        .setName("날짜")
+        //        .setKey("dueDate"));
+        //
+        //    $scope.summaryConfigs.push($scope.tempConfigs);
+        //    $scope.tempConfigs = [];
+        //
+        //    $scope.tempConfigs.push(summaryService.getConfig()
+        //        .setName("중요도")
+        //        .setKey("severityName"));
+        //    $scope.tempConfigs.push(summaryService.getConfig()
+        //        .setName("담당자")
+        //        .setKey("assigneeName"));
+        //
+        //    $scope.summaryConfigs.push($scope.tempConfigs);
+        //    $scope.tempConfigs = [];
+        //}
+        //makeTableConfig(); // 테이블 그리기
         /*--------------------- layout - grid system end --------------------*/
 
 
