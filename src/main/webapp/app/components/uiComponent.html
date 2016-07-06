@@ -963,11 +963,11 @@
                 <button ng-click="vm.submitConfig()" class="btn btn_icon btn_customs" owl-btn-save></button>
             </div>
             <div ng-show="vm.tabArea[15].status">
-                <!--<tags-input ng-model="tags" display-property="name" multiple="false">-->
-                    <!--<auto-complete source="loadData($query)" multiple="false" max-results-to-show="20"></auto-complete>-->
-                <!--</tags-input>-->
+                <tags-input ng-model="tags" display-property="name" multiple="false">
+                    <auto-complete source="loadData($query)" multiple="false" max-results-to-show="20"></auto-complete>
+                </tags-input>
 
-                <autocomplete source="loadData(query)" ng-model="tags" displayProperty="name" multiple="false" maxResultsToShow="20"></autocomplete>
+                <autocomplete tags="tags" display-property="name" multiple="false" max-results-to-show="20"></autocomplete>
                 {{tags}}
             </div>
 
