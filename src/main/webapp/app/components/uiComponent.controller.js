@@ -32,13 +32,12 @@
         $scope.tags = [];
         $scope.loadData = function(name) {
             $log.debug("name : ", name)
-            //var deferred = $q.defer();
-            return findUser.findByName(name).then(function(result){
+            var deferred = $q.defer();
+            findUser.findByName(name).then(function(result){
                 deferred.resolve(result);
                 $log.debug("userList : ", result);
-                return result;
             }); //user search
-            //return deferred.promise;
+            return deferred.promise;
         };
 
 
@@ -132,7 +131,7 @@
             { status: false },   // Tree
             { status: false },   // layout
             { status: false },   // submit
-            { status: true }   // auto-complete
+            { status: true },  // auto-complete
             { status: false }   // tree
         ];
 
