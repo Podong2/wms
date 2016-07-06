@@ -32,7 +32,7 @@
             'summernote',
             'angularFileUpload',
             'ui.mask',
-            'jsTree.directive'
+            'ntt.TreeDnD'
         ])
         .config(config)
         .run(run);
