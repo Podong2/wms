@@ -31,7 +31,8 @@
             'smart-table',
             'summernote',
             'angularFileUpload',
-            'ui.mask'
+            'ui.mask',
+            'jsTree.directive'
         ])
         .config(config)
         .run(run);
