@@ -23,15 +23,11 @@ function autocomplete($document, $log, $compile, findUser, $q) {
         replace: false,
         templateUrl : 'app/components/ng-tags-input/tagsInput.html',
         controller : ['$scope', function($scope) {
-            $scope.loadData = function(name) {
-                var deferred = $q.defer();
-                findUser.findByName(name).then(function(result){
-                    deferred.resolve(result);
-                }); //user search
-                return deferred.promise;
-            };
         }],
         link: function (scope, element, attrs) {
+            scope.loadData = function(name) {
+                return scope.source()(name);
+            };
+        }
         }
     }
-}

@@ -31,7 +31,7 @@
 
         $scope.tags = [];
         $scope.loadData = function(name) {
-            $log.debug("name : ", name)
+            $log.debug("name - : ", name)
             var deferred = $q.defer();
             findUser.findByName(name).then(function(result){
                 deferred.resolve(result);
