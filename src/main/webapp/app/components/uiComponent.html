@@ -33,6 +33,7 @@
                     <li ng-class="vm.tabArea[14].status == true ? 'active' : ''" ng-click="vm.tabDisplay(14)"><span translate="">ProgressBar</span></li>
                     <li ng-class="vm.tabArea[15].status == true ? 'active' : ''" ng-click="vm.tabDisplay(15)"><span translate="">auto-complete</span></li>
                     <li ng-class="vm.tabArea[16].status == true ? 'active' : ''" ng-click="vm.tabDisplay(16)"><span translate="">dashboard</span></li>
+                    <li ng-class="vm.tabArea[16].status == true ? 'active' : ''" ng-click="vm.tabDisplay(17)"><span translate="">Table</span></li>
                 </ul>
             </div>
         </div><br/><br/>
@@ -982,6 +983,12 @@
                     maximizable : 팝업 보기 모드 (boolean)
                     enable-confirm-delete : 위젯 삭제시 삭제확인 팝업 오픈 (boolean)
                 -->
+            </div>
+            <div ng-show="vm.tabArea[17].status">
+                <h3><b>Table</b></h3>
+                <button ng-click="loadWmsTableData()">add</button>
+
+                <wms-table ng-model="vm.wmsTableData" table-configs="vm.tableConfigs" update-callback="updateCallback"></wms-table>
             </div>
         </div>
     </div>

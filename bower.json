@@ -57,7 +57,8 @@
     "showdown": "^1.4.2",
     "angular-markdown-directive": "^0.3.1",
     "adf-widget-github": "^0.4.1",
-    "adf-widget-travis": "^0.1.1"
+    "adf-widget-travis": "^0.1.1",
+    "ng-table": "^1.0.0"
   },
   "devDependencies": {
     "angular-mocks": "1.5.5"

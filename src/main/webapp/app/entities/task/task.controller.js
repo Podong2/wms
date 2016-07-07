@@ -28,6 +28,7 @@
         vm.singleUpload = singleUpload;
         vm.page = 1;
         vm.totalItems = null;
+        vm.tasks = [];
 
         //	목록 데이터 저장
         vm.responseData = {
@@ -141,7 +142,10 @@
                 vm.totalItems = headers('X-Total-Count');
                 vm.queryCount = vm.totalItems;
 
-                vm.tasks = data;
+                // vm.tasks = data;
+                angular.forEach(data, function(task){
+                    vm.tasks.push(task);
+                });
                 vm.responseData.data = data;
                 $log.debug("data : ", vm.responseData);
                 vm.page = pagingParams.page;
@@ -223,13 +227,13 @@
 
             // TODO 페이지 처리 공통 처리 할것
             vm.searchQuery.page = (vm.page -1);
-            vm.searchQuery.size = 20;
+            vm.searchQuery.size = paginationConstants.itemsPerPage;
             vm.searchQuery.sort = "desc";
             vm.searchQuery.sortField = "id";
 
             // {page: vm.page - 1, size: paginationConstants.itemsPerPage}
             TaskListSearch.findTaskList(vm.searchQuery).then(function(result){
-                $log.debug("vm.tasks : ", result);
+                // $log.debug("vm.tasks : ", result);
                 //vm.tasks = result;
 
                 vm.links = ParseLinks.parse(result.headers('link'));
@@ -237,6 +241,12 @@
 
                 $log.debug("vm.links : ", vm.links);
                 $log.debug("vm.totalItems : ", vm.totalItems);
+
+                vm.tasks.length = 0;
+
+                angular.forEach(result.data, function(task){
+                    vm.tasks.push(task);
+                });
 
                 vm.responseData = result;
             })
@@ -295,8 +305,8 @@
             TaskEdit.singleUpload(taskInfo).then(function (response) {
                 $log.debug("Task single upload success.");
             });
-            $scope.tableConfigs = []; // 테이블 초기화
-            makeTableConfig(); // 테이블 다시 그리기
+            // $scope.tableConfigs = []; // 테이블 초기화
+            // makeTableConfig(); // 테이블 다시 그리기
         }
 
         $scope.makeTableConfig = makeTableConfig;
@@ -310,7 +320,7 @@
                 .setDType("check"));
             $scope.tableConfigs.push(tableService.getConfig("이슈 명", "name")
                 .setDType("renderer")
-                .setDRenderer("issue_detail"));
+                .setDRenderer("TASK_NAME_EDIT"));
             $scope.tableConfigs.push(tableService.getConfig("담당자", "assigneeName")
                 .setHWidth("width-160-p")
                 .setDAlign("text-center"));
@@ -335,12 +345,11 @@
                 .setDRenderer("config"));
         }
 
-        vm.getData = getData;
-        function getData () {
-            return vm.responseData.data;
-        }
+        // vm.getData = getData;
+        // function getData () {
+        //     return vm.responseData.data;
+        // }
 
         $scope.makeTableConfig();
-
     }
 })();

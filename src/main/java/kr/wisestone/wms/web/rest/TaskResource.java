@@ -276,7 +276,7 @@ public class TaskResource {
     public ResponseEntity<Void> findSimilar() throws URISyntaxException {
 
         Code code = new Code();
-        code.setId(10002L);
+        code.setId(10000L);
 
         User user = new User();
         user.setId(3L);

@@ -40,7 +40,10 @@
             'adf.widget.linklist',
             'adf.widget.markdown',
             'adf.widget.github',
-            'adf.widget.travis'
+            'adf.widget.travis',
+            'ngTagsInput',
+            'lrDragNDrop',
+            'cellCursor'
         ])
         .config(config)
         .run(run);

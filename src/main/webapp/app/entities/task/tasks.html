@@ -128,7 +128,9 @@
     </div>
     <div class="table-responsive voffset3">
 
-        <ng-include src="'app/components/common/smartBody.html'"></ng-include>
+        <wms-table ng-model="vm.tasks" table-configs="tableConfigs" update-callback="vm.singleUpload"></wms-table>
+
+        <!--<ng-include src="'app/components/common/smartBody.html'"></ng-include>-->
     </div>
     <div class="text-center">
         <jhi-item-count page="vm.page" total="vm.queryCount"></jhi-item-count>
