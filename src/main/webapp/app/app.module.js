@@ -43,7 +43,6 @@
             'adf.widget.travis',
             'ngTagsInput',
             'lrDragNDrop',
-            'ngTable',
             'cellCursor'
         ])
         .config(config)

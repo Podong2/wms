@@ -132,6 +132,7 @@
             { status: false },   // layout
             { status: false },   // submit
             { status: false },  // auto-complete
+            { status: false },  // table
             { status: true }  // table
         ];
 
