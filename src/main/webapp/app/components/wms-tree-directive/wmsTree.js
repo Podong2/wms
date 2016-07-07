@@ -60,7 +60,7 @@ function wmsTree($log) {
         }],
         link: function (scope, element, attrs) {
 
-            $(element).find('tree-dnd').bind("keydown keypress", function (event) {
+            element.find('tree-dnd').bind("keydown keypress", function (event) {
                 scope.$apply(function () {
                     if(event.keyCode === 40) {
                         scope.my_tree.select_next_node();
