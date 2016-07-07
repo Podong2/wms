@@ -32,7 +32,8 @@
                     <li ng-class="vm.tabArea[13].status == true ? 'active' : ''" ng-click="vm.tabDisplay(13)"><span translate="">Layout</span></li>
                     <li ng-class="vm.tabArea[14].status == true ? 'active' : ''" ng-click="vm.tabDisplay(14)"><span translate="">ProgressBar</span></li>
                     <li ng-class="vm.tabArea[15].status == true ? 'active' : ''" ng-click="vm.tabDisplay(15)"><span translate="">auto-complete</span></li>
-                    <li ng-class="vm.tabArea[16].status == true ? 'active' : ''" ng-click="vm.tabDisplay(16)"><span translate="">Table</span></li>
+                    <li ng-class="vm.tabArea[16].status == true ? 'active' : ''" ng-click="vm.tabDisplay(16)"><span translate="">dashboard</span></li>
+                    <li ng-class="vm.tabArea[16].status == true ? 'active' : ''" ng-click="vm.tabDisplay(17)"><span translate="">Table</span></li>
                 </ul>
             </div>
         </div><br/><br/>
@@ -971,6 +972,19 @@
                 {{tags}}
             </div>
             <div ng-show="vm.tabArea[16].status">
+                <!--<adf-dashboard name="mydashboard" collapsible="true" editable="true" structure="6-6" adf-model="model" maximizable="true" enable-confirm-delete="true" categories="false"/>-->
+                <dashboard name="mydashboard" collapsible="true" editable="true" structure="6-6" adf-model="model" maximizable="true" enable-confirm-delete="true"/>
+                <!--
+                    name : 대시보드의 이름을 지정함
+                    collapsible : 접기기능 (boolean)
+                    editable : 수정버튼 on/off (boolean)
+                    structure : 초기 레이아웃 설정
+                    adf-model : 대시보드 model
+                    maximizable : 팝업 보기 모드 (boolean)
+                    enable-confirm-delete : 위젯 삭제시 삭제확인 팝업 오픈 (boolean)
+                -->
+            </div>
+            <div ng-show="vm.tabArea[17].status">
                 <h3><b>Table</b></h3>
                 <button ng-click="loadWmsTableData()">add</button>
 

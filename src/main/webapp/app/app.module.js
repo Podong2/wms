@@ -34,6 +34,14 @@
             'ui.mask',
             'ntt.TreeDnD',
             'ngTagsInput',
+            'adf',
+            'adf.structures.base',
+            'adf.widget.news',
+            'adf.widget.linklist',
+            'adf.widget.markdown',
+            'adf.widget.github',
+            'adf.widget.travis',
+            'ngTagsInput',
             'lrDragNDrop',
             'ngTable',
             'cellCursor'
@@ -41,10 +49,10 @@
         .config(config)
         .run(run);
 
-    config.$inject = ['nyaBsConfigProvider'];
+    config.$inject = ['nyaBsConfigProvider', 'dashboardProvider'];
     run.$inject = ['stateHandler', 'translationHandler', 'editableOptions'];
 
-    function config(nyaBsConfigProvider) {
+    function config(nyaBsConfigProvider, dashboardProvider) {
         nyaBsConfigProvider.setLocalizedText('ko', {
             defaultNoneSelection: '선택 해주세요',
             noSearchResult: '검색 결과가 존재하지 않습니다',
@@ -68,6 +76,17 @@
         });
 
         nyaBsConfigProvider.useLocale('ko');
+
+        dashboardProvider
+            .structure('6-6', {
+                rows: [{
+                    columns: [{
+                        styleClass: 'col-md-6'
+                    }, {
+                        styleClass: 'col-md-6'
+                    }]
+                }]
+            });
     }
 
     function run(stateHandler, translationHandler, editableOptions) {

@@ -13,14 +13,18 @@
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.css">
     <link rel="stylesheet" href="bower_components/react-bootstrap-table/css/react-bootstrap-table.css">
+    <link rel="stylesheet" href="bower_components/bootstrap-fileinput/css/fileinput.min.css">
     <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css">
     <link rel="stylesheet" href="bower_components/nya-bootstrap-select/dist/css/nya-bs-select.css">
     <link rel="stylesheet" href="bower_components/angular-toastr/dist/angular-toastr.css">
     <link rel="stylesheet" href="bower_components/angular-xeditable/dist/css/xeditable.css">
     <link rel="stylesheet" href="bower_components/angular-ui-tree/dist/angular-ui-tree.css">
-    <link rel="stylesheet" href="bower_components/bootstrap-fileinput/css/fileinput.min.css">
-    <link href="bower_components/angular-xeditable/dist/css/xeditable.css" rel="stylesheet">
-    <link href="bower_components/ng-tags-input/ng-tags-input.css" rel="stylesheet">
+    <link rel="stylesheet" href="bower_components/angular-tree-dnd/dist/ng-tree-dnd.css">
+    <link rel="stylesheet" href="bower_components/angular-tree-dnd/dist/ng-tree-dnd.min.css">
+    <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.css">
+    <link rel="stylesheet" href="bower_components/angular-dashboard-framework/dist/angular-dashboard-framework.css">
+    <link rel="stylesheet" href="bower_components/angular-chart.js/dist/angular-chart.css">
+    <link rel="stylesheet" href="bower_components/adf-widget-travis/dist/adf-widget-travis.css">
     <link href="bower_components/ng-table/dist/ng-table.css" rel="stylesheet">
     <!-- endinject -->
     <!-- endbuild -->
@@ -142,7 +146,14 @@
 <script src="bower_components/react/react.js"></script>
 <script src="bower_components/react/react-dom.js"></script>
 <script src="bower_components/underscore/underscore.js"></script>
-<script src="bower_components/react-bootstrap-table/dist/react-bootstrap-table.js"></script>
+<script src="bower_components/react-bootstrap-table/dist/react-bootstrap-table.min.js"></script>
+<script src="bower_components/bootstrap-fileinput/js/fileinput.min.js"></script>
+<script src="bower_components/Sortable/Sortable.js"></script>
+<script src="bower_components/Sortable/ng-sortable.js"></script>
+<script src="bower_components/Sortable/knockout-sortable.js"></script>
+<script src="bower_components/Sortable/react-sortable-mixin.js"></script>
+<script src="bower_components/showdown/dist/showdown.js"></script>
+<script src="bower_components/Chart.js/Chart.js"></script>
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/angular-aria/angular-aria.js"></script>
 <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
@@ -159,23 +170,29 @@
 <script src="bower_components/angular-translate-storage-cookie/angular-translate-storage-cookie.js"></script>
 <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
 <script src="bower_components/angular-animate/angular-animate.js"></script>
-<!--<script src="bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.js"></script>-->
+<script src="bower_components/bootstrap-ui-datetime-picker/dist/datetime-picker.js"></script>
 <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
 <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
 <script src="bower_components/nya-bootstrap-select/dist/js/nya-bs-select.js"></script>
 <script src="bower_components/angular-toastr/dist/angular-toastr.tpls.js"></script>
+<script src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
 <script src="bower_components/ngReact/ngReact.js"></script>
 <script src="bower_components/angular-ui-tree/dist/angular-ui-tree.js"></script>
 <script src="bower_components/restangular/dist/restangular.js"></script>
-<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
-<script src="bower_components/bootstrap-fileinput/js/fileinput.min.js"></script>
-<script src="bower_components/bootstrap-fileinput/js/plugins/canvas-to-blob.min.js"></script>
-<script src="bower_components/bootstrap-fileinput/js/plugins/sortable.min.js"></script>
-<script src="bower_components/bootstrap-fileinput/js/plugins/purify.min.js"></script>
-<script src="bower_components/bootstrap-fileinput/js/locales/fa.js"></script>
-<script src="bower_components/bootstrap-fileinput/js/locales/LANG.js"></script>
-<script type="text/javascript" src="bower_components/angular-ui-mask/dist/mask.js"></script>
-<script src="bower_components/ng-table/dist/ng-table.js"></script>
+<script src="bower_components/angular-ui-mask/dist/mask.js"></script>
+<script src="bower_components/angular-tree-dnd/dist/ng-tree-dnd.js"></script>
+<script src="bower_components/angular-tree-dnd/dist/ng-tree-dnd.min.js"></script>
+<script src="bower_components/ng-tags-input/ng-tags-input.js"></script>
+<script src="bower_components/angular-dashboard-framework/dist/angular-dashboard-framework-tpls.js"></script>
+<script src="bower_components/adf-structures-base/dist/adf-structures-base.js"></script>
+<script src="bower_components/adf-widget-news/dist/adf-widget-news.js"></script>
+<script src="bower_components/adf-widget-linklist/dist/adf-widget-linklist.js"></script>
+<script src="bower_components/angular-markdown-directive/markdown.js"></script>
+<script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
+<script src="bower_components/angular-md5/angular-md5.js"></script>
+<script src="bower_components/adf-widget-markdown/dist/adf-widget-markdown.js"></script>
+<script src="bower_components/adf-widget-github/dist/adf-widget-github.js"></script>
+<script src="bower_components/adf-widget-travis/dist/adf-widget-travis.js"></script>
 <!-- endinject -->
 <!-- endbuild -->
 
@@ -417,12 +434,14 @@
 <script src="app/components/common/directive/focusing.directive.js"></script>
 <script src="app/components/common/directive/wmsKrUpdate.directive.js"></script>
 <script src="app/components/custom-xeditable/xeditable.js"></script>
-<script src="app/components/selectBox/selectBox.directive.js"></script>
+<script src="app/components/selectBox/wmsSelectBox.directive.js"></script>
 <script src="app/components/ng-tags-input/ng-tags-input.js"></script>
 <script src="app/components/common/service/makeTable.service.js"></script>
-<script src="app/components/ng-tags-input/autocomplete.directive.js"></script>
+<script src="app/components/ng-tags-input/wmsAutocomplete.directive.js"></script>
 <script src="app/components/wms-tree-directive/angular-tree-dnd/ng-tree-dnd.js"></script>
 <script src="app/components/wms-tree-directive/wmsTree.js"></script>
+<script src="app/components/showdown/src/showdown.js"></script>
+<script src="app/components/dashboard/wmsDashboard.directive.js"></script>
 <script src="app/components/wms-table-directive/wmsTable.js"></script>
 <script src="app/components/wms-table-directive/cell-cursor/cellCursor.js"></script>
 
