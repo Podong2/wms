@@ -58,7 +58,7 @@
     "angular-markdown-directive": "^0.3.1",
     "adf-widget-github": "^0.4.1",
     "highcharts": "^4.2.5",
-    "highcharts-ng": "beljebuzz-highcharts-ng#^0.0.6",
+    "highcharts-ng": "^0.0.11",
     "adf-widget-travis": "^0.1.1"
   },
   "devDependencies": {
