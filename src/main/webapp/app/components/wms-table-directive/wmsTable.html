@@ -23,7 +23,8 @@
             <tbody>
             <tr bindonce ng-repeat="row in displayCollection" ng-init="selectIndex = $index" ng-class="row.checked == true ? 'table-active' : ''">
                 <td bindonce ng-repeat="tableConfig in _tableConfigs" bo-class="[tableConfig.dAlign, tableConfig.visible]">
-                    <div bo-switch="tableConfig.dType">
+                    <span class="{{row[tableConfig.dIcon]}}" style="color:{{row[tableConfig.dColor]}};"></span>
+                    <div bo-switch="tableConfig.dType" style="color:{{row[tableConfig.dColor]}};display:inline-block;">
                         <div bo-switch-when="check">
                             <input type="checkbox" style="top:0px;" ng-model="row.checked" ng-disabled="row.readOnly">
                         </div>
@@ -33,9 +34,12 @@
                         <div bo-switch-when="date">
                             {{ ::row[tableConfig.dAttr] | date: tableService.getDateFormat(tableConfig.dDateFormat, row[tableConfig.dAttr]) }}
                         </div>
+                        <div bo-switch-when="number">
+                            {{ ::row[tableConfig.dAttr] | number }}
+                        </div>
                         <div bo-switch-default>
                             <div bo-switch="tableConfig.dHtmlConverter">
-                                <div bo-switch-when="true">
+                                <div bo-switch-when="true" >
                                     <span ng-bind-html="tableService.convertHtml(row[tableConfig.dAttr])"></span>
                                 </div>
                                 <div bo-switch-when="false" translate="{{::row[tableConfig.dAttr]}}">
