@@ -5,76 +5,88 @@
 
 angular.module('wmsApp')
     .directive('customRenderer', customRenderer);
-        customRenderer.$inject=['$compile', '$filter', '$log', '$sce'];
-        function customRenderer($compile, $filter, $log, $sce) {
-        return {
-            restrict : "E",
-            scope: "=data",
-            link: function (scope, element, attrs) {
-                /*	change value는 목록 화면에서 팝업을 통해 responseData값이 변경되었을 때
-                 * 	responseData의 값 변경을 스코프가 감지 못하는 현상때문에 changeValue 스코프 값
-                 * 	변경을 통해 감지 - ex_) project.ctrl
-                 */
-                function renderer() {
-                    var rendererType = attrs["property"];
-                    var index = attrs["index"];
-                    var tableAttr = attrs["tableAttr"]; //  테이블 dAttr 값
-                    var customTag = "";
+customRenderer.$inject=['$compile', '$filter', '$log', '$sce'];
+function customRenderer($compile, $filter, $log, $sce) {
+    return {
+        restrict : "E",
+        scope: {
+            data: "=",
+            rendererCallback: "="
+        },
+        link: function (scope, element, attrs) {
+            /*	change value는 목록 화면에서 팝업을 통해 responseData값이 변경되었을 때
+             * 	responseData의 값 변경을 스코프가 감지 못하는 현상때문에 changeValue 스코프 값
+             * 	변경을 통해 감지 - ex_) project.ctrl
+             */
+            function renderer() {
+                var rendererType = attrs["property"];
+                var index = attrs["index"];
+                var tableAttr = attrs["tableAttr"]; //  테이블 dAttr 값
+                var customTag = "";
 
-                    element.empty();
-                    if (scope.data === undefined) {
-                        if (scope.vm.responseData.data != null) {
-                            scope.data = scope.vm.responseData.data[index];
-                        }
+                element.empty();
+
+                if (scope.data === undefined) {
+                    if (scope.tableData != null) {
+                        scope.data = scope.tableData[index];
                     }
-
-                    function getTimeStamp() {
-                        var d = new Date();
-                        var s = leadingZeros(d.getFullYear(), 4) + '-' + leadingZeros(d.getMonth() + 1, 2) + '-' + leadingZeros(d.getDate(), 2);
-                        return s;
-                    }
-
-                    function leadingZeros(n, digits) {
-                        var zero = '';
-                        n = n.toString();
-
-                        if (n.length < digits) {
-                            for (var i = 0; i < digits - n.length; i++)
-                                zero += '0';
-                        }
-                        return zero + n;
-                    }
-
-                    switch (rendererType) {
-                        case "config" :
-                            customTag = "<a owl-btn-link link-type='edit' ui-sref='task.edit({id \: " + scope.data.id + "})' href='#/task/" + scope.data.id + "/edit'></a>";
-                            break;
-                        case "issue_detail" :
-                            customTag =
-                                "<div class='taskEdit'>" +
-                                    "<div class='btn btn-default pull-right glyphicon glyphicon-pencil edit-btn' toggle-event></div>" +
-                                    "<a ui-sref='task-detail({id \: " + scope.data.id + "})' href='#/task/" + scope.data.id + "/edit'>"+ scope.data.name +"</a>" +
-                                    "<input type='text' class='form-control col-xs-2 title-focus' ng-model='row.name' id='searchQuery' placeholder='태스크 검색' aria-invalid='false' enter-submit='vm.singleUpload(row)' ng-blur='vm.singleUpload(row)'>" +
-                                "</div>";
-                            break;
-
-                    }
-
-                    var linkFn = $compile(customTag);
-                    var content = linkFn(scope);
-                    element.append(content);
                 }
 
-                var watchFunc = function (newValue, oldValue) {
-                    renderer();
+                function getTimeStamp() {
+                    var d = new Date();
+                    var s = leadingZeros(d.getFullYear(), 4) + '-' + leadingZeros(d.getMonth() + 1, 2) + '-' + leadingZeros(d.getDate(), 2);
+                    return s;
                 }
 
-                if (scope.changeValue != null) {
-                    scope.$watch("changeValue", watchFunc);
+                function leadingZeros(n, digits) {
+                    var zero = '';
+                    n = n.toString();
+
+                    if (n.length < digits) {
+                        for (var i = 0; i < digits - n.length; i++)
+                            zero += '0';
+                    }
+                    return zero + n;
                 }
-                else {
-                    renderer();
+
+                switch (rendererType) {
+                    case "config" :
+                        customTag = "<a owl-btn-link link-type='edit' ui-sref='task.edit({id \: " + scope.data.id + "})' href='#/task/" + scope.data.id + "/edit'></a>";
+                        break;
+                    case "TASK_NAME_EDIT" :
+                        customTag =
+                            "<div class='taskEdit'>" +
+                            "<div class='btn btn-default pull-right glyphicon glyphicon-pencil edit-btn' toggle-event></div>" +
+                            "<a ui-sref='task-detail({id \: " + scope.data.id + "})' href='#/task/" + scope.data.id + "/edit'>"+ scope.data.name +"</a>" +
+                            "<input type='text' class='form-control col-xs-2 title-focus' ng-model='data.name' id='searchQuery' bindonce placeholder='태스크 이름' aria-invalid='false' enter-submit='rendererCallback(data)' ng-blur='rendererCallback(data)'>" +
+                            "</div>";
+                        break;
+                    case "field_edit" :
+                        customTag =
+                            "<div class='taskEdit'>" +
+                            "<div class='btn btn-default pull-right glyphicon glyphicon-pencil edit-btn' toggle-event></div>" +
+                            "<a href='#'>"+ scope.data.name +"</a>" +
+                            "<input type='text' class='form-control col-xs-2 title-focus' ng-model='data.name' bindonce id='searchQuery' aria-invalid='false' enter-submit='rendererCallback(data)' ng-blur='rendererCallback(data)'>" +
+                            "</div>";
+                        break;
+
                 }
+
+                var linkFn = $compile(customTag);
+                var content = linkFn(scope);
+                element.append(content);
+            }
+
+            var watchFunc = function (newValue, oldValue) {
+                renderer();
+            }
+
+            if (scope.changeValue != null) {
+                scope.$watch("changeValue", watchFunc);
+            }
+            else {
+                renderer();
             }
         }
     }
+}

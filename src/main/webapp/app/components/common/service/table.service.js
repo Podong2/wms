@@ -42,8 +42,6 @@ function tableService($log, $sce) {
                 dHtmlConverter : false,	               /* HMTL태그 컨버터 */
                 visible    : "",                       /* 칼럼 표시 css   */
 
-
-
                 hChecked   : false,         /* 전체 선택여부              */
                 hDrag      : true,			/* 헤더 드래그 가능 여부      */
                 hMedia     : "all",         /* 부트스트랩 미디어 타입     */
@@ -55,6 +53,7 @@ function tableService($log, $sce) {
                 dLinkType  : "none",        /* 링크 타입 (화면전환, 팝업) */
                 dLinkStyle : "button-u",    /* 링크 표현 방법             */
                 dRenderer  : "none",        /* 렌더링 방법 (필터)         */
+                dRendererCallback  : null,        /* 렌더링 방법 (필터)         */
                 dRotation  : "",            /* 로테이션                   */
                 dRendererCss : "",          /* 랜더러로 그린 요소에 대한 css정의 */
                 dClass     : "",            /* css속성                    */
@@ -125,6 +124,10 @@ function tableService($log, $sce) {
                 },
                 setDRenderer : function (dRenderer) {
                     this.dRenderer = dRenderer;
+                    return this;
+                },
+                setDRendererCallBack : function (dRendererCallback) {
+                    this.dRendererCallback = dRendererCallback;
                     return this;
                 },
                 setDClass : function (dClass) {

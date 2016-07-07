@@ -13,9 +13,9 @@
         .module('wmsApp')
         .controller('UiComponentController', UiComponentController);
 
-    UiComponentController.$inject = ['$scope', 'Principal', 'ModalService', '$state', 'toastr', 'summaryService', 'toastrConfig', 'FIndCode', '$log', 'findUser', '$q', 'makeTableService', '$TreeDnDConvert'];
+    UiComponentController.$inject = ['$scope', 'Principal', 'ModalService', '$state', 'toastr', 'summaryService', 'toastrConfig', 'FIndCode', '$log', 'findUser', '$q', 'makeTableService', 'tableService'];
 
-    function UiComponentController ($scope, Principal, ModalService, $state, toastr, summaryService, toastrConfig, FIndCode, $log, findUser, $q, makeTableService, $TreeDnDConvert) {
+    function UiComponentController ($scope, Principal, ModalService, $state, toastr, summaryService, toastrConfig, FIndCode, $log, findUser, $q, makeTableService, tableService) {
         var vm = this;
 
         vm.openToast = openToast;
@@ -131,8 +131,8 @@
             { status: false },   // Tree
             { status: false },   // layout
             { status: false },   // submit
-            { status: true },  // auto-complete
-            { status: false }   // tree
+            { status: false },  // auto-complete
+            { status: true }  // table
         ];
 
 
@@ -713,6 +713,83 @@
             FIndCode.findByCodeType("severity").then(function(result){ vm.code = result; }); // 중요도 요청
             FIndCode.findByCodeType("severity").then(function(result){ vm.code = result; }); // 중요도 요청
         }
+        /*----------------------table - smart table--------------------------*/
 
+        vm.wmsTableData = [];
+
+        // for (var i=0; i<50; i++) {
+        //     vm.wmsTableData.push({
+        //         name:"name-"+i,
+        //         field1:"field1-"+i,
+        //         field2:"field2-"+i,
+        //         field3:"field3-"+i
+        //     });
+        // }
+
+        $scope.loadWmsTableData = function() {
+
+            vm.wmsTableData.length = 0;
+
+            for (var i=0; i<50; i++) {
+                vm.wmsTableData.push({
+                    name:"name-"+i,
+                    field1:"field1-"+i,
+                    field2:"field2-"+i,
+                    field3:"field3-"+i,
+                    field4:"field4-"+i,
+                    field5:"field5-"+i,
+                    field6:"field6-"+i,
+                    field7:"field7-"+i,
+                    field8:"field8-"+i
+                });
+            }
+
+            // vm.wmsTableData = _tableData;
+        };
+
+        $scope.updateCallback = function(row) {
+            $log.debug("row updated : ", row);
+        };
+
+        vm.tableConfigs = [];
+        vm.tableConfigs.push(tableService.getConfig("", "checked")
+            .setHWidth("width-30-p")
+            .setDAlign("text-center")
+            .setHAlign("text-center")
+            .setDType("check"));
+        vm.tableConfigs.push(tableService.getConfig("제목", "name")
+            .setDType("renderer")
+            .setDRenderer("field_edit"));
+
+        /**
+         *
+         .setDType(uiConstant.common.RENDERER)
+         .setDRenderer(uiConstant.renderType.PROJECT_ROLE_DETAIL)
+         */
+
+        vm.tableConfigs.push(tableService.getConfig("필드1", "field1")
+            .setHWidth("width-80-p")
+            .setDAlign("text-center"));
+        vm.tableConfigs.push(tableService.getConfig("필드2", "field2")
+            .setHWidth("width-80-p")
+            .setDAlign("text-center"));
+        vm.tableConfigs.push(tableService.getConfig("필드3", "field3")
+            .setHWidth("width-80-p")
+            .setDAlign("text-center"));
+        vm.tableConfigs.push(tableService.getConfig("필드4", "field4")
+            .setHWidth("width-80-p")
+            .setDAlign("text-center"));
+        vm.tableConfigs.push(tableService.getConfig("필드5", "field5")
+            .setHWidth("width-80-p")
+            .setDAlign("text-center"));
+        vm.tableConfigs.push(tableService.getConfig("필드6", "field6")
+            .setHWidth("width-80-p")
+            .setDAlign("text-center"));
+        vm.tableConfigs.push(tableService.getConfig("필드7", "field7")
+            .setHWidth("width-80-p")
+            .setDAlign("text-center"));
+        vm.tableConfigs.push(tableService.getConfig("필드8", "field8")
+            .setHWidth("width-80-p")
+            .setDAlign("text-center"));
     }
 })();

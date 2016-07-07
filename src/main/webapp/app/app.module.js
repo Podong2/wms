@@ -33,7 +33,10 @@
             'angularFileUpload',
             'ui.mask',
             'ntt.TreeDnD',
-            'ngTagsInput'
+            'ngTagsInput',
+            'lrDragNDrop',
+            'ngTable',
+            'cellCursor'
         ])
         .config(config)
         .run(run);
