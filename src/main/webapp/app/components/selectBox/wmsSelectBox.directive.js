@@ -20,13 +20,14 @@ function selectBox($document, $log, $compile) {
         },
         replace : false,
         controller : ['$scope', '$element', '$attrs', '$rootScope', function ($scope, $element, $attrs, $rootScope) {
-
+            // TODO $parent를 제거한다.
             $scope.$watch("selectedValue", function(){
                 $scope.$parent.vm[$scope.selectedValueName] = $scope.selectedValue;
             });
 
         }],
         link: function (scope, element, attrs) {
+            // TODO scope로 위치 이동한다.
             scope.selectedValueName = attrs['selectedvalue'];
             scope.actionsBox = attrs['actionsbox'];
             scope.multiple = attrs['multiple'];
@@ -47,6 +48,7 @@ function selectBox($document, $log, $compile) {
                                 '</li>' +
                             '</ol>';
             }
+            // TODO compile 함수를 사용하여 처리한다.
             var linkFn = $compile(template);
             var content = linkFn(scope);
             element.append(content);
