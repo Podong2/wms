@@ -32,7 +32,7 @@
                     <li ng-class="vm.tabArea[13].status == true ? 'active' : ''" ng-click="vm.tabDisplay(13)"><span translate="">Layout</span></li>
                     <li ng-class="vm.tabArea[14].status == true ? 'active' : ''" ng-click="vm.tabDisplay(14)"><span translate="">ProgressBar</span></li>
                     <li ng-class="vm.tabArea[15].status == true ? 'active' : ''" ng-click="vm.tabDisplay(15)"><span translate="">auto-complete</span></li>
-                    <li ng-class="vm.tabArea[16].status == true ? 'active' : ''" ng-click="vm.tabDisplay(16)"><span translate="">dashboard</span></li>
+                    <li ng-class="vm.tabArea[16].status == true ? 'active' : ''" ng-click="vm.tabDisplay(16)"><span translate="">Tree</span></li>
                 </ul>
             </div>
         </div><br/><br/>
@@ -969,9 +969,6 @@
 
                 <autocomplete source="loadData" tags="tags" display-property="name" multiple="false" max-results-to-show="20"></autocomplete>
                 {{tags}}
-            </div>
-            <div ng-show="vm.tabArea[16].status">
-                <adf-dashboard name="mydashboard" collapsible="true" structure="6-6" adf-model="model" />
             </div>
 
 
