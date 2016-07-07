@@ -1413,3 +1413,12 @@ table th {
 }
 /*------------ btn css end -------------*/
 
+.text-cuting{
+    width: 100px;
+    padding: 0 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    float: left;
+}
+
