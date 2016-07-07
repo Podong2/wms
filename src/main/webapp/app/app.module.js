@@ -37,7 +37,10 @@
             'adf',
             'adf.structures.base',
             'adf.widget.news',
-            'adf.widget.linklist'
+            'adf.widget.linklist',
+            'adf.widget.markdown',
+            'adf.widget.github',
+            'adf.widget.travis'
         ])
         .config(config)
         .run(run);
