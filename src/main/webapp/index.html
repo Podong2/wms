@@ -26,6 +26,7 @@
     <link rel="stylesheet" href="bower_components/angular-chart.js/dist/angular-chart.css">
     <link rel="stylesheet" href="bower_components/adf-widget-travis/dist/adf-widget-travis.css">
     <link href="bower_components/ng-table/dist/ng-table.css" rel="stylesheet">
+    <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.css">
     <!-- endinject -->
     <!-- endbuild -->
     <!-- build:css content/css/main.css -->
@@ -193,6 +194,9 @@
 <script src="bower_components/adf-widget-markdown/dist/adf-widget-markdown.js"></script>
 <script src="bower_components/adf-widget-github/dist/adf-widget-github.js"></script>
 <script src="bower_components/adf-widget-travis/dist/adf-widget-travis.js"></script>
+<script src="bower_components/d3/d3.js"></script>
+<script src="bower_components/nvd3/build/nv.d3.js"></script> <!-- or use another assembly -->
+<script src="bower_components/angular-nvd3/dist/angular-nvd3.js"></script>
 <!-- endinject -->
 <!-- endbuild -->
 
@@ -445,6 +449,14 @@
 <script src="app/components/wms-table-directive/wmsTable.js"></script>
 <script src="app/components/wms-table-directive/cell-cursor/cellCursor.js"></script>
 <script src="app/components/dashboard/angular-dashboard-framework-tpls.js"></script>
+<script src="app/components/wms-chart/module/bar-chart/wmsBarChart.directive.js"></script>
+<script src="app/components/wms-chart/module/column-chart/wmsColumnChart.directive.js"></script>
+<script src="app/components/wms-chart/module/line-chart/wmsLineChart.directive.js"></script>
+<script src="app/components/wms-chart/module/pie-chart/wmsPieChart.directive.js"></script>
+<script src="app/components/wms-chart/widgets/bar-chart/wms-widget-barChart.js"></script>
+<script src="app/components/wms-chart/widgets/pie-chart/wms-widget-pieChart.js"></script>
+<script src="app/components/wms-chart/widgets/column-chart/wms-widget-columnChart.js"></script>
+<script src="app/components/wms-chart/widgets/line-chart/wms-widget-lineChart.js"></script>
 
 <!-- endinject -->
 <!-- endbuild -->

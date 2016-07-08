@@ -43,7 +43,12 @@
             'adf.widget.travis',
             'ngTagsInput',
             'lrDragNDrop',
-            'cellCursor'
+            'cellCursor',
+            'nvd3',
+            'wms.widget.barChart',
+            'wms.widget.columnChart',
+            'wms.widget.lineChart',
+            'wms.widget.pieChart'
         ])
         .config(config)
         .run(run);
