@@ -34,7 +34,8 @@
                     <li ng-class="vm.tabArea[15].status == true ? 'active' : ''" ng-click="vm.tabDisplay(15)"><span translate="">auto-complete</span></li>
                     <li ng-class="vm.tabArea[16].status == true ? 'active' : ''" ng-click="vm.tabDisplay(16)"><span translate="">dashboard</span></li>
                     <li ng-class="vm.tabArea[17].status == true ? 'active' : ''" ng-click="vm.tabDisplay(17)"><span translate="">Table</span></li>
-                    <li ng-class="vm.tabArea[18].status == true ? 'active' : ''" ng-click="vm.tabDisplay(18)"><span translate="">Calendar</span></li>
+                    <li ng-class="vm.tabArea[18].status == true ? 'active' : ''" ng-click="vm.tabDisplay(18)"><span translate="">Chart</span></li>
+                    <li ng-class="vm.tabArea[19].status == true ? 'active' : ''" ng-click="vm.tabDisplay(19)"><span translate="">Calendar</span></li>
                 </ul>
             </div>
         </div><br/><br/>
@@ -991,7 +992,27 @@
 
                 <wms-table ng-model="vm.wmsTableData" table-configs="vm.tableConfigs" update-callback="updateCallback"></wms-table>
             </div>
+
             <div ng-show="vm.tabArea[18].status">
+                <h3><b>Chart</b></h3>
+                <h4>bar chart</h4>
+                <bar-chart data="barData" options="barOptions"></bar-chart>
+
+                <hr/>
+                <h4>pie chart</h4>
+                <pie-chart data="pieData" options="pieOptions"></pie-chart>
+
+                <hr/>
+                <h4>line chart</h4>
+                <line-chart data="lineData" options="lineOptions"></line-chart>
+
+                <hr/>
+
+                <h4>column chart</h4>
+                <column-chart data="columnData" options="columnOptions"></column-chart>
+
+            </div>
+            <div ng-show="vm.tabArea[19].status">
                 <h3><b>Calendar</b></h3>
 
                 <button ng-click="vm.addSchedule();">add</button>

@@ -44,6 +44,11 @@
             'ngTagsInput',
             'lrDragNDrop',
             'cellCursor',
+            'nvd3',
+            'wms.widget.barChart',
+            'wms.widget.columnChart',
+            'wms.widget.lineChart',
+            'wms.widget.pieChart',
             'mwl.calendar',
             'angularMoment'
         ])
