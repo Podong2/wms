@@ -169,5 +169,19 @@
             "fileType":"Content Type",
             "config":"Config"
         }
+    },
+    "calendar" : {
+        "prev" : "前",
+        "today" : "今日",
+        "next" : "後",
+        "year" : "年",
+        "month" : "月",
+        "week" : "週",
+        "day" : "日",
+        "title" : {
+            "year" : "年",
+            "month" : "月",
+            "day" : "日"
+        }
     }
 }

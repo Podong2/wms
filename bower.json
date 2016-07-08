@@ -61,7 +61,10 @@
     "ng-table": "^1.0.0",
     "angular-nvd3": "^1.0.7",
     "d3": "^4.1.0",
-    "nvd3": "^1.8.4"
+    "nvd3": "^1.8.4",
+    "angular-bootstrap-calendar": "^0.21.5",
+    "moment": "^2.14.1",
+    "angular-moment": "^0.10.3"
   },
   "devDependencies": {
     "angular-mocks": "1.5.5"

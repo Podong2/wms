@@ -13,9 +13,9 @@
         .module('wmsApp')
         .controller('UiComponentController', UiComponentController);
 
-    UiComponentController.$inject = ['$scope', 'Principal', 'ModalService', '$state', 'toastr', 'summaryService', 'toastrConfig', 'FIndCode', '$log', 'findUser', '$q', 'tableService'];
+    UiComponentController.$inject = ['$scope', 'Principal', 'ModalService', '$state', 'toastr', 'summaryService', 'toastrConfig', 'FIndCode', '$log', 'findUser', '$q', 'tableService', 'moment'];
 
-    function UiComponentController ($scope, Principal, ModalService, $state, toastr, summaryService, toastrConfig, FIndCode, $log, findUser, $q, tableService) {
+    function UiComponentController ($scope, Principal, ModalService, $state, toastr, summaryService, toastrConfig, FIndCode, $log, findUser, $q, tableService, moment) {
         var vm = this;
 
         vm.openToast = openToast;
@@ -31,7 +31,7 @@
 
         $scope.tags = [];
         $scope.loadData = function(name) {
-            $log.debug("name - : ", name)
+            $log.debug("name - : ", name);
             var deferred = $q.defer();
             findUser.findByName(name).then(function(result){
                 deferred.resolve(result);
@@ -134,7 +134,8 @@
             { status: false },  // auto-complete
             { status: false },  // table
             { status: false },  // table
-            { status: false }  // chart
+            { status: false },  // chart
+            { status: true }  // table
         ];
 
 
@@ -766,6 +767,70 @@
             .setHWidth("width-80-p")
             .setDAlign("text-center")
             .setDType("number"));
+
+
+        /*---------------------------Calendar------------------------------------------- */
+
+        vm.holidays = ['01-01', '03-01', '05-05', '05-14', '06-06', '10-03', '10-09', '08-15', '12-25'];
+
+        vm.events = [
+            {
+                title: '이벤트1',
+                type: 'warning',
+                startsAt: moment().startOf('week').subtract(2, 'days').add(8, 'hours').toDate(),
+                endsAt: moment().startOf('week').add(1, 'week').add(9, 'hours').toDate(),
+                draggable: true,
+                resizable: true
+            }, {
+                title: '<i class="glyphicon glyphicon-asterisk"></i> <span class="text-primary">이벤트2</span>, <i>html</i> 타이틀',
+                type: 'info',
+                startsAt: moment().subtract(1, 'day').toDate(),
+                endsAt: moment().add(5, 'days').toDate(),
+                draggable: true,
+                resizable: true
+            }, {
+                title: '매월 반복 이벤트',
+                type: 'special',
+                startsAt: moment().startOf('day').add(7, 'hours').toDate(),
+                endsAt: moment().startOf('day').add(19, 'hours').toDate(),
+                recursOn: 'month',
+                draggable: true,
+                resizable: true
+            }
+        ];
+
+        vm.addSchedule = function() {
+            $log.debug("addSchedule");
+
+            vm.events.push({
+                title: '사용자 추가 이벤트',
+                type: 'error',
+                startsAt: moment().startOf('day').add(7, 'hours').toDate(),
+                endsAt: moment().startOf('day').add(19, 'hours').toDate(),
+                recursOn: 'month',
+                draggable: true,
+                resizable: true
+            });
+        };
+
+        vm.eventClicked = function(event) {
+            $log.debug('eventClicked : ', event);
+        };
+
+        vm.eventEdited = function(event) {
+            $log.debug('eventEdited : ', event);
+        };
+
+        vm.eventDeleted = function(event) {
+            $log.debug('eventDeleted : ', event);
+
+            var index = vm.events.indexOf(event);
+            vm.events.splice(index, 1);
+        };
+
+        vm.eventTimesChanged = function(event) {
+            $log.debug('eventTimesChanged : ', event);
+        };
 
 
 

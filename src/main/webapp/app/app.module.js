@@ -48,7 +48,9 @@
             'wms.widget.barChart',
             'wms.widget.columnChart',
             'wms.widget.lineChart',
-            'wms.widget.pieChart'
+            'wms.widget.pieChart',
+            'mwl.calendar',
+            'angularMoment'
         ])
         .config(config)
         .run(run);
