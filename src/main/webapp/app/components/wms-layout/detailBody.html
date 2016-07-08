@@ -1,0 +1,42 @@
+<div class="ibox">
+    <div class="ibox_content">
+        <div ng-repeat="summary in summaryConfigs" class="detail-info-area">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="row">
+                        <div class="header-color header col-sm-6 col-xs-12 col-md-3" ng-show="summary[0].name != ''" translate="{{ summary[0].name }}"></div>
+                        <div class="header col-sm-6 col-xs-12 col-md-3" ng-show="summary[0].name != '' && !summary[0].renderer">{{ responseData.data[0][summary[0].key] }}</div>
+                        <div class="col-sm-6 col-xs-12 col-md-3" ng-show="summary[0].name != '' && summary[0].renderer">
+                            <owl-custom-renderer index="0" property="{{summary[0].renderer}}"></owl-custom-renderer>
+                        </div>
+                        <div class="header-color col-sm-6 col-xs-12 col-md-3" ng-if="summary[1].name != '' && responseData.data[0][summary[1].key] != null" translate="{{ summary[1].name }}"></div>
+                        <div class="col-sm-6 col-xs-12 col-md-3" ng-if="summary[1].name != '' && !summary[1].renderer && responseData.data[0][summary[1].key] != null">{{ responseData.data[0][summary[1].key] }}</div>
+                        <div class="col-sm-6 col-xs-12 col-md-3" ng-if="summary[1].name != '' && summary[1].renderer && responseData.data[0][summary[1].key] != null">
+                            <owl-custom-renderer index="0" property="{{summary[1].renderer}}"></owl-custom-renderer>
+                        </div>
+                        <!--<div class="header-color col-sm-6 col-xs-12 col-md-3" ng-if="summary[2].name != '' && responseData.data[0][summary[2].key] != null" translate="{{ summary[2].name }}"></div>-->
+                        <!--<div class="col-sm-6 col-xs-12 col-md-3" ng-if="summary[2].name != '' && !summary[2].renderer && responseData.data[0][summary[2].key] != null">{{ responseData.data[0][summary[2].key] }}</div>-->
+                        <!--<div class="col-sm-6 col-xs-12 col-md-3" ng-if="summary[2].name != '' && summary[2].renderer && responseData.data[0][summary[2].key] != null">-->
+                            <!--<owl-custom-renderer index="0" property="{{summary[2].renderer}}"></owl-custom-renderer>-->
+                        <!--</div>-->
+                        <!--<div class="header-color col-sm-6 col-xs-12 col-md-3" ng-if="summary[3].name != '' && responseData.data[0][summary[3].key] != null" translate="{{ summary[3].name }}"></div>-->
+                        <!--<div class="col-sm-6 col-xs-12 col-md-3" ng-if="summary[3].name != '' && !summary[3].renderer && responseData.data[0][summary[3].key] != null">{{ responseData.data[0][summary[3].key] }}</div>-->
+                        <!--<div class="col-sm-6 col-xs-12 col-md-3" ng-if="summary[3].name != '' && summary[3].renderer && responseData.data[0][summary[3].key] != null">-->
+                            <!--<owl-custom-renderer index="0" property="{{summary[3].renderer}}"></owl-custom-renderer>-->
+                        <!--</div>-->
+                        <!--<div class="header-color col-sm-6 col-xs-12 col-md-3" ng-if="summary[4].name != '' && responseData.data[0][summary[4].key] != null" translate="{{ summary[4].name }}"></div>-->
+                        <!--<div class="col-sm-6 col-xs-12 col-md-3" ng-if="summary[4].name != '' && !summary[4].renderer && responseData.data[0][summary[4].key] != null">{{ responseData.data[0][summary[4].key] }}</div>-->
+                        <!--<div class="col-sm-6 col-xs-12 col-md-3" ng-if="summary[4].name != '' && summary[4].renderer && responseData.data[0][summary[4].key] != null">-->
+                            <!--<owl-custom-renderer index="0" property="{{summary[4].renderer}}"></owl-custom-renderer>-->
+                        <!--</div>-->
+                        <!--<div class="header-color col-sm-6 col-xs-12 col-md-3" ng-if="summary[5].name != '' && responseData.data[0][summary[5].key] != null" translate="{{ summary[5].name }}"></div>-->
+                        <!--<div class="col-sm-6 col-xs-12 col-md-3" ng-if="summary[5].name != '' && !summary[5].renderer && responseData.data[0][summary[5].key] != null">{{ responseData.data[0][summary[5].key] }}</div>-->
+                        <!--<div class="col-sm-6 col-xs-12 col-md-3" ng-if="summary[5].name != '' && summary[5].renderer && responseData.data[0][summary[5].key] != null">-->
+                            <!--<owl-custom-renderer index="0" property="{{summary[5].renderer}}"></owl-custom-renderer>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
