@@ -135,7 +135,7 @@
             { status: false },  // table
             { status: false },  // table
             { status: false },  // chart
-            { status: true }  // table
+            { status: false }  // table
         ];
 
 
