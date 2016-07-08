@@ -29,8 +29,9 @@ angular.module('wms.widget.lineChart', ['adf.provider', 'nvd3', 'wms.line.chart'
   .config(["dashboardProvider", function(dashboardProvider){
     dashboardProvider
       .widget('lineChart', {
-        title: 'lineChart',
-        description: 'Displays a lineChart',
+        title: '',
+          subject: 'lineChart',
+        description: 'widget.lineChartDescription',
         templateUrl: 'app/components/wms-chart/widgets/line-chart/widgetLineChartTemplate.html',
         edit: {
           templateUrl: '{widgetsPath}/chart/src/edit.html',

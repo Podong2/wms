@@ -29,8 +29,9 @@ angular.module('wms.widget.pieChart', ['adf.provider', 'nvd3', 'wms.pie.chart'])
   .config(["dashboardProvider", function(dashboardProvider){
     dashboardProvider
       .widget('pieChart', {
-        title: 'pieChart',
-        description: 'Displays a pieChart',
+        title: '',
+          subject: 'pieChart',
+        description: 'widget.pieChartDescription',
         templateUrl: 'app/components/wms-chart/widgets/pie-chart/widgetPieChartTemplate.html',
         edit: {
           templateUrl: '{widgetsPath}/chart/src/edit.html',

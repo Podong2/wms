@@ -29,8 +29,9 @@ angular.module('wms.widget.barChart', ['adf.provider', 'nvd3', 'wms.bar.chart'])
   .config(["dashboardProvider", function(dashboardProvider){
     dashboardProvider
       .widget('barChart', {
-        title: 'barChart',
-        description: 'Displays a barChart',
+        title: '',
+        subject: 'barChart',
+        description: 'widget.barChartDescription',
         templateUrl: 'app/components/wms-chart/widgets/bar-chart/widgetBarChartTemplate.html',
         edit: {
           templateUrl: '{widgetsPath}/chart/src/edit.html',
