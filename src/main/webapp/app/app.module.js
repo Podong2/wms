@@ -43,7 +43,9 @@
             'adf.widget.travis',
             'ngTagsInput',
             'lrDragNDrop',
-            'cellCursor'
+            'cellCursor',
+            'mwl.calendar',
+            'angularMoment'
         ])
         .config(config)
         .run(run);

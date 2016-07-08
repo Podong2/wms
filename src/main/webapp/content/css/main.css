@@ -1422,3 +1422,15 @@ table th {
     float: left;
 }
 
+/*------------calendar------------------*/
+#cal-week-box {
+    display: none;
+}
+
+.cell-weekend {
+    background-color: #ffe0e3 !important;
+}
+
+.cell-holiday {
+    background-color: #ffe0e3 !important;
+}

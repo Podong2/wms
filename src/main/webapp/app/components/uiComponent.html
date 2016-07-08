@@ -33,7 +33,8 @@
                     <li ng-class="vm.tabArea[14].status == true ? 'active' : ''" ng-click="vm.tabDisplay(14)"><span translate="">ProgressBar</span></li>
                     <li ng-class="vm.tabArea[15].status == true ? 'active' : ''" ng-click="vm.tabDisplay(15)"><span translate="">auto-complete</span></li>
                     <li ng-class="vm.tabArea[16].status == true ? 'active' : ''" ng-click="vm.tabDisplay(16)"><span translate="">dashboard</span></li>
-                    <li ng-class="vm.tabArea[16].status == true ? 'active' : ''" ng-click="vm.tabDisplay(17)"><span translate="">Table</span></li>
+                    <li ng-class="vm.tabArea[17].status == true ? 'active' : ''" ng-click="vm.tabDisplay(17)"><span translate="">Table</span></li>
+                    <li ng-class="vm.tabArea[18].status == true ? 'active' : ''" ng-click="vm.tabDisplay(18)"><span translate="">Calendar</span></li>
                 </ul>
             </div>
         </div><br/><br/>
@@ -990,6 +991,79 @@
 
                 <wms-table ng-model="vm.wmsTableData" table-configs="vm.tableConfigs" update-callback="updateCallback"></wms-table>
             </div>
+            <div ng-show="vm.tabArea[18].status">
+                <h3><b>Calendar</b></h3>
+
+                <button ng-click="vm.addSchedule();">add</button>
+
+                <wms-calendar events="vm.events"
+                              click-event-function="vm.eventClicked"
+                              edit-event-function="vm.eventEdited"
+                              delete-event-function="vm.eventDeleted"
+                              time-change-event-function="vm.eventTimesChanged"
+                              holidays="vm.holidays"
+                >
+                </wms-calendar>
+            </div>
+
+<h4>디렉티브</h4>
+<xmp>
+    <wms-calendar events="vm.events"
+                  click-event-function="vm.eventClicked"
+                  edit-event-function="vm.eventEdited"
+                  delete-event-function="vm.eventDeleted"
+                  time-change-event-function="vm.eventTimesChanged"
+                  holidays="vm.holidays"
+    >
+    </wms-calendar>
+</xmp>
+<br/>
+<h4>데이터</h4>
+<xmp>
+    vm.holidays = ['01-01', '03-01', '05-05', '05-14', '06-06', '10-03', '10-09', '08-15', '12-25'];
+
+    vm.events = [
+        {
+            title: '이벤트1',
+            type: 'warning',
+            startsAt: moment().startOf('week').subtract(2, 'days').add(8, 'hours').toDate(),
+            endsAt: moment().startOf('week').add(1, 'week').add(9, 'hours').toDate(),
+            draggable: true,
+            resizable: true
+        }, {
+            title: '<i class="glyphicon glyphicon-asterisk"></i> <span class="text-primary">이벤트2</span>, <i>html</i> 타이틀',
+            type: 'info',
+            startsAt: moment().subtract(1, 'day').toDate(),
+            endsAt: moment().add(5, 'days').toDate(),
+            draggable: true,
+            resizable: true
+        }, {
+            title: '매월 반복 이벤트',
+            type: 'special',
+            startsAt: moment().startOf('day').add(7, 'hours').toDate(),
+            endsAt: moment().startOf('day').add(19, 'hours').toDate(),
+            recursOn: 'month',
+            draggable: true,
+            resizable: true
+        }
+    ];
+
+    vm.eventClicked = function(event) {
+        $log.debug('eventClicked : ', event);
+    };
+
+    vm.eventEdited = function(event) {
+        $log.debug('eventEdited : ', event);
+    };
+
+    vm.eventDeleted = function(event) {
+        $log.debug('eventDeleted : ', event);
+    };
+
+    vm.eventTimesChanged = function(event) {
+        $log.debug('eventTimesChanged : ', event);
+    };
+</xmp>
         </div>
     </div>
 </div>

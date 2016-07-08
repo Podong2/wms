@@ -1,0 +1,66 @@
+<h2 class="text-center">{{ calendarTitle }}</h2>
+<div class="row">
+    <div class="col-md-6">
+        <div class="btn-group">
+            <button
+                class="btn btn-primary"
+                mwl-date-modifier
+                date="viewDate"
+                decrement="calendarView"
+                >
+                <span translate="calendar.prev">
+                    이전
+                </span>
+            </button>
+            <button
+                class="btn btn-default"
+                mwl-date-modifier
+                date="viewDate"
+                set-to-today
+                >
+                <span translate="calendar.today">
+                    오늘
+                </span>
+            </button>
+            <button
+                class="btn btn-primary"
+                mwl-date-modifier
+                date="viewDate"
+                increment="calendarView"
+                >
+                <span translate="calendar.next">
+                    이후
+                </span>
+            </button>
+        </div>
+    </div>
+    <br class="visible-xs visible-sm">
+    <div class="col-md-6 text-right">
+        <div class="btn-group">
+            <span class="btn btn-primary" ng-model="calendarView" uib-btn-radio="'year'"><span translate="calendar.year">년</span></span>
+            <span class="btn btn-primary" ng-model="calendarView" uib-btn-radio="'month'"><span translate="calendar.month">월</span></span>
+            <span class="btn btn-primary" ng-model="calendarView" uib-btn-radio="'week'"><span translate="calendar.week">주</span></span>
+            <span class="btn btn-primary" ng-model="calendarView" uib-btn-radio="'day'"><span translate="calendar.day">일</span></span>
+        </div>
+    </div>
+</div>
+<br>
+<div class="panel panel-default">
+    <mwl-calendar
+        events="events"
+        view="calendarView"
+        view-title="calendarTitle"
+        view-date="viewDate"
+        on-event-click="clickEventFunction(calendarEvent)"
+        on-event-times-changed="timeChangeEventFunction(calendarEvent); calendarEvent.startsAt = calendarNewEventStart; calendarEvent.endsAt = calendarNewEventEnd"
+        edit-event-html="'<i class=\'glyphicon glyphicon-pencil\'></i>'"
+        delete-event-html="'<i class=\'glyphicon glyphicon-remove\'></i>'"
+        on-edit-event-click="editEventFunction(calendarEvent)"
+        on-delete-event-click="deleteEventFunction(calendarEvent)"
+        cell-is-open="isCellOpen"
+        day-view-start="06:00"
+        day-view-end="22:00"
+        day-view-split="30"
+        cell-modifier="cellModifier(calendarCell)">
+    </mwl-calendar>
+</div>

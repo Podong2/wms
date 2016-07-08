@@ -169,5 +169,14 @@
             "fileType":"Content Type",
             "config":"Config"
         }
+    },
+    "calendar" : {
+        "prev" : "Prev",
+        "today" : "Today",
+        "next" : "Next",
+        "year" : "Year",
+        "month" : "Month",
+        "week" : "Week",
+        "day" : "Day"
     }
 }

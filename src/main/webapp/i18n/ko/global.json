@@ -168,5 +168,14 @@
             "fileType":"파일유형",
             "config":"설정"
         }
+    },
+    "calendar": {
+        "prev" : "이전",
+        "today" : "오늘",
+        "next" : "이후",
+        "year" : "년",
+        "month" : "월",
+        "week" : "주",
+        "day" : "일"
     }
 }

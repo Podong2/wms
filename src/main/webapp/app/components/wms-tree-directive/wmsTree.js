@@ -68,6 +68,13 @@
                             scope.my_tree.select_prev_node();
                         } else if (event.keyCode === 46) {
                             scope.my_tree.remove_node();
+                        } else if (event.keyCode === 37) {
+                            var node = scope.my_tree.get_selected_node();
+                            $log.debug(node);
+                            scope.my_tree.collapse_node(node);
+                        } else if (event.keyCode === 39) {
+                            var node = scope.my_tree.get_selected_node();
+                            scope.my_tree.expand_node(node);
                         }
                         event.preventDefault();
                     });
