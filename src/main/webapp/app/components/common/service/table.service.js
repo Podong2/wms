@@ -60,8 +60,18 @@ function tableService($log, $sce) {
                 isData     : true,          /* 데이터 컬럼 여부           */
                 dController : "",
                 dFnBroadCast : "",
+                dColor : "",
+                dIcon : "",
 
                 dDateFormat : null,
+                setDColor : function (dColor) {
+                    this.dColor = dColor;
+                    return this;
+                },
+                setDIcon : function (dIcon) {
+                    this.dIcon = dIcon;
+                    return this;
+                },
                 setHName : function (hName) {
                     this.hName = hName;
                     return this;

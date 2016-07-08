@@ -69,7 +69,6 @@ function customRenderer($compile, $filter, $log, $sce) {
                             "<input type='text' class='form-control col-xs-2 title-focus' ng-model='data.name' bindonce id='searchQuery' aria-invalid='false' enter-submit='rendererCallback(data)' ng-blur='rendererCallback(data)'>" +
                             "</div>";
                         break;
-
                 }
 
                 var linkFn = $compile(customTag);

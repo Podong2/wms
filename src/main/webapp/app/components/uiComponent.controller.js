@@ -1080,14 +1080,10 @@
             for (var i=0; i<50; i++) {
                 vm.wmsTableData.push({
                     name:"name-"+i,
-                    field1:"field1-"+i,
-                    field2:"field2-"+i,
-                    field3:"field3-"+i,
-                    field4:"field4-"+i,
-                    field5:"field5-"+i,
-                    field6:"field6-"+i,
-                    field7:"field7-"+i,
-                    field8:"field8-"+i
+                    field1: '6546456',
+                    field2: '12312311',
+                    field1_color: '#'+Math.floor(Math.random()*16777215).toString(16),
+                    icon: 'glyphicon glyphicon-heart'
                 });
             }
 
@@ -1115,28 +1111,13 @@
          */
 
         vm.tableConfigs.push(tableService.getConfig("필드1", "field1")
-            .setHWidth("width-80-p")
-            .setDAlign("text-center"));
+            .setHWidth("width-200-p")
+            .setDAlign("text-center")
+            .setDColor('field1_color')
+            .setDIcon('icon'));
         vm.tableConfigs.push(tableService.getConfig("필드2", "field2")
             .setHWidth("width-80-p")
-            .setDAlign("text-center"));
-        vm.tableConfigs.push(tableService.getConfig("필드3", "field3")
-            .setHWidth("width-80-p")
-            .setDAlign("text-center"));
-        vm.tableConfigs.push(tableService.getConfig("필드4", "field4")
-            .setHWidth("width-80-p")
-            .setDAlign("text-center"));
-        vm.tableConfigs.push(tableService.getConfig("필드5", "field5")
-            .setHWidth("width-80-p")
-            .setDAlign("text-center"));
-        vm.tableConfigs.push(tableService.getConfig("필드6", "field6")
-            .setHWidth("width-80-p")
-            .setDAlign("text-center"));
-        vm.tableConfigs.push(tableService.getConfig("필드7", "field7")
-            .setHWidth("width-80-p")
-            .setDAlign("text-center"));
-        vm.tableConfigs.push(tableService.getConfig("필드8", "field8")
-            .setHWidth("width-80-p")
-            .setDAlign("text-center"));
+            .setDAlign("text-center")
+            .setDType("number"));
     }
 })();

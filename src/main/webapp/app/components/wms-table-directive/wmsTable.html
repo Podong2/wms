@@ -23,23 +23,38 @@
             <tbody>
             <tr bindonce ng-repeat="row in displayCollection" ng-init="selectIndex = $index" ng-class="row.checked == true ? 'table-active' : ''">
                 <td bindonce ng-repeat="tableConfig in _tableConfigs" bo-class="[tableConfig.dAlign, tableConfig.visible]">
-                    <div bo-switch="tableConfig.dType">
+                    <div bo-switch="tableConfig.dType" style="color:{{row[tableConfig.dColor]}};">
                         <div bo-switch-when="check">
-                            <input type="checkbox" style="top:0px;" ng-model="row.checked" ng-disabled="row.readOnly">
+                            <span class="{{row[tableConfig.dIcon]}}" style="color:{{row[tableConfig.dColor]}};"></span>
+                            <div style="display:inline-block;">
+                                <input type="checkbox" style="top:0px;" ng-model="row.checked" ng-disabled="row.readOnly">
+                            </div>
                         </div>
                         <div bo-switch-when="renderer">
                             <custom-renderer table-attr="{{tableConfig.dRendererAttr}}" index="{{selectIndex}}" data="row" property="{{tableConfig.dRenderer}}" renderer-callback="_updateCallback"></custom-renderer>
                         </div>
                         <div bo-switch-when="date">
-                            {{ ::row[tableConfig.dAttr] | date: tableService.getDateFormat(tableConfig.dDateFormat, row[tableConfig.dAttr]) }}
+                            <span class="{{row[tableConfig.dIcon]}}" style="color:{{row[tableConfig.dColor]}};"></span>
+                            <div style="display:inline-block;">
+                                {{ ::row[tableConfig.dAttr] | date: tableService.getDateFormat(tableConfig.dDateFormat, row[tableConfig.dAttr]) }}
+                            </div>
+                        </div>
+                        <div bo-switch-when="number">
+                            <span class="{{row[tableConfig.dIcon]}}" style="color:{{row[tableConfig.dColor]}};"></span>
+                            <div style="display:inline-block;">
+                            {{ ::row[tableConfig.dAttr] | number }}
+                            </div>
                         </div>
                         <div bo-switch-default>
                             <div bo-switch="tableConfig.dHtmlConverter">
-                                <div bo-switch-when="true">
-                                    <span ng-bind-html="tableService.convertHtml(row[tableConfig.dAttr])"></span>
-                                </div>
-                                <div bo-switch-when="false" translate="{{::row[tableConfig.dAttr]}}">
+                                <span class="{{row[tableConfig.dIcon]}}" style="color:{{row[tableConfig.dColor]}};"></span>
+                                <div style="display:inline-block;">
+                                    <div bo-switch-when="true" >
+                                        <span ng-bind-html="tableService.convertHtml(row[tableConfig.dAttr])"></span>
+                                    </div>
+                                    <div bo-switch-when="false" translate="{{::row[tableConfig.dAttr]}}">
 
+                                    </div>
                                 </div>
                             </div>
                         </div>
