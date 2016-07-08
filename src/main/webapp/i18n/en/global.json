@@ -177,6 +177,11 @@
         "year" : "Year",
         "month" : "Month",
         "week" : "Week",
-        "day" : "Day"
+        "day" : "Day",
+        "title" : {
+            "year" : ".",
+            "month" : ".",
+            "day" : "."
+        }
     }
 }

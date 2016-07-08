@@ -1,4 +1,19 @@
-<h2 class="text-center">{{ calendarTitle }}</h2>
+<h2 class="text-center" ng-if="calendarView == 'year'">
+    {{ viewDate | date : 'yyyy' }}<span translate="calendar.title.year">년</span>
+</h2>
+<h2 class="text-center" ng-if="calendarView == 'month'">
+    {{ viewDate | date : 'yyyy' }}<span translate="calendar.title.year">년</span>
+    {{ viewDate | date : 'MM' }}<span translate="calendar.title.month">월</span>
+</h2>
+<h2 class="text-center" ng-if="calendarView == 'week'">
+    {{ viewDate | date : 'yyyy' }}<span translate="calendar.title.year">년</span>
+    {{ viewDate | date : 'MM' }}<span translate="calendar.title.month">월</span>
+</h2>
+<h2 class="text-center" ng-if="calendarView == 'day'">
+    {{ viewDate | date : 'yyyy' }}<span translate="calendar.title.year">년</span>
+    {{ viewDate | date : 'MM' }}<span translate="calendar.title.month">월</span>
+    {{ viewDate | date : 'dd' }}<span translate="calendar.title.day">일</span>
+</h2>
 <div class="row">
     <div class="col-md-6">
         <div class="btn-group">
