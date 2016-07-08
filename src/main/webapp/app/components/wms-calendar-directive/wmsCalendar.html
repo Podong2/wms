@@ -1,11 +1,7 @@
 <h2 class="text-center" ng-if="calendarView == 'year'">
     {{ viewDate | date : 'yyyy' }}<span translate="calendar.title.year">년</span>
 </h2>
-<h2 class="text-center" ng-if="calendarView == 'month'">
-    {{ viewDate | date : 'yyyy' }}<span translate="calendar.title.year">년</span>
-    {{ viewDate | date : 'MM' }}<span translate="calendar.title.month">월</span>
-</h2>
-<h2 class="text-center" ng-if="calendarView == 'week'">
+<h2 class="text-center" ng-if="calendarView == 'month' || calendarView == 'week'">
     {{ viewDate | date : 'yyyy' }}<span translate="calendar.title.year">년</span>
     {{ viewDate | date : 'MM' }}<span translate="calendar.title.month">월</span>
 </h2>
