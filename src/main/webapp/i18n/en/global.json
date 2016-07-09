@@ -203,6 +203,8 @@
         "travisDescription" : "Build history from Travis CI",
         "Github Repository Path" : "Github Repository Path",
         "Access Token" : "Access Token",
-        "pathExsample" : "Enter Path (username/reponame)"
+        "pathExsample" : "Enter Path (username/reponame)",
+        "widgetConfig" : "Please configure the widget.",
+        "widgetInsertConfig" : "Please insert a repository path in the widget configuration."
     }
 }
