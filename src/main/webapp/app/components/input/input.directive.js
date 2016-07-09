@@ -17,6 +17,20 @@
     function inputBox ($compile) {
         return {
             restrict: 'E',
+            //scope : {
+            //    formName : '@',
+            //    inputName : '@',
+            //    minlength : '@',
+            //    maxlength : '@',
+            //    pattern : '@',
+            //    modelName : '=',
+            //    requiredText : '@',
+            //    minlengthText : '@',
+            //    maxlengthText : '@',
+            //    patternText : '@',
+            //    placeholderText : '@'
+            //},
+            replace: false,
             //templateUrl : 'app/components/input/inputTemplate.html',
             link: function (scope, element, attrs) {
 
@@ -38,10 +52,10 @@
                     '<input type="text" class="form-control" id="'+ scope.inputName +'" name="'+ scope.inputName +'" placeholder="{{\''+ scope.placeholderText +'\' | translate}}" ' +
                     'ng-model="'+ scope.modelName +'" ng-minlength="'+ scope.minlength +'" ng-maxlength="'+ scope.maxlength +'" ng-pattern="'+ scope.pattern +'" required wms-kr-update>'+
                     '<div ng-show="'+ scope.formName +'.'+ scope.inputName +'.$dirty && '+ scope.formName +'.'+ scope.inputName +'.$invalid">' +
-                    '<p class="help-block" ng-show="'+ scope.formName +'.'+ scope.inputName +'.$error.required" translate="'+scope.requiredText+'"></p>' +
-                    '<p class="help-block" ng-show="'+ scope.formName +'.'+ scope.inputName +'.$error.minlength" translate="'+scope.minlengthText+'"></p>' +
-                    '<p class="help-block" ng-show="'+ scope.formName +'.'+ scope.inputName +'.$error.maxlength" translate="'+scope.maxlengthText+'"></p>' +
-                    '<p class="help-block" ng-show="'+ scope.formName +'.'+ scope.inputName +'.$error.pattern" translate="'+scope.patternText+'"></p>' +
+                    '<p class="help-block" ng-if="'+ scope.formName +'.'+ scope.inputName +'.$error.required" translate="'+scope.requiredText+'"></p>' +
+                    '<p class="help-block" ng-if="'+ scope.formName +'.'+ scope.inputName +'.$error.minlength" translate="'+scope.minlengthText+'"></p>' +
+                    '<p class="help-block" ng-if="'+ scope.formName +'.'+ scope.inputName +'.$error.maxlength" translate="'+scope.maxlengthText+'"></p>' +
+                    '<p class="help-block" ng-if="'+ scope.formName +'.'+ scope.inputName +'.$error.pattern" translate="'+scope.patternText+'"></p>' +
                     '</div>' +
                     '</div>';
                 '</form>';
