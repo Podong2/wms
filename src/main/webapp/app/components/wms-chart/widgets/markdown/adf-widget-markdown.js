@@ -46,5 +46,5 @@ angular.module('adf.widget.markdown', ['adf.provider', 'btford.markdown'])
     $scope.config = config;
   }]);
 
-angular.module("adf.widget.markdown").run(["$templateCache", function($templateCache) {$templateCache.put("{widgetsPath}/markdown/src/edit.html","<form role=form><div class=form-group><label for=content>Markdown content</label> <textarea id=content class=form-control rows=5 ng-model=config.content></textarea></div></form>");
+angular.module("adf.widget.markdown").run(["$templateCache", function($templateCache) {$templateCache.put("{widgetsPath}/markdown/src/edit.html","<form role=form><div class=form-group><label for=content translate='entity.action.content'></label> <textarea id=content class=form-control rows=5 ng-model=config.content></textarea></div></form>");
 $templateCache.put("{widgetsPath}/markdown/src/view.html","<div class=markdown btf-markdown=config.content></div>");}]);})(window);

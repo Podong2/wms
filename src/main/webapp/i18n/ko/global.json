@@ -134,7 +134,8 @@
             "move" : "이동",
             "collapse" :"접기",
             "fullScreen" : "크게보기",
-            "refresh" : "새로고침"
+            "refresh" : "새로고침",
+            "content" : "내용"
         },
         "detail": {
             "field": "필드",
@@ -204,6 +205,18 @@
         "accessToken" : "접근 토큰 정보",
         "pathExsample" : "경로 입력 (username/reponame)",
         "widgetConfig" : "위젯을 설정하세요.",
-        "widgetInsertConfig" : "위젯 구성 저장소 경로를 넣으십시오."
+        "widgetInsertConfig" : "위젯 구성 저장소 경로를 넣으십시오.",
+        "linkName" : "링크",
+        "feedWidgetConfig" : "위젯을 구성할 url을 설정해 주세요.",
+        "feedUrl" : "구성 url",
+        "enterFeedUrl" : "구성 url 입력",
+        "numberOfEntries" : "번호 항목",
+        "showFeedTitle" : "구성 제목 노출",
+        "showFeedDescription" : "구성 내용 노출",
+        "repository" : "저장소",
+        "userName" : "사용자 명",
+        "enterRepository" : "저장소 입력",
+        "enterUserName" : "사용자 명 입력",
+        "structure" : "구조"
     }
 }
