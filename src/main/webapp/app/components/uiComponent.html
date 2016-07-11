@@ -961,6 +961,34 @@
                 <h3><b>Layout</b></h3>
                 <!--<ng-include src="'app/components/common/detailBody.html'"></ng-include>-->
                 <wms-make-table response-data="responseData" column-datas="columnDatas" type="multi"></wms-make-table>
+<h4>디렉티브 선언</h4>
+<xmp>
+    <wms-make-table response-data="responseData" column-datas="columnDatas" type="multi"></wms-make-table>
+</xmp>
+<h4>데이터 구조</h4>
+<xmp>
+$scope.responseData = {
+    data : [{
+        dueDate : "2016-07-04",
+        name : "bootstrap grid system"
+    }]
+};
+
+$scope.columnDatas = [
+    {
+    key : "name",
+    language : "이름",
+    renderer : "randerer",
+    rendererType : "text"
+    },
+    {
+    key : "dueDate",
+    language : "날짜",
+    renderer : "randerer",
+    rendererType : "date"
+    }
+];
+</xmp>
             </div>
 
             <div ng-show="vm.tabArea[14].status">
