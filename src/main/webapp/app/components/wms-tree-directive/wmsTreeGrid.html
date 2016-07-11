@@ -1,0 +1,68 @@
+<script type="text/ng-template" id="tree-dnd-grid-template-render.html">
+    <table class="table table-bordered table-hover table-striped">
+        <thead>
+            <tr>
+                <th ng-class="expandingProperty.titleClass" ng-style="expandingProperty.titleStyle"
+                    compile="expandingProperty.titleTemplate">
+                    {{expandingProperty.displayName || expandingProperty.field || expandingProperty}}
+                </th>
+                <th ng-repeat="col in colDefinitions" ng-class="col.titleClass" ng-style="col.titleStyle"
+                    compile="col.titleTemplate">
+                    {{col.displayName || col.field}}
+                </th>
+            </tr>
+        </thead>
+        <tbody tree-dnd-nodes>
+            <tr tree-dnd-node="node" ng-repeat="node in tree_nodes track by node.__hashKey__ "
+                ng-show="enabledFilter ? node.__filtered_visible__ === true && node.__visible__ : node.__visible__"
+                ng-class="enabledFilter ? (node.__filtered__ === true? 'success': '') : (node.__selected__ ? ' active':'')"
+                ng-click="onSelect(node)">
+                <td tree-dnd-node-handle
+                    ng-style="expandingProperty.cellStyle ? expandingProperty.cellStyle : {'padding-left': $callbacks.calsIndent(node.__level__)}"
+                    ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
+                    <a data-nodrag> <i ng-class="node.__icon_class__"
+                                       ng-click="toggleExpand(node)"
+                                       class="tree-icon"></i>
+                    </a> {{node[expandingProperty.field] || node[expandingProperty]}}
+                </td>
+                <td ng-repeat="col in colDefinitions" ng-class="col.cellClass" ng-style="col.cellStyle"
+                    compile="col.cellTemplate">
+                    {{node[col.field]}}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</script>
+
+<div class="form-group" ng-if="enableFilter != 'false'">
+    <div class="input-group">
+        <label>필터: </label>
+        <input class="form-control" ng-model="_filter.name">
+    </div>
+</div>
+<div class="voffset-b2">
+    <button type="button" class="btn btn-default" ng-click="expandAll();">전체 열기</button>
+    <button type="button" class="btn btn-default" ng-click="collapseAll();">전체 닫기</button>
+</div>
+<tree-dnd
+    tree-data="tree_data"
+    tree-control="my_tree_grid"
+    filter="_filter"
+    expand-on="expanding_property"
+    order-by="{{orderBy}}"
+    template-url="tree-dnd-grid-template-render.html"
+    column-defs="columnDefinitions"
+
+    indent="30"
+    indent-plus="20"
+    indent-unit="px"
+
+    enable-drop="true"
+    enable-drag="true"
+    enable-collapse="true"
+    enable-move="true"
+
+    enable-hotkey="true"
+    enable-status="true"
+>
+</tree-dnd>

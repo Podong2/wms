@@ -914,47 +914,19 @@
                 <wms-tree tree-model="wmsTreeData"
                           disabled="false"
                           enable-filter="true"
-                          enable-sort="false"
+                          enable-sort="true"
                           enable-clone="true">
                 </wms-tree>
 
-<h4>디렉티브 선언</h4>
-<xmp>
-<wms-tree tree-model="wmsTreeData"
-          disabled="false"
-          enable-filter="true"
-          enable-sort="true"
-          enable-clone="true">
-</wms-tree>
-</xmp>
-<h4>데이터 구조</h4>
-<xmp>
-[{
-    "id": 1,
-    "parentId": null,
-    "name": "United States of America"
-},
-{
-    "id": 2,
-    "parentId": 1,
-    "name": "California"
-},
-{
-    "id": 3,
-    "parentId": 2,
-    "name": "San Francisco"
-},
-{
-    "id": 201,
-    "parentId": null,
-    "name": "India"
-},
-{
-    "id": 301,
-    "parentId": null,
-    "name": "Bangladesh"
-}]
-</xmp>
+
+                <h3><b>Tree</b></h3>
+                <wms-tree-grid tree-model="wmsTreeData2"
+                          column-definitions="wmsTreeColumnDefinitions"
+                          disabled="false"
+                          enable-filter="true"
+                          enable-sort="true"
+                          enable-clone="true">
+                </wms-tree-grid>
             </div>
 
             <div ng-show="vm.tabArea[13].status">
