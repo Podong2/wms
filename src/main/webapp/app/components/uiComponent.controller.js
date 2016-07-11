@@ -141,82 +141,92 @@
 
 
         //Tree values start ///////////////////////////////////////////////////////////////////////////
-        vm.list = [
-            {
-                "id": 1,
-                "title": "QSD팀",
-                "items": [
-                    {
-                        "id": 11,
-                        "title": "오지영 이사",
-                        "items": [
-                            {
-                                "id": 111,
-                                "title": "장원호 선임",
-                                "items": []
-                            },
-                            {
-                                "id": 111,
-                                "title": "이정선 주임",
-                                "items": []
-                            },
-                            {
-                                "id": 111,
-                                "title": "한성용 연구원",
-                                "items": []
-                            }
-                        ]
-                    }
-                ]
-            },
-            {
-                "id": 2,
-                "title": "QA팀",
-                "nodrop": true,
-                "items": [
-                    {
-                        "id": 21,
-                        "title": "홍길동 팀장",
-                        "items": []
-                    },
-                    {
-                        "id": 22,
-                        "title": "김철수 주임",
-                        "items": []
-                    }
-                ]
-            }
-        ];
 
         $scope.wmsTreeData = [{
             "id": 1,
             "parentId": null,
             "name": "가가가가가가가가",
+            "description": "설명설명설명설명설명설명1",
             "icon": "glyphicon glyphicon-align-justify"
         },
         {
             "id": 2,
             "parentId": 1,
             "name": "다다다다다다다다",
+            "description": "설명설명설명설명설명설명222222",
             "icon": "glyphicon glyphicon-tag"
         },
         {
             "id": 3,
             "parentId": 2,
-            "name": "나나나나나나나나"
+            "name": "나나나나나나나나",
+            "description": "설명설명설명설명설명설명3333"
         },
         {
             "id": 201,
             "parentId": null,
             "name": "라라라라라라라라",
+            "description": "설명설명설명설명설명설명4444444",
             "icon": "glyphicon glyphicon-cog"
         },
         {
             "id": 301,
             "parentId": null,
             "name": "마마마마마마마마",
+            "description": "설명설명설명설명설명설명556615566655555",
             "icon": "glyphicon glyphicon-align-justify"
         }];
+        $scope.wmsTreeData2 = [{
+            "id": 1,
+            "parentId": null,
+            "name": "가가가가가가가가",
+            "description": "설명설명설명설명설명설명1",
+            "icon": "glyphicon glyphicon-align-justify"
+        },
+        {
+            "id": 2,
+            "parentId": 1,
+            "name": "다다다다다다다다",
+            "description": "설명설명설명설명설명설명222222",
+            "icon": "glyphicon glyphicon-tag"
+        },
+        {
+            "id": 3,
+            "parentId": 2,
+            "name": "나나나나나나나나",
+            "description": "설명설명설명설명설명설명3333"
+        },
+        {
+            "id": 201,
+            "parentId": null,
+            "name": "라라라라라라라라",
+            "description": "설명설명설명설명설명설명4444444",
+            "icon": "glyphicon glyphicon-cog"
+        },
+        {
+            "id": 301,
+            "parentId": null,
+            "name": "마마마마마마마마",
+            "description": "설명설명설명설명설명설명556615566655555",
+            "icon": "glyphicon glyphicon-align-justify"
+        }];
+
+        $scope.wmsTreeColumnDefinitions = [
+            {
+                field:         'description',
+                titleClass:    'text-center',
+                titleTemplate: '<label> {{col.displayName || col.field}} <input class="form-control" ng-model="_filter.description"></label>',
+                displayName:   '설명'
+            },
+            {
+                titleStyle:    {
+                    'width': '200px'
+                },
+                titleClass:    'text-center',
+                cellClass:     'v-middle text-center',
+                displayName:   'Function',
+                cellTemplate:  '<button ng-click="addChildFunction()" class="btn btn-default btn-sm">Add</button><button ng-click="tree.remove_node(node)" class="btn btn-default btn-sm">Remove</button>'
+            }];
         //Tree values end ///////////////////////////////////////////////////////////////////////////
 
 
