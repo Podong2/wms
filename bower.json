@@ -60,7 +60,7 @@
     "adf-widget-travis": "^0.1.1",
     "ng-table": "^1.0.0",
     "angular-nvd3": "^1.0.7",
-    "d3": "^4.1.0",
+    "d3": "3.5.5",
     "nvd3": "^1.8.4",
     "angular-bootstrap-calendar": "^0.21.5",
     "moment": "^2.14.1",
