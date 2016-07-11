@@ -43,25 +43,26 @@
     <button type="button" class="btn btn-default" ng-click="expandAll();">전체 열기</button>
     <button type="button" class="btn btn-default" ng-click="collapseAll();">전체 닫기</button>
 </div>
+<div class="panel panel-default pad">
+    <tree-dnd
+        tree-data="tree_data"
+        tree-control="my_tree"
+        filter="_filter"
+        expand-on="expanding_property"
+        order-by="{{orderBy}}"
+        template-url="tree-dnd-template-render.html"
 
-<tree-dnd
-    tree-data="tree_data"
-    tree-control="my_tree"
-    filter="_filter"
-    expand-on="expanding_property"
-    order-by="{{orderBy}}"
-    template-url="tree-dnd-template-render.html"
+        indent="30"
+        indent-plus="20"
+        indent-unit="px"
 
-    indent="30"
-    indent-plus="20"
-    indent-unit="px"
+        enable-drop="{{enableModify}}"
+        enable-drag="{{enableModify}}"
+        enable-collapse="{{enableModify}}"
+        enable-move="{{enableModify}}"
 
-    enable-drop="{{enableModify}}"
-    enable-drag="{{enableModify}}"
-    enable-collapse="{{enableModify}}"
-    enable-move="{{enableModify}}"
-
-    enable-hotkey="{{enableModify}}"
-    enable-status="{{enableModify}}"
->
-</tree-dnd>
+        enable-hotkey="{{enableModify}}"
+        enable-status="{{enableModify}}"
+    >
+    </tree-dnd>
+</div>

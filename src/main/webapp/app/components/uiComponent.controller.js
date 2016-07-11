@@ -219,7 +219,7 @@
             },
             {
                 titleStyle:    {
-                    'width': '200px'
+                    'width': '80px'
                 },
                 titleClass:    'text-center',
                 cellClass:     'v-middle text-center',
