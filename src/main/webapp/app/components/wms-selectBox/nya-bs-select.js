@@ -757,7 +757,7 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', '$compi
           });
         dropdownToggle.on('click', function() {
           var nyaBsOptionNode;
-          $element.toggleClass('open');
+          $element.addClass('open');
           if($element.hasClass('open') && typeof liHeight === 'undefined') {
             calcMenuSize();
           }
@@ -775,6 +775,7 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', '$compi
             }
           }
         });
+
 
         // actions box
         if ($attrs.actionsBox === 'true' && isMultiple) {

@@ -9,7 +9,7 @@
 
 angular.module('wmsApp')
     .directive('wmsSelectBox', wmsSelectBox);
-    wmsSelectBox.$inject=['$document', '$log', '$compile']
+    wmsSelectBox.$inject=['$document', '$log', '$compile'];
 function wmsSelectBox($document, $log, $compile) {
     return {
         restrict: 'E',
