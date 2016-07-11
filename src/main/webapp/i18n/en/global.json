@@ -131,7 +131,12 @@
             "INSERT": "Insert",
             "UPDATE": "Update",
             "DELETE": "Delete",
-            "search": "Search"
+            "search": "Search",
+            "move" : "move",
+            "collapse" :"collapse",
+            "fullScreen" : "fullScreen",
+            "refresh" : "refresh",
+            "content" : "content"
         },
         "detail": {
             "field": "Field",
@@ -183,5 +188,36 @@
             "month" : ".",
             "day" : "."
         }
+    },
+    "widget" : {
+        "historyDescription" : "Display the commit history of a GitHub project as chart",
+        "authorDescription" : "Displays the commits per author as pie chart",
+        "commitsDescription" : "Displays the commits as list",
+        "issueDescription" : "Displays issues as list of a GitHub project",
+        "barChartDescription" : "Displays a barChart",
+        "columnChartDescription" : "Displays a columnChart",
+        "lineChartDescription" : "Displays a lineChart",
+        "pieChartDescription" : "Displays a pieChart",
+        "linkDescription" : "Displays a list of links",
+        "markdownDescription" : "Markdown widget",
+        "newsDescription" : "Displays a RSS/Atom feed",
+        "travisDescription" : "Build history from Travis CI",
+        "Github Repository Path" : "Github Repository Path",
+        "Access Token" : "Access Token",
+        "pathExsample" : "Enter Path (username/reponame)",
+        "widgetConfig" : "Please configure the widget.",
+        "widgetInsertConfig" : "Please insert a repository path in the widget configuration.",
+        "linkName" : "link",
+        "feedWidgetConfig" : "Please insert a feed url in the widget configuration",
+        "feedUrl" : "Feed url",
+        "enterFeedUrl" : "enter Feed url",
+        "numberOfEntries" : "Number of Entries",
+        "showFeedTitle" : "Show Feed Title",
+        "showFeedDescription" : "Show Feed Description",
+        "repository" : "Repository",
+        "userName" : "userName",
+        "enterRepository" : "enterRepository",
+        "enterUserName" : "enter UserName",
+        "structure" : "Structure"
     }
 }

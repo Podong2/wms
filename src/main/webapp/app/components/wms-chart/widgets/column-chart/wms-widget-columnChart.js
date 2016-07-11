@@ -29,8 +29,9 @@ angular.module('wms.widget.columnChart', ['adf.provider', 'nvd3', 'wms.column.ch
   .config(["dashboardProvider", function(dashboardProvider){
     dashboardProvider
       .widget('columnChart', {
-        title: 'columnChart',
-        description: 'Displays a columnChart',
+        title: '',
+          subject: 'columnChart',
+        description: 'widget.columnChartDescription',
         templateUrl: 'app/components/wms-chart/widgets/column-chart/widgetColumnChartTemplate.html',
         edit: {
           templateUrl: '{widgetsPath}/chart/src/edit.html',

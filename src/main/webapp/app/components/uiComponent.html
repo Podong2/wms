@@ -79,23 +79,23 @@
 
 ----------------------------------------------------------------------------------<br/>
                 <h4>단일 select box</h4>
-                <select-box
+                <wms-select-box
                    ng-model="vm.arrayCollection"
-                   selectedValue="selectedValue"
+                   selected-value="vm.selectedValue"
                    dataSize="5"
                    dataLiveSearch="true"
-                ></select-box>
+                ></wms-select-box>
 
                 <h4>다중 select box</h4>
-                <select-box
+                <wms-select-box
                    ng-model="vm.arrayCollection"
-                   selectedValue="multipleValue"
-                   actionsBox="true"
+                   selected-value="vm.multipleValue"
+                   actions-box="true"
                    multiple="true"
                    dataSize="5"
                    dataLiveSearch="true"
                    disabled="false"
-                ></select-box>
+                ></wms-select-box>
 
 <br/>----------------------------------------------------------------------------------<br/>
                 value key : vm.multipleValue<br/>
@@ -104,23 +104,23 @@
 
                 <xmp>
                     단일 select
-                    <select-box
+                    <wms-select-box
                         ng-model="vm.arrayCollection"
-                        selectedValue="multipleValue"
+                        selected-value="vm.selectedValue"
                         dataSize="5"
                         dataLiveSearch="true"
-                    ></select-box>
+                    ></wms-select-box>
 
                     다중 select
-                    <select-box
+                    <wms-select-box
                         ng-model="vm.arrayCollection"
-                        selectedValue="multipleValue"
-                        actionsBox="true"
+                        selected-value="vm.multipleValue"
+                        actions-box="true"
                         multiple="true"
                         dataSize="5"
                         dataLiveSearch="true"
                         disabled="false"
-                    ></select-box>
+                    ></wms-select-box>
                 </xmp>
             </div>
 
@@ -136,17 +136,17 @@
                 ------------------------------------------------------------------------<br/>
 
                         <input-box
-                            formName="form"
-                            inputName="name"
+                            form-name="form"
+                            input-name="name"
                             minlength="2"
                             maxlength="10"
                             pattern="/^[a-zA-Z][a-zA-Z0-9]{0,20}$/"
-                            modelName="vm.textValue"
-                            requiredText="이름을 입력하세요."
-                            minText="이름은 두자 이상 입력하세요."
-                            maxText="이름은 10자 이하로 입력하세요."
-                            patternText="특수문자를 제외한 영문, 숫자, 한글을 입력하세요."
-                            placeholderText="이름 입력"
+                            ng-model="vm.textValue"
+                            required-text="이름을 입력하세요."
+                            min-text="이름은 두자 이상 입력하세요."
+                            max-text="이름은 10자 이하로 입력하세요."
+                            pattern-text="특수문자를 제외한 영문, 숫자, 한글을 입력하세요."
+                            placeholder-text="이름 입력"
                         ></input-box>
                         {{vm.textValue}}
                 ------------------------------------------------------------------------<br/>
@@ -933,6 +933,34 @@
                 <h3><b>Layout</b></h3>
                 <!--<ng-include src="'app/components/common/detailBody.html'"></ng-include>-->
                 <wms-make-table response-data="responseData" column-datas="columnDatas" type="multi"></wms-make-table>
+<h4>디렉티브 선언</h4>
+<xmp>
+    <wms-make-table response-data="responseData" column-datas="columnDatas" type="multi"></wms-make-table>
+</xmp>
+<h4>데이터 구조</h4>
+<xmp>
+$scope.responseData = {
+    data : [{
+        dueDate : "2016-07-04",
+        name : "bootstrap grid system"
+    }]
+};
+
+$scope.columnDatas = [
+    {
+    key : "name",
+    language : "이름",
+    renderer : "randerer",
+    rendererType : "text"
+    },
+    {
+    key : "dueDate",
+    language : "날짜",
+    renderer : "randerer",
+    rendererType : "date"
+    }
+];
+</xmp>
             </div>
 
             <div ng-show="vm.tabArea[14].status">
@@ -980,7 +1008,6 @@
                 <line-chart data="lineData" options="lineOptions"></line-chart>
 
                 <hr/>
-
                 <h4>column chart</h4>
                 <column-chart data="columnData" options="columnOptions"></column-chart>
 

@@ -6,14 +6,14 @@
         <uib-accordion ng-init="categorized= createCategories(widgets)">
         <uib-accordion-group heading="{{category.name}}" ng-repeat="category in categorized | adfOrderByObjectKey: 'name'">
         <dl class="dl-horizontal">
-            <dt ng-repeat-start="widget in category | adfOrderByObjectKey: 'key'"> <a href ng-click="addWidget(key)"> {{widget.title}} </a> </dt>
-            <dd ng-repeat-end ng-if="widget.description"> {{widget.description}}</dd>
+            <dt ng-repeat-start="widget in category | adfOrderByObjectKey: 'key'"> <a href ng-click="addWidget(key)"> {{widget.subject}} </a> </dt>
+            <dd ng-repeat-end ng-if="widget.description" translate="{{widget.description}}"></dd>
         </dl>
         </uib-accordion-group> </uib-accordion> </div>
     <div style="display: inline-block;" ng-if="!createCategories">
     <dl class="dl-horizontal">
-        <dt ng-repeat-start="widget in widgets | adfOrderByObjectKey: 'key'"> <a href ng-click="addWidget(widget.key)"> {{widget.title}} </a> </dt>
-        <dd ng-repeat-end ng-if="widget.description"> {{widget.description}}</dd>
+        <dt ng-repeat-start="widget in widgets | adfOrderByObjectKey: 'key'"> <a href ng-click="addWidget(widget.key)"> {{widget.subject}} </a> </dt>
+        <dd ng-repeat-end ng-if="widget.description" translate="{{widget.description}}"></dd>
     </dl>
 </div> </div>
 <div class="modal-footer">

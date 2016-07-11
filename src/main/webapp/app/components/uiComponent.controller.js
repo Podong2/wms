@@ -129,13 +129,13 @@
             { status: false },  // button
             { status: false },  // ngGallery
             { status: false },   // Tree
-            { status: true },   // layout
+            { status: false },   // layout
             { status: false },   // submit
             { status: false },  // auto-complete
-            { status: false },  // table
+            { status: true },  // dashboard
             { status: false },  // table
             { status: false },  // chart
-            { status: false }  // table
+            { status: false }  // calendar
         ];
 
 

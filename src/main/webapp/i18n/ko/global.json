@@ -130,7 +130,12 @@
             "INSERT": "생성",
             "UPDATE": "수정",
             "DELETE": "삭제",
-            "search": "검색"
+            "search": "검색",
+            "move" : "이동",
+            "collapse" :"접기",
+            "fullScreen" : "크게보기",
+            "refresh" : "새로고침",
+            "content" : "내용"
         },
         "detail": {
             "field": "필드",
@@ -182,5 +187,36 @@
             "month" : "월",
             "day" : "일"
         }
+    },
+    "widget" : {
+        "historyDescription" : "github history 차트를 확인할 수 있는 위젯입니다.",
+        "authorDescription" : "github author 차트를 확인할 수 있는 위젯입니다.",
+        "commitsDescription" : "github commits 차트를 확인할 수 있는 위젯입니다.",
+        "issueDescription" : "github issue 차트를 확인할 수 있는 위젯입니다.",
+        "barChartDescription" : "바차트를 확인할 수 있는 위젯입니다.",
+        "columnChartDescription" : "컬럼트를 확인할 수 있는 위젯입니다.",
+        "lineChartDescription" : "라인트를 확인할 수 있는 위젯입니다.",
+        "pieChartDescription" : "파이차트를 확인할 수 있는 위젯입니다.",
+        "linkDescription" : "링크를 확인할 수 있는 위젯입니다.",
+        "markdownDescription" : "마크다운을 이용할 수 있는 위젯입니다.",
+        "newsDescription" : "뉴스를 확인할 수 있는 위젯입니다.",
+        "travisDescription" : "travis CI 를 확인할 수 있는 위젯입니다.",
+        "githubRepositoryPath" : "Github 저장소 경로",
+        "accessToken" : "접근 토큰 정보",
+        "pathExsample" : "경로 입력 (username/reponame)",
+        "widgetConfig" : "위젯을 설정하세요.",
+        "widgetInsertConfig" : "위젯 구성 저장소 경로를 넣으십시오.",
+        "linkName" : "링크",
+        "feedWidgetConfig" : "위젯을 구성할 url을 설정해 주세요.",
+        "feedUrl" : "구성 url",
+        "enterFeedUrl" : "구성 url 입력",
+        "numberOfEntries" : "번호 항목",
+        "showFeedTitle" : "구성 제목 노출",
+        "showFeedDescription" : "구성 내용 노출",
+        "repository" : "저장소",
+        "userName" : "사용자 명",
+        "enterRepository" : "저장소 입력",
+        "enterUserName" : "사용자 명 입력",
+        "structure" : "구조"
     }
 }
