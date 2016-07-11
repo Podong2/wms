@@ -50,15 +50,32 @@
             'wms.widget.lineChart',
             'wms.widget.pieChart',
             'mwl.calendar',
-            'angularMoment'
+            'angularMoment',
+            'gantt',
+            'gantt.sortable',
+            'gantt.movable',
+            'gantt.drawtask',
+            'gantt.tooltips',
+            'gantt.bounds',
+            'gantt.progress',
+            'gantt.table',
+            'gantt.tree',
+            'gantt.groups',
+            'gantt.dependencies',
+            'gantt.overlap',
+            'gantt.resizeSensor',
+            'mgcrea.ngStrap',
+            'mgcrea.ngStrap.collapse'
         ])
         .config(config)
         .run(run);
 
-    config.$inject = ['nyaBsConfigProvider', 'dashboardProvider'];
+    config.$inject = ['nyaBsConfigProvider', 'dashboardProvider', '$compileProvider'];
     run.$inject = ['stateHandler', 'translationHandler', 'editableOptions'];
 
-    function config(nyaBsConfigProvider, dashboardProvider) {
+    function config(nyaBsConfigProvider, dashboardProvider, $compileProvider) {
+        $compileProvider.debugInfoEnabled(false); // Remove debug info (angularJS >= 1.3)
+
         nyaBsConfigProvider.setLocalizedText('ko', {
             defaultNoneSelection: '선택 해주세요',
             noSearchResult: '검색 결과가 존재하지 않습니다',

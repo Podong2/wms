@@ -132,10 +132,11 @@
             { status: false },   // layout
             { status: false },   // submit
             { status: false },  // auto-complete
-            { status: true },  // dashboard
+            { status: false },  // dashboard
             { status: false },  // table
             { status: false },  // chart
-            { status: false }  // calendar
+            { status: false },  // calendar
+            { status: true }  // gantt
         ];
 
 

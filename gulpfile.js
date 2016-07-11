@@ -265,6 +265,15 @@ gulp.task('react', function () {
         .pipe(react())
         .pipe(gulp.dest(config.app + 'app/react/'));
 });
+gulp.task('gantt', function () {
+    return gulp.src([config.app + 'app/components/wms-gantt/wmsGantt.controller.js'])
+        .pipe(babel({
+            presets: ['es2015']
+        }))
+        .pipe(plumber({errorHandler: handleErrors}))
+        .pipe(babel())
+        .pipe(gulp.dest(config.app + 'app/components/wms-gantt/dist/'));
+});
 //gulp.task('ngReact', function () {
 //    return gulp.src([config.bower + 'react/**/*.js', config.bower + 'ngReact/**/*.js'])
 //        .pipe(plumber({errorHandler: handleErrors}))

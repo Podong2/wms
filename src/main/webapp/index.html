@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.css">
     <link rel="stylesheet" href="bower_components/react-bootstrap-table/css/react-bootstrap-table.css">
     <link rel="stylesheet" href="bower_components/bootstrap-fileinput/css/fileinput.min.css">
+    <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.css">
     <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css">
     <link rel="stylesheet" href="bower_components/nya-bootstrap-select/dist/css/nya-bs-select.css">
     <link rel="stylesheet" href="bower_components/angular-toastr/dist/angular-toastr.css">
@@ -24,10 +25,11 @@
     <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.css">
     <link rel="stylesheet" href="bower_components/angular-dashboard-framework/dist/angular-dashboard-framework.css">
     <link rel="stylesheet" href="bower_components/angular-chart.js/dist/angular-chart.css">
+    <link rel="stylesheet" href="bower_components/ng-table/dist/ng-table.css">
+    <link rel="stylesheet" href="bower_components/angular-bootstrap-calendar/dist/css/angular-bootstrap-calendar.css">
+    <link rel="stylesheet" href="bower_components/angular-gantt/assets/angular-gantt.css">
+    <link rel="stylesheet" href="bower_components/angular-gantt/assets/angular-gantt-plugins.css">
     <link rel="stylesheet" href="bower_components/adf-widget-travis/dist/adf-widget-travis.css">
-    <link href="bower_components/ng-table/dist/ng-table.css" rel="stylesheet">
-    <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.css">
-    <link href="bower_components/angular-bootstrap-calendar/dist/css/angular-bootstrap-calendar.min.css" rel="stylesheet">
     <!-- endinject -->
     <!-- endbuild -->
     <!-- build:css content/css/main.css -->
@@ -156,6 +158,11 @@
 <script src="bower_components/Sortable/react-sortable-mixin.js"></script>
 <script src="bower_components/showdown/dist/showdown.js"></script>
 <script src="bower_components/Chart.js/Chart.js"></script>
+<script src="bower_components/d3/d3.js"></script>
+<script src="bower_components/nvd3/build/nv.d3.js"></script>
+<script src="bower_components/moment/moment.js"></script>
+<script src="bower_components/moment-range/dist/moment-range.js"></script>
+<script src="bower_components/domready/ready.js"></script>
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/angular-aria/angular-aria.js"></script>
 <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
@@ -190,15 +197,18 @@
 <script src="bower_components/angular-markdown-directive/markdown.js"></script>
 <script src="bower_components/angular-chart.js/dist/angular-chart.js"></script>
 <script src="bower_components/angular-md5/angular-md5.js"></script>
-<script src="bower_components/d3/d3.js"></script>
-<script src="bower_components/nvd3/build/nv.d3.js"></script> <!-- or use another assembly -->
+<script src="bower_components/ng-table/dist/ng-table.js"></script>
 <script src="bower_components/angular-nvd3/dist/angular-nvd3.js"></script>
-<script src="app/components/wms-calendar-directive/interact-js/interact.min.js"></script>
-<script src="bower_components/moment/moment.js"></script>
+<script src="bower_components/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar-tpls.js"></script>
 <script src="bower_components/angular-moment/angular-moment.js"></script>
-<script src="bower_components/angular-bootstrap-calendar/dist/js/angular-bootstrap-calendar-tpls.min.js"></script>
-
-
+<script src="bower_components/angular-gantt/assets/angular-gantt.js"></script>
+<script src="bower_components/angular-gantt/assets/angular-gantt-plugins.js"></script>
+<script src="bower_components/angular-strap/dist/angular-strap.js"></script>
+<script src="bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
+<script src="bower_components/element-queries/dist/element-queries.min.js"></script>
+<script src="bower_components/adf-widget-markdown/dist/adf-widget-markdown.js"></script>
+<script src="bower_components/adf-widget-github/dist/adf-widget-github.js"></script>
+<script src="bower_components/adf-widget-travis/dist/adf-widget-travis.js"></script>
 <!-- endinject -->
 <!-- endbuild -->
 
@@ -467,6 +477,9 @@
 <script src="app/components/wms-chart/widgets/travis/adf-widget-travis.js"></script>
 <script src="app/components/dashboard/adf-structures-base.js"></script>
 <script src="app/components/wms-selectBox/nya-bs-select.js"></script>
+<script src="app/components/wms-gantt/wmsGantt.controller.js"></script>
+<script src="bower_components/angular-gantt/plunker/jsPlumb-2.0.5.js"></script>
+<script src="app/components/wms-calendar-directive/interact-js/interact.min.js"></script>
 
 <!-- endinject -->
 <!-- endbuild -->

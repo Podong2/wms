@@ -36,6 +36,7 @@
                     <li ng-class="vm.tabArea[17].status == true ? 'active' : ''" ng-click="vm.tabDisplay(17)"><span translate="">Table</span></li>
                     <li ng-class="vm.tabArea[18].status == true ? 'active' : ''" ng-click="vm.tabDisplay(18)"><span translate="">Chart</span></li>
                     <li ng-class="vm.tabArea[19].status == true ? 'active' : ''" ng-click="vm.tabDisplay(19)"><span translate="">Calendar</span></li>
+                    <li ng-class="vm.tabArea[20].status == true ? 'active' : ''" ng-click="vm.tabDisplay(20)"><span translate="">gantt</span></li>
                 </ul>
             </div>
         </div><br/><br/>
@@ -1113,8 +1114,9 @@ $scope.columnDatas = [
                     };
                 </xmp>
             </div>
-
-
+            <div ng-show="vm.tabArea[20].status">
+                <ng-include src="'app/components/wms-gantt/ganttTemplate.html'"></ng-include>
+            </div>
         </div>
     </div>
 </div>
