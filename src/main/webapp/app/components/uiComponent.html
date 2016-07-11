@@ -919,9 +919,23 @@
                           enable-clone="true">
                 </wms-tree>
 
-
-                <h3><b>Tree</b></h3>
+                <h3><b>Tree Grid</b></h3>
+                <div class="panel container-fluid">
+                    <div class="row panel-default form-group">
+                        <h4>Tree Grid 노드 추가</h4>
+                        <div class="input-group">
+                            <label>이름</label>
+                            <input type="text" class="form-control" ng-model="vm.nodeForm.name">
+                        </div>
+                        <div class="input-group">
+                            <label>설명</label>
+                            <input type="text" class="form-control" ng-model="vm.nodeForm.description">
+                        </div>
+                        <button type="button" class="btn btn-default voffset" ng-click="addNode()">추가</button>
+                    </div>
+                </div>
                 <wms-tree-grid tree-model="wmsTreeData2"
+                               tree-scope="treeScope"
                           column-definitions="wmsTreeColumnDefinitions"
                           disabled="false"
                           enable-filter="true"

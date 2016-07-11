@@ -14,6 +14,7 @@
         return {
             restrict: 'E',
             scope: {
+                treeScope: "=treeScope",
                 treeModel: '=treeModel',
                 columnDefinitions: "=columnDefinitions",
                 disabled: '@disabled',
@@ -38,8 +39,17 @@
                     $scope.my_tree_grid.collapse_all();
                 };
 
-                $scope.addChildFunction = function() {
-                    alert(123);
+                $scope.addChildFunction = function(node) {
+                    $log.debug(node);
+                };
+
+                $scope.addNode = function(childNode) {
+                    var node = $scope.my_tree_grid.get_selected_node();
+
+                    if(node != null)
+                        childNode.parentId = node.id;
+
+                    $scope.my_tree_grid.add_node(node, childNode);
                 };
 
                 $scope.expanding_property = {
@@ -60,6 +70,8 @@
                 if ($scope.enableSort == 'true') {
                     $scope.orderBy = 'name';
                 }
+
+                $scope.treeScope = $scope;
 
                 // linear 한 data 구조의 json 을 tree 형태의 json 구조로 변환
                 $scope.tree_data = $TreeDnDConvert.line2tree($scope.treeModel, 'id', 'parentId');

@@ -1434,3 +1434,19 @@ table th {
 .cell-holiday {
     background-color: #ffeef1 !important;
 }
+/*---------tree & tree grid------------*/
+.tree-grid-active {
+    background-color: #deefd7 !important;
+}
+tr:active, .tr:active, tr:focus, .tr:focus{
+    border:none !important;
+    outline:none !important;
+}
+span:active, .span:active, span:focus, .span:focus{
+    border:none !important;
+    outline:none !important;
+}
+i:active, .i:active, i:focus, .i:focus{
+    border:none !important;
+    outline:none !important;
+}

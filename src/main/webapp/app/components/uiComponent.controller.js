@@ -215,7 +215,6 @@
             {
                 field:         'description',
                 titleClass:    'text-center',
-                titleTemplate: '<label> {{col.displayName || col.field}} <input class="form-control" ng-model="_filter.description"></label>',
                 displayName:   '설명'
             },
             {
@@ -224,9 +223,28 @@
                 },
                 titleClass:    'text-center',
                 cellClass:     'v-middle text-center',
-                displayName:   'Function',
-                cellTemplate:  '<button ng-click="addChildFunction()" class="btn btn-default btn-sm">Add</button><button ng-click="tree.remove_node(node)" class="btn btn-default btn-sm">Remove</button>'
+                displayName:   ' ',
+                cellTemplate:  '<button ng-click="tree.remove_node(node)" class="btn btn-default btn-sm">삭제</button>'
             }];
+
+        $scope.treeScope;
+
+        vm.nodeForm = {name : "", description : ""};
+
+        $scope.addNode = function() {
+
+            var node = {
+                "name": vm.nodeForm.name,
+                "description": vm.nodeForm.description
+            };
+
+            node.id = $scope.wmsTreeData2.length;
+
+            $scope.treeScope.addNode(node);
+
+            vm.nodeForm.name = "";
+            vm.nodeForm.description = "";
+        };
         //Tree values end ///////////////////////////////////////////////////////////////////////////
 
 

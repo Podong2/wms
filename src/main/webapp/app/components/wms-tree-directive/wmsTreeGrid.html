@@ -15,15 +15,17 @@
         <tbody tree-dnd-nodes>
             <tr tree-dnd-node="node" ng-repeat="node in tree_nodes track by node.__hashKey__ "
                 ng-show="enabledFilter ? node.__filtered_visible__ === true && node.__visible__ : node.__visible__"
-                ng-class="enabledFilter ? (node.__filtered__ === true? 'success': '') : (node.__selected__ ? ' active':'')"
+                ng-class="enabledFilter ? (node.__filtered__ === true? 'success': '') : (node.__selected__ ? ' tree-grid-active':'')"
                 ng-click="onSelect(node)">
                 <td tree-dnd-node-handle
                     ng-style="expandingProperty.cellStyle ? expandingProperty.cellStyle : {'padding-left': $callbacks.calsIndent(node.__level__)}"
                     ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
-                    <a data-nodrag> <i ng-class="node.__icon_class__"
+                    <a data-nodrag> <i
+                                        ng-show="node.__children__.length > 0"
+                                        ng-class="node.__expanded__ ? ('glyphicon glyphicon-chevron-down') : 'glyphicon glyphicon-chevron-right'"
                                        ng-click="toggleExpand(node)"
                                        class="tree-icon"></i>
-                    </a> {{node[expandingProperty.field] || node[expandingProperty]}}
+                    </a> <span ng-class="node.icon ? node.icon : ''"></span> {{node[expandingProperty.field] || node[expandingProperty]}}
                 </td>
                 <td ng-repeat="col in colDefinitions" ng-class="col.cellClass" ng-style="col.cellStyle"
                     compile="col.cellTemplate">
@@ -57,12 +59,12 @@
     indent-plus="20"
     indent-unit="px"
 
-    enable-drop="true"
-    enable-drag="true"
-    enable-collapse="true"
-    enable-move="true"
+    enable-drop="{{enableModify}}"
+    enable-drag="{{enableModify}}"
+    enable-collapse="{{enableModify}}"
+    enable-move="{{enableModify}}"
 
-    enable-hotkey="true"
-    enable-status="true"
+    enable-hotkey="{{enableModify}}"
+    enable-status="{{enableModify}}"
 >
 </tree-dnd>
