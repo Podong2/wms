@@ -1,0 +1,71 @@
+/**
+ * Created by whjang on 2016-07-12.
+ */
+(function() {
+    'use strict';
+
+    angular.module('wmsApp')
+        .directive('wmsKanban', wmsKanban);
+
+    wmsKanban.$inject = ['$log'];
+
+    function wmsKanban($log) {
+
+        return {
+            restrict: 'E',
+            scope: {
+                kanbanScope: "=",
+                boardList: "=",
+                addBoardFunction: "=",
+                addCardFunction: "="
+            },
+            replace: false,
+            templateUrl: 'app/components/wms-kanban/wmsKanban.html',
+            controller: ['$scope', '$element', '$attrs', '$rootScope', '$filter', function ($scope, $element, $attrs, $rootScope, $filter) {
+
+                $scope.kanbanScope = $scope;
+                $scope.viewType = 'card';
+
+                $scope.changeListView = function() {
+                    if($scope.viewType == 'card')
+                        $scope.viewType = 'list';
+                    else
+                        $scope.viewType = 'card';
+                };
+
+                $scope.sortKanbanCards = function(index) {
+                    $scope.boardList[index].tasks = $filter('orderBy')($scope.boardList[index].tasks, "name", false);
+                };
+
+                $scope.addKanbanCards = function(index, task) {
+
+                    if(task == null)
+                        task = {name:"태스크 임시",  status:"status1"};
+
+                    $scope.boardList[index].tasks.push(task);
+                };
+
+                $scope.addKanbanList = function(index) {
+
+                    var status4 = {
+                        label: "상태"+($scope.boardList.length+1),
+                        allowedStatus: ['status1','status2','status3'],
+                        tasks: [
+                            {name: "태스크13", status: "status1"},
+                            {name: "태스크14", status: "status1"},
+                            {name: "태스크15", status: "status1"}
+                        ]
+                    };
+
+                    if(index == null)
+                        $scope.boardList.push(status4);
+                    else
+                        $scope.boardList.splice((index+1), 0, status4);
+                };
+            }],
+            link: function (scope, element, attrs) {
+
+            }
+        }
+    }
+})();

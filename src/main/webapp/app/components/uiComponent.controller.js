@@ -13,9 +13,9 @@
         .module('wmsApp')
         .controller('UiComponentController', UiComponentController);
 
-    UiComponentController.$inject = ['$scope', 'Principal', 'ModalService', '$state', 'toastr', 'summaryService', 'toastrConfig', 'FIndCode', '$log', 'findUser', '$q', 'tableService', 'moment'];
+    UiComponentController.$inject = ['$scope', 'Principal', 'ModalService', '$state', 'toastr', 'summaryService', 'toastrConfig', 'FIndCode', '$log', 'findUser', '$q', 'tableService', 'moment', '$filter'];
 
-    function UiComponentController ($scope, Principal, ModalService, $state, toastr, summaryService, toastrConfig, FIndCode, $log, findUser, $q, tableService, moment) {
+    function UiComponentController ($scope, Principal, ModalService, $state, toastr, summaryService, toastrConfig, FIndCode, $log, findUser, $q, tableService, moment, $filter) {
         var vm = this;
 
         vm.openToast = openToast;
@@ -1212,40 +1212,40 @@
         /*----------------------------------------------------------------- kanban data start ---------------------------------------------------------------------*/
         $scope.kanbanList = [
             {
-                label: "Men",
-                allowedTypes: ['man'],
-                max: 4,
-                people: [
-                    {name: "Bob", type: "man"},
-                    {name: "Charlie", type: "man"},
-                    {name: "Dave", type: "man"}
+                label: "상태1",
+                allowedStatus: ['status1'],
+                tasks: [
+                    {name: "태스크1", status: "status1"},
+                    {name: "태스크2", status: "status1"},
+                    {name: "태스크3", status: "status1"}
                 ]
             },
             {
-                label: "Women",
-                allowedTypes: ['woman'],
-                max: 4,
-                people: [
-                    {name: "Alice", type: "woman"},
-                    {name: "Eve", type: "woman"},
-                    {name: "Peggy", type: "woman"}
+                label: "상태2",
+                allowedStatus: ['status1', 'status3'],
+                tasks: [
+                    {name: "태스크4", status: "status2"},
+                    {name: "태스크5", status: "status2"},
+                    {name: "태스크6", status: "status2"}
                 ]
             },
             {
-                label: "People",
-                allowedTypes: ['man', 'woman'],
-                max: 6,
-                people: [
-                    {name: "Frank", type: "man"},
-                    {name: "Mallory", type: "woman"},
-                    {name: "Alex", type: "unknown"},
-                    {name: "Oscar", type: "man"},
-                    {name: "Wendy", type: "woman"}
+                label: "상태3",
+                allowedStatus: ['status2', 'status3'],
+                tasks: [
+                    {name: "태스크7", status: "status3"},
+                    {name: "태스크8", status: "status3"},
+                    {name: "태스크9", status: "status3"},
+                    {name: "태스크10", status: "status3"},
+                    {name: "태스크11", status: "status3"}
                 ]
             }
         ];
 
+        $scope.kanbanScope;
 
-
+        $scope.addKanbanTask = function() {
+            $scope.kanbanScope.addKanbanCards(1, {name:"태스크 임시 외부", status:"status2"});
+        };
     }
 })();

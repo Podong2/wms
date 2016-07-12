@@ -174,8 +174,17 @@ Generic styles
     background-color: white;
 }
 
+
 .pad {
     padding: 10px;
+}
+
+.pad0 {
+    padding: 0px;
+}
+
+.pad-r0 {
+    padding-right: 0px;
 }
 
 .pad20 {
@@ -1553,4 +1562,8 @@ i:active, .i:active, i:focus, .i:focus{
 
 .typesDemo .name {
     margin-left: 20px;
+}
+
+.vertical-middle {
+    vertical-align: middle;
 }
