@@ -33,8 +33,8 @@
                         $scope.viewType = 'card';
                 };
 
-                $scope.sortKanbanCards = function(index) {
-                    $scope.boardList[index].tasks = $filter('orderBy')($scope.boardList[index].tasks, "name", false);
+                $scope.sortKanbanCards = function(list) {
+                    list.tasks = $filter('orderBy')(list.tasks, "name", false);
                 };
 
                 $scope.addKanbanCards = function(index, task) {
@@ -43,6 +43,13 @@
                         task = {name:"태스크 임시", assignee: "담당자1",  status:"status1"};
 
                     $scope.boardList[index].tasks.push(task);
+                };
+
+                $scope.removeCard = function(list, task) {
+
+                    var index = list.tasks.indexOf(task);
+
+                    list.tasks.splice(index, 1);
                 };
 
                 $scope.addKanbanList = function(index) {

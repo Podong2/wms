@@ -4,7 +4,7 @@
             <div class="panel panel-info ">
                 <div class="panel-heading">
                     <h3 class="panel-title ng-binding">{{list.label}}</h3>
-                    <span type="button" class="glyphicon glyphicon-sort-by-alphabet" ng-click="sortKanbanCards($index)"></span>
+                    <span type="button" class="glyphicon glyphicon-sort-by-alphabet" ng-click="sortKanbanCards(list)"></span>
                     <span type="button" class="glyphicon glyphicon-plus" ng-click="addKanbanCards($index)"></span>
                     <span type="button" class="glyphicon glyphicon-retweet" ng-click="changeListView()"></span>
                 </div>
@@ -31,10 +31,8 @@
                             <dnd-nodrag draggable="true">
                                 <div dnd-handle="" class="handle" draggable="true">:::</div>
                                 <div class="name" ng-show="viewType == 'card'">
-                                    <label>태스크</label>
-                                    <input type="text" ng-model="task.name" class="form-control input-sm">
-                                    <label>담당자</label>
-                                    <input type="text" ng-model="task.assignee" class="form-control input-sm">
+                                    <span>{{task.name}}</span>
+                                    <span class="glyphicon glyphicon-remove" ng-click="removeCard(list, task)"></span>
                                 </div>
                                 <div class="name" ng-show="viewType == 'list'">
                                     <table class="table voffset-b0">
