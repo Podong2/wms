@@ -37,6 +37,7 @@
                     <li ng-class="vm.tabArea[18].status == true ? 'active' : ''" ng-click="vm.tabDisplay(18)"><span translate="">Chart</span></li>
                     <li ng-class="vm.tabArea[19].status == true ? 'active' : ''" ng-click="vm.tabDisplay(19)"><span translate="">Calendar</span></li>
                     <li ng-class="vm.tabArea[20].status == true ? 'active' : ''" ng-click="vm.tabDisplay(20)"><span translate="">gantt</span></li>
+                    <li ng-class="vm.tabArea[21].status == true ? 'active' : ''" ng-click="vm.tabDisplay(20)"><span translate="">Kanban</span></li>
                 </ul>
             </div>
         </div><br/><br/>
@@ -1103,6 +1104,40 @@ $scope.columnDatas = [
             <div ng-show="vm.tabArea[20].status">
                 <ng-include src="'app/components/wms-gantt/ganttTemplate.html'"></ng-include>
             </div>
+
+            <div ng-show="vm.tabArea[21].status">
+
+                <div class="typesDemo row ng-scope">
+
+                    <div ng-repeat="list in kanbanList" class="col-md-4 ng-scope">
+                        <div class="panel panel-info">
+                            <div class="panel-heading">
+                                <h3 class="panel-title ng-binding">List of {{list.label}} (max. {{list.max}})</h3>
+                            </div>
+                            <!-- ngInclude: 'types/types.html' -->
+                            <div class="panel-body ng-scope">
+                                <ul dnd-list="list.people" dnd-allowed-types="list.allowedTypes" dnd-disable-if="list.people.length >= list.max" class="ng-scope">
+                                    <!-- ngRepeat: person in list.people -->
+                                    <li ng-repeat="person in list.people" dnd-draggable="person" dnd-type="person.type" dnd-disable-if="person.type == 'unknown'" dnd-moved="list.people.splice($index, 1)" dnd-effect-allowed="move" class="background-man" draggable="true">
+                                        <dnd-nodrag draggable="true">
+                                            <div dnd-handle="" class="handle" draggable="true">:::</div>
+                                            <div class="name">
+                                                <input type="text" ng-model="person.name" class="background-man form-control input-sm">
+                                            </div>
+                                        </dnd-nodrag>
+                                    </li><!-- end ngRepeat: person in list.people -->
+                                    <li class="dndPlaceholder">
+                                        Drop any <strong>{{list.allowedTypes.join(' or ')}}</strong> here
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+
         </div>
     </div>
 </div>

@@ -136,7 +136,8 @@
             { status: false },  // table
             { status: false },  // chart
             { status: false },  // calendar
-            { status: true }  // gantt
+            { status: false },  // gantt
+            { status: true }  // kanban
         ];
 
 
@@ -1208,5 +1209,43 @@
 
 
         /*----------------------------------------------------------------- chart data end ---------------------------------------------------------------------*/
+        /*----------------------------------------------------------------- kanban data start ---------------------------------------------------------------------*/
+        $scope.kanbanList = [
+            {
+                label: "Men",
+                allowedTypes: ['man'],
+                max: 4,
+                people: [
+                    {name: "Bob", type: "man"},
+                    {name: "Charlie", type: "man"},
+                    {name: "Dave", type: "man"}
+                ]
+            },
+            {
+                label: "Women",
+                allowedTypes: ['woman'],
+                max: 4,
+                people: [
+                    {name: "Alice", type: "woman"},
+                    {name: "Eve", type: "woman"},
+                    {name: "Peggy", type: "woman"}
+                ]
+            },
+            {
+                label: "People",
+                allowedTypes: ['man', 'woman'],
+                max: 6,
+                people: [
+                    {name: "Frank", type: "man"},
+                    {name: "Mallory", type: "woman"},
+                    {name: "Alex", type: "unknown"},
+                    {name: "Oscar", type: "man"},
+                    {name: "Wendy", type: "woman"}
+                ]
+            }
+        ];
+
+
+
     }
 })();
