@@ -137,7 +137,7 @@
             { status: false },  // chart
             { status: false },  // calendar
             { status: false },  // gantt
-            { status: false }  // kanban
+            { status: false },  // kanban
             { status: true }  // summernote
         ];
 
