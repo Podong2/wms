@@ -10,6 +10,16 @@
                 </div>
                 <div class="panel-body ng-scope">
                     <ul dnd-list="list.tasks" dnd-allowed-types="list.allowedStatus" dnd-disable-if="list.tasks.length >= list.max" class="ng-scope">
+                        <li ng-show="viewType == 'list'">
+                            <div>
+                                <table class="table voffset-b0">
+                                    <tr>
+                                        <th>태스크</th>
+                                        <th>담당자</th>
+                                    </tr>
+                                </table>
+                            </div>
+                        </li>
                         <li ng-repeat="task in list.tasks"
                             dnd-draggable="task"
                             dnd-type="task.status"
@@ -20,8 +30,23 @@
 
                             <dnd-nodrag draggable="true">
                                 <div dnd-handle="" class="handle" draggable="true">:::</div>
-                                <div class="name">
-                                    <input type="text" ng-model="task.name" class="background-man form-control input-sm">
+                                <div class="name" ng-show="viewType == 'card'">
+                                    <label>태스크</label>
+                                    <input type="text" ng-model="task.name" class="form-control input-sm">
+                                    <label>담당자</label>
+                                    <input type="text" ng-model="task.assignee" class="form-control input-sm">
+                                </div>
+                                <div class="name" ng-show="viewType == 'list'">
+                                    <table class="table voffset-b0">
+                                        <tr>
+                                            <td class="border-none">
+                                                <input type="text" ng-model="task.name" class="form-control input-sm">
+                                            </td>
+                                            <td class="border-none">
+                                                <input type="text" ng-model="task.assignee" class="form-control input-sm">
+                                            </td>
+                                        </tr>
+                                    </table>
                                 </div>
                             </dnd-nodrag>
                         </li>

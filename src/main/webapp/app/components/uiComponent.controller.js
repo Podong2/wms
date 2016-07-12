@@ -1215,29 +1215,29 @@
                 label: "상태1",
                 allowedStatus: ['status1'],
                 tasks: [
-                    {name: "태스크1", status: "status1"},
-                    {name: "태스크2", status: "status1"},
-                    {name: "태스크3", status: "status1"}
+                    {name: "태스크1", assignee: "담당자2", status: "status1"},
+                    {name: "태스크2", assignee: "담당자1", status: "status1"},
+                    {name: "태스크3", assignee: "담당자3", status: "status1"}
                 ]
             },
             {
                 label: "상태2",
                 allowedStatus: ['status1', 'status3'],
                 tasks: [
-                    {name: "태스크4", status: "status2"},
-                    {name: "태스크5", status: "status2"},
-                    {name: "태스크6", status: "status2"}
+                    {name: "태스크4", assignee: "담당자3", status: "status2"},
+                    {name: "태스크5", assignee: "담당자3", status: "status2"},
+                    {name: "태스크6", assignee: "담당자1", status: "status2"}
                 ]
             },
             {
                 label: "상태3",
                 allowedStatus: ['status2', 'status3'],
                 tasks: [
-                    {name: "태스크7", status: "status3"},
-                    {name: "태스크8", status: "status3"},
-                    {name: "태스크9", status: "status3"},
-                    {name: "태스크10", status: "status3"},
-                    {name: "태스크11", status: "status3"}
+                    {name: "태스크7", assignee: "담당자1", status: "status3"},
+                    {name: "태스크8", assignee: "담당자2", status: "status3"},
+                    {name: "태스크9", assignee: "담당자2", status: "status3"},
+                    {name: "태스크10", assignee: "담당자1", status: "status3"},
+                    {name: "태스크11", assignee: "담당자3", status: "status3"}
                 ]
             }
         ];
@@ -1245,7 +1245,7 @@
         $scope.kanbanScope;
 
         $scope.addKanbanTask = function() {
-            $scope.kanbanScope.addKanbanCards(1, {name:"태스크 임시 외부", status:"status2"});
+            $scope.kanbanScope.addKanbanCards(1, {name:"태스크 임시 외부", assignee: "담당자3", status:"status2"});
         };
     }
 })();

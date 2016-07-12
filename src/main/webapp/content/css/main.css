@@ -207,6 +207,7 @@ Generic styles
 .voffset8 { margin-top: 100px; }
 .voffset9 { margin-top: 150px; }
 
+.voffset-b0 { margin-bottom: 0px; }
 .voffset-b { margin-bottom: 2px; }
 .voffset-b1 { margin-bottom: 5px; }
 .voffset-b2 { margin-bottom: 10px; }
@@ -1551,6 +1552,24 @@ i:active, .i:active, i:focus, .i:focus{
     color: #D84FA7;
 }
 
+
+/**
+ * An element with .dndPlaceholder class will be
+ * added to the dnd-list while the user is dragging
+ * over it.
+ */
+.typesDemo table[dnd-list] .dndPlaceholder {
+    display: block;
+    background-color: #ddd;
+    padding: 10px 15px;
+    min-height: 42px;
+}
+
+.typesDemo table[dnd-list] tr dnd-nodrag {
+    display: block;
+    padding: 10px 15px;
+}
+
 /**
  * Handle positioning
  */
@@ -1566,4 +1585,8 @@ i:active, .i:active, i:focus, .i:focus{
 
 .vertical-middle {
     vertical-align: middle;
+}
+
+.border-none {
+    border: 0 !important;
 }

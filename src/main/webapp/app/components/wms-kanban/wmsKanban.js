@@ -40,7 +40,7 @@
                 $scope.addKanbanCards = function(index, task) {
 
                     if(task == null)
-                        task = {name:"태스크 임시",  status:"status1"};
+                        task = {name:"태스크 임시", assignee: "담당자1",  status:"status1"};
 
                     $scope.boardList[index].tasks.push(task);
                 };
@@ -51,9 +51,9 @@
                         label: "상태"+($scope.boardList.length+1),
                         allowedStatus: ['status1','status2','status3'],
                         tasks: [
-                            {name: "태스크13", status: "status1"},
-                            {name: "태스크14", status: "status1"},
-                            {name: "태스크15", status: "status1"}
+                            {name: "태스크13", assignee: "담당자2", status: "status1"},
+                            {name: "태스크14", assignee: "담당자2", status: "status1"},
+                            {name: "태스크15", assignee: "담당자1", status: "status1"}
                         ]
                     };
 
