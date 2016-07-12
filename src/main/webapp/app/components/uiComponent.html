@@ -37,6 +37,7 @@
                     <li ng-class="vm.tabArea[18].status == true ? 'active' : ''" ng-click="vm.tabDisplay(18)"><span translate="">Chart</span></li>
                     <li ng-class="vm.tabArea[19].status == true ? 'active' : ''" ng-click="vm.tabDisplay(19)"><span translate="">Calendar</span></li>
                     <li ng-class="vm.tabArea[20].status == true ? 'active' : ''" ng-click="vm.tabDisplay(20)"><span translate="">gantt</span></li>
+                    <li ng-class="vm.tabArea[21].status == true ? 'active' : ''" ng-click="vm.tabDisplay(21)"><span translate="">summernote</span></li>
                 </ul>
             </div>
         </div><br/><br/>
@@ -1101,7 +1102,15 @@ $scope.columnDatas = [
                 </xmp>
             </div>
             <div ng-show="vm.tabArea[20].status">
-                <ng-include src="'app/components/wms-gantt/ganttTemplate.html'"></ng-include>
+                <!--<ng-include src="'app/components/wms-gantt/ganttTemplate.html'"></ng-include>-->
+            </div>
+            <div ng-show="vm.tabArea[21].status" data-ng-controller="summerController">
+                <h3>summerNote</h3>
+                <summernote ng-model="text" on-init="init()" on-enter="enter()" on-focus="focus(evt)" config="dataService.getSummerNoteOptions(true)"
+                            on-blur="blur(evt)" on-paste="paste()" on-keyup="keyup(evt)" contenteditable="true"
+                            on-keydown="keydown(evt)" on-change="change(contents)"
+                            on-image-upload="imageUpload(files)" editable="editable" editor="editor" lang="ko-KR">
+                </summernote>
             </div>
         </div>
     </div>

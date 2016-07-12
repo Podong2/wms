@@ -5,13 +5,38 @@
 
 angular.module('wmsApp')
     .factory('dataService', dataService);
-dataService.$inject=['$log', '$rootScope'];
-        function dataService($log, $rootScope) {
+dataService.$inject=['$log', '$rootScope', 'findUser', '$q'];
+        function dataService($log, $rootScope, findUser, $q) {
         return {
             summerNoteOptions : {	//	에디터창 옵션설정
                 airMode : false,
                 focus : false,
                 toolbar : [],
+                template: {
+                    path: 'app/components/wms-angular-summernote/plugin/template', // path to your template folder
+                    list: [ // list of your template (without the .html extension)
+                        'template1'
+                    ]
+                },
+                hint: {
+                    match: /([a-zA-Z가-힣0-9].*[@])|([@].*[a-zA-Z가-힣0-9])/,
+                    search: function (keyword, callback) {
+
+                        var mentions = [];
+                        findUser.findByName(keyword).then(function(result){
+                            angular.forEach(result, function(val){
+                                mentions.push(val.name);
+                            });
+                            callback($.grep(mentions, function (item) {
+                                return item.indexOf(keyword) == 0;
+                            }));
+                        }); //user search
+
+                    },
+                    content: function (item) {
+                        return '@' + item;
+                    }
+                }
             },
             getSummerNoteOptions : function (options, toolbarType) {
                 //	옵션 사용시
@@ -33,16 +58,19 @@ dataService.$inject=['$log', '$rootScope'];
                             break;
                         default :
                             this.summerNoteOptions.toolbar = [
-                                ['style', ['style']],
-                                ['font', ['bold', 'italic', 'underline', 'clear']],
-                                ['fontname', ['fontname']],
-                                ['fontsize', ['fontsize']],
-                                ['color', ['color']],
-                                ['para', ['ul', 'ol', 'paragraph']],
+                                ['edit',['undo','redo']],
+                                ['headline', ['style']],
+                                ['style', ['bold', 'italic', 'underline', 'clear']],
+                                ['fontface', ['fontname']],
+                                ['textsize', ['fontsize']],
+                                ['fontclr', ['color']],
+                                ['alignment', ['ul', 'ol', 'paragraph', 'lineheight']],
                                 ['height', ['height']],
                                 ['table', ['table']],
-                                ['insert', ['link', 'hr', 'picture']],
+                                ['insert', ['link','picture','video','hr']],
                                 ['view', ['fullscreen', 'codeview']],
+                                ['help', ['help']],
+                                ['insert', ['template']]
                             ];
                             break;
                     }

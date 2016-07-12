@@ -13,9 +13,9 @@
         .module('wmsApp')
         .controller('UiComponentController', UiComponentController);
 
-    UiComponentController.$inject = ['$scope', 'Principal', 'ModalService', '$state', 'toastr', 'summaryService', 'toastrConfig', 'FIndCode', '$log', 'findUser', '$q', 'tableService', 'moment'];
+    UiComponentController.$inject = ['$scope', 'Principal', 'ModalService', '$state', 'toastr', 'summaryService', 'toastrConfig', 'FIndCode', '$log', 'findUser', '$q', 'tableService', 'moment', 'dataService'];
 
-    function UiComponentController ($scope, Principal, ModalService, $state, toastr, summaryService, toastrConfig, FIndCode, $log, findUser, $q, tableService, moment) {
+    function UiComponentController ($scope, Principal, ModalService, $state, toastr, summaryService, toastrConfig, FIndCode, $log, findUser, $q, tableService, moment, dataService) {
         var vm = this;
 
         vm.openToast = openToast;
@@ -136,7 +136,8 @@
             { status: false },  // table
             { status: false },  // chart
             { status: false },  // calendar
-            { status: true }  // gantt
+            { status: false },  // gantt
+            { status: true }  // summernote
         ];
 
 

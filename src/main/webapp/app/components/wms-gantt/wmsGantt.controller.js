@@ -21,29 +21,32 @@
 
     function ganttController ($scope, $timeout, $log, utils, ObjectModel, Sample, mouseOffset, debounce, moment) {
 
-        var objectModel;
-        var dataToRemove;
 
         $scope.arrayCollection = [
-            {name: 'all - 모든 플러그인', value : '0'},
-            {name: 'Scale - 날짜 기간 변경', value : '1'},
-            {name: 'Sort - 정렬', value : '2'},
-            {name: 'Filter Task&Row -  타스크 명 필터 검색', value : '3'},
-            {name: 'Today & Expand & Out of range - ', value : '4'},
-            {name: 'Draw & Read Only - 타스크 생성 및 수정불가', value : '5'},
-            {name: 'Magnet - 자석 효과', value : '6'},
-            {name: 'Side table Config - 좌측 테이블 설정', value : '7'},
-            {name: 'Groups - 그룹 표현', value : '8'},
-            {name: 'Layout & Zoom - 스크롤 처리 및 줌 기능', value : '9'},
-            {name: 'Labels - 테이블 숨김 및 사이즈 조절', value : '10'},
-            {name: 'Content - task명 앞 아이콘 처리 ', value : '11'},
-            {name: 'Date range - 타스크 기간 검색', value : '12'},
-            {name: 'Working & Non - Working', value : '13'},
-            {name: 'Tree actions - 테이블 트리 전체 접기/펴기', value : '14'},
-            {name: 'Dependencies - 의존관계 노출/미노출', value : '15'},
-            {name: 'Data actions - task reload, remove, Clear 처리', value : '16'}
+            {name: 'all - 모든 플러그인', value : '1'},
+            {name: 'Scale - 날짜 기간 변경', value : '2'},
+            {name: 'Sort - 정렬', value : '3'},
+            {name: 'Filter Task&Row -  타스크 명 필터 검색', value : '4'},
+            {name: 'Today & Expand & Out of range - ', value : '5'},
+            {name: 'Draw & Read Only - 타스크 생성 및 수정불가', value : '6'},
+            {name: 'Magnet - 자석 효과', value : '7'},
+            {name: 'Side table Config - 좌측 테이블 설정', value : '8'},
+            {name: 'Groups - 그룹 표현', value : '9'},
+            {name: 'Layout & Zoom - 스크롤 처리 및 줌 기능', value : '10'},
+            {name: 'Labels - 테이블 숨김 및 사이즈 조절', value : '11'},
+            {name: 'Content - task명 앞 아이콘 처리 ', value : '12'},
+            {name: 'Date range - 타스크 기간 검색', value : '13'},
+            {name: 'Working & Non - Working', value : '14'},
+            {name: 'Tree actions - 테이블 트리 전체 접기/펴기', value : '15'},
+            {name: 'Dependencies - 의존관계 노출/미노출', value : '16'},
+            {name: 'Data actions - task reload, remove, Clear 처리', value : '17'}
+
         ];
-        $scope.selectedValue = 0;
+        $scope.selectedValue = 1;
+
+
+        var objectModel;
+        var dataToRemove;
 
         // Event handler
         var logScrollEvent = function(left, date, direction) {
@@ -502,18 +505,18 @@ angular.module('wmsApp')
                         {name: 'Go-live', color: '#93C47D', from: new Date(2016, 10, 29, 16, 0, 0), to: new Date(2016, 10, 29, 16, 0, 0)}
                     ], data: 'Can contain any custom data or object'},
                     {name: 'Status meetings', tasks: [
-                        {name: 'Demo #1', color: '#9FC5F8', from: new Date(2016, 9, 25, 15, 0, 0), to: new Date(2016, 9, 25, 18, 30, 0)},
-                        {name: 'Demo #2', color: '#9FC5F8', from: new Date(2016, 10, 1, 15, 0, 0), to: new Date(2016, 10, 1, 18, 0, 0)},
-                        {name: 'Demo #3', color: '#9FC5F8', from: new Date(2016, 10, 8, 15, 0, 0), to: new Date(2016, 10, 8, 18, 0, 0)},
-                        {name: 'Demo #4', color: '#9FC5F8', from: new Date(2016, 10, 15, 15, 0, 0), to: new Date(2016, 10, 15, 18, 0, 0)},
+                        {name: 'Demo #1', color: '#9FC5F8', from: new Date(2016, 4, 25, 15, 0, 0), to: new Date(2016, 9, 25, 18, 30, 0)},
+                        {name: 'Demo #2', color: '#9FC5F8', from: new Date(2016, 5, 1, 15, 0, 0), to: new Date(2016, 6, 1, 18, 0, 0)},
+                        {name: 'Demo #3', color: '#9FC5F8', from: new Date(2016, 6, 8, 15, 0, 0), to: new Date(2016, 7, 8, 18, 0, 0)},
+                        {name: 'Demo #4', color: '#9FC5F8', from: new Date(2016, 3, 15, 15, 0, 0), to: new Date(2016, 5, 15, 18, 0, 0)},
                         {name: 'Demo #5', color: '#9FC5F8', from: new Date(2016, 10, 24, 9, 0, 0), to: new Date(2016, 10, 24, 10, 0, 0)}
                     ]},
                     {name: 'Kickoff', movable: {allowResizing: false}, tasks: [
-                        {name: 'Day 1', color: '#9FC5F8', from: new Date(2016, 9, 7, 9, 0, 0), to: new Date(2016, 9, 7, 17, 0, 0),
+                        {name: 'Day 1', color: '#9FC5F8', from: new Date(2016, 1, 7, 9, 0, 0), to: new Date(2016, 9, 7, 17, 0, 0),
                             progress: {percent: 100, color: '#3C8CF8'}, movable: false},
-                        {name: 'Day 2', color: '#9FC5F8', from: new Date(2016, 9, 8, 9, 0, 0), to: new Date(2016, 9, 8, 17, 0, 0),
+                        {name: 'Day 2', color: '#9FC5F8', from: new Date(2016, 3, 8, 9, 0, 0), to: new Date(2016, 9, 8, 17, 0, 0),
                             progress: {percent: 100, color: '#3C8CF8'}},
-                        {name: 'Day 3', color: '#9FC5F8', from: new Date(2016, 9, 9, 8, 30, 0), to: new Date(2016, 9, 9, 12, 0, 0),
+                        {name: 'Day 3', color: '#9FC5F8', from: new Date(2016, 4, 9, 8, 30, 0), to: new Date(2016, 9, 9, 12, 0, 0),
                             progress: {percent: 100, color: '#3C8CF8'}}
                     ]},
                     {name: 'Create concept', tasks: [
@@ -526,15 +529,15 @@ angular.module('wmsApp')
                     ]},
                     {name: 'Development', children: ['Sprint 1', 'Sprint 2', 'Sprint 3', 'Sprint 4'], content: '<i class="fa fa-file-code-o" ng-click="scope.handleRowIconClick(row.model)"></i> {{row.model.name}}'},
                     {name: 'Sprint 1', tooltips: false, tasks: [
-                        {id: 'Product list view', name: 'Product list view', color: '#F1C232', from: new Date(2016, 9, 21, 8, 0, 0), to: new Date(2016, 9, 25, 15, 0, 0),
+                        {id: 'Product list view', name: 'Product list view', color: '#F1C232', from: new Date(2016, 4, 21, 8, 0, 0), to: new Date(2016, 9, 25, 15, 0, 0),
                             progress: 25, dependencies: [{to: 'Order basket'}, {from: 'Finalize concept'}]}
                     ]},
                     {name: 'Sprint 2', tasks: [
-                        {id: 'Order basket', name: 'Order basket', color: '#F1C232', from: new Date(2016, 9, 28, 8, 0, 0), to: new Date(2016, 10, 1, 15, 0, 0),
+                        {id: 'Order basket', name: 'Order basket', color: '#F1C232', from: new Date(2016, 5, 28, 8, 0, 0), to: new Date(2016, 10, 1, 15, 0, 0),
                             dependencies: {to: 'Checkout'}}
                     ]},
                     {name: 'Sprint 3', tasks: [
-                        {id: 'Checkout', name: 'Checkout', color: '#F1C232', from: new Date(2016, 10, 4, 8, 0, 0), to: new Date(2016, 10, 8, 15, 0, 0),
+                        {id: 'Checkout', name: 'Checkout', color: '#F1C232', from: new Date(2016, 7, 4, 8, 0, 0), to: new Date(2016, 10, 8, 15, 0, 0),
                             dependencies: {to: 'Login & Signup & Admin Views'}}
                     ]},
                     {name: 'Sprint 4', tasks: [

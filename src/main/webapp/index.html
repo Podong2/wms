@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="bower_components/react-bootstrap-table/css/react-bootstrap-table.css">
     <link rel="stylesheet" href="bower_components/bootstrap-fileinput/css/fileinput.min.css">
     <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.css">
+    <link rel="stylesheet" href="bower_components/summernote/dist/summernote.css">
     <link rel="stylesheet" href="bower_components/angular-loading-bar/build/loading-bar.css">
     <link rel="stylesheet" href="bower_components/nya-bootstrap-select/dist/css/nya-bs-select.css">
     <link rel="stylesheet" href="bower_components/angular-toastr/dist/angular-toastr.css">
@@ -35,7 +36,6 @@
     <!-- build:css content/css/main.css -->
     <link rel="stylesheet" href="content/css/main.css">
     <link rel="stylesheet" href="app/components/ngGallery/src/css/ngGallery.css">
-    <link rel="stylesheet" href="app/components/summernote/summernote.css">
     <link rel="stylesheet" href="app/components/wms-tree-directive/angular-tree-dnd/ng-tree-dnd.min.css">
     <link rel="stylesheet" href="app/components/wms-table-directive/cell-cursor/cellCursor.css">
     <!-- endbuild -->
@@ -163,6 +163,7 @@
 <script src="bower_components/moment/moment.js"></script>
 <script src="bower_components/moment-range/dist/moment-range.js"></script>
 <script src="bower_components/domready/ready.js"></script>
+<!--<script src="bower_components/summernote/dist/summernote.js"></script>--><!-- custom -->
 <script src="bower_components/angular/angular.js"></script>
 <script src="bower_components/angular-aria/angular-aria.js"></script>
 <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
@@ -206,14 +207,14 @@
 <script src="bower_components/angular-strap/dist/angular-strap.js"></script>
 <script src="bower_components/angular-strap/dist/angular-strap.tpl.js"></script>
 <script src="bower_components/element-queries/dist/element-queries.min.js"></script>
-<script src="bower_components/adf-widget-markdown/dist/adf-widget-markdown.js"></script>
-<script src="bower_components/adf-widget-github/dist/adf-widget-github.js"></script>
-<script src="bower_components/adf-widget-travis/dist/adf-widget-travis.js"></script>
-<script src="bower_components/d3/d3.js"></script>
-<script src="bower_components/nvd3/build/nv.d3.js"></script>
-<script src="bower_components/angular-nvd3/dist/angular-nvd3.js"></script>
+<script src="bower_components/angular-summernote/dist/angular-summernote.js"></script>
 <!-- endinject -->
 <!-- endbuild -->
+
+<!-- default:js -->
+<script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
+<script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
+<!-- default:js end -->
 
 <!-- build:js app/app.js  -->
 <!-- inject:js -->
@@ -438,9 +439,6 @@
 <!--<script src="app/components/require/require.js"></script>-->
 <script src="app/components/bindonce/bindonce.js"></script>
 <script src="app/components/common/directive/customRenderer.directive.js"></script>
-<script src="app/components/summernote/summernote.js"></script>
-<script src="app/components/angular-summernote/angular-summernote.js"></script>
-<script src="app/components/summernote/summernote-ko-KR.js"></script>
 <script src="app/components/common/controller/editUpload.controller.js"></script>
 <script src="app/components/common/service/data.service.js"></script>
 <script src="app/components/common/directive/fileUpload.directive.js"></script>
@@ -484,6 +482,11 @@
 <script src="app/components/wms-gantt/wmsGantt.controller.js"></script>
 <script src="bower_components/angular-gantt/plunker/jsPlumb-2.0.5.js"></script>
 <script src="app/components/wms-calendar-directive/interact-js/interact.min.js"></script>
+<script src="app/components/wms-gantt/wmsGantt.directive.js"></script>
+<script src="app/components/wms-angular-summernote/summernote.controller.js"></script>
+<script src="app/components/wms-angular-summernote/custom-components/summernote.js"></script>
+<script src="app/components/wms-angular-summernote/custom-components/summernote-ko-KR.js"></script>
+<script src="app/components/wms-angular-summernote/plugin/template/summernote-ext-template.js"></script>
 
 <!-- endinject -->
 <!-- endbuild -->
