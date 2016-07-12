@@ -36,7 +36,7 @@
           ui.button({
             className: 'dropdown-toggle',
             contents: '<span class="template"/> Template <span class="caret"></span>',
-            tooltip: 'Insert Template',
+            tooltip: '탬플릿 추가',
             data: {
               toggle: 'dropdown'
             }
