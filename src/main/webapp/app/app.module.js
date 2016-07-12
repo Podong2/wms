@@ -23,7 +23,7 @@
             'ui.bootstrap.datetimepicker',
             'ui.bootstrap.pagination',
             'xeditable',
-            'drag',
+            // 'drag',
             'jkuri.gallery',
             'react',
             'ui.tree',
@@ -41,7 +41,6 @@
             'adf.widget.markdown',
             'adf.widget.github',
             'adf.widget.travis',
-            'ngTagsInput',
             'lrDragNDrop',
             'cellCursor',
             'nvd3',
@@ -65,7 +64,8 @@
             'gantt.overlap',
             'gantt.resizeSensor',
             'mgcrea.ngStrap',
-            'mgcrea.ngStrap.collapse'
+            'mgcrea.ngStrap.collapse',
+            'dndLists'
         ])
         .config(config)
         .run(run);

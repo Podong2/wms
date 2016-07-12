@@ -13,9 +13,9 @@
         .module('wmsApp')
         .controller('UiComponentController', UiComponentController);
 
-    UiComponentController.$inject = ['$scope', 'Principal', 'ModalService', '$state', 'toastr', 'summaryService', 'toastrConfig', 'FIndCode', '$log', 'findUser', '$q', 'tableService', 'moment', 'dataService'];
+    UiComponentController.$inject = ['$scope', 'Principal', 'ModalService', '$state', 'toastr', 'summaryService', 'toastrConfig', 'FIndCode', '$log', 'findUser', '$q', 'tableService', 'moment', '$filter', 'dataService'];
 
-    function UiComponentController ($scope, Principal, ModalService, $state, toastr, summaryService, toastrConfig, FIndCode, $log, findUser, $q, tableService, moment, dataService) {
+    function UiComponentController ($scope, Principal, ModalService, $state, toastr, summaryService, toastrConfig, FIndCode, $log, findUser, $q, tableService, moment, $filter, dataService) {
         var vm = this;
 
         vm.openToast = openToast;
@@ -137,6 +137,7 @@
             { status: false },  // chart
             { status: false },  // calendar
             { status: false },  // gantt
+            { status: false }  // kanban
             { status: true }  // summernote
         ];
 
@@ -1209,5 +1210,43 @@
 
 
         /*----------------------------------------------------------------- chart data end ---------------------------------------------------------------------*/
+        /*----------------------------------------------------------------- kanban data start ---------------------------------------------------------------------*/
+        $scope.kanbanList = [
+            {
+                label: "상태1",
+                allowedStatus: ['status1'],
+                tasks: [
+                    {name: "태스크1", assignee: "담당자2", status: "status1"},
+                    {name: "태스크2", assignee: "담당자1", status: "status1"},
+                    {name: "태스크3", assignee: "담당자3", status: "status1"}
+                ]
+            },
+            {
+                label: "상태2",
+                allowedStatus: ['status1', 'status3'],
+                tasks: [
+                    {name: "태스크4", assignee: "담당자3", status: "status2"},
+                    {name: "태스크5", assignee: "담당자3", status: "status2"},
+                    {name: "태스크6", assignee: "담당자1", status: "status2"}
+                ]
+            },
+            {
+                label: "상태3",
+                allowedStatus: ['status2', 'status3'],
+                tasks: [
+                    {name: "태스크7", assignee: "담당자1", status: "status3"},
+                    {name: "태스크8", assignee: "담당자2", status: "status3"},
+                    {name: "태스크9", assignee: "담당자2", status: "status3"},
+                    {name: "태스크10", assignee: "담당자1", status: "status3"},
+                    {name: "태스크11", assignee: "담당자3", status: "status3"}
+                ]
+            }
+        ];
+
+        $scope.kanbanScope;
+
+        $scope.addKanbanTask = function() {
+            $scope.kanbanScope.addKanbanCards(1, {name:"태스크 임시 외부", assignee: "담당자3", status:"status2"});
+        };
     }
 })();
