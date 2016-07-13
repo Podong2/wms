@@ -64,7 +64,14 @@ public class SocialService {
 
     private User createUserIfNotExist(UserProfile userProfile, String langKey, String providerId) {
         String email = userProfile.getEmail();
-        String userName = userProfile.getUsername().toLowerCase(Locale.ENGLISH);
+
+        String userName = userProfile.getUsername();
+
+        if(userName == null) {
+            userName = userProfile.getName().replaceAll(" ", "");
+        }
+
+        userName = userName.toLowerCase(Locale.ENGLISH);
         if (StringUtils.isBlank(email) && StringUtils.isBlank(userName)) {
             log.error("Cannot create social user because email and login are null");
             throw new IllegalArgumentException("Email and login cannot be null");
@@ -105,7 +112,7 @@ public class SocialService {
             case "twitter":
                 return userProfile.getUsername().toLowerCase();
             default:
-                return userProfile.getEmail();
+                return userProfile.getEmail().substring(0, userProfile.getEmail().indexOf("@"));
         }
     }
 
