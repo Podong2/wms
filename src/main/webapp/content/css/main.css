@@ -901,8 +901,8 @@ Social Buttons
     height: 40px;
 }
 li.active > a{
-    color: #337ab7 !important;
-    background-color: #fff !important;
+    /*color: #337ab7 !important;*/
+    /*background-color: #fff !important;*/
 }
 .modal-backdrop {
     background-color: transparent !important;
@@ -1322,9 +1322,7 @@ tr.angular-ui-tree-empty {
 
 table th {
     font-weight: bold;
-    color: #fdfdfd;
     taxt-align: center !important;
-    background-color: #5bc0de;
     line-height: 1.8;
     text-align: center !important
 }

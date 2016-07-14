@@ -10,14 +10,14 @@
     function stateConfig($stateProvider) {
         $stateProvider
         .state('department', {
-            parent: 'entity',
+            parent: 'app',
             url: '/department?page&sort&search',
             data: {
                 authorities: ['ROLE_USER'],
                 pageTitle: 'wmsApp.department.home.title'
             },
             views: {
-                'content@': {
+                'content@app': {
                     templateUrl: 'app/entities/department/departments.html',
                     controller: 'DepartmentController',
                     controllerAs: 'vm'
@@ -52,14 +52,14 @@
             }
         })
         .state('department-detail', {
-            parent: 'entity',
+            parent: 'app',
             url: '/department/{id}',
             data: {
                 authorities: ['ROLE_USER'],
                 pageTitle: 'wmsApp.department.detail.title'
             },
             views: {
-                'content@': {
+                'content@app': {
                     templateUrl: 'app/entities/department/department-detail.html',
                     controller: 'DepartmentDetailController',
                     controllerAs: 'vm'
