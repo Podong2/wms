@@ -10,14 +10,15 @@
     function stateConfig($stateProvider) {
         $stateProvider
         .state('system-role-permission', {
-            parent: 'entity',
+            parent: 'app',
             url: '/system-role-permission',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'wmsApp.systemRolePermission.home.title'
+                pageTitle: 'wmsApp.systemRolePermission.home.title',
+                title : 'System Role Permission'
             },
             views: {
-                'content@': {
+                'content@app': {
                     templateUrl: 'app/entities/system-role-permission/system-role-permissions.html',
                     controller: 'SystemRolePermissionController',
                     controllerAs: 'vm'
@@ -32,14 +33,15 @@
             }
         })
         .state('system-role-permission-detail', {
-            parent: 'entity',
+            parent: 'app',
             url: '/system-role-permission/{id}',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'wmsApp.systemRolePermission.detail.title'
+                pageTitle: 'wmsApp.systemRolePermission.detail.title',
+                title : 'Detail'
             },
             views: {
-                'content@': {
+                'content@app': {
                     templateUrl: 'app/entities/system-role-permission/system-role-permission-detail.html',
                     controller: 'SystemRolePermissionDetailController',
                     controllerAs: 'vm'

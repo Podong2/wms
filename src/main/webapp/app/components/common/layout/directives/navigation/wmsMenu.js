@@ -36,17 +36,20 @@
     };
 })(jQuery);
 
-angular.module('wmsApp').directive('smartMenu', smartMenu);
-smartMenu.$inject=['$state', '$rootScope'];
-    function smartMenu($state, $rootScope) {
+angular.module('wmsApp').directive('wmsMenu', wmsMenu);
+wmsMenu.$inject=['$state', '$rootScope'];
+    function wmsMenu($state, $rootScope) {
     return {
         restrict: 'A',
         link: function (scope, element, attrs) {
+            scope.$watch('$last',function(v){
+                var $collapsible = element.find('li[data-menu-collapse]');
+                bindEvents($collapsible);
+            });
+
             var $body = $('body');
 
-            var $collapsible = element.find('li[data-menu-collapse]');
-
-            var bindEvents = function(){
+            var bindEvents = function($collapsible){
                 $collapsible.each(function (idx, li) {
                     var $li = $(li);
                     $li
@@ -74,7 +77,7 @@ smartMenu.$inject=['$state', '$rootScope'];
                     }
                 });
             }
-            bindEvents();
+
 
 
             // click on route link

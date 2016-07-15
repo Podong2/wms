@@ -29,8 +29,8 @@
         traditional href="" links. See documentation for details.
         -->
 
-        <ul data-smart-menu>
-            <li data-menu-collapse><!-- ng-show="menu.displayYn ? (permissionCheck.check(menu.permissionUrl) ? menu.displayYn : false) : false" -->
+        <ul data-wms-Menu>
+            <li data-menu-collapse ng-repeat="menu in vm.menu track by $index"><!-- ng-show="menu.displayYn ? (permissionCheck.check(menu.permissionUrl) ? menu.displayYn : false) : false" -->
                 <a href="#">
                     <i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent" translate="Entities"></span>
                     <!--<b class="collapse-sign"><em class="fa fa-plus-square-o"></em></b>-->
@@ -63,7 +63,7 @@
             </li>
 
             <li data-menu-collapse class="top-menu-invisible">
-                <a href="#"><i class="fa fa-lg fa-fw fa-cube txt-color-blue"></i> <span class="menu-item-parent">SmartAdmin Intel</span></a>
+                <a href="#"><i class="fa fa-lg fa-fw fa-cube txt-color-blue"></i> <span class="menu-item-parent">WMS Intel</span></a>
                 <ul>
                     <li data-ui-sref-active="active">
                         <a data-ui-sref="app.smartAdmin.appLayouts"><i class="fa fa-gear"></i>
@@ -396,7 +396,7 @@
         </ul>
 
         <!-- NOTE: This allows you to pull menu items from server -->
-        <!-- <ul data-smart-menu-items="/api/menu-items.json"></ul> -->
+        <!-- <ul data-wms-Menu-Items="/api/menu-items.json"></ul> -->
 
         <script type="text/ng-template" id="nodes_renderer.html">
             <a data-ui-sref="{{child.urlPath}}"><!-- ng-show="child.name != null && child.displayYn ? (permissionCheck.check(child.permissionUrl) ? child.displayYn : false) : false" -->

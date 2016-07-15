@@ -1,4 +1,4 @@
-<div>
+<div id="content">
     <h2 translate="wmsApp.permissionCategory.home.title">Permission Categories</h2>
     <jhi-alert></jhi-alert>
     <div class="container-fluid">
@@ -32,7 +32,7 @@
     </div>
     <br/>
     <div class="table-responsive">
-        <table class="jh-table table table-striped">
+        <table class="jh-table table table-striped table-bordered">
             <thead>
                 <tr jh-sort="vm.predicate" ascending="vm.reverse" callback="vm.transition()">
                     <th jh-sort-by="id"><span translate="global.field.id">ID</span> <span class="glyphicon glyphicon-sort"></span></th>

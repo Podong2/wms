@@ -1126,6 +1126,7 @@ $scope.columnDatas = [
                             on-keydown="keydown(evt)" on-change="change(contents)"
                             on-image-upload="imageUpload(files)" editable="editable" editor="editor" lang="ko-KR">
                 </summernote>
+                <span ng-bind-html="vm.renderHtml(text)"></span>
             </div>
         </div>
     </div>

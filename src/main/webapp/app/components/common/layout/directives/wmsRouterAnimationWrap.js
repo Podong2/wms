@@ -1,12 +1,12 @@
 'use strict';
 
-angular.module('wmsApp').directive('smartRouterAnimationWrap', smartRouterAnimationWrap);
-smartRouterAnimationWrap.$inject=['$rootScope', '$timeout'];
-    function smartRouterAnimationWrap($rootScope,$timeout) {
+angular.module('wmsApp').directive('wmsRouterAnimationWrap', wmsRouterAnimationWrap);
+wmsRouterAnimationWrap.$inject=['$rootScope', '$timeout'];
+    function wmsRouterAnimationWrap($rootScope,$timeout) {
     return {
         restrict: 'A',
         compile: function (element, attributes) {
-            element.removeAttr('smart-router-animation-wrap data-smart-router-animation-wrap wrap-for data-wrap-for');
+            element.removeAttr('wms-Router-Animation-Wrap data-wms-Router-Animation-Wrap wrap-for data-wrap-for');
 
             element.addClass('router-animation-container');
 
@@ -20,7 +20,7 @@ smartRouterAnimationWrap.$inject=['$rootScope', '$timeout'];
 
 
             var animateElementSelector = attributes.wrapFor;
-            var viewsToMatch = attributes.smartRouterAnimationWrap.split(/\s/);
+            var viewsToMatch = attributes.wmsRouterAnimationWrap.split(/\s/);
 
             var needRunContentViewAnimEnd = false;
             function contentViewAnimStart() {

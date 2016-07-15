@@ -10,14 +10,15 @@
     function stateConfig($stateProvider) {
         $stateProvider
         .state('menu-permission', {
-            parent: 'entity',
+            parent: 'app',
             url: '/menu-permission',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'wmsApp.menuPermission.home.title'
+                pageTitle: 'wmsApp.menuPermission.home.title',
+                title : 'Menu Permission'
             },
             views: {
-                'content@': {
+                'content@app': {
                     templateUrl: 'app/entities/menu-permission/menu-permissions.html',
                     controller: 'MenuPermissionController',
                     controllerAs: 'vm'
@@ -32,14 +33,15 @@
             }
         })
         .state('menu-permission-detail', {
-            parent: 'entity',
+            parent: 'app',
             url: '/menu-permission/{id}',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'wmsApp.menuPermission.detail.title'
+                pageTitle: 'wmsApp.menuPermission.detail.title',
+                title : 'Detail'
             },
             views: {
-                'content@': {
+                'content@app': {
                     templateUrl: 'app/entities/menu-permission/menu-permission-detail.html',
                     controller: 'MenuPermissionDetailController',
                     controllerAs: 'vm'

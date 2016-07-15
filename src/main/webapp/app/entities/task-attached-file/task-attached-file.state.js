@@ -10,14 +10,15 @@
     function stateConfig($stateProvider) {
         $stateProvider
         .state('task-attached-file', {
-            parent: 'entity',
+            parent: 'app',
             url: '/task-attached-file',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'wmsApp.taskAttachedFile.home.title'
+                pageTitle: 'wmsApp.taskAttachedFile.home.title',
+                title : 'Task Attached File'
             },
             views: {
-                'content@': {
+                'content@app': {
                     templateUrl: 'app/entities/task-attached-file/task-attached-files.html',
                     controller: 'TaskAttachedFileController',
                     controllerAs: 'vm'
@@ -32,14 +33,15 @@
             }
         })
         .state('task-attached-file-detail', {
-            parent: 'entity',
+            parent: 'app',
             url: '/task-attached-file/{id}',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'wmsApp.taskAttachedFile.detail.title'
+                pageTitle: 'wmsApp.taskAttachedFile.detail.title',
+                title : 'Detail'
             },
             views: {
-                'content@': {
+                'content@app': {
                     templateUrl: 'app/entities/task-attached-file/task-attached-file-detail.html',
                     controller: 'TaskAttachedFileDetailController',
                     controllerAs: 'vm'

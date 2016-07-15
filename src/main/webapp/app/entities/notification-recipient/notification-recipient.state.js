@@ -10,14 +10,15 @@
     function stateConfig($stateProvider) {
         $stateProvider
         .state('notification-recipient', {
-            parent: 'entity',
+            parent: 'app',
             url: '/notification-recipient',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'wmsApp.notificationRecipient.home.title'
+                pageTitle: 'wmsApp.notificationRecipient.home.title',
+                title : 'Entities / Notification Recipient'
             },
             views: {
-                'content@': {
+                'content@app': {
                     templateUrl: 'app/entities/notification-recipient/notification-recipients.html',
                     controller: 'NotificationRecipientController',
                     controllerAs: 'vm'
@@ -32,14 +33,15 @@
             }
         })
         .state('notification-recipient-detail', {
-            parent: 'entity',
+            parent: 'app',
             url: '/notification-recipient/{id}',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'wmsApp.notificationRecipient.detail.title'
+                pageTitle: 'wmsApp.notificationRecipient.detail.title',
+                title : 'Detail'
             },
             views: {
-                'content@': {
+                'content@app': {
                     templateUrl: 'app/entities/notification-recipient/notification-recipient-detail.html',
                     controller: 'NotificationRecipientDetailController',
                     controllerAs: 'vm'

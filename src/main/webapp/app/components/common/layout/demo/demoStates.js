@@ -97,10 +97,53 @@ demoStates.$inject=['$rootScope'];
             $scope.colorblindFriendly = localStorage.getItem('sm-colorblind-friendly') == 'true';
 
 
-            $scope.skins = appConfig.skins;
+            $scope.skins = [
+                {name: "wms-style-0",
+                    logo: "styles/img/logo.png",
+                    class: "btn btn-block btn-xs txt-color-white margin-right-5",
+                    style: "background-color:#4E463F;",
+                    label: "Smart Default"},
 
+                {name: "wms-style-1",
+                    logo: "styles/img/logo-white.png",
+                    class: "btn btn-block btn-xs txt-color-white",
+                    style: "background:#3A4558;",
+                    label: "Dark Elegance"},
 
-            $scope.smartSkin = localStorage.getItem('sm-skin') ? localStorage.getItem('sm-skin') : appConfig.smartSkin;
+                {name: "wms-style-2",
+                    logo: "styles/img/logo-blue.png",
+                    class: "btn btn-xs btn-block txt-color-darken margin-top-5",
+                    style: "background:#fff;",
+                    label: "Ultra Light"},
+
+                {name: "wms-style-3",
+                    logo: "styles/img/logo-pale.png",
+                    class: "btn btn-xs btn-block txt-color-white margin-top-5",
+                    style: "background:#f78c40",
+                    label: "Google Skin"},
+
+                {name: "wms-style-4",
+                    logo: "styles/img/logo-pale.png",
+                    class: "btn btn-xs btn-block txt-color-white margin-top-5",
+                    style: "background: #bbc0cf; border: 1px solid #59779E; color: #17273D !important;",
+                    label: "PixelSmash"},
+
+                {name: "wms-style-5",
+                    logo: "styles/img/logo-pale.png",
+                    class: "btn btn-xs btn-block txt-color-white margin-top-5",
+                    style: "background: rgba(153, 179, 204, 0.2); border: 1px solid rgba(121, 161, 221, 0.8); color: #17273D !important;",
+                    label: "Glass"},
+
+                {name: "wms-style-6",
+                    logo: "styles/img/logo-pale.png",
+                    class: "btn btn-xs btn-block txt-color-white margin-top-5",
+                    style: "background: #2196F3; border: 1px solid rgba(121, 161, 221, 0.8); color: #FFF !important;",
+                    beta: true,
+                    label: "MaterialDesign"
+                }
+            ];
+
+            $scope.smartSkin = localStorage.getItem('sm-skin') ? localStorage.getItem('sm-skin') : 'wms-style-0';
 
             $scope.setSkin = function (skin) {
                 $scope.smartSkin = skin.name;
@@ -111,7 +154,7 @@ demoStates.$inject=['$rootScope'];
             };
 
 
-            if($scope.smartSkin != "smart-style-0"){
+            if($scope.smartSkin != "wms-style-0"){
                 $scope.setSkin(_.find($scope.skins, {name: $scope.smartSkin}))
             }
 

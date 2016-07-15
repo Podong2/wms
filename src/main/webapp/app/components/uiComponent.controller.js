@@ -28,6 +28,10 @@
         vm.tabDisplay = tabDisplay;
         vm.submitConfig = submitConfig;
 
+        //	설명 html 형식으로 표현
+        function renderHtml (data) {
+            return $sce.trustAsHtml(data);
+        }
 
         $scope.tags = [];
         $scope.loadData = function(name) {

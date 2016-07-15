@@ -20,7 +20,8 @@
             parent: 'app',
             url: '/component', // 표현 url 설정
             data: {
-                authorities: []
+                authorities: [],
+                title : 'Components'
             },
             views: {//
                 'content@app': {//

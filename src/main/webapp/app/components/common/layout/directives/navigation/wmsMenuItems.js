@@ -1,9 +1,9 @@
 (function(){
     "use strict";
 
-    angular.module('wmsApp').directive('smartMenuItems', smartMenuItems);
-    smartMenuItems.$inject=['$http', '$rootScope', '$compile'];
-        function smartMenuItems($http, $rootScope, $compile) {
+    angular.module('wmsApp').directive('wmsMenuItems', wmsMenuItems);
+    wmsMenuItems.$inject=['$http', '$rootScope', '$compile'];
+        function wmsMenuItems($http, $rootScope, $compile) {
     return {
         restrict: 'A',
         compile: function (element, attrs) {
@@ -47,9 +47,9 @@
             }
 
 
-            $http.get(attrs.smartMenuItems).then(function(res){
+            $http.get(attrs.wmsMenuItems).then(function(res){
                 var ul = $('<ul />', {
-                    'smart-menu': ''
+                    'wms-Menu': ''
                 })
                 _.forEach(res.data.items, function(item) {
                     createItem(item, ul, 1);

@@ -1,4 +1,4 @@
-angular.module('wmsApp').directive('speechRecognition', function () {
+angular.module('wmsApp').directive('wmsRecognition', function () {
 	'use strict';
 
 	$.root_ = $('body');
@@ -18,7 +18,7 @@ angular.module('wmsApp').directive('speechRecognition', function () {
 	 * http://www.myorange.ca
 	 */
 
-	var SpeechRecognition = root.SpeechRecognition || root.webkitSpeechRecognition || root.mozSpeechRecognition || root.msSpeechRecognition || root.oSpeechRecognition;
+	var wmsRecognition = root.wmsRecognition || root.webkitSpeechRecognition || root.mozSpeechRecognition || root.msSpeechRecognition || root.oSpeechRecognition;
 
 // ref: http://updates.html5rocks.com/2013/01/Voice-Driven-Web-Apps-Introduction-to-the-Web-Speech-API
 
@@ -148,7 +148,7 @@ angular.module('wmsApp').directive('speechRecognition', function () {
 
 		// Check browser support
 		// This is done as early as possible, to make it as fast as possible for unsupported browsers
-		if (!SpeechRecognition) {
+		if (!wmsRecognition) {
 			root.smartSpeechRecognition = null;
 			return undefined;
 		}
@@ -210,8 +210,8 @@ angular.module('wmsApp').directive('speechRecognition', function () {
 					recognition.abort();
 				}
 
-				// initiate SpeechRecognition
-				recognition = new SpeechRecognition();
+				// initiate wmsRecognition
+				recognition = new wmsRecognition();
 
 				// Set the max number of alternative transcripts to try and match with a command
 				recognition.maxAlternatives = 5;
@@ -473,12 +473,12 @@ angular.module('wmsApp').directive('speechRecognition', function () {
 		}
 	}
 // if already running with localstorage
-	if (SpeechRecognition && appConfig.voice_command && localStorage.getItem('sm-setautovoice') == 'true') {
+	if (wmsRecognition && appConfig.voice_command && localStorage.getItem('sm-setautovoice') == 'true') {
 		autoStart();
 	}
 
 // auto start
-	if (SpeechRecognition && appConfig.voice_command_auto && appConfig.voice_command) {
+	if (wmsRecognition && appConfig.voice_command_auto && appConfig.voice_command) {
 		autoStart();
 	}
 
@@ -486,7 +486,7 @@ angular.module('wmsApp').directive('speechRecognition', function () {
 	var link = function(scope, element) {
 
 
-		if (SpeechRecognition && appConfig.voice_command) {
+		if (wmsRecognition && appConfig.voice_command) {
 
 			// create dynamic modal instance
 			var modal = $('<div class="modal fade" id="voiceModal" tabindex="-1" role="dialog" aria-labelledby="remoteModalLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"></div></div></div>');

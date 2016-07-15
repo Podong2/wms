@@ -2,15 +2,15 @@
 
 'use strict';
 
-angular.module('wmsApp').directive('smartPageTitle', smartPageTitle);
-smartPageTitle.$inject=['$rootScope', '$timeout'];
-    function smartPageTitle($rootScope, $timeout) {
+angular.module('wmsApp').directive('wmsPageTitle', wmsPageTitle);
+wmsPageTitle.$inject=['$rootScope', '$timeout'];
+    function wmsPageTitle($rootScope, $timeout) {
     return {
         restrict: 'A',
         compile: function (element, attributes) {
-            element.removeAttr('smart-page-title data-smart-page-title');
+            element.removeAttr('wms-Page-Title data-wms-Page-Title');
 
-            var defaultTitle = attributes.smartPageTitle;
+            var defaultTitle = attributes.wmsPageTitle;
             var listener = function(event, toState, toParams, fromState, fromParams) {
                 var title = defaultTitle;
                 if (toState.data && toState.data.title) title = toState.data.title + ' | ' + title;

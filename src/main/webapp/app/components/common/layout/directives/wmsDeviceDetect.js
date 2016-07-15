@@ -8,11 +8,11 @@
  */
 'use strict';
 
-angular.module('wmsApp').directive('smartDeviceDetect', function () {
+angular.module('wmsApp').directive('wmsDeviceDetect', function () {
     return {
         restrict: 'A',
         compile: function (tElement, tAttributes) {
-            tElement.removeAttr('smart-device-detect data-smart-device-detect');
+            tElement.removeAttr('wms-Device-Detect data-wms-Device-Detect');
 
             var isMobile = (/iphone|ipad|ipod|android|blackberry|mini|windows\sce|palm/i.test(navigator.userAgent.toLowerCase()));
 

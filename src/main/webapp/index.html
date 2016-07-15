@@ -12,7 +12,7 @@
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.css">
-    <link rel="stylesheet" href="bower_components/react-bootstrap-table/css/react-bootstrap-table.css">
+    <!--<link rel="stylesheet" href="bower_components/react-bootstrap-table/css/react-bootstrap-table.css">--><!-- css 충돌로 인한 주석 처리 -->
     <link rel="stylesheet" href="bower_components/bootstrap-fileinput/css/fileinput.min.css">
     <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.css">
     <link rel="stylesheet" href="bower_components/summernote/dist/summernote.css">
@@ -33,14 +33,18 @@
     <!-- endbuild -->
     <!-- build:css content/css/main.css -->
     <link rel="stylesheet" href="content/css/main.css">
-    <link rel="stylesheet" href="app/smartadmin-production.min.css">
-    <link rel="stylesheet" href="app/wms-animate.css">
+    <link rel="stylesheet" href="content/css/wms-production.min.css">
+    <link rel="stylesheet" href="content/css/wms-skins.min.css">
+    <link rel="stylesheet" href="content/css/wms-animate.css">
     <link rel="stylesheet" href="app/components/ngGallery/src/css/ngGallery.css">
     <link rel="stylesheet" href="app/components/wms-tree-directive/angular-tree-dnd/ng-tree-dnd.min.css">
     <link rel="stylesheet" href="app/components/wms-table-directive/cell-cursor/cellCursor.css">
     <!-- endbuild -->
 </head>
-<body ng-app="wmsApp" ng-strict-di dynamic-view-scroll ng-controller="MainController as vm" class="smart-style-0 desktop-detected">
+<body ng-app="wmsApp" ng-strict-di dynamic-view-scroll ng-controller="MainController as vm" class="wms-style-0 desktop-detected"
+      data-wms-Device-Detect
+      data-wms-Fast-Click
+      data-wms-Page-Title="WMS AngularJS">
 <!--[if lt IE 9]>
 <!--<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>-->
 <![endif]-->
@@ -477,23 +481,18 @@
 <script src="app/components/common/layout/actions/resetWidgets.js"></script>
 <script src="app/components/common/layout/actions/searchMobile.js"></script>
 <script src="app/components/common/layout/actions/toggleMenu.js"></script>
-<script src="app/components/common/layout/directives/smartPageTitle.js"></script>
-<script src="app/components/common/layout/directives/smartRouterAnimationWrap.js"></script>
-<script src="app/components/common/layout/directives/smartSpeech.js"></script>
+<script src="app/components/common/layout/directives/wmsPageTitle.js"></script>
+<script src="app/components/common/layout/directives/wmsRouterAnimationWrap.js"></script>
+<script src="app/components/common/layout/directives/wmsSpeech.js"></script>
 <script src="app/components/common/layout/directives/stateBreadcrumbs.js"></script>
-<script src="app/components/common/layout/directives/bigBreadcrumbs.js"></script>
-<script src="app/components/common/layout/directives/dismisser.js"></script>
-<script src="app/components/common/layout/directives/radioToggle.js"></script>
-<script src="app/components/common/layout/directives/smartDeviceDetect.js"></script>
+<script src="app/components/common/layout/directives/wmsDeviceDetect.js"></script>
 <script src="app/components/common/layout/directives/hrefVoid.js"></script>
-<script src="app/components/common/layout/directives/smartFastClick.js"></script>
-<script src="app/components/common/layout/directives/smartFitAppView.js"></script>
-<script src="app/components/common/layout/directives/smartInclude.js"></script>
-<script src="app/components/common/layout/directives/smartLayout.js"></script>
-<script src="app/components/common/layout/directives/navigation/smartMenu.js"></script>
-<script src="app/components/common/layout/directives/navigation/smartMenuItems.js"></script>
-<script src="app/components/common/layout/directives/widgets/jarvisWidget.js"></script>
-<script src="app/components/common/layout/directives/widgets/widgetGrid.js"></script>
+<script src="app/components/common/layout/directives/wmsFastClick.js"></script>
+<script src="app/components/common/layout/directives/wmsInclude.js"></script>
+<script src="app/components/common/layout/service/wmsCss.js"></script>
+<script src="app/components/common/layout/directives/wmsLayout.js"></script>
+<script src="app/components/common/layout/directives/navigation/wmsMenu.js"></script>
+<script src="app/components/common/layout/directives/navigation/wmsMenuItems.js"></script>
 <script src="app/components/common/layout/activities/activities-controller.js"></script>
 <script src="app/components/common/layout/activities/activities-dropdown-toggle-directive.js"></script>
 <script src="app/components/common/layout/activities/activities-service.js"></script>

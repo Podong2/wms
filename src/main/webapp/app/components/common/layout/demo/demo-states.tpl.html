@@ -28,15 +28,15 @@
                           class="checkbox style-0"><span>For Colorblind <div
                     class="font-xs text-right">(experimental)
             </div></span>
-            </label><span id="smart-bgimages"></span></section>
+            </label><span id="wms-bgimages"></span></section>
         <section><h6 class="margin-top-10 semi-bold margin-bottom-5">Clear Localstorage</h6><a
                 ng-click="factoryReset()" class="btn btn-xs btn-block btn-primary" id="reset-smart-widget"><i
                 class="fa fa-refresh"></i> Factory Reset</a></section>
 
-        <h6 class="margin-top-10 semi-bold margin-bottom-5">SmartAdmin Skins</h6>
+        <h6 class="margin-top-10 semi-bold margin-bottom-5">WMS Skins</h6>
 
 
-        <section id="smart-styles">
+        <section id="wms-styles">
             <a ng-repeat="skin in skins" ng-click="setSkin(skin)" class="{{skin.class}}" style="{{skin.style}}"><i ng-if="skin.name == $parent.smartSkin" class="fa fa-check fa-fw"></i> {{skin.label}} <sup ng-if="skin.beta">beta</sup></a>
         </section>
     </form>

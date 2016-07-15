@@ -6,7 +6,7 @@ Language.$inject=["$http"];
 
 	function getLanguage(key, callback) {
 
-		$http.get(APP_CONFIG.apiRootUrl + '/langs/' + key + '.json').success(function(data){
+		$http.get('api'+ '/langs/' + key + '.json').success(function(data){
 
 			callback(data);
 
@@ -21,7 +21,7 @@ Language.$inject=["$http"];
 
 	function getLanguages(callback) {
 
-		$http.get(APP_CONFIG.apiRootUrl + '/languages.json').success(function(data){
+		$http.get('api' + '/languages.json').success(function(data){
 
 			callback(data);
 

@@ -1,6 +1,8 @@
 'use strict';
 
-angular.module('wmsApp').factory('SmartCss', function ($rootScope, $timeout) {
+angular.module('wmsApp').factory('wmsCss', wmsCss);
+wmsCss.$inject=['$rootScope','$timeout'];
+    function wmsCss($rootScope, $timeout) {
 
     var sheet = (function () {
         // Create the <style> tag
@@ -22,9 +24,9 @@ angular.module('wmsApp').factory('SmartCss', function ($rootScope, $timeout) {
     var _styles = {};
 
 
-    var SmartCss = {
+    var wmsCss = {
         writeRule: function(selector){
-            SmartCss.deleteRuleFor(selector);
+            wmsCss.deleteRuleFor(selector);
             if(_.has(_styles, selector)){
                 var css = selector + '{ ' + _.map(_styles[selector], function(v, k){
                     return  k + ':' +  v + ';'
@@ -48,12 +50,12 @@ angular.module('wmsApp').factory('SmartCss', function ($rootScope, $timeout) {
             if(!delay)
                 delay = 0;
             $timeout(function(){
-                SmartCss.writeRule(selector);
+                wmsCss.writeRule(selector);
             }, delay);
 
         },
         remove: function(selector, property, delay){
-            SmartCss.add(selector, property, null, delay);
+            wmsCss.add(selector, property, null, delay);
         },
         deleteRuleFor: function (selector) {
             _(sheet.rules).forEach(function (rule, idx) {
@@ -66,12 +68,12 @@ angular.module('wmsApp').factory('SmartCss', function ($rootScope, $timeout) {
     };
 
     $rootScope.$on('$smartContentResize', function (event, data) {
-        SmartCss.appViewSize = data;
+        wmsCss.appViewSize = data;
     });
 
-    return SmartCss;
+    return wmsCss;
 
-});
+}
 
 
 

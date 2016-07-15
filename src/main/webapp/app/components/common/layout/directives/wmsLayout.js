@@ -1,9 +1,9 @@
 
 'use strict';
 
-angular.module('wmsApp').directive('smartLayout', smartLayout);
-smartLayout.$inject=['$rootScope', '$timeout', '$interval', '$q', 'SmartCss', 'APP_CONFIG'];
-    function smartLayout($rootScope, $timeout, $interval, $q, SmartCss, APP_CONFIG) {
+angular.module('wmsApp').directive('wmsLayout', wmsLayout);
+wmsLayout.$inject=['$rootScope', '$timeout', '$interval', '$q', 'wmsCss'];
+    function wmsLayout($rootScope, $timeout, $interval, $q, wmsCss) {
 
     var _debug = 0;
 
@@ -48,9 +48,9 @@ smartLayout.$inject=['$rootScope', '$timeout', '$interval', '$q', 'SmartCss', 'A
     })();
 
     (function applyConfigSkin(){
-        if(APP_CONFIG.smartSkin){
-            $body.removeClass(_.pluck(APP_CONFIG.skins, 'name').join(' '));
-            $body.addClass(APP_CONFIG.smartSkin);
+        if('wms-style-0'){
+            $body.removeClass(_.pluck('wms-style-0', 'name').join(' '));
+            $body.addClass('wms-style-0');
         }
     })();
 
@@ -59,7 +59,7 @@ smartLayout.$inject=['$rootScope', '$timeout', '$interval', '$q', 'SmartCss', 'A
         priority: 2014,
         restrict: 'A',
         compile: function (tElement, tAttributes) {
-            tElement.removeAttr('smart-layout data-smart-layout');
+            tElement.removeAttr('wms-Layout data-wms-Layout');
 
             var appViewHeight = 0 ,
                 appViewWidth = 0,

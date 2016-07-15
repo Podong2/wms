@@ -2,7 +2,7 @@
     <header id="header"  class="animated fadeInDown" >
 
         <div id="logo-group">
-            <span id="logo"> <img src="content/images/logo.png" alt="SmartAdmin"> </span>
+            <span id="logo"> <img src="content/images/logo.png" alt="WMS"> </span>
         </div>
 
     <span id="extr-page-header-space"> <span class="hidden-mobile hiddex-xs">Need an account?</span> <a
@@ -15,11 +15,11 @@
         <div id="content" class="container">
             <div class="row">
                 <div class="col-xs-12 col-sm-12 col-md-7 col-lg-8 hidden-xs hidden-sm">
-                    <h1 class="txt-color-red login-header-big">SmartAdmin</h1>
+                    <h1 class="txt-color-red login-header-big">WMS</h1>
 
                     <div class="hero">
                         <div class="pull-left login-desc-box-l">
-                            <h4 class="paragraph-header">It's Okay to be Smart. Experience the simplicity of SmartAdmin,
+                            <h4 class="paragraph-header">It's Okay to be Smart. Experience the simplicity of WMS,
                                 everywhere you go!</h4>
 
                             <div class="login-app-icons">
@@ -30,7 +30,7 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
-                            <h5 class="about-heading">About SmartAdmin - Are you up to date?</h5>
+                            <h5 class="about-heading">About WMS - Are you up to date?</h5>
 
                             <p>
                                 Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
@@ -49,7 +49,7 @@
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
                     <div class="well no-padding">
-                        <form class="form smart-form" name="loginForm" role="form" ng-submit="vm.login($event)" novalidate show-validation>
+                        <form class="form wms-form" name="loginForm" role="form" ng-submit="vm.login($event)" novalidate show-validation>
                             <header>
                                 Sign In
                             </header>
@@ -94,16 +94,16 @@
                                                ng-model="vm.password"
                                                wms-kr-update>
                                         <b class="tooltip tooltip-top-right"><i class="fa fa-lock txt-color-teal"></i> 비밀번호를 입력하세요.</b> </label>
-                                    <div class="error ng-hide" ng-show="loginForm.password.$invalid &amp;&amp; loginForm.password.$dirty">
-                                      <span ng-show="loginForm.password.$error.required" class="ng-hide" translate="global.messages.validate.newpassword.required">
+                                    <div ng-show="loginForm.password.$invalid &amp;&amp; loginForm.password.$dirty">
+                                      <p class="help-block" ng-show="loginForm.password.$error.required" translate="global.messages.validate.newpassword.required">
                                     Your password is required.
-                                      </span>
-                                      <span ng-show="loginForm.password.$error.minlength" class="ng-hide" translate="global.messages.validate.newpassword.minlength">
+                                      </p>
+                                      <p class="help-block" ng-show="loginForm.password.$error.minlength" translate="global.messages.validate.newpassword.minlength">
                                     Your password is required to be at least 4 characters.
-                                      </span>
-                                      <span ng-show="loginForm.password.$error.maxlength" class="ng-hide" translate="global.messages.validate.newpassword.maxlength">
+                                      </p>
+                                      <p class="help-block" ng-show="loginForm.password.$error.maxlength" translate="global.messages.validate.newpassword.maxlength">
                                     Your password cannot be longer than 50 characters.
-                                      </span>
+                                      </p>
                                     </div>
 
                                     <div class="note">

@@ -1,12 +1,12 @@
 <!-- HEADER -->
-<div data-smart-include="app/layout/partials/header.tpl.html" class="placeholder-header"></div>
+<div data-wms-Include="app/layout/partials/header.tpl.html" class="placeholder-header"></div>
 <!-- END HEADER -->
 
 
 
 <!-- Left panel : Navigation area -->
 <!-- Note: This width of the aside area can be adjusted through LESS variables -->
-<div data-smart-include="app/layout/partials/navigation.tpl.html" class="placeholder-left-panel"></div>
+<div data-wms-Include="app/layout/partials/navigation.tpl.html" class="placeholder-left-panel"></div>
 
 <!-- END NAVIGATION -->
 
@@ -44,7 +44,7 @@
     <!-- END RIBBON -->
 
 
-    <div data-smart-router-animation-wrap="content content@app" data-wrap-for="#content">
+    <div  data-wrap-for="#content"><!-- data-wms-Router-Animation-Wrap="content content@app" 톱니바퀴 디렉티브 제거 -->
         <div data-ui-view="content" data-autoscroll="false"></div>
     </div>
 
@@ -52,9 +52,9 @@
 <!-- END MAIN PANEL -->
 
 <!-- PAGE FOOTER -->
-<div data-smart-include="app/layout/partials/footer.tpl.html"></div>
+<div data-wms-Include="app/layout/partials/footer.tpl.html"></div>
 
-<div data-smart-include="app/layout/shortcut/shortcut.tpl.html"></div>
+<div data-wms-Include="app/layout/shortcut/shortcut.tpl.html"></div>
 
 <!-- END PAGE FOOTER -->
 
