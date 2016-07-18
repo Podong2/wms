@@ -597,7 +597,7 @@ Social Buttons
     }
     .slideMenu ul{
         white-space: nowrap;
-        width: 737px !important;
+        width: 2020px !important;
     }
     .slideMenu ul li{
         margin-left: -4px;
@@ -699,7 +699,7 @@ Social Buttons
     }
     .slideMenu ul{
         white-space: nowrap;
-        width: 737px !important;
+        width: 2020px !important;
     }
     .slideMenu ul li{
         margin-left: -4px;
@@ -724,7 +724,7 @@ Social Buttons
 }
 @media screen and (min-width: 992px) and (max-width: 1366px) {
     .slideBtnArea {
-        display: none !important;
+        display: block !important;
     }
     .slideMenu{
         overflow-x: hidden;
@@ -733,16 +733,21 @@ Social Buttons
     }
     .slideMenu ul{
         white-space: nowrap;
-        width: 1370px !important;
+        width: 2020px !important;
     }
 }
 @media (min-width: 1250px) {
     .slideBtnArea {
-        display: none !important;
+        display: block !important;
+    }
+    .slideMenu{
+        overflow-x: hidden;
+        overflow-y: hidden;
+        margin: 15px 45px 0px 45px;
     }
     .slideMenu ul{
         white-space: nowrap;
-        width: auto;
+        width: 2020px;
     }
 }
 
@@ -961,7 +966,7 @@ li.active > a{
     color : #2aabd2;
 }
 .slideMenu ul {
-    width : 100%;
+    /*width : 100%;*/
     cursor: auto;
 }
 .slideBody {

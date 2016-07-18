@@ -30,8 +30,10 @@
 
         function login() {
             collapseNavbar();
-            LoginService.open();
+            //LoginService.open();
+            $state.go('login');
         }
+
 
         function logout() {
             collapseNavbar();
