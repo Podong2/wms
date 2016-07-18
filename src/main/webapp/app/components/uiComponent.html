@@ -1103,7 +1103,9 @@ $scope.columnDatas = [
                 </xmp>
             </div>
             <div ng-show="vm.tabArea[20].status">
-                <!--<ng-include src="'app/components/wms-gantt/ganttTemplate.html'"></ng-include>-->
+                <div style="border-radius: 5px; background-color: #eee; border:1px solid #aaa;">
+                    <ng-include src="'app/components/wms-gantt/ganttTemplate.html'"></ng-include>
+                </div>
             </div>
 
             <div ng-show="vm.tabArea[21].status">
@@ -1126,7 +1128,10 @@ $scope.columnDatas = [
                             on-keydown="keydown(evt)" on-change="change(contents)"
                             on-image-upload="imageUpload(files)" editable="editable" editor="editor" lang="ko-KR">
                 </summernote>
-                <span ng-bind-html="vm.renderHtml(text)"></span>
+                <div class="well">
+                    <span ng-bind-html="vm.renderHtml(text)"></span>
+                </div>
+
             </div>
         </div>
     </div>

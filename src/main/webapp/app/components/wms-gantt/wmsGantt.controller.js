@@ -505,18 +505,18 @@ angular.module('wmsApp')
                         {name: 'Go-live', color: '#93C47D', from: new Date(2016, 10, 29, 16, 0, 0), to: new Date(2016, 10, 29, 16, 0, 0)}
                     ], data: 'Can contain any custom data or object'},
                     {name: 'Status meetings', tasks: [
-                        {name: 'Demo #1', color: '#9FC5F8', from: new Date(2016, 4, 25, 15, 0, 0), to: new Date(2016, 9, 25, 18, 30, 0)},
-                        {name: 'Demo #2', color: '#9FC5F8', from: new Date(2016, 5, 1, 15, 0, 0), to: new Date(2016, 6, 1, 18, 0, 0)},
-                        {name: 'Demo #3', color: '#9FC5F8', from: new Date(2016, 6, 8, 15, 0, 0), to: new Date(2016, 7, 8, 18, 0, 0)},
-                        {name: 'Demo #4', color: '#9FC5F8', from: new Date(2016, 3, 15, 15, 0, 0), to: new Date(2016, 5, 15, 18, 0, 0)},
-                        {name: 'Demo #5', color: '#9FC5F8', from: new Date(2016, 10, 24, 9, 0, 0), to: new Date(2016, 10, 24, 10, 0, 0)}
+                        {name: 'Demo #1', color: '#9FC5F8', from: new Date(2016, 7, 25, 15, 0, 0), to: new Date(2016, 9, 25, 18, 30, 0)},
+                        {name: 'Demo #2', color: '#9FC5F8', from: new Date(2016, 7, 1, 15, 0, 0), to: new Date(2016, 7, 2, 18, 0, 0)},
+                        {name: 'Demo #3', color: '#9FC5F8', from: new Date(2016, 7, 8, 15, 0, 0), to: new Date(2016, 7, 8, 18, 0, 0)},
+                        {name: 'Demo #4', color: '#9FC5F8', from: new Date(2016, 7, 15, 15, 0, 0), to: new Date(2016, 7, 25, 18, 0, 0)},
+                        {name: 'Demo #5', color: '#9FC5F8', from: new Date(2016, 7, 24, 9, 0, 0), to: new Date(2016, 8, 24, 10, 0, 0)}
                     ]},
                     {name: 'Kickoff', movable: {allowResizing: false}, tasks: [
-                        {name: 'Day 1', color: '#9FC5F8', from: new Date(2016, 1, 7, 9, 0, 0), to: new Date(2016, 9, 7, 17, 0, 0),
+                        {name: 'Day 1', color: '#9FC5F8', from: new Date(2016, 8, 7, 9, 0, 0), to: new Date(2016, 9, 7, 17, 0, 0),
                             progress: {percent: 100, color: '#3C8CF8'}, movable: false},
-                        {name: 'Day 2', color: '#9FC5F8', from: new Date(2016, 3, 8, 9, 0, 0), to: new Date(2016, 9, 8, 17, 0, 0),
+                        {name: 'Day 2', color: '#9FC5F8', from: new Date(2016, 8, 8, 9, 0, 0), to: new Date(2016, 9, 8, 17, 0, 0),
                             progress: {percent: 100, color: '#3C8CF8'}},
-                        {name: 'Day 3', color: '#9FC5F8', from: new Date(2016, 4, 9, 8, 30, 0), to: new Date(2016, 9, 9, 12, 0, 0),
+                        {name: 'Day 3', color: '#9FC5F8', from: new Date(2016, 7, 9, 8, 30, 0), to: new Date(2016, 9, 9, 12, 0, 0),
                             progress: {percent: 100, color: '#3C8CF8'}}
                     ]},
                     {name: 'Create concept', tasks: [
@@ -529,15 +529,15 @@ angular.module('wmsApp')
                     ]},
                     {name: 'Development', children: ['Sprint 1', 'Sprint 2', 'Sprint 3', 'Sprint 4'], content: '<i class="fa fa-file-code-o" ng-click="scope.handleRowIconClick(row.model)"></i> {{row.model.name}}'},
                     {name: 'Sprint 1', tooltips: false, tasks: [
-                        {id: 'Product list view', name: 'Product list view', color: '#F1C232', from: new Date(2016, 4, 21, 8, 0, 0), to: new Date(2016, 9, 25, 15, 0, 0),
+                        {id: 'Product list view', name: 'Product list view', color: '#F1C232', from: new Date(2016, 8, 21, 8, 0, 0), to: new Date(2016, 9, 25, 15, 0, 0),
                             progress: 25, dependencies: [{to: 'Order basket'}, {from: 'Finalize concept'}]}
                     ]},
                     {name: 'Sprint 2', tasks: [
-                        {id: 'Order basket', name: 'Order basket', color: '#F1C232', from: new Date(2016, 5, 28, 8, 0, 0), to: new Date(2016, 10, 1, 15, 0, 0),
+                        {id: 'Order basket', name: 'Order basket', color: '#F1C232', from: new Date(2016, 8, 28, 8, 0, 0), to: new Date(2016, 9, 1, 15, 0, 0),
                             dependencies: {to: 'Checkout'}}
                     ]},
                     {name: 'Sprint 3', tasks: [
-                        {id: 'Checkout', name: 'Checkout', color: '#F1C232', from: new Date(2016, 7, 4, 8, 0, 0), to: new Date(2016, 10, 8, 15, 0, 0),
+                        {id: 'Checkout', name: 'Checkout', color: '#F1C232', from: new Date(2016, 9, 4, 8, 0, 0), to: new Date(2016, 10, 8, 15, 0, 0),
                             dependencies: {to: 'Login & Signup & Admin Views'}}
                     ]},
                     {name: 'Sprint 4', tasks: [

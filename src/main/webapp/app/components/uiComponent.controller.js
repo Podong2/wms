@@ -13,9 +13,9 @@
         .module('wmsApp')
         .controller('UiComponentController', UiComponentController);
 
-    UiComponentController.$inject = ['$scope', 'Principal', 'ModalService', '$state', 'toastr', 'summaryService', 'toastrConfig', 'FIndCode', '$log', 'findUser', '$q', 'tableService', 'moment', '$filter', 'dataService'];
+    UiComponentController.$inject = ['$scope', 'Principal', 'ModalService', '$state', 'toastr', 'summaryService', 'toastrConfig', 'FIndCode', '$log', 'findUser', '$q', 'tableService', 'moment', '$filter', 'dataService', '$sce'];
 
-    function UiComponentController ($scope, Principal, ModalService, $state, toastr, summaryService, toastrConfig, FIndCode, $log, findUser, $q, tableService, moment, $filter, dataService) {
+    function UiComponentController ($scope, Principal, ModalService, $state, toastr, summaryService, toastrConfig, FIndCode, $log, findUser, $q, tableService, moment, $filter, dataService, $sce) {
         var vm = this;
 
         vm.openToast = openToast;
@@ -27,6 +27,7 @@
         vm.showStateArray = showStateArray;
         vm.tabDisplay = tabDisplay;
         vm.submitConfig = submitConfig;
+        vm.renderHtml = renderHtml;
 
         //	설명 html 형식으로 표현
         function renderHtml (data) {
