@@ -28,6 +28,7 @@
         vm.tabDisplay = tabDisplay;
         vm.submitConfig = submitConfig;
         vm.renderHtml = renderHtml;
+        vm.autoValueInit = autoValueInit;
 
         //	설명 html 형식으로 표현
         function renderHtml (data) {
@@ -44,6 +45,12 @@
             }); //user search
             return deferred.promise;
         };
+
+        // auto-complate : 다중사용자 모드 변경시 tags 값 초기화
+        vm.autoType = false;
+        function autoValueInit(){
+            $scope.tags =[];
+        }
 
 
         vm.textValue = "";
@@ -1121,7 +1128,7 @@
                     values: sin2,
                     key: 'Another sine wave',
                     color: '#7777ff',
-                    area: true      //area - set to true if you want this line to turn into a filled area chart.
+                    area: true      //area - true 세팅 시 0을 중심으로 y축으로 색을 채워준다.
                 }
             ];
         }

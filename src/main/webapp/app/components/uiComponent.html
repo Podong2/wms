@@ -6,8 +6,8 @@
   ~ Vestibulum commodo. Ut rhoncus gravida arcu.
   -->
 <div id="content" ng-cloak>
-    <div class="row" style="padding: 10px;">
 
+    <div class="row" style="padding: 10px;">
         <!-- 탭부분 -->
         <div class="col-md-12 mgt10 slideBody">
             <i class="fa fa-chevron-right fa-3x cursor float-right slideBtnArea"
@@ -200,7 +200,7 @@
             </div>
 
             <!-- alert -->
-            <div ng-show="vm.tabArea[3].status">
+            <div ng-if="vm.tabArea[3].status">
                 <h3><b>alerts</b></h3>
                 <ul>
                     <li>alert은 오른쪽 상단, toast는 오른쪽하단 표시, 유효성 체크는 body영역</li>
@@ -222,7 +222,7 @@
                 </div>
             </div>
 
-            <div ng-show="vm.tabArea[4].status">
+            <div ng-if="vm.tabArea[4].status">
                 <h3><b>Toast</b></h3>
                 <ul>
                     <li>시스템의 메시지 노출시에는 toast로 노출한다.</li>
@@ -249,7 +249,7 @@
             </div>
 
             <!-- pagination -->
-            <div ng-show="vm.tabArea[5].status">
+            <div ng-if="vm.tabArea[5].status">
                 <h3><b>pagination</b></h3>
                 <ul>
                     <li>동그라미, 사각형 등 모양 변경</li>
@@ -266,7 +266,7 @@
             </div>
 
             <!-- tooltip -->
-            <div ng-show="vm.tabArea[6].status">
+            <div ng-if="vm.tabArea[6].status">
                 <h3><b>tooltip</b></h3>
                 <ul>
                     <li>버튼 혹은 특정요소를 마우스 오버 시 툴팁이 노출된다.</li>
@@ -280,7 +280,7 @@
             </div>
 
             <!-- datePicker -->
-            <div ng-show="vm.tabArea[7].status">
+            <div ng-if="vm.tabArea[7].status">
                 <h3><b>datePicker</b></h3>
                 <ul>
                     <li>좌우 화살표 또는 월을 선택하여 원하는 달의 달력을 확인할 수 있다.</li>
@@ -809,7 +809,7 @@
             </div>
 
             <!-- Modal -->
-            <div ng-show="vm.tabArea[8].status">
+            <div ng-if="vm.tabArea[8].status">
                 <h3><b>Modal</b></h3>
                 <ul>
                     <li>기존 owl과 동일한 modal이 적용되야한다.</li>
@@ -823,7 +823,7 @@
             </div>
 
             <!-- xeditable -->
-            <div ng-show="vm.tabArea[9].status">
+            <div ng-if="vm.tabArea[9].status">
                 <h3><b>xeditable</b></h3>
                 <ul>
                     <li>사용자는 요약정보등의 특정 text 정보들을 클릭하여 변경 할 수 있다.</li>
@@ -847,7 +847,7 @@
             </div>
 
             <!-- button -->
-            <div ng-show="vm.tabArea[10].status">
+            <div ng-if="vm.tabArea[10].status">
                 <h3><b>button</b></h3>
                 <ul>
                     <li>버튼의 명확한 디자인과 크기조절이 어렵지않아야한다.</li>
@@ -887,7 +887,7 @@
             </div>
 
             <!-- ngGallery -->
-            <div ng-show="vm.tabArea[11].status">
+            <div ng-if="vm.tabArea[11].status">
                 <h3><b>ngGallery</b></h3>
                 <ul>
                     <li>이미지 확장자명의 파일은 갤러리로 표현이 가능해야한다.</li>
@@ -900,7 +900,7 @@
             </div>
 
             <!-- Tree -->
-            <div ng-show="vm.tabArea[12].status">
+            <div ng-if="vm.tabArea[12].status">
                 <h3><b>Tree</b></h3>
                 <!--<div class="col-md-12">-->
                     <!--<div class="col-md-4">-->
@@ -946,7 +946,7 @@
                 </wms-tree-grid>
             </div>
 
-            <div ng-show="vm.tabArea[13].status">
+            <div ng-if="vm.tabArea[13].status">
                 <h3><b>Layout</b></h3>
                 <!--<ng-include src="'app/components/common/detailBody.html'"></ng-include>-->
                 <wms-make-table response-data="responseData" column-datas="columnDatas" type="multi"></wms-make-table>
@@ -980,18 +980,19 @@ $scope.columnDatas = [
 </xmp>
             </div>
 
-            <div ng-show="vm.tabArea[14].status">
+            <div ng-if="vm.tabArea[14].status">
                 <button ng-click="vm.submitConfig()" class="btn btn_icon btn_customs" owl-btn-save></button>
             </div>
-            <div ng-show="vm.tabArea[15].status">
-                <tags-input ng-model="tags" display-property="name" multiple="false">
-                    <auto-complete source="loadData($query)" multiple="false" max-results-to-show="20"></auto-complete>
-                </tags-input>
+            <div ng-if="vm.tabArea[15].status">
+                <!--<tags-input ng-model="tags" display-property="name" multiple="false">-->
+                    <!--<auto-complete source="loadData($query)" multiple="false" max-results-to-show="20"></auto-complete>-->
+                <!--</tags-input>-->
 
-                <autocomplete source="loadData" tags="tags" display-property="name" multiple="false" max-results-to-show="20"></autocomplete>
+                <autocomplete source="loadData" tags="tags" display-property="name" multiple="{{vm.autoType}}" max-results-to-show="20"></autocomplete>
+                <label for="auto-single"><input type="checkbox" id="auto-single" data-ng-model="vm.autoType" data-ng-click="vm.autoValueInit()"/>다중 사용자 모드</label><br/>
                 {{tags}}
             </div>
-            <div ng-show="vm.tabArea[16].status">
+            <div ng-if="vm.tabArea[16].status">
                 <!--<adf-dashboard name="mydashboard" collapsible="true" editable="true" structure="6-6" adf-model="model" maximizable="true" enable-confirm-delete="true" categories="false"/>-->
                 <dashboard name="mydashboard" collapsible="true" editable="true" structure="6-6" adf-model="model" maximizable="true" enable-confirm-delete="true"></dashboard>
                 <!--
@@ -1004,18 +1005,17 @@ $scope.columnDatas = [
                     enable-confirm-delete : 위젯 삭제시 삭제확인 팝업 오픈 (boolean)
                 -->
             </div>
-            <div ng-show="vm.tabArea[17].status">
+            <div ng-if="vm.tabArea[17].status">
                 <h3><b>Table</b></h3>
                 <button ng-click="loadWmsTableData()">add</button>
 
                 <wms-table ng-model="vm.wmsTableData" table-configs="vm.tableConfigs" update-callback="updateCallback"></wms-table>
             </div>
 
-            <div ng-show="vm.tabArea[18].status">
+            <div ng-if="vm.tabArea[18].status">
                 <h3><b>Chart</b></h3>
                 <h4>bar chart</h4>
                 <bar-chart data="barData" options="barOptions"></bar-chart>
-
                 <hr/>
                 <h4>pie chart</h4>
                 <pie-chart data="pieData" options="pieOptions"></pie-chart>
@@ -1029,7 +1029,7 @@ $scope.columnDatas = [
                 <column-chart data="columnData" options="columnOptions"></column-chart>
 
             </div>
-            <div ng-show="vm.tabArea[19].status">
+            <div ng-if="vm.tabArea[19].status">
                 <h3><b>Calendar</b></h3>
 
                 <button ng-click="vm.addSchedule();">add</button>
@@ -1102,13 +1102,17 @@ $scope.columnDatas = [
                     };
                 </xmp>
             </div>
-            <div ng-show="vm.tabArea[20].status">
-                <div style="border-radius: 5px; background-color: #eee; border:1px solid #aaa;">
+            <div ng-if="vm.tabArea[20].status">
+                <div style="border-radius: 5px;
+                            background-color: #fff;
+                            border: 1px solid #ccc;
+                            margin-top: 45px;
+                            padding: 15px;">
                     <ng-include src="'app/components/wms-gantt/ganttTemplate.html'"></ng-include>
                 </div>
             </div>
 
-            <div ng-show="vm.tabArea[21].status">
+            <div ng-if="vm.tabArea[21].status">
 
                 <h3><b>Kanban</b></h3>
 
@@ -1121,14 +1125,14 @@ $scope.columnDatas = [
                 <wms-kanban board-list="kanbanList" kanban-scope="kanbanScope"></wms-kanban>
             </div>
 
-            <div ng-show="vm.tabArea[22].status" data-ng-controller="summerController">
+            <div ng-if="vm.tabArea[22].status" data-ng-controller="summerController">
                 <h3>summerNote</h3>
                 <summernote ng-model="text" on-init="init()" on-enter="enter()" on-focus="focus(evt)" config="dataService.getSummerNoteOptions(true)"
                             on-blur="blur(evt)" on-paste="paste()" on-keyup="keyup(evt)" contenteditable="true"
                             on-keydown="keydown(evt)" on-change="change(contents)"
                             on-image-upload="imageUpload(files)" editable="editable" editor="editor" lang="ko-KR">
                 </summernote>
-                <div class="well">
+                <div class="well" style="background-color: #fff;">
                     <span ng-bind-html="vm.renderHtml(text)"></span>
                 </div>
 
