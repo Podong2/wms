@@ -1602,3 +1602,7 @@ i:active, .i:active, i:focus, .i:focus{
     background: #fafafa;
     padding: 5px 15px;
 }
+.ribbon-icon{
+    margin: 12px 5px 0 0;
+    color: #fdfdfd;
+}

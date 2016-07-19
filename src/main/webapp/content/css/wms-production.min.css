@@ -8026,7 +8026,7 @@ aside {
 }
 
 #ribbon .breadcrumb li:last-child, #ribbon .breadcrumb > .active {
-    color: #E4E4E4
+    /*color: #E4E4E4*/
 }
 
 .fixed-ribbon #ribbon {

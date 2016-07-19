@@ -92,7 +92,7 @@
             html: false,
             closeButton: false,
             tapToDismiss: true,
-            progressBar: false,
+            progressBar: true,
             closeHtml: '<button>&times;</button>',
             newestOnTop: true,
             maxOpened: 0,
@@ -130,7 +130,7 @@
         vm.tabArea = [
             { status: false },   // side nav
             { status: false },  // select box
-            { status: false },  // Input box
+            { status: true },  // Input box
             { status: false },  // alerts
             { status: false },  // Toast
             { status: false },  // pagination
@@ -150,7 +150,7 @@
             { status: false },  // calendar
             { status: false },  // gantt
             { status: false },  // kanban
-            { status: true }  // summernote
+            { status: false }  // summernote
         ];
 
 
@@ -495,30 +495,7 @@
             toastr.success('Hello world!', 'Toastr fun!');
             toastr.error('Your credentials are gone', 'Error');
             toastr.warning('Your computer is about to explode!', 'Warning');
-
-
         }
-        // toast 설정 watch function
-        $scope.$watchCollection('vm.options', function(newValue) {
-            //toastrConfig.autoDismiss = newValue.autoDismiss;
-            //toastrConfig.allowHtml = newValue.html;
-            //toastrConfig.extendedTimeOut = parseInt(newValue.extendedTimeout, 10);
-            toastrConfig.positionClass = newValue.position;
-            toastrConfig.timeOut = parseInt(newValue.timeout, 10);
-            //toastrConfig.closeButton = newValue.closeButton;
-            //toastrConfig.tapToDismiss = newValue.tapToDismiss;
-            //toastrConfig.progressBar = newValue.progressBar;
-            //toastrConfig.closeHtml = newValue.closeHtml;
-            //toastrConfig.newestOnTop = newValue.newestOnTop;
-            //toastrConfig.maxOpened = newValue.maxOpened;
-            //toastrConfig.preventDuplicates = newValue.preventDuplicates;
-            //toastrConfig.preventOpenDuplicates = newValue.preventOpenDuplicates;
-            //if (newValue.customTemplate) {
-            //    toastrConfig.templates.toast = 'custom';
-            //} else {
-            //    toastrConfig.templates.toast = 'directives/toast/toast.html';
-            //}
-        });
 
         // select box disabled 처리 function
         function isDisabledDate(currentDate, mode) {
