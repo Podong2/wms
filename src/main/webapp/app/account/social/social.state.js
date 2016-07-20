@@ -9,14 +9,14 @@
 
     function stateConfig($stateProvider) {
         $stateProvider.state('social-register', {
-            parent: 'account',
+            parent: 'app',
             url: '/social-register/:provider?{success:boolean}',
             data: {
                 authorities: [],
                 pageTitle: 'social.register.title'
             },
             views: {
-                'content@': {
+                'content@app': {
                     templateUrl: 'app/account/social/social-register.html',
                     controller: 'SocialRegisterController',
                     controllerAs: 'vm'

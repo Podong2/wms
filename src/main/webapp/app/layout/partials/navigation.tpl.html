@@ -3,26 +3,6 @@
     <!-- User info -->
     <div login-info></div>
     <!-- end user info -->
-
-
-    <!--<div class="navbar-collapse" uib-collapse="vm.isNavbarCollapsed" ng-switch="vm.isAuthenticated()" style="float: left;">-->
-        <!--<ul class="nav navbar-nav">-->
-            <!--&lt;!&ndash; 동적 navbar &ndash;&gt;-->
-            <!--<li data-menu-collapse ng-class="{active: vm.$state.includes('entity')}" ng-repeat="menu in vm.menu" >&lt;!&ndash; ng-show="menu.displayYn ? (permissionCheck.check(menu.permissionUrl) ? menu.displayYn : false) : false" &ndash;&gt;-->
-                <!--<a href="#" title="Entities">-->
-                    <!--<i class="glyphicon glyphicon-th-list"></i>-->
-                    <!--<span class="hidden-sm" translate="{{menu.name}}">{{menu.name}}</span>-->
-                <!--</a>-->
-                <!--<ul>-->
-                    <!--<li data-ui-sref-active="active" ng-repeat="child in menu.childMenus track by $index" ng-include="'nodes_renderer.html'" >-->
-
-                    <!--</li>-->
-                <!--</ul>-->
-            <!--</li>-->
-        <!--</ul>-->
-    <!--</div>-->
-
-
     <nav>
         <!-- NOTE: Notice the gaps after each icon usage <i></i>..
         Please note that these links work a bit different than
@@ -49,6 +29,59 @@
                     <i class="fa fa-lg fa-fw fa-flask"></i><span class="menu-item-parent" translate="ui-component">ui-component</span>
                 </a>
             </li>
+
+            <!-- 관리자 -->
+            <li data-menu-collapse>
+                <a href="#">
+                    <i class="fa fa-lg fa-fw fa-cog"></i> <span class="menu-item-parent" translate="global.menu.admin.main"></span>
+                </a>
+                <ul>
+                    <li data-ui-sref-active="active">
+                        <a ui-sref="user-management" class="menu-item-parent" translate="global.menu.admin.userManagement"></a>
+                    </li>
+                    <li data-ui-sref-active="active">
+                        <a  ui-sref="jhi-tracker" class="menu-item-parent" translate="global.menu.admin.tracker"></a>
+                    </li>
+                    <li data-ui-sref-active="active">
+                        <a  ui-sref="jhi-metrics" class="menu-item-parent" translate="global.menu.admin.metrics"></a>
+                    </li>
+                    <li data-ui-sref-active="active">
+                        <a  ui-sref="jhi-health" class="menu-item-parent" translate="global.menu.admin.health"></a>
+                    </li>
+                    <li data-ui-sref-active="active">
+                        <a ui-sref="jhi-configuration" class="menu-item-parent" translate="global.menu.admin.configuration"></a>
+                    </li>
+                    <li data-ui-sref-active="active">
+                        <a  ui-sref="audits" class="menu-item-parent" translate="global.menu.admin.audits"></a>
+                    </li>
+                    <li data-ui-sref-active="active" >
+                        <a ui-sref="logs" class="menu-item-parent" translate="global.menu.admin.logs"></a>
+                    </li>
+                    <li data-ui-sref-active="active" >
+                        <a ui-sref="docs" class="menu-item-parent" translate="global.menu.admin.apidocs"></a>
+                    </li>
+                </ul>
+            </li>
+
+            <!-- 사용자 -->
+            <li data-menu-collapse>
+                <a href="#">
+                    <i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent" translate="global.menu.account.main"></span>
+                </a>
+                <ul>
+                    <li data-ui-sref-active="active">
+                        <a ui-sref="settings" class="menu-item-parent" translate="global.menu.account.settings"></a>
+                    </li>
+                    <li data-ui-sref-active="active">
+                        <a ui-sref="password" class="menu-item-parent" translate="global.menu.account.password"></a>
+                    </li>
+                    <li data-ui-sref-active="active">
+                        <a ui-sref="sessions" class="menu-item-parent" translate="global.menu.account.sessions"></a>
+                    </li>
+                </ul>
+            </li>
+
+
             <li data-menu-collapse>
                 <a href="#" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i> <span
                         class="menu-item-parent">Dashboard</span></a>
@@ -61,6 +94,7 @@
                     </li>
                 </ul>
             </li>
+
 
             <li data-menu-collapse class="top-menu-invisible">
                 <a href="#"><i class="fa fa-lg fa-fw fa-cube txt-color-blue"></i> <span class="menu-item-parent">WMS Intel</span></a>

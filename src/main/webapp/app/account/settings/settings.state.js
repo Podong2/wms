@@ -9,14 +9,14 @@
 
     function stateConfig($stateProvider) {
         $stateProvider.state('settings', {
-            parent: 'account',
+            parent: 'app',
             url: '/settings',
             data: {
                 authorities: ['ROLE_USER'],
                 pageTitle: 'global.menu.account.settings'
             },
             views: {
-                'content@': {
+                'content@app': {
                     templateUrl: 'app/account/settings/settings.html',
                     controller: 'SettingsController',
                     controllerAs: 'vm'

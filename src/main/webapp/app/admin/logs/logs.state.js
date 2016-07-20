@@ -9,14 +9,15 @@
 
     function stateConfig($stateProvider) {
         $stateProvider.state('logs', {
-            parent: 'admin',
+            parent: 'app',
             url: '/logs',
             data: {
                 authorities: ['ROLE_ADMIN'],
-                pageTitle: 'logs.title'
+                pageTitle: 'logs.title',
+                title : 'Logs'
             },
             views: {
-                'content@': {
+                'content@app': {
                     templateUrl: 'app/admin/logs/logs.html',
                     controller: 'LogsController',
                     controllerAs: 'vm'

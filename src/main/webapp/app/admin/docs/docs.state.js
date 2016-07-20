@@ -9,14 +9,15 @@
 
     function stateConfig ($stateProvider) {
         $stateProvider.state('docs', {
-            parent: 'admin',
+            parent: 'app',
             url: '/docs',
             data: {
                 authorities: ['ROLE_ADMIN'],
-                pageTitle: 'global.menu.admin.apidocs'
+                pageTitle: 'global.menu.admin.apidocs',
+                title : 'Docs'
             },
             views: {
-                'content@': {
+                'content@app': {
                     templateUrl: 'app/admin/docs/docs.html'
                 }
             },

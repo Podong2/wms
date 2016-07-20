@@ -10,14 +10,15 @@
     function stateConfig($stateProvider) {
         $stateProvider
         .state('user-management', {
-            parent: 'admin',
+             parent: 'app',
             url: '/user-management',
             data: {
                 authorities: ['ROLE_ADMIN'],
-                pageTitle: 'user-management.home.title'
+                pageTitle: 'user-management.home.title',
+                title : 'user Management'
             },
             views: {
-                'content@': {
+                'content@app': {
                     templateUrl: 'app/admin/user-management/user-management.html',
                     controller: 'UserManagementController',
                     controllerAs: 'vm'
@@ -31,14 +32,15 @@
             }
         })
         .state('user-management-detail', {
-            parent: 'admin',
+             parent: 'app',
             url: '/user/:login',
             data: {
                 authorities: ['ROLE_ADMIN'],
-                pageTitle: 'user-management.detail.title'
+                pageTitle: 'user-management.detail.title',
+                title : 'Detail'
             },
             views: {
-                'content@': {
+                'content@app': {
                     templateUrl: 'app/admin/user-management/user-management-detail.html',
                     controller: 'UserManagementDetailController',
                     controllerAs: 'vm'
