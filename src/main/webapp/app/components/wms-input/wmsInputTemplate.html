@@ -1,0 +1,24 @@
+<label class="input" for="{{inputName}}">
+    <i data-ng-hide="tooltip == '' || tooltip == undefined" class="icon-append fa {{tooltipIcon}}"></i>
+    <input type="{{inputType}}"
+           class="form-control"
+           id="{{inputName}}"
+           name="{{inputName}}"
+           placeholder="{{placeholderText | translate}}"
+           ng-model="ngModel"
+           ng-minlength="minlength"
+           ng-maxlength="maxlength"
+           ng-pattern="/^[a-zA-Z][a-zA-Z0-9]{0,20}$/"
+           required
+           wms-kr-update>
+    <b class="tooltip tooltip-top-right" data-ng-hide="tooltip == '' || tooltip == undefined" >
+        <i class="fa txt-color-teal {{tooltipIcon}}"></i> {{tooltip}}
+    </b>
+</label>
+{{ngModel}}
+<div ng-show="{{formName}}.{{inputName}}.$dirty && {{formName}}.{{inputName}}.$invalid">
+    <p class="help-block" ng-show="{{formName}}.{{inputName}}.$error.required" translate="{{requiredText}}"></p>
+    <p class="help-block" ng-show="{{formName}}.{{inputName}}.$error.minlength" translate="{{minText}}"></p>
+    <p class="help-block" ng-show="{{formName}}.{{inputName}}.$error.maxlength" translate="{{maxText}}"></p>
+    <p class="help-block" ng-show="{{formName}}.{{inputName}}.$error.pattern" translate="{{patternText}}"></p>
+</div>

@@ -102,22 +102,26 @@
                                         Your username can only contain lower-case letters and digits.
                                     </p>
                                 </div>
-                                <input-box
-                                    input-type="text"
-                                    form-name="form"
-                                    input-name="login"
-                                    minlength="3"
-                                    maxlength="12"
-                                    ng-model="vm.password"
-                                    pattern="/^[a-zA-Z][a-zA-Z0-9]{0,20}$/"
-                                    required-text="register.messages.validate.login.required"
-                                    min-text="register.messages.validate.login.minlength"
-                                    max-text="register.messages.validate.login.maxlength"
-                                    pattern-text="register.messages.validate.login.pattern"
-                                    placeholder-text="login.form.password.placeholder"
-                                    tooltip="아이디를 입력하세요."
-                                    tooltip-icon="fa-user"
-                                ></input-box>
+                                <!--<input-box-->
+                                    <!--input-type="text"-->
+                                    <!--form-name="form"-->
+                                    <!--input-name="login"-->
+                                    <!--minlength="3"-->
+                                    <!--maxlength="12"-->
+                                    <!--ng-model="vm.registerAccount.login"-->
+                                    <!--pattern="/^[a-zA-Z][a-zA-Z0-9]{0,20}$/"-->
+                                    <!--required-text="register.messages.validate.login.required"-->
+                                    <!--min-text="register.messages.validate.login.minlength"-->
+                                    <!--max-text="register.messages.validate.login.maxlength"-->
+                                    <!--pattern-text="register.messages.validate.login.pattern"-->
+                                    <!--placeholder-text="global.form.username.placeholder"-->
+                                    <!--tooltip="아이디를 입력하세요."-->
+                                    <!--tooltip-icon="fa-user"-->
+                                <!--&gt;</input-box>-->
+                                <!--required : {{form.login.$error.required}}<br/>-->
+                                <!--minlength : {{form.login.$error.minlength}}<br/>-->
+                                <!--maxlength : {{form.login.$error.maxlength}}<br/>-->
+                                <!--pattern : {{form.login.$error.pattern}}<br/>-->
                             </section>
 
                             <section class="form-group">
@@ -135,6 +139,18 @@
                                         Your username can only contain lower-case letters and digits.
                                     </p>
                                 </div>
+                                <!--<input-box-->
+                                    <!--input-type="email"-->
+                                    <!--form-name="form"-->
+                                    <!--input-name="email"-->
+                                    <!--ng-model="vm.registerAccount.email"-->
+                                    <!--pattern="/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/"-->
+                                    <!--required-text="global.messages.validate.email.required"-->
+                                    <!--pattern-text="global.messages.validate.email.pattern"-->
+                                    <!--placeholder-text="global.form.email.placeholder"-->
+                                    <!--tooltip="이메일을 입력하세요."-->
+                                    <!--tooltip-icon="fa-envelope"-->
+                                <!--&gt;</input-box>-->
                             </section>
 
                             <section class="form-group">
@@ -223,6 +239,7 @@
                             <!--</section>-->
                         </fieldset>
                         <footer>
+                            <!--{{form.$invalid}}-->
                             <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary" translate="register.form.button">Register</button>
                         </footer>
 
