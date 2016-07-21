@@ -12,45 +12,42 @@
     angular
         .module('wmsApp')
         .directive('inputBox', inputBox);
-    inputBox.$inject=['$compile'];
+    inputBox.$inject=[];
 
-    function inputBox ($compile) {
+    function inputBox () {
         return {
             restrict: 'E',
+            required : 'ngModel',
             scope : {
                 formName : '@',
                 inputName : '@',
                 minlength : '@',
                 maxlength : '@',
                 pattern : '@',
-                ngModel : '=ngModel',
                 requiredText : '@',
                 minText : '@',
                 maxText : '@',
                 patternText : '@',
-                placeholderText : '@'
+                placeholderText : '@',
+                inputType : '@',
+                tooltip : '@',
+                tooltipIcon : '@',
+                ngModel : '=ngModel'
             },
+            //templateUrl : 'app/components/wms-input/wmsInputTemplate.html',
             replace: false,
-            compile: function (element) {
-
-                return function($scope){
-                    var template = '<form  name="'+ $scope.formName +'" role="'+ $scope.formName +'" novalidate show-validation>' +
-                        '<div class="form-group">'+
-                        '<label class="control-label" for="'+ $scope.inputName +'" translate="global.form.username">Username</label>'+
-                        '<input type="text" class="form-control" id="'+ $scope.inputName +'" name="'+ $scope.inputName +'" placeholder="{{\''+ $scope.placeholderText +'\' | translate}}" ' +
-                        'ng-model="ngModel" ng-minlength="'+ $scope.minlength +'" ng-maxlength="'+ $scope.maxlength +'" ng-pattern="'+ $scope.pattern +'" required wms-kr-update>'+
-                        '<div ng-show="'+ $scope.formName +'.'+ $scope.inputName +'.$dirty && '+ $scope.formName +'.'+ $scope.inputName +'.$invalid">' +
-                        '<p class="help-block" ng-if="'+ $scope.formName +'.'+ $scope.inputName +'.$error.required" translate="'+$scope.requiredText+'"></p>' +
-                        '<p class="help-block" ng-if="'+ $scope.formName +'.'+ $scope.inputName +'.$error.minlength" translate="'+$scope.minText+'"></p>' +
-                        '<p class="help-block" ng-if="'+ $scope.formName +'.'+ $scope.inputName +'.$error.maxlength" translate="'+$scope.maxText+'"></p>' +
-                        '<p class="help-block" ng-if="'+ $scope.formName +'.'+ $scope.inputName +'.$error.pattern" translate="'+$scope.patternText+'"></p>' +
-                        '</div>' +
-                        '</div>';
-                    '</form>';
-                    var linkFn = $compile(template);
-                    var content = linkFn($scope);
-                    element.append(content);
-                }
+            compile: function (element, attrs) {
+                var template = '<label class="input" for="'+ attrs.inputName +'"><i data-ng-hide="\''+attrs.tooltip+'\' == \'\' || \''+attrs.tooltip+'\' == undefined" class="icon-append fa '+ attrs.tooltipIcon +'"></i>'+
+                                    '<input type="'+ attrs.inputType +'" class="form-control" id="'+ attrs.inputName +'" name="'+ attrs.inputName +'" placeholder="{{\''+ attrs.placeholderText +'\' | translate}}" ' +
+                                    'ng-model="'+ attrs.ngModel +'" ng-minlength="'+ attrs.minlength +'" ng-maxlength="'+ attrs.maxlength +'" ng-pattern="'+ attrs.pattern +'" required wms-kr-update>' +
+                                    '<b class="tooltip tooltip-top-right" data-ng-hide="\''+attrs.tooltip+'\' == \'\' || \''+attrs.tooltip+'\' == undefined" ><i class="fa txt-color-teal '+ attrs.tooltipIcon +'"></i> '+ attrs.tooltip +'</b></label>'+
+                                '<div ng-show="'+ attrs.formName +'.'+ attrs.inputName +'.$dirty && '+ attrs.formName +'.'+ attrs.inputName +'.$invalid">' +
+                                    '<p class="help-block" ng-show="'+ attrs.formName +'.'+ attrs.inputName +'.$error.required" translate="'+attrs.requiredText+'"></p>' +
+                                    '<p class="help-block" ng-show="'+ attrs.formName +'.'+ attrs.inputName +'.$error.minlength" translate="'+attrs.minText+'"></p>' +
+                                    '<p class="help-block" ng-show="'+ attrs.formName +'.'+ attrs.inputName +'.$error.maxlength" translate="'+attrs.maxText+'"></p>' +
+                                    '<p class="help-block" ng-show="'+ attrs.formName +'.'+ attrs.inputName +'.$error.pattern" translate="'+attrs.patternText+'"></p>' +
+                                '</div>';
+                element.append(template);
 
             }
         };

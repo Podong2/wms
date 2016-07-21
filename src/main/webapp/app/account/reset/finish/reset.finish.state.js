@@ -9,13 +9,13 @@
 
     function stateConfig($stateProvider) {
         $stateProvider.state('finishReset', {
-            parent: 'account',
+            parent: 'app',
             url: '/reset/finish?key',
             data: {
                 authorities: []
             },
             views: {
-                'content@': {
+                'content@app': {
                     templateUrl: 'app/account/reset/finish/reset.finish.html',
                     controller: 'ResetFinishController',
                     controllerAs: 'vm'

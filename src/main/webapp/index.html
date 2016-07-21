@@ -1,5 +1,5 @@
 <!doctype html>
-<html class="no-js">
+<html class="no-js" >
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,7 +12,7 @@
     <!-- bower:css -->
     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="bower_components/components-font-awesome/css/font-awesome.css">
-    <link rel="stylesheet" href="bower_components/react-bootstrap-table/css/react-bootstrap-table.css">
+    <!--<link rel="stylesheet" href="bower_components/react-bootstrap-table/css/react-bootstrap-table.css">--><!-- css 충돌로 인한 주석 처리 -->
     <link rel="stylesheet" href="bower_components/bootstrap-fileinput/css/fileinput.min.css">
     <link rel="stylesheet" href="bower_components/nvd3/build/nv.d3.css">
     <link rel="stylesheet" href="bower_components/summernote/dist/summernote.css">
@@ -32,101 +32,93 @@
     <!-- endinject -->
     <!-- endbuild -->
     <!-- build:css content/css/main.css -->
+    <link rel="stylesheet" href="content/css/custom-css/bootstrap.min.css"><!-- 스마트 어드민의 부트스트랩이 bower의 부트스트랩보다 후에 로딩되고 main css보다 전에 로딩되어야한다. -->
     <link rel="stylesheet" href="content/css/main.css">
+    <link rel="stylesheet" href="content/css/wms-production.min.css">
+    <link rel="stylesheet" href="content/css/wms-skins.min.css">
+    <link rel="stylesheet" href="content/css/wms-animate.css">
+    <link rel="stylesheet" href="content/css/wms-production-plugins.min.css">
     <link rel="stylesheet" href="app/components/ngGallery/src/css/ngGallery.css">
     <link rel="stylesheet" href="app/components/wms-tree-directive/angular-tree-dnd/ng-tree-dnd.min.css">
     <link rel="stylesheet" href="app/components/wms-table-directive/cell-cursor/cellCursor.css">
     <!-- endbuild -->
 </head>
-<body ng-app="wmsApp" ng-strict-di dynamic-view-scroll ng-controller="MainController as vm">
+<body ng-app="wmsApp" ng-strict-di dynamic-view-scroll ng-controller="MainController as vm" class="wms-style-0 desktop-detected"
+      data-wms-Device-Detect
+      data-wms-Fast-Click
+      data-wms-Page-Title="WMS AngularJS">
 <!--[if lt IE 9]>
-<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+<!--<p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>-->
 <![endif]-->
 <!--<page-ribbon></page-ribbon>-->
 
-<div ui-view="navbar" ng-cloak></div>
-<!-- Brand and toggle get grouped for better mobile display -->
-<div class="side-nav-btn">
-    <div>
-        <!--<div class="navbar-header fixed-brand" style="z-index: 1000;">-->
-        <!--<button type="button" class="navbar-toggle collapsed" data-toggle="collapse"  id="menu-toggle" style="margin-bottom: 0" menu-toggle-close>-->
-        <!--<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>-->
-        <!--</button>-->
-        <!--</div>&lt;!&ndash; navbar-header&ndash;&gt;-->
-    </div>
-</div>
-<div class="content-wrapper">
-    <div class="side-menu sidebar-inverse toggled-2" id="wrapper">
-        <!-- Sidebar -->
-        <div id="sidebar-wrapper">
-            <button class="navbar-toggle collapse in" data-toggle="collapse" id="menu-toggle-2" style="margin-bottom: 0; padding: 5px" menu-toggle>
-                <span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>
-            </button><br/>
-            <div class="side-icon col-xs-2" style="margin-top: 10px;">
-                <div class="users" depth-toggle menuType="users" style="width: 100%; height: 30px;  cursor: pointer">
-                    <i class="fa fa-users fa-stack-1x"></i>
-                </div>
-                <div class="test" depth-toggle menuType="test" style="width: 100%; height: 30px; cursor: pointer">
-                    <i class="fa fa-calendar fa-stack-1x"></i>
-                </div>
-            </div>
-            <div class="side-contents col-xs-10" style="margin-top: 20px">
-                <div class="users">
-                    접속중인 사용자
-                    <table class="table table-bordered">
-                        <thead>
-                        <tr>
-                            <th class="text-center thbrl_no width-200-p">
-                                <span translate="">아이디</span>
-                            </th>
-                            <th class="text-center width-160-p"><span translate="">이메일</span>
-                            </th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr ng-repeat="user in vm.connectedUsers">
-                            <td class="width-200-p">
-                            <span style="color:#428bca; cursor:pointer; white-space: normal;"
-                                  class="btn btn-blue btn-sm">{{user.login}}}</span>
-                            </td>
-                            <td class="width-160-p">{{user.email}}</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div class="test">
-                    테스트 페이지
-                </div>
+<div data-ui-view="root"  data-autoscroll="false"></div>
 
+<div ui-view="layout" ng-cloak></div>
 
-            </div>
+<!--<div ui-view="navbar" ng-cloak></div>-->
+<!--<div class="content-wrapper">-->
 
-        </div><!-- /#sidebar-wrapper -->
-    </div>
-
-    <div class="container-fluid" >
-        <div class="well side-body toggled-3" ui-view="content">
-            <!-- Angular views -->
-        </div>
-        <!--            <div class="footer" ng-cloak>
-                        <p translate="footer">This is your footer</p>
-                    </div>-->
-    </div>
-
-    <!--<div class="side-menu sidebar-inverse " id="right-wrapper">-->
+    <!--<div class="side-menu sidebar-inverse toggled-2" id="wrapper">-->
         <!--&lt;!&ndash; Sidebar &ndash;&gt;-->
-        <!--<div id="right-sidebar-wrapper">-->
-            <!--<ul class="sidebar-nav nav-pills nav-stacked" id="right-menu">-->
-                <!--<li>-->
-                    <!--<a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-wrench fa-stack-1x "></i></span><span class="menu-name">Services</span></a>-->
-                <!--</li>-->
-                <!--<li>-->
-                    <!--<a href="#"><span class="fa-stack fa-lg pull-left"><i class="fa fa-server fa-stack-1x "></i></span><span class="menu-name">Contact</span></a>-->
-                <!--</li>-->
-            <!--</ul>-->
+        <!--<div id="sidebar-wrapper">-->
+            <!--<button class="navbar-toggle collapse in" data-toggle="collapse" id="menu-toggle-2" style="margin-bottom: 0; padding: 5px" menu-toggle>-->
+                <!--<span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>-->
+            <!--</button><br/>-->
+            <!--<div class="side-icon col-xs-2" style="margin-top: 10px;">-->
+                <!--<div class="users" depth-toggle menuType="users" style="width: 100%; height: 30px;  cursor: pointer">-->
+                    <!--<i class="fa fa-users fa-stack-1x"></i>-->
+                <!--</div>-->
+                <!--<div class="test" depth-toggle menuType="test" style="width: 100%; height: 30px; cursor: pointer">-->
+                    <!--<i class="fa fa-calendar fa-stack-1x"></i>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="side-contents col-xs-10" style="margin-top: 20px">-->
+                <!--<div class="users">-->
+                    <!--접속중인 사용자-->
+                    <!--<table class="table table-bordered">-->
+                        <!--<thead>-->
+                        <!--<tr>-->
+                            <!--<th class="text-center thbrl_no width-200-p">-->
+                                <!--<span translate="">아이디</span>-->
+                            <!--</th>-->
+                            <!--<th class="text-center width-160-p"><span translate="">이메일</span>-->
+                            <!--</th>-->
+                        <!--</tr>-->
+                        <!--</thead>-->
+                        <!--<tbody>-->
+                        <!--<tr ng-repeat="user in vm.connectedUsers">-->
+                            <!--<td class="width-200-p">-->
+                            <!--<span style="color:#428bca; cursor:pointer; white-space: normal;"-->
+                                  <!--class="btn btn-blue btn-sm">{{user.login}}}</span>-->
+                            <!--</td>-->
+                            <!--<td class="width-160-p">{{user.email}}</td>-->
+                        <!--</tr>-->
+                        <!--</tbody>-->
+                    <!--</table>-->
+                <!--</div>-->
+                <!--<div class="test">-->
+                    <!--테스트 페이지-->
+                <!--</div>-->
+
+
+            <!--</div>-->
+
         <!--</div>&lt;!&ndash; /#sidebar-wrapper &ndash;&gt;-->
     <!--</div>-->
-</div>
+
+    <!--<div class="container-fluid" >-->
+        <!--<div class="well side-body toggled-3" ui-view="content">-->
+            <!--&lt;!&ndash; Angular views &ndash;&gt;-->
+        <!--</div>-->
+        <!--&lt;!&ndash;            <div class="footer" ng-cloak>-->
+                        <!--<p translate="footer">This is your footer</p>-->
+                    <!--</div>&ndash;&gt;-->
+    <!--</div>-->
+    <!--&lt;!&ndash; Angular views &ndash;&gt;-->
+<!--</div>-->
+
+<!-- Brand and toggle get grouped for better mobile display -->
 <!-- Google Analytics: uncomment and change UA-XXXXX-X to be your site's ID.
 <script>
     (function(b,o,i,l,e,r){b.GoogleAnalyticsObject=l;b[l]||(b[l]=
@@ -485,6 +477,32 @@
 <script src="app/components/wms-angular-summernote/custom-components/summernote.js"></script>
 <script src="app/components/wms-angular-summernote/custom-components/summernote-ko-KR.js"></script>
 <script src="app/components/wms-angular-summernote/plugin/template/summernote-ext-template.js"></script>
+<script src="app/components/common/layout/actions/fullScreen.js"></script>
+<script src="app/components/common/layout/actions/minifyMenu.js"></script>
+<script src="app/components/common/layout/actions/reloadState.js"></script>
+<script src="app/components/common/layout/actions/resetWidgets.js"></script>
+<script src="app/components/common/layout/actions/searchMobile.js"></script>
+<script src="app/components/common/layout/actions/toggleMenu.js"></script>
+<script src="app/components/common/layout/directives/wmsPageTitle.js"></script>
+<script src="app/components/common/layout/directives/wmsRouterAnimationWrap.js"></script>
+<script src="app/components/common/layout/directives/wmsSpeech.js"></script>
+<script src="app/components/common/layout/directives/stateBreadcrumbs.js"></script>
+<script src="app/components/common/layout/directives/wmsDeviceDetect.js"></script>
+<script src="app/components/common/layout/directives/hrefVoid.js"></script>
+<script src="app/components/common/layout/directives/wmsFastClick.js"></script>
+<script src="app/components/common/layout/directives/wmsInclude.js"></script>
+<script src="app/components/common/layout/service/wmsCss.js"></script>
+<script src="app/components/common/layout/directives/wmsLayout.js"></script>
+<script src="app/components/common/layout/directives/navigation/wmsMenu.js"></script>
+<script src="app/components/common/layout/directives/navigation/wmsMenuItems.js"></script>
+<script src="app/components/common/layout/activities/activities-controller.js"></script>
+<script src="app/components/common/layout/activities/activities-dropdown-toggle-directive.js"></script>
+<script src="app/components/common/layout/activities/activities-service.js"></script>
+<script src="app/layout/language/languageSelector.js"></script>
+<script src="app/layout/language/language-controller.js"></script>
+<script src="app/layout/language/Language.js"></script>
+<script src="app/components/common/layout/demo/demoStates.js"></script>
+<script src="app/auth/login.js"></script>
 
 <!-- endinject -->
 <!-- endbuild -->

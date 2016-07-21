@@ -17,8 +17,7 @@ angular.module('wmsApp')
             restrict: 'A',
             link: function(scope, element) {
                 element.on('click', function() {
-                    var leftPos = $(".IssueGallery").scrollLeft();
-                    $(".IssueGallery").animate({scrollLeft: leftPos + 200}, "slow");
+                    $(".IssueGallery").animate({left: '+=600px'});
                 });
             }
         }
@@ -28,8 +27,7 @@ angular.module('wmsApp')
             restrict: 'A',
             link: function(scope, element) {
                 element.on('click', function() {
-                    var leftPos = $(".IssueGallery").scrollLeft();
-                    $(".IssueGallery").animate({scrollLeft: leftPos - 200}, "slow");
+                    $(".IssueGallery").animate({left: '-=600px'});
                 });
             }
         }
@@ -39,8 +37,7 @@ angular.module('wmsApp')
             restrict: 'A',
             link: function(scope, element) {
                 element.on('click', function() {
-                    var leftPos = $(".slideMenu").scrollLeft();
-                    $(".slideMenu").animate({scrollLeft: leftPos + 200}, "slow");
+                    $(".slideMenu").animate({left: '+=600px'});
                 });
             }
         }
@@ -50,8 +47,7 @@ angular.module('wmsApp')
             restrict: 'A',
             link: function(scope, element) {
                 element.on('click', function() {
-                    var leftPos = $(".slideMenu").scrollLeft();
-                    $(".slideMenu").animate({scrollLeft: leftPos - 200}, "slow");
+                    $(".slideMenu").animate({left: '-=600px'});
                 });
             }
         }

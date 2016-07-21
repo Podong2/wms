@@ -1,0 +1,62 @@
+<!-- HEADER -->
+<div data-wms-Include="app/layout/partials/header.tpl.html" class="placeholder-header"></div>
+<!-- END HEADER -->
+
+
+
+<!-- Left panel : Navigation area -->
+<!-- Note: This width of the aside area can be adjusted through LESS variables -->
+<div data-wms-Include="app/layout/partials/navigation.tpl.html" class="placeholder-left-panel"></div>
+
+<!-- END NAVIGATION -->
+
+
+<!--<div class="container-fluid" >-->
+    <!--<div class="well side-body toggled-3" ui-view="content">-->
+        <!--&lt;!&ndash; Angular views &ndash;&gt;-->
+    <!--</div>-->
+    <!--&lt;!&ndash;            <div class="footer" ng-cloak>-->
+                    <!--<p translate="footer">This is your footer</p>-->
+                <!--</div>&ndash;&gt;-->
+<!--</div>-->
+
+
+<!-- MAIN PANEL -->
+<div id="main" role="main">
+    <!--<demo-states></demo-states>-->
+
+    <!-- RIBBON -->
+    <div id="ribbon">
+
+				<!--<span class="ribbon-button-alignment">-->
+					<!--<span id="refresh" class="btn btn-ribbon" reset-widgets-->
+                          <!--tooltip-placement="bottom"-->
+                          <!--smart-tooltip-html="<i class='text-warning fa fa-warning'></i> Warning! This will reset all your widget settings.">-->
+						<!--<i class="fa fa-refresh"></i>-->
+					<!--</span>-->
+				<!--</span>-->
+        <!-- breadcrumb -->
+        <span class="fa fa-lg fa-fw fa-flag-o ribbon-icon"></span>
+        <state-breadcrumbs></state-breadcrumbs>
+        <!-- end breadcrumb -->
+
+
+    </div>
+    <!-- END RIBBON -->
+
+
+    <div  data-wrap-for="#content"><!-- data-wms-Router-Animation-Wrap="content content@app" 톱니바퀴 디렉티브 제거 -->
+        <div data-ui-view="content" data-autoscroll="false"></div>
+    </div>
+
+</div>
+<!-- END MAIN PANEL -->
+
+<!-- PAGE FOOTER -->
+<div data-wms-Include="app/layout/partials/footer.tpl.html"></div>
+
+<div data-wms-Include="app/layout/shortcut/shortcut.tpl.html"></div>
+
+<!-- END PAGE FOOTER -->
+
+

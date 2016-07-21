@@ -13,9 +13,9 @@
         .module('wmsApp')
         .controller('UiComponentController', UiComponentController);
 
-    UiComponentController.$inject = ['$scope', 'Principal', 'ModalService', '$state', 'toastr', 'summaryService', 'toastrConfig', 'FIndCode', '$log', 'findUser', '$q', 'tableService', 'moment', '$filter', 'dataService'];
+    UiComponentController.$inject = ['$scope', 'Principal', 'ModalService', '$state', 'toastr', 'summaryService', 'toastrConfig', 'FIndCode', '$log', 'findUser', '$q', 'tableService', 'moment', '$filter', 'dataService', '$sce'];
 
-    function UiComponentController ($scope, Principal, ModalService, $state, toastr, summaryService, toastrConfig, FIndCode, $log, findUser, $q, tableService, moment, $filter, dataService) {
+    function UiComponentController ($scope, Principal, ModalService, $state, toastr, summaryService, toastrConfig, FIndCode, $log, findUser, $q, tableService, moment, $filter, dataService, $sce) {
         var vm = this;
 
         vm.openToast = openToast;
@@ -27,7 +27,13 @@
         vm.showStateArray = showStateArray;
         vm.tabDisplay = tabDisplay;
         vm.submitConfig = submitConfig;
+        vm.renderHtml = renderHtml;
+        vm.autoValueInit = autoValueInit;
 
+        //	설명 html 형식으로 표현
+        function renderHtml (data) {
+            return $sce.trustAsHtml(data);
+        }
 
         $scope.tags = [];
         $scope.loadData = function(name) {
@@ -39,6 +45,12 @@
             }); //user search
             return deferred.promise;
         };
+
+        // auto-complate : 다중사용자 모드 변경시 tags 값 초기화
+        vm.autoType = false;
+        function autoValueInit(){
+            $scope.tags =[];
+        }
 
 
         vm.textValue = "";
@@ -80,7 +92,7 @@
             html: false,
             closeButton: false,
             tapToDismiss: true,
-            progressBar: false,
+            progressBar: true,
             closeHtml: '<button>&times;</button>',
             newestOnTop: true,
             maxOpened: 0,
@@ -118,7 +130,7 @@
         vm.tabArea = [
             { status: false },   // side nav
             { status: false },  // select box
-            { status: false },  // Input box
+            { status: true },  // Input box
             { status: false },  // alerts
             { status: false },  // Toast
             { status: false },  // pagination
@@ -138,7 +150,7 @@
             { status: false },  // calendar
             { status: false },  // gantt
             { status: false },  // kanban
-            { status: true }  // summernote
+            { status: false }  // summernote
         ];
 
 
@@ -483,30 +495,7 @@
             toastr.success('Hello world!', 'Toastr fun!');
             toastr.error('Your credentials are gone', 'Error');
             toastr.warning('Your computer is about to explode!', 'Warning');
-
-
         }
-        // toast 설정 watch function
-        $scope.$watchCollection('vm.options', function(newValue) {
-            //toastrConfig.autoDismiss = newValue.autoDismiss;
-            //toastrConfig.allowHtml = newValue.html;
-            //toastrConfig.extendedTimeOut = parseInt(newValue.extendedTimeout, 10);
-            toastrConfig.positionClass = newValue.position;
-            toastrConfig.timeOut = parseInt(newValue.timeout, 10);
-            //toastrConfig.closeButton = newValue.closeButton;
-            //toastrConfig.tapToDismiss = newValue.tapToDismiss;
-            //toastrConfig.progressBar = newValue.progressBar;
-            //toastrConfig.closeHtml = newValue.closeHtml;
-            //toastrConfig.newestOnTop = newValue.newestOnTop;
-            //toastrConfig.maxOpened = newValue.maxOpened;
-            //toastrConfig.preventDuplicates = newValue.preventDuplicates;
-            //toastrConfig.preventOpenDuplicates = newValue.preventOpenDuplicates;
-            //if (newValue.customTemplate) {
-            //    toastrConfig.templates.toast = 'custom';
-            //} else {
-            //    toastrConfig.templates.toast = 'directives/toast/toast.html';
-            //}
-        });
 
         // select box disabled 처리 function
         function isDisabledDate(currentDate, mode) {
@@ -1116,7 +1105,7 @@
                     values: sin2,
                     key: 'Another sine wave',
                     color: '#7777ff',
-                    area: true      //area - set to true if you want this line to turn into a filled area chart.
+                    area: true      //area - true 세팅 시 0을 중심으로 y축으로 색을 채워준다.
                 }
             ];
         }

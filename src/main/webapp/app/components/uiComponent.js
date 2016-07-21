@@ -20,10 +20,11 @@
             parent: 'app',
             url: '/component', // 표현 url 설정
             data: {
-                authorities: []
+                authorities: [],
+                title : 'Components'
             },
             views: {//
-                'content@': {//
+                'content@app': {//
                     templateUrl: 'app/components/uiComponent.html', // home에 사용될 template html 파일
                     controller: 'UiComponentController', // home에 사용될 controller 명
                     controllerAs: 'vm' // 별칭을 vm으로 설정
@@ -32,6 +33,8 @@
             resolve: {//
                 mainTranslatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate,$translatePartialLoader) {
                     $translatePartialLoader.addPart('home'); // home.json의 다국어 파일을 주입
+                    $translatePartialLoader.addPart('login'); // home.json의 다국어 파일을 주입
+                    $translatePartialLoader.addPart('register'); // home.json의 다국어 파일을 주입
                     return $translate.refresh();
                 }]
             }

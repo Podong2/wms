@@ -9,14 +9,15 @@
 
     function stateConfig($stateProvider) {
         $stateProvider.state('jhi-health', {
-            parent: 'admin',
+            parent: 'app',
             url: '/health',
             data: {
                 authorities: ['ROLE_ADMIN'],
-                pageTitle: 'health.title'
+                pageTitle: 'health.title',
+                title : 'Jhi Health'
             },
             views: {
-                'content@': {
+                'content@app': {
                     templateUrl: 'app/admin/health/health.html',
                     controller: 'JhiHealthCheckController',
                     controllerAs: 'vm'

@@ -10,14 +10,15 @@
     function stateConfig($stateProvider) {
         $stateProvider
         .state('permission', {
-            parent: 'entity',
+            parent: 'app',
             url: '/permission?page&sort&search',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'wmsApp.permission.home.title'
+                pageTitle: 'wmsApp.permission.home.title',
+                title : 'Entities / Permission'
             },
             views: {
-                'content@': {
+                'content@app': {
                     templateUrl: 'app/entities/permission/permissions.html',
                     controller: 'PermissionController',
                     controllerAs: 'vm'
@@ -52,14 +53,15 @@
             }
         })
         .state('permission-detail', {
-            parent: 'entity',
+            parent: 'app',
             url: '/permission/{id}',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'wmsApp.permission.detail.title'
+                pageTitle: 'wmsApp.permission.detail.title',
+                title : 'Detail'
             },
             views: {
-                'content@': {
+                'content@app': {
                     templateUrl: 'app/entities/permission/permission-detail.html',
                     controller: 'PermissionDetailController',
                     controllerAs: 'vm'

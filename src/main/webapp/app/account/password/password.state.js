@@ -9,14 +9,14 @@
 
     function stateConfig($stateProvider) {
         $stateProvider.state('password', {
-            parent: 'account',
+            parent: 'app',
             url: '/password',
             data: {
                 authorities: ['ROLE_USER'],
                 pageTitle: 'global.menu.account.password'
             },
             views: {
-                'content@': {
+                'content@app': {
                     templateUrl: 'app/account/password/password.html',
                     controller: 'PasswordController',
                     controllerAs: 'vm'

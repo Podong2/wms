@@ -70,10 +70,10 @@
         .config(config)
         .run(run);
 
-    config.$inject = ['nyaBsConfigProvider', 'dashboardProvider', '$compileProvider'];
+    config.$inject = ['nyaBsConfigProvider', 'dashboardProvider', '$compileProvider', 'toastrConfig'];
     run.$inject = ['stateHandler', 'translationHandler', 'editableOptions'];
 
-    function config(nyaBsConfigProvider, dashboardProvider, $compileProvider) {
+    function config(nyaBsConfigProvider, dashboardProvider, $compileProvider, toastrConfig) {
         $compileProvider.debugInfoEnabled(false); // Remove debug info (angularJS >= 1.3)
 
         nyaBsConfigProvider.setLocalizedText('ko', {
@@ -110,6 +110,32 @@
                     }]
                 }]
             });
+
+        angular.extend(toastrConfig, {
+            allowHtml: false,
+            closeButton: false,
+            closeHtml: '<button>&times;</button>',
+            extendedTimeOut: 1000,
+            iconClasses: {
+                error: 'toast-error',
+                info: 'toast-info',
+                success: 'toast-success',
+                warning: 'toast-warning'
+            },
+            messageClass: 'toast-message',
+            onHidden: null,
+            onShown: null,
+            onTap: null,
+            progressBar: true,
+            tapToDismiss: true,
+            templates: {
+                toast: 'directives/toast/toast.html',
+                progressbar: 'directives/progressbar/progressbar.html'
+            },
+            timeOut: 3000,
+            titleClass: 'toast-title',
+            toastClass: 'toast'
+        });
     }
 
     function run(stateHandler, translationHandler, editableOptions) {

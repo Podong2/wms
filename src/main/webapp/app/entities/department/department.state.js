@@ -9,15 +9,23 @@
 
     function stateConfig($stateProvider) {
         $stateProvider
+        //.state('entities', {
+        //    parent: 'app',
+        //    abstract: true,
+        //    data: {
+        //        title: 'Entities'
+        //    }
+        //})
         .state('department', {
-            parent: 'entity',
+            parent: 'app',
             url: '/department?page&sort&search',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'wmsApp.department.home.title'
+                pageTitle: 'wmsApp.department.home.title',
+                title : 'Entities / Department'
             },
             views: {
-                'content@': {
+                'content@app': {
                     templateUrl: 'app/entities/department/departments.html',
                     controller: 'DepartmentController',
                     controllerAs: 'vm'
@@ -52,14 +60,15 @@
             }
         })
         .state('department-detail', {
-            parent: 'entity',
+            parent: 'app',
             url: '/department/{id}',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'wmsApp.department.detail.title'
+                pageTitle: 'wmsApp.department.detail.title',
+                title : 'Detail'
             },
             views: {
-                'content@': {
+                'content@app': {
                     templateUrl: 'app/entities/department/department-detail.html',
                     controller: 'DepartmentDetailController',
                     controllerAs: 'vm'

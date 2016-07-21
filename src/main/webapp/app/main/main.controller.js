@@ -23,6 +23,8 @@
             }
         }
 
+        $scope.fixedPageFooter = false;
+
         connectedUserList();
     }
 })();

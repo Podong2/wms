@@ -1,0 +1,123 @@
+<div id="extr-page">
+    <header id="header"  class="animated fadeInDown" >
+
+        <div id="logo-group">
+            <span id="logo"> <img src="content/images/logo.png" alt="WMS"> </span>
+        </div>
+
+    <span id="extr-page-header-space"> <span class="hidden-mobile hiddex-xs">Need an account?</span> <a
+        ui-sref="register" class="btn btn-danger">Create account</a> </span>
+
+    </header>
+
+    <div id="main" role="main"  class="animated fadeInDown" >
+
+        <div id="content" class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-7 col-lg-8 hidden-xs hidden-sm">
+                    <h1 class="txt-color-red login-header-big">WMS</h1>
+
+                    <div class="hero">
+                        <div class="pull-left login-desc-box-l">
+                            <h4 class="paragraph-header">It's Okay to be Smart. Experience the simplicity of WMS,
+                                everywhere you go!</h4>
+
+                            <div class="login-app-icons">
+                                <a ui-sref="app.dashboard" class="btn btn-danger btn-sm">Frontend Template</a>
+                                <a href-void class="btn btn-danger btn-sm">Find out more</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <h5 class="about-heading">About WMS - Are you up to date?</h5>
+
+                            <p>
+                                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque
+                                laudantium, totam rem aperiam, eaque ipsa.
+                            </p>
+                        </div>
+                        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+                            <h5 class="about-heading">Not just your average template!</h5>
+
+                            <p>
+                                Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta
+                                nobis est eligendi voluptatem accusantium!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-5 col-lg-4">
+                    <div class="well no-padding">
+                        <form class="form wms-form" name="loginForm" role="form" ng-submit="vm.login($event)" novalidate show-validation>
+                            <header>
+                                Sign In
+                            </header>
+                            <fieldset>
+                                <section class="form-group">
+                                    <input-box
+                                        input-type="text"
+                                        form-name="loginForm"
+                                        input-name="username"
+                                        minlength="3"
+                                        maxlength="12"
+                                        pattern="/^[a-zA-Z][a-zA-Z0-9]{0,20}$/"
+                                        ng-model="vm.username"
+                                        required-text="register.messages.validate.login.required"
+                                        min-text="register.messages.validate.login.minlength"
+                                        max-text="register.messages.validate.login.maxlength"
+                                        pattern-text="register.messages.validate.login.pattern"
+                                        placeholder-text="global.form.username.placeholder"
+                                        tooltip="아이디를 입력하세요."
+                                        tooltip-icon="fa-user"
+                                    ></input-box>
+                                </section>
+                                <section class="form-group">
+                                    <input-box
+                                        input-type="password"
+                                        form-name="loginForm"
+                                        input-name="password"
+                                        minlength="4"
+                                        maxlength="50"
+                                        ng-model="vm.password"
+                                        required-text="global.messages.validate.newpassword.required"
+                                        min-text="global.messages.validate.newpassword.minlength"
+                                        max-text="global.messages.validate.newpassword.maxlength"
+                                        placeholder-text="login.form.password.placeholder"
+                                        tooltip="비밀번호를 입력하세요."
+                                        tooltip-icon="fa-lock"
+                                    ></input-box>
+                                    <div class="note">
+                                        <a ui-sref="forgotPassword">Forgot password?</a>
+                                    </div>
+                                </section>
+                                <section>
+                                    <label for="rememberMe">
+                                        <input type="checkbox" id="rememberMe" ng-model="vm.rememberMe" checked>
+                                        <span translate="login.form.rememberme">Remember me</span>
+                                    </label>
+                                </section>
+                            </fieldset>
+                            <footer>
+                                <button type="submit" class="btn btn-primary" translate="login.form.button">Sign in</button>
+                            </footer>
+                        </form>
+                    </div>
+                    <h5 class="text-center"> - Or sign in using -</h5>
+                    <ul class="list-inline text-center">
+                        <li>
+                            <a href-void class="btn btn-primary btn-circle"><i class="fa fa-facebook"></i></a>
+                        </li>
+                        <li>
+                            <a href-void class="btn btn-info btn-circle"><i class="fa fa-twitter"></i></a>
+                        </li>
+                        <li>
+                            <a href-void class="btn btn-warning btn-circle"><i class="fa fa-linkedin"></i></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

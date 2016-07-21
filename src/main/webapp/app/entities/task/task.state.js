@@ -10,14 +10,15 @@
     function stateConfig($stateProvider) {
         $stateProvider
         .state('task', {
-            parent: 'entity',
+            parent: 'app',
             url: '/task?page&sort&search',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'wmsApp.task.home.title'
+                pageTitle: 'wmsApp.task.home.title',
+                title : 'Entities / Task'
             },
             views: {
-                'content@': {
+                'content@app': {
                     templateUrl: 'app/entities/task/tasks.html',
                     controller: 'TaskController',
                     controllerAs: 'vm'
@@ -52,14 +53,15 @@
             }
         })
         .state('task-detail', {
-            parent: 'entity',
+            parent: 'app',
             url: '/task/{id}',
             data: {
                 authorities: ['ROLE_USER'],
-                pageTitle: 'wmsApp.task.detail.title'
+                pageTitle: 'wmsApp.task.detail.title',
+                title : 'Detail'
             },
             views: {
-                'content@': {
+                'content@app': {
                     templateUrl: 'app/entities/task/task-detail.html',
                     controller: 'TaskDetailController',
                     controllerAs: 'vm'
