@@ -26,6 +26,13 @@
                 $scope.kanbanScope = $scope;
                 $scope.viewType = 'card';
 
+                $scope.removeOrigin = function(parentIndex) {
+
+                    $log.debug(parentIndex);
+
+                    $scope.boardList.splice(parentIndex, 1)
+                };
+
                 $scope.changeListView = function() {
                     if($scope.viewType == 'card')
                         $scope.viewType = 'list';
@@ -45,6 +52,10 @@
                     $scope.boardList[index].tasks.push(task);
                 };
 
+                $scope.removeKanbanList = function(index) {
+                    $scope.boardList.splice(index, 1);
+                };
+
                 $scope.removeCard = function(list, task) {
 
                     var index = list.tasks.indexOf(task);
@@ -55,6 +66,7 @@
                 $scope.addKanbanList = function(index) {
 
                     var status4 = {
+                        type:"list",
                         label: "상태"+($scope.boardList.length+1),
                         allowedStatus: ['status1','status2','status3'],
                         tasks: [

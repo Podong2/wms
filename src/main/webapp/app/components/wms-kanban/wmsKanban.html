@@ -1,15 +1,31 @@
-<div class="typesDemo row ng-scope">
-    <div ng-repeat="list in boardList track by $index"  class="col-md-4 pad-r0 ng-scope">
+<div dnd-list="boardList"
+     dnd-allowed-types="['list']"
+     class="wmsKanban row ng-scope">
+    <div
+         ng-repeat="list in boardList"
+         dnd-draggable="list"
+         dnd-type="'list'"
+         dnd-effect-allowed="move"
+         dnd-moved="boardList.splice($index, 1)"
+         class="col-md-4 pad-r0 container-element box box-blue ng-scope">
         <div class="col-md-11 pad0">
             <div class="panel panel-info ">
                 <div class="panel-heading">
-                    <h3 class="panel-title ng-binding">{{list.label}}</h3>
+                    <h3 dnd-handle="" draggable="true"  class="panel-title ng-binding">{{list.label}}</h3>
                     <span type="button" class="glyphicon glyphicon-sort-by-alphabet" ng-click="sortKanbanCards(list)"></span>
                     <span type="button" class="glyphicon glyphicon-plus" ng-click="addKanbanCards($index)"></span>
                     <span type="button" class="glyphicon glyphicon-retweet" ng-click="changeListView()"></span>
+                    <span type="button" class="glyphicon glyphicon-remove" ng-click="removeKanbanList($index)"></span>
                 </div>
                 <div class="panel-body ng-scope">
-                    <ul dnd-list="list.tasks" dnd-allowed-types="list.allowedStatus" dnd-disable-if="list.tasks.length >= list.max" class="ng-scope">
+                    <ul
+                        dnd-list="list.tasks"
+                        dnd-allowed-types="['item']"
+                        dnd-horizontal-list="true"
+                        dnd-external-sources="true"
+                        dnd-drop="dropCallback(event, index, item, external, type, 'itemType')"
+                        class="itemlist ng-scope">
+
                         <li ng-show="viewType == 'list'">
                             <div>
                                 <table class="table voffset-b0">
@@ -20,38 +36,32 @@
                                 </table>
                             </div>
                         </li>
-                        <li ng-repeat="task in list.tasks"
+                        <li
+                            ng-repeat="task in list.tasks"
                             dnd-draggable="task"
-                            dnd-type="task.status"
-                            dnd-disable-if="task.status == 'unknown'"
-                            dnd-moved="list.tasks.splice($index, 1)"
+                            dnd-type="'item'"
                             dnd-effect-allowed="move"
-                            draggable="true">
+                            dnd-moved="list.tasks.splice($index, 1);">
 
-                            <dnd-nodrag draggable="true">
-                                <div dnd-handle="" class="handle" draggable="true">:::</div>
-                                <div class="name" ng-show="viewType == 'card'">
-                                    <span>{{task.name}}</span>
-                                    <span class="glyphicon glyphicon-remove" ng-click="removeCard(list, task)"></span>
-                                </div>
-                                <div class="name" ng-show="viewType == 'list'">
-                                    <table class="table voffset-b0">
-                                        <tr>
-                                            <td class="border-none">
-                                                <input type="text" ng-model="task.name" class="form-control input-sm">
-                                            </td>
-                                            <td class="border-none">
-                                                <input type="text" ng-model="task.assignee" class="form-control input-sm">
-                                            </td>
-                                        </tr>
-                                    </table>
-                                </div>
-                            </dnd-nodrag>
-                        </li>
-                        <li class="dndPlaceholder">
-                            이곳에 <strong>{{list.allowedStatus.join(', ')}}</strong> 를 놓아주세요.
+                            <div class="name" ng-show="viewType == 'card'">
+                                <span>{{task.name}}</span>
+                                <span class="glyphicon glyphicon-remove" ng-click="removeCard(list, task)"></span>
+                            </div>
+                            <div class="name" ng-show="viewType == 'list'">
+                                <table class="table voffset-b0">
+                                    <tr>
+                                        <td class="border-none">
+                                            <input type="text" ng-model="task.name" class="form-control input-sm">
+                                        </td>
+                                        <td class="border-none">
+                                            <input type="text" ng-model="task.assignee" class="form-control input-sm">
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
                         </li>
                     </ul>
+                    <div class="clearfix"></div>
                 </div>
             </div>
         </div>
