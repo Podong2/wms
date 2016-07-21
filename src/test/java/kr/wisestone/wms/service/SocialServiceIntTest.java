@@ -5,8 +5,6 @@ import kr.wisestone.wms.domain.Authority;
 import kr.wisestone.wms.domain.User;
 import kr.wisestone.wms.repository.AuthorityRepository;
 import kr.wisestone.wms.repository.UserRepository;
-import kr.wisestone.wms.service.MailService;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -329,6 +327,67 @@ public class SocialServiceIntTest {
         User userToDelete = userRepository.findOneByEmail("mail@mail.com").get();
         userRepository.delete(userToDelete);
     }
+
+//    private static Credential authorize() throws Exception {
+//
+//        JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
+//        java.io.File DATA_STORE_DIR = new java.io.File(
+//            System.getProperty("user.home"), ".credentials/stored-credential.json");
+//
+//        FileDataStoreFactory DATA_STORE_FACTORY = new FileDataStoreFactory(DATA_STORE_DIR);
+//        HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+//
+//        // load client secrets
+//        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY,
+//            new InputStreamReader(SocialServiceIntTest.class.getResourceAsStream("/config/google-api/client_secret.json")));
+//        if (clientSecrets.getDetails().getClientId().startsWith("Enter")
+//            || clientSecrets.getDetails().getClientSecret().startsWith("Enter ")) {
+//            System.out.println(
+//                "Enter Client ID and Secret from https://code.google.com/apis/console/?api=calendar "
+//                    + "into calendar-cmdline-sample/src/main/resources/client_secrets.json");
+//            System.exit(1);
+//        }
+//
+//        // set up authorization code flow
+//        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
+//            httpTransport, JSON_FACTORY, clientSecrets,
+//            Collections.singleton(CalendarScopes.CALENDAR)).setDataStoreFactory(DATA_STORE_FACTORY)
+//            .build();
+//
+//        return new AuthorizationCodeInstalledApp(flow, new WmsLocalServerReceiver(61830)).authorize("user");
+//    }
+//
+//    @Test
+//    public void testGoogleCalendar() throws Exception {
+//
+//        JsonFactory jsonFactory = JacksonFactory.getDefaultInstance();
+//
+//        /** Global instance of the HTTP transport. */
+//        HttpTransport httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+//
+//        // authorization
+//        Credential credential = authorize();
+//
+//        // Initialize Calendar service with valid OAuth credentials
+//        Calendar service = new Calendar.Builder(httpTransport, jsonFactory, credential)
+//            .setApplicationName("applicationName").build();
+//
+//        // Iterate through entries in calendar list
+//
+//        Calendar.Events.List eventsService = service.events().list("ko.south_korea#holiday@group.v.calendar.google.com");
+//
+//        DateTime minTime = new DateTime(DateUtil.convertStrToDate("2016-01-01", "yyyy-MM-dd"), TimeZone.getTimeZone("Asia/Seoul"));
+//        DateTime maxTime = new DateTime(DateUtil.convertStrToDate("2016-12-31", "yyyy-MM-dd"), TimeZone.getTimeZone("Asia/Seoul"));
+//
+//        eventsService.setTimeMax(maxTime);
+//        eventsService.setTimeMin(minTime);
+////        eventsService.setOrderBy("startTime");
+//        Events events = eventsService.execute();
+//
+//        for(Event event : events.getItems()) {
+//            System.out.println(event.getSummary() + " : " + event.getStart().getDate());
+//        }
+//    }
 
     private Connection<?> createConnection(String login,
                                            String email,

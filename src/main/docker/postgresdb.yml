@@ -1,0 +1,13 @@
+version: '2'
+services:
+    wms-postgresql:
+        container_name: wms-postgresql
+        image: postgres:9.6
+        # volumes:
+        #     - ~/volumes/jhipster/wms/mysql/:/var/lib/mysql/
+        environment:
+            - POSTGRES_USER=wms
+            - POSTGRES_PASSWORD=wisestone
+            - POSTGRES_DB=wms
+        ports:
+            - 5432:5432
