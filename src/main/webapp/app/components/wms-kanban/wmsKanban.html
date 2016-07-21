@@ -1,15 +1,16 @@
-<div dnd-list="boardList"
-     dnd-allowed-types="['list']"
-     class="wmsKanban row ng-scope">
-    <div
-         ng-repeat="list in boardList"
-         dnd-draggable="list"
-         dnd-type="'list'"
-         dnd-effect-allowed="move"
-         dnd-moved="boardList.splice($index, 1)"
-         class="col-md-4 pad-r0 container-element box box-blue ng-scope">
-        <div class="col-md-11 pad0">
-            <div class="panel panel-info ">
+<div class="wmsKanban">
+    <ul dnd-list="boardList"
+        dnd-allowed-types="['list']"
+        class="ng-scope">
+        <li
+            ng-repeat="list in boardList"
+            dnd-draggable="list"
+            dnd-type="'list'"
+            dnd-effect-allowed="copyMove"
+            dnd-moved="boardList.splice($index, 1)"
+            class=" container-element box box-blue ng-scope"
+            ng-style="{ 'width' : (100/boardList.length)+'%'}">
+            <div class="wmsKanbanItem pad0 panel panel-info " style="width:95%;float:left; display:inline">
                 <div class="panel-heading">
                     <h3 dnd-handle="" draggable="true"  class="panel-title ng-binding">{{list.label}}</h3>
                     <span type="button" class="glyphicon glyphicon-sort-by-alphabet" ng-click="sortKanbanCards(list)"></span>
@@ -17,30 +18,19 @@
                     <span type="button" class="glyphicon glyphicon-retweet" ng-click="changeListView()"></span>
                     <span type="button" class="glyphicon glyphicon-remove" ng-click="removeKanbanList($index)"></span>
                 </div>
-                <div class="panel-body ng-scope">
+                <div class="drop-zone panel-body ng-scope">
                     <ul
                         dnd-list="list.tasks"
                         dnd-allowed-types="['item']"
                         dnd-horizontal-list="true"
                         dnd-external-sources="true"
-                        dnd-drop="dropCallback(event, index, item, external, type, 'itemType')"
                         class="itemlist ng-scope">
 
-                        <li ng-show="viewType == 'list'">
-                            <div>
-                                <table class="table voffset-b0">
-                                    <tr>
-                                        <th>태스크</th>
-                                        <th>담당자</th>
-                                    </tr>
-                                </table>
-                            </div>
-                        </li>
                         <li
                             ng-repeat="task in list.tasks"
                             dnd-draggable="task"
                             dnd-type="'item'"
-                            dnd-effect-allowed="move"
+                            dnd-effect-allowed="copyMove"
                             dnd-moved="list.tasks.splice($index, 1);">
 
                             <div class="name" ng-show="viewType == 'card'">
@@ -60,13 +50,14 @@
                                 </table>
                             </div>
                         </li>
+                        <li class="dndPlaceholder">
+                        </li>
                     </ul>
-                    <div class="clearfix"></div>
                 </div>
             </div>
-        </div>
-        <div class="col-md-1 vertical-middle text-right">
-            <span type="button" class="glyphicon glyphicon-plus" ng-show="boardList.length != ($index+1)" ng-click="addKanbanList($index)"></span>
-        </div>
-    </div>
+            <div class="vertical-middle text-right"  style="width:5%;float:left; display:inline">
+                <span type="button" class="glyphicon glyphicon-plus" ng-show="boardList.length != ($index+1)" ng-click="addKanbanList($index)"></span>
+            </div>
+        </li>
+    </ul>
 </div>

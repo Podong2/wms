@@ -130,7 +130,7 @@
         vm.tabArea = [
             { status: false },   // side nav
             { status: false },  // select box
-            { status: true },  // Input box
+            { status: false },  // Input box
             { status: false },  // alerts
             { status: false },  // Toast
             { status: false },  // pagination
@@ -149,7 +149,7 @@
             { status: false },  // chart
             { status: false },  // calendar
             { status: false },  // gantt
-            { status: false },  // kanban
+            { status: true },  // kanban
             { status: false }  // summernote
         ];
 

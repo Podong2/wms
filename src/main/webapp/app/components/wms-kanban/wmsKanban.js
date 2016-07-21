@@ -27,9 +27,6 @@
                 $scope.viewType = 'card';
 
                 $scope.removeOrigin = function(parentIndex) {
-
-                    $log.debug(parentIndex);
-
                     $scope.boardList.splice(parentIndex, 1)
                 };
 
@@ -45,7 +42,6 @@
                 };
 
                 $scope.addKanbanCards = function(index, task) {
-
                     if(task == null)
                         task = {name:"태스크 임시", assignee: "담당자1",  status:"status1"};
 
