@@ -1158,7 +1158,6 @@
                         scope.$on(
                             '$destroy', function () {
 
-                                console.log('##################');
                             }
                         );
                     };
@@ -1998,7 +1997,6 @@
                     scope.$on(
                         '$destroy', function () {
 
-                            console.log('++++++++++++');
                             angular.element($window.document.body).unbind("keydown", keydownHandler);
                             angular.element($window.document.body).unbind("keyup", keyupHandler);
                             if (scope.statusElm) {
@@ -2085,7 +2083,6 @@
                         );
                     },
                     reload_data:                       function () {
-                        console.log("reload1");
                         return scope.reload_data();
                     },
                     add_node:                          function (parent, new_node, index) {
@@ -2819,12 +2816,12 @@ angular.module('template/TreeDnD/TreeDnD.html', []).run(
 
         $templateCache.put(
             'template/TreeDnD/TreeDnDStatusCopy.html',
-            "<label><i class=\"fa fa-copy\"></i>&nbsp;<b>Copying</b></label>"
+            "<label><i class=\"fa fa-copy\"></i>&nbsp;<b>복사</b></label>"
         );
 
         $templateCache.put(
             'template/TreeDnD/TreeDnDStatusMove.html',
-            '<label><i class="fa fa-file-text"></i>&nbsp;<b>Moving</b></label>'
+            '<label><i class="fa fa-file-text"></i>&nbsp;<b>이동</b></label>'
         );
     }]
 );
