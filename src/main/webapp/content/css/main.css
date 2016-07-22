@@ -1537,6 +1537,16 @@ i:active, .i:active, i:focus, .i:focus{
  * For the correct positioning of the placeholder element, the dnd-list and
  * it's children must have position: relative
  */
+.wmsKanbanItem {
+    width:95%;
+    float:left;
+    display:inline;
+}
+.wmsKanbanItemAdd {
+    width:5%;
+    float:left;
+    display:inline
+}
 .wmsKanbanItem .drop-zone ul[dnd-list],
 .wmsKanbanItem .drop-zone ul[dnd-list] > li {
     position: relative;
@@ -1606,12 +1616,7 @@ i:active, .i:active, i:focus, .i:focus{
     font-weight: 700;
     height: 50px;
     margin: 5px;
-    padding: 3px;
-}
-
-.wmsKanbanItem .drop-zone .container-element {
-    float:left;
-    display:inline;
+    padding: 5px;
 }
 
 .vertical-middle {

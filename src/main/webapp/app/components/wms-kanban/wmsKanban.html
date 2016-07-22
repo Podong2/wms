@@ -10,12 +10,12 @@
             dnd-moved="boardList.splice($index, 1)"
             class=" container-element box box-blue ng-scope"
             ng-style="{ 'width' : (100/boardList.length)+'%'}">
-            <div class="wmsKanbanItem pad0 panel panel-info " style="width:95%;float:left; display:inline">
+            <div class="wmsKanbanItem pad0 panel panel-info">
                 <div class="panel-heading">
-                    <h3 dnd-handle="" draggable="true"  class="panel-title ng-binding">{{list.label}}</h3>
+                    <h3 dnd-handle="" draggable="true"  class="panel-title ng-binding"><a href="#" editable-text="list.label" buttons="no">{{ list.label || "empty" }}</a></h3>
                     <span type="button" class="glyphicon glyphicon-sort-by-alphabet" ng-click="sortKanbanCards(list)"></span>
                     <span type="button" class="glyphicon glyphicon-plus" ng-click="addKanbanCards($index)"></span>
-                    <span type="button" class="glyphicon glyphicon-retweet" ng-click="changeListView()"></span>
+                    <!--<span type="button" class="glyphicon glyphicon-retweet" ng-click="changeListView()"></span>-->
                     <span type="button" class="glyphicon glyphicon-remove" ng-click="removeKanbanList($index)"></span>
                 </div>
                 <div class="drop-zone panel-body ng-scope">
@@ -24,38 +24,22 @@
                         dnd-allowed-types="['item']"
                         dnd-horizontal-list="true"
                         dnd-external-sources="true"
-                        class="itemlist ng-scope">
-
+                        class="itemlist ng-scope"
+                        ng-if="viewType == 'card'">
                         <li
                             ng-repeat="task in list.tasks"
                             dnd-draggable="task"
                             dnd-type="'item'"
                             dnd-effect-allowed="copyMove"
                             dnd-moved="list.tasks.splice($index, 1);">
-
-                            <div class="name" ng-show="viewType == 'card'">
-                                <span>{{task.name}}</span>
-                                <span class="glyphicon glyphicon-remove" ng-click="removeCard(list, task)"></span>
-                            </div>
-                            <div class="name" ng-show="viewType == 'list'">
-                                <table class="table voffset-b0">
-                                    <tr>
-                                        <td class="border-none">
-                                            <input type="text" ng-model="task.name" class="form-control input-sm">
-                                        </td>
-                                        <td class="border-none">
-                                            <input type="text" ng-model="task.assignee" class="form-control input-sm">
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
+                            <span><a href="#" editable-text="task.name" buttons="no">{{ task.name || "empty" }}</a></span>
+                            <span class="glyphicon glyphicon-remove pull-right" ng-click="removeCard(list, task)"></span>
                         </li>
-                        <li class="dndPlaceholder">
-                        </li>
+                        <li class="dndPlaceholder"></li>
                     </ul>
                 </div>
             </div>
-            <div class="vertical-middle text-right"  style="width:5%;float:left; display:inline">
+            <div class="vertical-middle text-center wmsKanbanItemAdd">
                 <span type="button" class="glyphicon glyphicon-plus" ng-show="boardList.length != ($index+1)" ng-click="addKanbanList($index)"></span>
             </div>
         </li>
