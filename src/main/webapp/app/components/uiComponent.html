@@ -138,6 +138,7 @@
 
                 ------------------------------------------------------------------------<br/>
                 <form class="form wms-form" name="editForm" role="editForm" novalidate show-validation>
+                    <div class="form-group">
                         <input-box
                             input-type="text".
                             form-name="editForm"
@@ -154,6 +155,7 @@
                             tooltip="이름을 입력하세요."
                             tooltip-icon="fa-user"
                         ></input-box>
+                    </div>
                 </form>
                         {{vm.textValue}}
                 ------------------------------------------------------------------------<br/>
@@ -259,11 +261,11 @@
                     <li>동그라미, 사각형 등 모양 변경</li>
                 </ul>
                 <div class="table_B text-center">
-                    <!--<uib-pagination boundary-links="true" items-per-page="1" total-items="500" ng-model="2" max-size="5" ng-click="getList(selectedPage-1)" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>-->
+                    <uib-pagination boundary-links="true" items-per-page="1" total-items="500" ng-model="2" max-size="5" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
                 </div>
                 <xmp>
                     <div class="table_B text-center">
-                        <uib-pagination boundary-links="true" items-per-page="1" total-items="500" ng-model="2" max-size="5" ng-click="getList(selectedPage-1)" class="pagination-sm"
+                        <uib-pagination boundary-links="true" items-per-page="1" total-items="500" ng-model="2" max-size="5" class="pagination-sm"
                                         previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
                     </div>
                 </xmp>
@@ -276,10 +278,23 @@
                     <li>버튼 혹은 특정요소를 마우스 오버 시 툴팁이 노출된다.</li>
                     <li>마우스가 요소 영역에서 벗어날 시 툴팁이 사라진다.</li>
                     <li>표현되는 text는 개행되지 않아야한다.</li>
+                    <li>표현되는 text는 개행되지 않아야한다.</li>
                 </ul>
-                <a href="#" uib-tooltip="Hooray123123123123123123!">Hover over me</a>
+                <h5><b>position option</b></h5>
+                <ul>
+                    <li>top : 상단 정중앙</li>
+                    <li>top-left : 상단 왼쪽 가장자리에 모서리 생성</li>
+                    <li>top-right : 상단 오른쪽 가장자리에 모서리 생성</li>
+                    <li>top 이외에 bottom, right, left 가 있다.</li>
+                </ul>
+                <a href="#" uib-tooltip="Hooray123123123123123123!">Hover over me</a><br/>
+                <a href="#" tooltip-placement="top-left" uib-tooltip="Hooray123123123123123123!">Hover over me</a><br/>
+                <a href="#" tooltip-placement="top-right" uib-tooltip="Hooray123123123123123123!">Hover over me</a>
+
                 <xmp>
                     <a href="#" uib-tooltip="Hooray123123123123123123!">Hover over me</a>
+                    <a href="#" tooltip-placement="top-left" uib-tooltip="Hooray123123123123123123!">Hover over me</a><br/>
+                    <a href="#" tooltip-placement="top-right" uib-tooltip="Hooray123123123123123123!">Hover over me</a>
                 </xmp>
             </div>
 

@@ -1,6 +1,6 @@
 /*!
- * SmartAdmin v1.8.1 
- * Copyright 2011-2016 
+ * SmartAdmin v1.8.1
+ * Copyright 2011-2016
  *//*!
  * Bootstrap v3.3.6
  *
@@ -235,8 +235,12 @@ td, th {
 
 @font-face {
     font-family: 'Glyphicons Halflings';
-    src: url(../fonts/glyphicons-halflings-regular.eot);
-    src: url(../fonts/glyphicons-halflings-regular.eot?#iefix) format('embedded-opentype'), url(../fonts/glyphicons-halflings-regular.woff2) format('woff2'), url(../fonts/glyphicons-halflings-regular.woff) format('woff'), url(../fonts/glyphicons-halflings-regular.ttf) format('truetype'), url(../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format('svg')
+    src: url(/content/css/custom-css/fonts/glyphicons-halflings-regular.eot);
+    src: url(/content/css/custom-css/fonts/glyphicons-halflings-regular.eot?#iefix) format('embedded-opentype')
+    , url(/content/css/custom-css/fonts/glyphicons-halflings-regular.woff2) format('woff2')
+    , url(/content/css/custom-css/fonts/glyphicons-halflings-regular.woff) format('woff')
+    , url(/content/css/custom-css/fonts/glyphicons-halflings-regular.ttf) format('truetype')
+    , url(/content/css/custom-css/fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular) format('svg')
 }
 
 .glyphicon {

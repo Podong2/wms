@@ -1339,11 +1339,14 @@ table th {
 /* 상세 요약정보 테이블 css start */
 .detail-info-area > .row .row > .header-color{
     font-weight: bold;
-    color: #fff;
-    background-color: #5bc0de;
+    color: #000;
+    background-color: #eee;
+    background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f2f2f2), to(#fafafa));
+    background-image: -webkit-linear-gradient(top, #f2f2f2 0, #fafafa 100%);
 }
 .detail-info-area > .row .row > div{
     padding:10px;
+    background-color: #fefefe;
 }
 .detail-info-area:first-child{
     border-top : 1px solid #ddd;
