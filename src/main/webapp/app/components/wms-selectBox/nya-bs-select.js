@@ -588,7 +588,8 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', '$compi
           previousTabIndex,
           valueExpFn,
           valueExpGetter = $parse(nyaBsSelectCtrl.valueExp),
-          isMultiple = typeof $attrs.multiple !== 'undefined';
+          isMultiple = typeof $attrs.multiple !== 'undefined',
+          selectedYn;
 
         // find element from current $element root. because the compiled element may be detached from DOM tree by ng-if or ng-switch.
         var dropdownToggle = jqLite($element[0].querySelector('.dropdown-toggle')),
@@ -715,6 +716,7 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', '$compi
         // view --> model
 
         dropdownMenu.on('click', function menuEventHandler (event) {
+            selectedYn = true;
           if(isDisabled) {
             return;
           }
@@ -752,9 +754,38 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', '$compi
             $element.triggerHandler('blur');
           }
         });
+
+          /* focus 시 select box 열림 처리, 요소 선택 시 focus 잡혀도 닫힘처리 2016.7.26 */
+          var focusOpen = true;
           dropdownToggle.on('focus', function() {
-              $element.addClass('open');
+              if(focusOpen){
+                  $element.addClass('open');
+                  focusOpen = false;
+              }else{
+                  if(selectedYn){
+                      selectedYn = false;
+                  }else{
+                      $element.toggleClass('open');
+                  }
+              }
+
+              /* live search 체크하여 input에 focus 주기 */
+              var nyaBsOptionNode;
+              if($attrs.liveSearch === 'true' && $element.hasClass('open')) {
+                  searchBox.children().eq(0)[0].focus();
+                  nyaBsOptionNode = findFocus(true);
+                  if(nyaBsOptionNode) {
+                      dropdownMenu.children().removeClass('active');
+                      jqLite(nyaBsOptionNode).addClass('active');
+                  }
+              } else if($element.hasClass('open')) {
+                  nyaBsOptionNode = findFocus(true);
+                  if(nyaBsOptionNode) {
+                      setFocus(nyaBsOptionNode);
+                  }
+              }
           });
+
         dropdownToggle.on('click', function() {
           var nyaBsOptionNode;
           $element.addClass('open');
@@ -904,8 +935,10 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', '$compi
           if($attrs.liveSearch === 'true') {
             searchBoxContainer = filterTarget(event.target, $element[0], searchBox[0]);
           } else {
-            menuContainer = filterTarget(event.target, $element[0], dropdownContainer[0])
+            //menuContainer = filterTarget(event.target, $element[0], dropdownContainer[0])
           }
+            menuContainer = filterTarget(event.target, $element[0], dropdownContainer[0]) // live search에서 엔터키 막은 부분 선택되게 수정함 2016.07.26 hsy
+
 
           if(toggleButton) {
 
@@ -985,11 +1018,12 @@ nyaBsSelect.directive('nyaBsSelect', ['$parse', '$document', '$timeout', '$compi
             } else if(keyCode === 13) {
               event.stopPropagation();
               // enter pressed
+                selectedYn = true;
               liElement = jqLite(event.target.parentNode);
               if(liElement.hasClass('nya-bs-option')) {
                 selectOption(liElement);
                 if(!isMultiple) {
-                  dropdownToggle[0].focus();
+                  //dropdownToggle[0].focus();
                 }
               }
             }

@@ -488,7 +488,7 @@
         function openToast(){
             toastr.info('What a nice apple button', 'Button spree', {
                 closeButton: true,
-                closeHtml: "<a ng-click='test()'>이벤트 버튼</a>"
+                closeHtml: "<p class='text-align-right'><a href-void class='btn btn-primary btn-sm'>Yes</a> <a href-void class='btn btn-danger btn-sm'>No</a></p>"
             });
             toastrConfig.timeOut = 3000;
             toastrConfig.positionClass = 'toast-bottom-right';

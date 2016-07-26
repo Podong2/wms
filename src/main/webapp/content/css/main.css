@@ -1107,9 +1107,17 @@ tr.angular-ui-tree-empty {
     cursor: pointer;
 }
 
+/* :::::::::::::::::::::: select box style ::::::::::::::::::::::: */
+wms-select-box .dropdown-menu > .active > a{
+    color: #000;
+    text-decoration: none;
+    outline: 0;
+    background-color: transparent;
+}
 .nya-bs-select{
     width: 196px;
 }
+/* :::::::::::::::::::::: select box style end ::::::::::::::::::::::: */
 
 
 /*  :::::::::::::: table td width style ::::::::::::::  */
