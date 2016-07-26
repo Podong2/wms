@@ -261,7 +261,8 @@
                     <li>동그라미, 사각형 등 모양 변경</li>
                 </ul>
                 <div class="table_B text-center">
-                    <uib-pagination boundary-links="true" items-per-page="1" total-items="500" ng-model="2" max-size="5" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
+                    <uib-pagination boundary-links="true" items-per-page="1" total-items="500" ng-model="2" max-size="5" class="pagination-sm"
+                                    previous-text="&lsaquo;" next-text="&rsaquo;" first-text="&laquo;" last-text="&raquo;"></uib-pagination>
                 </div>
                 <xmp>
                     <div class="table_B text-center">
@@ -1009,7 +1010,11 @@ $scope.columnDatas = [
 
                 <autocomplete source="loadData" tags="tags" display-property="name" multiple="{{vm.autoType}}" max-results-to-show="20"></autocomplete>
                 <label for="auto-single"><input type="checkbox" id="auto-single" data-ng-model="vm.autoType" data-ng-click="vm.autoValueInit()"/>다중 사용자 모드</label><br/>
+                <h5>데이터</h5>
                 {{tags}}
+<xmp>
+    <autocomplete source="loadData" tags="tags" display-property="name" multiple="{{vm.autoType}}" max-results-to-show="20"></autocomplete>
+</xmp>
             </div>
             <div ng-if="vm.tabArea[16].status">
                 <!--<adf-dashboard name="mydashboard" collapsible="true" editable="true" structure="6-6" adf-model="model" maximizable="true" enable-confirm-delete="true" categories="false"/>-->

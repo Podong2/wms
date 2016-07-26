@@ -17,7 +17,7 @@ angular.module('wmsApp')
             restrict: 'A',
             link: function(scope, element) {
                 element.on('click', function() {
-                    $(".IssueGallery").animate({left: '+=600px'});
+                    $(".IssueGallery").animate({left:"50"}, 1);
                 });
             }
         }
@@ -27,7 +27,7 @@ angular.module('wmsApp')
             restrict: 'A',
             link: function(scope, element) {
                 element.on('click', function() {
-                    $(".IssueGallery").animate({left: '-=600px'});
+                    $(".IssueGallery").animate({left:"+=50"}, 1);
                 });
             }
         }
@@ -37,7 +37,7 @@ angular.module('wmsApp')
             restrict: 'A',
             link: function(scope, element) {
                 element.on('click', function() {
-                    $(".slideMenu").animate({left: '+=600px'});
+                    $(".slideMenu").animate({left:"50"}, 1);
                 });
             }
         }
@@ -47,7 +47,7 @@ angular.module('wmsApp')
             restrict: 'A',
             link: function(scope, element) {
                 element.on('click', function() {
-                    $(".slideMenu").animate({left: '-=600px'});
+                    $(".slideMenu").animate({left:"+=50"}, 1);
                 });
             }
         }
