@@ -124,19 +124,19 @@
             <ul class="nav navbar-nav navbar-right">
 
 
-                <!-- 동적 navbar -->
-                <li ng-class="{active: vm.$state.includes('entity')}" ng-switch-when="true" ng-repeat="menu in vm.menu track by $index" uib-dropdown ng-show="menu.displayYn ? (permissionCheck.check(menu.permissionUrl) ? menu.displayYn : false) : false">
-                    <a ng-click="vm.collapseNavbar()" class="dropdown-toggle" uib-dropdown-toggle>
-                        <span class="glyphicon glyphicon-th-list"></span>
-                        <span class="hidden-sm" translate="{{menu.name}}">{{menu.name}}</span>
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu" uib-dropdown-menu>
-                        <li ui-sref-active="active" ng-repeat="child in menu.childMenus track by $index" ng-include="'nodes_renderer.html'" >
+                <!--&lt;!&ndash; 동적 navbar &ndash;&gt;-->
+                <!--<li ng-class="{active: vm.$state.includes('entity')}" ng-switch-when="true" ng-repeat="menu in vm.menu track by $index" uib-dropdown ng-show="menu.displayYn ? (permissionCheck.check(menu.permissionUrl) ? menu.displayYn : false) : false">-->
+                    <!--<a ng-click="vm.collapseNavbar()" class="dropdown-toggle" uib-dropdown-toggle>-->
+                        <!--<span class="glyphicon glyphicon-th-list"></span>-->
+                        <!--<span class="hidden-sm" translate="{{menu.name}}">{{menu.name}}</span>-->
+                        <!--<b class="caret"></b>-->
+                    <!--</a>-->
+                    <!--<ul class="dropdown-menu" uib-dropdown-menu>-->
+                        <!--<li ui-sref-active="active" ng-repeat="child in menu.childMenus track by $index" ng-include="'nodes_renderer.html'" >-->
 
-                        </li>
-                    </ul>
-                </li>
+                        <!--</li>-->
+                    <!--</ul>-->
+                <!--</li>-->
             </ul>
             </div>
         <div>

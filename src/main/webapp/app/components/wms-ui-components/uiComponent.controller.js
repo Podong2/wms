@@ -13,9 +13,9 @@
         .module('wmsApp')
         .controller('UiComponentController', UiComponentController);
 
-    UiComponentController.$inject = ['$scope', 'Principal', 'ModalService', '$state', 'toastr', 'summaryService', 'toastrConfig', 'FIndCode', '$log', 'findUser', '$q', 'tableService', 'moment', '$filter', 'dataService', '$sce'];
+    UiComponentController.$inject = ['$scope', 'Principal', 'ModalService', '$state', 'toastr', 'summaryService', 'toastrConfig', 'FIndCode', '$log', 'findUser', '$q', 'tableService', 'moment', '$filter', 'dataService', '$sce', 'DateUtils'];
 
-    function UiComponentController ($scope, Principal, ModalService, $state, toastr, summaryService, toastrConfig, FIndCode, $log, findUser, $q, tableService, moment, $filter, dataService, $sce) {
+    function UiComponentController ($scope, Principal, ModalService, $state, toastr, summaryService, toastrConfig, FIndCode, $log, findUser, $q, tableService, moment, $filter, dataService, $sce, DateUtils) {
         var vm = this;
 
         vm.openToast = openToast;
@@ -52,6 +52,13 @@
             $scope.tags =[];
         }
 
+        //
+        vm.dueDate = {
+            date: DateUtils.toDate("1984-05-14T15:00:00.000Z"),
+            datepickerOptions: {
+                maxDate: null
+            }
+        };
 
         vm.textValue = "";
         //select box
@@ -106,7 +113,7 @@
             "remember": true, // checkbox
             "status": 2,
             "stateArray": [2, 4],
-            "dob": "1984-05-14T15:00:00.000Z"
+            "dob": DateUtils.toDate("1984-05-14T15:00:00.000Z")
         };
         // xeditble radio, select
         vm.statuses = [
@@ -458,7 +465,8 @@
         // 달력 오픈 function ///////////////////////////////
         function openCalendar(e, picker) {
             vm[picker].open = true;
-        };
+        }
+
         // watch min and max dates to calculate difference
         var unwatchMinMaxValues = $scope.$watch(function() {
             return [vm.picker4, vm.picker5, vm.picker10, vm.picker11];

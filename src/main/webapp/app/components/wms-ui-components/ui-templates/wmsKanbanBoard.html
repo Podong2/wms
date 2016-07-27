@@ -1,0 +1,22 @@
+<!--
+  ~ Copyright (c) 2016. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
+  -->
+<div id="content" ng-cloak>
+
+            <div class="well">
+
+                <h3><b>Kanban</b></h3>
+
+                <div class="row voffset2 voffset-b2">
+                    <div class="col-md-12">
+                        <button type="button" class="btn btn-default" ng-click="kanbanScope.addKanbanList()">리스트 추가</button>
+                        <button type="button" class="btn btn-default" ng-click="addKanbanTask()">태스크 추가</button>
+                    </div>
+                </div>
+                <wms-kanban board-list="kanbanList" kanban-scope="kanbanScope"></wms-kanban>
+            </div>
+</div>

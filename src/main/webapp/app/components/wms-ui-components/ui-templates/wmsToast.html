@@ -1,0 +1,36 @@
+<!--
+  ~ Copyright (c) 2016. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
+  -->
+<div id="content" ng-cloak>
+
+            <div class="well">
+                <h3><b>Toast</b></h3>
+                <ul>
+                    <li>시스템의 메시지 노출시에는 toast로 노출한다.</li>
+                    <li>노출 후 특정 시간이 지난 후 자동으로 닫힌다.</li>
+                    <li>오류 메시지는 자동닫힘이 없고 x 버튼을 눌러야 닫힌다.</li>
+                    <li>메시지별 각각의 컬러 테마가 적용된다.</li>
+                </ul>
+                <div class="form-group" style="padding-left: 22px;">
+                    <label>Toast position</label>
+                    <label class="radio">
+                        <input type="radio" ng-model="vm.options.position" value="toast-top-right" class="ng-pristine ng-untouched ng-valid" name="7">Top Right
+                    </label>
+                    <label class="radio">
+                        <input type="radio" ng-model="vm.options.position" value="toast-bottom-right" class="ng-valid ng-dirty ng-valid-parse ng-touched" name="8" style="">Bottom Right
+                    </label>
+                    <label class="radio">
+                        <input type="radio" ng-model="vm.options.position" value="toast-bottom-left" class="ng-pristine ng-untouched ng-valid" name="9">Bottom Left
+                    </label>
+                    <label class="radio">
+                        <input type="radio" ng-model="vm.options.position" value="toast-top-left" class="ng-pristine ng-untouched ng-valid" name="10">Top Left
+                    </label>
+                </div>
+                <button ng-click="vm.openToast()" class="btn btn-primary">Open Toast</button>
+            </div>
+
+</div>

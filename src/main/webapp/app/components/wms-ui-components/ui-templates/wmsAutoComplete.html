@@ -1,0 +1,25 @@
+<!--
+  ~ Copyright (c) 2016. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
+  -->
+<div id="content" ng-cloak>
+
+            <div class="well">
+                <h3><b>auto Complete</b></h3>
+                <!--<tags-input ng-model="tags" display-property="name" multiple="false">-->
+                    <!--<auto-complete source="loadData($query)" multiple="false" max-results-to-show="20"></auto-complete>-->
+                <!--</tags-input>-->
+
+                <autocomplete source="loadData" tags="tags" display-property="name" multiple="{{vm.autoType}}" max-results-to-show="20"></autocomplete>
+                <label for="auto-single"><input type="checkbox" id="auto-single" data-ng-model="vm.autoType" data-ng-click="vm.autoValueInit()"/>다중 사용자 모드</label><br/>
+                <h5>데이터</h5>
+                {{tags}}
+<xmp>
+    <autocomplete source="loadData" tags="tags" display-property="name" multiple="{{vm.autoType}}" max-results-to-show="20"></autocomplete>
+</xmp>
+            </div>
+</div>
+

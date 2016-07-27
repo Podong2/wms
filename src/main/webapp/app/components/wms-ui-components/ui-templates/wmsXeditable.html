@@ -1,0 +1,38 @@
+<!--
+  ~ Copyright (c) 2016. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
+  -->
+<div id="content" ng-cloak>
+
+            <!-- xeditable -->
+            <div class="well">
+                <h3><b>xeditable</b></h3>
+                <ul>
+                    <li>사용자는 요약정보등의 특정 text 정보들을 클릭하여 변경 할 수 있다.</li>
+                    <li>text, select, datepicker 등등 다양한 입력요소들을 변경할 수 있다.</li>
+                </ul>
+                text 형식 : <a href="#" editable-text="vm.user.name" buttons="no">{{ vm.user.name || "empty" }}</a><br/>
+                check box : <a href="#" editable-checkbox="vm.user.remember" buttons="no" e-title="Remember?"> {{ vm.user.remember && "선택" || "미선택" }} </a><br/>
+                <!--radio box : <a href="#" editable-radiolist="vm.user.status" e-ng-options="s.value as s.text for s in vm.statuses">{{ vm.showStatus() }}</a><br/>-->
+                <div id="datePickerSection">
+                    date type : <span class="dateValueSection cursor" date-picker-edit-toggle>{{ (vm.user.dob | date:"yyyy-MM-dd HH:mm") || 'empty' }}</span>
+                    <div class="input-group datePickerSection">
+                        <input type="text" class="form-control date-focusing" datetime-picker="yyyy-MM-dd HH:mm" edit-state="true" ng-model="vm.user.dob" is-open="vm.dueDate.open" id="field_dueDate" enter-submit="vm.save()"/>
+                                                <span class="input-group-btn">
+                                                  <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDate')"><i class="fa fa-calendar"></i></button>
+                                                </span>
+                    </div>
+                </div><br/>
+                select :
+                <a editable-select="vm.statusId" e-ng-options="s.id as s.name for s in vm.statuses" buttons="no">
+                    {{ vm.showStatus(vm.statusId) }}
+                </a><br/>
+                multi select :
+                <a href="#" editable-select="vm.user.stateArray" e-multiple e-ng-options="s.id as s.name for s in vm.statuses" buttons="no">
+                    {{ vm.showStateArray() }}
+                </a>
+            </div>
+</div>

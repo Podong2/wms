@@ -1,0 +1,22 @@
+<!--
+  ~ Copyright (c) 2016. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
+  -->
+<div id="content" ng-cloak>
+
+            <div class="well" data-ng-controller="summerController">
+                <h3><b>summerNote</b></h3>
+                <summernote ng-model="text" on-init="init()" on-enter="enter()" on-focus="focus(evt)" config="dataService.getSummerNoteOptions(true)"
+                            on-blur="blur(evt)" on-paste="paste()" on-keyup="keyup(evt)" contenteditable="true"
+                            on-keydown="keydown(evt)" on-change="change(contents)"
+                            on-image-upload="imageUpload(files)" editable="editable" editor="editor" lang="ko-KR">
+                </summernote>
+                <div class="well" style="background-color: #fff;">
+                    <span ng-bind-html="vm.renderHtml(text)"></span>
+                </div>
+
+            </div>
+</div>

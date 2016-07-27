@@ -1,0 +1,35 @@
+<!--
+  ~ Copyright (c) 2016. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
+  -->
+<div id="content" ng-cloak>
+
+            <div class="well">
+                <h3><b>Modal</b></h3>
+                <ul>
+                    <li>기존 owl과 동일한 modal이 적용되야한다.</li>
+                    <li>드래그로 창을 이동 가능해야한다.</li>
+                    <li>엔터키 입력 시 창의 전송기능 작동 가능해야한다.</li>
+                    <li>esc 입력시 창이 닫힌다.</li>
+                    <li>배경색은 투명색으로 유지한다.</li>
+                    <li>내용이 많을 시 화면이 벗어나지 않는 선에서 스크롤 생성되야 한다.</li>
+                </ul>
+                <button type="button" ng-click="vm.modalOpen()">모달 오픈</button>
+            </div>
+</div>
+
+
+
+<script type="text/javascript">
+
+    // detect support of touch events in ios, android and MS devices
+    if ("ontouchstart" in document.documentElement || navigator.msMaxTouchPoints > 1) {
+        var script = document.createElement("script");
+        script.src = "app/components/modal/touch.js";
+        document.body.appendChild(script);
+    }
+
+</script>

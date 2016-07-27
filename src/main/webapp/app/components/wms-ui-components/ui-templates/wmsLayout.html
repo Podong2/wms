@@ -1,0 +1,42 @@
+<!--
+  ~ Copyright (c) 2016. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
+  -->
+<div id="content" ng-cloak>
+            <div class="well">
+                <h3><b>Layout</b></h3>
+                <!--<ng-include src="'app/components/common/detailBody.html'"></ng-include>-->
+                <wms-make-table response-data="responseData" column-datas="columnDatas" type="multi"></wms-make-table>
+                <h4>디렉티브 선언</h4>
+<xmp>
+    <wms-make-table response-data="responseData" column-datas="columnDatas" type="multi"></wms-make-table>
+</xmp>
+                <h4>데이터 구조</h4>
+<xmp>
+$scope.responseData = {
+    data : [{
+        dueDate : "2016-07-04",
+        name : "bootstrap grid system"
+    }]
+};
+
+$scope.columnDatas = [
+    {
+    key : "name",
+    language : "이름",
+    renderer : "randerer",
+    rendererType : "text"
+    },
+    {
+    key : "dueDate",
+    language : "날짜",
+    renderer : "randerer",
+    rendererType : "date"
+    }
+];
+</xmp>
+            </div>
+</div>

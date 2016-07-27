@@ -1,0 +1,110 @@
+<!--
+  ~ Copyright (c) 2016. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
+  -->
+<div id="content" ng-cloak>
+
+            <!-- input box -->
+            <div class="well">
+                <h3><b>Input box</b></h3>
+                <ul>
+                    <li>input box의 깔끔한 디자인을 지원해야한다.</li>
+                    <li>size를 class로 간편하게 조절 가능해야한다.</li>
+                    <li>success, warning, false 등 input 상태를 표현가능해야한다.</li>
+                </ul>
+
+                ------------------------------------------------------------------------<br/>
+                <form class="form wms-form" name="editForm" role="editForm" novalidate show-validation>
+                    <div class="form-group">
+                        <input-box
+                            input-type="text".
+                            form-name="editForm"
+                            input-name="name"
+                            minlength="3"
+                            maxlength="12"
+                            ng-model="vm.textValue"
+                            pattern="/^[a-zA-Z][a-zA-Z0-9]{0,20}$/"
+                            required-text="register.messages.validate.login.required"
+                            min-text="register.messages.validate.login.minlength"
+                            max-text="register.messages.validate.login.maxlength"
+                            pattern-text="register.messages.validate.login.pattern"
+                            placeholder-text="login.form.password.placeholder"
+                            tooltip="이름을 입력하세요."
+                            tooltip-icon="fa-user"
+                        ></input-box>
+                    </div>
+                </form>
+                        {{vm.textValue}}
+                <xmp>
+<form class="form wms-form" name="editForm" role="editForm" novalidate show-validation>
+    <div class="form-group">
+        <input-box
+            input-type="text".
+            form-name="editForm"
+            input-name="name"
+            minlength="3"
+            maxlength="12"
+            ng-model="vm.textValue"
+            pattern="/^[a-zA-Z][a-zA-Z0-9]{0,20}$/"
+            required-text="register.messages.validate.login.required"
+            min-text="register.messages.validate.login.minlength"
+            max-text="register.messages.validate.login.maxlength"
+            pattern-text="register.messages.validate.login.pattern"
+            placeholder-text="login.form.password.placeholder"
+            tooltip="이름을 입력하세요."
+            tooltip-icon="fa-user"
+        ></input-box>
+    </div>
+</form>
+
+                </xmp>
+                ------------------------------------------------------------------------<br/>
+
+
+                <div ><!--input-check checkType="vm.inputCheck" massage="vm.errorMsg"-->
+                    <input type="text" class="form-control" data-ng-model="vm.inputCheck" aria-describedby="inputSuccess2Status">
+                </div>
+                <xmp>
+                    <div >
+                        <input type="text" class="form-control" data-ng-model="vm.inputCheck" aria-describedby="inputSuccess2Status">
+                    </div>
+                </xmp>
+
+                <!--<input type="text" id="inputHelpBlock" class="form-control" aria-describedby="helpBlock">-->
+                <div class="form-group has-success">
+                    <label class="control-label" for="inputSuccess1">Input with success</label>
+                    <input type="text" class="form-control" id="inputSuccess1" aria-describedby="helpBlock2">
+                </div>
+                <xmp>
+                    <div class="form-group has-success">
+                        <label class="control-label" for="inputSuccess2">Input with success</label>
+                        <input type="text" class="form-control" id="inputSuccess2" aria-describedby="helpBlock2">
+                    </div>
+                </xmp>
+
+                <div class="form-group has-warning">
+                    <label class="control-label" for="inputWarning1">Input with warning</label>
+                    <input type="text" class="form-control" id="inputWarning1">
+                </div>
+                <xmp>
+                    <div class="form-group has-warning">
+                        <label class="control-label" for="inputWarning2">Input with warning</label>
+                        <input type="text" class="form-control" id="inputWarning2">
+                    </div>
+                </xmp>
+
+                <div class="form-group has-error">
+                    <label class="control-label" for="inputError1">Input with error</label>
+                    <input type="text" class="form-control" id="inputError1">
+                </div>
+                <xmp>
+                    <div class="form-group has-error">
+                        <label class="control-label" for="inputError2">Input with error</label>
+                        <input type="text" class="form-control" id="inputError2">
+                    </div>
+                </xmp>
+            </div>
+</div>
