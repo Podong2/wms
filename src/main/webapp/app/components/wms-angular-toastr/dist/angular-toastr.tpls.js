@@ -218,6 +218,10 @@
           toast.scope.options.closeHtml = options.closeHtml;
         }
 
+        if (options.eventButton) {
+          toast.scope.options.eventHtml = options.eventHtml;
+        }
+
         function generateEvent(event) {
           if (options[event]) {
             return function() {
@@ -241,7 +245,6 @@
         }
 
         createScope(newToast, map, options);
-
         newToast.el = createToastEl(newToast.scope);
 
         return newToast;
@@ -319,7 +322,9 @@
       },
       timeOut: 5000,
       titleClass: 'toast-title',
-      toastClass: 'toast'
+      toastClass: 'toast',
+      eventButton: false,
+      eventHtml: ""
     });
 }());
 
@@ -404,9 +409,9 @@
   angular.module('toastr')
     .directive('toast', toast);
 
-  toast.$inject = ['$injector', '$interval', 'toastrConfig', 'toastr'];
+  toast.$inject = ['$injector', '$interval', 'toastrConfig', 'toastr', "$rootScope"];
 
-  function toast($injector, $interval, toastrConfig, toastr) {
+  function toast($injector, $interval, toastrConfig, toastr, $rootScope) {
     return {
       replace: true,
       templateUrl: function() {
@@ -433,6 +438,13 @@
         element.prepend(button);
       }
 
+      if (wantsEventButton()) {
+        var eventButton = angular.element(scope.options.eventHtml),
+        $compile = $injector.get('$compile');
+        $compile(eventButton)(scope);
+        element.append(eventButton);
+      }
+
       scope.init = function() {
         if (scope.options.timeOut) {
           timeout = createTimeout(scope.options.timeOut);
@@ -453,10 +465,17 @@
         if (angular.isFunction(scope.options.onTap)) {
           scope.options.onTap();
         }
-        if (scope.options.tapToDismiss) {
-          scope.close(true);
-        }
+        //if (scope.options.tapToDismiss) {
+        //  scope.close(true);
+        //}
       };
+
+        scope.ok = function(){
+            $rootScope.$broadcast("ok");
+        };
+        scope.no = function(){
+            $rootScope.$broadcast("no");
+        };
 
       scope.close = function (wasClicked, $event) {
         if ($event && angular.isFunction($event.stopPropagation)) {
@@ -489,9 +508,21 @@
       function wantsCloseButton() {
         return scope.options.closeHtml;
       }
+
+      function wantsEventButton() {
+        return scope.options.eventHtml;
+      }
     }
   }
 }());
 
 angular.module("toastr").run(["$templateCache", function($templateCache) {$templateCache.put("directives/progressbar/progressbar.html","<div class=\"toast-progress\"></div>\n");
-$templateCache.put("directives/toast/toast.html","<div class=\"{{toastClass}} {{toastType}}\" ng-click=\"tapToast()\">\n  <div ng-switch on=\"allowHtml\">\n    <div ng-switch-default ng-if=\"title\" class=\"{{titleClass}}\" aria-label=\"{{title}}\">{{title}}</div>\n    <div ng-switch-default class=\"{{messageClass}}\" aria-label=\"{{message}}\">{{message}}</div>\n    <div ng-switch-when=\"true\" ng-if=\"title\" class=\"{{titleClass}}\" ng-bind-html=\"title\"></div>\n    <div ng-switch-when=\"true\" class=\"{{messageClass}}\" ng-bind-html=\"message\"></div>\n  </div>\n  <progress-bar ng-if=\"progressBar\"></progress-bar>\n</div>\n");}]);
+$templateCache.put("directives/toast/toast.html","<div class=\"{{toastClass}} {{toastType}}\" ng-click=\"tapToast()\">\n  " +
+    "<div ng-switch on=\"allowHtml\">\n    " +
+        "<div ng-switch-default ng-if=\"title\" class=\"{{titleClass}}\" aria-label=\"{{title}}\">{{title}}</div>\n    " +
+        "<div ng-switch-default class=\"{{messageClass}}\" aria-label=\"{{message}}\">{{message}}</div>\n    " +
+        "<div ng-switch-when=\"true\" ng-if=\"title\" class=\"{{titleClass}}\" ng-bind-html=\"title\"></div>\n    " +
+        "<div ng-switch-when=\"true\" class=\"{{messageClass}}\" ng-bind-html=\"message\"></div>\n  " +
+    "</div>\n  " +
+    "<progress-bar ng-if=\"progressBar\"></progress-bar>\n" +
+    "</div>\n");}]);

@@ -13,9 +13,9 @@
         .module('wmsApp')
         .controller('UiComponentController', UiComponentController);
 
-    UiComponentController.$inject = ['$scope', 'Principal', 'ModalService', '$state', 'toastr', 'summaryService', 'toastrConfig', 'FIndCode', '$log', 'findUser', '$q', 'tableService', 'moment', '$filter', 'dataService', '$sce', 'DateUtils'];
+    UiComponentController.$inject = ['$scope', 'Principal', 'ModalService', '$state', 'toastr', 'summaryService', 'toastrConfig', 'FIndCode', '$log', 'findUser', '$q', 'tableService', 'moment', '$filter', 'dataService', '$sce', 'DateUtils', '$rootScope'];
 
-    function UiComponentController ($scope, Principal, ModalService, $state, toastr, summaryService, toastrConfig, FIndCode, $log, findUser, $q, tableService, moment, $filter, dataService, $sce, DateUtils) {
+    function UiComponentController ($scope, Principal, ModalService, $state, toastr, summaryService, toastrConfig, FIndCode, $log, findUser, $q, tableService, moment, $filter, dataService, $sce, DateUtils, $rootScope) {
         var vm = this;
 
         vm.openToast = openToast;
@@ -494,9 +494,11 @@
         // toast 제어 function
         vm.openedToasts = [];
         function openToast(){
-            toastr.info('What a nice apple button', 'Button spree', {
-                closeButton: true,
-                closeHtml: "<p class='text-align-right'><a href-void class='btn btn-primary btn-sm'>Yes</a> <a href-void class='btn btn-danger btn-sm'>No</a></p>"
+            toastr.info("What a nice apple button ", 'Button spree', {
+                allowHtml: true,
+                eventButton: true,
+                eventHtml: "<p class='text-align-right'><a href-void class='btn btn-primary btn-sm' ng-click='ok()'>Yes</a> <a href-void class='btn btn-danger btn-sm' ng-click='no()'>No</a></p>",
+                closeButton: true
             });
             toastrConfig.timeOut = 3000;
             toastrConfig.positionClass = 'toast-bottom-right';
@@ -504,6 +506,13 @@
             toastr.error('Your credentials are gone', 'Error');
             toastr.warning('Your computer is about to explode!', 'Warning');
         }
+        $rootScope.$on("ok", function(){
+            alert("ok");
+        });
+        $rootScope.$on("no", function(){
+            alert("no");
+        });
+
 
         // select box disabled 처리 function
         function isDisabledDate(currentDate, mode) {

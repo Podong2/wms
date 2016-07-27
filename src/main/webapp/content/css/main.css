@@ -1650,3 +1650,11 @@ i:active, .i:active, i:focus, .i:focus{
     margin: 12px 5px 0 0;
     color: #fdfdfd;
 }
+.panel-default > .panel-heading {
+    color: #fff;
+    background-color: #4c4f53;
+    border-color: #4c4f53;
+}
+#widget-header a{
+    color : #fff;
+}

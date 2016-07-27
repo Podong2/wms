@@ -126,7 +126,7 @@
             onHidden: null,
             onShown: null,
             onTap: null,
-            progressBar: true,
+            progressBar: false,
             tapToDismiss: true,
             templates: {
                 toast: 'directives/toast/toast.html',
