@@ -1553,6 +1553,11 @@ i:active, .i:active, i:focus, .i:focus{
     float:left;
     display:inline;
 }
+
+.wmsKanbanItem .listHeader {
+    cursor: pointer;
+}
+
 .wmsKanbanItemAdd {
     width:5%;
     float:left;
