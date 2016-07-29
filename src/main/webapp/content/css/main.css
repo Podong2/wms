@@ -1554,10 +1554,6 @@ i:active, .i:active, i:focus, .i:focus{
     display:inline;
 }
 
-.wmsKanbanItem .listHeader {
-    cursor: pointer;
-}
-
 .wmsKanbanItemAdd {
     width:5%;
     float:left;
@@ -1575,7 +1571,7 @@ i:active, .i:active, i:focus, .i:focus{
  * otherwise you can't drop to it once it's empty
  */
 .wmsKanbanItem .drop-zone ul[dnd-list] {
-    min-height: 42px;
+    min-height: 30px;
     margin: 0px;
     padding-left: 0px;
 }
@@ -1617,7 +1613,7 @@ i:active, .i:active, i:focus, .i:focus{
     background-color: #ddd !important;
     position: relative;
     display: block;
-    min-height: 42px;
+    min-height: 30px;
 }
 
 /***************************** Element type specific styles *****************************/
@@ -1630,7 +1626,7 @@ i:active, .i:active, i:focus, .i:focus{
     border: solid #0a0a0a thin;
     border-radius: .25em;
     font-weight: 700;
-    height: 50px;
+    height: 30px;
     margin: 5px;
     padding: 5px;
 }
@@ -1650,6 +1646,7 @@ i:active, .i:active, i:focus, .i:focus{
     border: 1px solid #C2C2C2;
     background: #fafafa;
     padding: 5px 15px;
+    cursor: pointer;
 }
 .ribbon-icon{
     margin: 12px 5px 0 0;
