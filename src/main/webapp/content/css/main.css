@@ -1344,7 +1344,7 @@ table th {
     background: #EAF4FF !important;
 }
 
-/* 상세 요약정보 테이블 css start */
+/*-------------- 상세 요약정보 테이블 css start ---------------*/
 .detail-info-area > .row .row > .header-color{
     font-weight: bold;
     color: #000;
@@ -1366,7 +1366,7 @@ table th {
 .detail-info-area > .row{
     margin: 0;
 }
-/* 상세 요약정보 테이블 css end */
+/*-------------- 상세 요약정보 테이블 css end ---------------*/
 
 /* ng gallery start */
 .galleryBtnArea {
@@ -1650,11 +1650,15 @@ i:active, .i:active, i:focus, .i:focus{
     margin: 12px 5px 0 0;
     color: #fdfdfd;
 }
-.panel-default > .panel-heading {
+
+/* ----------------------- dashboard style ------------------------ */
+.dashboard .panel-default > .panel-heading {
     color: #fff;
     background-color: #4c4f53;
     border-color: #4c4f53;
 }
-#widget-header a{
+.dashboard #widget-header a{
     color : #fff;
+    margin: 0 3px;
 }
+/* ----------------------- dashboard style end ------------------------ */

@@ -98,8 +98,10 @@
             deselectAll: '全解除'
         });
 
+        /* select box 다국어 설정 */
         nyaBsConfigProvider.useLocale('ko');
 
+        /* dashboard 기본 영역 */
         dashboardProvider
             .structure('6-6', {
                 rows: [{
@@ -111,6 +113,7 @@
                 }]
             });
 
+        /* toast config */
         angular.extend(toastrConfig, {
             allowHtml: false,
             closeButton: false,
