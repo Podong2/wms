@@ -30,18 +30,6 @@
                     }]
                 }
             })
-            //.state('register', {
-            //    url: '/register',
-            //    views: {
-            //        root: {
-            //            templateUrl: 'app/auth/views/register.html'
-            //        }
-            //    },
-            //    data: {
-            //        title: 'Register',
-            //        htmlId: 'extr-page'
-            //    }
-            //})
             .state('realLogin', {
                 url: '/real-login',
 

@@ -21,4 +21,4 @@ angular.module('wmsApp').directive('resetWidgets', function(){
         }
     }
 
-});
+}); // 네비게이션 바의 리셋 버튼. 현재는 제거 상태

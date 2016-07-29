@@ -1,4 +1,4 @@
-angular.module('wmsApp').directive('wmsRecognition', function () {
+angular.module('wmsApp').directive('wmsRecognition', function () { // 마이크
 	'use strict';
 
 	$.root_ = $('body');
