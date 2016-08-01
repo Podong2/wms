@@ -12,15 +12,15 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {})
 public interface TaskMapper {
 
-    @Mapping(source = "severity.id", target = "severityId")
-    @Mapping(source = "severity.name", target = "severityName")
+    @Mapping(source = "status.id", target = "statusId")
+    @Mapping(source = "status.name", target = "statusName")
     @Mapping(source = "assignee.id", target = "assigneeId")
     @Mapping(source = "assignee.name", target = "assigneeName")
     TaskDTO taskToTaskDTO(Task task);
 
     List<TaskDTO> tasksToTaskDTOs(List<Task> tasks);
 
-    @Mapping(source = "severityId", target = "severity")
+    @Mapping(source = "statusId", target = "status")
     @Mapping(source = "assigneeId", target = "assignee")
     Task taskDTOToTask(TaskDTO taskDTO);
 

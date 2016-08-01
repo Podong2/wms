@@ -9,9 +9,9 @@ import java.util.List;
 public class TaskCondition {
     private String name;
 
-    private String dueDateFrom;
+    private String endDateFrom;
 
-    private String dueDateTo;
+    private String endDateTo;
 
     private List<Long> severities = new ArrayList<>();
 

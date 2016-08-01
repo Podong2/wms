@@ -103,14 +103,14 @@ public class TaskService {
         if(StringUtils.hasText(taskCondition.getName()))
             predicate.and($task.name.contains(taskCondition.getName()));
 
-        if(StringUtils.hasText(taskCondition.getDueDateFrom()))
-            predicate.and($task.dueDate.goe(taskCondition.getDueDateFrom()));
+        if(StringUtils.hasText(taskCondition.getEndDateFrom()))
+            predicate.and($task.endDate.goe(taskCondition.getEndDateFrom()));
 
-        if(StringUtils.hasText(taskCondition.getDueDateTo()))
-            predicate.and($task.dueDate.loe(taskCondition.getDueDateTo()));
+        if(StringUtils.hasText(taskCondition.getEndDateTo()))
+            predicate.and($task.endDate.loe(taskCondition.getEndDateTo()));
 
         if(!taskCondition.getSeverities().isEmpty())
-            predicate.and($task.severity.id.in(taskCondition.getSeverities()));
+            predicate.and($task.status.id.in(taskCondition.getSeverities()));
 
         if(StringUtils.hasText(taskCondition.getContents()))
             predicate.and($task.contents.contains(taskCondition.getContents()));

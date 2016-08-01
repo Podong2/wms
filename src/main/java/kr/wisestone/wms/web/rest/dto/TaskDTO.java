@@ -24,9 +24,9 @@ public class TaskDTO implements Serializable {
 
     private String contents;
 
-    private Long severityId;
+    private Long statusId;
 
-    private String severityName;
+    private String statusName;
 
     private Long assigneeId;
 
@@ -63,12 +63,12 @@ public class TaskDTO implements Serializable {
         this.contents = contents;
     }
 
-    public Long getSeverityId() {
-        return severityId;
+    public Long getStatusId() {
+        return statusId;
     }
 
-    public void setSeverityId(Long codeId) {
-        this.severityId = codeId;
+    public void setStatusId(Long codeId) {
+        this.statusId = codeId;
     }
 
     public Long getAssigneeId() {
@@ -79,12 +79,12 @@ public class TaskDTO implements Serializable {
         this.assigneeId = assigneeId;
     }
 
-    public String getSeverityName() {
-        return severityName;
+    public String getStatusName() {
+        return statusName;
     }
 
-    public void setSeverityName(String severityName) {
-        this.severityName = severityName;
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
     }
 
     public String getAssigneeName() {
