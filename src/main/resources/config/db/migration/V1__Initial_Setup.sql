@@ -264,8 +264,8 @@ CREATE TABLE owl_trace_log_attached_file
 CREATE TABLE owl_task
 (
     id                   bigint,
-    name                 varchar(1000)  NULL ,
-    contents             text NULL ,
+    name                 varchar(1000) NOT NULL ,
+    contents             text NULL,
     status_id            bigint NULL,
     parent_id            bigint NULL,
     start_date           varchar(20) NULL,
