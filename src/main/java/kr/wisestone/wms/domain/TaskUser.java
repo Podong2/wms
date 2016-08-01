@@ -35,6 +35,14 @@ public class TaskUser extends AbstractAuditingEntity {
     @Column(name = "type")
     private TaskUserType type;
 
+    public TaskUser() {}
+
+    public TaskUser(Task task, User user, TaskUserType type) {
+        this.setTask(task);
+        this.setUser(user);
+        this.setType(type);
+    }
+
     public Long getId() {
         return id;
     }

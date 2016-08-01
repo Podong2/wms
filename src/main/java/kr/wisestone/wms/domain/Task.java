@@ -1,11 +1,14 @@
 package kr.wisestone.wms.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.Document;
 
+import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -79,6 +82,19 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<TaskUser> taskUsers = new HashSet<>();
+
+    @OneToMany(mappedBy = "task")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<RelatedTask> relatedTasks = new HashSet<>();
+
+    public Task() {
+
+    }
+
+    public Task(String name) {
+        setName(name);
+    }
 
     @Override
     public Long getId() {
@@ -183,6 +199,40 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
 
     public void setTaskUsers(Set<TaskUser> taskUsers) {
         this.taskUsers = taskUsers;
+    }
+
+    public Set<RelatedTask> getRelatedTasks() {
+        return relatedTasks;
+    }
+
+    public void setRelatedTasks(Set<RelatedTask> relatedTasks) {
+        this.relatedTasks = relatedTasks;
+    }
+
+    public Task addTaskUser(User user, TaskUserType taskUserType) {
+
+        TaskUser origin = this.taskUsers.stream().filter(
+            taskUser ->
+                taskUser.getType().equals(taskUserType) && taskUser.getUser().getId().equals(user.getId())
+        ).findFirst().get();
+
+        if(origin == null)
+            this.taskUsers.add(new TaskUser(this, user, taskUserType));
+
+        return this;
+    }
+
+    public Task addRelatedTask(Task task) {
+
+        RelatedTask origin = this.relatedTasks.stream().filter(
+            relatedTask ->
+                relatedTask.getTask().getId().equals(task.getId())
+        ).findFirst().get();
+
+        if(origin == null)
+            this.relatedTasks.add(new RelatedTask(this, task));
+
+        return this;
     }
 
     @Override

@@ -81,15 +81,29 @@ public class TaskResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<TaskDTO> createTask(TaskForm taskForm, MultipartHttpServletRequest request) throws URISyntaxException {
+    public ResponseEntity<TaskDTO> createTask(TaskForm taskForm) throws URISyntaxException {
         log.debug("REST request to save Task : {}", taskForm);
         if (taskForm.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("task", "idexists", "A new task cannot already have an ID")).body(null);
         }
 
-        List<MultipartFile> files = request.getFiles("file");
+        TaskDTO result = taskService.createByName(taskForm.getName());
+        return ResponseEntity.created(new URI("/api/tasks/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert("task", result.getId().toString()))
+            .body(result);
+    }
 
-        TaskDTO result = taskService.save(taskForm, files);
+    @RequestMapping(value = "/tasks/createSubTask",
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<TaskDTO> createSubTask(TaskForm taskForm) throws URISyntaxException {
+        log.debug("REST request to save Task : {}", taskForm);
+        if (taskForm.getId() != null) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("task", "idexists", "A new task cannot already have an ID")).body(null);
+        }
+
+        TaskDTO result = taskService.createSubTask(taskForm);
         return ResponseEntity.created(new URI("/api/tasks/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("task", result.getId().toString()))
             .body(result);
@@ -111,7 +125,7 @@ public class TaskResource {
     public ResponseEntity<TaskDTO> updateTask(TaskForm taskForm, MultipartHttpServletRequest request) throws URISyntaxException, IOException {
         log.debug("REST request to update Task : {}", taskForm);
         if (taskForm.getId() == null) {
-            return createTask(taskForm, request);
+            return createTask(taskForm);
         }
 
         List<MultipartFile> files = request.getFiles("file");

@@ -13,4 +13,5 @@ import java.util.List;
 @SuppressWarnings("unused")
 public interface TaskRepository extends JpaRepository<Task,Long>, QueryDslPredicateExecutor<Task> {
 
+    Task findByName(String name);
 }

@@ -75,7 +75,6 @@ public class TaskService {
         }
 
         task = taskRepository.save(task);
-//        taskSearchRepository.save(task);
 
         TaskDTO result = taskMapper.taskToTaskDTO(task);
 
@@ -216,6 +215,30 @@ public class TaskService {
         origin = taskRepository.save(origin);
 //        taskSearchRepository.save(origin);
         TaskDTO result = taskMapper.taskToTaskDTO(origin);
+
+        return result;
+    }
+
+    public TaskDTO createByName(String name) {
+
+        Task task = this.taskRepository.findByName(name);
+
+        if(task != null) {
+            throw new CommonRuntimeException("error.task.taskNameDuplicate");
+        }
+
+        task = this.taskRepository.save(new Task(name));
+
+        return taskMapper.taskToTaskDTO(task);
+    }
+
+    public TaskDTO createSubTask(TaskForm taskForm) {
+
+        Task subTask = taskForm.bindSubTask(new Task());
+
+        subTask = taskRepository.save(subTask);
+
+        TaskDTO result = taskMapper.taskToTaskDTO(subTask);
 
         return result;
     }
