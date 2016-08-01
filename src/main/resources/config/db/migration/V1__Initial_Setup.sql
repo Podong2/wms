@@ -13,6 +13,11 @@ CREATE TABLE owl_user
 	password_hash        varchar(60) NOT NULL,
 	name                 varchar(100) NULL,
 	email                varchar(100) NULL,
+	company_id           bigint,
+	department_id        bigint,
+	profile_image_id     bigint,
+	status               varchar(50),
+	fail_count           integer,
 	activated            char(1) NOT NULL,
 	lang_key             varchar(5) NOT NULL,
 	activation_key       varchar(20) NULL,
@@ -82,8 +87,359 @@ CREATE TABLE owl_social_user_connection
     image_url          varchar(255),
     access_token       varchar(255) NOT NULL,
     secret             varchar(255),
-    referesh_token     varchar(255),
+    refresh_token      varchar(255),
     expire_time        bigint
+);
+
+CREATE TABLE owl_company
+(
+	id                   bigint,
+	name                 varchar(100) NOT NULL,
+	description          text NULL,
+	type                 varchar(50) NULL,
+	created_by           varchar(50)  NOT NULL,
+	created_date         timestamp  NULL,
+	last_modified_by     varchar(50)  NULL,
+	last_modified_date   timestamp  NULL
+);
+
+
+CREATE TABLE owl_department
+(
+	id                   bigint,
+	name                 varchar(100) NOT NULL,
+	description          text NULL,
+	status               varchar(100) NULL,
+	parent_id            bigint NULL,
+	company_id           bigint NOT NULL,
+	created_by           varchar(50)  NOT NULL,
+	created_date         timestamp  NULL,
+	last_modified_by     varchar(50)  NULL,
+	last_modified_date   timestamp  NULL
+);
+
+CREATE TABLE owl_menu
+(
+    id                   bigint,
+    parent_id            bigint  NULL ,
+    name                 varchar(1000)  NULL ,
+    description          text  NULL ,
+    area                 varchar(50)  NULL ,
+    position             integer  NULL ,
+    status               varchar(50)  NULL ,
+    project_yn           char(1)  NULL ,
+    system_yn            char(1)  NULL ,
+    mobile_yn            char(1)  NULL DEFAULT  'Y',
+    hr_include_yn        char(1)  NULL DEFAULT  'N',
+    url_path             varchar(255)  NULL ,
+    permission_url       varchar(100),
+    display_yn           char(1) NULL DEFAULT 'Y',
+    created_by           varchar(50)  NOT NULL,
+    created_date         timestamp  NULL,
+    last_modified_by     varchar(50)  NULL,
+    last_modified_date   timestamp  NULL
+);
+
+
+CREATE TABLE owl_menu_permission
+(
+    id                   bigint,
+    menu_id              bigint  NULL ,
+    permission_id        bigint  NULL ,
+    default_yn           char(1)  NULL ,
+    created_by           varchar(50)  NOT NULL,
+    created_date         timestamp  NULL,
+    last_modified_by     varchar(50)  NULL,
+    last_modified_date   timestamp  NULL
+);
+
+
+CREATE TABLE owl_permission
+(
+    id                   bigint,
+    parent_id            bigint  NULL ,
+    permission_category_id bigint  NULL ,
+    name                 varchar(1000)  NULL ,
+    description          text  NULL ,
+    status               varchar(50)  NULL ,
+    action               varchar(255)  NULL ,
+    role_gubun           varchar(50)  NULL ,
+    role_permission_yn   char(1)  NULL ,
+    created_by           varchar(50)  NOT NULL,
+    created_date         timestamp  NULL,
+    last_modified_by     varchar(50)  NULL,
+    last_modified_date   timestamp  NULL
+);
+
+
+CREATE TABLE owl_permission_category
+(
+    id                   bigint,
+    name                 varchar(1000)  NULL ,
+    description          text  NULL ,
+    created_by           varchar(50)  NOT NULL,
+    created_date         timestamp  NULL,
+    last_modified_by     varchar(50)  NULL,
+    last_modified_date   timestamp  NULL
+);
+
+
+CREATE TABLE owl_system_role
+(
+    id                   bigint,
+    name                 varchar(1000)  NULL ,
+    description          text  NULL ,
+    role_gubun           varchar(50)  NULL ,
+    created_by           varchar(50)  NOT NULL,
+    created_date         timestamp  NULL,
+    last_modified_by     varchar(50)  NULL,
+    last_modified_date   timestamp  NULL
+);
+
+
+CREATE TABLE owl_system_role_permission
+(
+    id                   bigint,
+    system_role_id       bigint  NULL ,
+    permission_id        bigint  NULL ,
+    created_by           varchar(50)  NOT NULL,
+    created_date         timestamp  NULL,
+    last_modified_by     varchar(50)  NULL,
+    last_modified_date   timestamp  NULL
+);
+
+
+CREATE TABLE owl_system_role_user
+(
+    id                   bigint,
+    system_role_id       bigint  NULL ,
+    user_id              bigint  NULL ,
+    created_by           varchar(50)  NOT NULL,
+    created_date         timestamp  NULL,
+    last_modified_by     varchar(50)  NULL,
+    last_modified_date   timestamp  NULL
+);
+
+CREATE TABLE owl_attached_file (
+    id                   bigint,
+	name                 varchar(1000) NOT NULL,
+	content              bytea,
+	content_type         varchar(50) NULL,
+	size                 bigint NULL,
+	created_by           varchar(50)  NOT NULL ,
+	created_date         timestamp  NULL ,
+	last_modified_by     varchar(50)  NULL ,
+	last_modified_date   timestamp  NULL
+);
+
+CREATE TABLE owl_trace_log (
+    id                   bigint,
+	entity_id            bigint NULL,
+	entity_name          varchar(255) NULL,
+	entity_field         varchar(255) NULL,
+	persist_type         varchar(255) NULL,
+	reply_yn             char(1) NULL,
+	old_value            text NULL,
+	new_value            text NULL,
+	etc_value            varchar(1000) NULL,
+	attached_file_id     bigint,
+	created_by           varchar(50)  NULL ,
+	created_date         timestamp  NULL ,
+	last_modified_by     varchar(50)  NULL ,
+	last_modified_date   timestamp  NULL
+);
+
+
+CREATE TABLE owl_trace_log_attached_file
+(
+    id                   bigint,
+    trace_log_id         bigint  NULL ,
+    attached_file_id     bigint  NULL ,
+    created_by           varchar(50)  NOT NULL,
+    created_date         timestamp  NULL,
+    last_modified_by     varchar(50)  NULL,
+    last_modified_date   timestamp  NULL
+);
+
+CREATE TABLE owl_task
+(
+    id                   bigint,
+    name                 varchar(1000)  NULL ,
+    contents             text NULL ,
+    status_id            bigint NULL,
+    parent_id            bigint NULL,
+    start_date           varchar(20) NULL,
+    end_date             varchar(20) NULL,
+    important_yn         char(1) NULL,
+    template_yn          char(1) NULL,
+    created_by           varchar(50) NOT NULL,
+    created_date         timestamp NULL,
+    last_modified_by     varchar(50) NULL,
+    last_modified_date   timestamp NULL
+);
+
+CREATE TABLE owl_related_task
+(
+    id                   bigint,
+    task_id              bigint  NULL ,
+    related_task_id      bigint  NULL ,
+    created_by           varchar(50)  NOT NULL,
+    created_date         timestamp  NULL,
+    last_modified_by     varchar(50)  NULL,
+    last_modified_date   timestamp  NULL
+);
+
+CREATE TABLE owl_task_user
+(
+    id                   bigint,
+    task_id              bigint  NULL ,
+    user_id              bigint  NULL ,
+    user_type            varchar(50),
+    created_by           varchar(50)  NOT NULL,
+    created_date         timestamp  NULL,
+    last_modified_by     varchar(50)  NULL,
+    last_modified_date   timestamp  NULL
+);
+
+CREATE TABLE owl_task_trace_log
+(
+    id                   bigint,
+    task_id              bigint NULL ,
+    trace_log_id         bigint NULL ,
+    created_by           varchar(50)  NOT NULL,
+    created_date         timestamp  NULL,
+    last_modified_by     varchar(50)  NULL,
+    last_modified_date   timestamp  NULL
+);
+
+CREATE TABLE owl_task_approval
+(
+    id                   bigint,
+    task_id              bigint NULL ,
+    requestor_id         bigint NULL ,
+    approval_status      varchar(100),
+    created_by           varchar(50)  NOT NULL,
+    created_date         timestamp  NULL,
+    last_modified_by     varchar(50)  NULL,
+    last_modified_date   timestamp  NULL
+);
+
+CREATE TABLE owl_task_approver
+(
+    id                   bigint,
+    task_approval_id     bigint NULL ,
+    approver_id          bigint NULL ,
+    approval_status      varchar(100),
+    created_by           varchar(50)  NOT NULL,
+    created_date         timestamp  NULL,
+    last_modified_by     varchar(50)  NULL,
+    last_modified_date   timestamp  NULL
+);
+
+CREATE TABLE owl_task_attached_file
+(
+    id                   bigint,
+    task_id              bigint  NULL ,
+    attached_file_id     bigint  NULL ,
+    created_by           varchar(50)  NOT NULL,
+    created_date         timestamp  NULL,
+    last_modified_by     varchar(50)  NULL,
+    last_modified_date   timestamp  NULL
+);
+
+CREATE TABLE owl_project
+(
+    id                   bigint,
+    name                 varchar(1000)  NULL ,
+    contents             text NULL ,
+    folder_yn            char(1) NULL,
+    admin_id             bigint NULL,
+    start_date           varchar(20) NULL,
+    end_date             varchar(20) NULL,
+    parent_id            bigint NULL,
+    status_id            bigint NULL,
+    created_by           varchar(50) NOT NULL,
+    created_date         timestamp NULL,
+    last_modified_by     varchar(50) NULL,
+    last_modified_date   timestamp NULL
+);
+
+CREATE TABLE owl_project_trace_log
+(
+    id                   bigint,
+    project_id           bigint NULL ,
+    trace_log_id         bigint NULL ,
+    created_by           varchar(50)  NOT NULL,
+    created_date         timestamp  NULL,
+    last_modified_by     varchar(50)  NULL,
+    last_modified_date   timestamp  NULL
+);
+
+CREATE TABLE owl_project_attached_file
+(
+    id                   bigint,
+    project_id           bigint  NULL ,
+    attached_file_id     bigint  NULL ,
+    created_by           varchar(50)  NOT NULL,
+    created_date         timestamp  NULL,
+    last_modified_by     varchar(50)  NULL,
+    last_modified_date   timestamp  NULL
+);
+
+CREATE TABLE owl_project_user
+(
+    id                   bigint,
+    project_id           bigint  NULL ,
+    user_id              bigint  NULL ,
+    created_by           varchar(50)  NOT NULL,
+    created_date         timestamp  NULL,
+    last_modified_by     varchar(50)  NULL,
+    last_modified_date   timestamp  NULL
+);
+
+CREATE TABLE owl_code
+(
+    id                   bigint,
+    name                 varchar(1000)  NULL ,
+    default_yn           char(1)  NULL ,
+    position             integer NULL,
+    color                varchar(255)  NULL ,
+    code_type            varchar(50)  NULL ,
+    created_by           varchar(50)  NOT NULL,
+    created_date         timestamp  NULL,
+    last_modified_by     varchar(50)  NULL,
+    last_modified_date   timestamp  NULL
+);
+
+CREATE TABLE owl_notification
+(
+    id                              bigint,
+    title                           varchar(255) NOT NULL,
+    contents                        text  NULL ,
+    sender_id                       bigint null,
+    notification_method             varchar(255) NULL,
+    notification_config             varchar(255) NULL,
+    notification_type               varchar(255) NULL,
+    notification_level_name         varchar(255) NULL,
+    notification_level_display_time integer NULL,
+    notification_level_color        varchar(255) NULL,
+    created_by                      varchar(50)  NOT NULL,
+    created_date                    timestamp  NULL,
+    last_modified_by                varchar(50)  NULL,
+    last_modified_date              timestamp  NULL
+);
+
+
+CREATE TABLE owl_notification_recipient
+(
+    id                   bigint,
+    notification_id      bigint  NULL ,
+    recipient_id         bigint  NULL ,
+    read_yn              char(1) NULL ,
+    created_by           varchar(50)  NOT NULL,
+    created_date         timestamp  NULL,
+    last_modified_by     varchar(50)  NULL,
+    last_modified_date   timestamp  NULL
 );
 
 
@@ -91,7 +447,24 @@ INSERT INTO owl_sequence (seq_id, seq_value)
 VALUES
     ('owl_user_id',10000),
     ('owl_social_user_connection_id',10000),
-    ('owl_persistent_audit_event_id',10000)
+    ('owl_persistent_audit_event_id',10000),
+    ('owl_company_id',10000),
+    ('owl_department_id',10000),
+    ('owl_menu_id',10000),
+    ('owl_menu_permission_id',10000),
+    ('owl_permission_id',10000),
+    ('owl_permission_category_id',10000),
+    ('owl_system_role_id',10000),
+    ('owl_system_role_permission_id',10000),
+    ('owl_system_role_user_id',10000),
+    ('owl_task',10000),
+    ('owl_code',10000),
+    ('owl_task_attached_file',10000),
+    ('owl_task_id',10000),
+    ('owl_code_id',10000),
+    ('owl_task_attached_file_id',10000),
+    ('owl_notification_id',10000),
+    ('owl_notification_recipient_id',10000)
 ;
 
 INSERT INTO owl_authority (name)
@@ -115,5 +488,4 @@ VALUES
     (2,'anonymoususer','$2a$10$j8S5d7Sr7.8VTOYNviDPOeWX8KcYILUVJBsYV83Y5NtECayypx9lO','Anonymous','anonymous@localhost',B'1'::bit(1),'ko','system'),
     (3,'admin','$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC','Administrator','admin@localhost',B'1'::bit(1),'ko','system'),
     (4,'user','$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K','User','user@localhost',B'1'::bit(1),'ko','system')
-
 ;

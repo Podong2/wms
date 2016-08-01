@@ -55,15 +55,15 @@
                             </div>
 
                             <!-- 종료날짜 -->
-                            <div class="col-md-6" ng-if="summary[1].key == 'dueDate'">
+                            <div class="col-md-6" ng-if="summary[1].key == 'endDate'">
                                 <div class="row">
                                     <div class=" col-md-6" ng-show="summary[1].name != ''" translate="{{ summary[1].name }}"></div>
                                     <div class="col-md-6" ng-show="summary[1].name != '' && !summary[1].renderer" id="datePickerSection">
                                         <span class="dateValueSection cursor" date-picker-edit-toggle>{{ (vm.responseData[summary[1].key] | date:"yyyy-MM-dd HH:mm") || 'empty' }}</span>
                                         <div class="input-group datePickerSection">
-                                            <input type="text" class="form-control date-focusing" datetime-picker="yyyy-MM-dd HH:mm" edit-state="true" ng-model="vm.responseData.dueDate" is-open="vm.dueDate.open" id="field_dueDate" enter-submit="vm.save()"/>
+                                            <input type="text" class="form-control date-focusing" datetime-picker="yyyy-MM-dd HH:mm" edit-state="true" ng-model="vm.responseData.endDate" is-open="vm.endDate.open" id="field_dueDate" enter-submit="vm.save()"/>
                                             <span class="input-group-btn">
-                                              <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDate')"><i class="fa fa-calendar"></i></button>
+                                              <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'endDate')"><i class="fa fa-calendar"></i></button>
                                             </span>
                                         </div>
                                     </div>

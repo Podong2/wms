@@ -1,13 +1,11 @@
 package kr.wisestone.wms.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.Document;
 
-import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
@@ -39,23 +37,48 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
     @Column(name = "name")
     private String name;
 
-    @Column(name = "due_date")
-    private String dueDate;
+    @Column(name = "start_date")
+    private String startDate;
+
+    @Column(name = "end_date")
+    private String endDate;
 
     @Column(name = "contents")
     private String contents;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "severity_id")
-    private Code severity;
+    @JoinColumn(name = "status_id")
+    private Code status;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     private Set<TaskAttachedFile> taskAttachedFiles = new HashSet<>();
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    private Task parent;
+
+    @OneToMany(mappedBy = "parent")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<Task> subTasks = new HashSet<>();
+
+    @Column(name = "important_yn")
+    @Type(type="yes_no")
+    private Boolean importantYn = Boolean.FALSE;
+
+    @Column(name = "template_yn")
+    @Type(type="yes_no")
+    private Boolean templateYn = Boolean.FALSE;
+
     @ManyToOne
     @JoinColumn(name = "assignee_id")
     private User assignee;
+
+    @OneToMany(mappedBy = "task")
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<TaskUser> taskUsers = new HashSet<>();
 
     @Override
     public Long getId() {
@@ -74,12 +97,12 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
         this.name = name;
     }
 
-    public String getDueDate() {
-        return dueDate;
+    public String getEndDate() {
+        return endDate;
     }
 
-    public void setDueDate(String dueDate) {
-        this.dueDate = dueDate;
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
     }
 
     public String getContents() {
@@ -90,12 +113,12 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
         this.contents = contents;
     }
 
-    public Code getSeverity() {
-        return severity;
+    public Code getStatus() {
+        return status;
     }
 
-    public void setSeverity(Code code) {
-        this.severity = code;
+    public void setStatus(Code code) {
+        this.status = code;
     }
 
     public Set<TaskAttachedFile> getTaskAttachedFiles() {
@@ -112,6 +135,54 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
 
     public void setAssignee(User assignee) {
         this.assignee = assignee;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public Task getParent() {
+        return parent;
+    }
+
+    public void setParent(Task parent) {
+        this.parent = parent;
+    }
+
+    public Set<Task> getSubTasks() {
+        return subTasks;
+    }
+
+    public void setSubTasks(Set<Task> subTasks) {
+        this.subTasks = subTasks;
+    }
+
+    public Boolean getImportantYn() {
+        return importantYn;
+    }
+
+    public void setImportantYn(Boolean importantYn) {
+        this.importantYn = importantYn;
+    }
+
+    public Boolean getTemplateYn() {
+        return templateYn;
+    }
+
+    public void setTemplateYn(Boolean templateYn) {
+        this.templateYn = templateYn;
+    }
+
+    public Set<TaskUser> getTaskUsers() {
+        return taskUsers;
+    }
+
+    public void setTaskUsers(Set<TaskUser> taskUsers) {
+        this.taskUsers = taskUsers;
     }
 
     @Override
@@ -153,7 +224,7 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
         return "Task{" +
             "id=" + id +
             ", name='" + name + "'" +
-            ", dueDate='" + dueDate + "'" +
+            ", endDate='" + endDate + "'" +
             ", contents='" + contents + "'" +
             '}';
     }

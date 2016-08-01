@@ -20,9 +20,9 @@
                 <div id="datePickerSection">
                     date type : <span class="dateValueSection cursor" date-picker-edit-toggle>{{ (vm.user.dob | date:"yyyy-MM-dd HH:mm") || 'empty' }}</span>
                     <div class="input-group datePickerSection">
-                        <input type="text" class="form-control date-focusing" datetime-picker="yyyy-MM-dd HH:mm" edit-state="true" ng-model="vm.user.dob" is-open="vm.dueDate.open" id="field_dueDate" enter-submit="vm.save()"/>
+                        <input type="text" class="form-control date-focusing" datetime-picker="yyyy-MM-dd HH:mm" edit-state="true" ng-model="vm.user.dob" is-open="vm.endDate.open" id="field_dueDate" enter-submit="vm.save()"/>
                                                 <span class="input-group-btn">
-                                                  <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDate')"><i class="fa fa-calendar"></i></button>
+                                                  <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'endDate')"><i class="fa fa-calendar"></i></button>
                                                 </span>
                     </div>
                 </div><br/>

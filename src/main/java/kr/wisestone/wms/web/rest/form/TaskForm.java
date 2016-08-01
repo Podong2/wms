@@ -15,11 +15,13 @@ public class TaskForm {
 
     private String name;
 
-    private String dueDate;
+    private String startDate;
+
+    private String endDate;
 
     private String contents;
 
-    private Long severityId;
+    private Long statusId;
 
     private Long assigneeId;
 
@@ -28,12 +30,13 @@ public class TaskForm {
     public Task bind(Task task) {
 
         task.setName(this.name);
-        task.setDueDate(this.dueDate);
+        task.setStartDate(this.startDate);
+        task.setEndDate(this.endDate);
         task.setContents(this.contents);
 
-        Code severity = new Code();
-        severity.setId(this.severityId);
-        task.setSeverity(severity);
+        Code status = new Code();
+        status.setId(this.statusId);
+        task.setStatus(status);
 
         User assignee = new User();
         assignee.setId(this.assigneeId);

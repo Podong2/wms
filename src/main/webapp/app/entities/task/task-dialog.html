@@ -35,24 +35,24 @@
                     </th>
                     <th class="text-center width-160-p"><span translate="global.assignee">담당자</span>
                     </th>
-                    <th class="text-center width-60-p"><span translate="wmsApp.task.dueDate">Due Date</span></th>
+                    <th class="text-center width-60-p"><span translate="wmsApp.task.endDate">Due Date</span></th>
                 </tr>
                 </thead>
                 <tbody>
                 <tr ng-repeat="task in vm.similarTasks">
                     <td class="width-200-p">{{task.name}}</td>
                     <td class="text-center width-160-p">{{task.assigneeName}}</td>
-                    <td class="text-center width-60-p">{{task.dueDate}}</td>
+                    <td class="text-center width-60-p">{{task.endDate}}</td>
                 </tr>
                 </tbody>
             </table>
         </div>
         <div class="form-group">
-            <label class="control-label" translate="wmsApp.task.dueDate" for="field_dueDate">Due Date</label>
+            <label class="control-label" translate="wmsApp.task.endDate" for="field_dueDate">Due Date</label>
             <p class="input-group width-220-p">
-                <input type="text" class="form-control" datetime-picker="yyyy-MM-dd HH:mm" ng-model="vm.dueDate.date" is-open="vm.dueDate.open" id="field_dueDate" value="{{vm.dueDate.date}}" enter-submit="vm.save()"/>
+                <input type="text" class="form-control" datetime-picker="yyyy-MM-dd HH:mm" ng-model="vm.endDate.date" is-open="vm.endDate.open" id="field_dueDate" value="{{vm.endDate.date}}" enter-submit="vm.save()"/>
                 <span class="input-group-btn">
-                  <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDate')"><i class="fa fa-calendar"></i></button>
+                  <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'endDate')"><i class="fa fa-calendar"></i></button>
                 </span>
             </p>
         </div>

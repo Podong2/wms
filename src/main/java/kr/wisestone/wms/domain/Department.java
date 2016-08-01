@@ -42,6 +42,10 @@ public class Department extends AbstractAuditingEntity implements Serializable {
     @Column(name = "status")
     private String status;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_id")
+    private Department parent;
+
     @OneToMany(mappedBy = "parent")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -50,10 +54,6 @@ public class Department extends AbstractAuditingEntity implements Serializable {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "company_id")
     private Company company;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id")
-    private Department parent;
 
     public Long getId() {
         return id;

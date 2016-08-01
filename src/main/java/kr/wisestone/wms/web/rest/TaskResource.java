@@ -16,20 +16,13 @@ import kr.wisestone.wms.web.rest.util.PaginationUtil;
 import kr.wisestone.wms.web.rest.dto.TaskDTO;
 import kr.wisestone.wms.web.rest.mapper.TaskMapper;
 import org.elasticsearch.common.unit.Fuzziness;
-import org.elasticsearch.index.query.FilteredQueryBuilder;
 import org.elasticsearch.index.query.MatchQueryBuilder;
-import org.elasticsearch.index.query.MoreLikeThisQueryBuilder;
-import org.elasticsearch.index.query.QueryBuilder;
-import org.hibernate.Hibernate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
-import org.springframework.data.elasticsearch.core.query.MoreLikeThisQuery;
-import org.springframework.data.elasticsearch.core.query.NativeSearchQuery;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
 import org.springframework.http.HttpHeaders;
@@ -45,12 +38,8 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -285,9 +274,9 @@ public class TaskResource {
 
             Task task = new Task();
             task.setName("task-"+i);
-            task.setDueDate("2016-07-01");
+            task.setEndDate("2016-07-01");
             task.setContents("1231231234123");
-            task.setSeverity(code);
+            task.setStatus(code);
             task.setAssignee(user);
 
             this.taskRepository.save(task);

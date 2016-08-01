@@ -1,12 +1,16 @@
 package kr.wisestone.wms.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.util.ClassUtils;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Table(name = "owl_trace_log")
@@ -43,6 +47,20 @@ public class TraceLog extends AbstractAuditingEntity {
 
     @Column(name = "new_value")
     private String newValue;
+
+    @Column(name = "etc_value")
+    private String etcValue;
+
+    @Column(name = "reply_yn")
+    @Type(type="yes_no")
+    private Boolean replyYn = Boolean.FALSE;
+
+    @Column(name = "attached_file_id")
+    private Long attachedFileId;
+
+    @OneToMany(mappedBy = "traceLog", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    private Set<TraceLogAttachedFile> traceLogAttachedFiles = new HashSet<>();
 
     @Transient
     private Traceable entity;
