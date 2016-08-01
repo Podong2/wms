@@ -17,4 +17,4 @@ reloadState.$inject=['$rootScope'];
             })
         }
     }
-}
+}// 아직 미파악

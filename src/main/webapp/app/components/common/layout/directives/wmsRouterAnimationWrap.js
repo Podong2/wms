@@ -77,4 +77,4 @@ wmsRouterAnimationWrap.$inject=['$rootScope', '$timeout'];
 
         }
     }
-}
+} // 톱니바퀴 제어

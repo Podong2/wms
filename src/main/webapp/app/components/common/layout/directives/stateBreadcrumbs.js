@@ -52,4 +52,4 @@ stateBreadcrumbs.$inject=['$rootScope', '$state'];
             })
         }
     }
-}
+}// 네비게이션 바 설정

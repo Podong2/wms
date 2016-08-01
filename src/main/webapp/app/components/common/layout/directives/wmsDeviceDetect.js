@@ -22,4 +22,4 @@ angular.module('wmsApp').directive('wmsDeviceDetect', function () {
 
         }
     }
-});
+}); // 모바일 체크

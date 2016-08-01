@@ -12,4 +12,4 @@ angular.module('wmsApp').directive('loginInfo', function(){
             }
         }
     }
-})
+});
