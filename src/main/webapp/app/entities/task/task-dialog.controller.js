@@ -5,9 +5,9 @@
         .module('wmsApp')
         .controller('TaskDialogController', TaskDialogController);
 
-    TaskDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Task', 'Code', 'TaskAttachedFile', 'User', '$log', 'TaskEdit', 'findUser', '$q', 'DateUtils', 'AlertService', 'toastr', '$http', '$state', 'parameter'];
+    TaskDialogController.$inject = ['$timeout', '$scope', '$stateParams', '$uibModalInstance', 'entity', 'Task', 'Code', 'TaskAttachedFile', 'User', '$log', 'TaskEdit', 'findUser', '$q', 'DateUtils', 'AlertService', 'toastr', '$http', '$state'];
 
-    function TaskDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Task, Code, TaskAttachedFile, User, $log, TaskEdit, findUser, $q, DateUtils, AlertService, toastr, $http, $state, parameter) {
+    function TaskDialogController ($timeout, $scope, $stateParams, $uibModalInstance, entity, Task, Code, TaskAttachedFile, User, $log, TaskEdit, findUser, $q, DateUtils, AlertService, toastr, $http, $state) {
         var vm = this;
         vm.task = entity;
         vm.clear = clear;

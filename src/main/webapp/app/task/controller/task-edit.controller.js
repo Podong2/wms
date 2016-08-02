@@ -31,7 +31,7 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
                 endDate : '',
                 contents : '',
                 statusId : '', //상태
-                importantYn : '', //중요여부
+                importantYn : false, //중요여부
                 assigneeIds : [],
                 watcherIds : []
 
@@ -110,10 +110,12 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
                 $uibModalInstance.dismiss('cancel');
             }
 
+            /* task 명 만으로 저장 */
             function save(){
                 if(vm.task.name != '') Task.save(vm.task, onSaveSuccess, onSaveError);
             }
 
+            /* 타스크의 서브타스크 등록 */
             function subTaskSave(){
                 if(vm.subTask.name != '') SubTask.save(vm.subTask, onSubTaskSaveSuccess, onSaveError);
             }
@@ -156,9 +158,6 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
             };
 
             function taskUpload(){
-                /* user picker info */
-                //$scope.assigneeUser = [];
-                //$scope.watchers = [];
                 if($scope.assigneeUser != [])userIdPush($scope.assigneeUser, "assigneeIds");
                 if($scope.watchers != [])userIdPush($scope.watchers, "watcherIds");
                 $log.debug("vm.task ;::::::", vm.task);

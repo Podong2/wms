@@ -1873,3 +1873,11 @@ i:active, .i:active, i:focus, .i:focus{
     border-top: 1px solid #e0e0e0;
     position: relative;
 }
+tags-input .tags {
+    border:0;
+    box-shadow: none;
+}
+tags-input .tags:hover, tags-input .tags:focus {
+    border: 1px solid darkgray;
+    box-shadow: 1px 1px 1px 0 lightgray inset;
+}

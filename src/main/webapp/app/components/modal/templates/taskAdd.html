@@ -4,7 +4,7 @@
     <div class="row">
         <div class="col-md-12">
             <div class="col-md-9">
-                <i class="fa fa-exclamation-circle task-circle"></i>
+                <i class="fa fa-exclamation-circle task-circle" ng-class="vm.task.importantYn ? 'on' : ''" ng-click="vm.task.importantYn = !vm.task.importantYn"></i>
                 <input type="text" class="taskAddInput" ng-model="vm.task.name" enter-submit="vm.save()" placeholder="Task"/>
             </div>
             <div class="col-md-3">
@@ -96,8 +96,7 @@
                 <div class="col-md-5" style="">
                     <div class="row">
                         <div class="col-md-12" style="    padding: 7px;">
-                            <autocomplete source="loadData" tags="assigneeUser" display-property="name" multiple="true" max-results-to-show="20"></autocomplete>
-                            {{assigneeUser}}
+                            <autocomplete source="loadData" tags="assigneeUser" display-property="name" multiple="true" max-results-to-show="20" placeholder="add Assignee User"></autocomplete>
 
                         </div>
                     </div>
@@ -105,8 +104,7 @@
                 <div class="col-md-5">
                     <div class="row">
                         <div class="col-md-12" style="    padding: 7px;">
-                            <autocomplete source="loadData" tags="watchers" display-property="name" multiple="true" max-results-to-show="20"></autocomplete>
-                            {{watchers}}
+                            <autocomplete source="loadData" tags="watchers" display-property="name" multiple="true" max-results-to-show="20" placeholder="add Watchers"></autocomplete>
                         </div>
                     </div>
                 </div>
@@ -204,7 +202,7 @@
 
     </div>
 </div>
-<div class="modal-footer">
+<div class="modal-footer" ng-show="vm.task.id !=''">
     <button type="button" class="btn btn_icon btn_customs" ng-click="vm.taskUpload()" owl-btn-save></button>
     <button type="button" class="btn btn_icon btn_customs2" ng-click="cancel()" owl-btn-cancel></button>
 </div>

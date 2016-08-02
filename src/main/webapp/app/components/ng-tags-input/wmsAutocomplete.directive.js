@@ -18,7 +18,8 @@ function autocomplete($document, $log, $compile, findUser, $q) {
             tags : '=',
             displayProperty : '@',
             multiple : '@',
-            maxResultsToShow : '@'
+            maxResultsToShow : '@',
+            placeholder : '@'
         },
         replace: false,
         templateUrl : 'app/components/ng-tags-input/tagsInput.html',
