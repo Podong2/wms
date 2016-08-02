@@ -2,11 +2,13 @@ angular.module('wmsApp')
     .directive('toggleEvent', toggleEvent)
     .directive('sectionToggle', sectionToggle)
     .directive('datePickerEditToggle', datePickerEditToggle)
-    .directive('userPickerEditToggle', userPickerEditToggle);
+    .directive('userPickerEditToggle', userPickerEditToggle)
+    .directive('projectPickerEditToggle', projectPickerEditToggle);
 toggleEvent.$inject=['$compile', '$filter', '$log', '$sce', '$timeout'];
 sectionToggle.$inject=['$timeout', '$rootScope'];
 datePickerEditToggle.$inject=['$timeout'];
 userPickerEditToggle.$inject=['$timeout'];
+projectPickerEditToggle.$inject=['$timeout'];
 function toggleEvent($compile, $filter, $log, $sce, $timeout) {
 
     return {
@@ -86,6 +88,26 @@ function userPickerEditToggle($timeout) {
             element.on('click', function(_this) {
                 $timeout(function () {
                     $(".user-focusing").focus();
+                }, 400);
+            });
+        }
+    }
+}
+function projectPickerEditToggle($timeout) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attr) {
+            $('body').click(function (e) {
+                if ($('.projectPickerSection').addClass("on"), $('.projectValueSection').addClass("on")) {
+                    if (!$('#projectPickerSection').has(e.target).length) {
+                        $('.projectPickerSection').removeClass("on");
+                        $('.projectValueSection').removeClass("on");
+                    }
+                }
+            });
+            element.on('click', function(_this) {
+                $timeout(function () {
+                    $(".project-focusing").focus();
                 }, 400);
             });
         }

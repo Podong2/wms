@@ -1,0 +1,152 @@
+<owl-alert-close></owl-alert-close>
+
+<div class="modal-body" dynamic-scroll style="overflow-y: auto; padding: 15px;">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-9">
+                <i class="fa fa-exclamation-circle task-circle"></i>
+                <input type="text" class="taskAddInput" ng-model="vm.task.name" ng-enter="vm.save()" ng-blur="vm.save()" placeholder="Task"/>
+            </div>
+            <div class="col-md-3">
+                <span class="pull-right taskOptionBtnArea">
+                    <span class="taskModalBtn" ng-click="taskAddModalOpen()" class="pull-right">
+                        <i class="fa fa-arrows-alt"></i>
+                    </span>
+                    <span class="taskModalBtn" ng-click="taskAddModalOpen()" class="pull-right">
+                        <i class="fa fa-flag"></i>
+                    </span>
+                    <span class="taskModalBtn" ng-click="taskAddModalOpen()" class="pull-right">
+                        <i class="fa fa-link"></i>
+                    </span>
+                    <span class="taskModalBtn" ng-click="taskAddModalOpen()" class="pull-right">
+                        <i class="fa fa-print"></i>
+                    </span>
+                    <span class="taskModalBtn" ng-click="taskAddModalOpen()" class="pull-right">
+                        <i class="fa fa-ellipsis-v"></i>
+                    </span>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div ng-class="viewTypeClass" style="margin-top: 10px">
+        <div id="projectPickerSection">
+            <label for="addProject" class="cursor projectValueSection" project-picker-edit-toggle><i class="fa fa-plus" id="addProject"></i> <span>Project/Folder Add</span></label>
+
+            <div class="project-picker projectPickerSection">
+                <div style="width: 300px;">
+                    <div style="width: 300px;">
+                        <div class="project-picker-search">
+                            <input class="project-picker-search-input" type="text" placeholder="Add to folder/project">
+                        </div>
+                        <div class="project-picker-list-area">
+                            <div class="project-picker-list">
+                                <div>
+                                    <div class="project-picker-list-item">
+                                        <div>
+                                            <div class="project-picker-list-item-title">My Project</div>
+                                            <div class="project-picker-list-item-path" >
+                                                <div>My Project</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="project-picker-list-item">
+                                        <div>
+                                            <div class="project-picker-list-item-title">My Project</div>
+                                            <div class="project-picker-list-item-path" >
+                                                <div>My Project</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- task 상태, 담당자, 참조자 선택 영역 -->
+        <div style="clear: both;
+                                        border-top: 1px solid #e0e0e0;
+                                        position: relative;">
+            <div class="row">
+                <div class="col-md-2">
+                    <label class="custom-control custom-checkbox" style="margin-bottom: 0;">
+                        <input type="checkbox" class="custom-control-input">
+                        <!--<span class="custom-control-indicator"></span>-->
+                        <!--<span class="custom-control-description">Check this custom checkbox</span>-->
+                        <ol class="nya-bs-select " ng-model="vm.task.severityId" style="width: 90px;">
+                            <li nya-bs-option="option in vm.codes" title="{{option.name}}" data-value="option.id">
+                                <a>
+                                    {{ option.name }}
+                                    <span class="glyphicon glyphicon-ok check-mark"></span>
+                                </a>
+                            </li>
+                        </ol>
+                    </label>
+                    <wms-select-box
+                        ng-model="vm.arrayCollection"
+                        selected-value="vm.selectedValue"
+                        dataSize="5"
+                        dataLiveSearch="true"
+                    ></wms-select-box>
+
+                </div>
+                <div class="col-md-5" style="    height: 30px;">
+                    <div class="row">
+                        <div class="col-md-3" style="background: #ddd;    text-align: center;    padding: 7px;    vertical-align: middle;">담당자</div>
+                        <div class="col-md-9" style="    padding: 7px;">+</div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="row">
+                        <div class="col-md-3" style="background: #ddd;    text-align: center;    padding: 7px;    vertical-align: middle;">참조자</div>
+                        <div class="col-md-9" style="    padding: 7px;">+</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div style="clear: both;
+                                        border-top: 1px solid #e0e0e0;
+                                        position: relative;">
+            <div>
+                <div class="row task-options">
+                    <div class="col-md-2">
+                        <i class="fa fa-calendar-check-o"></i> 일정
+                    </div>
+                    <div class="col-md-3">
+                        <i class="fa fa-flag"></i> 하위 작업 추가
+                    </div>
+                    <div class="col-md-2">
+                        <i class="fa fa-flag"></i> 파일 첨부
+                    </div>
+                    <div class="col-md-2">
+                        <i class="fa fa-flag"></i> 작업선 연결
+                    </div>
+                    <div class="col-md-3">
+                        <i class="fa fa-flag"></i> 단계별 담당자
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <summernote ng-model="text" on-init="init()" on-enter="enter()" on-focus="focus(evt)" config="dataService.getSummerNoteOptions(true)"
+                    on-blur="blur(evt)" on-paste="paste()" on-keyup="keyup(evt)" contenteditable="true"
+                    on-keydown="keydown(evt)" on-change="change(contents)"
+                    on-image-upload="imageUpload(files)" editable="editable" editor="editor" lang="ko-KR">
+        </summernote>
+
+    </div>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn_icon btn_customs" style="background-color:#028edd;color: #FFFFFF;" owl-btn-update></button>
+    <button type="button" class="btn btn_icon btn_customs" style="background-color:#028edd;color: #FFFFFF;" owl-btn-save></button>
+    <button type="button" class="btn btn_icon btn_customs2" ng-click="cancel()" owl-btn-cancel></button>
+</div>

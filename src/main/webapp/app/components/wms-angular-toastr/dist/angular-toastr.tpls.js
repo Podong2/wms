@@ -471,10 +471,10 @@
       };
 
         scope.ok = function(){
-            $rootScope.$broadcast("ok");
+            $rootScope.$broadcast("toastr-ok");
         };
         scope.no = function(){
-            $rootScope.$broadcast("no");
+            $rootScope.$broadcast("toastr-no");
         };
 
       scope.close = function (wasClicked, $event) {

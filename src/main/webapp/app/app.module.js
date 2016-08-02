@@ -65,7 +65,8 @@
             'gantt.resizeSensor',
             'mgcrea.ngStrap',
             'mgcrea.ngStrap.collapse',
-            'dndLists'
+            'dndLists',
+            'bgDirectives'
         ])
         .config(config)
         .run(run);

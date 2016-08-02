@@ -70,7 +70,8 @@
     "moment-range": "^2.2.0",
     "element-queries": "element-queries-css#^0.2.3",
     "angular-drag-and-drop-lists": "^1.4.0",
-    "angular-summernote": "^0.8.1"
+    "angular-summernote": "^0.8.1",
+    "bg-splitter": "*"
   },
   "devDependencies": {
     "angular-mocks": "1.5.5"
