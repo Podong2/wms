@@ -96,7 +96,7 @@
                 <div class="col-md-5" style="">
                     <div class="row">
                         <div class="col-md-12" style="    padding: 7px;">
-                            <autocomplete source="loadData" tags="assigneeUser" display-property="name" multiple="true" max-results-to-show="20" placeholder="add Assignee User"></autocomplete>
+                            <autocomplete source="findUsers" tags="assigneeUser" display-property="name" multiple="true" max-results-to-show="20" placeholder="add Assignee User"></autocomplete>
 
                         </div>
                     </div>
@@ -104,7 +104,7 @@
                 <div class="col-md-5">
                     <div class="row">
                         <div class="col-md-12" style="    padding: 7px;">
-                            <autocomplete source="loadData" tags="watchers" display-property="name" multiple="true" max-results-to-show="20" placeholder="add Watchers"></autocomplete>
+                            <autocomplete source="findUsers" tags="watchers" display-property="name" multiple="true" max-results-to-show="20" placeholder="add Watchers"></autocomplete>
                         </div>
                     </div>
                 </div>
@@ -177,13 +177,17 @@
                         <i class="fa fa-flag"></i> 단계별 담당자
                     </div>
                 </div>
-                <div class="sub-task-area">
+                <div class="sub-task-area" style="border-top: 1px solid #ddd">
                     <div ng-repeat="list in vm.subTaskList" ng-show="vm.subTaskList != []">
                         {{list.name}}
                     </div>
                     <div class="add-sub-task">
                         <input type="text" class="" ng-model="vm.subTask.name" enter-submit="vm.subTaskSave()" placeholder="Sub Task"/>
                     </div>
+                </div>
+                <div style="border-top: 1px solid #ddd">
+                    <autocomplete source="findTasks" tags="relatedTaskList" display-property="name" multiple="true" max-results-to-show="20" placeholder="작업선 연결 타스크 검색"></autocomplete>
+                    {{relatedTaskList}}
                 </div>
             </div>
         </div>

@@ -5,8 +5,8 @@
 
 angular.module('wmsApp')
     .controller("taskEditCtrl", taskEditCtrl);
-taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'toastr', '$state', '$timeout', 'DateUtils', 'SubTask', 'Principal', 'findUser', '$q', 'TaskEdit'];
-        function taskEditCtrl($scope, $uibModalInstance, Code, $log, Task, toastr, $state, $timeout, DateUtils, SubTask, Principal, findUser, $q, TaskEdit) {
+taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'toastr', '$state', '$timeout', 'DateUtils', 'SubTask', 'Principal', 'findUser', '$q', 'TaskEdit', 'FindTasks'];
+        function taskEditCtrl($scope, $uibModalInstance, Code, $log, Task, toastr, $state, $timeout, DateUtils, SubTask, Principal, findUser, $q, TaskEdit, FindTasks) {
             var vm = this;
             vm.save = save;
             vm.subTaskSave = subTaskSave;
@@ -22,6 +22,7 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
             /* user picker info */
             $scope.assigneeUser = [];
             $scope.watchers = [];
+            $scope.relatedTaskList = [];
 
             /* task info */
             vm.task = {
@@ -33,7 +34,8 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
                 statusId : '', //상태
                 importantYn : false, //중요여부
                 assigneeIds : [],
-                watcherIds : []
+                watcherIds : [],
+                relatedTaskIds : []
 
             };
 
@@ -147,7 +149,8 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
                 $scope.tags =[];
             }
 
-            $scope.loadData = function(name) {
+            /* user picker */
+            $scope.findUsers = function(name) {
                 $log.debug("name - : ", name);
                 var deferred = $q.defer();
                 findUser.findByName(name).then(function(result){
@@ -157,9 +160,22 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
                 return deferred.promise;
             };
 
+            /* task picker */
+            $scope.findTasks = function(name) {
+                $log.debug("name - : ", name);
+                var deferred = $q.defer();
+                FindTasks.findByName(name).then(function(result){
+                    deferred.resolve(result);
+                    $log.debug("taskList : ", result);
+                }); //user search
+                return deferred.promise;
+            };
+
             function taskUpload(){
                 if($scope.assigneeUser != [])userIdPush($scope.assigneeUser, "assigneeIds");
                 if($scope.watchers != [])userIdPush($scope.watchers, "watcherIds");
+                if($scope.relatedTaskList != [])userIdPush($scope.relatedTaskList, "relatedTaskIds");
+
                 $log.debug("vm.task ;::::::", vm.task);
                 TaskEdit.uploadTask({
                     method : "POST",

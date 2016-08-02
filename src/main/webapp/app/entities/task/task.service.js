@@ -4,11 +4,13 @@
         .module('wmsApp')
         .factory('Task', Task)
         .factory('SubTask', SubTask)
+        .factory('FindTasks', FindTasks)
         .factory('TaskRemove', TaskRemove)
         .factory('TaskEdit', TaskEdit);
 
     Task.$inject = ['$resource'];
     SubTask.$inject = ['$resource'];
+    FindTasks.$inject = ['$http', '$log', '$q'];
     TaskRemove.$inject = ['$resource'];
     TaskEdit.$inject = ['$log', '$upload', '$http', '$q'];
 
@@ -64,6 +66,25 @@
             },
             'update': { method:'PUT' }
         });
+    }
+
+    function FindTasks($http, $log, $q){
+        var service = {
+            findByName : findByName
+        }
+        return service;
+
+        function findByName(name){
+            var deferred = $q.defer();
+            $http({
+                url :'/api/tasks/findByName',
+                params : {name : name}
+            }).success(function (result) {
+                deferred.resolve(result);
+                $log.debug("find by Tasks : ", result);
+            });
+            return deferred.promise;
+        }
     }
 
     function TaskEdit($log, $upload, $http, $q){
