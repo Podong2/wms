@@ -97,7 +97,7 @@ public class TaskResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<TaskDTO> createSubTask(TaskForm taskForm) throws URISyntaxException {
+    public ResponseEntity<TaskDTO> createSubTask(@RequestBody TaskForm taskForm) throws URISyntaxException {
         log.debug("REST request to save Task : {}", taskForm);
         if (taskForm.getId() != null) {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("task", "idexists", "A new task cannot already have an ID")).body(null);
