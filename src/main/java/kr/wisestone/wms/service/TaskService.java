@@ -116,22 +116,20 @@ public class TaskService {
         if(taskCondition.getListType().equals(TaskCondition.LIST_TYPE_TODAY)) {
 
             predicate.and($task.startDate.lt(today));
-            predicate.and($task.status.defaultYn.eq(Boolean.TRUE));
+            predicate.and($task.status.isNull().or($task.status.id.eq(1L)));
 
         } else if(taskCondition.getListType().equals(TaskCondition.LIST_TYPE_SCHEDULED)) {
 
             predicate.and($task.startDate.gt(today));
-            predicate.and($task.status.defaultYn.eq(Boolean.TRUE));
+            predicate.and($task.status.id.eq(1L));
 
         } else if(taskCondition.getListType().equals(TaskCondition.LIST_TYPE_HOLD)) {
 
-            predicate.and($task.startDate.gt(today));
-            predicate.and($task.status.defaultYn.eq(Boolean.TRUE));
+            predicate.and($task.status.id.eq(3L));
 
         } else if(taskCondition.getListType().equals(TaskCondition.LIST_TYPE_COMPLETE)) {
 
-            predicate.and($task.startDate.gt(today));
-            predicate.and($task.status.defaultYn.eq(Boolean.TRUE));
+            predicate.and($task.status.id.eq(2L));
         }
 
         Page<Task> result = taskRepository.findAll(predicate, pageable);
@@ -270,5 +268,15 @@ public class TaskService {
         TaskDTO result = taskMapper.taskToTaskDTO(subTask);
 
         return result;
+    }
+
+    public List<TaskDTO> findByNameLike(String name) {
+        BooleanBuilder predicate = new BooleanBuilder();
+
+        predicate.and(QTask.task.name.contains(name));
+
+        List<Task> tasks = Lists.newArrayList(this.taskRepository.findAll(predicate));
+
+        return taskMapper.tasksToTaskDTOs(tasks);
     }
 }

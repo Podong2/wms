@@ -40,6 +40,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -177,6 +178,18 @@ public class TaskResource {
         Page<TaskDTO> page = taskService.findAll(taskCondition, PaginationUtil.applySort(pageable, Sort.Direction.ASC, "endDate"));
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/tasks");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/tasks/findByName",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<TaskDTO>> findByName(@RequestParam("name") String name) {
+        log.debug("REST request to get Task name : {}", name);
+
+        List<TaskDTO> taskDTOs = taskService.findByNameLike(name);
+
+        return new ResponseEntity<>(taskDTOs, HttpStatus.OK);
     }
 
     /**
