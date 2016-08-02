@@ -1,0 +1,83 @@
+<!--
+  ~ Copyright (c) 2016. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
+  -->
+<div id="content" ng-cloak>
+    <div class="layout-scroll" style="position: relative;
+    border: 1px solid #aaa; height: 1030px;">
+        <bg-splitter orientation="horizontal">
+
+            <bg-pane min-size="200">
+                <!--<div class="checkbox">-->
+                    <!--<label>-->
+                        <!--<input type="checkbox" ng-model="oneAtATime">-->
+                        <!--Open only one at a time-->
+                    <!--</label>-->
+                <!--</div>-->
+                <uib-accordion close-others="oneAtATime">
+                    <div uib-accordion-group class="panel-default" heading="Static Header, initially expanded" is-open="status.isFirstOpen" is-disabled="status.isFirstDisabled">
+<!--                        <wms-tree-list-grid tree-model="wmsTreeData3"
+                                            tree-scope="treeScope"
+                                            column-definitions="wmsTreeColumnDefinitions"
+                                            disabled="false"
+                                            enable-filter="false"
+                                            enable-sort="true"
+                                            enable-clone="false">
+                        </wms-tree-list-grid>-->
+                        <button ng-click="loadWmsTableData()">add</button>
+
+                        <wms-table ng-model="vm.wmsTableData" table-configs="vm.tableConfigs" update-callback="updateCallback"></wms-table>
+                    </div>
+                    <div uib-accordion-group class="panel-default" heading="오늘 작업 목록">
+<!--                        <wms-tree-list-grid tree-model="wmsTreeData2"
+                                       tree-scope="treeScope"
+                                       column-definitions="wmsTreeColumnDefinitions"
+                                       disabled="false"
+                                       enable-filter="false"
+                                       enable-sort="true"
+                                       enable-clone="false">
+                        </wms-tree-list-grid>-->
+                        <button ng-click="loadWmsTableData()">add</button>
+
+                        <wms-table ng-model="vm.wmsTableData" table-configs="vm.tableConfigs" update-callback="updateCallback"></wms-table>
+                    </div>
+                </uib-accordion>
+            </bg-pane>
+
+            <bg-pane min-size="330">
+            </bg-pane>
+
+        </bg-splitter>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

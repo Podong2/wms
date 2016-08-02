@@ -17,7 +17,8 @@
 
     function ModalService ($uibModal) {
         var service = {
-            open: open
+            open: open,
+            openModal : openModal
         };
         var modalInstance = null;
         var resetModal = function () {
@@ -26,13 +27,14 @@
 
         return service;
 
-        function open (viewTitle, viewMessage, url, callBack, callBackParameter, viewTypeClass) {
+        function open (viewTitle, viewMessage, url, controller, callBack, callBackParameter, viewTypeClass) {
             if (modalInstance !== null) return;
             modalInstance = $uibModal.open({
                 animation: true,
                 templateUrl: 'app/components/modal/templates/' + url,
-                controller: 'commonModalCtrl',
+                controller: controller,
                 controllerAs: 'vm',
+                size: "lg",
                 resolve: {
                     viewTitle : function () {
                         return viewTitle;
@@ -59,6 +61,21 @@
                 resetModal,
                 resetModal
             );
+        }
+        function openModal(parameter) {
+            modalInstance = $uibModal.open({
+                templateUrl: 'app/components/modal/templates/' + parameter.url,
+                controller: parameter.ctrl,
+                controllerAs: 'vm',
+                size: parameter.size,
+                backdrop : "static",
+                resolve: {
+                    parameter : function () {
+                        return parameter;
+                    }
+                }
+            });
+
         }
     }
 })();

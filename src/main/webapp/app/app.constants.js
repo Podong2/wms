@@ -4,7 +4,6 @@
     angular
         .module('wmsApp')
         .constant('VERSION', "0.0.1-SNAPSHOT")
-        .constant('DEBUG_INFO_ENABLED', true)
-        .constant('APP_CONFIG', window.appConfig)
+        .constant('DEBUG_INFO_ENABLED', false)
 ;
 })();

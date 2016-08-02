@@ -231,6 +231,40 @@
             "description": "설명설명설명설명설명설명556615566655555",
             "icon": "glyphicon glyphicon-align-justify"
         }];
+        $scope.wmsTreeData3 = [{
+            "id": 1,
+            "parentId": null,
+            "name": "가가가가가가가가",
+            "description": "설명설명설명설명설명설명1",
+            "icon": "glyphicon glyphicon-align-justify"
+        },
+        {
+            "id": 2,
+            "parentId": 1,
+            "name": "다다다다다다다다",
+            "description": "설명설명설명설명설명설명222222",
+            "icon": "glyphicon glyphicon-tag"
+        },
+        {
+            "id": 3,
+            "parentId": 2,
+            "name": "나나나나나나나나",
+            "description": "설명설명설명설명설명설명3333"
+        },
+        {
+            "id": 201,
+            "parentId": null,
+            "name": "라라라라라라라라",
+            "description": "설명설명설명설명설명설명4444444",
+            "icon": "glyphicon glyphicon-cog"
+        },
+        {
+            "id": 301,
+            "parentId": null,
+            "name": "마마마마마마마마",
+            "description": "설명설명설명설명설명설명556615566655555",
+            "icon": "glyphicon glyphicon-align-justify"
+        }];
 
         $scope.wmsTreeColumnDefinitions = [
             {
@@ -506,11 +540,11 @@
             toastr.error('Your credentials are gone', 'Error');
             toastr.warning('Your computer is about to explode!', 'Warning');
         }
-        $rootScope.$on("ok", function(){
-            alert("ok");
+        $rootScope.$on("toastr-ok", function(){
+            alert("toastr-ok");
         });
-        $rootScope.$on("no", function(){
-            alert("no");
+        $rootScope.$on("toastr-no", function(){
+            alert("toastr-no");
         });
 
 
@@ -1254,5 +1288,32 @@
         $scope.addKanbanTask = function() {
             $scope.kanbanScope.addKanbanCards(1, {name:"태스크 임시 외부", assignee: "담당자3", status:"status2"});
         };
+
+        $scope.oneAtATime = false;
+
+        $scope.groups = [
+            {
+                title: 'Dynamic Group Header - 1',
+                content: 'Dynamic Group Body - 1'
+            },
+            {
+                title: 'Dynamic Group Header - 2',
+                content: 'Dynamic Group Body - 2'
+            }
+        ];
+
+        $scope.items = ['Item 1', 'Item 2', 'Item 3'];
+
+        $scope.addItem = function() {
+            var newItemNo = $scope.items.length + 1;
+            $scope.items.push('Item ' + newItemNo);
+        };
+
+        $scope.status = {
+            isCustomHeaderOpen: false,
+            isFirstOpen: true,
+            isFirstDisabled: false
+        };
+
     }
 })();

@@ -1664,3 +1664,207 @@ i:active, .i:active, i:focus, .i:focus{
     margin: 0 3px;
 }
 /* ----------------------- dashboard style end ------------------------ */
+
+/*---------------------------- wms task table css ----------------------------*/
+.split-panes .panel-body{
+    padding:0;
+}
+.split-panes .panel-group .panel + .panel{
+    margin-top:0;
+}
+.split-panes .panel-default > .panel-heading{
+    border: 0;
+    box-shadow: none;
+}
+.wms-tree-node:first-child{
+    border-top: 0;
+}
+.wms-tree-node{
+    border-top: 1px solid #ddd;
+}
+.wms-tree-node, .wms-tree-node-list{
+    cursor: auto;
+}
+.wms-tree-node-list{
+    padding: 15px;
+}
+.split-panes.horizontal > .split-pane1, .split-panes.horizontal > .split-pane2{
+    overflow: hidden;
+    overflow-y: auto;
+}
+/*---------------------------- wms task table css end ----------------------------*/
+
+
+/*---------------------------- task Add button css ------------------------------*/
+.taskAddBtn {
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    cursor: default !important;
+    display: inline-block;
+    font-weight: 700;
+    height: 30px;
+    width: 30px;
+    padding: 2px;
+    text-align: center;
+    text-decoration: none !important;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    margin: 10px 0 0;
+    background-color: #f8f8f8;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#f8f8f8), to(#f1f1f1));
+    background-image: -webkit-linear-gradient(top, #f8f8f8, #f1f1f1);
+    background-image: -moz-linear-gradient(top, #f8f8f8, #f1f1f1);
+    background-image: -ms-linear-gradient(top, #f8f8f8, #f1f1f1);
+    background-image: -o-linear-gradient(top, #f8f8f8, #f1f1f1);
+    background-image: linear-gradient(top, #f8f8f8, #f1f1f1);
+    border: 1px solid #bfbfbf;
+    color: #c4bab6;
+    font-size: 19px;
+    position: relative
+}
+.taskAddBtn:hover {
+    border: 1px solid #bfbfbf;
+    transition: all 0s;
+    cursor: pointer !important;
+    -webkit-box-shadow: inset 0 0 4px 1px rgba(0, 0, 0, .08);
+    box-shadow: inset 0 0 4px 1px rgba(0, 0, 0, .08)
+}
+.taskModalBtn {
+    -moz-border-radius: 2px;
+    -webkit-border-radius: 2px;
+    border-radius: 2px;
+    cursor: default !important;
+    display: inline-block;
+    font-weight: 700;
+    height: 27px;
+    width: 26px;
+    text-align: center;
+    text-decoration: none !important;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    background-color: #f8f8f8;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#f8f8f8), to(#f1f1f1));
+    background-image: -webkit-linear-gradient(top, #f8f8f8, #f1f1f1);
+    background-image: -moz-linear-gradient(top, #f8f8f8, #f1f1f1);
+    background-image: -ms-linear-gradient(top, #f8f8f8, #f1f1f1);
+    background-image: -o-linear-gradient(top, #f8f8f8, #f1f1f1);
+    background-image: linear-gradient(top, #f8f8f8, #f1f1f1);
+    border: 1px solid #bfbfbf;
+    color: #c4bab6;
+    font-size: 19px;
+    position: relative
+}
+.taskModalBtn:hover {
+    border: 1px solid #bfbfbf;
+    transition: all 0s;
+    cursor: pointer !important;
+    -webkit-box-shadow: inset 0 0 4px 1px rgba(0, 0, 0, .08);
+    box-shadow: inset 0 0 4px 1px rgba(0, 0, 0, .08)
+}
+.taskModalBtn:hover{
+    color : #1c1c1c;
+}
+.taskAddInput{
+    width: 95%;
+    float: left;
+    height: 33px;
+    border: 0;
+    padding: 3px;
+    font-size: 17px;
+}
+.taskAddInput:focus, .taskAddInput:hover{
+    border :1px solid #aaa;
+}
+.task-circle{
+    float: left;
+    font-size: 21px;
+    margin: 6px 4px 0 0;
+    color: #ddd;
+    cursor: pointer;
+}
+.task-circle.on, .task-circle:hover{
+    color: #fb3c4a;
+}
+.taskOptionBtnArea{
+    margin-top: 3px;
+}
+/*---------------------------- task Add button css end ------------------------------*/
+
+/*---------------------------- project picker css ------------------------------*/
+.project-picker {
+    position: absolute;
+    z-index: 15000;
+    visibility: visible;
+    box-shadow: 0 0 6px #6f6f6f;
+    background-color: #fff;
+    display: none;
+}
+.project-picker .project-picker-search{
+    position: relative;
+    padding: 16px 16px 8px 16px;
+    z-index: 2;
+}
+.project-picker .project-picker-search .project-picker-search-input{
+    outline: none;
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    border: 1px solid #d1d1d3;
+    height: 32px;
+    padding: 0 10px;
+    -webkit-font-smoothing: antialiased;
+    color: #333333;
+}
+.project-picker .project-picker-list-area{
+    position: relative;
+    width: 100%;
+    max-height: 344px;
+    box-sizing: border-box;
+}
+.project-picker .project-picker-list-area .project-picker-list{
+    display: block;
+    overflow: auto;
+    box-sizing: border-box;
+    padding-bottom: 24px;
+    max-height: 280px;
+    position: relative;
+}
+.project-picker .project-picker-list-area .project-picker-list .project-picker-list-item{
+    border-left: 4px solid transparent;
+    display: block;
+    padding: 6px 16px;
+    height: 48px;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+.project-picker .project-picker-list-area .project-picker-list .project-picker-list-item .project-picker-list-item-title{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    line-height: 18px;
+}
+.project-picker .project-picker-list-area .project-picker-list .project-picker-list-item .project-picker-list-item-path div{
+    -webkit-font-smoothing: antialiased;
+    color: #a5a5a5;
+    display: block;
+    float: right;
+    min-width: 100%;
+    box-sizing: border-box;
+}
+.projectPickerSection.on{
+    display: block;
+}
+/*---------------------------- project picker css end ------------------------------*/
+.task-options{
+    height: 32px;
+    margin:0;
+}
+.task-options > div{
+    border-right : 1px solid #ddd;
+    height:100%;
+    padding: 7px;
+}
+.task-options > div:first-child{
+    border-left:1px solid #ddd;
+}
