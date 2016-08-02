@@ -115,7 +115,7 @@ public class TaskService {
 
         if(taskCondition.getListType().equals(TaskCondition.LIST_TYPE_TODAY)) {
 
-            predicate.and($task.startDate.lt(today));
+            predicate.and($task.endDate.loe(today));
             predicate.and($task.status.isNull().or($task.status.id.eq(1L)));
 
         } else if(taskCondition.getListType().equals(TaskCondition.LIST_TYPE_SCHEDULED)) {
