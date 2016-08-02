@@ -28,7 +28,7 @@
             </div>
         </div>
     </div>
-    <div ng-class="viewTypeClass" style="margin-top: 10px" ><!--ng-show="vm.task.id !=''"-->
+    <div ng-class="viewTypeClass" style="margin-top: 10px; min-height: 500px" ng-show="vm.task.id !=''">
         <div id="projectPickerSection">
             <label for="addProject" class="cursor projectValueSection" project-picker-edit-toggle><i class="fa fa-plus" id="addProject"></i> <span>Project/Folder Add</span></label>
 
@@ -76,7 +76,7 @@
                         <input type="checkbox" class="custom-control-input">
                         <!--<span class="custom-control-indicator"></span>-->
                         <!--<span class="custom-control-description">Check this custom checkbox</span>-->
-                        <ol class="nya-bs-select " ng-model="vm.task.severityId" style="width: 90px;">
+                        <ol class="nya-bs-select " ng-model="vm.task.statusId" style="width: 90px;">
                             <li nya-bs-option="option in vm.codes" title="{{option.name}}" data-value="option.id">
                                 <a>
                                     {{ option.name }}
@@ -93,16 +93,21 @@
                     ></wms-select-box>
 
                 </div>
-                <div class="col-md-5" style="    height: 30px;">
+                <div class="col-md-5" style="">
                     <div class="row">
-                        <div class="col-md-3" style="background: #ddd;    text-align: center;    padding: 7px;    vertical-align: middle;">담당자</div>
-                        <div class="col-md-9" style="    padding: 7px;">+</div>
+                        <div class="col-md-12" style="    padding: 7px;">
+                            <autocomplete source="loadData" tags="assigneeUser" display-property="name" multiple="true" max-results-to-show="20"></autocomplete>
+                            {{assigneeUser}}
+
+                        </div>
                     </div>
                 </div>
                 <div class="col-md-5">
                     <div class="row">
-                        <div class="col-md-3" style="background: #ddd;    text-align: center;    padding: 7px;    vertical-align: middle;">참조자</div>
-                        <div class="col-md-9" style="    padding: 7px;">+</div>
+                        <div class="col-md-12" style="    padding: 7px;">
+                            <autocomplete source="loadData" tags="watchers" display-property="name" multiple="true" max-results-to-show="20"></autocomplete>
+                            {{watchers}}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -175,24 +180,36 @@
                     </div>
                 </div>
                 <div class="sub-task-area">
+                    <div ng-repeat="list in vm.subTaskList" ng-show="vm.subTaskList != []">
+                        {{list.name}}
+                    </div>
                     <div class="add-sub-task">
-                        <input type="text" class="" ng-model="vm.subTask.name" enter-submit="vm.subTaskSave()" placeholder="Sub Task"/>{{vm.subTask.name}}
+                        <input type="text" class="" ng-model="vm.subTask.name" enter-submit="vm.subTaskSave()" placeholder="Sub Task"/>
                     </div>
                 </div>
             </div>
         </div>
 
+        <div>
+            <summernote ng-model="vm.task.contents" on-init="init()" on-enter="enter()" on-focus="focus(evt)" config="dataService.getSummerNoteOptions(true)"
+                on-blur="blur(evt)" on-paste="paste()" on-keyup="keyup(evt)" contenteditable="true"
+                on-keydown="keydown(evt)" on-change="change(contents)"
+                on-image-upload="imageUpload(files)" editable="editable" editor="editor" lang="ko-KR">
+            </summernote>
+        </div>
 
-        <!--<summernote ng-model="text" on-init="init()" on-enter="enter()" on-focus="focus(evt)" config="dataService.getSummerNoteOptions(true)"-->
-                    <!--on-blur="blur(evt)" on-paste="paste()" on-keyup="keyup(evt)" contenteditable="true"-->
-                    <!--on-keydown="keydown(evt)" on-change="change(contents)"-->
-                    <!--on-image-upload="imageUpload(files)" editable="editable" editor="editor" lang="ko-KR">-->
-        <!--</summernote>-->
+        <div>
+            <input id="input-4" name="input4[]" type="file" multiple class="file-loading" get-files>
+        </div>
 
     </div>
 </div>
 <div class="modal-footer">
-    <button type="button" class="btn btn_icon btn_customs" style="background-color:#028edd;color: #FFFFFF;" owl-btn-update></button>
-    <button type="button" class="btn btn_icon btn_customs" style="background-color:#028edd;color: #FFFFFF;" owl-btn-save></button>
+    <button type="button" class="btn btn_icon btn_customs" ng-click="vm.taskUpload()" owl-btn-save></button>
     <button type="button" class="btn btn_icon btn_customs2" ng-click="cancel()" owl-btn-cancel></button>
 </div>
+
+
+<script>
+    $("#input-4").fileinput({showCaption: false, showUpload: false, uploadUrl:"1", uploadAsync: false});
+</script>

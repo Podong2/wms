@@ -1314,6 +1314,5 @@
             isFirstOpen: true,
             isFirstDisabled: false
         };
-
     }
 })();
