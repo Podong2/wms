@@ -174,9 +174,9 @@ public class TaskResource {
         throws URISyntaxException {
         log.debug("REST request to get a page of Tasks");
 
-        Page<Task> page = taskService.findAll(taskCondition, PaginationUtil.applySort(pageable, Sort.Direction.DESC, "id"));
+        Page<TaskDTO> page = taskService.findAll(taskCondition, PaginationUtil.applySort(pageable, Sort.Direction.DESC, "id"));
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/tasks");
-        return new ResponseEntity<>(taskMapper.tasksToTaskDTOs(page.getContent()), headers, HttpStatus.OK);
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
     /**
@@ -266,7 +266,7 @@ public class TaskResource {
         List<Task> tasks = elasticsearchTemplate.queryForList(searchQuery, Task.class);
 
         for(Task task : tasks) {
-            task.setAssignee(this.userService.getUserWithAuthorities(task.getAssignee().getId()));
+//            task.setAssignee(this.userService.getUserWithAuthorities(task.getAssignee().getId()));
         }
 
         return new ResponseEntity<>(taskMapper.tasksToTaskDTOs(tasks), HttpStatus.OK);
@@ -291,7 +291,6 @@ public class TaskResource {
             task.setEndDate("2016-07-01");
             task.setContents("1231231234123");
             task.setStatus(code);
-            task.setAssignee(user);
 
             this.taskRepository.save(task);
             this.taskSearchRepository.save(task);

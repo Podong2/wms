@@ -1,13 +1,9 @@
 package kr.wisestone.wms.web.rest.dto;
 
-import kr.wisestone.wms.domain.AttachedFile;
-import kr.wisestone.wms.domain.Task;
 import kr.wisestone.wms.domain.TaskAttachedFile;
 
 import java.io.Serializable;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.Objects;
 
 
@@ -20,7 +16,9 @@ public class TaskDTO implements Serializable {
 
     private String name;
 
-    private String dueDate;
+    private String startDate;
+
+    private String endDate;
 
     private String contents;
 
@@ -28,9 +26,15 @@ public class TaskDTO implements Serializable {
 
     private String statusName;
 
-    private Long assigneeId;
+    private List<UserDTO> assignees;
 
-    private String assigneeName;
+    private List<UserDTO> watchers;
+
+    private Boolean importantYn;
+
+    private Boolean templateYn;
+
+    private String statusGroup;
 
     private List<TaskAttachedFile> attachedFiles;
 
@@ -48,13 +52,6 @@ public class TaskDTO implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-    public String getDueDate() {
-        return dueDate;
-    }
-
-    public void setDueDate(String dueDate) {
-        this.dueDate = dueDate;
-    }
     public String getContents() {
         return contents;
     }
@@ -71,14 +68,6 @@ public class TaskDTO implements Serializable {
         this.statusId = codeId;
     }
 
-    public Long getAssigneeId() {
-        return assigneeId;
-    }
-
-    public void setAssigneeId(Long assigneeId) {
-        this.assigneeId = assigneeId;
-    }
-
     public String getStatusName() {
         return statusName;
     }
@@ -87,20 +76,68 @@ public class TaskDTO implements Serializable {
         this.statusName = statusName;
     }
 
-    public String getAssigneeName() {
-        return assigneeName;
-    }
-
-    public void setAssigneeName(String assigneeName) {
-        this.assigneeName = assigneeName;
-    }
-
     public List<TaskAttachedFile> getAttachedFiles() {
         return attachedFiles;
     }
 
     public void setAttachedFiles(List<TaskAttachedFile> attachedFiles) {
         this.attachedFiles = attachedFiles;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public List<UserDTO> getAssignees() {
+        return assignees;
+    }
+
+    public void setAssignees(List<UserDTO> assignees) {
+        this.assignees = assignees;
+    }
+
+    public List<UserDTO> getWatchers() {
+        return watchers;
+    }
+
+    public void setWatchers(List<UserDTO> watchers) {
+        this.watchers = watchers;
+    }
+
+    public Boolean getImportantYn() {
+        return importantYn;
+    }
+
+    public void setImportantYn(Boolean importantYn) {
+        this.importantYn = importantYn;
+    }
+
+    public Boolean getTemplateYn() {
+        return templateYn;
+    }
+
+    public void setTemplateYn(Boolean templateYn) {
+        this.templateYn = templateYn;
+    }
+
+    public String getStatusGroup() {
+        return statusGroup;
+    }
+
+    public void setStatusGroup(String statusGroup) {
+        this.statusGroup = statusGroup;
     }
 
     @Override
@@ -126,11 +163,21 @@ public class TaskDTO implements Serializable {
 
     @Override
     public String toString() {
+
         return "TaskDTO{" +
             "id=" + id +
-            ", name='" + name + "'" +
-            ", dueDate='" + dueDate + "'" +
-            ", contents='" + contents + "'" +
+            ", name='" + name + '\'' +
+            ", startDate='" + startDate + '\'' +
+            ", endDate='" + endDate + '\'' +
+            ", contents='" + contents + '\'' +
+            ", statusId=" + statusId +
+            ", statusName='" + statusName + '\'' +
+            ", assignees=" + assignees +
+            ", watchers=" + watchers +
+            ", importantYn=" + importantYn +
+            ", templateYn=" + templateYn +
+            ", statusGroup='" + statusGroup + '\'' +
+            ", attachedFiles=" + attachedFiles +
             '}';
     }
 }

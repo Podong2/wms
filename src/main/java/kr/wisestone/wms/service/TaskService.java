@@ -10,9 +10,11 @@ import kr.wisestone.wms.web.rest.condition.TaskCondition;
 import kr.wisestone.wms.web.rest.dto.TaskDTO;
 import kr.wisestone.wms.web.rest.form.TaskForm;
 import kr.wisestone.wms.web.rest.mapper.TaskMapper;
+import kr.wisestone.wms.web.rest.mapper.UserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
@@ -43,16 +45,19 @@ public class TaskService {
     private TaskSearchRepository taskSearchRepository;
 
     @Inject
-    private TaskMapper taskMapper;
-
-    @Inject
     private NotificationService notificationService;
 
     @Inject
     private UserService userService;
 
     @Inject
-    private  AttachedFileService attachedFileService;
+    private AttachedFileService attachedFileService;
+
+    @Inject
+    private TaskMapper taskMapper;
+
+    @Inject
+    private UserMapper userMapper;
 
     /**
      * Save a task.
@@ -78,9 +83,9 @@ public class TaskService {
 
         TaskDTO result = taskMapper.taskToTaskDTO(task);
 
-        User user = userService.getUserWithAuthorities(task.getAssignee().getId());
-
-        notificationService.sendIssueCreatedNotification(result, Lists.newArrayList(user), "04");
+//        User user = userService.getUserWithAuthorities(task.getAssignee().getId());
+//
+//        notificationService.sendIssueCreatedNotification(result, Lists.newArrayList(user), "04");
 
         return result;
     }
@@ -92,34 +97,28 @@ public class TaskService {
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<Task> findAll(TaskCondition taskCondition, Pageable pageable) {
+    public Page<TaskDTO> findAll(TaskCondition taskCondition, Pageable pageable) {
         log.debug("Request to get all Tasks by condition");
 
         QTask $task = QTask.task;
 
         BooleanBuilder predicate = new BooleanBuilder();
 
-        if(StringUtils.hasText(taskCondition.getName()))
-            predicate.and($task.name.contains(taskCondition.getName()));
-
-        if(StringUtils.hasText(taskCondition.getEndDateFrom()))
-            predicate.and($task.endDate.goe(taskCondition.getEndDateFrom()));
-
-        if(StringUtils.hasText(taskCondition.getEndDateTo()))
-            predicate.and($task.endDate.loe(taskCondition.getEndDateTo()));
-
-        if(!taskCondition.getSeverities().isEmpty())
-            predicate.and($task.status.id.in(taskCondition.getSeverities()));
-
-        if(StringUtils.hasText(taskCondition.getContents()))
-            predicate.and($task.contents.contains(taskCondition.getContents()));
-
-        if(!taskCondition.getAssignees().isEmpty())
-            predicate.and($task.assignee.id.in(taskCondition.getAssignees()));
-
         Page<Task> result = taskRepository.findAll(predicate, pageable);
 
-        return result;
+        List<TaskDTO> taskDTOs = Lists.newArrayList();
+
+        for(Task task : result.getContent()) {
+
+            TaskDTO taskDTO = taskMapper.taskToTaskDTO(task);
+
+            taskDTO.setAssignees(userMapper.usersToUserDTOs(task.findTaskUsersByType(TaskUserType.ASSIGNEE)));
+            taskDTO.setWatchers(userMapper.usersToUserDTOs(task.findTaskUsersByType(TaskUserType.WATCHER)));
+
+            taskDTOs.add(taskDTO);
+        }
+
+        return new PageImpl<>(taskDTOs, pageable, result.getTotalElements());
     }
 
     /**
@@ -170,9 +169,9 @@ public class TaskService {
 
         Task targetTask = taskRepository.findOne(id);
 
-        User user = userService.getUserWithAuthorities(targetTask.getAssignee().getId());
-
-        notificationService.sendIssueRemovedNotification(taskMapper.taskToTaskDTO(targetTask), Lists.newArrayList(user), "04");
+//        User user = userService.getUserWithAuthorities(targetTask.getAssignee().getId());
+//
+//        notificationService.sendIssueRemovedNotification(taskMapper.taskToTaskDTO(targetTask), Lists.newArrayList(user), "04");
 
         taskRepository.delete(id);
         taskSearchRepository.delete(id);

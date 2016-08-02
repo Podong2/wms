@@ -83,7 +83,7 @@ public class TaskForm {
 
         User assignee = new User();
         assignee.setId(this.getAssigneeId());
-        subTask.setAssignee(assignee);
+        subTask.addTaskUser(assignee, TaskUserType.ASSIGNEE);
 
         return subTask;
     }

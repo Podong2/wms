@@ -1,6 +1,7 @@
 package kr.wisestone.wms.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
 import org.hibernate.annotations.Cache;
@@ -12,8 +13,10 @@ import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * A Task.
@@ -74,11 +77,8 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
     @Type(type="yes_no")
     private Boolean templateYn = Boolean.FALSE;
 
-    @ManyToOne
-    @JoinColumn(name = "assignee_id")
-    private User assignee;
-
     @OneToMany(mappedBy = "task")
+    @OrderBy(value = "id asc")
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<TaskUser> taskUsers = new HashSet<>();
@@ -143,14 +143,6 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
 
     public void setTaskAttachedFiles(Set<TaskAttachedFile> taskAttachedFiles) {
         this.taskAttachedFiles = taskAttachedFiles;
-    }
-
-    public User getAssignee() {
-        return assignee;
-    }
-
-    public void setAssignee(User assignee) {
-        this.assignee = assignee;
     }
 
     public String getStartDate() {
@@ -222,6 +214,15 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
         return this;
     }
 
+    public List<User> findTaskUsersByType(TaskUserType taskUserType) {
+
+        List<TaskUser> taskUsers = this.taskUsers.stream().filter(
+                                        taskUser -> taskUser.getType().equals(taskUserType)
+                                    ).collect(Collectors.toList());
+
+        return taskUsers.stream().map(TaskUser::getUser).collect(Collectors.toList());
+    }
+
     public Task addRelatedTask(Task task) {
 
         RelatedTask origin = this.relatedTasks.stream().filter(
@@ -247,6 +248,35 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
         }
 
         return logRecord;
+    }
+
+    public TaskAttachedFile addAttachedFile(AttachedFile attachedFile) {
+
+        if(attachedFile == null) {
+            return null;
+        }
+
+        TaskAttachedFile taskAttachedFile = new TaskAttachedFile(this, attachedFile);
+
+        this.taskAttachedFiles.add(taskAttachedFile);
+
+        return taskAttachedFile;
+    }
+
+    public TaskAttachedFile findAttachedFile(Long attachedFileId) {
+        return this.taskAttachedFiles.stream().filter(
+            taskAttachedFile -> taskAttachedFile.getId().equals(attachedFileId)
+        ).findFirst().get();
+    }
+
+    public Task removeAttachedFile(Long attachedFileId) {
+
+        TaskAttachedFile taskAttachedFile = this.findAttachedFile(attachedFileId);
+
+        if(taskAttachedFile != null)
+            this.taskAttachedFiles.remove(taskAttachedFile);
+
+        return this;
     }
 
     @Override
@@ -277,34 +307,5 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
             ", endDate='" + endDate + "'" +
             ", contents='" + contents + "'" +
             '}';
-    }
-
-    public TaskAttachedFile addAttachedFile(AttachedFile attachedFile) {
-
-        if(attachedFile == null) {
-            return null;
-        }
-
-        TaskAttachedFile taskAttachedFile = new TaskAttachedFile(this, attachedFile);
-
-        this.taskAttachedFiles.add(taskAttachedFile);
-
-        return taskAttachedFile;
-    }
-
-    public TaskAttachedFile findAttachedFile(Long attachedFileId) {
-        return this.taskAttachedFiles.stream().filter(
-            taskAttachedFile -> taskAttachedFile.getId().equals(attachedFileId)
-        ).findFirst().get();
-    }
-
-    public Task removeAttachedFile(Long attachedFileId) {
-
-        TaskAttachedFile taskAttachedFile = this.findAttachedFile(attachedFileId);
-
-        if(taskAttachedFile != null)
-            this.taskAttachedFiles.remove(taskAttachedFile);
-
-        return this;
     }
 }
