@@ -32,6 +32,8 @@ public class RelatedTask extends AbstractAuditingEntity {
     @JoinColumn(name = "related_task_id")
     private Task relatedTask;
 
+    public RelatedTask() {}
+
     public RelatedTask(Task task, Task relatedTask) {
         this.setTask(task);
         this.setRelatedTask(relatedTask);
