@@ -174,7 +174,7 @@ public class TaskResource {
         throws URISyntaxException {
         log.debug("REST request to get a page of Tasks");
 
-        Page<TaskDTO> page = taskService.findAll(taskCondition, PaginationUtil.applySort(pageable, Sort.Direction.DESC, "id"));
+        Page<TaskDTO> page = taskService.findAll(taskCondition, PaginationUtil.applySort(pageable, Sort.Direction.ASC, "endDate"));
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/tasks");
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }

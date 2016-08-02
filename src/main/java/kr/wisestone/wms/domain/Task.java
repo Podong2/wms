@@ -4,18 +4,18 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.common.base.Function;
 import com.google.common.base.Predicate;
 import com.google.common.collect.Iterables;
+import com.google.common.collect.Lists;
+import kr.wisestone.wms.common.util.DateUtil;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.util.StringUtils;
 
 import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -205,7 +205,7 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
 
         TaskUser origin = this.taskUsers.stream().filter(
             taskUser ->
-                taskUser.getType().equals(taskUserType) && taskUser.getUser().getId().equals(user.getId())
+                taskUser.getUserType().equals(taskUserType) && taskUser.getUser().getId().equals(user.getId())
         ).findFirst().get();
 
         if(origin == null)
@@ -217,7 +217,7 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
     public List<User> findTaskUsersByType(TaskUserType taskUserType) {
 
         List<TaskUser> taskUsers = this.taskUsers.stream().filter(
-                                        taskUser -> taskUser.getType().equals(taskUserType)
+                                        taskUser -> taskUser.getUserType().equals(taskUserType)
                                     ).collect(Collectors.toList());
 
         return taskUsers.stream().map(TaskUser::getUser).collect(Collectors.toList());
@@ -277,6 +277,30 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
             this.taskAttachedFiles.remove(taskAttachedFile);
 
         return this;
+    }
+
+    public String getStatusGroup() {
+
+        if(StringUtils.isEmpty(this.endDate)) {
+            return "NONE_SCHEDULED";
+        }
+
+        String today = DateUtil.getTodayWithYYYYMMDD();
+        String createdDate = DateUtil.convertDateToYYYYMMDD(Date.from(getCreatedDate().toInstant()));
+
+        if(this.endDate.equals(today)) {
+            return "SCHEDULED_TODAY";
+        }
+
+        if(DateUtil.convertStrToDate(this.endDate, "yyyy-MM-dd").getTime() < DateUtil.convertStrToDate(today, "yyyy-MM-dd").getTime()) {
+            return "DELAYED";
+        }
+
+        if(createdDate.equals(today)) {
+            return "REGISTERED_TODAY";
+        }
+
+        return "IN_PROGRESS";
     }
 
     @Override

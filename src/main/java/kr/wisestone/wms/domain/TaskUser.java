@@ -32,15 +32,15 @@ public class TaskUser extends AbstractAuditingEntity {
     private User user;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type")
-    private TaskUserType type;
+    @Column(name = "user_type")
+    private TaskUserType userType;
 
     public TaskUser() {}
 
     public TaskUser(Task task, User user, TaskUserType type) {
         this.setTask(task);
         this.setUser(user);
-        this.setType(type);
+        this.setUserType(type);
     }
 
     public Long getId() {
@@ -67,11 +67,11 @@ public class TaskUser extends AbstractAuditingEntity {
         this.user = user;
     }
 
-    public TaskUserType getType() {
-        return type;
+    public TaskUserType getUserType() {
+        return userType;
     }
 
-    public void setType(TaskUserType type) {
-        this.type = type;
+    public void setUserType(TaskUserType type) {
+        this.userType = type;
     }
 }

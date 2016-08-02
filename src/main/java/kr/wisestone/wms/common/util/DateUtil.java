@@ -44,6 +44,11 @@ public class DateUtil {
         return convertDateToStr(source, "yyyy-MM-dd HH:mm:ss");
     }
 
+    public static String getTodayWithYYYYMMDD() {
+
+        return DateUtil.convertDateToYYYYMMDD(new Date());
+    }
+
     public static String convertDateToStr(Date source, String pattern) {
         return convertDateToStr(source, pattern, Locale.KOREA);
     }
