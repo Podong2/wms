@@ -225,12 +225,12 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
 
     public Task addRelatedTask(Task task) {
 
-        RelatedTask origin = this.relatedTasks.stream().filter(
+        Optional<RelatedTask> origin = this.relatedTasks.stream().filter(
             relatedTask ->
                 relatedTask.getTask().getId().equals(task.getId())
-        ).findFirst().get();
+        ).findFirst();
 
-        if(origin == null)
+        if(!origin.isPresent())
             this.relatedTasks.add(new RelatedTask(this, task));
 
         return this;
