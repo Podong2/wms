@@ -5,6 +5,7 @@ import kr.wisestone.wms.domain.Task;
 import kr.wisestone.wms.domain.TaskUserType;
 import kr.wisestone.wms.domain.User;
 import lombok.Data;
+import org.flywaydb.core.internal.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ public class TaskForm {
 
     private Long assigneeId;
 
-    private Boolean importantYn;
+    private Boolean importantYn = Boolean.FALSE;
 
     private List<Long> assigneeIds = new ArrayList<>();
 
@@ -41,13 +42,23 @@ public class TaskForm {
     public Task bind(Task task) {
 
         task.setName(this.name);
-        task.setStartDate(this.startDate);
-        task.setEndDate(this.endDate);
-        task.setContents(this.contents);
 
-        Code status = new Code();
-        status.setId(this.statusId);
-        task.setStatus(status);
+        if(StringUtils.hasText(this.startDate))
+            task.setStartDate(this.startDate);
+
+        if(StringUtils.hasText(this.endDate))
+            task.setEndDate(this.endDate);
+
+        if(StringUtils.hasText(this.contents))
+            task.setContents(this.contents);
+
+        task.setImportantYn(importantYn);
+
+        if(this.statusId != null) {
+            Code status = new Code();
+            status.setId(this.statusId);
+            task.setStatus(status);
+        }
 
         for(Long id : getAssigneeIds()) {
             User user = new User();

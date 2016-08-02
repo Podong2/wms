@@ -3,9 +3,11 @@ package kr.wisestone.wms.service;
 import com.google.common.collect.Lists;
 import com.mysema.query.BooleanBuilder;
 import kr.wisestone.wms.common.exception.CommonRuntimeException;
+import kr.wisestone.wms.common.util.DateUtil;
 import kr.wisestone.wms.domain.*;
 import kr.wisestone.wms.repository.TaskRepository;
 import kr.wisestone.wms.repository.search.TaskSearchRepository;
+import kr.wisestone.wms.security.SecurityUtils;
 import kr.wisestone.wms.web.rest.condition.TaskCondition;
 import kr.wisestone.wms.web.rest.dto.TaskDTO;
 import kr.wisestone.wms.web.rest.form.TaskForm;
@@ -100,9 +102,37 @@ public class TaskService {
     public Page<TaskDTO> findAll(TaskCondition taskCondition, Pageable pageable) {
         log.debug("Request to get all Tasks by condition");
 
+        String login = SecurityUtils.getCurrentUserLogin();
+
         QTask $task = QTask.task;
 
         BooleanBuilder predicate = new BooleanBuilder();
+
+        predicate.and($task.taskUsers.any().user.login.eq(login).or($task.createdBy.eq(login)));
+
+
+        String today = DateUtil.getTodayWithYYYYMMDD();
+
+        if(taskCondition.getListType().equals(TaskCondition.LIST_TYPE_TODAY)) {
+
+            predicate.and($task.startDate.lt(today));
+            predicate.and($task.status.defaultYn.eq(Boolean.TRUE));
+
+        } else if(taskCondition.getListType().equals(TaskCondition.LIST_TYPE_SCHEDULED)) {
+
+            predicate.and($task.startDate.gt(today));
+            predicate.and($task.status.defaultYn.eq(Boolean.TRUE));
+
+        } else if(taskCondition.getListType().equals(TaskCondition.LIST_TYPE_HOLD)) {
+
+            predicate.and($task.startDate.gt(today));
+            predicate.and($task.status.defaultYn.eq(Boolean.TRUE));
+
+        } else if(taskCondition.getListType().equals(TaskCondition.LIST_TYPE_COMPLETE)) {
+
+            predicate.and($task.startDate.gt(today));
+            predicate.and($task.status.defaultYn.eq(Boolean.TRUE));
+        }
 
         Page<Task> result = taskRepository.findAll(predicate, pageable);
 

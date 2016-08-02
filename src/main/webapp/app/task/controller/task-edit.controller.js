@@ -177,10 +177,14 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
             }
 
             function userIdPush(userInfo, type){
-                vm.task[type] =[];
+
+                var typeIds = new Array();
+
                 angular.forEach(userInfo, function(val){
-                    vm.task[type].push(val.id);
+                    typeIds.push(val.id);
                 });
+
+                vm.task[type] = typeIds.join(",");
             }
 
 
