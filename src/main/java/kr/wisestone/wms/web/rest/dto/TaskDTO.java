@@ -3,6 +3,7 @@ package kr.wisestone.wms.web.rest.dto;
 import kr.wisestone.wms.domain.TaskAttachedFile;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,6 +38,12 @@ public class TaskDTO implements Serializable {
     private String statusGroup;
 
     private List<TaskAttachedFile> attachedFiles;
+
+    private TaskDTO parent;
+
+    private List<TaskDTO> subTasks = new ArrayList<>();
+
+    private List<TaskDTO> relatedTasks = new ArrayList<>();
 
     public Long getId() {
         return id;
@@ -138,6 +145,30 @@ public class TaskDTO implements Serializable {
 
     public void setStatusGroup(String statusGroup) {
         this.statusGroup = statusGroup;
+    }
+
+    public List<TaskDTO> getSubTasks() {
+        return subTasks;
+    }
+
+    public void setSubTasks(List<TaskDTO> subTasks) {
+        this.subTasks = subTasks;
+    }
+
+    public List<TaskDTO> getRelatedTasks() {
+        return relatedTasks;
+    }
+
+    public void setRelatedTasks(List<TaskDTO> relatedTasks) {
+        this.relatedTasks = relatedTasks;
+    }
+
+    public TaskDTO getParent() {
+        return parent;
+    }
+
+    public void setParent(TaskDTO parent) {
+        this.parent = parent;
     }
 
     @Override
