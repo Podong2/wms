@@ -162,7 +162,6 @@ public class TaskResource {
     /**
      * GET  /tasks : get all the tasks.
      *
-     * @param pageable the pagination information
      * @return the ResponseEntity with status 200 (OK) and the list of tasks in body
      * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
      */
@@ -171,13 +170,13 @@ public class TaskResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Transactional(readOnly = true)
-    public ResponseEntity<List<TaskDTO>> getAllTasks(@ModelAttribute TaskCondition taskCondition, Pageable pageable)
+    public ResponseEntity<List<TaskDTO>> getAllTasks(@ModelAttribute TaskCondition taskCondition)
         throws URISyntaxException {
         log.debug("REST request to get a page of Tasks");
 
-        Page<TaskDTO> page = taskService.findAll(taskCondition, PaginationUtil.applySort(pageable, Sort.Direction.ASC, "endDate"));
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/tasks");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        List<TaskDTO> result = taskService.findAll(taskCondition);
+//        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/tasks");
+        return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/tasks/findByName",

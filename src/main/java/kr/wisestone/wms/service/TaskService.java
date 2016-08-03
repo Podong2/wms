@@ -95,12 +95,44 @@ public class TaskService {
     /**
      *  Get all the tasks.
      *
-     *  @param pageable the pagination information
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<TaskDTO> findAll(TaskCondition taskCondition, Pageable pageable) {
+    public List<TaskDTO> findAll(TaskCondition taskCondition) {
         log.debug("Request to get all Tasks by condition");
+
+        BooleanBuilder predicate = taskListPredicate(taskCondition);
+
+        List<Task> result = Lists.newArrayList(taskRepository.findAll(predicate, QTask.task.endDate.asc()));
+
+        List<TaskDTO> taskDTOs = Lists.newArrayList();
+
+        taskDTOs.addAll(result.stream().map(this::convertTaskToDTO).collect(Collectors.toList()));
+
+        return taskDTOs;
+    }
+
+    private TaskDTO convertTaskToDTO(Task task) {
+        TaskDTO taskDTO = taskMapper.taskToTaskDTO(task);
+
+        if(task.getTaskUsers() != null && !task.getTaskUsers().isEmpty()) {
+            taskDTO.setAssignees(userMapper.usersToUserDTOs(task.findTaskUsersByType(TaskUserType.ASSIGNEE)));
+            taskDTO.setWatchers(userMapper.usersToUserDTOs(task.findTaskUsersByType(TaskUserType.WATCHER)));
+        }
+
+        if(task.getSubTasks() != null && !task.getSubTasks().isEmpty())
+            taskDTO.setSubTasks(taskMapper.tasksToTaskDTOs(Lists.newArrayList(task.getSubTasks())));
+
+        if(task.getRelatedTasks() != null && !task.getRelatedTasks().isEmpty())
+            taskDTO.setRelatedTasks(taskMapper.tasksToTaskDTOs(task.getPlainRelatedTask()));
+
+        if(task.getParent() != null)
+            taskDTO.setParent(taskMapper.taskToTaskDTO(task.getParent()));
+
+        return taskDTO;
+    }
+
+    private BooleanBuilder taskListPredicate(TaskCondition taskCondition) {
 
         String login = SecurityUtils.getCurrentUserLogin();
 
@@ -110,43 +142,33 @@ public class TaskService {
 
         predicate.and($task.taskUsers.any().user.login.eq(login).or($task.createdBy.eq(login)));
 
-
         String today = DateUtil.getTodayWithYYYYMMDD();
 
-        if(taskCondition.getListType().equals(TaskCondition.LIST_TYPE_TODAY)) {
+        switch (taskCondition.getListType()) {
+            case TaskCondition.LIST_TYPE_TODAY:
 
-            predicate.and($task.endDate.loe(today));
-            predicate.and($task.status.isNull().or($task.status.id.eq(1L)));
+                predicate.and($task.endDate.loe(today).or($task.endDate.isNull()));
+                predicate.and($task.status.isNull().or($task.status.id.eq(1L)));
 
-        } else if(taskCondition.getListType().equals(TaskCondition.LIST_TYPE_SCHEDULED)) {
+                break;
+            case TaskCondition.LIST_TYPE_SCHEDULED:
 
-            predicate.and($task.startDate.gt(today));
-            predicate.and($task.status.id.eq(1L));
+                predicate.and($task.startDate.gt(today));
+                predicate.and($task.status.id.eq(1L));
 
-        } else if(taskCondition.getListType().equals(TaskCondition.LIST_TYPE_HOLD)) {
+                break;
+            case TaskCondition.LIST_TYPE_HOLD:
 
-            predicate.and($task.status.id.eq(3L));
+                predicate.and($task.status.id.eq(3L));
 
-        } else if(taskCondition.getListType().equals(TaskCondition.LIST_TYPE_COMPLETE)) {
+                break;
+            case TaskCondition.LIST_TYPE_COMPLETE:
 
-            predicate.and($task.status.id.eq(2L));
+                predicate.and($task.status.id.eq(2L));
+                break;
         }
 
-        Page<Task> result = taskRepository.findAll(predicate, pageable);
-
-        List<TaskDTO> taskDTOs = Lists.newArrayList();
-
-        for(Task task : result.getContent()) {
-
-            TaskDTO taskDTO = taskMapper.taskToTaskDTO(task);
-
-            taskDTO.setAssignees(userMapper.usersToUserDTOs(task.findTaskUsersByType(TaskUserType.ASSIGNEE)));
-            taskDTO.setWatchers(userMapper.usersToUserDTOs(task.findTaskUsersByType(TaskUserType.WATCHER)));
-
-            taskDTOs.add(taskDTO);
-        }
-
-        return new PageImpl<>(taskDTOs, pageable, result.getTotalElements());
+        return predicate;
     }
 
     /**
