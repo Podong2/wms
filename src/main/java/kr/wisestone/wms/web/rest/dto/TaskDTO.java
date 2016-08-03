@@ -1,9 +1,14 @@
 package kr.wisestone.wms.web.rest.dto;
 
+import kr.wisestone.wms.common.util.DateUtil;
 import kr.wisestone.wms.domain.TaskAttachedFile;
+import kr.wisestone.wms.web.rest.condition.TaskCondition;
+import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -44,6 +49,10 @@ public class TaskDTO implements Serializable {
     private List<TaskDTO> subTasks = new ArrayList<>();
 
     private List<TaskDTO> relatedTasks = new ArrayList<>();
+
+    private ZonedDateTime createdDate;
+
+    private String createdBy;
 
     public Long getId() {
         return id;
@@ -139,10 +148,6 @@ public class TaskDTO implements Serializable {
         this.templateYn = templateYn;
     }
 
-    public String getStatusGroup() {
-        return statusGroup;
-    }
-
     public void setStatusGroup(String statusGroup) {
         this.statusGroup = statusGroup;
     }
@@ -169,6 +174,26 @@ public class TaskDTO implements Serializable {
 
     public void setParent(TaskDTO parent) {
         this.parent = parent;
+    }
+
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getStatusGroup() {
+        return statusGroup;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
     }
 
     @Override

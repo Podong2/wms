@@ -1,5 +1,7 @@
 package kr.wisestone.wms.service;
 
+import com.google.common.base.Predicate;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.mysema.query.BooleanBuilder;
 import kr.wisestone.wms.common.exception.CommonRuntimeException;
@@ -10,6 +12,7 @@ import kr.wisestone.wms.repository.search.TaskSearchRepository;
 import kr.wisestone.wms.security.SecurityUtils;
 import kr.wisestone.wms.web.rest.condition.TaskCondition;
 import kr.wisestone.wms.web.rest.dto.TaskDTO;
+import kr.wisestone.wms.web.rest.dto.UserDTO;
 import kr.wisestone.wms.web.rest.form.TaskForm;
 import kr.wisestone.wms.web.rest.mapper.TaskMapper;
 import kr.wisestone.wms.web.rest.mapper.UserMapper;
@@ -23,9 +26,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
+import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -101,23 +107,79 @@ public class TaskService {
     public List<TaskDTO> findAll(TaskCondition taskCondition) {
         log.debug("Request to get all Tasks by condition");
 
+        String login = SecurityUtils.getCurrentUserLogin();
+
         BooleanBuilder predicate = taskListPredicate(taskCondition);
 
         List<Task> result = Lists.newArrayList(taskRepository.findAll(predicate, QTask.task.endDate.asc()));
 
         List<TaskDTO> taskDTOs = Lists.newArrayList();
 
-        taskDTOs.addAll(result.stream().map(this::convertTaskToDTO).collect(Collectors.toList()));
+        for(Task task : result) {
+
+            TaskDTO taskDTO = taskMapper.taskToTaskDTO(task);
+
+            this.copyTaskRelationProperties(task, taskDTO);
+            this.determineStatusGroup(taskDTO, taskCondition.getListType(), login);
+
+            taskDTOs.add(taskDTO);
+        }
 
         return taskDTOs;
     }
 
-    private TaskDTO convertTaskToDTO(Task task) {
-        TaskDTO taskDTO = taskMapper.taskToTaskDTO(task);
 
-        this.copyTaskRelationProperties(task, taskDTO);
+    public void determineStatusGroup(TaskDTO taskDTO, String listType, String login) {
 
-        return taskDTO;
+        String statusGroup = "";
+
+        if(listType.equals(TaskCondition.LIST_TYPE_TODAY)) {
+
+            statusGroup = "IN_PROGRESS";
+
+            if(StringUtils.isEmpty(taskDTO.getEndDate())) {
+                statusGroup = "NONE_SCHEDULED";
+            } else {
+                String today = DateUtil.getTodayWithYYYYMMDD();
+                String createdDate = DateUtil.convertDateToYYYYMMDD(Date.from(taskDTO.getCreatedDate().toInstant()));
+
+                if(taskDTO.getEndDate().equals(today)) {
+                    statusGroup = "SCHEDULED_TODAY";
+                }
+
+                if(DateUtil.convertStrToDate(taskDTO.getEndDate(), "yyyy-MM-dd").getTime() < DateUtil.convertStrToDate(today, "yyyy-MM-dd").getTime()) {
+                    statusGroup = "DELAYED";
+                }
+
+                if(createdDate.equals(today)) {
+                    statusGroup = "REGISTERED_TODAY";
+                }
+            }
+
+        } else if(listType.equals(TaskCondition.LIST_TYPE_SCHEDULED) || listType.equals(TaskCondition.LIST_TYPE_HOLD) || listType.equals(TaskCondition.LIST_TYPE_COMPLETE)) {
+
+            if(taskDTO.getAssignees() != null) {
+                Optional<UserDTO> assignee = taskDTO.getAssignees().stream().filter(userDTO -> userDTO.getLogin().equals(login)).findFirst();
+
+                if(assignee.isPresent()) {
+                    statusGroup = "MY_TASK";
+                }
+
+            } else if(taskDTO.getCreatedBy().equals(login)) {
+
+                statusGroup = "REQUEST_TASK";
+
+            } else if(taskDTO.getWatchers() != null) {
+
+                Optional<UserDTO> watcher = taskDTO.getWatchers().stream().filter(userDTO -> userDTO.getLogin().equals(login)).findFirst();
+
+                if(watcher.isPresent()) {
+                    statusGroup = "WATCHED_TASK";
+                }
+            }
+        }
+
+        taskDTO.setStatusGroup(statusGroup);
     }
 
     private void copyTaskRelationProperties(Task task, TaskDTO taskDTO) {

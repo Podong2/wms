@@ -28,6 +28,8 @@ public interface TaskMapper {
     List<TaskDTO> tasksToTaskDTOs(List<Task> tasks);
 
     @Mapping(source = "statusId", target = "status")
+    @Mapping(source = "subTasks", target = "subTasks", ignore = true)
+    @Mapping(source = "relatedTasks", target = "relatedTasks", ignore = true)
     Task taskDTOToTask(TaskDTO taskDTO);
 
     List<Task> taskDTOsToTasks(List<TaskDTO> taskDTOs);
