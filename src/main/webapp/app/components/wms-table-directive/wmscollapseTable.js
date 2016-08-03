@@ -5,11 +5,11 @@
     'use strict';
 
     angular.module('wmsApp')
-        .directive('wmsTable', wmsTable);
+        .directive('wmsCollapseTable', wmsCollapseTable);
 
-    wmsTable.$inject = ['$log'];
+    wmsCollapseTable.$inject = ['$log'];
 
-    function wmsTable($log) {
+    function wmsCollapseTable($log) {
 
         return {
             restrict: 'E',
@@ -19,7 +19,7 @@
                 updateCallback: '=updateCallback'
             },
             replace: false,
-            templateUrl: 'app/components/wms-table-directive/wmsTable.html',
+            templateUrl: 'app/components/wms-table-directive/wmsCollapseTable.html',
             controller: ['$scope', '$element', '$attrs', '$rootScope', 'tableService', function ($scope, $element, $attrs, $rootScope, tableService) {
 
                 $scope.tableService = tableService;

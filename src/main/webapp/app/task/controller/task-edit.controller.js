@@ -43,7 +43,8 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
             vm.subTask = {
                 name : '',
                 parentId : '',
-                assigneeId : 3
+                assigneeId : 3,
+                statusId : 1
             };
 
             // min date picker

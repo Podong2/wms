@@ -10,44 +10,197 @@
     border: 1px solid #aaa; height: 1030px;">
         <bg-splitter orientation="horizontal">
 
-            <bg-pane min-size="200">
-                <!--<div class="checkbox">-->
-                    <!--<label>-->
-                        <!--<input type="checkbox" ng-model="oneAtATime">-->
-                        <!--Open only one at a time-->
-                    <!--</label>-->
-                <!--</div>-->
+            <bg-pane min-size="400">
                 <uib-accordion close-others="oneAtATime">
-                    <div uib-accordion-group class="panel-default" heading="Static Header, initially expanded" is-open="status.isFirstOpen" is-disabled="status.isFirstDisabled">
-<!--                        <wms-tree-list-grid tree-model="wmsTreeData3"
-                                            tree-scope="treeScope"
-                                            column-definitions="wmsTreeColumnDefinitions"
-                                            disabled="false"
-                                            enable-filter="false"
-                                            enable-sort="true"
-                                            enable-clone="false">
-                        </wms-tree-list-grid>-->
-                        <button ng-click="loadWmsTableData()">add</button>
-
-                        <wms-table ng-model="vm.wmsTableData" table-configs="vm.tableConfigs" update-callback="updateCallback"></wms-table>
+                    <ul class="nav nav-tabs nav-justified">
+                        <li class="text-center" ng-class="vm.tabArea[0].status == true ? 'active' : ''" ng-click="vm.tabDisplay(0, 'TODAY')"><span>오늘</span></li>
+                        <li class="text-center" ng-class="vm.tabArea[1].status == true ? 'active' : ''" ng-click="vm.tabDisplay(1, 'SCHEDULED')"><span>예정</span></li>
+                        <li class="text-center" ng-class="vm.tabArea[2].status == true ? 'active' : ''" ng-click="vm.tabDisplay(2, 'HOLD')"><span>보류</span></li>
+                        <li class="text-center" ng-class="vm.tabArea[3].status == true ? 'active' : ''" ng-click="vm.tabDisplay(3, 'COMPLETE')"><span>완료</span></li>
+                    </ul>
+                    <div style="font-weight: bold; font-size: 25px; background: #fff;">
+                        <span>{{vm.tasks.length}}건</span>
+                        <div class="pull-right">
+                            <span><i class="fa fa-file-text cursor "></i>1</span>
+                            <span><i class="fa fa-list cursor "></i>1</span>
+                            <span><i class="fa fa-check-square-o cursor "></i>1</span>
+                            <span><i class="fa fa-eye cursor "></i>1</span>
+                        </div>
                     </div>
-                    <div uib-accordion-group class="panel-default" heading="오늘 작업 목록">
-<!--                        <wms-tree-list-grid tree-model="wmsTreeData2"
-                                       tree-scope="treeScope"
-                                       column-definitions="wmsTreeColumnDefinitions"
-                                       disabled="false"
-                                       enable-filter="false"
-                                       enable-sort="true"
-                                       enable-clone="false">
-                        </wms-tree-list-grid>-->
-                        <button ng-click="loadWmsTableData()">add</button>
-
-                        <wms-table ng-model="vm.wmsTableData" table-configs="vm.tableConfigs" update-callback="updateCallback"></wms-table>
+                    <div uib-accordion-group class="panel-default" heading="지연된 작업" is-open="status.isFirstOpen" is-disabled="status.isFirstDisabled" ng-show="vm.tabArea[0].status">
+                        <div class="table table-bordered table-hover " style="margin-bottom: 0;">
+                            <div>
+                                <div ng-repeat="data in vm.delayed" class="">
+                                    <div  class="wms-tree-node-list"
+                                         ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
+                                        <input type="checkbox"/> <a href-void>{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
+                                        <div class="pull-right">
+                                            <div>{{data.endDate}}</div>
+                                            <div>
+                                                <span ng-if="data.parent.name != null">상위 1</span>
+                                                <span ng-if="data.subTasks.length > 0">하위 {{data.subTasks.length}}</span>
+                                                <span ng-if="data.watchers.length > 0">참조 {{data.watchers.length}}</span>
+                                                <!--<span>승인/미승인</span>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div uib-accordion-group class="panel-default" heading="오늘 완료 작업" ng-show="vm.tabArea[0].status">
+                        <div class="table table-bordered table-hover " style="margin-bottom: 0;">
+                            <div>
+                                <div ng-repeat="data in vm.scheduledToday">
+                                    <div  class="wms-tree-node-list"
+                                          ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
+                                        <input type="checkbox"/> <a href-void>{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
+                                        <div class="pull-right">
+                                            <div>{{data.endDate}}</div>
+                                            <div>
+                                                <span ng-if="data.parent.name != null">상위 1</span>
+                                                <span ng-if="data.subTasks.length > 0">하위 {{data.subTasks.length}}</span>
+                                                <span ng-if="data.watchers.length > 0">참조 {{data.watchers.length}}</span>
+                                                <!--<span>승인/미승인</span>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div uib-accordion-group class="panel-default" heading="새로 등록된 작업" ng-show="vm.tabArea[0].status">
+                        <div class="table table-bordered table-hover " style="margin-bottom: 0;">
+                            <div>
+                                <div ng-repeat="data in vm.registeredToday">
+                                    <div  class="wms-tree-node-list"
+                                          ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
+                                        <input type="checkbox"/> <a href-void>{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
+                                        <div class="pull-right">
+                                            <div>{{data.endDate}}</div>
+                                            <div>
+                                                <span ng-if="data.parent.name != null">상위 1</span>
+                                                <span ng-if="data.subTasks.length > 0">하위 {{data.subTasks.length}}</span>
+                                                <span ng-if="data.watchers.length > 0">참조 {{data.watchers.length}}</span>
+                                                <!--<span>승인/미승인</span>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div uib-accordion-group class="panel-default" heading="진행 중인 작업" ng-show="vm.tabArea[0].status">
+                        <div class="table table-bordered table-hover " style="margin-bottom: 0;">
+                            <div>
+                                <div ng-repeat="data in vm.inProgress">
+                                    <div  class="wms-tree-node-list"
+                                          ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
+                                        <input type="checkbox"/> <a href-void>{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
+                                        <div class="pull-right">
+                                            <div>{{data.endDate}}</div>
+                                            <div>
+                                                <span ng-if="data.parent.name != null">상위 1</span>
+                                                <span ng-if="data.subTasks.length > 0">하위 {{data.subTasks.length}}</span>
+                                                <span ng-if="data.watchers.length > 0">참조 {{data.watchers.length}}</span>
+                                                <!--<span>승인/미승인</span>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-if="vm.inProgress == []" >데이터가 없습니다.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div uib-accordion-group class="panel-default" heading="일정 미정 작업" ng-show="vm.tabArea[0].status">
+                        <div class="table table-bordered table-hover " style="margin-bottom: 0;">
+                            <div>
+                                <div ng-repeat="data in vm.noneScheduled">
+                                    <div  class="wms-tree-node-list"
+                                          ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
+                                        <input type="checkbox"/> <a href-void>{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
+                                        <div class="pull-right">
+                                            <div>{{data.endDate}}</div>
+                                            <div>
+                                                <span ng-if="data.parent.name != null">상위 1</span>
+                                                <span ng-if="data.subTasks.length > 0">하위 {{data.subTasks.length}}</span>
+                                                <span ng-if="data.watchers.length > 0">참조 {{data.watchers.length}}</span>
+                                                <!--<span>승인/미승인</span>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div uib-accordion-group class="panel-default" heading="내 작업" ng-show="!vm.tabArea[0].status">
+                        <div class="table table-bordered table-hover " style="margin-bottom: 0;">
+                            <div>
+                                <div ng-repeat="data in vm.myTask">
+                                    <div  class="wms-tree-node-list"
+                                          ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
+                                        <input type="checkbox"/> <a href-void>{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
+                                        <div class="pull-right">
+                                            <div>{{data.endDate}}</div>
+                                            <div>
+                                                <span ng-if="data.parent.name != null">상위 1</span>
+                                                <span ng-if="data.subTasks.length > 0">하위 {{data.subTasks.length}}</span>
+                                                <span ng-if="data.watchers.length > 0">참조 {{data.watchers.length}}</span>
+                                                <!--<span>승인/미승인</span>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div uib-accordion-group class="panel-default" heading="요청 받은 작업" ng-show="!vm.tabArea[0].status">
+                        <div class="table table-bordered table-hover " style="margin-bottom: 0;">
+                            <div>
+                                <div ng-repeat="data in vm.requestTask">
+                                    <div  class="wms-tree-node-list"
+                                          ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
+                                        <input type="checkbox"/> <a href-void>{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
+                                        <div class="pull-right">
+                                            <div>{{data.endDate}}</div>
+                                            <div>
+                                                <span ng-if="data.parent.name != null">상위 1</span>
+                                                <span ng-if="data.subTasks.length > 0">하위 {{data.subTasks.length}}</span>
+                                                <span ng-if="data.watchers.length > 0">참조 {{data.watchers.length}}</span>
+                                                <!--<span>승인/미승인</span>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div uib-accordion-group class="panel-default" heading="참조 작업" ng-show="!vm.tabArea[0].status">
+                        <div class="table table-bordered table-hover " style="margin-bottom: 0;">
+                            <div>
+                                <div ng-repeat="data in vm.watchedTask">
+                                    <div  class="wms-tree-node-list"
+                                          ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
+                                        <input type="checkbox"/> <a href-void>{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
+                                        <div class="pull-right">
+                                            <div>{{data.endDate}}</div>
+                                            <div>
+                                                <span ng-if="data.parent.name != null">상위 1</span>
+                                                <span ng-if="data.subTasks.length > 0">하위 {{data.subTasks.length}}</span>
+                                                <span ng-if="data.watchers.length > 0">참조 {{data.watchers.length}}</span>
+                                                <!--<span>승인/미승인</span>-->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </uib-accordion>
             </bg-pane>
 
             <bg-pane min-size="330">
+
             </bg-pane>
 
         </bg-splitter>

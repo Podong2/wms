@@ -555,7 +555,7 @@
             views: {//
                 'content@app': {//
                     templateUrl: 'app/components/wms-ui-components/ui-templates/wmsUILayout.html', // home에 사용될 template html 파일
-                    controller: 'UiComponentController', // home에 사용될 controller 명
+                    controller: 'taskListCtrl', // home에 사용될 controller 명
                     controllerAs: 'vm' // 별칭을 vm으로 설정
                 }
             },

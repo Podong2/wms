@@ -2,34 +2,25 @@
     <div class="table table-bordered table-hover " style="margin-bottom: 0;">
         <div tree-dnd-nodes>
             <div tree-dnd-node="node" ng-repeat="node in tree_nodes track by node.__hashKey__ " class="wms-tree-node"
-                ng-show="enabledFilter ? node.__filtered_visible__ === true && node.__visible__ : node.__visible__"
-                ng-click="onSelect(node)">
+
+                ng-click="onSelect(node)"><!--ng-show="enabledFilter ? node.__filtered_visible__ === true && node.__visible__ : node.__visible__"-->
                 <div tree-dnd-node-handle class="wms-tree-node-list"
-                    ng-style="expandingProperty.cellStyle ? expandingProperty.cellStyle : {'padding-left': $callbacks.calsIndent(node.__level__)}"
-                    ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
-                    <a data-nodrag> <i
+
+                    ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate"><!--ng-style="expandingProperty.cellStyle ? expandingProperty.cellStyle : {'padding-left': $callbacks.calsIndent(node.__level__)}"-->
+<!--                    <a data-nodrag> <i
                                         ng-show="node.__children__.length > 0"
                                         ng-class="node.__expanded__ ? ('glyphicon glyphicon-chevron-down') : 'glyphicon glyphicon-chevron-right'"
                                        ng-click="toggleExpand(node)"
                                        class="tree-icon"></i>
-                    </a> <span ng-class="node.icon ? node.icon : ''"></span> <input type="checkbox"/> <a href-void>{{node[expandingProperty.field] || node[expandingProperty]}}</a>
-                    <span class="ull-right">7/12(5일)</span>
+                    </a> -->
+                    <input type="checkbox"/> <a href-void>{{node[expandingProperty.field] || node[expandingProperty]}}</a><span ng-class="node.icon ? node.icon : ''"></span>
+                    <span class="pull-right">7/12(5일)</span>
                 </div>
             </div>
         </div>
     </div>
 </script>
 
-<!--<div class="form-group" ng-if="enableFilter != 'false'">
-    <div class="input-group">
-        <label>필터: </label>
-        <input class="form-control" ng-model="_filter.name">
-    </div>
-</div>-->
-<!--<div class="voffset-b2">
-    <button type="button" class="btn btn-default" ng-click="expandAll();">전체 열기</button>
-    <button type="button" class="btn btn-default" ng-click="collapseAll();">전체 닫기</button>
-</div>-->
 <tree-dnd
     tree-data="tree_data"
     tree-control="my_tree_grid"
