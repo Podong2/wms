@@ -284,30 +284,6 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
         return this;
     }
 
-    public String getStatusGroup() {
-
-        if(StringUtils.isEmpty(this.endDate)) {
-            return "NONE_SCHEDULED";
-        }
-
-        String today = DateUtil.getTodayWithYYYYMMDD();
-        String createdDate = DateUtil.convertDateToYYYYMMDD(Date.from(getCreatedDate().toInstant()));
-
-        if(this.endDate.equals(today)) {
-            return "SCHEDULED_TODAY";
-        }
-
-        if(DateUtil.convertStrToDate(this.endDate, "yyyy-MM-dd").getTime() < DateUtil.convertStrToDate(today, "yyyy-MM-dd").getTime()) {
-            return "DELAYED";
-        }
-
-        if(createdDate.equals(today)) {
-            return "REGISTERED_TODAY";
-        }
-
-        return "IN_PROGRESS";
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) {
