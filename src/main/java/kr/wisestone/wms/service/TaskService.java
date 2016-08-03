@@ -129,7 +129,7 @@ public class TaskService {
     }
 
 
-    public void determineStatusGroup(TaskDTO taskDTO, String listType, String login) {
+    private void determineStatusGroup(TaskDTO taskDTO, String listType, String login) {
 
         String statusGroup = "";
 

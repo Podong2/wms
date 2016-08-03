@@ -41,7 +41,8 @@ public class TaskForm {
 
     public Task bind(Task task) {
 
-        task.setName(this.name);
+        if(StringUtils.hasText(this.name))
+            task.setName(this.name);
 
         if(StringUtils.hasText(this.startDate))
             task.setStartDate(this.startDate);
@@ -86,7 +87,8 @@ public class TaskForm {
 
     public Task bindSubTask(Task subTask) {
 
-        subTask.setName(this.getName());
+        if(StringUtils.hasText(this.getName()))
+            subTask.setName(this.getName());
 
         Task parent = new Task();
         parent.setId(this.getParentId());
