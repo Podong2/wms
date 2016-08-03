@@ -115,6 +115,12 @@ public class TaskService {
     private TaskDTO convertTaskToDTO(Task task) {
         TaskDTO taskDTO = taskMapper.taskToTaskDTO(task);
 
+        this.copyTaskRelationProperties(task, taskDTO);
+
+        return taskDTO;
+    }
+
+    private void copyTaskRelationProperties(Task task, TaskDTO taskDTO) {
         if(task.getTaskUsers() != null && !task.getTaskUsers().isEmpty()) {
             taskDTO.setAssignees(userMapper.usersToUserDTOs(task.findTaskUsersByType(TaskUserType.ASSIGNEE)));
             taskDTO.setWatchers(userMapper.usersToUserDTOs(task.findTaskUsersByType(TaskUserType.WATCHER)));
@@ -128,8 +134,6 @@ public class TaskService {
 
         if(task.getParent() != null)
             taskDTO.setParent(taskMapper.taskToTaskDTO(task.getParent()));
-
-        return taskDTO;
     }
 
     private BooleanBuilder taskListPredicate(TaskCondition taskCondition) {
@@ -182,6 +186,8 @@ public class TaskService {
         log.debug("Request to get Task : {}", id);
         Task task = taskRepository.findOne(id);
         TaskDTO taskDTO = taskMapper.taskToTaskDTO(task);
+
+        this.copyTaskRelationProperties(task, taskDTO);
 
         if(!task.getTaskAttachedFiles().isEmpty()) {
             taskDTO.setAttachedFiles(Lists.newArrayList(task.getTaskAttachedFiles()));
