@@ -145,9 +145,7 @@ public class TaskService {
 
                 if(taskDTO.getEndDate().equals(today)) {
                     statusGroup = "SCHEDULED_TODAY";
-                }
-
-                if(DateUtil.convertStrToDate(taskDTO.getEndDate(), "yyyy-MM-dd").getTime() < DateUtil.convertStrToDate(today, "yyyy-MM-dd").getTime()) {
+                } else if(DateUtil.convertStrToDate(taskDTO.getEndDate(), "yyyy-MM-dd").getTime() < DateUtil.convertStrToDate(today, "yyyy-MM-dd").getTime()) {
                     statusGroup = "DELAYED";
                 }
 
@@ -213,7 +211,7 @@ public class TaskService {
         switch (taskCondition.getListType()) {
             case TaskCondition.LIST_TYPE_TODAY:
 
-                predicate.and($task.endDate.loe(today).or($task.endDate.isNull()));
+                predicate.and($task.startDate.lt(today).or($task.endDate.isNull()));
                 predicate.and($task.status.isNull().or($task.status.id.eq(1L)));
 
                 break;
