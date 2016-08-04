@@ -7,8 +7,12 @@ import kr.wisestone.wms.domain.QTraceLog;
 import kr.wisestone.wms.domain.Task;
 import kr.wisestone.wms.domain.TraceLog;
 import kr.wisestone.wms.repository.TraceLogRepository;
+import kr.wisestone.wms.service.TraceLogService;
 import kr.wisestone.wms.web.rest.condition.TaskCondition;
 import kr.wisestone.wms.web.rest.dto.TaskDTO;
+import kr.wisestone.wms.web.rest.form.TaskForm;
+import kr.wisestone.wms.web.rest.form.TraceLogForm;
+import kr.wisestone.wms.web.rest.util.HeaderUtil;
 import kr.wisestone.wms.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,8 +21,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.inject.Inject;
+import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -30,6 +38,9 @@ public class TraceLogResource {
 
     @Inject
     private TraceLogRepository traceLogRepository;
+
+    @Inject
+    private TraceLogService traceLogService;
 
     /**
      * GET  /tasks : get all the tasks.
@@ -56,5 +67,21 @@ public class TraceLogResource {
         List<TraceLog> traceLogs = Lists.newArrayList(traceLogRepository.findAll(predicate, $traceLog.createdDate.asc()));
 
         return new ResponseEntity<>(traceLogs, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/trace-log",
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<TraceLog> addTraceLog(TraceLogForm traceLogForm, MultipartHttpServletRequest request) throws URISyntaxException, IOException {
+        log.debug("REST request to update TraceLog : {}", traceLogForm);
+
+        List<MultipartFile> files = request.getFiles("file");
+
+        TraceLog result = traceLogService.createTraceLog(traceLogForm, files);
+
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert("task", result.getId().toString()))
+            .body(result);
     }
 }

@@ -71,6 +71,19 @@ public class TraceLog extends AbstractAuditingEntity {
     @Transient
     private Traceable entity;
 
+    public TraceLogAttachedFile addAttachedFile(AttachedFile attachedFile) {
+
+        if(attachedFile == null) {
+            return null;
+        }
+
+        TraceLogAttachedFile taskAttachedFile = new TraceLogAttachedFile(this, attachedFile);
+
+        this.traceLogAttachedFiles.add(taskAttachedFile);
+
+        return taskAttachedFile;
+    }
+
     public static TraceLog builder(Traceable entity, String auditLogType) {
 
         TraceLog logRecord = new TraceLog();

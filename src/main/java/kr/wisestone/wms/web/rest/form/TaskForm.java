@@ -100,7 +100,7 @@ public class TaskForm {
             Task relatedTask = new Task();
             relatedTask.setId(id);
 
-            task.addRelatedTask(task);
+            task.addRelatedTask(relatedTask);
         }
 
         for(Long id : getRemoveRelatedTaskIds()) {

@@ -35,6 +35,13 @@ public class TraceLogAttachedFile extends AbstractAuditingEntity {
     @JoinColumn(name = "attached_file_id")
     private AttachedFile attachedFile;
 
+    public TraceLogAttachedFile(){}
+
+    public TraceLogAttachedFile(TraceLog traceLog, AttachedFile attachedFile) {
+        this.setTraceLog(traceLog);
+        this.setAttachedFile(attachedFile);
+    }
+
     public Long getId() {
         return id;
     }
