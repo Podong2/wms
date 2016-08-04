@@ -3,6 +3,7 @@ package kr.wisestone.wms.domain;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.util.ClassUtils;
 
 import javax.persistence.*;
 
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @Table(name = "owl_task_project")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "taskProject")
-public class TaskProject extends AbstractAuditingEntity {
+public class TaskProject extends AbstractAuditingEntity implements Traceable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "taskProjectSeqGenerator")
@@ -53,5 +54,24 @@ public class TaskProject extends AbstractAuditingEntity {
 
     public void setProject(Project project) {
         this.project = project;
+    }
+
+    @Override
+    public TraceLog getTraceLog(String persisType) {
+
+        TraceLog logRecord = TraceLog.builder(this, persisType);
+
+        logRecord.setTaskId(this.getTask().getId());
+        logRecord.setEntityName(ClassUtils.getShortName(this.getTask().getClass()));
+        logRecord.setEntityField("taskProjects");
+        logRecord.setEntityId(this.getTask().getId());
+
+        if (Traceable.PERSIST_TYPE_INSERT.equals(persisType)) {
+            logRecord.setNewValue(this.getProject().getName());
+        } else if (Traceable.PERSIST_TYPE_DELETE.equals(persisType)) {
+            logRecord.setOldValue(this.getProject().getName());
+        }
+
+        return logRecord;
     }
 }

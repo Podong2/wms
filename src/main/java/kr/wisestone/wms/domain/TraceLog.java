@@ -62,6 +62,12 @@ public class TraceLog extends AbstractAuditingEntity {
     @JsonIgnore
     private Set<TraceLogAttachedFile> traceLogAttachedFiles = new HashSet<>();
 
+    @Column(name = "task_id")
+    private Long taskId;
+
+    @Column(name = "project_id")
+    private Long projectId;
+
     @Transient
     private Traceable entity;
 
@@ -71,10 +77,7 @@ public class TraceLog extends AbstractAuditingEntity {
         logRecord.setEntity(entity);
         logRecord.setEntityId(entity.getId());
         logRecord.setEntityName(ClassUtils.getShortName(entity.getClass()));
-        logRecord.setEntityField("");
         logRecord.setPersistType(auditLogType);
-        logRecord.setOldValue("");
-        logRecord.setNewValue("");
 
         return logRecord;
     }

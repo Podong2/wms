@@ -10,6 +10,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Nullable;
@@ -87,6 +88,11 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<RelatedTask> relatedTasks = new HashSet<>();
+
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<TaskProject> taskProjects = new HashSet<>();
 
     public Task() {
 
@@ -219,6 +225,19 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
         return this;
     }
 
+    public Task removeTaskUser(User user, TaskUserType taskUserType) {
+
+        Optional<TaskUser> origin = this.taskUsers.stream().filter(
+            taskUser ->
+                taskUser.getUserType().equals(taskUserType) && taskUser.getUser().getId().equals(user.getId())
+        ).findFirst();
+
+        if(origin.isPresent())
+            this.taskUsers.remove(origin.get());
+
+        return this;
+    }
+
     public List<User> findTaskUsersByType(TaskUserType taskUserType) {
 
         List<TaskUser> taskUsers = this.taskUsers.stream().filter(
@@ -241,18 +260,17 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
         return this;
     }
 
-    @Override
-    public TraceLog getTraceLog(String persisType) {
+    public Task removeRelatedTask(Task task) {
 
-        TraceLog logRecord = TraceLog.builder(this, persisType);
+        Optional<RelatedTask> origin = this.relatedTasks.stream().filter(
+            relatedTask ->
+                relatedTask.getTask().getId().equals(task.getId())
+        ).findFirst();
 
-        if (Traceable.PERSIST_TYPE_INSERT.equals(persisType)) {
-            logRecord.setNewValue(this.getName());
-        } else if (Traceable.PERSIST_TYPE_DELETE.equals(persisType)) {
-            logRecord.setOldValue(this.getName());
-        }
+        if(origin.isPresent())
+            this.relatedTasks.remove(origin.get());
 
-        return logRecord;
+        return this;
     }
 
     public TaskAttachedFile addAttachedFile(AttachedFile attachedFile) {
@@ -284,6 +302,14 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
         return this;
     }
 
+    public Set<TaskProject> getTaskProjects() {
+        return taskProjects;
+    }
+
+    public void setTaskProjects(Set<TaskProject> taskProjects) {
+        this.taskProjects = taskProjects;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {
@@ -312,5 +338,28 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
             ", endDate='" + endDate + "'" +
             ", contents='" + contents + "'" +
             '}';
+    }
+
+    @Override
+    public TraceLog getTraceLog(String persisType) {
+
+        TraceLog logRecord = TraceLog.builder(this, persisType);
+
+        if(this.parent == null) {
+            logRecord.setTaskId(this.getId());
+        } else {
+            logRecord.setTaskId(this.getParent().getId());
+            logRecord.setEntityName(ClassUtils.getShortName(this.getParent().getClass()));
+            logRecord.setEntityField("subTasks");
+            logRecord.setEntityId(this.getId());
+        }
+
+        if (Traceable.PERSIST_TYPE_INSERT.equals(persisType)) {
+            logRecord.setNewValue(this.getName());
+        } else if (Traceable.PERSIST_TYPE_DELETE.equals(persisType)) {
+            logRecord.setOldValue(this.getName());
+        }
+
+        return logRecord;
     }
 }

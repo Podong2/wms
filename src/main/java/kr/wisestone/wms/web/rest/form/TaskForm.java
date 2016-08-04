@@ -31,13 +31,19 @@ public class TaskForm {
 
     private Boolean importantYn = Boolean.FALSE;
 
+    private List<Long> removeTargetFiles = new ArrayList<>();
+
     private List<Long> assigneeIds = new ArrayList<>();
 
     private List<Long> watcherIds = new ArrayList<>();
 
-    private List<Long> removeTargetFiles = new ArrayList<>();
-
     private List<Long> relatedTaskIds = new ArrayList<>();
+
+    private List<Long> removeAssigneeIds = new ArrayList<>();
+
+    private List<Long> removeWatcherIds = new ArrayList<>();
+
+    private List<Long> removeRelatedTaskIds = new ArrayList<>();
 
     public Task bind(Task task) {
 
@@ -68,6 +74,13 @@ public class TaskForm {
             task.addTaskUser(user, TaskUserType.ASSIGNEE);
         }
 
+        for(Long id : getRemoveAssigneeIds()) {
+            User user = new User();
+            user.setId(id);
+
+            task.removeTaskUser(user, TaskUserType.ASSIGNEE);
+        }
+
         for(Long id : getWatcherIds()) {
             User user = new User();
             user.setId(id);
@@ -75,11 +88,19 @@ public class TaskForm {
             task.addTaskUser(user, TaskUserType.WATCHER);
         }
 
-        for(Long id : getRelatedTaskIds()) {
+
+        for(Long id : getRemoveWatcherIds()) {
+            User user = new User();
+            user.setId(id);
+
+            task.removeTaskUser(user, TaskUserType.WATCHER);
+        }
+
+        for(Long id : getRemoveRelatedTaskIds()) {
             Task relatedTask = new Task();
             relatedTask.setId(id);
 
-            task.addRelatedTask(task);
+            task.removeRelatedTask(task);
         }
 
         return task;

@@ -71,4 +71,99 @@ public class Project extends AbstractAuditingEntity {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<ProjectAttachedFile> projectAttachedFiles = new HashSet<>();
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(String startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(String endDate) {
+        this.endDate = endDate;
+    }
+
+    public String getContents() {
+        return contents;
+    }
+
+    public void setContents(String contents) {
+        this.contents = contents;
+    }
+
+    public Boolean getFolderYn() {
+        return folderYn;
+    }
+
+    public void setFolderYn(Boolean folderYn) {
+        this.folderYn = folderYn;
+    }
+
+    public Code getStatus() {
+        return status;
+    }
+
+    public void setStatus(Code status) {
+        this.status = status;
+    }
+
+    public Project getParent() {
+        return parent;
+    }
+
+    public void setParent(Project parent) {
+        this.parent = parent;
+    }
+
+    public User getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(User admin) {
+        this.admin = admin;
+    }
+
+    public Set<Project> getSubProjects() {
+        return subProjects;
+    }
+
+    public void setSubProjects(Set<Project> subProjects) {
+        this.subProjects = subProjects;
+    }
+
+    public Set<ProjectUser> getProjectUsers() {
+        return projectUsers;
+    }
+
+    public void setProjectUsers(Set<ProjectUser> projectUsers) {
+        this.projectUsers = projectUsers;
+    }
+
+    public Set<ProjectAttachedFile> getProjectAttachedFiles() {
+        return projectAttachedFiles;
+    }
+
+    public void setProjectAttachedFiles(Set<ProjectAttachedFile> projectAttachedFiles) {
+        this.projectAttachedFiles = projectAttachedFiles;
+    }
 }

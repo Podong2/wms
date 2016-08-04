@@ -53,7 +53,7 @@ public class TraceLogResource {
         predicate.and($traceLog.entityName.eq(entityName));
         predicate.and($traceLog.entityId.eq(entityId));
 
-        List<TraceLog> traceLogs = Lists.newArrayList(traceLogRepository.findAll(predicate));
+        List<TraceLog> traceLogs = Lists.newArrayList(traceLogRepository.findAll(predicate, $traceLog.createdDate.asc()));
 
         return new ResponseEntity<>(traceLogs, HttpStatus.OK);
     }

@@ -3,6 +3,7 @@ package kr.wisestone.wms.domain;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.util.ClassUtils;
 
 import javax.persistence.*;
 
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @Table(name = "owl_task_user")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "taskUser")
-public class TaskUser extends AbstractAuditingEntity {
+public class TaskUser extends AbstractAuditingEntity implements Traceable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "taskUserSeqGenerator")
@@ -73,5 +74,26 @@ public class TaskUser extends AbstractAuditingEntity {
 
     public void setUserType(TaskUserType type) {
         this.userType = type;
+    }
+
+
+    @Override
+    public TraceLog getTraceLog(String persisType) {
+
+        TraceLog logRecord = TraceLog.builder(this, persisType);
+
+        logRecord.setTaskId(this.getTask().getId());
+        logRecord.setEntityName(ClassUtils.getShortName(this.getTask().getClass()));
+        logRecord.setEntityField("taskUsers");
+        logRecord.setEntityId(this.getTask().getId());
+        logRecord.setEtcValue(this.getUserType().getDescription());
+
+        if (Traceable.PERSIST_TYPE_INSERT.equals(persisType)) {
+            logRecord.setNewValue(this.getUser().getName());
+        } else if (Traceable.PERSIST_TYPE_DELETE.equals(persisType)) {
+            logRecord.setOldValue(this.getUser().getName());
+        }
+
+        return logRecord;
     }
 }

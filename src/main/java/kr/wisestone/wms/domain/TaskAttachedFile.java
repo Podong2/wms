@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.util.ClassUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -18,7 +19,7 @@ import java.util.Objects;
 @Table(name = "owl_task_attached_file")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "taskattachedfile")
-public class TaskAttachedFile extends AbstractAuditingEntity implements Serializable {
+public class TaskAttachedFile extends AbstractAuditingEntity implements Traceable, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -100,5 +101,26 @@ public class TaskAttachedFile extends AbstractAuditingEntity implements Serializ
         return "TaskAttachedFile{" +
             "id=" + id +
             '}';
+    }
+
+    @Override
+    public TraceLog getTraceLog(String persisType) {
+
+        TraceLog logRecord = TraceLog.builder(this, persisType);
+
+        logRecord.setTaskId(this.getTask().getId());
+        logRecord.setEtcValue(this.getAttachedFile().getSize().toString());
+        logRecord.setAttachedFileId(this.getAttachedFile().getId());
+        logRecord.setEntityName(ClassUtils.getShortName(this.getTask().getClass()));
+        logRecord.setEntityField("taskAttachedFiles");
+        logRecord.setEntityId(this.getTask().getId());
+
+        if (Traceable.PERSIST_TYPE_INSERT.equals(persisType)) {
+            logRecord.setNewValue(this.getAttachedFile().getName());
+        } else if (Traceable.PERSIST_TYPE_DELETE.equals(persisType)) {
+            logRecord.setOldValue(this.getAttachedFile().getName());
+        }
+
+        return logRecord;
     }
 }
