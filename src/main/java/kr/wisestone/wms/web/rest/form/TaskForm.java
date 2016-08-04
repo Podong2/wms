@@ -96,6 +96,13 @@ public class TaskForm {
             task.removeTaskUser(user, TaskUserType.WATCHER);
         }
 
+        for(Long id : getRelatedTaskIds()) {
+            Task relatedTask = new Task();
+            relatedTask.setId(id);
+
+            task.addRelatedTask(task);
+        }
+
         for(Long id : getRemoveRelatedTaskIds()) {
             Task relatedTask = new Task();
             relatedTask.setId(id);
