@@ -85,7 +85,7 @@
                 $log.debug("_identity : ", _identity);
                 _authenticated = true; // 인증 true
                 deferred.resolve(_identity); // 값을 promise 에 전달
-                JhiTrackerService.connect(); // 접속중인 url 정보의 websocket으로 연결한다.
+                //JhiTrackerService.connect(); // 접속중인 url 정보의 websocket으로 연결한다.
             }
 
             function getAccountCatch () {

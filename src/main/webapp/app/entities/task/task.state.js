@@ -155,7 +155,79 @@
                     $state.go('^');
                 });
             }]
-        });
+        })
+        .state('my-task', { // ui router에서 호출받을 state name 설정
+            parent: 'app',
+            url: '/myTask', // 표현 url 설정
+            data: {
+                authorities: [],
+                title : 'My Task'
+            },
+            views: {//
+                'content@app': {//
+                    templateUrl: 'app/task/html/myTask.html', // home에 사용될 template html 파일
+                    controller: 'taskListCtrl', // home에 사용될 controller 명
+                    controllerAs: 'vm' // 별칭을 vm으로 설정
+                }
+            },
+            resolve: {//
+                mainTranslatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate,$translatePartialLoader) {
+                    $translatePartialLoader.addPart('home'); // home.json의 다국어 파일을 주입
+                    $translatePartialLoader.addPart('login'); // home.json의 다국어 파일을 주입
+                    $translatePartialLoader.addPart('register'); // home.json의 다국어 파일을 주입
+                    return $translate.refresh();
+                }]
+            }
+        })
+        .state('my-task.detail', { // ui router에서 호출받을 state name 설정
+            parent: 'my-task',
+            url: '/detail/{id}', // 표현 url 설정
+            data: {
+                authorities: [],
+                title : 'My Task Detail'
+            },
+            views: {//
+                'taskDetail': {//
+                    templateUrl: 'app/task/html/myTaskDetail.html', // home에 사용될 template html 파일
+                    controller: 'TaskDetailCtrl', // home에 사용될 controller 명
+                    controllerAs: 'vm' // 별칭을 vm으로 설정
+                }
+            },
+            resolve: {//
+                translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+                    $translatePartialLoader.addPart('task');
+                    return $translate.refresh();
+                }],
+                entity: ['$stateParams', 'Task', function($stateParams, Task) {
+                    return Task.get({id : $stateParams.id}).$promise;
+                }]
+            }
+        })
+        //.state('my-task.view', { // ui router에서 호출받을 state name 설정
+        //    url: '/tasks', // 표현 url 설정
+        //    data: {
+        //        authorities: [],
+        //        title : 'My Task Details'
+        //    },
+        //    views: {//
+        //        'taskList': {//
+        //            templateUrl: 'app/task/html/myTaskList.html', // home에 사용될 template html 파일
+        //            controller: 'taskListCtrl', // home에 사용될 controller 명
+        //            controllerAs: 'vm' // 별칭을 vm으로 설정
+        //        },
+        //        'taskDetail': {//
+        //            templateUrl: 'app/task/html/myTaskDetail.html', // home에 사용될 template html 파일
+        //            controller: 'TaskDetailCtrl', // home에 사용될 controller 명
+        //            controllerAs: 'vm' // 별칭을 vm으로 설정
+        //        }
+        //    },
+        //    resolve: {//
+        //        translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
+        //            $translatePartialLoader.addPart('task');
+        //            return $translate.refresh();
+        //        }]
+        //    }
+        //})
     }
 
 })();

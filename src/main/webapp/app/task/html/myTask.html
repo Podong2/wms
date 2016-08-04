@@ -6,11 +6,12 @@
   ~ Vestibulum commodo. Ut rhoncus gravida arcu.
   -->
 <div id="content" ng-cloak>
-    <div class="layout-scroll" style="position: relative;
+    <div class="layout-scroll" style="position: relative; background: #fff;
     border: 1px solid #aaa; height: 1030px;">
         <bg-splitter orientation="horizontal">
 
             <bg-pane min-size="400">
+                <!--<div ui-view="taskList"></div>-->
                 <uib-accordion close-others="oneAtATime">
                     <ul class="nav nav-tabs nav-justified">
                         <li class="text-center" ng-class="vm.tabArea[0].status == true ? 'active' : ''" ng-click="vm.tabDisplay(0, 'TODAY')"><span>오늘</span></li>
@@ -32,8 +33,8 @@
                             <div>
                                 <div ng-repeat="data in vm.delayed" class="">
                                     <div  class="wms-tree-node-list"
-                                         ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
-                                        <input type="checkbox"/> <a href-void ui-sref="ui-layout.detail">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
+                                          ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
+                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
                                         <div class="pull-right">
                                             <div>{{data.endDate}}</div>
                                             <div>
@@ -48,13 +49,13 @@
                             </div>
                         </div>
                     </div>
-                    <div uib-accordion-group class="panel-default" heading="오늘 완료 작업" is-open="true" ng-show="vm.tabArea[0].status">
+                    <div uib-accordion-group class="panel-default" heading="오늘 완료 작업" ng-show="vm.tabArea[0].status">
                         <div class="table table-bordered table-hover " style="margin-bottom: 0;">
                             <div>
                                 <div ng-repeat="data in vm.scheduledToday">
                                     <div  class="wms-tree-node-list"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
-                                        <input type="checkbox"/> <a href-void ui-sref="ui-layout.detail">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
+                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
                                         <div class="pull-right">
                                             <div>{{data.endDate}}</div>
                                             <div>
@@ -69,13 +70,13 @@
                             </div>
                         </div>
                     </div>
-                    <div uib-accordion-group class="panel-default" heading="새로 등록된 작업" is-open="true" ng-show="vm.tabArea[0].status">
+                    <div uib-accordion-group class="panel-default" heading="새로 등록된 작업" ng-show="vm.tabArea[0].status">
                         <div class="table table-bordered table-hover " style="margin-bottom: 0;">
                             <div>
                                 <div ng-repeat="data in vm.registeredToday">
                                     <div  class="wms-tree-node-list"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
-                                        <input type="checkbox"/> <a href-void ui-sref="ui-layout.detail">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
+                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
                                         <div class="pull-right">
                                             <div>{{data.endDate}}</div>
                                             <div>
@@ -90,13 +91,13 @@
                             </div>
                         </div>
                     </div>
-                    <div uib-accordion-group class="panel-default" heading="진행 중인 작업" is-open="true" ng-show="vm.tabArea[0].status">
+                    <div uib-accordion-group class="panel-default" heading="진행 중인 작업" ng-show="vm.tabArea[0].status">
                         <div class="table table-bordered table-hover " style="margin-bottom: 0;">
                             <div>
                                 <div ng-repeat="data in vm.inProgress">
                                     <div  class="wms-tree-node-list"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
-                                        <input type="checkbox"/> <a href-void ui-sref="ui-layout.detail">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
+                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
                                         <div class="pull-right">
                                             <div>{{data.endDate}}</div>
                                             <div>
@@ -118,7 +119,7 @@
                                 <div ng-repeat="data in vm.noneScheduled">
                                     <div  class="wms-tree-node-list"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
-                                        <input type="checkbox"/> <a href-void ui-sref="ui-layout.detail">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
+                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
                                         <div class="pull-right">
                                             <div>{{data.endDate}}</div>
                                             <div>
@@ -139,7 +140,7 @@
                                 <div ng-repeat="data in vm.myTask">
                                     <div  class="wms-tree-node-list"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
-                                        <input type="checkbox"/> <a href-void ui-sref="ui-layout.detail">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
+                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
                                         <div class="pull-right">
                                             <div>{{data.endDate}}</div>
                                             <div>
@@ -160,7 +161,7 @@
                                 <div ng-repeat="data in vm.requestTask">
                                     <div  class="wms-tree-node-list"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
-                                        <input type="checkbox"/> <a href-void ui-sref="ui-layout.detail">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
+                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
                                         <div class="pull-right">
                                             <div>{{data.endDate}}</div>
                                             <div>
@@ -181,7 +182,7 @@
                                 <div ng-repeat="data in vm.watchedTask">
                                     <div  class="wms-tree-node-list"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
-                                        <input type="checkbox"/> <a href-void ui-sref="ui-layout.detail">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
+                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
                                         <div class="pull-right">
                                             <div>{{data.endDate}}</div>
                                             <div>
@@ -197,9 +198,10 @@
                         </div>
                     </div>
                 </uib-accordion>
+
             </bg-pane>
 
-            <bg-pane min-size="330">
+            <bg-pane min-size="700">
                 <div ui-view="taskDetail"></div>
             </bg-pane>
 

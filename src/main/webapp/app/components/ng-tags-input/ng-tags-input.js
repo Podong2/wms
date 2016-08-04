@@ -202,11 +202,12 @@ tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tag
             onTagRemoving: '&',
             onTagRemoved: '&',
             onTagClicked: '&',
+            tagType: '@'
         },
         replace: false,
         transclude: true,
         templateUrl: 'ngTagsInput/tags-input.html',
-        controller: ["$scope", "$attrs", "$element", function($scope, $attrs, $element) {
+        controller: ["$scope", "$attrs", "$element", "$rootScope", function($scope, $attrs, $element, $rootScope) {
             $scope.events = tiUtil.simplePubSub();
 
             tagsInputConfig.load('tagsInput', $scope, $attrs, {
@@ -277,6 +278,7 @@ tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tag
                         if ($scope.disabled) {
                             return;
                         }
+                        $rootScope.$broadcast("tagRemoveId", {id : $scope.tagList.items[index].id, tagType : $scope.tagType});
                         $scope.tagList.remove(index);
                     }
                 };
@@ -574,7 +576,7 @@ tagsInput.directive('tiTagItem', ["tiUtil", function(tiUtil) {
  *    of the evaluation must be one of the values supported by the ngClass directive (either a string, an array or an object).
  *    See https://docs.angularjs.org/api/ng/directive/ngClass for more information.
  */
-tagsInput.directive('autoComplete', ["$document", "$timeout", "$sce", "$q", "tagsInputConfig", "tiUtil", function($document, $timeout, $sce, $q, tagsInputConfig, tiUtil) {
+tagsInput.directive('autoComplete', ["$document", "$timeout", "$sce", "$q", "tagsInputConfig", "tiUtil", "$rootScope", function($document, $timeout, $sce, $q, tagsInputConfig, tiUtil, $rootScope) {
     function SuggestionList(loadFn, options, events) {
         var self = {}, getDifference, lastPromise, getTagId;
 

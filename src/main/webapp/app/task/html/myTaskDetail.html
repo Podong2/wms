@@ -1,0 +1,213 @@
+<div style="overflow-y: auto; padding: 15px;">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="col-md-9">
+                <i class="fa fa-exclamation-circle task-circle" ng-class="vm.task.importantYn ? 'on' : ''" ng-click="vm.task.importantYn = !vm.task.importantYn"></i>
+                <input type="text" class="taskAddInput" ng-model="vm.task.name" enter-submit="vm.taskUpload()" placeholder="Task"/>
+            </div>
+            <div class="col-md-3">
+                <span class="pull-right taskOptionBtnArea">
+                    <span class="taskModalBtn" ng-click="taskAddModalOpen()" class="pull-right">
+                        <i class="fa fa-arrows-alt"></i>
+                    </span>
+                    <span class="taskModalBtn" ng-click="taskAddModalOpen()" class="pull-right">
+                        <i class="fa fa-flag"></i>
+                    </span>
+                    <span class="taskModalBtn" ng-click="taskAddModalOpen()" class="pull-right">
+                        <i class="fa fa-link"></i>
+                    </span>
+                    <span class="taskModalBtn" ng-click="taskAddModalOpen()" class="pull-right">
+                        <i class="fa fa-print"></i>
+                    </span>
+                    <span class="taskModalBtn" ng-click="taskAddModalOpen()" class="pull-right">
+                        <i class="fa fa-ellipsis-v"></i>
+                    </span>
+                </span>
+            </div>
+        </div>
+    </div>
+    <div class="viewTypeClass task-detail" style="margin-top: 10px; min-height: 500px">
+        <div id="projectPickerSection">
+            <label for="addProject" class="cursor projectValueSection" project-picker-edit-toggle><i class="fa fa-plus" id="addProject"></i> <span>Project/Folder Add</span></label>
+
+            <div class="project-picker projectPickerSection">
+                <div style="width: 300px;">
+                    <div style="width: 300px;">
+                        <div class="project-picker-search">
+                            <input class="project-picker-search-input" type="text" placeholder="Add to folder/project">
+                        </div>
+                        <div class="project-picker-list-area">
+                            <div class="project-picker-list">
+                                <div>
+                                    <div class="project-picker-list-item">
+                                        <div>
+                                            <div class="project-picker-list-item-title">My Project</div>
+                                            <div class="project-picker-list-item-path" >
+                                                <div>My Project</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="project-picker-list-item">
+                                        <div>
+                                            <div class="project-picker-list-item-title">My Project</div>
+                                            <div class="project-picker-list-item-path" >
+                                                <div>My Project</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- task 상태, 담당자, 참조자 선택 영역 -->
+        <div class="task-options-area">
+            <div class="row">
+                <div class="col-md-2">
+                    <label class="custom-control custom-checkbox" style="margin-bottom: 0;">
+                        <input type="checkbox" class="custom-control-input">
+                        <!--<span class="custom-control-indicator"></span>-->
+                        <!--<span class="custom-control-description">Check this custom checkbox</span>-->
+                        <ol class="nya-bs-select " ng-model="vm.task.statusId" style="width: 90px;">
+                            <li nya-bs-option="option in vm.codes" title="{{option.name}}" data-value="option.id">
+                                <a>
+                                    {{ option.name }}
+                                    <span class="glyphicon glyphicon-ok check-mark"></span>
+                                </a>
+                            </li>
+                        </ol>
+                    </label>
+                </div>
+                <div class="col-md-5" style="">
+                    <div class="row">
+                        <div class="col-md-12" style="    padding: 7px;">
+                            <autocomplete source="findUsers" tags="vm.task.assignees" display-property="name" multiple="true" max-results-to-show="20" placeholder="add Assignee User" tag-type="assignees"></autocomplete>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-5">
+                    <div class="row">
+                        <div class="col-md-12" style="    padding: 7px;">
+                            <autocomplete source="findUsers" tags="vm.task.watchers" display-property="name" multiple="true" max-results-to-show="20" placeholder="add Watchers" tag-type="watchers"></autocomplete>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- task option 선택 영역 -->
+        <div class="task-options-area">
+            <div>
+                <div class="row task-options">
+                    <div class="col-md-4">
+
+
+                        <div id="editSection">
+                            <div class="form-group">
+                                <p class="input-group" style="">
+                                    <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="endDate" picker-toggle style="height: 10px;">
+                                    <span class="dueDateValues" picker-toggle>{{vm.task.startDate + " ~ " + vm.task.endDate}}</span>
+                                </p>
+                            </div>
+                            <div class="editSection" >
+                                <div class="title">
+                                    구간검색
+                                </div>
+                                <div class="pickerArea">
+
+                                    <label class="control-label">시작일</label>
+                                    <div class="">
+                                        <p class="input-group">
+                                            <input type="text" class="form-control startDate" edit-state="true" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.dueDateFrom.date" is-open="vm.dueDateFrom.open"
+                                                   datepicker-options="vm.dueDateFrom.datepickerOptions" close-text="Close" />
+                                            <!--<input type="text" class="form-control startDate" datetime-picker="yyyy-MM-dd" ng-model="vm.dueDateFrom.date" is-open="vm.dueDateFrom.open" datepicker-popup="yyyyMMdd"-->
+                                            <!--enable-time="false" datepicker-options="vm.dueDateFrom.datepickerOptions" />-->
+                                          <span class="input-group-btn">
+                                              <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDateFrom')"><i class="fa fa-calendar"></i></button>
+                                          </span>
+                                        </p>
+                                    </div>
+
+                                    <label class="control-label">종료일</label>
+                                    <div class="">
+                                        <p class="input-group">
+                                            <input type="text" class="form-control" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.dueDateTo.date" is-open="vm.dueDateTo.open"
+                                                   datepicker-options="vm.dueDateTo.datepickerOptions" close-text="Close" />
+                                            <!--<input type="text" class="form-control" datetime-picker="yyyy-dd-MM" ng-model="vm.dueDateTo.date" is-open="vm.dueDateTo.open"-->
+                                            <!--enable-time="false" datepicker-options="vm.dueDateTo.datepickerOptions" />-->
+                                      <span class="input-group-btn">
+                                          <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDateTo')"><i class="fa fa-calendar"></i></button>
+                                      </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <div class="col-md-2">
+                        <label for="subTaskAdd" class="cursor" ><i class="fa fa-flag" id="subTaskAdd">하위 작업 추가</i></label>
+                    </div>
+                    <div class="col-md-2">
+                        <i class="fa fa-flag"></i> 파일 첨부
+                    </div>
+                    <div class="col-md-2">
+                        <i class="fa fa-flag"></i> 작업선 연결
+                    </div>
+                    <div class="col-md-2">
+                        <i class="fa fa-flag"></i> 단계별 담당자
+                    </div>
+                </div>
+                <div class="sub-task-area" style="border-top: 1px solid #ddd">
+                    <div ng-repeat="list in vm.task.subTasks" ng-show="vm.task.subTasks != []">
+                        {{list.name}}
+                    </div>
+                    <div class="add-sub-task">
+                        <input type="text" class="" ng-model="vm.subTask.name" enter-submit="vm.subTaskSave()" placeholder="Sub Task"/>
+                    </div>
+                </div>
+                <div style="border-top: 1px solid #ddd">
+                    <autocomplete source="findTasks" tags="vm.task.relatedTasks" display-property="name" multiple="true" max-results-to-show="20" placeholder="작업선 연결 타스크 검색" tag-type="relatedTasks"></autocomplete>
+                    {{relatedTaskList}}
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <div class="panel panel-default min-height-100-p detail-content" id="editingSection">
+                <div class="ibox">
+                    <div class="ibox_content elementSection">
+                        <span ng-bind-html="vm.renderHtml(vm.task.contents)" section-toggle></span>
+                    </div>
+
+                    <div class="content-edit editingSection" >
+                        <summernote config="dataService.getSummerNoteOptions(true)"
+                                    lang="ko-KR" ng-model="vm.task.contents"
+                                    data-editor="editor"
+                                    data-editable="editable"
+                                    data-on-image-upload="imageUpload(files)"></summernote>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <input id="input-4" name="input4[]" type="file" multiple class="file-loading" get-files>
+        </div>
+
+    </div>
+</div>
+
+
+<script>
+    $("#input-4").fileinput({showCaption: false, showUpload: false, uploadUrl:"1", uploadAsync: false});
+</script>

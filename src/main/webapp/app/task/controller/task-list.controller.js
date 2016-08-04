@@ -5,10 +5,11 @@
 
 angular.module('wmsApp')
     .controller("taskListCtrl", taskListCtrl);
-taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLinks'];
-        function taskListCtrl($scope, Code, $log, Task, AlertService, ParseLinks) {
+taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLinks', '$rootScope'];
+        function taskListCtrl($scope, Code, $log, Task, AlertService, ParseLinks, $rootScope) {
             var vm = this;
             vm.tabDisplay = tabDisplay;
+            //vm.showDetail = showDetail;
 
             vm.tasks=[]; // 총 목록
             vm.delayed=[]; // 지연된 작업
@@ -27,10 +28,10 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
                 isFirstDisabled: false
             };
             vm.tabArea = [
-                { status: true },  //
-                { status: false },  //
-                { status: false },  //
-                { status: false }   //
+                { status: true },  // 오늘
+                { status: false },  // 예정
+                { status: false },  // 보류
+                { status: false }   // 완료
             ];
 
             //  탭메뉴 영역 표시 여부 지정
@@ -51,16 +52,16 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
             }
             getList();
 
+            $scope.$on("taskReload", function(){
+                getList();
+            });
+
+            //function showDetail(id){
+            //    $rootScope.$broadcast("showDetail", { id : id });
+            //}
+
             function onSuccess(data, headers) {
-                vm.tasks=[];
-                vm.delayed=[];
-                vm.scheduledToday=[];
-                vm.registeredToday=[];
-                vm.inProgress=[];
-                vm.noneScheduled=[];
-                vm.myTask=[];
-                vm.requestTask=[];
-                vm.watchedTask=[];
+                vm.tasks=[]; vm.delayed=[]; vm.scheduledToday=[]; vm.registeredToday=[]; vm.inProgress=[]; vm.noneScheduled=[]; vm.myTask=[]; vm.requestTask=[]; vm.watchedTask=[];
 
                 angular.forEach(data, function(task){
                     if(task.statusGroup == "DELAYED") vm.delayed.push(task);
@@ -74,15 +75,16 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
                     vm.tasks.push(task);
                 });
                 //vm.responseData.data = data;
-                $log.debug("vm.tasks : ", vm.tasks);
-                $log.debug("지연된 작업 : ", vm.delayed);
-                $log.debug("오늘 완료 작업 : ", vm.scheduledToday);
-                $log.debug("새로 등록된 작업 : ", vm.registeredToday);
-                $log.debug("진행 중인 작업 : ", vm.inProgress);
-                $log.debug("일정 미정 작업 : ", vm.noneScheduled);
-                $log.debug("내 작업 : ", vm.myTask);
-                $log.debug("요청받은 작업 : ", vm.requestTask);
-                $log.debug("참조 작업 : ", vm.watchedTask);
+                //$log.debug("vm.tasks : ", vm.tasks);
+                //$log.debug("지연된 작업 : ", vm.delayed);
+                //$log.debug("오늘 완료 작업 : ", vm.scheduledToday);
+                //$log.debug("새로 등록된 작업 : ", vm.registeredToday);
+                //$log.debug("진행 중인 작업 : ", vm.inProgress);
+                //$log.debug("일정 미정 작업 : ", vm.noneScheduled);
+                //$log.debug("내 작업 : ", vm.myTask);
+                //$log.debug("요청받은 작업 : ", vm.requestTask);
+                //$log.debug("참조 작업 : ", vm.watchedTask);
+                //$rootScope.$broadcast("showDetail", { id : vm.tasks[0].id });
                 //vm.page = pagingParams.page;
             }
             function onError(error) {

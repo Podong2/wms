@@ -142,7 +142,7 @@
                             $translate.refresh();
                         });
                     }
-                    JhiTrackerService.sendActivity(); // 해당사용자의 활동상태를 websocket에 전달한다.
+                    //JhiTrackerService.sendActivity(); // 해당사용자의 활동상태를 websocket에 전달한다.
                     deferred.resolve(data);
                 });
                 return cb();

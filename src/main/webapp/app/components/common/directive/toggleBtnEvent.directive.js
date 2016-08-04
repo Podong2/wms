@@ -36,16 +36,16 @@ function sectionToggle($timeout, $rootScope) {
     return {
         restrict: 'A',
         link: function(scope, element, attr) {
-            $('body').click(function (e) {
-                if ($('.editingSection').addClass("on"), $('.elementSection').addClass("on")) {
-                    if (!$('#editingSection').has(e.target).length) {
-                        $('.editingSection').removeClass("on");
-                        $('.elementSection').removeClass("on");
-                        $rootScope.$broadcast("editingUpload")
-                    }
-                }
-            });
             element.on('click', function(_this) {
+                $("body").bind("click", function(e){
+                    if ($('.editingSection').addClass("on"), $('.elementSection').addClass("on")) {
+                        if (!$('#editingSection').has(e.target).length) {
+                            $('.editingSection').removeClass("on");
+                            $('.elementSection').removeClass("on");
+                            $rootScope.$broadcast("editingUpload")
+                        }
+                    }
+                });
                 $timeout(function () {
                     $(".focusing").focus();
                 }, 400);
@@ -57,15 +57,15 @@ function datePickerEditToggle($timeout) {
     return {
         restrict: 'A',
         link: function(scope, element, attr) {
-            $('body').click(function (e) {
-                if ($('.datePickerSection').addClass("on"), $('.dateValueSection').addClass("on")) {
-                    if (!$('#datePickerSection').has(e.target).length) {
-                        $('.datePickerSection').removeClass("on");
-                        $('.dateValueSection').removeClass("on");
-                    }
-                }
-            });
             element.on('click', function(_this) {
+                $('body').bind('click',function (e) {
+                    if ($('.datePickerSection').addClass("on"), $('.dateValueSection').addClass("on")) {
+                        if (!$('#datePickerSection').has(e.target).length) {
+                            $('.datePickerSection').removeClass("on");
+                            $('.dateValueSection').removeClass("on");
+                        }
+                    }
+                });
                 $timeout(function () {
                     $(".date-focusing").focus();
                 }, 400);
