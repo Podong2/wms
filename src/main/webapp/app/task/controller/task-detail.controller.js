@@ -268,5 +268,11 @@
         //setAttachedFiles(vm.task.attachedFiles); // 첨부파일목록 겔러리 세팅
 
 
+        $("#input-4").fileinput({
+            showCaption: false, showUpload: false, uploadUrl:"1", uploadAsync: false
+        });
     }
+
 })();
+
+

@@ -68,7 +68,7 @@
         </div>
 
         <!-- 상태 변경/등록일 -->
-        <div class="row">
+        <div class="row" style="padding: 4px;">
             <div class="col-md-9">
                 <div class="pull-left">
                 <span class="custom-control custom-checkbox" style="margin-bottom: 0;">
@@ -93,8 +93,8 @@
                 </div>
             </div>
             <div class="col-md-3">
-                <div class="pull-right">
-                    <span class="task-create-date"><span class="task-create-date-text">등록일 </span> {{ (vm.task.createdDate | date:"yyyy-MM-dd HH:mm") || 'empty' }}</span>
+                <div class="pull-right" style="margin-top: 14px;">
+                    <span class="task-create-date"><span class="task-create-date-text">{{vm.task.createdBy}} </span> {{ (vm.task.createdDate | date:"yyyy-MM-dd HH:mm") || 'empty' }}</span>
                 </div>
             </div>
         </div>
@@ -131,8 +131,11 @@
 
                         <div id="editSection">
                             <div class="form-group" style="margin-bottom: 0">
-                                <p class="input-group" style="width: 100%">
-                                    <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="endDate" picker-toggle style="height: 30px; width: 100%">
+                                <p class="input-group  wms-form" style="width: 100%">
+                                    <label class="input"> <i class="icon-append fa fa-calendar" style="z-index: 1000"></i>
+                                        <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="endDate" picker-toggle style="height: 30px; width: 100%">
+                                    </label>
+
                                     <span class="dueDateValues" picker-toggle>{{vm.task.startDate + " ~ " + vm.task.endDate}}</span>
                                 </p>
                             </div>
@@ -175,16 +178,16 @@
 
                     </div>
                     <div class="col-md-2">
-                        <label for="subTaskAdd" class="cursor" ng-click="vm.subTaskOpen = !vm.subTaskOpen" ><i class="fa fa-flag" id="subTaskAdd" > 하위 작업 추가</i></label>
+                        <label for="subTaskAdd" class="cursor" ng-click="vm.subTaskOpen = !vm.subTaskOpen" ><i class="fa fa-outdent" id="subTaskAdd" > 하위 작업 추가</i></label>
                     </div>
                     <div class="col-md-2">
-                        <label for="subTaskAdd" class="cursor" ng-click="vm.fileAreaOpen = !vm.fileAreaOpen"><i class="fa fa-flag"></i> 파일 첨부</label>
+                        <label for="subTaskAdd" class="cursor" ng-click="vm.fileAreaOpen = !vm.fileAreaOpen"><i class="fa fa-paperclip"></i> 파일 첨부</label>
                     </div>
                     <div class="col-md-2">
-                        <label for="subTaskAdd" class="cursor" ng-click="vm.relatedTaskOpen = !vm.relatedTaskOpen"><i class="fa fa-flag"></i> 참조 작업</label>
+                        <label for="subTaskAdd" class="cursor" ng-click="vm.relatedTaskOpen = !vm.relatedTaskOpen"><i class="fa fa-share-alt"></i> 참조 작업</label>
                     </div>
                     <div class="col-md-2">
-                        <label for="subTaskAdd" class="cursor" ><i class="fa fa-flag"></i> 단계별 담당자</label>
+                        <label for="subTaskAdd" class="cursor" ><i class="fa fa-share-alt"></i> 단계별 담당자</label>
                     </div>
                 </div>
                 <div class="sub-task-area"  style="border-top: 1px solid #ddd; padding: 5px" ng-class="vm.subTaskOpen ? 'on' : ''">
@@ -235,5 +238,5 @@
 
 
 <script>
-    $("#input-4").fileinput({showCaption: false, showUpload: false, uploadUrl:"1", uploadAsync: false});
+
 </script>
