@@ -1,6 +1,7 @@
 package kr.wisestone.wms.service;
 
 import kr.wisestone.wms.domain.AttachedFile;
+import kr.wisestone.wms.domain.Task;
 import kr.wisestone.wms.domain.TraceLog;
 import kr.wisestone.wms.repository.TraceLogRepository;
 import kr.wisestone.wms.web.rest.form.TraceLogForm;
@@ -37,7 +38,7 @@ public class TraceLogService {
         this.entityManager.persist(logRecord);
     }
 
-    public TraceLog createTraceLog(TraceLogForm traceLogForm, List<MultipartFile> files) {
+    public TraceLog saveTraceLog(TraceLogForm traceLogForm, List<MultipartFile> files) {
 
         TraceLog traceLog = traceLogForm.bind();
 
@@ -51,5 +52,31 @@ public class TraceLogService {
         traceLog = traceLogRepository.save(traceLog);
 
         return traceLog;
+    }
+
+    public TraceLog modifyTraceLog(TraceLogForm traceLogForm, List<MultipartFile> files) {
+
+        TraceLog origin = traceLogRepository.findOne(traceLogForm.getId());
+
+        origin.setNewValue(traceLogForm.getContents());
+
+        for(MultipartFile multipartFile : files) {
+
+            AttachedFile attachedFile = this.attachedFileService.saveFile(multipartFile);
+
+            origin.addAttachedFile(attachedFile);
+        }
+
+        if(!traceLogForm.getRemoveAttachedFileIds().isEmpty()) {
+
+            for(Long targetFileId : traceLogForm.getRemoveAttachedFileIds()) {
+
+                origin.removeAttachedFile(targetFileId);
+            }
+        }
+
+        origin = traceLogRepository.save(origin);
+
+        return origin;
     }
 }

@@ -3,17 +3,13 @@ package kr.wisestone.wms.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.collect.Lists;
 import com.mysema.query.BooleanBuilder;
+import kr.wisestone.wms.common.exception.CommonRuntimeException;
 import kr.wisestone.wms.domain.QTraceLog;
-import kr.wisestone.wms.domain.Task;
 import kr.wisestone.wms.domain.TraceLog;
 import kr.wisestone.wms.repository.TraceLogRepository;
 import kr.wisestone.wms.service.TraceLogService;
-import kr.wisestone.wms.web.rest.condition.TaskCondition;
-import kr.wisestone.wms.web.rest.dto.TaskDTO;
-import kr.wisestone.wms.web.rest.form.TaskForm;
 import kr.wisestone.wms.web.rest.form.TraceLogForm;
 import kr.wisestone.wms.web.rest.util.HeaderUtil;
-import kr.wisestone.wms.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -26,7 +22,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.inject.Inject;
 import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 
@@ -78,10 +73,42 @@ public class TraceLogResource {
 
         List<MultipartFile> files = request.getFiles("file");
 
-        TraceLog result = traceLogService.createTraceLog(traceLogForm, files);
+        TraceLog result = traceLogService.saveTraceLog(traceLogForm, files);
 
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("task", result.getId().toString()))
             .body(result);
+    }
+
+    @RequestMapping(value = "/trace-log/update",
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<TraceLog> updateTraceLog(TraceLogForm traceLogForm, MultipartHttpServletRequest request) throws URISyntaxException, IOException {
+        log.debug("REST request to update TraceLog : {}", traceLogForm);
+
+        List<MultipartFile> files = request.getFiles("file");
+
+        TraceLog result = traceLogService.modifyTraceLog(traceLogForm, files);
+
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert("task", result.getId().toString()))
+            .body(result);
+    }
+
+    @RequestMapping(value = "/trace-log/{id}",
+        method = RequestMethod.DELETE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<Void> deleteTraceLog(@PathVariable(value = "id") Long id) throws URISyntaxException, IOException {
+
+        TraceLog origin = traceLogRepository.findOne(id);
+
+        if(origin == null)
+            throw new CommonRuntimeException("error.traceLog.notFound");
+
+        traceLogRepository.delete(origin);
+
+        return ResponseEntity.ok().headers(HeaderUtil.createEntitySingleDeletionAlert("traceLog", id.toString())).build();
     }
 }

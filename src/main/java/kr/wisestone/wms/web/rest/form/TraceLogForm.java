@@ -17,6 +17,8 @@ public class TraceLogForm {
 
     private List<Long> mentionIds = new ArrayList<>();
 
+    private List<Long> removeAttachedFileIds = new ArrayList<>();
+
     public TraceLog bind() {
         TraceLog traceLog = new TraceLog();
 
