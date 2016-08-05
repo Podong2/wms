@@ -27,9 +27,10 @@
         </div>
     </div>
     <div class="viewTypeClass task-detail" style="margin-top: 10px; min-height: 500px">
+
+        <!-- 프로젝트/폴더 선택 -->
         <div id="projectPickerSection">
             <label for="addProject" class="cursor projectValueSection" project-picker-edit-toggle><i class="fa fa-plus" id="addProject"></i> <span>Project/Folder Add</span></label>
-
             <div class="project-picker projectPickerSection">
                 <div style="width: 300px;">
                     <div style="width: 300px;">
@@ -66,35 +67,54 @@
             </div>
         </div>
 
+        <!-- 상태 변경/등록일 -->
+        <div class="row">
+            <div class="col-md-9">
+                <div class="pull-left">
+                <span class="custom-control custom-checkbox" style="margin-bottom: 0;">
+                    <input type="checkbox" ng-click="vm.task.statusId = 2" class="custom-control-input">
+                    <!--<span class="custom-control-indicator"></span>-->
+                    <!--<span class="custom-control-description">Check this custom checkbox</span>-->
+                    <!--<ol class="nya-bs-select " ng-model="vm.task.statusId" style="width: 90px;">-->
+                        <!--<li nya-bs-option="option in vm.codes" title="{{option.name}}" data-value="option.id">-->
+                            <!--<a>-->
+                                <!--{{ option.name }}-->
+                                <!--<span class="glyphicon glyphicon-ok check-mark"></span>-->
+                            <!--</a>-->
+                        <!--</li>-->
+                    <!--</ol>-->
+                    <wms-select-box
+                        ng-model="vm.codes"
+                        selected-value="vm.task.statusId"
+                        dataSize="5"
+                        dataLiveSearch="false"
+                    ></wms-select-box>
+                </span>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="pull-right">
+                    <span class="task-create-date"><span class="task-create-date-text">등록일 </span> {{ (vm.task.createdDate | date:"yyyy-MM-dd HH:mm") || 'empty' }}</span>
+                </div>
+            </div>
+        </div>
+
+
+
         <!-- task 상태, 담당자, 참조자 선택 영역 -->
         <div class="task-options-area">
             <div class="row">
-                <div class="col-md-2">
-                    <label class="custom-control custom-checkbox" style="margin-bottom: 0;">
-                        <input type="checkbox" class="custom-control-input">
-                        <!--<span class="custom-control-indicator"></span>-->
-                        <!--<span class="custom-control-description">Check this custom checkbox</span>-->
-                        <ol class="nya-bs-select " ng-model="vm.task.statusId" style="width: 90px;">
-                            <li nya-bs-option="option in vm.codes" title="{{option.name}}" data-value="option.id">
-                                <a>
-                                    {{ option.name }}
-                                    <span class="glyphicon glyphicon-ok check-mark"></span>
-                                </a>
-                            </li>
-                        </ol>
-                    </label>
-                </div>
-                <div class="col-md-5" style="">
+                <div class="col-md-6" style="">
                     <div class="row">
                         <div class="col-md-12" style="    padding: 7px;">
-                            <autocomplete source="findUsers" tags="vm.task.assignees" display-property="name" multiple="true" max-results-to-show="20" placeholder="add Assignee User" tag-type="assignees"></autocomplete>
+                            <autocomplete source="findUsers" tags="vm.task.assignees" display-property="name" multiple="true" max-results-to-show="20" placeholder="담당자를 선택하세요." tag-type="assignees"></autocomplete>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-12" style="    padding: 7px;">
-                            <autocomplete source="findUsers" tags="vm.task.watchers" display-property="name" multiple="true" max-results-to-show="20" placeholder="add Watchers" tag-type="watchers"></autocomplete>
+                            <autocomplete source="findUsers" tags="vm.task.watchers" display-property="name" multiple="true" max-results-to-show="20" placeholder="참조자를 선택하세요." tag-type="watchers"></autocomplete>
                         </div>
                     </div>
                 </div>
@@ -110,9 +130,9 @@
 
 
                         <div id="editSection">
-                            <div class="form-group">
-                                <p class="input-group" style="">
-                                    <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="endDate" picker-toggle style="height: 10px;">
+                            <div class="form-group" style="margin-bottom: 0">
+                                <p class="input-group" style="width: 100%">
+                                    <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="endDate" picker-toggle style="height: 30px; width: 100%">
                                     <span class="dueDateValues" picker-toggle>{{vm.task.startDate + " ~ " + vm.task.endDate}}</span>
                                 </p>
                             </div>
@@ -155,33 +175,32 @@
 
                     </div>
                     <div class="col-md-2">
-                        <label for="subTaskAdd" class="cursor" ><i class="fa fa-flag" id="subTaskAdd">하위 작업 추가</i></label>
+                        <label for="subTaskAdd" class="cursor" ng-click="vm.subTaskOpen = !vm.subTaskOpen" ><i class="fa fa-flag" id="subTaskAdd" > 하위 작업 추가</i></label>
                     </div>
                     <div class="col-md-2">
-                        <i class="fa fa-flag"></i> 파일 첨부
+                        <label for="subTaskAdd" class="cursor" ng-click="vm.fileAreaOpen = !vm.fileAreaOpen"><i class="fa fa-flag"></i> 파일 첨부</label>
                     </div>
                     <div class="col-md-2">
-                        <i class="fa fa-flag"></i> 작업선 연결
+                        <label for="subTaskAdd" class="cursor" ng-click="vm.relatedTaskOpen = !vm.relatedTaskOpen"><i class="fa fa-flag"></i> 작업선 연결</label>
                     </div>
                     <div class="col-md-2">
-                        <i class="fa fa-flag"></i> 단계별 담당자
+                        <label for="subTaskAdd" class="cursor" ><i class="fa fa-flag"></i> 단계별 담당자</label>
                     </div>
                 </div>
-                <div class="sub-task-area" style="border-top: 1px solid #ddd">
+                <div class="sub-task-area"  style="border-top: 1px solid #ddd; padding: 5px">
                     <div ng-repeat="list in vm.task.subTasks" ng-show="vm.task.subTasks != []">
                         {{list.name}}
                     </div>
-                    <div class="add-sub-task">
-                        <input type="text" class="" ng-model="vm.subTask.name" enter-submit="vm.subTaskSave()" placeholder="Sub Task"/>
+                    <div class="add-sub-task" ng-class="vm.subTaskOpen ? 'on' : ''">
+                        <input type="text" class="form-control" ng-model="vm.subTask.name" enter-submit="vm.subTaskSave()" placeholder="Sub Task"/>
                     </div>
                 </div>
-                <div style="border-top: 1px solid #ddd">
-                    <autocomplete source="findTasks" tags="vm.task.relatedTasks" display-property="name" multiple="true" max-results-to-show="20" placeholder="작업선 연결 타스크 검색" tag-type="relatedTasks"></autocomplete>
-                    {{relatedTaskList}}
+                <div class="related-task-area" ng-class="vm.relatedTaskOpen ? 'on' : ''" style="border-top: 1px solid #ddd">
+                    <autocomplete source="findTasks" tags="vm.task.relatedTasks" display-property="name" multiple="true" max-results-to-show="20" placeholder="작업선에 연결 할 타스크를 입력하세요." tag-type="relatedTasks"></autocomplete>
                 </div>
             </div>
         </div>
-
+{{vm.task.relatedTasks}}
         <div>
             <div class="panel panel-default min-height-100-p detail-content" id="editingSection">
                 <div class="ibox">
@@ -200,7 +219,7 @@
             </div>
         </div>
 
-        <div>
+        <div class="task-file-area" ng-class="vm.fileAreaOpen ? 'on' : ''">
             <input id="input-4" name="input4[]" type="file" multiple class="file-loading" get-files>
         </div>
 
