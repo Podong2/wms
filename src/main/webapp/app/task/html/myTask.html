@@ -34,7 +34,7 @@
                                 <div ng-repeat="data in vm.delayed" class="">
                                     <div  class="wms-tree-node-list"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
-                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
+                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
                                         <div class="pull-right">
                                             <div>{{data.endDate}}</div>
                                             <div>
@@ -45,6 +45,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div class="no-data" ng-if="vm.delayed.length == 0">
+                                    데이터가 없습니다.
                                 </div>
                             </div>
                         </div>
@@ -55,7 +58,7 @@
                                 <div ng-repeat="data in vm.scheduledToday">
                                     <div  class="wms-tree-node-list"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
-                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
+                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
                                         <div class="pull-right">
                                             <div>{{data.endDate}}</div>
                                             <div>
@@ -66,6 +69,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div ng-if="vm.scheduledToday.length == 0">
+                                    데이터가 없습니다.
                                 </div>
                             </div>
                         </div>
@@ -76,7 +82,7 @@
                                 <div ng-repeat="data in vm.registeredToday">
                                     <div  class="wms-tree-node-list"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
-                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
+                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
                                         <div class="pull-right">
                                             <div>{{data.endDate}}</div>
                                             <div>
@@ -87,6 +93,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div ng-if="vm.registeredToday.length == 0">
+                                    데이터가 없습니다.
                                 </div>
                             </div>
                         </div>
@@ -97,7 +106,7 @@
                                 <div ng-repeat="data in vm.inProgress">
                                     <div  class="wms-tree-node-list"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
-                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
+                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
                                         <div class="pull-right">
                                             <div>{{data.endDate}}</div>
                                             <div>
@@ -109,7 +118,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div ng-if="vm.inProgress == []" >데이터가 없습니다.</div>
+                                <div ng-if="vm.inProgress.length == 0">
+                                    데이터가 없습니다.
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -119,7 +130,7 @@
                                 <div ng-repeat="data in vm.noneScheduled">
                                     <div  class="wms-tree-node-list"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
-                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
+                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
                                         <div class="pull-right">
                                             <div>{{data.endDate}}</div>
                                             <div>
@@ -130,6 +141,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div ng-if="vm.noneScheduled.length == 0">
+                                    데이터가 없습니다.
                                 </div>
                             </div>
                         </div>
@@ -140,7 +154,7 @@
                                 <div ng-repeat="data in vm.myTask">
                                     <div  class="wms-tree-node-list"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
-                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
+                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
                                         <div class="pull-right">
                                             <div>{{data.endDate}}</div>
                                             <div>
@@ -151,6 +165,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div ng-if="vm.myTask.length == 0">
+                                    데이터가 없습니다.
                                 </div>
                             </div>
                         </div>
@@ -161,7 +178,7 @@
                                 <div ng-repeat="data in vm.requestTask">
                                     <div  class="wms-tree-node-list"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
-                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
+                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
                                         <div class="pull-right">
                                             <div>{{data.endDate}}</div>
                                             <div>
@@ -172,6 +189,9 @@
                                             </div>
                                         </div>
                                     </div>
+                                </div>
+                                <div ng-if="vm.requestTask.length == 0">
+                                    데이터가 없습니다.
                                 </div>
                             </div>
                         </div>
@@ -182,7 +202,7 @@
                                 <div ng-repeat="data in vm.watchedTask">
                                     <div  class="wms-tree-node-list"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
-                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
+                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
                                         <div class="pull-right">
                                             <div>{{data.endDate}}</div>
                                             <div>
@@ -194,6 +214,9 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div ng-if="vm.watchedTask.length == 0">
+                                    데이터가 없습니다.
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -201,7 +224,7 @@
 
             </bg-pane>
 
-            <bg-pane min-size="700">
+            <bg-pane min-size="750">
                 <div ui-view="taskDetail"></div>
             </bg-pane>
 

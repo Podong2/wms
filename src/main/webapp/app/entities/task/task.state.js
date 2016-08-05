@@ -181,7 +181,7 @@
         })
         .state('my-task.detail', { // ui router에서 호출받을 state name 설정
             parent: 'my-task',
-            url: '/detail/{id}', // 표현 url 설정
+            url: '/detail/{listType}/{id}', // 표현 url 설정
             data: {
                 authorities: [],
                 title : 'My Task Detail'

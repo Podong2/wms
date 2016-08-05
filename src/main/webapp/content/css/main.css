@@ -1857,16 +1857,22 @@ i:active, .i:active, i:focus, .i:focus{
 }
 /*---------------------------- project picker css end ------------------------------*/
 .task-options{
-    height: 32px;
     margin:0;
 }
 .task-options > div{
-    border-right : 1px solid #ddd;
-    height:100%;
-    padding: 7px;
+    padding: 13px 3px;
+    height:56px;
+}
+.task-options > div > label {
+    margin-top: 6px;
+}
+.task-options > div:hover{
+    background: #ddd;
 }
 .task-options > div:first-child{
-    border-left:1px solid #ddd;
+    background: #fff;
+}
+.task-options > div:first-child{
 }
 .task-options-area{
     clear: both;
@@ -1880,4 +1886,28 @@ tags-input .tags {
 tags-input .tags:hover, tags-input .tags:focus {
     border: 1px solid darkgray;
     box-shadow: 1px 1px 1px 0 lightgray inset;
+}
+.detail-content:hover{
+    border: 1px dashed black;
+}
+.add-sub-task{
+    display: none;
+}
+.add-sub-task.on{
+    display: block;
+}
+.task-file-area{
+    display: none;
+}
+.task-file-area.on{
+    display: block;
+}
+.related-task-area{
+    display: none;
+}
+.related-task-area.on{
+    display: block;
+}
+.no-data{
+
 }

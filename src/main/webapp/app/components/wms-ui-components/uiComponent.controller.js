@@ -70,18 +70,18 @@
 
         // multi select values
         vm.arrayCollection = [
-            {name: 'Alice', class: 'Class A', icon: 'glyphicon-euro'},
-            {name: 'Bob', class: 'Class B', icon: 'glyphicon-usd'},
-            {name: 'Carl', class: 'Class A', icon: 'glyphicon-euro'},
-            {name: 'Daniel', class: 'Class B', icon: 'glyphicon-usd'},
-            {name: 'Emi', class: 'Class A', icon: 'glyphicon-euro'},
-            {name: 'Flank', class: 'Class B', icon: 'glyphicon-gbp'},
-            {name: 'George', class: 'Class C', icon: 'glyphicon-euro'},
-            {name: 'Harry', class: 'Class C', icon: 'glyphicon-gbp'}
+            {id: 1,name: 'Alice', class: 'Class A', icon: 'glyphicon-euro'},
+            {id: 2,name: 'Bob', class: 'Class B', icon: 'glyphicon-usd'},
+            {id: 3,name: 'Carl', class: 'Class A', icon: 'glyphicon-euro'},
+            {id: 4,name: 'Daniel', class: 'Class B', icon: 'glyphicon-usd'},
+            {id: 5,name: 'Emi', class: 'Class A', icon: 'glyphicon-euro'},
+            {id: 6,name: 'Flank', class: 'Class B', icon: 'glyphicon-gbp'},
+            {id: 7,name: 'George', class: 'Class C', icon: 'glyphicon-euro'},
+            {id: 8,name: 'Harry', class: 'Class C', icon: 'glyphicon-gbp'}
         ];
 
         // select checked value
-        vm.selectedValue = [];
+        vm.selectedValue = "";
         // multi select checked values
         vm.multipleValue = [];
 

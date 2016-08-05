@@ -5,9 +5,9 @@
         .module('wmsApp')
         .controller('TaskDetailCtrl', TaskDetailCtrl);
 
-    TaskDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', 'TaskAttachedFile', 'summaryService', '$log', 'TaskEdit', 'DateUtils', 'FIndCode', 'User', 'findUser', '$q', '$sce', 'TaskListSearch', '$state', 'toastr', 'DataUtils', 'SubTask', 'FindTasks', 'entity'];
+    TaskDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', 'TaskAttachedFile', '$log', 'TaskEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'entity'];
 
-    function TaskDetailCtrl($scope, $rootScope, $stateParams, Task, Code, TaskAttachedFile, summaryService, $log, TaskEdit, DateUtils, FIndCode, User, findUser, $q, $sce, TaskListSearch, $state, toastr, DataUtils, SubTask, FindTasks, entity) {
+    function TaskDetailCtrl($scope, $rootScope, $stateParams, Task, Code, TaskAttachedFile, $log, TaskEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, entity) {
         var vm = this;
 
         vm.task = entity;
@@ -21,10 +21,18 @@
         vm.codes = Code.query();
 
         vm.responseData = _.clone(vm.task);
+        $log.debug("vm.taskvm.taskvm.task", vm.task)
+
+        //$log.debug("info :", vm.task)
+        $log.debug("$stateParams.listType :", $stateParams.listType)
 
 
         // 갤러리 썸네일 이미지
         vm.images = [];
+
+        vm.subTaskOpen = false;
+        vm.fileAreaOpen = false;
+        vm.relatedTaskOpen = false;
 
         $scope.files = [];
 
@@ -203,7 +211,7 @@
             }).then(function (response) {
                 toastr.success('태스크 수정 완료', '태스크 수정 완료');
                 //$state.go("my-task", {}, {reload : true});
-                $rootScope.$broadcast("taskReload");
+                $rootScope.$broadcast("taskReload", {listType : $stateParams.listType});
                 vm.task.removeAssigneeIds = "";
                 vm.task.removeWatcherIds = "";
                 vm.task.removeRelatedTaskIds ="";

@@ -5,8 +5,8 @@
 
 angular.module('wmsApp')
     .controller("taskListCtrl", taskListCtrl);
-taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLinks', '$rootScope'];
-        function taskListCtrl($scope, Code, $log, Task, AlertService, ParseLinks, $rootScope) {
+taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLinks', '$rootScope', '$state'];
+        function taskListCtrl($scope, Code, $log, Task, AlertService, ParseLinks, $rootScope, $state) {
             var vm = this;
             vm.tabDisplay = tabDisplay;
             //vm.showDetail = showDetail;
@@ -20,6 +20,7 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
             vm.myTask=[]; // 내작업
             vm.requestTask=[]; // 요청받은작업
             vm.watchedTask=[]; // 참조작업
+            vm.listType = "TODAY";
 
             /* layout config option */
             $scope.status = {
@@ -45,6 +46,7 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
                     }
                 });
                 getList(type);
+                vm.listType = type;
             }
 
             function getList(type){
@@ -52,8 +54,8 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
             }
             getList();
 
-            $scope.$on("taskReload", function(){
-                getList();
+            $scope.$on("taskReload", function(event, args){
+                getList(args.listType);
             });
 
             //function showDetail(id){
@@ -75,16 +77,16 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
                     vm.tasks.push(task);
                 });
                 //vm.responseData.data = data;
-                //$log.debug("vm.tasks : ", vm.tasks);
+                $log.debug("vm.tasks : ", vm.tasks);
                 //$log.debug("지연된 작업 : ", vm.delayed);
                 //$log.debug("오늘 완료 작업 : ", vm.scheduledToday);
                 //$log.debug("새로 등록된 작업 : ", vm.registeredToday);
                 //$log.debug("진행 중인 작업 : ", vm.inProgress);
                 //$log.debug("일정 미정 작업 : ", vm.noneScheduled);
-                //$log.debug("내 작업 : ", vm.myTask);
-                //$log.debug("요청받은 작업 : ", vm.requestTask);
-                //$log.debug("참조 작업 : ", vm.watchedTask);
-                //$rootScope.$broadcast("showDetail", { id : vm.tasks[0].id });
+                $log.debug("내 작업 : ", vm.myTask);
+                $log.debug("요청받은 작업 : ", vm.requestTask);
+                $log.debug("참조 작업 : ", vm.watchedTask);
+                $state.go("my-task.detail", { id : vm.tasks[0].id, listType : vm.listType });
                 //vm.page = pagingParams.page;
             }
             function onError(error) {
