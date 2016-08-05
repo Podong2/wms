@@ -205,7 +205,9 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
 
     public List<Task> getPlainRelatedTask() {
 
-        return relatedTasks.stream().map(RelatedTask::getRelatedTask).collect(Collectors.toList());
+        List<Task> transformedTasks = relatedTasks.stream().map(RelatedTask::getRelatedTask).collect(Collectors.toList());;
+
+        return transformedTasks;
     }
 
     public void setRelatedTasks(Set<RelatedTask> relatedTasks) {
