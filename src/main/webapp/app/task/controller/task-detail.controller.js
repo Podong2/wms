@@ -22,6 +22,7 @@
 
         vm.responseData = _.clone(vm.task);
         $log.debug("vm.taskvm.taskvm.task", vm.task)
+        $log.debug("vm.codes : ", vm.codes)
 
         //$log.debug("info :", vm.task)
         $log.debug("$stateParams.listType :", $stateParams.listType)

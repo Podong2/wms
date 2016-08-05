@@ -39,6 +39,10 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
 
             };
 
+            vm.subTaskOpen = false;
+            vm.fileAreaOpen = false;
+            vm.relatedTaskOpen = false;
+
             /* sub task info */
             vm.subTask = {
                 name : '',
@@ -105,12 +109,11 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
             //  전송
             function ok () {
 
-                $uibModalInstance.dismiss('cancel');
             }
 
             //  닫기
             function cancel () {
-                $uibModalInstance.dismiss('cancel');
+                $uibModalInstance.close();
             }
 
             /* task 명 만으로 저장 */
@@ -187,7 +190,7 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
                 }).then(function (response) {
                     toastr.success('태스크 수정 완료', '태스크 수정 완료');
                     $timeout(function(){ // state reload 명령과 충돌하는 문제 때문에 설정
-                        //$uibModalInstance.dismiss('cancel');
+                        $uibModalInstance.dismiss('cancel');
                     }, 100);
                 });
             }

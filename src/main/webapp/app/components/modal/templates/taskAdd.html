@@ -67,44 +67,44 @@
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-md-12">
+                <label class="custom-control custom-checkbox" style="margin-bottom: 0;">
+                    <input type="checkbox" class="custom-control-input">
+                    <!--<span class="custom-control-indicator"></span>-->
+                    <!--<span class="custom-control-description">Check this custom checkbox</span>-->
+                    <ol class="nya-bs-select " ng-model="vm.task.statusId" style="width: 90px;">
+                        <li nya-bs-option="option in vm.codes" title="{{option.name}}" data-value="option.id">
+                            <a>
+                                {{ option.name }}
+                                <span class="glyphicon glyphicon-ok check-mark"></span>
+                            </a>
+                        </li>
+                    </ol>
+                    <!--                        <wms-select-box
+                                                ng-model="vm.codes"
+                                                selected-value="vm.task.statusId"
+                                                dataSize="5"
+                                            ></wms-select-box>-->
+                </label>
+            </div>
+        </div>
 
         <!-- task 상태, 담당자, 참조자 선택 영역 -->
         <div class="task-options-area">
             <div class="row">
-                <div class="col-md-2">
-                    <label class="custom-control custom-checkbox" style="margin-bottom: 0;">
-                        <input type="checkbox" class="custom-control-input">
-                        <!--<span class="custom-control-indicator"></span>-->
-                        <!--<span class="custom-control-description">Check this custom checkbox</span>-->
-                        <ol class="nya-bs-select " ng-model="vm.task.statusId" style="width: 90px;">
-                            <li nya-bs-option="option in vm.codes" title="{{option.name}}" data-value="option.id">
-                                <a>
-                                    {{ option.name }}
-                                    <span class="glyphicon glyphicon-ok check-mark"></span>
-                                </a>
-                            </li>
-                        </ol>
-                    </label>
-                    <wms-select-box
-                        ng-model="vm.arrayCollection"
-                        selected-value="vm.selectedValue"
-                        dataSize="5"
-                        dataLiveSearch="true"
-                    ></wms-select-box>
-
-                </div>
-                <div class="col-md-5" style="">
+                <div class="col-md-6" style="">
                     <div class="row">
                         <div class="col-md-12" style="    padding: 7px;">
-                            <autocomplete source="findUsers" tags="assigneeUser" display-property="name" multiple="true" max-results-to-show="20" placeholder="add Assignee User"></autocomplete>
+                            <autocomplete source="findUsers" tags="assigneeUser" display-property="name" multiple="true" max-results-to-show="20" placeholder="담당자를 선택하세요." ></autocomplete>
 
                         </div>
                     </div>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-6">
                     <div class="row">
                         <div class="col-md-12" style="    padding: 7px;">
-                            <autocomplete source="findUsers" tags="watchers" display-property="name" multiple="true" max-results-to-show="20" placeholder="add Watchers"></autocomplete>
+                            <autocomplete source="findUsers" tags="watchers" display-property="name" multiple="true" max-results-to-show="20" placeholder="참조자를 선택하세요." ></autocomplete>
                         </div>
                     </div>
                 </div>
@@ -120,9 +120,9 @@
 
 
                         <div id="editSection">
-                            <div class="form-group">
-                                <p class="input-group" style="">
-                                    <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="endDate" picker-toggle style="height: 10px;">
+                            <div class="form-group" style="margin-bottom: 0">
+                                <p class="input-group" style="width: 100%">
+                                    <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="endDate" picker-toggle style="height: 30px; width: 100%">
                                     <span class="dueDateValues" picker-toggle>{{vm.task.startDate + " ~ " + vm.task.endDate}}</span>
                                 </p>
                             </div>
@@ -137,8 +137,6 @@
                                         <p class="input-group">
                                             <input type="text" class="form-control startDate" edit-state="true" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.dueDateFrom.date" is-open="vm.dueDateFrom.open"
                                                    datepicker-options="vm.dueDateFrom.datepickerOptions" close-text="Close" />
-                                            <!--<input type="text" class="form-control startDate" datetime-picker="yyyy-MM-dd" ng-model="vm.dueDateFrom.date" is-open="vm.dueDateFrom.open" datepicker-popup="yyyyMMdd"-->
-                                            <!--enable-time="false" datepicker-options="vm.dueDateFrom.datepickerOptions" />-->
                                           <span class="input-group-btn">
                                               <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDateFrom')"><i class="fa fa-calendar"></i></button>
                                           </span>
@@ -150,8 +148,6 @@
                                         <p class="input-group">
                                             <input type="text" class="form-control" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.dueDateTo.date" is-open="vm.dueDateTo.open"
                                                    datepicker-options="vm.dueDateTo.datepickerOptions" close-text="Close" />
-                                            <!--<input type="text" class="form-control" datetime-picker="yyyy-dd-MM" ng-model="vm.dueDateTo.date" is-open="vm.dueDateTo.open"-->
-                                            <!--enable-time="false" datepicker-options="vm.dueDateTo.datepickerOptions" />-->
                                       <span class="input-group-btn">
                                           <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDateTo')"><i class="fa fa-calendar"></i></button>
                                       </span>
@@ -165,29 +161,37 @@
 
                     </div>
                     <div class="col-md-2">
-                        <label for="subTaskAdd" class="cursor" ><i class="fa fa-flag" id="subTaskAdd">하위 작업 추가</i></label>
+                        <label for="subTaskAdd" class="cursor" ng-click="vm.subTaskOpen = !vm.subTaskOpen" ><i class="fa fa-flag" id="subTaskAdd" > 하위 작업 추가</i></label>
                     </div>
                     <div class="col-md-2">
-                        <i class="fa fa-flag"></i> 파일 첨부
+                        <label for="subTaskAdd" class="cursor" ng-click="vm.fileAreaOpen = !vm.fileAreaOpen"><i class="fa fa-flag"></i> 파일 첨부</label>
                     </div>
                     <div class="col-md-2">
-                        <i class="fa fa-flag"></i> 작업선 연결
+                        <label for="subTaskAdd" class="cursor" ng-click="vm.relatedTaskOpen = !vm.relatedTaskOpen"><i class="fa fa-flag"></i> 작업선 연결</label>
                     </div>
                     <div class="col-md-2">
-                        <i class="fa fa-flag"></i> 단계별 담당자
+                        <label for="subTaskAdd" class="cursor" ><i class="fa fa-flag"></i> 단계별 담당자</label>
                     </div>
                 </div>
-                <div class="sub-task-area" style="border-top: 1px solid #ddd">
-                    <div ng-repeat="list in vm.subTaskList" ng-show="vm.subTaskList != []">
+                <div class="sub-task-area" style="border-top: 1px solid #ddd; padding: 5px" ng-class="vm.subTaskOpen ? 'on' : ''">
+                    <div class="sub-task-area-title">하위 작업 목록</div>
+                    <div ng-repeat="list in vm.subTaskList" ng-show="vm.subTaskList != []" class="sub-task-area-list">
                         {{list.name}}
                     </div>
                     <div class="add-sub-task">
-                        <input type="text" class="" ng-model="vm.subTask.name" enter-submit="vm.subTaskSave()" placeholder="Sub Task"/>
+                        <input type="text" class="form-control" ng-model="vm.subTask.name" enter-submit="vm.subTaskSave()" placeholder=" 추가할 작업명을 입력하세요."/>
                     </div>
                 </div>
-                <div style="border-top: 1px solid #ddd">
-                    <autocomplete source="findTasks" tags="relatedTaskList" display-property="name" multiple="true" max-results-to-show="20" placeholder="작업선 연결 타스크 검색"></autocomplete>
-                    {{relatedTaskList}}
+                <div class="related-task-area" ng-class="vm.relatedTaskOpen ? 'on' : ''" style="border-top: 1px solid #ddd">
+
+                    <div class="row" style="margin: 0px;">
+                        <div class="col-md-2 related-title">
+                            참조 작업
+                        </div>
+                        <div class="col-md-10">
+                            <autocomplete source="findTasks" tags="relatedTaskList" display-property="name" multiple="true" max-results-to-show="20" placeholder="작업선 연결 타스크 검색"></autocomplete>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -200,7 +204,7 @@
             </summernote>
         </div>
 
-        <div>
+        <div class="task-file-area" ng-class="vm.fileAreaOpen ? 'on' : ''">
             <input id="input-4" name="input4[]" type="file" multiple class="file-loading" get-files>
         </div>
 
