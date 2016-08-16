@@ -190,7 +190,7 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
                 }).then(function (response) {
                     toastr.success('태스크 수정 완료', '태스크 수정 완료');
                     $timeout(function(){ // state reload 명령과 충돌하는 문제 때문에 설정
-                        $uibModalInstance.dismiss('cancel');
+                        $uibModalInstance.close();
                     }, 100);
                 });
             }
