@@ -28,7 +28,7 @@
             </div>
         </div>
     </div>
-    <div ng-class="viewTypeClass" style="margin-top: 10px; min-height: 500px" ng-show="vm.task.id !=''">
+    <div ng-class="viewTypeClass" style="margin-top: 10px; min-height: 500px" >
         <div id="projectPickerSection">
             <label for="addProject" class="cursor projectValueSection" project-picker-edit-toggle><i class="fa fa-plus" id="addProject"></i> <span>Project/Folder Add</span></label>
 
@@ -210,7 +210,7 @@
 
     </div>
 </div>
-<div class="modal-footer" ng-show="vm.task.id !=''">
+<div class="modal-footer" >
     <button type="button" class="btn btn_icon btn_customs" ng-click="vm.taskUpload()" owl-btn-save></button>
     <button type="button" class="btn btn_icon btn_customs2" ng-click="vm.cancel()" owl-btn-cancel></button>
 </div>

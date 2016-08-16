@@ -5,9 +5,9 @@
         .module('wmsApp')
         .controller('TaskDetailCtrl', TaskDetailCtrl);
 
-    TaskDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', 'TaskAttachedFile', '$log', 'TaskEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'entity'];
+    TaskDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', 'TaskAttachedFile', '$log', 'TaskEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'entity', 'TaskListSearch'];
 
-    function TaskDetailCtrl($scope, $rootScope, $stateParams, Task, Code, TaskAttachedFile, $log, TaskEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, entity) {
+    function TaskDetailCtrl($scope, $rootScope, $stateParams, Task, Code, TaskAttachedFile, $log, TaskEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, entity, TaskListSearch) {
         var vm = this;
 
         vm.task = entity;
@@ -17,15 +17,16 @@
         vm.renderHtml = renderHtml;
         //vm.fileDownLoad = fileDownLoad;
         vm.subTaskSave = subTaskSave;
-        //TaskListSearch.TaskAudigLog({'entityId' : vm.task.id, 'entityName' : 'Task'}).then(function(result){ vm.TaskAuditLog = result; }); // Audit Log List call
+        TaskListSearch.TaskAudigLog({'entityId' : vm.task.id, 'entityName' : 'Task'}).then(function(result){ vm.TaskAuditLog = result; }); // Audit Log List call
         vm.codes = Code.query();
 
         vm.responseData = _.clone(vm.task);
         $log.debug("vm.taskvm.taskvm.task", vm.task)
+        $log.debug("vm.TaskAuditLog 로그: ", vm.TaskAuditLog);
         $log.debug("vm.codes : ", vm.codes)
 
         //$log.debug("info :", vm.task)
-        $log.debug("$stateParams.listType :", $stateParams.listType)
+        $log.debug("$stateParams.listType :", $stateParams.listType);
 
 
         // 갤러리 썸네일 이미지
