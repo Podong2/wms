@@ -1,6 +1,5 @@
 package kr.wisestone.wms.web.rest.mapper;
 
-import kr.wisestone.wms.domain.Code;
 import kr.wisestone.wms.domain.TraceLog;
 import kr.wisestone.wms.web.rest.dto.TraceLogDTO;
 import org.mapstruct.Mapper;

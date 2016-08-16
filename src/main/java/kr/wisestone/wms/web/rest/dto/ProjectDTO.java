@@ -31,6 +31,8 @@ public class ProjectDTO implements Serializable {
 
     private List<ProjectDTO> projectParents = new ArrayList<>();
 
+    private List<ProjectDTO> projectChilds = new ArrayList<>();
+
     private List<UserDTO> projectUsers = new ArrayList<>();
 
     private List<ProjectAttachedFile> projectAttachedFiles = new ArrayList<>();
@@ -121,6 +123,14 @@ public class ProjectDTO implements Serializable {
 
     public void setProjectParents(List<ProjectDTO> projectParents) {
         this.projectParents = projectParents;
+    }
+
+    public List<ProjectDTO> getProjectChilds() {
+        return projectChilds;
+    }
+
+    public void setProjectChilds(List<ProjectDTO> projectChilds) {
+        this.projectChilds = projectChilds;
     }
 
     public List<UserDTO> getProjectUsers() {

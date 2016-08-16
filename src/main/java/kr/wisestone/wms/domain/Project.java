@@ -55,10 +55,15 @@ public class Project extends AbstractAuditingEntity implements Traceable {
     @JoinColumn(name = "admin_id")
     private User admin;
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "project")
     @JsonIgnore
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<ProjectParent> projectParents = new HashSet<>();
+
+    @OneToMany(mappedBy = "parent")
+    @JsonIgnore
+    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<ProjectParent> projectChilds = new HashSet<>();
 
     @OneToMany(mappedBy = "project")
     @JsonIgnore
@@ -132,6 +137,14 @@ public class Project extends AbstractAuditingEntity implements Traceable {
 
     public void setAdmin(User admin) {
         this.admin = admin;
+    }
+
+    public Set<ProjectParent> getProjectChilds() {
+        return projectChilds;
+    }
+
+    public void setProjectChilds(Set<ProjectParent> projectChilds) {
+        this.projectChilds = projectChilds;
     }
 
     public Set<ProjectParent> getProjectParents() {

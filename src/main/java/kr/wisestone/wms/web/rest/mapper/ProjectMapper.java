@@ -20,6 +20,7 @@ public interface ProjectMapper {
     @Mapping(source = "admin.id", target = "adminId")
     @Mapping(source = "admin.name", target = "adminName")
     @Mapping(source = "projectParents", target = "projectParents", ignore = true)
+    @Mapping(source = "projectChilds", target = "projectChilds", ignore = true)
     @Mapping(source = "projectUsers", target = "projectUsers", ignore = true)
     ProjectDTO projectToProjectDTO(Project project);
 
@@ -28,6 +29,7 @@ public interface ProjectMapper {
     @Mapping(source = "statusId", target = "status")
     @Mapping(source = "adminId", target = "admin")
     @Mapping(source = "projectParents", target = "projectParents", ignore = true)
+    @Mapping(source = "projectChilds", target = "projectChilds", ignore = true)
     @Mapping(source = "projectUsers", target = "projectUsers", ignore = true)
     Project projectDTOToProject(ProjectDTO projectDTO);
 

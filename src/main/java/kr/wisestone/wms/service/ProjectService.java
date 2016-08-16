@@ -125,4 +125,25 @@ public class ProjectService {
 
         return projectMapper.projectsToProjectDTOs(projects);
     }
+
+    public List<ProjectDTO> findActiveProjects() {
+
+        String login = SecurityUtils.getCurrentUserLogin();
+
+        QProject $project = QProject.project;
+
+        BooleanBuilder predicate = new BooleanBuilder();
+        predicate.and($project.status.id.eq(1L));
+        predicate.and($project.projectUsers.any().user.login.eq(login).or($project.admin.login.eq(login)));
+
+        predicate.and($project.projectParents.isEmpty()
+                    .or($project.projectParents.any().parent.projectUsers.any().user.login.ne(login)
+                        .and($project.projectParents.any().parent.admin.login.ne(login))
+                    )
+                );
+
+        List<Project> projects = Lists.newArrayList(projectRepository.findAll(predicate));
+
+        return projectMapper.projectsToProjectDTOs(projects);
+    }
 }
