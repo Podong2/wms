@@ -1117,6 +1117,12 @@ wms-select-box .dropdown-menu > .active > a{
 .nya-bs-select{
     width: 196px;
 }
+.task-options-area .nya-bs-select{
+    width: 95px;
+}
+.task-options-area ol>button{
+    height: 42px;
+}
 /* :::::::::::::::::::::: select box style end ::::::::::::::::::::::: */
 
 
