@@ -68,37 +68,6 @@ public class TaskService {
     private UserMapper userMapper;
 
     /**
-     * Save a task.
-     *
-     * @param taskForm the entity to save
-     * @param files
-     * @return the persisted entity
-     */
-    @Transactional
-    public TaskDTO save(TaskForm taskForm, List<MultipartFile> files) {
-        log.debug("Request to save Task : {}", taskForm);
-
-        Task task = taskForm.bind(new Task());
-
-        for(MultipartFile multipartFile : files) {
-
-            AttachedFile attachedFile = this.attachedFileService.saveFile(multipartFile);
-
-            task.addAttachedFile(attachedFile);
-        }
-
-        task = taskRepository.save(task);
-
-        TaskDTO result = taskMapper.taskToTaskDTO(task);
-
-//        User user = userService.getUserWithAuthorities(task.getAssignee().getId());
-//
-//        notificationService.sendIssueCreatedNotification(result, Lists.newArrayList(user), "04");
-
-        return result;
-    }
-
-    /**
      *  Get all the tasks.
      *
      *  @return the list of entities

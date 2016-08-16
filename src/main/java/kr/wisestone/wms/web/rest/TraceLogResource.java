@@ -8,7 +8,9 @@ import kr.wisestone.wms.domain.QTraceLog;
 import kr.wisestone.wms.domain.TraceLog;
 import kr.wisestone.wms.repository.TraceLogRepository;
 import kr.wisestone.wms.service.TraceLogService;
+import kr.wisestone.wms.web.rest.dto.TraceLogDTO;
 import kr.wisestone.wms.web.rest.form.TraceLogForm;
+import kr.wisestone.wms.web.rest.mapper.TraceLogMapper;
 import kr.wisestone.wms.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +39,9 @@ public class TraceLogResource {
     @Inject
     private TraceLogService traceLogService;
 
+    @Inject
+    private TraceLogMapper traceLogMapper;
+
     /**
      * GET  /tasks : get all the tasks.
      *
@@ -48,7 +53,7 @@ public class TraceLogResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Transactional(readOnly = true)
-    public ResponseEntity<List<TraceLog>> getTraceLog(@RequestParam(value = "entityId") Long entityId
+    public ResponseEntity<List<TraceLogDTO>> getTraceLog(@RequestParam(value = "entityId") Long entityId
                                                     , @RequestParam(value = "entityName") String entityName)
         throws URISyntaxException {
         log.debug("REST request to get a page of Tasks");
@@ -61,7 +66,7 @@ public class TraceLogResource {
 
         List<TraceLog> traceLogs = Lists.newArrayList(traceLogRepository.findAll(predicate, $traceLog.createdDate.asc()));
 
-        return new ResponseEntity<>(traceLogs, HttpStatus.OK);
+        return new ResponseEntity<>(traceLogMapper.traceLogsToTraceLogDTOs(traceLogs), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/trace-log",

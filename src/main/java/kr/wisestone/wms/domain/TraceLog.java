@@ -2,6 +2,7 @@ package kr.wisestone.wms.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
@@ -9,6 +10,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.util.ClassUtils;
 
 import javax.persistence.*;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,7 +18,6 @@ import java.util.Set;
 @Table(name = "owl_trace_log")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "tracelog")
-@Data
 public class TraceLog extends AbstractAuditingEntity {
 
     @Id
@@ -70,6 +71,118 @@ public class TraceLog extends AbstractAuditingEntity {
 
     @Transient
     private Traceable entity;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getEntityId() {
+        return entityId;
+    }
+
+    public void setEntityId(Long entityId) {
+        this.entityId = entityId;
+    }
+
+    public String getEntityName() {
+        return entityName;
+    }
+
+    public void setEntityName(String entityName) {
+        this.entityName = entityName;
+    }
+
+    public String getEntityField() {
+        return entityField;
+    }
+
+    public void setEntityField(String entityField) {
+        this.entityField = entityField;
+    }
+
+    public String getPersistType() {
+        return persistType;
+    }
+
+    public void setPersistType(String persistType) {
+        this.persistType = persistType;
+    }
+
+    public String getOldValue() {
+        return oldValue;
+    }
+
+    public void setOldValue(String oldValue) {
+        this.oldValue = oldValue;
+    }
+
+    public String getNewValue() {
+        return newValue;
+    }
+
+    public void setNewValue(String newValue) {
+        this.newValue = newValue;
+    }
+
+    public String getEtcValue() {
+        return etcValue;
+    }
+
+    public void setEtcValue(String etcValue) {
+        this.etcValue = etcValue;
+    }
+
+    public Boolean getReplyYn() {
+        return replyYn;
+    }
+
+    public void setReplyYn(Boolean replyYn) {
+        this.replyYn = replyYn;
+    }
+
+    public Long getAttachedFileId() {
+        return attachedFileId;
+    }
+
+    public void setAttachedFileId(Long attachedFileId) {
+        this.attachedFileId = attachedFileId;
+    }
+
+    public Set<TraceLogAttachedFile> getTraceLogAttachedFiles() {
+        return traceLogAttachedFiles;
+    }
+
+    public void setTraceLogAttachedFiles(Set<TraceLogAttachedFile> traceLogAttachedFiles) {
+        this.traceLogAttachedFiles = traceLogAttachedFiles;
+    }
+
+    public Long getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(Long taskId) {
+        this.taskId = taskId;
+    }
+
+    public Long getProjectId() {
+        return projectId;
+    }
+
+    public void setProjectId(Long projectId) {
+        this.projectId = projectId;
+    }
+
+    public Traceable getEntity() {
+        return entity;
+    }
+
+    public void setEntity(Traceable entity) {
+        this.entity = entity;
+    }
 
     public TraceLogAttachedFile addAttachedFile(AttachedFile attachedFile) {
 

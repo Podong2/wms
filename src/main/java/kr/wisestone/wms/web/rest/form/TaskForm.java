@@ -122,9 +122,18 @@ public class TaskForm {
         parent.setId(this.getParentId());
         subTask.setParent(parent);
 
-        User assignee = new User();
-        assignee.setId(this.getAssigneeId());
-        subTask.addTaskUser(assignee, TaskUserType.ASSIGNEE);
+        if(this.getAssigneeId() != null) {
+            User assignee = new User();
+            assignee.setId(this.getAssigneeId());
+            subTask.addTaskUser(assignee, TaskUserType.ASSIGNEE);
+        }
+
+        for(Long id : getAssigneeIds()) {
+            User user = new User();
+            user.setId(id);
+
+            subTask.addTaskUser(user, TaskUserType.ASSIGNEE);
+        }
 
         return subTask;
     }

@@ -48,9 +48,7 @@ public final class SecurityUtils {
         Authentication authentication = securityContext.getAuthentication();
         User user = null;
         if (authentication != null) {
-            if (authentication.getPrincipal() instanceof UserDetails) {
-                user = (User) authentication.getPrincipal();
-            } else if (authentication.getPrincipal() instanceof String) {
+            if (authentication.getPrincipal() instanceof User) {
                 user = (User) authentication.getPrincipal();
             }
         }

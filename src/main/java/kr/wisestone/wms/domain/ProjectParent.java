@@ -1,5 +1,6 @@
 package kr.wisestone.wms.domain;
 
+import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.util.ClassUtils;
@@ -7,17 +8,17 @@ import org.springframework.util.ClassUtils;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "owl_project_user")
-@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "projectUser")
-public class ProjectUser extends AbstractAuditingEntity implements Traceable {
+@Table(name = "owl_project_parent")
+@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+@Document(indexName = "projectparent")
+public class ProjectParent extends AbstractAuditingEntity implements Traceable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "projectUserSeqGenerator")
-    @TableGenerator(name = "projectUserSeqGenerator"
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "projectParentSeqGenerator")
+    @TableGenerator(name = "projectParentSeqGenerator"
         , table = "owl_sequence"
         , initialValue = 10000
-        , pkColumnValue = "owl_project_user_id"
+        , pkColumnValue = "owl_project_parent_id"
         , pkColumnName = "seq_id"
         , valueColumnName = "seq_value"
         , allocationSize = 1)
@@ -28,16 +29,14 @@ public class ProjectUser extends AbstractAuditingEntity implements Traceable {
     private Project project;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "parent_id")
+    private Project parent;
 
-    public ProjectUser() {}
+    public ProjectParent() {}
 
-    public ProjectUser(Project project, User user) {
-        super();
-
+    public ProjectParent(Project project, Project parent) {
         this.setProject(project);
-        this.setUser(user);
+        this.setParent(parent);
     }
 
     public Long getId() {
@@ -56,12 +55,12 @@ public class ProjectUser extends AbstractAuditingEntity implements Traceable {
         this.project = project;
     }
 
-    public User getUser() {
-        return user;
+    public Project getParent() {
+        return parent;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setParent(Project parent) {
+        this.parent = parent;
     }
 
     @Override
@@ -71,13 +70,13 @@ public class ProjectUser extends AbstractAuditingEntity implements Traceable {
 
         logRecord.setProjectId(this.getProject().getId());
         logRecord.setEntityName(ClassUtils.getShortName(this.getProject().getClass()));
-        logRecord.setEntityField("projectUsers");
+        logRecord.setEntityField("projectParents");
         logRecord.setEntityId(this.getProject().getId());
 
         if (Traceable.PERSIST_TYPE_INSERT.equals(persisType)) {
-            logRecord.setNewValue(this.getUser().getName());
+            logRecord.setNewValue(this.getParent().getName());
         } else if (Traceable.PERSIST_TYPE_DELETE.equals(persisType)) {
-            logRecord.setOldValue(this.getUser().getName());
+            logRecord.setOldValue(this.getParent().getName());
         }
 
         return logRecord;

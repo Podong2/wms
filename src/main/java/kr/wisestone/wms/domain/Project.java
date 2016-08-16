@@ -1,21 +1,24 @@
 package kr.wisestone.wms.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.annotations.*;
 import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.Document;
+import org.springframework.util.ClassUtils;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "owl_project")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "project")
-public class Project extends AbstractAuditingEntity {
+public class Project extends AbstractAuditingEntity implements Traceable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "projectSeqGenerator")
@@ -48,10 +51,6 @@ public class Project extends AbstractAuditingEntity {
     @JoinColumn(name = "status_id")
     private Code status;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "parent_id")
-    private Project parent;
-
     @ManyToOne
     @JoinColumn(name = "admin_id")
     private User admin;
@@ -59,7 +58,7 @@ public class Project extends AbstractAuditingEntity {
     @OneToMany(mappedBy = "parent")
     @JsonIgnore
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<Project> subProjects = new HashSet<>();
+    private Set<ProjectParent> projectParents = new HashSet<>();
 
     @OneToMany(mappedBy = "project")
     @JsonIgnore
@@ -127,14 +126,6 @@ public class Project extends AbstractAuditingEntity {
         this.status = status;
     }
 
-    public Project getParent() {
-        return parent;
-    }
-
-    public void setParent(Project parent) {
-        this.parent = parent;
-    }
-
     public User getAdmin() {
         return admin;
     }
@@ -143,16 +134,26 @@ public class Project extends AbstractAuditingEntity {
         this.admin = admin;
     }
 
-    public Set<Project> getSubProjects() {
-        return subProjects;
+    public Set<ProjectParent> getProjectParents() {
+        return projectParents;
     }
 
-    public void setSubProjects(Set<Project> subProjects) {
-        this.subProjects = subProjects;
+    public void setProjectParents(Set<ProjectParent> projectParents) {
+        this.projectParents = projectParents;
+    }
+
+    public List<Project> getPlainProjectParent() {
+
+        return this.projectParents.stream().map(ProjectParent::getParent).collect(Collectors.toList());
     }
 
     public Set<ProjectUser> getProjectUsers() {
         return projectUsers;
+    }
+
+    public List<User> getPlainProjectUsers() {
+
+        return this.projectUsers.stream().map(ProjectUser::getUser).collect(Collectors.toList());
     }
 
     public void setProjectUsers(Set<ProjectUser> projectUsers) {
@@ -165,5 +166,112 @@ public class Project extends AbstractAuditingEntity {
 
     public void setProjectAttachedFiles(Set<ProjectAttachedFile> projectAttachedFiles) {
         this.projectAttachedFiles = projectAttachedFiles;
+    }
+
+    public ProjectAttachedFile addAttachedFile(AttachedFile attachedFile) {
+
+        if(attachedFile == null) {
+            return null;
+        }
+
+        ProjectAttachedFile projectAttachedFile = new ProjectAttachedFile(this, attachedFile);
+
+        this.projectAttachedFiles.add(projectAttachedFile);
+
+        return projectAttachedFile;
+    }
+
+    public ProjectAttachedFile findAttachedFile(Long attachedFileId) {
+        return this.projectAttachedFiles.stream().filter(
+            projectAttachedFile -> projectAttachedFile.getId().equals(attachedFileId)
+        ).findFirst().get();
+    }
+
+    public Project removeAttachedFile(Long attachedFileId) {
+
+        ProjectAttachedFile projectAttachedFile = this.findAttachedFile(attachedFileId);
+
+        if(projectAttachedFile != null)
+            this.projectAttachedFiles.remove(projectAttachedFile);
+
+        return this;
+    }
+
+    public Project addProjectUser(User user) {
+
+        ProjectUser origin = this.findProjectUser(user);
+
+        if(origin == null)
+            this.projectUsers.add(new ProjectUser(this, user));
+
+        return this;
+    }
+
+    public Project removeProjectUser(User user) {
+
+        ProjectUser origin = this.findProjectUser(user);
+
+        if(origin != null)
+            this.projectUsers.remove(origin);
+
+        return this;
+    }
+
+    private ProjectUser findProjectUser(User user) {
+        Optional<ProjectUser> origin = this.projectUsers.stream().filter(
+            projectUser ->
+                projectUser.getUser().getId().equals(user.getId())
+        ).findFirst();
+
+        if(origin.isPresent()) return origin.get();
+        else return null;
+    }
+
+    public Project addParentProject(Project parent) {
+
+        ProjectParent origin = this.findParentProject(parent);
+
+        if(origin == null)
+            this.projectParents.add(new ProjectParent(this, parent));
+
+        return this;
+    }
+
+    public Project removeParentProject(Project parent) {
+
+        ProjectParent origin = this.findParentProject(parent);
+
+        if(origin != null)
+            this.projectParents.remove(origin);
+
+        return this;
+    }
+
+    private ProjectParent findParentProject(Project parent) {
+        Optional<ProjectParent> origin = this.projectParents.stream().filter(
+            projectParent ->
+                projectParent.getParent().getId().equals(parent.getId())
+        ).findFirst();
+
+        if(origin.isPresent()) return origin.get();
+        else return null;
+    }
+
+    @Override
+    public TraceLog getTraceLog(String persisType) {
+
+        TraceLog logRecord = TraceLog.builder(this, persisType);
+
+        logRecord.setProjectId(this.getId());
+        logRecord.setEntityName(ClassUtils.getShortName(this.getClass()));
+        logRecord.setEntityId(this.getId());
+
+        if (Traceable.PERSIST_TYPE_INSERT.equals(persisType)) {
+            logRecord.setNewValue(this.getName());
+        } else if (Traceable.PERSIST_TYPE_DELETE.equals(persisType)) {
+            logRecord.setOldValue(this.getName());
+        }
+
+        return logRecord;
     }
 }
