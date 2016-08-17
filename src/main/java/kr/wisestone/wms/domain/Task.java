@@ -275,6 +275,32 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
         return this;
     }
 
+    public Task addTaskProject(Project project) {
+
+        Optional<TaskProject> origin = this.taskProjects.stream().filter(
+            taskProject ->
+                taskProject.getProject().getId().equals(project.getId())
+        ).findFirst();
+
+        if(!origin.isPresent())
+            this.taskProjects.add(new TaskProject(this, project));
+
+        return this;
+    }
+
+    public Task removeTaskProject(Project project) {
+
+        Optional<TaskProject> origin = this.taskProjects.stream().filter(
+            taskProject ->
+                taskProject.getProject().getId().equals(project.getId())
+        ).findFirst();
+
+        if(origin.isPresent())
+            this.taskProjects.remove(origin.get());
+
+        return this;
+    }
+
     public TaskAttachedFile addAttachedFile(AttachedFile attachedFile) {
 
         if(attachedFile == null) {

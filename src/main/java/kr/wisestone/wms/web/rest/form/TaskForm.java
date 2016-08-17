@@ -1,9 +1,6 @@
 package kr.wisestone.wms.web.rest.form;
 
-import kr.wisestone.wms.domain.Code;
-import kr.wisestone.wms.domain.Task;
-import kr.wisestone.wms.domain.TaskUserType;
-import kr.wisestone.wms.domain.User;
+import kr.wisestone.wms.domain.*;
 import lombok.Data;
 import org.flywaydb.core.internal.util.StringUtils;
 
@@ -31,7 +28,7 @@ public class TaskForm {
 
     private Boolean importantYn = Boolean.FALSE;
 
-    private List<Long> removeTargetFiles = new ArrayList<>();
+    private List<Long> projectIds = new ArrayList<>();
 
     private List<Long> assigneeIds = new ArrayList<>();
 
@@ -39,11 +36,15 @@ public class TaskForm {
 
     private List<Long> relatedTaskIds = new ArrayList<>();
 
+    private List<Long> removeProjectIds = new ArrayList<>();
+
     private List<Long> removeAssigneeIds = new ArrayList<>();
 
     private List<Long> removeWatcherIds = new ArrayList<>();
 
     private List<Long> removeRelatedTaskIds = new ArrayList<>();
+
+    private List<Long> removeTargetFiles = new ArrayList<>();
 
     public Task bind(Task task) {
 
@@ -65,6 +66,20 @@ public class TaskForm {
             Code status = new Code();
             status.setId(this.statusId);
             task.setStatus(status);
+        }
+
+        for(Long id : getProjectIds()) {
+            Project project = new Project();
+            project.setId(id);
+
+            task.addTaskProject(project);
+        }
+
+        for(Long id : getRemoveProjectIds()) {
+            Project project = new Project();
+            project.setId(id);
+
+            task.removeTaskProject(project);
         }
 
         for(Long id : getAssigneeIds()) {

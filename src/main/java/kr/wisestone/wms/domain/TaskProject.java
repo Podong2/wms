@@ -32,6 +32,13 @@ public class TaskProject extends AbstractAuditingEntity implements Traceable {
     @JoinColumn(name = "project_id")
     private Project project;
 
+    public TaskProject() {}
+
+    public TaskProject(Task task, Project project) {
+        setTask(task);
+        setProject(project);
+    }
+
     public Long getId() {
         return id;
     }
