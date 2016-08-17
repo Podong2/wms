@@ -8,14 +8,14 @@ import org.springframework.util.ClassUtils;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "owl_project_parent")
+@Table(name = "owl_project_relation")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Document(indexName = "projectparent")
-public class ProjectParent extends AbstractAuditingEntity implements Traceable {
+@Document(indexName = "projectrelation")
+public class ProjectRelation extends AbstractAuditingEntity implements Traceable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE, generator = "projectParentSeqGenerator")
-    @TableGenerator(name = "projectParentSeqGenerator"
+    @GeneratedValue(strategy = GenerationType.TABLE, generator = "projectRelationSeqGenerator")
+    @TableGenerator(name = "projectRelationSeqGenerator"
         , table = "owl_sequence"
         , initialValue = 10000
         , pkColumnValue = "owl_project_parent_id"
@@ -25,17 +25,17 @@ public class ProjectParent extends AbstractAuditingEntity implements Traceable {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "project_id")
-    private Project project;
+    @JoinColumn(name = "child_id")
+    private Project child;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parent_id")
     private Project parent;
 
-    public ProjectParent() {}
+    public ProjectRelation() {}
 
-    public ProjectParent(Project project, Project parent) {
-        this.setProject(project);
+    public ProjectRelation(Project child, Project parent) {
+        this.setChild(child);
         this.setParent(parent);
     }
 
@@ -47,12 +47,12 @@ public class ProjectParent extends AbstractAuditingEntity implements Traceable {
         this.id = id;
     }
 
-    public Project getProject() {
-        return project;
+    public Project getChild() {
+        return child;
     }
 
-    public void setProject(Project project) {
-        this.project = project;
+    public void setChild(Project child) {
+        this.child = child;
     }
 
     public Project getParent() {
@@ -68,10 +68,10 @@ public class ProjectParent extends AbstractAuditingEntity implements Traceable {
 
         TraceLog logRecord = TraceLog.builder(this, persisType);
 
-        logRecord.setProjectId(this.getProject().getId());
-        logRecord.setEntityName(ClassUtils.getShortName(this.getProject().getClass()));
-        logRecord.setEntityField("projectParents");
-        logRecord.setEntityId(this.getProject().getId());
+        logRecord.setProjectId(this.getChild().getId());
+        logRecord.setEntityName(ClassUtils.getShortName(this.getChild().getClass()));
+        logRecord.setEntityField("projectRelation");
+        logRecord.setEntityId(this.getChild().getId());
 
         if (Traceable.PERSIST_TYPE_INSERT.equals(persisType)) {
             logRecord.setNewValue(this.getParent().getName());

@@ -55,15 +55,15 @@ public class Project extends AbstractAuditingEntity implements Traceable {
     @JoinColumn(name = "admin_id")
     private User admin;
 
-    @OneToMany(mappedBy = "project")
+    @OneToMany(mappedBy = "child")
     @JsonIgnore
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<ProjectParent> projectParents = new HashSet<>();
+    private Set<ProjectRelation> projectParents = new HashSet<>();
 
     @OneToMany(mappedBy = "parent")
     @JsonIgnore
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-    private Set<ProjectParent> projectChilds = new HashSet<>();
+    private Set<ProjectRelation> projectChilds = new HashSet<>();
 
     @OneToMany(mappedBy = "project")
     @JsonIgnore
@@ -139,25 +139,25 @@ public class Project extends AbstractAuditingEntity implements Traceable {
         this.admin = admin;
     }
 
-    public Set<ProjectParent> getProjectChilds() {
+    public Set<ProjectRelation> getProjectChilds() {
         return projectChilds;
     }
 
-    public void setProjectChilds(Set<ProjectParent> projectChilds) {
+    public void setProjectChilds(Set<ProjectRelation> projectChilds) {
         this.projectChilds = projectChilds;
     }
 
-    public Set<ProjectParent> getProjectParents() {
+    public Set<ProjectRelation> getProjectParents() {
         return projectParents;
     }
 
-    public void setProjectParents(Set<ProjectParent> projectParents) {
+    public void setProjectParents(Set<ProjectRelation> projectParents) {
         this.projectParents = projectParents;
     }
 
     public List<Project> getPlainProjectParent() {
 
-        return this.projectParents.stream().map(ProjectParent::getParent).collect(Collectors.toList());
+        return this.projectParents.stream().map(ProjectRelation::getParent).collect(Collectors.toList());
     }
 
     public Set<ProjectUser> getProjectUsers() {
@@ -242,17 +242,17 @@ public class Project extends AbstractAuditingEntity implements Traceable {
 
     public Project addParentProject(Project parent) {
 
-        ProjectParent origin = this.findParentProject(parent);
+        ProjectRelation origin = this.findParentProject(parent);
 
         if(origin == null)
-            this.projectParents.add(new ProjectParent(this, parent));
+            this.projectParents.add(new ProjectRelation(this, parent));
 
         return this;
     }
 
     public Project removeParentProject(Project parent) {
 
-        ProjectParent origin = this.findParentProject(parent);
+        ProjectRelation origin = this.findParentProject(parent);
 
         if(origin != null)
             this.projectParents.remove(origin);
@@ -260,8 +260,8 @@ public class Project extends AbstractAuditingEntity implements Traceable {
         return this;
     }
 
-    private ProjectParent findParentProject(Project parent) {
-        Optional<ProjectParent> origin = this.projectParents.stream().filter(
+    private ProjectRelation findParentProject(Project parent) {
+        Optional<ProjectRelation> origin = this.projectParents.stream().filter(
             projectParent ->
                 projectParent.getParent().getId().equals(parent.getId())
         ).findFirst();

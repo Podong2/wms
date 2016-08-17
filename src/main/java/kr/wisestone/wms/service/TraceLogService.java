@@ -38,6 +38,7 @@ public class TraceLogService {
         this.entityManager.persist(logRecord);
     }
 
+    @Transactional
     public TraceLog saveTraceLog(TraceLogForm traceLogForm, List<MultipartFile> files) {
 
         TraceLog traceLog = traceLogForm.bind();
@@ -54,6 +55,7 @@ public class TraceLogService {
         return traceLog;
     }
 
+    @Transactional
     public TraceLog modifyTraceLog(TraceLogForm traceLogForm, List<MultipartFile> files) {
 
         TraceLog origin = traceLogRepository.findOne(traceLogForm.getId());

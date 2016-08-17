@@ -2,10 +2,7 @@ package kr.wisestone.wms.service;
 
 import com.google.common.collect.Lists;
 import com.mysema.query.BooleanBuilder;
-import kr.wisestone.wms.domain.AttachedFile;
-import kr.wisestone.wms.domain.Project;
-import kr.wisestone.wms.domain.QProject;
-import kr.wisestone.wms.domain.User;
+import kr.wisestone.wms.domain.*;
 import kr.wisestone.wms.repository.ProjectRepository;
 import kr.wisestone.wms.security.SecurityUtils;
 import kr.wisestone.wms.web.rest.dto.ProjectDTO;
@@ -20,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
 import java.util.List;
+import java.util.Set;
 
 @Service
 @Transactional
@@ -126,6 +124,7 @@ public class ProjectService {
         return projectMapper.projectsToProjectDTOs(projects);
     }
 
+    @Transactional(readOnly = true)
     public List<ProjectDTO> findActiveProjects() {
 
         String login = SecurityUtils.getCurrentUserLogin();
@@ -144,6 +143,33 @@ public class ProjectService {
 
         List<Project> projects = Lists.newArrayList(projectRepository.findAll(predicate));
 
+        List<ProjectDTO> projectDTOs = Lists.newArrayList();
+
+        for(Project project : projects) {
+
+            ProjectDTO projectDTO = projectMapper.projectToProjectDTO(project);
+
+            this.bindChildProjects(projectDTO, project.getProjectChilds());
+
+            projectDTOs.add(projectDTO);
+        }
+
         return projectMapper.projectsToProjectDTOs(projects);
+    }
+
+    private void bindChildProjects(ProjectDTO parent, Set<ProjectRelation> projectChilds) {
+
+        List<ProjectDTO> childProjectDTOs = Lists.newArrayList();
+
+        for(ProjectRelation projectRelation : projectChilds) {
+
+            ProjectDTO projectDTO = projectMapper.projectToProjectDTO(projectRelation.getChild());
+
+            this.bindChildProjects(projectDTO, projectRelation.getChild().getProjectChilds());
+
+            childProjectDTOs.add(projectDTO);
+        }
+
+        parent.setProjectChilds(childProjectDTOs);
     }
 }
