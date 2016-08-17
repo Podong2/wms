@@ -30,13 +30,13 @@ function wmsSelectBox($document, $log, $compile) {
                 console.log($scope);
                 var template = '';
                 if($scope.multiple == 'true'){
-                    template = '<ol class="nya-bs-select col-sm-2" ng-model="selectedValue" actions-box="' + $scope.actionsBox + '" multiple data-size="'+ $scope.datasize +'" data-live-search="'+ $scope.datalivesearch +'" disabled="'+ $scope.disabled +'">' +
+                    template = '<ol class="nya-bs-select col-sm-2" ng-model="selectedValue" style="padding: 0" actions-box="' + $scope.actionsBox + '" multiple data-size="'+ $scope.datasize +'" data-live-search="'+ $scope.datalivesearch +'" disabled="'+ $scope.disabled +'">' +
                         '<li nya-bs-option="option in save" title="{{option.name}}" data-value="option.id">' +
                         '<a><span><span class="glyphicon" ng-class="option.icon"></span> {{ option.name }}</span><span class="glyphicon glyphicon-ok check-mark"></span></a>' +
                         '</li>' +
                         '</ol>';
                 }else{
-                    template = '<ol class="nya-bs-select col-sm-2" ng-model="selectedValue" actions-box="' + $scope.actionsBox + '" data-size="'+ $scope.datasize +'" data-live-search="'+ $scope.datalivesearch +'" disabled="'+ $scope.disabled +'">' +
+                    template = '<ol class="nya-bs-select col-sm-2" ng-model="selectedValue" style="padding: 0" actions-box="' + $scope.actionsBox + '" data-size="'+ $scope.datasize +'" data-live-search="'+ $scope.datalivesearch +'" disabled="'+ $scope.disabled +'">' +
                         '<li nya-bs-option="option in save" title="{{option.name}}" data-value="option.id">' +
                         '<a><span><span class="glyphicon" ng-class="option.icon"></span> {{ option.name }}</span><span class="glyphicon glyphicon-ok check-mark"></span></a>' +
                         '</li>' +

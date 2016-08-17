@@ -10,9 +10,9 @@
                     <span class="taskModalBtn" ng-click="taskAddModalOpen()" class="pull-right">
                         <i class="fa fa-arrows-alt"></i>
                     </span>
-                    <span class="taskModalBtn" ng-click="taskAddModalOpen()" class="pull-right">
-                        <i class="fa fa-flag"></i>
-                    </span>
+                    <!--<span class="taskModalBtn" ng-click="taskAddModalOpen()" class="pull-right">-->
+                        <!--<i class="fa fa-flag"></i>-->
+                    <!--</span>-->
                     <span class="taskModalBtn" ng-click="taskAddModalOpen()" class="pull-right">
                         <i class="fa fa-link"></i>
                     </span>
@@ -83,10 +83,11 @@
 
 
         <!-- task 상태, 담당자, 참조자 선택 영역 -->
-        <div class="task-options-area">
+        <div class="task-options-area task-status-user-aera">
             <table class="table table-bordered">
                 <colgroup>
-                    <col width="140px">
+                    <col width="40px">
+                    <col width="98px">
                     <col width="">
                     <col width="">
                     <col width="">
@@ -97,13 +98,15 @@
                         <td>
                             <span class="custom-control custom-checkbox" style="margin-bottom: 0;">
                                 <input type="checkbox" ng-click="vm.task.statusId = 2" class="custom-control-input">
-                                <wms-select-box
-                                    ng-model="vm.codes"
-                                    selected-value="vm.task.statusId"
-                                    dataSize="5"
-                                    dataLiveSearch="false"
-                                ></wms-select-box>
                             </span>
+                        </td>
+                        <td>
+                            <wms-select-box
+                                ng-model="vm.codes"
+                                selected-value="vm.task.statusId"
+                                dataSize="5"
+                                dataLiveSearch="false"
+                            ></wms-select-box>
                         </td>
                         <td>
                             담당자
@@ -120,33 +123,6 @@
                     </tr>
                 </tbody>
             </table>
-            <!--<div class="row" style="margin: 0">
-                <div class="col-md-2" style="">
-                    <span class="custom-control custom-checkbox" style="margin-bottom: 0;">
-                        <input type="checkbox" ng-click="vm.task.statusId = 2" class="custom-control-input">
-                        <wms-select-box
-                            ng-model="vm.codes"
-                            selected-value="vm.task.statusId"
-                            dataSize="5"
-                            dataLiveSearch="false"
-                        ></wms-select-box>
-                    </span>
-                </div>
-                <div class="col-md-5" style="">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <autocomplete source="findUsers" tags="vm.task.assignees" display-property="name" multiple="true" max-results-to-show="20" tag-type="assignees"></autocomplete>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-5">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <autocomplete source="findUsers" tags="vm.task.watchers" display-property="name" multiple="true" max-results-to-show="20" tag-type="watchers"></autocomplete>
-                        </div>
-                    </div>
-                </div>
-            </div>-->
 
         </div>
 
@@ -159,7 +135,7 @@
 
                         <div id="editSection">
                             <div class="form-group" style="margin-bottom: 0">
-                                <p class="input-group  wms-form" style="width: 100%">
+                                <p class="input-group wms-form">
                                     <label class="input"> <i class="icon-append fa fa-calendar" style="z-index: 1000"></i>
                                         <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="endDate" picker-toggle style="height: 30px; width: 100%">
                                     </label>
@@ -178,8 +154,6 @@
                                         <p class="input-group">
                                             <input type="text" class="form-control startDate" edit-state="true" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.dueDateFrom.date" is-open="vm.dueDateFrom.open"
                                                    datepicker-options="vm.dueDateFrom.datepickerOptions" close-text="Close" />
-                                            <!--<input type="text" class="form-control startDate" datetime-picker="yyyy-MM-dd" ng-model="vm.dueDateFrom.date" is-open="vm.dueDateFrom.open" datepicker-popup="yyyyMMdd"-->
-                                            <!--enable-time="false" datepicker-options="vm.dueDateFrom.datepickerOptions" />-->
                                           <span class="input-group-btn">
                                               <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDateFrom')"><i class="fa fa-calendar"></i></button>
                                           </span>
@@ -191,8 +165,6 @@
                                         <p class="input-group">
                                             <input type="text" class="form-control" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.dueDateTo.date" is-open="vm.dueDateTo.open"
                                                    datepicker-options="vm.dueDateTo.datepickerOptions" close-text="Close" />
-                                            <!--<input type="text" class="form-control" datetime-picker="yyyy-dd-MM" ng-model="vm.dueDateTo.date" is-open="vm.dueDateTo.open"-->
-                                            <!--enable-time="false" datepicker-options="vm.dueDateTo.datepickerOptions" />-->
                                       <span class="input-group-btn">
                                           <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDateTo')"><i class="fa fa-calendar"></i></button>
                                       </span>
@@ -215,7 +187,7 @@
                         <label for="subTaskAdd" class="cursor" ng-click="vm.relatedTaskOpen = !vm.relatedTaskOpen"><i class="fa fa-share-alt"></i> 참조 작업</label>
                     </div>
                     <div class="col-md-2">
-                        <label for="subTaskAdd" class="cursor" ><i class="fa fa-share-alt"></i> 단계별 담당자</label>
+                        <label for="subTaskAdd" class="cursor" ><i class="fa fa-share-alt"></i> 참조 작업</label>
                     </div>
                 </div>
                 <div class="sub-task-area"  style="border-top: 1px solid #ddd; padding: 5px" ng-class="vm.subTaskOpen ? 'on' : ''">
@@ -233,10 +205,6 @@
                         </tbody>
                     </table>
 
-                    <!--<div class="sub-task-area-title">하위 작업 목록</div>-->
-                    <!--<div ng-repeat="list in vm.task.subTasks" ng-show="vm.task.subTasks != []" class="sub-task-area-list">-->
-                        <!--<input type="checkbox"/> <span>{{list.name}}</span> <i class="fa fa-user"></i> <span class="pull-right">{{list.endDate}}</span>-->
-                    <!--</div>-->
                     <div class="add-sub-task">
                         <input type="text" class="form-control" ng-model="vm.subTask.name" enter-submit="vm.subTaskSave()" placeholder=" 추가할 작업명을 입력하세요."/>
                     </div>
@@ -244,26 +212,18 @@
                 <div class="related-task-area" ng-class="vm.relatedTaskOpen ? 'on' : ''" style="border-top: 1px solid #ddd">
                     <table class="table table-bordered">
                         <colgroup>
-                            <col width="20%">
-                            <col width="80%">
+                            <col width="15%">
+                            <col width="85%">
                         </colgroup>
                         <tbody>
-                            <tr ng-repeat="list in vm.task.subTasks">
+                            <tr>
                                 <th style="vertical-align: middle;">참조 작업</th>
                                 <td>
-                                    <autocomplete source="findTasks" tags="vm.task.relatedTasks" display-property="name" multiple="true" max-results-to-show="20" placeholder="작업선에 연결 할 타스크를 입력하세요." tag-type="relatedTasks"></autocomplete>
+                                    <autocomplete source="findTasks" tags="vm.task.relatedTasks" display-property="name" multiple="true" max-results-to-show="20" tag-type="relatedTasks"></autocomplete>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <!--<div class="row" style="margin: 0px;">-->
-                        <!--<div class="col-md-2 related-title">-->
-                            <!--참조 작업-->
-                        <!--</div>-->
-                        <!--<div class="col-md-10">-->
-                            <!--<autocomplete source="findTasks" tags="vm.task.relatedTasks" display-property="name" multiple="true" max-results-to-show="20" placeholder="작업선에 연결 할 타스크를 입력하세요." tag-type="relatedTasks"></autocomplete>-->
-                        <!--</div>-->
-                    <!--</div>-->
                 </div>
             </div>
         </div>
@@ -289,29 +249,63 @@
             <input id="input-4" name="input4[]" type="file" multiple class="file-loading" get-files>
         </div>
 
-        <!--<div class="tree">-->
-            <!--<ul data-smart-treeview data-items="demoTree1" role="tree"></ul>-->
-        <!--</div>-->
-
         <!-- Timeline Content -->
         <div class="smart-timeline">
+            <a ng-click="vm.commentViewType = !vm.commentViewType">댓글만 보기</a>
             <ul class="smart-timeline-list">
-                <li ng-repeat="data in vm.TaskAuditLog.data">
 
+                <!-- 로그&댓글 보기 -->
+                <li ng-repeat="data in vm.TaskAuditLog.data" ng-if="!vm.commentViewType">
                     <div class="smart-timeline-icon" ng-if="(vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')">
                         {{vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd'}}
                     </div>
-                    <!--<div class="smart-timeline-time" ng-if="(vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')">-->
-                        <!--<small>{{data.createdDate | date : 'MM/dd'}}</small>-->
-                    <!--</div>-->
                     <div class="smart-timeline-content">
-                        <p ng-if="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')"
+                        <p ng-if="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
+                            || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')"
                             ng-class="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
                             || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
                             <a href-void><strong>{{data.createdBy}}</strong> </a><a ng-click="">댓글</a>
                         </p>
-                        <p style="padding-left: 10px">
-                            {{data.createdBy}} 이 {{data.entityField}} {{data.newValue}}를 {{data.persistType}}하였습니다. {{data.createdDate | date : 'HH:mm'}}
+                        <p class="pad-l15">
+                            <span ng-if="data.entityField == 'reply'">
+                                <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px"></span> {{data.createdDate | date : 'HH:mm'}}
+                                <br/>
+                                <p ng-repeat="file in data.attachedFiles" class="pad-l20">
+                                    <a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>
+                                </p>
+                            </span>
+                            <span ng-if="data.entityField != 'reply'" class="pad-l20">
+                                {{data.createdBy}} 이 {{data.entityField}} {{data.newValue}}를 {{data.persistType}}하였습니다. {{data.createdDate | date : 'HH:mm'}}
+                                <br/>
+                                <p ng-repeat="file in data.attachedFiles" class="pad-l20">
+                                    <a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>
+                                </p>
+                            </span>
+                        </p>
+                    </div>
+                </li>
+
+                <!-- 댓글만 보기 -->
+                <li ng-repeat="data in vm.commentList" ng-if="vm.commentViewType">
+                    <div class="smart-timeline-icon" ng-if="(vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')
+                    ">
+                        {{vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd'}}
+                    </div>
+                    <div class="smart-timeline-content">
+                        <p ng-if="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
+                            || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')"
+                            ng-class="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
+                            || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
+                            <a href-void><strong>{{data.createdBy}}</strong> </a><a ng-click="">댓글</a>
+                        </p>
+                        <p class="pad-l15">
+                            <span ng-if="data.entityField == 'reply'">
+                                <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px"></span> {{data.createdDate | date : 'HH:mm'}}
+                                <br/>
+                                <p ng-repeat="file in data.attachedFiles" class="pad-l20">
+                                    <a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>
+                                </p>
+                            </span>
                         </p>
                     </div>
                 </li>
@@ -320,7 +314,7 @@
         </div>
         <!-- END Timeline Content -->
 
-        <div class="row">
+        <div class="row comment-area">
             <div class="col-md-11">
                 <div class="row">
                     <div class="col-md-1">

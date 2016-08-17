@@ -25,16 +25,19 @@ dataService.$inject=['$log', '$rootScope', 'findUser', '$q'];
                         var mentions = [];
                         findUser.findByName(keyword).then(function(result){
                             angular.forEach(result, function(val){
-                                mentions.push(val.name);
+                                mentions.push(val);
                             });
                             callback($.grep(mentions, function (item) {
-                                return item.indexOf(keyword) == 0;
+                                return item.name.indexOf(keyword) == 0;
                             }));
                         }); //user search
 
                     },
-                    content: function (item) {
-                        return '@' + item;
+                    content: function (item, id) { // summernote mention text template
+                        return '<span class="mentionUser" id="'+id+'">@' + item + '</span>&nbsp;';
+                    },
+                    template: function(item) { // summernote mention select list template
+                        return '[<strong>' + item.name + '</strong>] ' + item.id;
                     }
                 }
             },

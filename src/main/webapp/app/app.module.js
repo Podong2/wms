@@ -78,7 +78,7 @@
         $compileProvider.debugInfoEnabled(false); // Remove debug info (angularJS >= 1.3)
 
         nyaBsConfigProvider.setLocalizedText('ko', {
-            defaultNoneSelection: '선택 해주세요',
+            defaultNoneSelection: '선택',
             noSearchResult: '검색 결과가 존재하지 않습니다',
             numberItemSelected: '%d개 선택 되었습니다',
             selectAll: '전체 선택',

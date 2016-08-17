@@ -136,7 +136,8 @@
             "collapse" :"collapse",
             "fullScreen" : "fullScreen",
             "refresh" : "refresh",
-            "content" : "content"
+            "content" : "content",
+            "fileDownload" : "Attachment File"
         },
         "detail": {
             "field": "フィールド",

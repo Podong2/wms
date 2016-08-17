@@ -6577,24 +6577,30 @@
 
     };
 
+      // hsy mention 수정 16.8.17
     this.nodeFromItem = function ($item) {
       var hint = hints[$item.data('index')];
       var item = $item.data('item');
-      var node = hint.content ? hint.content(item) : item;
+      var id = $item.data('id');
+      var node = hint.content ? hint.content(item, id) : item;
       if (typeof node === 'string') {
-        node = dom.createText(node);
+        //node = dom.createText(node);
+      var nodeElement = document.createElement('span');
+          nodeElement.innerHTML = node;
       }
-      return node;
+      return nodeElement;
     };
 
+      // hsy mention 수정 16.8.17
     this.createItemTemplates = function (hintIdx, items) {
       var hint = hints[hintIdx];
       return items.map(function (item, idx) {
         var $item = $('<div class="note-hint-item"/>');
-        $item.append(hint.template ? hint.template(item) : item + '');
+        $item.append(hint.template ? hint.template(item) : item.name + '');
         $item.data({
           'index': hintIdx,
-          'item': item
+          'item': item.name,
+          'id' : item.id
         });
 
         if (hintIdx === 0 && idx === 0) {

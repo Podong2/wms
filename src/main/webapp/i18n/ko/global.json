@@ -135,7 +135,8 @@
             "collapse" :"접기",
             "fullScreen" : "크게보기",
             "refresh" : "새로고침",
-            "content" : "내용"
+            "content" : "내용",
+            "fileDownload" : "첨부파일"
         },
         "detail": {
             "field": "필드",
