@@ -13,7 +13,7 @@
         vm.openCalendar = openCalendar;
         vm.taskUpload = taskUpload;
         vm.renderHtml = renderHtml;
-        //vm.fileDownLoad = fileDownLoad;
+        vm.fileDownLoad = fileDownLoad;
         vm.subTaskSave = subTaskSave;
         vm.createComment = createComment;
         vm.userInfo = Principal.getIdentity();
@@ -24,14 +24,21 @@
         vm.assigneeUsers = [];
         vm.logArrayData = [];
         vm.codes = Code.query();
+        vm.commentList = [];
 
         TaskListSearch.TaskAudigLog({'entityId' : vm.task.id, 'entityName' : 'Task'}).then(function(result){
             vm.TaskAuditLog = result;
+            angular.forEach(vm.TaskAuditLog.data, function(val){
+                if(val.entityField == 'reply'){
+                    vm.commentList.push(val);
+                }
+            });
+            $log.debug("vm.commentList : ", vm.commentList)
         });
 
         vm.responseData = _.clone(vm.task);
         $log.debug("vm.taskvm.taskvm.task", vm.task);
-        $log.debug("vm.codes : ", vm.codes);
+        $log.debug("vm.userInfo : ", vm.userInfo);
 
         //$log.debug("info :", vm.task)
         $log.debug("$stateParams.listType :", $stateParams.listType);
@@ -45,7 +52,7 @@
             id : vm.userInfo.id,
             taskId : vm.task.id,
             contents : '',
-            mentionIds : '',
+            mentionIds : [],
             removeAttachedFileIds : ''
         };
 
@@ -83,7 +90,7 @@
         vm.subTask = {
             name : '',
             parentId : vm.task.id,
-            assigneeId : 3,
+            assigneeId : vm.userInfo.id,
             statusId : 1
         };
 
@@ -287,11 +294,11 @@
         }
 
         // 첨부 파일 다운로드
-        //function fileDownLoad(key){
-        //    var iframe = $("<iframe/>").hide().appendTo("body").load(function() {
-        //        iframe.remove();
-        //    }).attr("src", "/api/attachedFile/" + key);
-        //}
+        function fileDownLoad(key){
+            var iframe = $("<iframe/>").hide().appendTo("body").load(function() {
+                iframe.remove();
+            }).attr("src", "/api/attachedFile/" + key);
+        }
 
         //setAttachedFiles(vm.task.attachedFiles); // 첨부파일목록 겔러리 세팅
 
@@ -303,7 +310,15 @@
             showCaption: false, showUpload: false, uploadUrl:"1", uploadAsync: false
         });
 
+        vm.mentionIds = []; // mention ids
         function createComment(){
+            var $mention = $(".comment-area .mentionUser");
+            vm.comment.mentionIds = [];
+            vm.mentionIds = [];
+            angular.forEach($mention, function(value){
+                vm.mentionIds.push(value.id);
+            });
+            commentMentionIdPush(vm.mentionIds);
             TaskEdit.createComment({
                 method : "POST",
                 file : $scope.commentFiles,
@@ -315,9 +330,31 @@
                 toastr.success('태스크 코멘트 생성 완료', '태스크 코멘트 생성 완료');
                 TaskListSearch.TaskAudigLog({'entityId' : vm.task.id, 'entityName' : 'Task'}).then(function(result){
                     vm.TaskAuditLog = result;
+                    vm.commentList=[];
+                    angular.forEach(vm.TaskAuditLog.data, function(val){
+                        if(val.entityField == 'reply'){
+                            vm.commentList.push(val);
+                        }
+                    });
                 });
 
             });
+        }
+
+        // 코멘트 멘션 유저 아이디 주입
+        function commentMentionIdPush(ids){
+            var typeIds = [];
+            angular.forEach(ids, function(val){
+                typeIds.push(val);
+            });
+            vm.comment.mentionIds = typeIds.join(",");
+        }
+
+        // 댓글만 보기 기능
+        vm.onlyComment = onlyComment;
+        vm.commentViewType = false;
+        function onlyComment(){
+
         }
     }
 

@@ -31,7 +31,7 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
                 startDate : '',
                 endDate : '',
                 contents : '',
-                statusId : '', //상태
+                statusId : 1, //상태
                 importantYn : false, //중요여부
                 assigneeIds : [],
                 watcherIds : [],

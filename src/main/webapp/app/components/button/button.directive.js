@@ -31,7 +31,8 @@ angular.module('wmsApp')
     .directive('owlBtnEtcFunc', owlBtnEtcFunc)
     .directive('owlBtnLink', owlBtnLink)
     .directive('owlBtnSearch', owlBtnSearch)
-    .directive('owlBtnBack', owlBtnBack);
+    .directive('owlBtnBack', owlBtnBack)
+    .directive('owlBtnFileDownload', owlBtnFileDownload);
 
     btnService.$inject = [];
     function btnService() {
@@ -371,6 +372,20 @@ owlBtnBack.$inject=['btnService'];
             }
         };
     }
+owlBtnFileDownload.$inject=['btnService'];
+function owlBtnFileDownload(btnService) {
+    return {
+        restrict: 'A',
+        compile: function (tElement, tAttrs) {
+            var btnName = "download";
+            var btnClass = "btn btn-success btn-sm btn-radius";
+            var btnIcon = "fa fa-download";
+            var i18n = "entity.action.fileDownload";
+
+            btnService.makeElement(tElement, tAttrs, btnName, btnClass, btnIcon, i18n);
+        }
+    };
+}
 
         owlBtnLink.$inject=['btnService'];
     function owlBtnLink(btnService) {

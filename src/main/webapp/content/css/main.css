@@ -182,6 +182,12 @@ Generic styles
 .pad0 {
     padding: 0px;
 }
+.pad-l15 {
+    padding-left: 15px;
+}
+.pad-l20 {
+    padding-left: 20px;
+}
 
 .pad-r0 {
     padding-right: 0px;
@@ -1710,7 +1716,7 @@ i:active, .i:active, i:focus, .i:focus{
     display: inline-block;
     font-weight: 700;
     height: 30px;
-    width: 30px;
+    width: 100px;
     padding: 2px;
     text-align: center;
     text-decoration: none !important;
@@ -1960,9 +1966,31 @@ tags-input .tags:hover, tags-input .tags:focus {
     padding: 12px;
     border-right: 1px solid #ccc;
 }
-.task-options-area table tbody tr td{
+.task-status-user-aera table{
+    margin-bottom: 0;
+}
+.task-status-user-aera table tbody tr td{
     vertical-align: middle;
     text-align: center;
+    padding: 0;
+}
+.task-status-user-aera table tbody tr td ol button{
+    box-shadow : none !important;
+    border : 0;
+}
+.ext-el-mask {
+    background-color: #fff;
+    opacity: .8;
+    z-index: 100;
+    position: absolute;
+    top: 55px;
+    left: 0;
+    -moz-opacity: .5;
+    opacity: .5;
+    filter: alpha(opacity=50);
+    width: 100%;
+    height: 91%;
+    zoom: 1;
 }
     /*<< comment css >>*/
     .comment-user-title{

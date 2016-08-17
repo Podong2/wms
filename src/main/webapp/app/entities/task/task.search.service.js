@@ -50,7 +50,7 @@
 
         function TaskAudigLog(params){
             var deferred = $q.defer();
-            $http.get( '/api/trace-log/findByTask', {
+            $http.get( '/api/trace-log', {
                 params : params
             } ).then(function (result) {
                 deferred.resolve(result);
