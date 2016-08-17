@@ -312,6 +312,11 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
         this.taskProjects = taskProjects;
     }
 
+    public List<Project> getPlainTaskProject() {
+
+        return this.taskProjects.stream().map(TaskProject::getProject).collect(Collectors.toList());
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) {

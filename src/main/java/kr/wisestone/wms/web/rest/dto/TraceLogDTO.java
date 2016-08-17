@@ -1,13 +1,11 @@
 package kr.wisestone.wms.web.rest.dto;
 
-import kr.wisestone.wms.domain.AttachedFile;
-import kr.wisestone.wms.domain.TraceLogAttachedFile;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class TraceLogDTO {
+
     private Long id;
 
     private Long entityId;

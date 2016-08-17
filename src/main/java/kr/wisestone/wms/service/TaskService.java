@@ -1,7 +1,5 @@
 package kr.wisestone.wms.service;
 
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.mysema.query.BooleanBuilder;
 import kr.wisestone.wms.common.exception.CommonRuntimeException;
@@ -14,26 +12,22 @@ import kr.wisestone.wms.web.rest.condition.TaskCondition;
 import kr.wisestone.wms.web.rest.dto.TaskDTO;
 import kr.wisestone.wms.web.rest.dto.UserDTO;
 import kr.wisestone.wms.web.rest.form.TaskForm;
+import kr.wisestone.wms.web.rest.mapper.ProjectMapper;
 import kr.wisestone.wms.web.rest.mapper.TaskMapper;
 import kr.wisestone.wms.web.rest.mapper.UserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -66,6 +60,9 @@ public class TaskService {
 
     @Inject
     private UserMapper userMapper;
+
+    @Inject
+    private ProjectMapper projectMapper;
 
     /**
      *  Get all the tasks.
@@ -163,6 +160,9 @@ public class TaskService {
 
         if(task.getParent() != null)
             taskDTO.setParent(taskMapper.taskToTaskDTO(task.getParent()));
+
+        if(task.getTaskProjects() != null && !task.getTaskProjects().isEmpty())
+            taskDTO.setTaskProjects(projectMapper.projectsToProjectDTOs(task.getPlainTaskProject()));
     }
 
     private BooleanBuilder taskListPredicate(TaskCondition taskCondition) {
@@ -335,5 +335,56 @@ public class TaskService {
         List<Task> tasks = Lists.newArrayList(this.taskRepository.findAll(predicate));
 
         return taskMapper.tasksToTaskDTOs(tasks);
+    }
+
+    public List<TaskDTO> findAllTaskByProjectHierarchy(Project project) {
+
+        List<TaskDTO> taskDTOs = Lists.newArrayList();
+
+        taskDTOs.addAll(this.findDTOByProject(project));
+
+        this.crawlingTasksByProject(project, taskDTOs);
+
+        return taskDTOs;
+    }
+
+    private void crawlingTasksByProject(Project project, List<TaskDTO> tasks) {
+        for(ProjectRelation projectRelation : project.getProjectChilds()) {
+
+            tasks.addAll(this.findDTOByProject(projectRelation.getChild()));
+
+            this.crawlingTasksByProject(projectRelation.getChild(), tasks);
+        }
+    }
+
+    public List<Task> findByProject(Project project) {
+
+        QTask $task = QTask.task;
+
+        BooleanBuilder predicate = new BooleanBuilder();
+
+        predicate.and($task.taskProjects.any().project.id.eq(project.getId()));
+
+        List<Task> tasks = Lists.newArrayList(taskRepository.findAll(predicate));
+
+        return tasks;
+    }
+
+    public List<TaskDTO> findDTOByProject(Project project) {
+
+        List<Task> tasks = this.findByProject(project);
+
+        List<TaskDTO> taskDTOs = Lists.newArrayList();
+
+        for(Task task : tasks) {
+
+            TaskDTO taskDTO = taskMapper.taskToTaskDTO(task);
+
+            this.copyTaskRelationProperties(task, taskDTO);
+
+            taskDTOs.add(taskDTO);
+        }
+
+        return taskDTOs;
     }
 }

@@ -1,18 +1,28 @@
 package kr.wisestone.wms.service;
 
+import com.google.common.collect.Lists;
+import com.mysema.query.BooleanBuilder;
 import kr.wisestone.wms.domain.AttachedFile;
+import kr.wisestone.wms.domain.QTraceLog;
 import kr.wisestone.wms.domain.TraceLog;
+import kr.wisestone.wms.domain.TraceLogAttachedFile;
 import kr.wisestone.wms.repository.TraceLogRepository;
+import kr.wisestone.wms.web.rest.dto.AttachedFileDTO;
+import kr.wisestone.wms.web.rest.dto.TraceLogDTO;
 import kr.wisestone.wms.web.rest.form.TraceLogForm;
+import kr.wisestone.wms.web.rest.mapper.AttachedFileMapper;
+import kr.wisestone.wms.web.rest.mapper.TraceLogMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @SuppressWarnings("unused")
@@ -26,6 +36,59 @@ public class TraceLogService {
 
     @Inject
     private AttachedFileService attachedFileService;
+
+    @Inject
+    private TraceLogMapper traceLogMapper;
+
+    @Inject
+    private AttachedFileMapper attachedFileMapper;
+
+    @Transactional(readOnly = true)
+    public List<TraceLogDTO> findByEntityIdAndEntityName(Long entityId, String entityName) {
+        QTraceLog $traceLog = QTraceLog.traceLog;
+
+        BooleanBuilder predicate = new BooleanBuilder();
+        predicate.and($traceLog.entityName.eq(entityName));
+        predicate.and($traceLog.entityId.eq(entityId));
+
+        List<TraceLogDTO> traceLogDTOs = this.findByPredicate($traceLog, predicate);
+
+        return traceLogDTOs;
+    }
+
+    public List<TraceLogDTO> findByEntityIdAndEntityNameAndAttachedFileIsNotNull(Long entityId, String entityName) {
+
+        QTraceLog $traceLog = QTraceLog.traceLog;
+
+        BooleanBuilder predicate = new BooleanBuilder();
+        predicate.and($traceLog.entityName.eq(entityName));
+        predicate.and($traceLog.entityId.eq(entityId));
+        predicate.and($traceLog.traceLogAttachedFiles.isNotEmpty());
+
+        List<TraceLogDTO> traceLogDTOs = this.findByPredicate($traceLog, predicate);
+
+        return traceLogDTOs;
+    }
+
+    private List<TraceLogDTO> findByPredicate(QTraceLog $traceLog, BooleanBuilder predicate) {
+        List<TraceLog> traceLogs = Lists.newArrayList(traceLogRepository.findAll(predicate, $traceLog.createdDate.asc()));
+
+        List<TraceLogDTO> traceLogDTOs = Lists.newArrayList();
+
+        for(TraceLog traceLog : traceLogs) {
+
+            TraceLogDTO traceLogDTO = traceLogMapper.traceLogToTraceLogDTO(traceLog);
+
+            List<AttachedFileDTO> attachedFileDTOs = attachedFileMapper.attachedFilesToAttachedFileDTOs(
+                traceLog.getTraceLogAttachedFiles().stream().map(TraceLogAttachedFile::getAttachedFile).collect(Collectors.toList())
+            );
+
+            traceLogDTO.setAttachedFiles(attachedFileDTOs);
+
+            traceLogDTOs.add(traceLogDTO);
+        }
+        return traceLogDTOs;
+    }
 
     @Transactional
     public void save(TraceLog logRecord) {
@@ -80,4 +143,6 @@ public class TraceLogService {
 
         return origin;
     }
+
+
 }

@@ -6,6 +6,7 @@ import kr.wisestone.wms.service.ProjectService;
 import kr.wisestone.wms.service.TaskService;
 import kr.wisestone.wms.web.rest.condition.TaskCondition;
 import kr.wisestone.wms.web.rest.dto.ProjectDTO;
+import kr.wisestone.wms.web.rest.dto.ProjectManagedAttachedFileDTO;
 import kr.wisestone.wms.web.rest.dto.TaskDTO;
 import kr.wisestone.wms.web.rest.form.ProjectForm;
 import kr.wisestone.wms.web.rest.form.TaskForm;
@@ -26,6 +27,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * REST controller for managing Project.
@@ -113,5 +115,49 @@ public class ProjectResource {
         List<ProjectDTO> projectDTOs = projectService.findByNameLike(name);
 
         return new ResponseEntity<>(projectDTOs, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/projects/{id}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<ProjectDTO> getProject(@PathVariable Long id) {
+        log.debug("REST request to get Project : {}", id);
+        ProjectDTO projectDTO = projectService.findOne(id);
+        return Optional.ofNullable(projectDTO)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @RequestMapping(value = "/projects/findTasks/{id}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<TaskDTO>> findProjectTasks(@PathVariable Long id) {
+        log.debug("REST request to get Project : {}", id);
+        List<TaskDTO> taskDTOs = projectService.findAllTasks(id);
+
+        return Optional.ofNullable(taskDTOs)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @RequestMapping(value = "/projects/findManagedAttachedFiles/{id}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<ProjectManagedAttachedFileDTO>> findManagedAttachedFiles(@PathVariable Long id) {
+        log.debug("REST request to get Project : {}", id);
+        List<ProjectManagedAttachedFileDTO> projectFiles = projectService.findAllProjectFiles(id);
+
+        return Optional.ofNullable(projectFiles)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

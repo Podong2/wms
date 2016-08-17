@@ -50,6 +50,10 @@ public class TaskDTO implements Serializable {
 
     private List<TaskDTO> relatedTasks = new ArrayList<>();
 
+    private List<ProjectDTO> taskProjects = new ArrayList<>();
+
+    private List<String> taskProjectHierarchy = new ArrayList<>();
+
     private ZonedDateTime createdDate;
 
     private String createdBy;
@@ -194,6 +198,22 @@ public class TaskDTO implements Serializable {
 
     public void setCreatedBy(String createdBy) {
         this.createdBy = createdBy;
+    }
+
+    public List<String> getTaskProjectHierarchy() {
+        return taskProjectHierarchy;
+    }
+
+    public void setTaskProjectHierarchy(List<String> taskProjectHierarchy) {
+        this.taskProjectHierarchy = taskProjectHierarchy;
+    }
+
+    public List<ProjectDTO> getTaskProjects() {
+        return taskProjects;
+    }
+
+    public void setTaskProjects(List<ProjectDTO> taskProjects) {
+        this.taskProjects = taskProjects;
     }
 
     @Override

@@ -1,6 +1,8 @@
 package kr.wisestone.wms.web.rest.dto;
 
 
+import kr.wisestone.wms.domain.AttachedFile;
+
 public class AttachedFileDTO {
 
     private Long id;
@@ -10,6 +12,17 @@ public class AttachedFileDTO {
     private Long size;
 
     private String contentType;
+
+    public AttachedFileDTO() {}
+
+    public AttachedFileDTO(AttachedFile attachedFile) {
+
+        this.setId(attachedFile.getId());
+        this.setName(attachedFile.getName());
+        this.setContentType(attachedFile.getContentType());
+        this.setSize(attachedFile.getSize());
+
+    }
 
     public Long getId() {
         return id;

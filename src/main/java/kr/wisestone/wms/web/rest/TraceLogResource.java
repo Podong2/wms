@@ -1,18 +1,10 @@
 package kr.wisestone.wms.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.mysema.query.BooleanBuilder;
 import kr.wisestone.wms.common.exception.CommonRuntimeException;
-import kr.wisestone.wms.domain.AttachedFile;
-import kr.wisestone.wms.domain.QTraceLog;
 import kr.wisestone.wms.domain.TraceLog;
-import kr.wisestone.wms.domain.TraceLogAttachedFile;
 import kr.wisestone.wms.repository.TraceLogRepository;
 import kr.wisestone.wms.service.TraceLogService;
-import kr.wisestone.wms.web.rest.dto.AttachedFileDTO;
 import kr.wisestone.wms.web.rest.dto.TraceLogDTO;
 import kr.wisestone.wms.web.rest.form.TraceLogForm;
 import kr.wisestone.wms.web.rest.mapper.AttachedFileMapper;
@@ -28,12 +20,10 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api")
@@ -69,28 +59,7 @@ public class TraceLogResource {
         throws URISyntaxException {
         log.debug("REST request to get a page of Tasks");
 
-        QTraceLog $traceLog = QTraceLog.traceLog;
-
-        BooleanBuilder predicate = new BooleanBuilder();
-        predicate.and($traceLog.entityName.eq(entityName));
-        predicate.and($traceLog.entityId.eq(entityId));
-
-        List<TraceLog> traceLogs = Lists.newArrayList(traceLogRepository.findAll(predicate, $traceLog.createdDate.asc()));
-
-        List<TraceLogDTO> traceLogDTOs = Lists.newArrayList();
-
-        for(TraceLog traceLog : traceLogs) {
-
-            TraceLogDTO traceLogDTO = traceLogMapper.traceLogToTraceLogDTO(traceLog);
-
-            List<AttachedFileDTO> attachedFileDTOs = attachedFileMapper.attachedFilesToAttachedFileDTOs(
-                    traceLog.getTraceLogAttachedFiles().stream().map(TraceLogAttachedFile::getAttachedFile).collect(Collectors.toList())
-            );
-
-            traceLogDTO.setAttachedFiles(attachedFileDTOs);
-
-            traceLogDTOs.add(traceLogDTO);
-        }
+        List<TraceLogDTO> traceLogDTOs = traceLogService.findByEntityIdAndEntityName(entityId, entityName);
 
         return new ResponseEntity<>(traceLogDTOs, HttpStatus.OK);
     }
