@@ -1937,10 +1937,10 @@ tags-input .tags:hover, tags-input .tags:focus {
 .task-list{
     border-top: 1px solid #ddd;
 }
-.task-list.green{border-left: 3px solid green;}
-.task-list.blue{border-left: 3px solid blue;}
-.task-list.black{border-left: 3px solid black;}
-.task-list.red{border-left: 3px solid red;}
+.task-list.green{border-left: 5px solid green;}
+.task-list.blue{border-left: 5px solid blue;}
+.task-list.black{border-left: 5px solid black;}
+.task-list.red{border-left: 5px solid red;}
 .sub-task-area-title{
     text-align: center;
     background: #ccc;
@@ -1998,3 +1998,9 @@ tags-input .tags:hover, tags-input .tags:focus {
     }
     /*<< comment css end >>*/
 /*---------------------------- task css end ------------------------------*/
+
+/* project */
+.projectAddSection.on{
+    display: block;
+}
+/* project end */
