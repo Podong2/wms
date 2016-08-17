@@ -15,10 +15,6 @@ import java.io.Serializable;
 @Entity
 @Table(name = "owl_attached_file")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
-@EqualsAndHashCode(callSuper=false)
 public class AttachedFile extends AbstractAuditingEntity implements Serializable {
 
     @Id
@@ -46,4 +42,53 @@ public class AttachedFile extends AbstractAuditingEntity implements Serializable
 
     @Column(name="content_type")
     private String contentType;
+
+    public AttachedFile() {}
+
+    public AttachedFile(String name, byte[] content, Long size, String contentType) {
+        this.name = name;
+        this.content = content;
+        this.size = size;
+        this.contentType = contentType;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public byte[] getContent() {
+        return content;
+    }
+
+    public void setContent(byte[] content) {
+        this.content = content;
+    }
+
+    public Long getSize() {
+        return size;
+    }
+
+    public void setSize(Long size) {
+        this.size = size;
+    }
+
+    public String getContentType() {
+        return contentType;
+    }
+
+    public void setContentType(String contentType) {
+        this.contentType = contentType;
+    }
 }

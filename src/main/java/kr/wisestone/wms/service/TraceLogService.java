@@ -1,7 +1,6 @@
 package kr.wisestone.wms.service;
 
 import kr.wisestone.wms.domain.AttachedFile;
-import kr.wisestone.wms.domain.Task;
 import kr.wisestone.wms.domain.TraceLog;
 import kr.wisestone.wms.repository.TraceLogRepository;
 import kr.wisestone.wms.web.rest.form.TraceLogForm;
