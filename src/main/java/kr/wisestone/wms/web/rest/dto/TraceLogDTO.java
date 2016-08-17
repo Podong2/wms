@@ -1,8 +1,8 @@
 package kr.wisestone.wms.web.rest.dto;
 
+import kr.wisestone.wms.domain.AttachedFile;
 import kr.wisestone.wms.domain.TraceLogAttachedFile;
 
-import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -28,7 +28,7 @@ public class TraceLogDTO {
 
     private Long attachedFileId;
 
-    private List<TraceLogAttachedFile> traceLogAttachedFiles = new ArrayList<>();
+    private List<AttachedFileDTO> attachedFiles = new ArrayList<>();
 
     private Long taskId;
 
@@ -122,12 +122,12 @@ public class TraceLogDTO {
         this.attachedFileId = attachedFileId;
     }
 
-    public List<TraceLogAttachedFile> getTraceLogAttachedFiles() {
-        return traceLogAttachedFiles;
+    public List<AttachedFileDTO> getAttachedFiles() {
+        return attachedFiles;
     }
 
-    public void setTraceLogAttachedFiles(List<TraceLogAttachedFile> traceLogAttachedFiles) {
-        this.traceLogAttachedFiles = traceLogAttachedFiles;
+    public void setAttachedFiles(List<AttachedFileDTO> attachedFiles) {
+        this.attachedFiles = attachedFiles;
     }
 
     public Long getTaskId() {
