@@ -121,8 +121,10 @@
 
                         <div id="editSection">
                             <div class="form-group" style="margin-bottom: 0">
-                                <p class="input-group" style="width: 100%">
-                                    <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="endDate" picker-toggle style="height: 30px; width: 100%">
+                                <p class="input-group wms-form" style="width: 100%">
+                                    <label class="input"> <i class="icon-append fa fa-calendar" style="z-index: 1000"></i>
+                                        <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="endDate" picker-toggle style="height: 30px; width: 100%">
+                                    </label>
                                     <span class="dueDateValues" picker-toggle>{{vm.task.startDate + " ~ " + vm.task.endDate}}</span>
                                 </p>
                             </div>

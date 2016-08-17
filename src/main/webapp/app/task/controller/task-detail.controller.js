@@ -5,25 +5,33 @@
         .module('wmsApp')
         .controller('TaskDetailCtrl', TaskDetailCtrl);
 
-    TaskDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', 'TaskAttachedFile', '$log', 'TaskEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'entity', 'TaskListSearch'];
+    TaskDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', 'TaskAttachedFile', '$log', 'TaskEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'entity', 'TaskListSearch', 'dataService', 'Principal'];
 
-    function TaskDetailCtrl($scope, $rootScope, $stateParams, Task, Code, TaskAttachedFile, $log, TaskEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, entity, TaskListSearch) {
+    function TaskDetailCtrl($scope, $rootScope, $stateParams, Task, Code, TaskAttachedFile, $log, TaskEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, entity, TaskListSearch, dataService, Principal) {
         var vm = this;
 
-        vm.task = entity;
         vm.openCalendar = openCalendar;
         vm.taskUpload = taskUpload;
-        vm.assigneeUsers = [];
         vm.renderHtml = renderHtml;
         //vm.fileDownLoad = fileDownLoad;
         vm.subTaskSave = subTaskSave;
-        TaskListSearch.TaskAudigLog({'entityId' : vm.task.id, 'entityName' : 'Task'}).then(function(result){ vm.TaskAuditLog = result; }); // Audit Log List call
+        vm.createComment = createComment;
+        vm.userInfo = Principal.getIdentity();
+        $scope.dataService = dataService;
+
+        vm.task = entity;
+        vm.date = '';
+        vm.assigneeUsers = [];
+        vm.logArrayData = [];
         vm.codes = Code.query();
 
+        TaskListSearch.TaskAudigLog({'entityId' : vm.task.id, 'entityName' : 'Task'}).then(function(result){
+            vm.TaskAuditLog = result;
+        });
+
         vm.responseData = _.clone(vm.task);
-        $log.debug("vm.taskvm.taskvm.task", vm.task)
-        $log.debug("vm.TaskAuditLog 로그: ", vm.TaskAuditLog);
-        $log.debug("vm.codes : ", vm.codes)
+        $log.debug("vm.taskvm.taskvm.task", vm.task);
+        $log.debug("vm.codes : ", vm.codes);
 
         //$log.debug("info :", vm.task)
         $log.debug("$stateParams.listType :", $stateParams.listType);
@@ -32,8 +40,19 @@
         // 갤러리 썸네일 이미지
         vm.images = [];
 
+        // 코멘트 생성 데이터
+        vm.comment = {
+            id : vm.userInfo.id,
+            taskId : vm.task.id,
+            contents : '',
+            mentionIds : '',
+            removeAttachedFileIds : ''
+        };
+
+        // 하위작업, 파일첨부, 참조작업 클릭 이벤트 데이터
         vm.subTaskOpen = false;
         vm.fileAreaOpen = false;
+        vm.commentFileAreaOpen = false;
         vm.relatedTaskOpen = false;
 
         $scope.files = [];
@@ -96,6 +115,14 @@
                 $scope.files.push(value)
             });
             $log.debug("파일 목록 : ", $scope.files);
+        });
+        // 파일 목록 라이브러리에서 가져오기
+        $scope.$on('setCommentFiles', function (event, args) {
+            $scope.commentFiles = [];
+            angular.forEach(args, function(value){
+                $scope.commentFiles.push(value)
+            });
+            $log.debug("코멘트 파일 목록 : ", $scope.commentFiles);
         });
 
         // content 데이터 변경 체크
@@ -268,10 +295,30 @@
 
         //setAttachedFiles(vm.task.attachedFiles); // 첨부파일목록 겔러리 세팅
 
-
+        // bootstrap file uploader plugin load
         $("#input-4").fileinput({
             showCaption: false, showUpload: false, uploadUrl:"1", uploadAsync: false
         });
+        $("#input-5").fileinput({
+            showCaption: false, showUpload: false, uploadUrl:"1", uploadAsync: false
+        });
+
+        function createComment(){
+            TaskEdit.createComment({
+                method : "POST",
+                file : $scope.commentFiles,
+                //	data 속성으로 별도의 데이터 전송
+                fields : vm.comment,
+                fileFormDataName : "file"
+            }).then(function (response) {
+                $scope.$emit('wmsApp:taskUpdate', response);
+                toastr.success('태스크 코멘트 생성 완료', '태스크 코멘트 생성 완료');
+                TaskListSearch.TaskAudigLog({'entityId' : vm.task.id, 'entityName' : 'Task'}).then(function(result){
+                    vm.TaskAuditLog = result;
+                });
+
+            });
+        }
     }
 
 })();

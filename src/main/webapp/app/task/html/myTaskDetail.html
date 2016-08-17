@@ -1,4 +1,4 @@
-<div class="well" style="overflow-y: auto;">
+<div class="well" style="overflow-y: auto; background-color: #fff;">
     <div class="row">
         <div class="col-md-12">
             <div class="col-md-9">
@@ -84,7 +84,43 @@
 
         <!-- task 상태, 담당자, 참조자 선택 영역 -->
         <div class="task-options-area">
-            <div class="row" style="margin: 0">
+            <table class="table table-bordered">
+                <colgroup>
+                    <col width="140px">
+                    <col width="">
+                    <col width="">
+                    <col width="">
+                    <col width="">
+                </colgroup>
+                <tbody>
+                    <tr>
+                        <td>
+                            <span class="custom-control custom-checkbox" style="margin-bottom: 0;">
+                                <input type="checkbox" ng-click="vm.task.statusId = 2" class="custom-control-input">
+                                <wms-select-box
+                                    ng-model="vm.codes"
+                                    selected-value="vm.task.statusId"
+                                    dataSize="5"
+                                    dataLiveSearch="false"
+                                ></wms-select-box>
+                            </span>
+                        </td>
+                        <td>
+                            담당자
+                        </td>
+                        <td>
+                            <autocomplete source="findUsers" tags="vm.task.assignees" display-property="name" multiple="true" max-results-to-show="20" tag-type="assignees"></autocomplete>
+                        </td>
+                        <td>
+                            참조
+                        </td>
+                        <td>
+                            <autocomplete source="findUsers" tags="vm.task.watchers" display-property="name" multiple="true" max-results-to-show="20" tag-type="watchers"></autocomplete>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <!--<div class="row" style="margin: 0">
                 <div class="col-md-2" style="">
                     <span class="custom-control custom-checkbox" style="margin-bottom: 0;">
                         <input type="checkbox" ng-click="vm.task.statusId = 2" class="custom-control-input">
@@ -110,7 +146,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div>-->
 
         </div>
 
@@ -260,109 +296,56 @@
         <!-- Timeline Content -->
         <div class="smart-timeline">
             <ul class="smart-timeline-list">
-                <li>
-                    <div class="smart-timeline-icon">
-                        <!--<img src="styles/img/avatars/sunny.png" width="32" height="32" alt="user">-->
+                <li ng-repeat="data in vm.TaskAuditLog.data">
+
+                    <div class="smart-timeline-icon" ng-if="(vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')">
+                        {{vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd'}}
                     </div>
-                    <div class="smart-timeline-time">
-                        <small>just now</small>
-                    </div>
+                    <!--<div class="smart-timeline-time" ng-if="(vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')">-->
+                        <!--<small>{{data.createdDate | date : 'MM/dd'}}</small>-->
+                    <!--</div>-->
                     <div class="smart-timeline-content">
-                        <p>
-                            <a href-void><strong>Trip to Adalaskar</strong></a>
+                        <p ng-if="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')"
+                            ng-class="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
+                            || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
+                            <a href-void><strong>{{data.createdBy}}</strong> </a><a ng-click="">댓글</a>
                         </p>
-                        <p>
-                            Check out my tour to Adalaskar
+                        <p style="padding-left: 10px">
+                            {{data.createdBy}} 이 {{data.entityField}} {{data.newValue}}를 {{data.persistType}}하였습니다. {{data.createdDate | date : 'HH:mm'}}
                         </p>
-                        <p>
-                            <a href-void class="btn btn-xs btn-primary"><i class="fa fa-file"></i> Read the post</a>
-                        </p>
-                        <!--<img src="styles/img/superbox/superbox-thumb-4.jpg" alt="img" width="150">-->
                     </div>
                 </li>
-                <li>
-                    <div class="smart-timeline-icon">
-                        <i class="fa fa-file-text"></i>
-                    </div>
-                    <div class="smart-timeline-time">
-                        <small>1 min ago</small>
-                    </div>
-                    <div class="smart-timeline-content">
-                        <p>
-                            <strong>Meeting invite for &quot;GENERAL GNU&quot; [<a href-void><i>Go to my calendar</i></a>]</strong>
-                        </p>
-                        <div class="well well-sm display-inline">
-                            <p>Will you be able to attend the meeting - <strong> 10:00 am</strong> tomorrow?</p>
-                            <button class="btn btn-xs btn-default">Confirm Attendance</button>
-                        </div>
-                    </div>
-                </li>
-                <li>
-                    <div class="smart-timeline-icon bg-color-greenDark">
-                        <i class="fa fa-bar-chart-o"></i>
-                    </div>
-                    <div class="smart-timeline-time">
-                        <small>5 hrs ago</small>
-                    </div>
-                    <div class="smart-timeline-content">
-                        <p>
-                            <strong class="txt-color-greenDark">24hrs User Feed</strong>
-                        </p>
-                        <div class="sparkline" data-sparkline-type="compositeline" data-sparkline-spotradius-top="5" data-sparkline-color-top="#3a6965" data-sparkline-line-width-top="3" data-sparkline-color-bottom="#2b5c59" data-sparkline-spot-color="#2b5c59" data-sparkline-minspot-color-top="#97bfbf" data-sparkline-maxspot-color-top="#c2cccc" data-sparkline-highlightline-color-top="#cce8e4" data-sparkline-highlightspot-color-top="#9dbdb9" data-sparkline-width="170px" data-sparkline-height="40px" data-sparkline-line-val="[6,4,7,8,4,3,2,2,5,6,7,4,1,5,7,9,9,8,7,6]" data-sparkline-bar-val="[4,1,5,7,9,9,8,7,6,6,4,7,8,4,3,2,2,5,6,7]"></div>
-                        <br>
-                    </div>
-                </li>
-                <li>
-                    <div class="smart-timeline-icon">
-                        <i class="fa fa-user"></i>
-                    </div>
-                    <div class="smart-timeline-time">
-                        <small>yesterday</small>
-                    </div>
-                    <div class="smart-timeline-content">
-                        <p>
-                            <a href-void><strong>Update user information</strong></a>
-                        </p>
-                        <p>
-                            Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus. Maecenas tempus, tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit vel, luctus pulvinar, hendrerit id, lorem. Maecenas nec odio et ante tincidunt tempus. Donec vitae sapien ut libero venenatis faucibus.
-                        </p>
-                        Tellus eget condimentum rhoncus, sem quam semper libero, sit amet adipiscing sem neque sed ipsum. Nam quam nunc, blandit
-                        <ul class="list-inline">
-                            <li>
-                                <!--<img src="styles/img/superbox/superbox-thumb-6.jpg" alt="img" width="50">-->1
-                            </li>
-                            <li>
-                                <!--<img src="styles/img/superbox/superbox-thumb-5.jpg" alt="img" width="50">-->2
-                            </li>
-                            <li>
-                                <!--<img src="styles/img/superbox/superbox-thumb-7.jpg" alt="img" width="50">-->3
-                            </li>
-                        </ul>
-                    </div>
-                </li>
-                <li>
-                    <div class="smart-timeline-icon">
-                        <i class="fa fa-pencil"></i>
-                    </div>
-                    <div class="smart-timeline-time">
-                        <small>12 Mar, 2013</small>
-                    </div>
-                    <div class="smart-timeline-content">
-                        <p>
-                            <a href-void><strong>Nabi Resource Report</strong></a>
-                        </p>
-                        <p>
-                            Ean vulputate eleifend tellus. Aenean leo ligula, porttitor eu, consequat vitae, eleifend ac, enim. Aliquam lorem ante, dapibus in, viverra quis.
-                        </p>
-                        <a href-void class="btn btn-xs btn-default">Read more</a>
-                    </div>
-                </li>
-                <li class="text-center">
-                    <a href-void class="btn btn-sm btn-default"><i class="fa fa-arrow-down text-muted"></i> LOAD MORE</a>
-                </li>
+
             </ul>
         </div>
         <!-- END Timeline Content -->
+
+        <div class="row">
+            <div class="col-md-11">
+                <div class="row">
+                    <div class="col-md-1">
+                        <a ng-click="vm.commentFileAreaOpen = !vm.commentFileAreaOpen">
+                            <i class="fa fa-paperclip pull-right" style="font-size: 30px; margin-top: 6px"></i>
+                        </a>
+
+                    </div>
+                    <div class="col-md-11">
+                        <summernote ng-model="vm.comment.contents" on-init="init()" on-enter="enter()" on-focus="focus(evt)" config="dataService.getSummerNoteOptions(false)"
+                                    on-blur="blur(evt)" on-paste="paste()" on-keyup="keyup(evt)" contenteditable="true"
+                                    on-keydown="keydown(evt)" on-change="change(contents)"
+                                    editable="editable" editor="editor" lang="ko-KR">
+                        </summernote>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn_icon btn_customs" ng-click="vm.createComment()" owl-btn-save></button>
+            </div>
+        </div>
+        <div class="task-file-area" ng-class="vm.commentFileAreaOpen ? 'on' : ''">
+            <input id="input-5" name="input5[]" type="file" multiple class="file-loading" get-files file-type="comment">
+        </div>
+
 
     </div>
 </div>

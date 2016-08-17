@@ -91,7 +91,8 @@
         var service = {
             addTask : addTask,
             uploadTask : uploadTask,
-            singleUpload : singleUpload
+            singleUpload : singleUpload,
+            createComment : createComment
         }
         return service;
 
@@ -118,6 +119,14 @@
                 deferred.resolve(result);
             });
             return deferred.promise;
+        }
+
+        function createComment(parameter){
+            parameter.url = "api/trace-log";
+            return $upload.upload(parameter).then(function (response) {
+                $log.debug("타스크 코멘트 생성 결과 : ", response);
+                return response;
+            });
         }
     }
 

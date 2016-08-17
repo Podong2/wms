@@ -1862,6 +1862,8 @@ i:active, .i:active, i:focus, .i:focus{
     display: block;
 }
 /*---------------------------- project picker css end ------------------------------*/
+
+/*---------------------------- task css ------------------------------*/
 .task-options{
     margin:0;
 }
@@ -1958,3 +1960,13 @@ tags-input .tags:hover, tags-input .tags:focus {
     padding: 12px;
     border-right: 1px solid #ccc;
 }
+.task-options-area table tbody tr td{
+    vertical-align: middle;
+    text-align: center;
+}
+    /*<< comment css >>*/
+    .comment-user-title{
+        margin-top: 13px;
+    }
+    /*<< comment css end >>*/
+/*---------------------------- task css end ------------------------------*/
