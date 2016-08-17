@@ -48,7 +48,7 @@ public class TraceLogResource {
      * @return the ResponseEntity with status 200 (OK) and the list of tasks in body
      * @throws URISyntaxException if there is an error to generate the pagination HTTP headers
      */
-    @RequestMapping(value = "/trace-log/findByTask",
+    @RequestMapping(value = "/trace-log",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
