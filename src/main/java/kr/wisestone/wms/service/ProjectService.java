@@ -61,6 +61,11 @@ public class ProjectService {
             project.setAdmin(user);
         }
 
+        Code status = new Code();
+        status.setId(1L);
+
+        project.setStatus(status);
+
         project = projectRepository.save(project);
 
         ProjectDTO result = projectMapper.projectToProjectDTO(project);
