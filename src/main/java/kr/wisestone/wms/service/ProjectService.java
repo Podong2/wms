@@ -6,6 +6,7 @@ import kr.wisestone.wms.common.exception.CommonRuntimeException;
 import kr.wisestone.wms.domain.*;
 import kr.wisestone.wms.repository.ProjectRepository;
 import kr.wisestone.wms.security.SecurityUtils;
+import kr.wisestone.wms.web.rest.condition.ProjectTaskCondition;
 import kr.wisestone.wms.web.rest.dto.*;
 import kr.wisestone.wms.web.rest.form.ProjectForm;
 import kr.wisestone.wms.web.rest.mapper.ProjectMapper;
@@ -188,14 +189,14 @@ public class ProjectService {
     }
 
     @Transactional(readOnly = true)
-    public List<TaskDTO> findAllTasks(Long id) {
+    public List<TaskDTO> findAllTasks(ProjectTaskCondition projectTaskCondition) {
 
-        Project project = projectRepository.findOne(id);
+        Project project = projectRepository.findOne(projectTaskCondition.getProjectId());
 
         if(project == null)
             throw new CommonRuntimeException("error.project.notFound");
 
-        return taskService.findAllTaskByProjectHierarchy(project);
+        return taskService.findAllTaskByProjectHierarchy(project, projectTaskCondition.getListType());
     }
 
     @Transactional(readOnly = true)
@@ -241,7 +242,7 @@ public class ProjectService {
             );
         }
 
-        List<Task> tasks = taskService.findByProject(project);
+        List<Task> tasks = taskService.findByProject(project, ProjectTaskCondition.LIST_TYPE_TOTAL);
 
         for(Task task : tasks) {
             projectManagedAttachedFileDTOs.addAll(

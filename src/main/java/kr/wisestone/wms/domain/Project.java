@@ -43,6 +43,9 @@ public class Project extends AbstractAuditingEntity implements Traceable {
     @Column(name = "contents")
     private String contents;
 
+    @Column(name = "color")
+    private String color;
+
     @Column(name = "folder_yn")
     @Type(type="yes_no")
     private Boolean folderYn = Boolean.FALSE;
@@ -113,6 +116,14 @@ public class Project extends AbstractAuditingEntity implements Traceable {
 
     public void setContents(String contents) {
         this.contents = contents;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 
     public Boolean getFolderYn() {

@@ -8,6 +8,7 @@ import kr.wisestone.wms.domain.*;
 import kr.wisestone.wms.repository.TaskRepository;
 import kr.wisestone.wms.repository.search.TaskSearchRepository;
 import kr.wisestone.wms.security.SecurityUtils;
+import kr.wisestone.wms.web.rest.condition.ProjectTaskCondition;
 import kr.wisestone.wms.web.rest.condition.TaskCondition;
 import kr.wisestone.wms.web.rest.dto.TaskDTO;
 import kr.wisestone.wms.web.rest.dto.UserDTO;
@@ -337,27 +338,48 @@ public class TaskService {
         return taskMapper.tasksToTaskDTOs(tasks);
     }
 
-    public List<TaskDTO> findAllTaskByProjectHierarchy(Project project) {
+    public List<TaskDTO> findAllTaskByProjectHierarchy(Project project, String listType) {
 
         List<TaskDTO> taskDTOs = Lists.newArrayList();
 
-        taskDTOs.addAll(this.findDTOByProject(project));
+        taskDTOs.addAll(this.findDTOByProject(project, listType));
 
-        this.crawlingTasksByProject(project, taskDTOs);
+        this.crawlingTasksByProject(project, listType, taskDTOs);
+
+        for(TaskDTO taskDTO : taskDTOs) {
+
+            String statusGroup = "SCHEDULED";
+
+            if(listType.equals(ProjectTaskCondition.LIST_TYPE_WEEK) || listType.equals(ProjectTaskCondition.LIST_TYPE_TOTAL)) {
+
+                if(!StringUtils.isEmpty(taskDTO.getEndDate())) {
+
+                    String today = DateUtil.getTodayWithYYYYMMDD();
+
+                    if(taskDTO.getEndDate().equals(today)) {
+                        statusGroup = "SCHEDULED_TODAY";
+                    } else if(DateUtil.convertStrToDate(taskDTO.getEndDate(), "yyyy-MM-dd").getTime() < DateUtil.convertStrToDate(today, "yyyy-MM-dd").getTime()) {
+                        statusGroup = "DELAYED";
+                    }
+                }
+            }
+
+            taskDTO.setStatusGroup(statusGroup);
+        }
 
         return taskDTOs;
     }
 
-    private void crawlingTasksByProject(Project project, List<TaskDTO> tasks) {
+    private void crawlingTasksByProject(Project project, String listType, List<TaskDTO> tasks) {
         for(ProjectRelation projectRelation : project.getProjectChilds()) {
 
-            tasks.addAll(this.findDTOByProject(projectRelation.getChild()));
+            tasks.addAll(this.findDTOByProject(projectRelation.getChild(), listType));
 
-            this.crawlingTasksByProject(projectRelation.getChild(), tasks);
+            this.crawlingTasksByProject(projectRelation.getChild(), listType, tasks);
         }
     }
 
-    public List<Task> findByProject(Project project) {
+    public List<Task> findByProject(Project project, String listType) {
 
         QTask $task = QTask.task;
 
@@ -365,14 +387,29 @@ public class TaskService {
 
         predicate.and($task.taskProjects.any().project.id.eq(project.getId()));
 
+        if(listType.equals(ProjectTaskCondition.LIST_TYPE_WEEK)) {
+
+            Date weekStartDate = DateUtil.getWeekStartDate();
+            Date weekEndDate = DateUtil.getWeekEndDate();
+
+            predicate.and($task.endDate.goe(DateUtil.convertDateToYYYYMMDD(weekStartDate)));
+            predicate.and($task.endDate.loe(DateUtil.convertDateToYYYYMMDD(weekEndDate)));
+
+        } else if(listType.equals(ProjectTaskCondition.LIST_TYPE_WEEK)) {
+
+            String today = DateUtil.getTodayWithYYYYMMDD();
+
+            predicate.and($task.endDate.gt(today));
+        }
+
         List<Task> tasks = Lists.newArrayList(taskRepository.findAll(predicate));
 
         return tasks;
     }
 
-    public List<TaskDTO> findDTOByProject(Project project) {
+    public List<TaskDTO> findDTOByProject(Project project, String listType) {
 
-        List<Task> tasks = this.findByProject(project);
+        List<Task> tasks = this.findByProject(project, listType);
 
         List<TaskDTO> taskDTOs = Lists.newArrayList();
 

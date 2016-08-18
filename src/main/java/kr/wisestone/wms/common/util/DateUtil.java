@@ -8,6 +8,7 @@ import org.elasticsearch.common.joda.time.Seconds;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -86,5 +87,26 @@ public class DateUtil {
     public static Integer getSecondsDiff(Date fromDate, Date toDate) {
 
         return Seconds.secondsBetween(new DateTime(fromDate), new DateTime(toDate)).getSeconds();
+    }
+
+    public static Date getWeekStartDate() {
+
+        Calendar cal = Calendar.getInstance();
+        Calendar first = (Calendar) cal.clone();
+        first.add(Calendar.DAY_OF_WEEK,
+            first.getFirstDayOfWeek() - first.get(Calendar.DAY_OF_WEEK));
+
+        return first.getTime();
+    }
+
+    public static Date getWeekEndDate() {
+
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(DateUtil.getWeekStartDate());
+
+        Calendar last = (Calendar) cal.clone();
+        last.add(Calendar.DAY_OF_YEAR, 6);
+
+        return last.getTime();
     }
 }

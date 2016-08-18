@@ -4,6 +4,7 @@ import com.codahale.metrics.annotation.Timed;
 import com.google.common.collect.Lists;
 import kr.wisestone.wms.service.ProjectService;
 import kr.wisestone.wms.service.TaskService;
+import kr.wisestone.wms.web.rest.condition.ProjectTaskCondition;
 import kr.wisestone.wms.web.rest.condition.TaskCondition;
 import kr.wisestone.wms.web.rest.dto.ProjectDTO;
 import kr.wisestone.wms.web.rest.dto.ProjectManagedAttachedFileDTO;
@@ -131,13 +132,13 @@ public class ProjectResource {
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @RequestMapping(value = "/projects/findTasks/{id}",
+    @RequestMapping(value = "/projects/findTasks",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<TaskDTO>> findProjectTasks(@PathVariable Long id) {
-        log.debug("REST request to get Project : {}", id);
-        List<TaskDTO> taskDTOs = projectService.findAllTasks(id);
+    public ResponseEntity<List<TaskDTO>> findProjectTasks(@ModelAttribute ProjectTaskCondition projectTaskCondition) {
+        log.debug("REST request to get Project : {}", projectTaskCondition.getProjectId());
+        List<TaskDTO> taskDTOs = projectService.findAllTasks(projectTaskCondition);
 
         return Optional.ofNullable(taskDTOs)
             .map(result -> new ResponseEntity<>(

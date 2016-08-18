@@ -65,6 +65,24 @@ public class Notification extends AbstractAuditingEntity implements Serializable
     @Column(name = "contents")
     private String contents;
 
+    @Column(name = "entity_id")
+    private Long entityId;
+
+    @Column(name = "entity_name")
+    private String entityName;
+
+    @Column(name = "entity_field")
+    private String entityField;
+
+    @Column(name = "entity_value")
+    private String entityValue;
+
+    @Column(name = "etc_value")
+    private String etcValue;
+
+    @Column(name = "attached_file_id")
+    private Long attachedFileId;
+
     @OneToMany(mappedBy = "notification", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -143,6 +161,54 @@ public class Notification extends AbstractAuditingEntity implements Serializable
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Long getAttachedFileId() {
+        return attachedFileId;
+    }
+
+    public void setAttachedFileId(Long attachedFileId) {
+        this.attachedFileId = attachedFileId;
+    }
+
+    public Long getEntityId() {
+        return entityId;
+    }
+
+    public void setEntityId(Long entityId) {
+        this.entityId = entityId;
+    }
+
+    public String getEntityName() {
+        return entityName;
+    }
+
+    public void setEntityName(String entityName) {
+        this.entityName = entityName;
+    }
+
+    public String getEntityField() {
+        return entityField;
+    }
+
+    public void setEntityField(String entityField) {
+        this.entityField = entityField;
+    }
+
+    public String getEntityValue() {
+        return entityValue;
+    }
+
+    public void setEntityValue(String entityValue) {
+        this.entityValue = entityValue;
+    }
+
+    public String getEtcValue() {
+        return etcValue;
+    }
+
+    public void setEtcValue(String etcValue) {
+        this.etcValue = etcValue;
     }
 
     public Set<NotificationRecipient> getNotificationRecipients() {
