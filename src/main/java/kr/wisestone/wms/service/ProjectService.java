@@ -168,7 +168,7 @@ public class ProjectService {
             projectDTOs.add(projectDTO);
         }
 
-        return projectMapper.projectsToProjectDTOs(projects);
+        return projectDTOs;
     }
 
     private void bindChildProjects(ProjectDTO parent, Set<ProjectRelation> projectChilds) {
