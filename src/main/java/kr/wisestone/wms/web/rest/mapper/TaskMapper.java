@@ -22,6 +22,7 @@ public interface TaskMapper {
     @Mapping(source = "status.id", target = "statusId")
     @Mapping(source = "status.name", target = "statusName")
     @Mapping(source = "subTasks", target = "subTasks", ignore = true)
+    @Mapping(source = "taskProjects", target = "taskProjects", ignore = true)
     @Mapping(source = "relatedTasks", target = "relatedTasks", ignore = true)
     TaskDTO taskToTaskDTO(Task task);
 
@@ -29,6 +30,7 @@ public interface TaskMapper {
 
     @Mapping(source = "statusId", target = "status")
     @Mapping(source = "subTasks", target = "subTasks", ignore = true)
+    @Mapping(source = "taskProjects", target = "taskProjects", ignore = true)
     @Mapping(source = "relatedTasks", target = "relatedTasks", ignore = true)
     Task taskDTOToTask(TaskDTO taskDTO);
 

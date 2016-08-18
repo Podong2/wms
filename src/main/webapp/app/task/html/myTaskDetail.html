@@ -95,7 +95,7 @@
                 </colgroup>
                 <tbody>
                     <tr>
-                        <td>
+                        <td class="task-list" ng-class="vm.task.statusId == 1 ? 'green' : (vm.task.statusId == 2 ? 'blue' : (vm.task.statusId == 3 ? 'black' : 'red'))">
                             <span class="custom-control custom-checkbox" style="margin-bottom: 0;">
                                 <input type="checkbox" ng-click="vm.task.statusId = 2" class="custom-control-input">
                             </span>
@@ -251,7 +251,7 @@
 
         <!-- Timeline Content -->
         <div class="smart-timeline">
-            <a ng-click="vm.commentViewType = !vm.commentViewType">댓글만 보기</a>
+            <a ng-click="vm.commentViewType = !vm.commentViewType">댓글만 보기({{vm.commentList.length}})</a>
             <ul class="smart-timeline-list">
 
                 <!-- 로그&댓글 보기 -->

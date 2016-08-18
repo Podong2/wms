@@ -182,6 +182,25 @@
                 </a>
             </li>
 
+            <li data-ui-sref-active="active" ng-controller="projectCtrl" id="projectAddSection">
+                <a class="menu-item-parent projectAddValueSection" project-add-toggle>
+                    <i class="fa fa-lg fa-fw fa-tasks"></i> <span class="menu-item-parent" translate="프로젝트/폴더 생성"></span>
+                </a>
+                <div class="project-picker projectAddSection" style="left: 100%; top: 180px;">
+                    <div style="width: 300px;">
+                        <div style="width: 300px;">
+                            <div class="project-picker-search">
+                                <label for="projectRadio"><input type="radio" id="projectRadio">프로젝트</label>
+                                <label for="folderRadio"><input type="radio" id="folderRadio">폴더</label>
+                            </div>
+                            <div class="project-picker-search">
+                                <input class="project-picker-search-input" type="text" placeholder="Add to folder/project">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
 
 <!--            <li data-menu-collapse>
                 <a href="#" title="Dashboard"><i class="fa fa-lg fa-fw fa-home"></i> <span

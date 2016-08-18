@@ -25,7 +25,14 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
             /* layout config option */
             $scope.status = {
                 isCustomHeaderOpen: false,
-                isFirstOpen: true,
+                isDelayedOpen: true,
+                isScheduledTodayOpen: true,
+                isRegisteredTodayOpen: true,
+                inProgressOpen: true,
+                isNoneScheduledOpen: true,
+                isMyTaskOpen: true,
+                isRequestTaskOpen: true,
+                isWatchedTaskOpen: true,
                 isFirstDisabled: false
             };
             vm.tabArea = [
