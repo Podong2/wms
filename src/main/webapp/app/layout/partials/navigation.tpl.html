@@ -9,7 +9,7 @@
         traditional href="" links. See documentation for details.
         -->
 
-        <ul data-wms-Menu>
+        <ul data-wms-Menu >
             <li data-menu-collapse ng-repeat="menu in vm.menu track by $index"><!-- ng-show="menu.displayYn ? (permissionCheck.check(menu.permissionUrl) ? menu.displayYn : false) : false" -->
                 <a href="#">
                     <i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent" translate="Entities"></span>
@@ -174,15 +174,17 @@
                     </li>
                 </ul>
             </li>
-
-
             <li data-ui-sref-active="active">
                 <a ui-sref="my-task" class="menu-item-parent">
                     <i class="fa fa-lg fa-fw fa-tasks"></i> <span class="menu-item-parent" translate="내작업"></span>
                 </a>
             </li>
+        </ul>
 
-            <li data-ui-sref-active="active" ng-controller="projectCtrl" id="projectAddSection">
+        <ul data-wms-Menu  data-ng-controller="projectCtrl as vm">
+
+            <!-- 프로젝트 생성 -->
+            <li data-ui-sref-active="active" id="projectAddSection">
                 <a class="menu-item-parent projectAddValueSection" project-add-toggle>
                     <i class="fa fa-lg fa-fw fa-tasks"></i> <span class="menu-item-parent" translate="프로젝트/폴더 생성"></span>
                 </a>
@@ -190,15 +192,32 @@
                     <div style="width: 300px;">
                         <div style="width: 300px;">
                             <div class="project-picker-search">
-                                <label for="projectRadio"><input type="radio" id="projectRadio">프로젝트</label>
-                                <label for="folderRadio"><input type="radio" id="folderRadio">폴더</label>
+                                <label for="projectRadio"><input type="radio" name="addProject" id="projectRadio" value="false" checked="checked" ng-model="vm.project.folderYn">프로젝트</label>
+                                <label for="folderRadio"><input type="radio" name="addProject" id="folderRadio" value="true" ng-model="vm.project.folderYn">폴더</label>
+                                {{vm.project}}
                             </div>
                             <div class="project-picker-search">
-                                <input class="project-picker-search-input" type="text" placeholder="Add to folder/project">
+                                <input class="project-picker-search-input" type="text" ng-model="vm.project.name" enter-submit="vm.saveProject()" placeholder="Add to folder/project">
                             </div>
                         </div>
                     </div>
                 </div>
+            </li>
+
+            <!-- 프로젝트 목록 -->
+            <li data-menu-collapse ng-repeat="list in vm.projectList track by $index"><!-- ng-show="menu.displayYn ? (permissionCheck.check(menu.permissionUrl) ? menu.displayYn : false) : false" -->
+                <a href="#">
+                    <i style="background: #9fda58; width: 25px; height: 10px"></i> <span class="menu-item-parent">{{list.name}}</span>
+                    <!--<b class="collapse-sign"><em class="fa fa-plus-square-o"></em></b>-->
+                </a>
+                <ul>
+                    <li data-ui-sref-active="active" data-ng-repeat="child in list.projectChilds track by $index">
+                        <a data-ui-sref="{{child.urlPath}}"><!-- ng-show="child.name != null && child.displayYn ? (permissionCheck.check(child.permissionUrl) ? child.displayYn : false) : false" -->
+                            <!--<span class="glyphicon glyphicon-asterisk"></span>&nbsp;-->
+                            <span translate="{{child.name}}">{{child.name}}</span>
+                        </a>
+                    </li>
+                </ul>
             </li>
 
 
