@@ -98,7 +98,7 @@ public class TaskResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<TaskDTO> saveTask(@RequestBody TaskForm taskForm, MultipartHttpServletRequest request) throws URISyntaxException {
+    public ResponseEntity<TaskDTO> saveTask(TaskForm taskForm, MultipartHttpServletRequest request) throws URISyntaxException {
 
         log.debug("REST request to save Task : {}", taskForm);
 
