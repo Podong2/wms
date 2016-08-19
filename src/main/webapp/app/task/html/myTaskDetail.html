@@ -35,7 +35,7 @@
                 <div class="pull-left">
                     <!-- 프로젝트/폴더 선택 -->
                     <div id="projectPickerSection">
-                        <label for="addProject" class="cursor projectValueSection" project-picker-edit-toggle><i class="fa fa-plus" id="addProject"></i> <span>Project/Folder Add</span></label>
+                        <label for="addProject" class="cursor projectValueSection" ><i class="fa fa-plus" id="addProject"></i> <span project-picker-edit-toggle>Project/Folder Add</span></label>
                         <span class="task-project" ng-repeat="project in vm.task.taskProjects">
                             {{project.name}}
                             <i class="fa fa-close"></i>
@@ -49,9 +49,9 @@
                                     <div class="project-picker-list-area">
                                         <div class="project-picker-list">
                                             <div data-ng-repeat="project in vm.projectList">
-                                                <div class="project-picker-list-item" ng-click="vm.task.projectIds.push(project.id)">
+                                                <div class="project-picker-list-item" ng-click="vm.task.projectIds = project.id">
                                                     <div>
-                                                        <div class="project-picker-list-item-title">{{project.name}}</div>
+                                                        <div class="project-picker-list-item-title">{{project.name}} || {{project.id}}</div>
                                                         <div class="project-picker-list-item-path" >
                                                             <div>My Project</div>
                                                         </div>

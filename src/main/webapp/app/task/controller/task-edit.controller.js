@@ -5,8 +5,8 @@
 
 angular.module('wmsApp')
     .controller("taskEditCtrl", taskEditCtrl);
-taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'toastr', '$state', '$timeout', 'DateUtils', 'SubTask', 'Principal', 'findUser', '$q', 'TaskEdit', 'FindTasks'];
-        function taskEditCtrl($scope, $uibModalInstance, Code, $log, Task, toastr, $state, $timeout, DateUtils, SubTask, Principal, findUser, $q, TaskEdit, FindTasks) {
+taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'toastr', '$state', '$timeout', 'DateUtils', 'SubTask', 'Principal', 'findUser', '$q', 'TaskEdit', 'FindTasks', 'ProjectFind'];
+        function taskEditCtrl($scope, $uibModalInstance, Code, $log, Task, toastr, $state, $timeout, DateUtils, SubTask, Principal, findUser, $q, TaskEdit, FindTasks, ProjectFind) {
             var vm = this;
             vm.save = save;
             vm.subTaskSave = subTaskSave;
@@ -15,6 +15,7 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
             vm.cancel = cancel;
             vm.autoValueInit = autoValueInit;
             vm.taskUpload = taskUpload;
+            //vm.projectListAdd = projectListAdd;
             vm.userInfo = Principal.getIdentity();
 
             vm.codes = Code.query();
@@ -35,9 +36,10 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
                 importantYn : false, //중요여부
                 assigneeIds : [],
                 watcherIds : [],
-                relatedTaskIds : []
-
+                relatedTaskIds : [],
+                projectIds : []
             };
+            vm.taskProject=[];
 
             vm.subTaskOpen = false;
             vm.fileAreaOpen = false;
@@ -103,6 +105,7 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
                     vm.task.endDate = formatDate;
                 }
             });
+
 
             // 달력 오픈
             function openCalendar(e, picker) {
@@ -182,6 +185,7 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
                 if($scope.assigneeUser != [])userIdPush($scope.assigneeUser, "assigneeIds");
                 if($scope.watchers != [])userIdPush($scope.watchers, "watcherIds");
                 if($scope.relatedTaskList != [])userIdPush($scope.relatedTaskList, "relatedTaskIds");
+                if(vm.taskProject != [])userIdPush(vm.taskProject, "projectIds");
 
                 $log.debug("vm.task ;::::::", vm.task);
                 TaskEdit.uploadTask({
@@ -203,23 +207,30 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
                 var typeIds = new Array();
 
                 angular.forEach(userInfo, function(val){
-                    typeIds.push(val.id);
+                    if(type == 'projectIds')typeIds.push(val);
+                    else typeIds.push(val.id);
                 });
 
                 vm.task[type] = typeIds.join(",");
             }
 
-            function getProjectList(){
-                Project.query({}, onSuccess, onError);
+            //function projectListAdd(project){
+            //    $("#projectPickerSection").append('<span class="task-project" ng-click="vm.deleteProjectElement($this)">'+project.name+'<i class="fa fa-close"></i></span>')
+            //}
+
+            vm.deleteProjectElement = deleteProjectElement;
+            function deleteProjectElement(_this){
+                $log.debug(_this)
             }
 
-            function onSuccess (result) {
+            function getProjectList(){
+                ProjectFind.query({name : ''}, onProjectSuccess, onProjectError);
+            }
+            function onProjectSuccess (result) {
                 vm.projectList = result;
                 $log.debug("프로젝트 목록 : ", result);
-                toastr.success('프로젝트 목록 불러오기 완료', '프로젝트 목록 불러오기 완료');
-                $rootScope.$broadcast('projectListLoading')
             }
-            function onError (result) {
+            function onProjectError (result) {
                 $log.debug("프로젝트 목록 : ", result);
                 toastr.error('프로젝트 목록 불러오기 실패', '프로젝트 목록 불러오기 실패');
             }

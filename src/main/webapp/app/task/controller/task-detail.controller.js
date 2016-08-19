@@ -202,7 +202,7 @@
             }
         });
         $scope.$watchCollection('vm.task.projectIds', function(newValue, oldValue){
-            if(oldValue != undefined && newValue != undefined && oldValue !== newValue && oldValue.length < newValue.length) {
+            if(oldValue !== newValue) {
                 taskUpload();
             }
         });

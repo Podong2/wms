@@ -105,7 +105,7 @@
         }
 
         function uploadTask(parameter){
-            parameter.url = "api/tasks/update";
+            parameter.url = "api/tasks/save";
             return $upload.upload(parameter).then(function (response) {
                 $log.debug("타스크 수정 결과 : ", response);
                 return response;
