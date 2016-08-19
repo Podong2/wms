@@ -5,9 +5,11 @@ import com.google.common.collect.Maps;
 import kr.wisestone.wms.common.constant.NotificationConfig;
 import kr.wisestone.wms.common.util.WebAppUtil;
 import kr.wisestone.wms.domain.Notification;
+import kr.wisestone.wms.domain.TraceLog;
 import kr.wisestone.wms.domain.User;
 import kr.wisestone.wms.repository.NotificationRepository;
 import kr.wisestone.wms.repository.search.NotificationSearchRepository;
+import kr.wisestone.wms.security.SecurityUtils;
 import kr.wisestone.wms.service.dto.NotificationParameterDTO;
 import kr.wisestone.wms.web.rest.dto.NotificationDTO;
 import kr.wisestone.wms.web.rest.dto.TaskDTO;
@@ -160,6 +162,25 @@ public class NotificationService {
 
         NotificationParameterDTO notificationParameterVo = new NotificationParameterDTO(
             notificationConfig, notifyMethod, title, contents, toUsers);
+
+        this.saveAndSendNotification(notificationParameterVo);
+    }
+
+    @Transactional
+    public void sendTraceLogNotification(TraceLog traceLog, String notifyMethod) {
+        NotificationConfig notificationConfig = NotificationConfig.TASK_MODIFIED;
+
+        User loginUser = SecurityUtils.getCurrentUser();
+
+        Map<String, Object> contents = Maps.newHashMap(ImmutableMap.<String, Object>builder().
+            put("task", traceLog).
+            put("baseUrl", WebAppUtil.getBaseUrl()).
+            build());
+
+        String title = this.getNotificationTitle(notificationConfig);
+
+        NotificationParameterDTO notificationParameterVo = new NotificationParameterDTO(
+            notificationConfig, notifyMethod, title, contents, null);
 
         this.saveAndSendNotification(notificationParameterVo);
     }

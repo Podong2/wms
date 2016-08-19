@@ -29,6 +29,7 @@ import javax.inject.Inject;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -315,6 +316,30 @@ public class TaskService {
         task = this.taskRepository.save(new Task(name));
 
         return taskMapper.taskToTaskDTO(task);
+    }
+
+    public TaskDTO saveTask(TaskForm taskForm, List<MultipartFile> files) {
+
+        Task origin = taskRepository.findOne(taskForm.getId());
+
+        origin = taskForm.bind(origin);
+
+        for(MultipartFile multipartFile : files) {
+
+            AttachedFile attachedFile = this.attachedFileService.saveFile(multipartFile);
+
+            origin.addAttachedFile(attachedFile);
+        }
+
+        origin = taskRepository.save(origin);
+//        taskSearchRepository.save(origin);
+        TaskDTO result = taskMapper.taskToTaskDTO(origin);
+
+        List<User> notificationTargets = origin.getTaskUsers().stream().map(TaskUser::getUser).collect(Collectors.toList());
+
+        notificationService.sendIssueCreatedNotification(result, notificationTargets, "04");
+
+        return result;
     }
 
     public TaskDTO createSubTask(TaskForm taskForm) {

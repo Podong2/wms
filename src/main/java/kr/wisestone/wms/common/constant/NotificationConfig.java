@@ -3,6 +3,7 @@ package kr.wisestone.wms.common.constant;
 public enum NotificationConfig {
     COMMON_MESSAGE("common", "commonMail", "commonPush"),
     TASK_CREATED("task.created.title", "taskCreatedMail", "taskCreatedPush"),
+    TASK_MODIFIED("task.modified.title", "taskModifiedMail", "taskModifiedPush"),
     TASK_REMOVED("task.removed.title", "taskRemovedMail", "taskRemovedPush"),
     ;
 
