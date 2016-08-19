@@ -94,6 +94,27 @@ public class TaskResource {
             .body(result);
     }
 
+    @RequestMapping(value = "/tasks/save",
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<TaskDTO> saveTask(@RequestBody TaskForm taskForm, MultipartHttpServletRequest request) throws URISyntaxException {
+
+        log.debug("REST request to save Task : {}", taskForm);
+
+        if (taskForm.getId() != null) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("task", "idexists", "A new task cannot already have an ID")).body(null);
+        }
+
+        List<MultipartFile> files = request.getFiles("file");
+
+        TaskDTO result = taskService.saveTask(taskForm, files);
+
+        return ResponseEntity.created(new URI("/api/tasks/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert("task", result.getId().toString()))
+            .body(result);
+    }
+
     @RequestMapping(value = "/tasks/createSubTask",
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
