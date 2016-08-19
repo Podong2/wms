@@ -5,9 +5,9 @@
         .module('wmsApp')
         .controller('TaskDetailCtrl', TaskDetailCtrl);
 
-    TaskDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', 'TaskAttachedFile', '$log', 'TaskEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'entity', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind'];
+    TaskDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', 'TaskAttachedFile', '$log', 'TaskEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'entity', 'TaskListSearch', 'dataService', 'Principal'];
 
-    function TaskDetailCtrl($scope, $rootScope, $stateParams, Task, Code, TaskAttachedFile, $log, TaskEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, entity, TaskListSearch, dataService, Principal, ProjectFind) {
+    function TaskDetailCtrl($scope, $rootScope, $stateParams, Task, Code, TaskAttachedFile, $log, TaskEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, entity, TaskListSearch, dataService, Principal) {
         var vm = this;
 
         vm.openCalendar = openCalendar;
@@ -25,7 +25,6 @@
         vm.logArrayData = [];
         vm.codes = Code.query();
         vm.commentList = [];
-        vm.projectList=[];
 
         TaskListSearch.TaskAudigLog({'entityId' : vm.task.id, 'entityName' : 'Task'}).then(function(result){
             vm.TaskAuditLog = result;
@@ -37,22 +36,11 @@
             $log.debug("vm.commentList : ", vm.commentList)
         });
 
-        function getProjectList(){
-            ProjectFind.query({name : ''}, onProjectSuccess, onProjectError);
-        }
-        function onProjectSuccess (result) {
-            vm.projectList = result;
-            $log.debug("프로젝트 목록 : ", result);
-        }
-        function onProjectError (result) {
-            $log.debug("프로젝트 목록 : ", result);
-            toastr.error('프로젝트 목록 불러오기 실패', '프로젝트 목록 불러오기 실패');
-        }
-        getProjectList();
-
         vm.responseData = _.clone(vm.task);
+        $log.debug("vm.taskvm.taskvm.task", vm.task);
+        $log.debug("vm.userInfo : ", vm.userInfo);
 
-        $log.debug("info :", vm.task)
+        //$log.debug("info :", vm.task)
         $log.debug("$stateParams.listType :", $stateParams.listType);
 
 
@@ -201,11 +189,6 @@
                 taskUpload();
             }
         });
-        $scope.$watchCollection('vm.task.projectIds', function(newValue, oldValue){
-            if(oldValue != undefined && newValue != undefined && oldValue !== newValue && oldValue.length < newValue.length) {
-                taskUpload();
-            }
-        });
 
         // 달력 오픈
         function openCalendar(e, picker) {
@@ -264,7 +247,6 @@
             }).then(function (response) {
                 toastr.success('태스크 수정 완료', '태스크 수정 완료');
                 //$state.go("my-task", {}, {reload : true});
-                $state.go("my-task.detail", {}, {reload : true});
                 $rootScope.$broadcast("taskReload", {listType : $stateParams.listType});
                 vm.task.removeAssigneeIds = "";
                 vm.task.removeWatcherIds = "";
@@ -272,7 +254,6 @@
                 vm.task.assigneeIds = "";
                 vm.task.watcherIds = "";
                 vm.task.relatedTaskIds ="";
-                vm.task.projectIds = "";
             });
         }
 

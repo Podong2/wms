@@ -37,15 +37,24 @@
 })(jQuery);
 
 angular.module('wmsApp').directive('wmsMenu', wmsMenu);
-wmsMenu.$inject=['$state', '$rootScope'];
-    function wmsMenu($state, $rootScope) {
+wmsMenu.$inject=['$state', '$rootScope', '$timeout'];
+    function wmsMenu($state, $rootScope, $timeout) {
     return {
         restrict: 'A',
         link: function (scope, element, attrs) {
-            scope.$watch('$last',function(v){
-                var $collapsible = element.find('li[data-menu-collapse]');
-                bindEvents($collapsible);
-            });
+            $rootScope.$on('projectListLoading', function(){
+                $timeout(function(){
+                    var $collapsible = element.find('li[data-menu-collapse]');
+                    bindEvents($collapsible);
+                }, 1000);
+            })
+            //scope.$watch('$last',function(v){
+            //    $timeout(function(){
+            //        var $collapsible = element.find('li[data-menu-collapse]');
+            //        bindEvents($collapsible);
+            //    }, 1000);
+            //
+            //});
 
             var $body = $('body');
 

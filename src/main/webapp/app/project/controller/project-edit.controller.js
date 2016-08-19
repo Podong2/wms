@@ -6,8 +6,8 @@
 
 angular.module('wmsApp')
     .controller("projectCtrl", projectCtrl);
-projectCtrl.$inject=['$scope', 'Code', '$log', 'toastr', '$state', '$timeout', 'Project'];
-        function projectCtrl($scope, Code, $log, toastr, $state, $timeout, Project) {
+projectCtrl.$inject=['$scope', 'Code', '$log', 'toastr', '$state', '$timeout', 'Project', '$rootScope'];
+        function projectCtrl($scope, Code, $log, toastr, $state, $timeout, Project, $rootScope) {
             var vm = this;
             vm.saveProject = saveProject;
             vm.projectAddOpen = false;
@@ -29,8 +29,7 @@ projectCtrl.$inject=['$scope', 'Code', '$log', 'toastr', '$state', '$timeout', '
 
             function onSuccess (result) {
                 vm.projectList = result;
-                $log.debug("프로젝트 목록 : ", result);
-                toastr.success('프로젝트 목록 불러오기 완료', '프로젝트 목록 불러오기 완료');
+                $rootScope.$broadcast('projectListLoading')
             }
             function onError (result) {
                 $log.debug("프로젝트 목록 : ", result);
