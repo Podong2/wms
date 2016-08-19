@@ -337,7 +337,7 @@ public class TaskService {
 
         List<User> notificationTargets = origin.getTaskUsers().stream().map(TaskUser::getUser).collect(Collectors.toList());
 
-        notificationService.sendIssueCreatedNotification(result, notificationTargets, "04");
+        notificationService.sendIssueCreatedNotification(this.findOne(taskForm.getId()), notificationTargets, "04");
 
         return result;
     }
@@ -363,7 +363,7 @@ public class TaskService {
         return taskMapper.tasksToTaskDTOs(tasks);
     }
 
-    public List<TaskDTO> findAllTaskByProjectHierarchy(Project project, String listType) {
+    public List<TaskDTO> findAllProjectManagedTasks(Project project, String listType) {
 
         List<TaskDTO> taskDTOs = Lists.newArrayList();
 

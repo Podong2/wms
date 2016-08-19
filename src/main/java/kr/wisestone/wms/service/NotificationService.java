@@ -1,20 +1,21 @@
 package kr.wisestone.wms.service;
 
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import kr.wisestone.wms.common.constant.NotificationConfig;
 import kr.wisestone.wms.common.util.WebAppUtil;
-import kr.wisestone.wms.domain.Notification;
-import kr.wisestone.wms.domain.TraceLog;
-import kr.wisestone.wms.domain.User;
+import kr.wisestone.wms.domain.*;
 import kr.wisestone.wms.repository.NotificationRepository;
 import kr.wisestone.wms.repository.search.NotificationSearchRepository;
 import kr.wisestone.wms.security.SecurityUtils;
 import kr.wisestone.wms.service.dto.NotificationParameterDTO;
 import kr.wisestone.wms.web.rest.dto.NotificationDTO;
+import kr.wisestone.wms.web.rest.dto.ProjectDTO;
 import kr.wisestone.wms.web.rest.dto.TaskDTO;
 import kr.wisestone.wms.web.rest.mapper.NotificationMapper;
 import kr.wisestone.wms.web.rest.mapper.UserMapper;
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
@@ -25,10 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
@@ -62,6 +60,12 @@ public class NotificationService {
     private PushService pushService;
 
     @Inject
+    private TaskService taskService;
+
+    @Inject
+    private ProjectService projectService;
+
+    @Inject
     private MailService mailService;
 
     @Inject
@@ -90,6 +94,9 @@ public class NotificationService {
      */
     @Transactional(readOnly = true)
     public Page<Notification> findAll(Pageable pageable) {
+
+        QNotification $notification = QNotification.notification;
+
         log.debug("Request to get all Notifications");
         Page<Notification> result = notificationRepository.findAll(pageable);
         return result;
@@ -141,7 +148,7 @@ public class NotificationService {
             put("baseUrl", WebAppUtil.getBaseUrl()).
             build());
 
-        String title = this.getNotificationTitle(notificationConfig);
+        String title = this.getTaskNotificationTitle(createdTaskDTO);
 
         NotificationParameterDTO notificationParameterVo = new NotificationParameterDTO(
             notificationConfig, notifyMethod, title, contents, toUsers);
@@ -167,26 +174,49 @@ public class NotificationService {
     }
 
     @Transactional
-    public void sendTraceLogNotification(TraceLog traceLog, String notifyMethod) {
+    public void sendTaskUpdateNotification(TraceLog traceLog, String notifyMethod) {
         NotificationConfig notificationConfig = NotificationConfig.TASK_MODIFIED;
 
         User loginUser = SecurityUtils.getCurrentUser();
 
+        TaskDTO task = taskService.findOne(traceLog.getTaskId());
+
         Map<String, Object> contents = Maps.newHashMap(ImmutableMap.<String, Object>builder().
-            put("task", traceLog).
+            put("task", task).
+            put("traceLog", traceLog).
             put("baseUrl", WebAppUtil.getBaseUrl()).
             build());
 
-        String title = this.getNotificationTitle(notificationConfig);
+        String title = this.getTaskNotificationTitle(task);
+
+        List<User> toUsers = Lists.newArrayList();
+
+        toUsers.addAll(userMapper.userDTOsToUsers(task.getAssignees()));
+        toUsers.addAll(userMapper.userDTOsToUsers(task.getWatchers()));
 
         NotificationParameterDTO notificationParameterVo = new NotificationParameterDTO(
-            notificationConfig, notifyMethod, title, contents, null);
+            notificationConfig, notifyMethod, title, contents, userMapper.userToUserDTO(loginUser), toUsers, traceLog);
 
         this.saveAndSendNotification(notificationParameterVo);
     }
 
     private String getNotificationTitle(NotificationConfig notification) {
         return messageSource.getMessage(notification.getTitle(), null, Locale.KOREA);
+    }
+
+    private String getTaskNotificationTitle(TaskDTO task) {
+
+        String taskName = task.getName();
+
+        List<ProjectDTO> projectDTOs = task.getTaskProjects();
+
+        if(projectDTOs != null && !projectDTOs.isEmpty()) {
+            String projectNames = StringUtils.join(projectDTOs.stream().map(ProjectDTO::getName).toArray(), ",");
+
+            taskName = projectNames + " " + taskName;
+        }
+
+        return taskName;
     }
 
     @Async

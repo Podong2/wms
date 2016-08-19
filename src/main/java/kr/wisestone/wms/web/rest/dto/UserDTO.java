@@ -1,10 +1,7 @@
 package kr.wisestone.wms.web.rest.dto;
 
 import kr.wisestone.wms.config.Constants;
-import kr.wisestone.wms.domain.Authority;
-import kr.wisestone.wms.domain.Company;
-import kr.wisestone.wms.domain.Department;
-import kr.wisestone.wms.domain.User;
+import kr.wisestone.wms.domain.*;
 import lombok.Data;
 import org.hibernate.validator.constraints.Email;
 
@@ -54,6 +51,8 @@ public class UserDTO {
     private String activationKey;
 
     private String resetKey;
+
+    private AttachedFile profileImage;
 
     public UserDTO() {
     }
@@ -218,6 +217,14 @@ public class UserDTO {
 
     public void setDepartmentName(String departmentName) {
         this.departmentName = departmentName;
+    }
+
+    public AttachedFile getProfileImage() {
+        return profileImage;
+    }
+
+    public void setProfileImage(AttachedFile profileImage) {
+        this.profileImage = profileImage;
     }
 
     @Override

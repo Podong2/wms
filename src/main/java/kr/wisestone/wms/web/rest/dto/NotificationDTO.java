@@ -29,6 +29,15 @@ public class NotificationDTO implements Serializable {
 
     private String contents;
 
+    private Long entityId;
+
+    private String entityName;
+
+    private String entityValue;
+
+    private String etcValue;
+
+    private String entityField;
 
     public Long getId() {
         return id;
@@ -94,6 +103,46 @@ public class NotificationDTO implements Serializable {
 
     public void setContents(String contents) {
         this.contents = contents;
+    }
+
+    public Long getEntityId() {
+        return entityId;
+    }
+
+    public void setEntityId(Long entityId) {
+        this.entityId = entityId;
+    }
+
+    public String getEntityName() {
+        return entityName;
+    }
+
+    public void setEntityName(String entityName) {
+        this.entityName = entityName;
+    }
+
+    public String getEntityValue() {
+        return entityValue;
+    }
+
+    public void setEntityValue(String entityValue) {
+        this.entityValue = entityValue;
+    }
+
+    public String getEtcValue() {
+        return etcValue;
+    }
+
+    public void setEtcValue(String etcValue) {
+        this.etcValue = etcValue;
+    }
+
+    public String getEntityField() {
+        return entityField;
+    }
+
+    public void setEntityField(String entityField) {
+        this.entityField = entityField;
     }
 
     @Override

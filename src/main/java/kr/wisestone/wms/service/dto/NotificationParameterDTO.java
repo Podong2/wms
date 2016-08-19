@@ -6,6 +6,7 @@ import com.google.common.collect.Lists;
 import kr.wisestone.wms.common.constant.NotificationConfig;
 import kr.wisestone.wms.common.util.ConvertUtil;
 import kr.wisestone.wms.domain.Notification;
+import kr.wisestone.wms.domain.TraceLog;
 import kr.wisestone.wms.domain.User;
 import kr.wisestone.wms.web.rest.dto.UserDTO;
 import lombok.Data;
@@ -36,6 +37,8 @@ public class NotificationParameterDTO {
 
     private List<User> pushUsers = new ArrayList<>();
 
+    private TraceLog traceLog;
+
     NotificationParameterDTO() {}
 
     public NotificationParameterDTO(NotificationConfig notificationConfig, String notificationMethod, Map<String, Object> contents
@@ -46,6 +49,18 @@ public class NotificationParameterDTO {
         this.contents = contents;
         this.fromUser = fromUser;
         this.toUsers = toUsers;
+    }
+
+    public NotificationParameterDTO(NotificationConfig notificationConfig, String notificationMethod, String title, Map<String, Object> contents
+        , UserDTO fromUser, List<User> toUsers, TraceLog traceLog) {
+
+        this.notificationConfig = notificationConfig;
+        this.notificationMethod = notificationMethod;
+        this.title = title;
+        this.contents = contents;
+        this.fromUser = fromUser;
+        this.toUsers = toUsers;
+        this.traceLog = traceLog;
     }
 
     public NotificationParameterDTO(NotificationConfig notificationConfig, String notificationMethod
@@ -87,6 +102,14 @@ public class NotificationParameterDTO {
             notification.setNotificationType("02");
         } else {
             notification.setNotificationType("01");
+        }
+
+        if(this.traceLog != null) {
+            notification.setEntityId(this.traceLog.getEntityId());
+            notification.setEntityField(this.traceLog.getEntityField());
+            notification.setEntityName(this.traceLog.getEntityName());
+            notification.setEntityValue(this.traceLog.getEntityField());
+            notification.setEtcValue(this.traceLog.getEtcValue());
         }
 
         notification.addNotificationReceive(this.toUsers.stream().map(User::getId).collect(Collectors.toList()));

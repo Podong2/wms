@@ -202,7 +202,7 @@ public class ProjectService {
         if(project == null)
             throw new CommonRuntimeException("error.project.notFound");
 
-        return taskService.findAllTaskByProjectHierarchy(project, projectTaskCondition.getListType());
+        return taskService.findAllProjectManagedTasks(project, projectTaskCondition.getListType());
     }
 
     @Transactional(readOnly = true)

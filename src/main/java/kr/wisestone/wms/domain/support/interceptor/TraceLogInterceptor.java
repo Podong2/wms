@@ -1,9 +1,7 @@
 package kr.wisestone.wms.domain.support.interceptor;
 
-import kr.wisestone.wms.domain.Code;
-import kr.wisestone.wms.domain.TraceLog;
-import kr.wisestone.wms.domain.Traceable;
-import kr.wisestone.wms.domain.User;
+import kr.wisestone.wms.domain.*;
+import kr.wisestone.wms.service.NotificationService;
 import kr.wisestone.wms.service.TraceLogService;
 import kr.wisestone.wms.util.ApplicationContextUtil;
 import org.apache.commons.lang.ArrayUtils;
@@ -33,6 +31,7 @@ public class TraceLogInterceptor extends EmptyInterceptor {
                                 Object[] previousState, String[] propertyNames, Type[] types) throws CallbackException {
 
         TraceLogService traceLogService = ApplicationContextUtil.getBean(TraceLogService.class);
+        NotificationService notificationService = ApplicationContextUtil.getBean(NotificationService.class);
 
         log.debug("Update Entity = " + entity.getClass().getName());
         for (String pn :propertyNames) {
@@ -74,14 +73,14 @@ public class TraceLogInterceptor extends EmptyInterceptor {
                 logRecord.setEntityField(entityField);
 
                 if (propertyNewState != null) {
-                    if (propertyNewState.length() > 20) {
+                    if (!entityField.equals("contents") && propertyNewState.length() > 20) {
                         logRecord.setNewValue(propertyNewState.substring(0, 20) + "...");
                     } else {
                         logRecord.setNewValue(propertyNewState);
                     }
                 }
                 if (propertyOldState != null) {
-                    if (propertyOldState.length() > 20) {
+                    if (!entityField.equals("contents") && propertyOldState.length() > 20) {
                         logRecord.setOldValue(propertyOldState.substring(0, 20) + "...");
                     } else {
                         logRecord.setOldValue(propertyOldState);
@@ -90,9 +89,15 @@ public class TraceLogInterceptor extends EmptyInterceptor {
 
                 if (logRecord != null && traceLogService != null) {
                     traceLogService.save(logRecord);
+
+                    if(notificationService != null) {
+
+                        if(entity instanceof Task) {
+                            notificationService.sendTaskUpdateNotification(logRecord, "04");
+                        }
+                    }
                 }
             }
-
         }
 
         return true;

@@ -39,7 +39,11 @@ public class PushService {
         NotificationConfig notificationConfig = notificationParameterDTO.getNotificationConfig();
 
         String content = templateEngine.process(notificationConfig.getPushTemplate(), context);
-        String subject = messageSource.getMessage(notificationConfig.getTitle(), null, locale);
+
+        String subject = notificationParameterDTO.getTitle();
+
+        if(StringUtils.isEmpty(subject))
+            subject = messageSource.getMessage(notificationConfig.getTitle(), null, locale);
 
         if(StringUtils.hasText(notificationParameterDTO.getTitle()))
             subject = notificationParameterDTO.getTitle();

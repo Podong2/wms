@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <body>
+        <p th:if="${task.parent != null}">
+            <span th:text="${task.parent.name}">parentName</span>
+        </p>
+        <p th:text="${task.name}">
+            assigneeName
+        </p>
+        <p th:text="${traceLog.createdDate}">
+            traceLog.createdDate
+        </p>
+        <p th:text="${traceLog.entityField}">
+            traceLog.createdDate
+        </p>
+        <p th:text="${traceLog.newValue}">
+            traceLog.createdDate
+        </p>
+        <p>
+          <a th:href="@{|${baseUrl}/#/task/${task.id}|}"
+             th:text="|${task.name}|">login</a>
+        </p>
+    </body>
+</html>

@@ -5,15 +5,37 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     </head>
     <body>
-        <p th:text="${task.assigneeName}">
-            assigneeName
-        </p>
-        <p th:text="${task.name}">
-            assigneeName
-        </p>
+        <table border="1">
+            <tr th:if="${task.parent != null}">
+                <th th:text="${task.parent.name}" colspan="2" style="font-size: large;">
+                    task.parent.name
+                </th>
+            </tr>
+            <tr>
+                <th th:text="${task.name}">
+                    task.name
+                </th>
+                <th rowspan="2">
+                    <span th:each="project,iterationStatus  : ${task.taskProjects}">
+                        <span th:text="${project.name + ' '}" style="text-decoration: underline;">project.name</span>
+                    </span>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    일정 : <span th:text="${task.startDate + ' ~ ' + task.endDate}">task.startDate + ' ~ ' + task.endDate</span>
+                </th>
+            </tr>
+            <tr>
+                <td th:utext="${task.contents}" colspan="2">
+                    task.contents
+                </td>
+            </tr>
+        </table>
+
         <p>
-          <a th:href="@{|${baseUrl}/#/task/${task.id}|}"
-             th:text="|${task.name}|">login</a>
+            <a th:href="@{|${baseUrl}/#/task/${task.id}|}"
+               th:text="|${task.name}|">login</a>
         </p>
     </body>
 </html>
