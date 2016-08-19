@@ -30,6 +30,12 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
 
     private static final long serialVersionUID = 1L;
 
+    public static final Long STATUS_ACTIVE = 1L;
+    public static final Long STATUS_COMPLETE = 2L;
+    public static final Long STATUS_HOLD = 3L;
+    public static final Long STATUS_CANCEL = 4L;
+
+
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "taskSeqGenerator")
     @TableGenerator(name = "taskSeqGenerator"

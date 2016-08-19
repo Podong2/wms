@@ -352,7 +352,15 @@ public class TaskService {
 
             if(listType.equals(ProjectTaskCondition.LIST_TYPE_WEEK) || listType.equals(ProjectTaskCondition.LIST_TYPE_TOTAL)) {
 
-                if(!StringUtils.isEmpty(taskDTO.getEndDate())) {
+                if(taskDTO.getStatusId().equals(Task.STATUS_COMPLETE)) {
+
+                    statusGroup = "COMPLETE";
+
+                } else if(taskDTO.getStatusId().equals(Task.STATUS_HOLD)) {
+
+                    statusGroup = "HOLD";
+
+                } else if(!StringUtils.isEmpty(taskDTO.getEndDate())) {
 
                     String today = DateUtil.getTodayWithYYYYMMDD();
 

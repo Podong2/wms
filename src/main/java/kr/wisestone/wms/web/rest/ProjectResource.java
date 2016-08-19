@@ -8,6 +8,7 @@ import kr.wisestone.wms.web.rest.condition.ProjectTaskCondition;
 import kr.wisestone.wms.web.rest.condition.TaskCondition;
 import kr.wisestone.wms.web.rest.dto.ProjectDTO;
 import kr.wisestone.wms.web.rest.dto.ProjectManagedAttachedFileDTO;
+import kr.wisestone.wms.web.rest.dto.ProjectTaskManageDTO;
 import kr.wisestone.wms.web.rest.dto.TaskDTO;
 import kr.wisestone.wms.web.rest.form.ProjectForm;
 import kr.wisestone.wms.web.rest.form.TaskForm;
@@ -145,6 +146,22 @@ public class ProjectResource {
                 result,
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @RequestMapping(value = "/projects/findManagedTasks",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<ProjectTaskManageDTO> findManagedProjectTasks(@ModelAttribute ProjectTaskCondition projectTaskCondition) {
+        log.debug("REST request to get Project : {}", projectTaskCondition.getProjectId());
+
+        ProjectDTO projectDTO = projectService.findOne(projectTaskCondition.getProjectId());
+
+        List<TaskDTO> taskDTOs = projectService.findAllTasks(projectTaskCondition);
+
+        return new ResponseEntity<>(
+                new ProjectTaskManageDTO(projectDTO, taskDTOs),
+                HttpStatus.OK);
     }
 
     @RequestMapping(value = "/projects/findManagedAttachedFiles/{id}",
