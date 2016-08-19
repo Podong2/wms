@@ -102,10 +102,6 @@ public class TaskResource {
 
         log.debug("REST request to save Task : {}", taskForm);
 
-        if (taskForm.getId() != null) {
-            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("task", "idexists", "A new task cannot already have an ID")).body(null);
-        }
-
         List<MultipartFile> files = request.getFiles("file");
 
         TaskDTO result = taskService.saveTask(taskForm, files);
