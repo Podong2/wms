@@ -16,6 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
@@ -130,6 +131,11 @@ public class ProjectService {
     }
 
     public List<ProjectDTO> findByNameLike(String name) {
+
+        if(StringUtils.isEmpty(name)) {
+            return projectMapper.projectsToProjectDTOs(this.projectRepository.findTop3ByOrderByCreatedDateDesc());
+        }
+
         BooleanBuilder predicate = new BooleanBuilder();
 
         predicate.and(QProject.project.name.contains(name));

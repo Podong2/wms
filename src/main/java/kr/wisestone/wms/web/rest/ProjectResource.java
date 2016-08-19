@@ -111,7 +111,7 @@ public class ProjectResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<ProjectDTO>> findByName(@RequestParam("name") String name) {
+    public ResponseEntity<List<ProjectDTO>> findByName(@RequestParam(value = "name", required = false) String name) {
         log.debug("REST request to get Project name : {}", name);
 
         List<ProjectDTO> projectDTOs = projectService.findByNameLike(name);
