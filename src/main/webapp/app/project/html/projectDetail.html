@@ -36,10 +36,6 @@
                     <!-- 프로젝트/폴더 선택 -->
                     <div id="projectPickerSection">
                         <label for="addProject" class="cursor projectValueSection" project-picker-edit-toggle><i class="fa fa-plus" id="addProject"></i> <span>Project/Folder Add</span></label>
-                        <span class="task-project" ng-repeat="project in vm.task.taskProjects">
-                            {{project.name}}
-                            <i class="fa fa-close"></i>
-                        </span>
                         <div class="project-picker projectPickerSection">
                             <div style="width: 300px;">
                                 <div style="width: 300px;">
@@ -48,10 +44,20 @@
                                     </div>
                                     <div class="project-picker-list-area">
                                         <div class="project-picker-list">
-                                            <div data-ng-repeat="project in vm.projectList">
-                                                <div class="project-picker-list-item" ng-click="vm.task.projectIds.push(project.id)">
+                                            <div>
+                                                <div class="project-picker-list-item">
                                                     <div>
-                                                        <div class="project-picker-list-item-title">{{project.name}}</div>
+                                                        <div class="project-picker-list-item-title">My Project</div>
+                                                        <div class="project-picker-list-item-path" >
+                                                            <div>My Project</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div>
+                                                <div class="project-picker-list-item">
+                                                    <div>
+                                                        <div class="project-picker-list-item-title">My Project</div>
                                                         <div class="project-picker-list-item-path" >
                                                             <div>My Project</div>
                                                         </div>
@@ -245,7 +251,7 @@
 
         <!-- Timeline Content -->
         <div class="smart-timeline">
-            <a ng-click="vm.commentViewType = !vm.commentViewType">댓글만 보기({{vm.commentList.length}})</a>
+            <a ng-click="vm.commentViewType = !vm.commentViewType">댓글만 보기</a>
             <ul class="smart-timeline-list">
 
                 <!-- 로그&댓글 보기 -->

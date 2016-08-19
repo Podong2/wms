@@ -43,6 +43,9 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
             vm.fileAreaOpen = false;
             vm.relatedTaskOpen = false;
 
+            /* 프로젝트 목록 */
+            vm.projectList = [];
+
             /* sub task info */
             vm.subTask = {
                 name : '',
@@ -206,5 +209,20 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
                 vm.task[type] = typeIds.join(",");
             }
 
+            function getProjectList(){
+                Project.query({}, onSuccess, onError);
+            }
+
+            function onSuccess (result) {
+                vm.projectList = result;
+                $log.debug("프로젝트 목록 : ", result);
+                toastr.success('프로젝트 목록 불러오기 완료', '프로젝트 목록 불러오기 완료');
+                $rootScope.$broadcast('projectListLoading')
+            }
+            function onError (result) {
+                $log.debug("프로젝트 목록 : ", result);
+                toastr.error('프로젝트 목록 불러오기 실패', '프로젝트 목록 불러오기 실패');
+            }
+            getProjectList();
 
         }
