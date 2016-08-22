@@ -174,6 +174,21 @@ public class TaskResource {
             .body(result);
     }
 
+    @RequestMapping(value = "/tasks/{id}",
+        method = RequestMethod.PUT,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<TaskDTO> revertTaskContents(@PathVariable Long id, @RequestParam Long traceLogId) throws URISyntaxException {
+        log.debug("REST request to update Task id : {}", id);
+
+        TaskDTO result = taskService.revertTaskContents(id, traceLogId);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert("task", result.getId().toString()))
+            .body(result);
+    }
+
+
+
     /**
      * GET  /tasks : get all the tasks.
      *

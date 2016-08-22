@@ -93,6 +93,9 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<TaskProject> taskProjects = new HashSet<>();
 
+    @OneToOne(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    private TaskRepeatSchedule taskRepeatSchedule;
+
     public Task() {
 
     }
@@ -340,6 +343,14 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
     public List<Project> getPlainTaskProject() {
 
         return this.taskProjects.stream().map(TaskProject::getProject).collect(Collectors.toList());
+    }
+
+    public TaskRepeatSchedule getTaskRepeatSchedule() {
+        return taskRepeatSchedule;
+    }
+
+    public void setTaskRepeatSchedule(TaskRepeatSchedule taskRepeatSchedule) {
+        this.taskRepeatSchedule = taskRepeatSchedule;
     }
 
     @Override

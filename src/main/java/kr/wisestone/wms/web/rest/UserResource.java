@@ -1,10 +1,7 @@
 package kr.wisestone.wms.web.rest;
 
-import com.mysema.query.BooleanBuilder;
-import kr.wisestone.wms.config.Constants;
 import com.codahale.metrics.annotation.Timed;
-import kr.wisestone.wms.domain.Authority;
-import kr.wisestone.wms.domain.QUser;
+import kr.wisestone.wms.config.Constants;
 import kr.wisestone.wms.domain.User;
 import kr.wisestone.wms.repository.AuthorityRepository;
 import kr.wisestone.wms.repository.UserRepository;
@@ -28,17 +25,19 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 import java.net.URI;
 import java.net.URISyntaxException;
-import javax.servlet.http.HttpServletRequest;
-import java.util.*;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * REST controller for managing users.
@@ -145,13 +144,13 @@ public class UserResource {
      * or with status 400 (Bad Request) if the login or email is already in use,
      * or with status 500 (Internal Server Error) if the user couldnt be updated
      */
-    @RequestMapping(value = "/users",
-        method = RequestMethod.PUT,
+    @RequestMapping(value = "/users/updateUser",
+        method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Transactional
     @Secured(AuthoritiesConstants.ADMIN)
-    public ResponseEntity<ManagedUserDTO> updateUser(@RequestBody ManagedUserDTO managedUserDTO) {
+    public ResponseEntity<ManagedUserDTO> updateUser(ManagedUserDTO managedUserDTO, MultipartHttpServletRequest request) {
         log.debug("REST request to update User : {}", managedUserDTO);
         Optional<User> existingUser = userRepository.findOneByEmail(managedUserDTO.getEmail());
         if (existingUser.isPresent() && (!existingUser.get().getId().equals(managedUserDTO.getId()))) {
@@ -162,7 +161,9 @@ public class UserResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("userManagement", "userexists", "Login already in use")).body(null);
         }
 
-        userService.updateUser(managedUserDTO);
+        MultipartFile file = request.getFile("file");
+
+        userService.updateUser(managedUserDTO, file);
 
         return ResponseEntity.ok()
             .headers(HeaderUtil.createAlert("userManagement.updated", managedUserDTO.getLogin()))

@@ -127,7 +127,7 @@ public class User extends AbstractAuditingEntity implements UserDetails, Seriali
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<PersistentToken> persistentTokens = new HashSet<>();
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "profile_image_id")
     private AttachedFile profileImage;
 
