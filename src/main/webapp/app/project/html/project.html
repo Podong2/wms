@@ -39,16 +39,16 @@
                             </div>
                         </div>
                     </div>
-                    <div style="font-weight: bold; font-size: 16px; background: #fff; padding: 0 10px; ">
-                        <ul class="project-menu-area">
-                            <li><span>목록</span></li>
-                            <li><span>차트</span></li>
-                            <li><span>히스토리</span></li>
-                            <li><span>리포트</span></li>
-                            <li><span>작업일정</span></li>
-                            <li><span>대화방</span></li>
-                            <li><span>파일</span></li>
-                            <li><span><i class="fa fa-ellipsis-v"></i></span></li>
+                    <div style="font-weight: bold; font-size: 16px; background: #fff; padding: 0 0px; ">
+                        <ul class="nav nav-tabs nav-justified project-menu-area">
+                            <li class="text-center"><span>목록</span></li>
+                            <li class="text-center"><span>차트</span></li>
+                            <li class="text-center" ui-sref="my-project-functions.history({id : vm.project.id})"><span>히스토리</span></li>
+                            <li class="text-center"><span>리포트</span></li>
+                            <li class="text-center"><span>작업일정</span></li>
+                            <li class="text-center"><span>대화방</span></li>
+                            <li class="text-center"><span>파일</span></li>
+                            <li class="text-center"><span><i class="fa fa-ellipsis-v"></i></span></li>
                         </ul>
                     </div>
 
@@ -59,14 +59,14 @@
                         dataLiveSearch="false"
                     ></wms-select-box>
                     <div style="clear: both">
-                        <span ng-click="vm.taskAdd = !vm.taskAdd">작업 생성+</span>
+                        <button class="btn btn-default btn-sm btn-radius" ng-click="vm.taskAdd = !vm.taskAdd">작업 생성+</button>
                         <span>상태 : 활성</span>
                         <span class="pull-right">
 
                         </span>
                     </div>
                     <div ng-show="vm.taskAdd">
-                        <input type="text" class="taskAddInput" ng-model="vm.task.name" enter-submit="vm.projectTaskAdd()" placeholder="작업명을 입력하세요."/>
+                        <input type="text" class="taskAddInput" ng-model="vm.task.name" enter-submit="vm.projectTaskAdd()" style="width: 100%; border-top: 1px solid #ddd" placeholder="작업명을 입력하세요."/>
                     </div>
                     <div style="clear: both"></div>
                     <div uib-accordion-group class="panel-default" heading="지연  {{vm.delayed.length}}" is-open="status.isDelayedOpen" is-disabled="status.isFirstDisabled" >
