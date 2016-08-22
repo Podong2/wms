@@ -66,6 +66,10 @@ public class TaskService {
     @Inject
     private ProjectMapper projectMapper;
 
+    @Inject
+    private TraceLogService traceLogService;
+
+
     /**
      *  Get all the tasks.
      *
@@ -305,6 +309,7 @@ public class TaskService {
         return result;
     }
 
+    @Transactional
     public TaskDTO create(TaskForm taskForm) {
 
         Task task = this.taskRepository.findByName(taskForm.getName());
@@ -320,6 +325,7 @@ public class TaskService {
         return taskMapper.taskToTaskDTO(task);
     }
 
+    @Transactional
     public TaskDTO saveTask(TaskForm taskForm, List<MultipartFile> files) {
 
         Task origin = taskRepository.findOne(taskForm.getId());
@@ -344,6 +350,7 @@ public class TaskService {
         return result;
     }
 
+    @Transactional
     public TaskDTO createSubTask(TaskForm taskForm) {
 
         Task subTask = taskForm.bindSubTask(new Task());
@@ -355,6 +362,7 @@ public class TaskService {
         return result;
     }
 
+    @Transactional(readOnly = true)
     public List<TaskDTO> findByNameLike(String name) {
         BooleanBuilder predicate = new BooleanBuilder();
 
@@ -365,6 +373,7 @@ public class TaskService {
         return taskMapper.tasksToTaskDTOs(tasks);
     }
 
+    @Transactional(readOnly = true)
     public List<TaskDTO> findAllProjectManagedTasks(Project project, String listType) {
 
         List<TaskDTO> taskDTOs = Lists.newArrayList();
@@ -405,6 +414,7 @@ public class TaskService {
         return taskDTOs;
     }
 
+    @Transactional(readOnly = true)
     private void crawlingTasksByProject(Project project, String listType, List<TaskDTO> tasks) {
         for(ProjectRelation projectRelation : project.getProjectChilds()) {
 
@@ -414,6 +424,7 @@ public class TaskService {
         }
     }
 
+    @Transactional(readOnly = true)
     public List<Task> findByProject(Project project, String listType) {
 
         QTask $task = QTask.task;
@@ -442,6 +453,7 @@ public class TaskService {
         return tasks;
     }
 
+    @Transactional(readOnly = true)
     public List<TaskDTO> findDTOByProject(Project project, String listType) {
 
         List<Task> tasks = this.findByProject(project, listType);
@@ -458,5 +470,25 @@ public class TaskService {
         }
 
         return taskDTOs;
+    }
+
+    @Transactional
+    public TaskDTO revertTaskContents(Long id, Long traceLogId) {
+
+        if(id == null)
+            throw new CommonRuntimeException("error.task.targetIdIsNull");
+
+        Task task = taskRepository.findOne(id);
+
+        if(task == null)
+            throw new CommonRuntimeException("error.task.notFound");
+
+        TraceLog traceLog = traceLogService.findOne(traceLogId);
+
+        task.setContents(traceLog.getNewValue());
+
+        task = taskRepository.save(task);
+
+        return taskMapper.taskToTaskDTO(task);
     }
 }

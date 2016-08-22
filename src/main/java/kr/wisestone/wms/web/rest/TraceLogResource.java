@@ -55,11 +55,12 @@ public class TraceLogResource {
     @Timed
     @Transactional(readOnly = true)
     public ResponseEntity<List<TraceLogDTO>> getTraceLog(@RequestParam(value = "entityId") Long entityId
-                                                    , @RequestParam(value = "entityName") String entityName)
+                                                    , @RequestParam(value = "entityName") String entityName
+                                                    , @RequestParam(value = "entityField", required = false) String entityField)
         throws URISyntaxException {
         log.debug("REST request to get a page of Tasks");
 
-        List<TraceLogDTO> traceLogDTOs = traceLogService.findByEntityIdAndEntityName(entityId, entityName);
+        List<TraceLogDTO> traceLogDTOs = traceLogService.findByEntityIdAndEntityName(entityId, entityName, entityField);
 
         return new ResponseEntity<>(traceLogDTOs, HttpStatus.OK);
     }

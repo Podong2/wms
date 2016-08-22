@@ -2,6 +2,7 @@ package kr.wisestone.wms.service;
 
 import com.google.common.collect.Lists;
 import com.mysema.query.BooleanBuilder;
+import kr.wisestone.wms.common.exception.CommonRuntimeException;
 import kr.wisestone.wms.domain.AttachedFile;
 import kr.wisestone.wms.domain.QTraceLog;
 import kr.wisestone.wms.domain.TraceLog;
@@ -12,6 +13,7 @@ import kr.wisestone.wms.web.rest.dto.TraceLogDTO;
 import kr.wisestone.wms.web.rest.form.TraceLogForm;
 import kr.wisestone.wms.web.rest.mapper.AttachedFileMapper;
 import kr.wisestone.wms.web.rest.mapper.TraceLogMapper;
+import org.flywaydb.core.internal.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,12 +46,16 @@ public class TraceLogService {
     private AttachedFileMapper attachedFileMapper;
 
     @Transactional(readOnly = true)
-    public List<TraceLogDTO> findByEntityIdAndEntityName(Long entityId, String entityName) {
+    public List<TraceLogDTO> findByEntityIdAndEntityName(Long entityId, String entityName, String entityField) {
         QTraceLog $traceLog = QTraceLog.traceLog;
 
         BooleanBuilder predicate = new BooleanBuilder();
         predicate.and($traceLog.entityName.eq(entityName));
         predicate.and($traceLog.entityId.eq(entityId));
+
+        if(StringUtils.hasText(entityField)) {
+            predicate.and($traceLog.entityField.eq(entityField));
+        }
 
         List<TraceLogDTO> traceLogDTOs = this.findByPredicate($traceLog, predicate);
 
@@ -144,5 +150,11 @@ public class TraceLogService {
         return origin;
     }
 
+    public TraceLog findOne(Long traceLogId) {
 
+        if(traceLogId == null)
+            throw new CommonRuntimeException("error.traceLog.targetIdIsNull");
+
+        return traceLogRepository.findOne(traceLogId);
+    }
 }
