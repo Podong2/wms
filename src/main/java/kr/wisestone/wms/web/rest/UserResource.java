@@ -144,7 +144,7 @@ public class UserResource {
      * or with status 400 (Bad Request) if the login or email is already in use,
      * or with status 500 (Internal Server Error) if the user couldnt be updated
      */
-    @RequestMapping(value = "/users",
+    @RequestMapping(value = "/users/updateUser",
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
