@@ -2,16 +2,14 @@ package kr.wisestone.wms.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import kr.wisestone.wms.common.constant.NotificationConfig;
+import kr.wisestone.wms.web.rest.dto.TaskDTO;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.Objects;
+import java.util.*;
 
 /**
  * A Notification.
@@ -237,6 +235,13 @@ public class Notification extends AbstractAuditingEntity implements Serializable
 
             this.getNotificationRecipients().add(new NotificationRecipient(this, id));
         }
+    }
+
+    public NotificationRecipient findNotificationRecipient(Long id) {
+        return this.notificationRecipients.stream().filter(
+            notificationRecipient ->
+                notificationRecipient.getRecipient().equals(id)
+        ).findFirst().orElse(null);
     }
 
     @Override

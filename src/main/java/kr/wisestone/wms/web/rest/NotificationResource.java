@@ -3,6 +3,8 @@ package kr.wisestone.wms.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import kr.wisestone.wms.domain.Notification;
 import kr.wisestone.wms.service.NotificationService;
+import kr.wisestone.wms.web.rest.dto.TaskDTO;
+import kr.wisestone.wms.web.rest.form.TaskForm;
 import kr.wisestone.wms.web.rest.util.HeaderUtil;
 import kr.wisestone.wms.web.rest.util.PaginationUtil;
 import kr.wisestone.wms.web.rest.dto.NotificationDTO;
@@ -56,12 +58,28 @@ public class NotificationResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     @Transactional(readOnly = true)
-    public ResponseEntity<List<NotificationDTO>> getAllNotifications(Pageable pageable)
+    public ResponseEntity<List<NotificationDTO>> getAllNotifications(
+            @RequestParam(name = "listType", required = false, defaultValue = "UN_READ") String listType
+            , Pageable pageable)
+
         throws URISyntaxException {
         log.debug("REST request to get a page of Notifications");
-        Page<Notification> page = notificationService.findAll(pageable);
+        Page<NotificationDTO> page = notificationService.findAll(listType, pageable);
         HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/notifications");
-        return new ResponseEntity<>(notificationMapper.notificationsToNotificationDTOs(page.getContent()), headers, HttpStatus.OK);
+        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/notifications/getUnreadCount",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<Long> getUnreadNotificationCount()
+
+        throws URISyntaxException {
+        log.debug("REST request to get a count of unread Notifications");
+        Long count = notificationService.unreadNotificationCounts();
+
+        return new ResponseEntity<>(count, HttpStatus.OK);
     }
 
     /**
@@ -77,6 +95,21 @@ public class NotificationResource {
     public ResponseEntity<NotificationDTO> getNotification(@PathVariable Long id) {
         log.debug("REST request to get Notification : {}", id);
         NotificationDTO notificationDTO = notificationService.findOne(id);
+        return Optional.ofNullable(notificationDTO)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @RequestMapping(value = "/notifications/{id}",
+        method = RequestMethod.PUT,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<NotificationDTO> checkReadNotification(@PathVariable Long id) throws URISyntaxException {
+        log.debug("REST request to read Notification : {}", id);
+
+        NotificationDTO notificationDTO = notificationService.checkReadNotification(id);
         return Optional.ofNullable(notificationDTO)
             .map(result -> new ResponseEntity<>(
                 result,
