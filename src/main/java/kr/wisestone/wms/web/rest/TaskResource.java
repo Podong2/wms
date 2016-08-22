@@ -21,7 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.elasticsearch.core.ElasticsearchTemplate;
 import org.springframework.data.elasticsearch.core.query.NativeSearchQueryBuilder;
 import org.springframework.data.elasticsearch.core.query.SearchQuery;
@@ -40,7 +39,6 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -88,7 +86,7 @@ public class TaskResource {
             return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("task", "idexists", "A new task cannot already have an ID")).body(null);
         }
 
-        TaskDTO result = taskService.createByName(taskForm.getName());
+        TaskDTO result = taskService.create(taskForm);
         return ResponseEntity.created(new URI("/api/tasks/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("task", result.getId().toString()))
             .body(result);
@@ -143,7 +141,7 @@ public class TaskResource {
     public ResponseEntity<TaskDTO> updateTask(TaskForm taskForm, MultipartHttpServletRequest request) throws URISyntaxException, IOException {
         log.debug("REST request to update Task : {}", taskForm);
         if (taskForm.getId() == null) {
-            return createTask(taskForm);
+//            return createTask(taskForm);
         }
 
         List<MultipartFile> files = request.getFiles("file");

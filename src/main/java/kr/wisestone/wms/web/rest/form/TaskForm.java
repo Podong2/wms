@@ -22,6 +22,8 @@ public class TaskForm {
 
     private Long parentId;
 
+    private Long projectId;
+
     private Long statusId;
 
     private Long assigneeId;
@@ -66,6 +68,17 @@ public class TaskForm {
             Code status = new Code();
             status.setId(this.statusId);
             task.setStatus(status);
+        } else {
+            Code status = new Code();
+            status.setId(1L);
+            task.setStatus(status);
+        }
+
+        if(this.projectId != null) {
+            Project project = new Project();
+            project.setId(this.projectId);
+
+            task.addTaskProject(project);
         }
 
         for(Long id : getProjectIds()) {

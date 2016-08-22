@@ -305,15 +305,17 @@ public class TaskService {
         return result;
     }
 
-    public TaskDTO createByName(String name) {
+    public TaskDTO create(TaskForm taskForm) {
 
-        Task task = this.taskRepository.findByName(name);
+        Task task = this.taskRepository.findByName(taskForm.getName());
 
         if(task != null) {
             throw new CommonRuntimeException("error.task.taskNameDuplicate");
         }
 
-        task = this.taskRepository.save(new Task(name));
+        task = taskForm.bind(new Task());
+
+        task = this.taskRepository.save(task);
 
         return taskMapper.taskToTaskDTO(task);
     }
