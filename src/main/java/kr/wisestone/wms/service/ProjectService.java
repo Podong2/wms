@@ -156,10 +156,11 @@ public class ProjectService {
         predicate.and($project.status.id.eq(1L));
         predicate.and($project.projectUsers.any().user.login.eq(login).or($project.admin.login.eq(login)));
 
-        predicate.and($project.projectParents.isEmpty()
-                    .or($project.projectParents.any().parent.projectUsers.any().user.login.ne(login)
-                        .and($project.projectParents.any().parent.admin.login.ne(login))
-                    )
+        predicate.and(
+                $project.projectParents.isEmpty()
+                .or($project.projectParents.any().parent.admin.login.ne(login)
+                    .and($project.projectParents.any().parent.projectUsers.isEmpty()
+                        .or($project.projectParents.any().parent.projectUsers.any().user.login.ne(login))))
                 );
 
         List<Project> projects = Lists.newArrayList(projectRepository.findAll(predicate));
