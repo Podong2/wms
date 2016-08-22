@@ -3,6 +3,7 @@ package kr.wisestone.wms.service;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.mysema.query.BooleanBuilder;
 import kr.wisestone.wms.common.constant.NotificationConfig;
 import kr.wisestone.wms.common.util.WebAppUtil;
 import kr.wisestone.wms.domain.*;
@@ -14,12 +15,14 @@ import kr.wisestone.wms.web.rest.dto.NotificationDTO;
 import kr.wisestone.wms.web.rest.dto.ProjectDTO;
 import kr.wisestone.wms.web.rest.dto.TaskDTO;
 import kr.wisestone.wms.web.rest.mapper.NotificationMapper;
+import kr.wisestone.wms.web.rest.mapper.TraceLogMapper;
 import kr.wisestone.wms.web.rest.mapper.UserMapper;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,6 +74,9 @@ public class NotificationService {
     @Inject
     private MessageSource messageSource;
 
+    @Inject
+    private TraceLogMapper traceLogMapper;
+
     /**
      * Save a notification.
      *
@@ -93,13 +99,37 @@ public class NotificationService {
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<Notification> findAll(Pageable pageable) {
+    public Page<NotificationDTO> findAll(String listType, Pageable pageable) {
+
+        User loginUser = SecurityUtils.getCurrentUser();
 
         QNotification $notification = QNotification.notification;
 
+        BooleanBuilder predicate = new BooleanBuilder();
+
+        predicate.and($notification.notificationRecipients.any().recipient.eq(loginUser.getId()));
+
+        if("UN_READ".equals(listType)) {
+            predicate.and($notification.notificationRecipients.any().readYn.eq(Boolean.FALSE));
+        } else {
+            predicate.and($notification.notificationRecipients.any().readYn.eq(Boolean.TRUE));
+        }
+
         log.debug("Request to get all Notifications");
-        Page<Notification> result = notificationRepository.findAll(pageable);
-        return result;
+        Page<Notification> result = notificationRepository.findAll(predicate, pageable);
+
+        List<NotificationDTO> notificationDTOs = notificationMapper.notificationsToNotificationDTOs(result.getContent());
+
+        for(NotificationDTO notificationDTO : notificationDTOs) {
+
+            if("Task".equals(notificationDTO.getEntityName())) {
+                notificationDTO.setTaskDTO(taskService.findOne(notificationDTO.getEntityId()));
+            } else if("Project".equals(notificationDTO.getEntityName())) {
+                notificationDTO.setProjectDTO(projectService.findOne(notificationDTO.getEntityId()));
+            }
+        }
+
+        return new PageImpl<>(notificationDTOs, pageable, result.getTotalElements());
     }
 
     /**
@@ -114,6 +144,19 @@ public class NotificationService {
         Notification notification = notificationRepository.findOne(id);
         NotificationDTO notificationDTO = notificationMapper.notificationToNotificationDTO(notification);
         return notificationDTO;
+    }
+
+    @Transactional
+    public NotificationDTO checkReadNotification(Long id) {
+
+        User loginUser = SecurityUtils.getCurrentUser();
+
+        Notification notification = notificationRepository.findOne(id);
+
+        NotificationRecipient notificationRecipient = notification.findNotificationRecipient(loginUser.getId());
+        notificationRecipient.setReadYn(Boolean.TRUE);
+
+        return notificationMapper.notificationToNotificationDTO(notification);
     }
 
     /**
@@ -143,6 +186,8 @@ public class NotificationService {
     public void sendIssueCreatedNotification(TaskDTO createdTaskDTO, List<User> toUsers, String notifyMethod) {
         NotificationConfig notificationConfig = NotificationConfig.TASK_CREATED;
 
+        User loginUser = SecurityUtils.getCurrentUser();
+
         Map<String, Object> contents = Maps.newHashMap(ImmutableMap.<String, Object>builder().
             put("task", createdTaskDTO).
             put("baseUrl", WebAppUtil.getBaseUrl()).
@@ -151,7 +196,7 @@ public class NotificationService {
         String title = this.getTaskNotificationTitle(createdTaskDTO);
 
         NotificationParameterDTO notificationParameterVo = new NotificationParameterDTO(
-            notificationConfig, notifyMethod, title, contents, toUsers);
+            notificationConfig, notifyMethod, title, contents, userMapper.userToUserDTO(loginUser), toUsers, createdTaskDTO);
 
         this.saveAndSendNotification(notificationParameterVo);
     }
@@ -183,7 +228,7 @@ public class NotificationService {
 
         Map<String, Object> contents = Maps.newHashMap(ImmutableMap.<String, Object>builder().
             put("task", task).
-            put("traceLog", traceLog).
+            put("traceLog", traceLogMapper.traceLogToTraceLogDTO(traceLog)).
             put("baseUrl", WebAppUtil.getBaseUrl()).
             build());
 

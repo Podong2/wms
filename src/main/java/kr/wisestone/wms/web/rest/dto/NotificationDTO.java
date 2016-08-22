@@ -39,6 +39,10 @@ public class NotificationDTO implements Serializable {
 
     private String entityField;
 
+    private TaskDTO taskDTO;
+
+    private ProjectDTO projectDTO;
+
     public Long getId() {
         return id;
     }
@@ -143,6 +147,22 @@ public class NotificationDTO implements Serializable {
 
     public void setEntityField(String entityField) {
         this.entityField = entityField;
+    }
+
+    public TaskDTO getTaskDTO() {
+        return taskDTO;
+    }
+
+    public void setTaskDTO(TaskDTO taskDTO) {
+        this.taskDTO = taskDTO;
+    }
+
+    public ProjectDTO getProjectDTO() {
+        return projectDTO;
+    }
+
+    public void setProjectDTO(ProjectDTO projectDTO) {
+        this.projectDTO = projectDTO;
     }
 
     @Override

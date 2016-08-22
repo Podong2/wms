@@ -8,10 +8,12 @@ import kr.wisestone.wms.common.util.ConvertUtil;
 import kr.wisestone.wms.domain.Notification;
 import kr.wisestone.wms.domain.TraceLog;
 import kr.wisestone.wms.domain.User;
+import kr.wisestone.wms.web.rest.dto.TaskDTO;
 import kr.wisestone.wms.web.rest.dto.UserDTO;
 import lombok.Data;
 
 import javax.annotation.Nullable;
+import javax.persistence.Column;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -37,7 +39,15 @@ public class NotificationParameterDTO {
 
     private List<User> pushUsers = new ArrayList<>();
 
-    private TraceLog traceLog;
+    private Long entityId;
+
+    private String entityName;
+
+    private String entityField;
+
+    private String entityValue;
+
+    private String etcValue;
 
     NotificationParameterDTO() {}
 
@@ -60,7 +70,27 @@ public class NotificationParameterDTO {
         this.contents = contents;
         this.fromUser = fromUser;
         this.toUsers = toUsers;
-        this.traceLog = traceLog;
+
+        this.setEntityId(traceLog.getEntityId());
+        this.setEntityField(traceLog.getEntityField());
+        this.setEntityName(traceLog.getEntityName());
+        this.setEntityValue(traceLog.getEntityField());
+        this.setEtcValue(traceLog.getEtcValue());
+    }
+
+    public NotificationParameterDTO(NotificationConfig notificationConfig, String notificationMethod, String title, Map<String, Object> contents
+        , UserDTO fromUser, List<User> toUsers, TaskDTO taskDTO) {
+
+        this.notificationConfig = notificationConfig;
+        this.notificationMethod = notificationMethod;
+        this.title = title;
+        this.contents = contents;
+        this.fromUser = fromUser;
+        this.toUsers = toUsers;
+
+        this.setEntityId(taskDTO.getId());
+        this.setEntityName("Task");
+        this.setEntityValue(taskDTO.getName());
     }
 
     public NotificationParameterDTO(NotificationConfig notificationConfig, String notificationMethod
@@ -104,13 +134,11 @@ public class NotificationParameterDTO {
             notification.setNotificationType("01");
         }
 
-        if(this.traceLog != null) {
-            notification.setEntityId(this.traceLog.getEntityId());
-            notification.setEntityField(this.traceLog.getEntityField());
-            notification.setEntityName(this.traceLog.getEntityName());
-            notification.setEntityValue(this.traceLog.getEntityField());
-            notification.setEtcValue(this.traceLog.getEtcValue());
-        }
+        notification.setEntityId(this.getEntityId());
+        notification.setEntityField(this.getEntityField());
+        notification.setEntityName(this.getEntityName());
+        notification.setEntityValue(this.getEntityField());
+        notification.setEtcValue(this.getEtcValue());
 
         notification.addNotificationReceive(this.toUsers.stream().map(User::getId).collect(Collectors.toList()));
 
