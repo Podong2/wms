@@ -2,6 +2,7 @@ package kr.wisestone.wms.service;
 
 import com.google.common.collect.Lists;
 import com.mysema.query.BooleanBuilder;
+import kr.wisestone.wms.domain.AttachedFile;
 import kr.wisestone.wms.domain.Authority;
 import kr.wisestone.wms.domain.QUser;
 import kr.wisestone.wms.domain.User;
@@ -20,6 +21,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
 
 import java.time.LocalDate;
@@ -60,6 +62,9 @@ public class UserService {
 
     @Inject
     private AuthorityRepository authorityRepository;
+
+    @Inject
+    private AttachedFileService attachedFileService;
 
     public Optional<User> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
@@ -272,7 +277,7 @@ public class UserService {
         }
     }
 
-    public User updateUser(ManagedUserDTO managedUserDTO) {
+    public User updateUser(ManagedUserDTO managedUserDTO, MultipartFile file) {
 
         User user = userRepository.findOne(managedUserDTO.getId());
 
@@ -294,6 +299,12 @@ public class UserService {
             authority -> authorities.add(authorityRepository.findOne(authority))
         );
         user.setAuthorities(authorities);
+
+
+        if(file != null) {
+            AttachedFile attachedFile = this.attachedFileService.saveFile(file);
+            user.setProfileImage(attachedFile);
+        }
 
         if(StringUtils.hasText(managedUserDTO.getStatus()))
             user.setStatus(managedUserDTO.getStatus());
