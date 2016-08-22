@@ -30,7 +30,7 @@
                     <!-- 프로젝트/폴더 선택 -->
                     <div id="projectPickerSection">
                         <label for="addProject" class="cursor projectValueSection" ><i class="fa fa-plus" id="addProject"></i> <span project-picker-edit-toggle>Project/Folder Add</span></label>
-                        <span class="task-project" ng-repeat="project in vm.project.parentProjectIds">
+                        <span class="task-project" ng-repeat="project in vm.project.projectParents">
                             {{project.name}}
                             <i class="fa fa-close"></i>
                         </span>
@@ -96,11 +96,11 @@
                     <td colspan="3">
                         <autocomplete source="findUsers" tags="vm.project.projectUsers" display-property="name" multiple="true" max-results-to-show="20" tag-type="watchers"></autocomplete>
                     </td>
-                    <td rowspan="2">
+                    <td ng-attr-rowspan="vm.project.folderYn ? 2 : 1">
                         <i class="fa fa-paperclip" ng-click="vm.fileAreaOpen = !vm.fileAreaOpen" style="font-size: 25px"></i>
                     </td>
                 </tr>
-                <tr>
+                <tr ng-show="!vm.project.folderYn">
                     <td>
                         시작일
                     </td>

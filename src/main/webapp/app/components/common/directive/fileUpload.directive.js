@@ -16,12 +16,12 @@ getFiles.$inject=['$log', '$rootScope'];
                     $(".kv-file-upload").remove();
                     $(".kv-file-zoom").remove();
                 });
-                element.bind("filebatchselected", function (event, files) {
-                    if(scope.fileType == 'comment') $rootScope.$broadcast('setCommentFiles', files);
-                    else $rootScope.$broadcast('setFiles', files);
-                    $(".kv-file-upload").remove();
-                    $(".kv-file-zoom").remove();
-                });
+                //element.bind("filebatchselected", function (event, files) {
+                //    if(scope.fileType == 'comment') $rootScope.$broadcast('setCommentFiles', files);
+                //    else $rootScope.$broadcast('setFiles', files);
+                //    $(".kv-file-upload").remove();
+                //    $(".kv-file-zoom").remove();
+                //});
             }
         }
     }

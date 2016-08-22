@@ -43,7 +43,7 @@
         // 코멘트 생성 데이터
         vm.comment = {
             id : vm.userInfo.id,
-            taskId : vm.project.id,
+            projectId : vm.project.id,
             contents : '',
             mentionIds : [],
             removeAttachedFileIds : ''
@@ -114,11 +114,12 @@
 
         // 파일 목록 라이브러리에서 가져오기
         $scope.$on('setFiles', function (event, args) {
-            $scope.files = [];
+            vm.files = [];
             angular.forEach(args, function(value){
-                $scope.files.push(value)
+                vm.files.push(value)
             });
-            $log.debug("파일 목록 : ", $scope.files);
+            $log.debug("파일 목록 : ", vm.files);
+            projectUpload();
         });
         // 파일 목록 라이브러리에서 가져오기
         $scope.$on('setCommentFiles', function (event, args) {
@@ -185,6 +186,11 @@
                 projectUpload();
             }
         });
+        $scope.$watch('vm.files', function(newValue, oldValue){
+            if(oldValue != undefined && newValue != undefined && oldValue !== newValue && oldValue.length < newValue.length) {
+                projectUpload();
+            }
+        });
 
         // 달력 오픈
         function openCalendar(e, picker) {
@@ -211,7 +217,7 @@
             $log.debug("vm.project update ;::::::", vm.project);
             ProjectEdit.uploadProject({
                 method : "POST",
-                file : $scope.files,
+                file : vm.files,
                 //	data 속성으로 별도의 데이터 전송
                 fields : vm.project,
                 fileFormDataName : "file"

@@ -14,7 +14,7 @@
                 <!--<div ui-view="taskList"></div>-->
                 <uib-accordion close-others="oneAtATime">
                     <div style="font-weight: bold; font-size: 16px; background: #fff; padding: 0 10px;">
-                        <a ui-sref="my-project.detail({project:vm.project})"><i class="fa fa-apple"></i> <span>{{vm.project.name}}</span> {{vm.project.startDate}} ~ {{vm.project.endDate}}</a>
+                        <a ui-sref="my-project.detail({project:vm.project})"><i class="fa fa-apple"></i> <span>{{vm.project.name}}</span> <span ng-show="!vm.project.folderYn">{{vm.project.startDate}} ~ {{vm.project.endDate}}</span></a>
                     </div>
                     <div style="background: #fff; padding: 0 10px; border-top : 1px solid #aaa">
                         <div class="row">
@@ -59,14 +59,14 @@
                         dataLiveSearch="false"
                     ></wms-select-box>
                     <div style="clear: both">
-                        <span>작업 생성+</span>
+                        <span ng-click="vm.taskAdd = !vm.taskAdd">작업 생성+</span>
                         <span>상태 : 활성</span>
                         <span class="pull-right">
 
                         </span>
                     </div>
-                    <div>
-                        <input type="text" class="taskAddInput" ng-model="vm.task.name" enter-submit="vm.save()" placeholder="Task"/>
+                    <div ng-show="vm.taskAdd">
+                        <input type="text" class="taskAddInput" ng-model="vm.task.name" enter-submit="vm.projectTaskAdd()" placeholder="작업명을 입력하세요."/>
                     </div>
                     <div style="clear: both"></div>
                     <div uib-accordion-group class="panel-default" heading="지연  {{vm.delayed.length}}" is-open="status.isDelayedOpen" is-disabled="status.isFirstDisabled" >

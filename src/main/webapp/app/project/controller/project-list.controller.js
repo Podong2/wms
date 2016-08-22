@@ -5,14 +5,17 @@
 
 angular.module('wmsApp')
     .controller("projectListCtrl", projectListCtrl);
-projectListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLinks', '$rootScope', '$state', 'ProjectInfo', '$stateParams'];
-        function projectListCtrl($scope, Code, $log, Task, AlertService, ParseLinks, $rootScope, $state, ProjectInfo, $stateParams) {
+projectListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLinks', '$rootScope', '$state', 'ProjectInfo', '$stateParams', 'toastr'];
+        function projectListCtrl($scope, Code, $log, Task, AlertService, ParseLinks, $rootScope, $state, ProjectInfo, $stateParams, toastr) {
             var vm = this;
+            vm.projectTaskAdd = projectTaskAdd;
             //vm.showDetail = showDetail;
             vm.codes = [{"id":1,"name":"활성"},{"id":2,"name":"완료"},{"id":3,"name":"보류"},{"id":4,"name":"취소"}]
             vm.sortType="1";
 
             vm.tasks=[]; // 총 목록
+
+            vm.taskAdd = false;
 
             /* layout config option */
             $scope.status = {
@@ -110,7 +113,30 @@ projectListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 AlertService.error(error.data.message);
             }
 
-
+            vm.task = {
+                name : '',
+                projectIds : ''
+            }
+            function projectTaskAdd(){
+                projectIdPush()
+                if(vm.task.name != '') Task.save(vm.task, onSaveSuccess, onSaveError);
+            }
+            function onSaveSuccess (result) {
+                toastr.success('태스크 생성 완료', '태스크 생성 완료');
+                vm.task.id = result.id;
+                vm.subTask.parentId = result.id;
+                $timeout(function(){ // state reload 명령과 충돌하는 문제 때문에 설정
+                    //$uibModalInstance.dismiss('cancel');
+                }, 100);
+            }
+            function onSaveError () {
+            }
+            // 타스크에 프로젝트 아이디 주입
+            function projectIdPush(ids){
+                var typeIds = [];
+                    typeIds.push(vm.project.id);
+                vm.task.projectIds = typeIds.join(",");
+            }
 
 
 
