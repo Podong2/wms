@@ -117,9 +117,9 @@ public class UserService {
         newUser.setEmail(email);
         newUser.setLangKey(langKey);
         // new user is not active
-        newUser.setActivated(false);
+        newUser.setActivated(Boolean.TRUE);
         // new user gets registration key
-        newUser.setActivationKey(RandomUtil.generateActivationKey());
+//        newUser.setActivationKey(RandomUtil.generateActivationKey());
         Authority authority = authorityRepository.findOne("ROLE_USER");
         Set<Authority> authorities = new HashSet<>();
         authorities.add(authority);

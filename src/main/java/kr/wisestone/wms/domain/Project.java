@@ -54,10 +54,6 @@ public class Project extends AbstractAuditingEntity implements Traceable {
     @JoinColumn(name = "status_id")
     private Code status;
 
-    @ManyToOne
-    @JoinColumn(name = "admin_id")
-    private User admin;
-
     @OneToMany(mappedBy = "child", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
     @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
@@ -142,14 +138,6 @@ public class Project extends AbstractAuditingEntity implements Traceable {
         this.status = status;
     }
 
-    public User getAdmin() {
-        return admin;
-    }
-
-    public void setAdmin(User admin) {
-        this.admin = admin;
-    }
-
     public Set<ProjectRelation> getProjectChilds() {
         return projectChilds;
     }
@@ -175,9 +163,11 @@ public class Project extends AbstractAuditingEntity implements Traceable {
         return projectUsers;
     }
 
-    public List<User> getPlainProjectUsers() {
+    public List<User> getPlainProjectUsers(UserType userType) {
 
-        return this.projectUsers.stream().map(ProjectUser::getUser).collect(Collectors.toList());
+        return this.projectUsers.stream().filter(
+            projectUser -> projectUser.getUserType().equals(userType)
+        ).map(ProjectUser::getUser).collect(Collectors.toList());
     }
 
     public void setProjectUsers(Set<ProjectUser> projectUsers) {
@@ -221,19 +211,19 @@ public class Project extends AbstractAuditingEntity implements Traceable {
         return this;
     }
 
-    public Project addProjectUser(User user) {
+    public Project addProjectUser(User user, UserType userType) {
 
-        ProjectUser origin = this.findProjectUser(user);
+        ProjectUser origin = this.findProjectUser(user, userType);
 
         if(origin == null)
-            this.projectUsers.add(new ProjectUser(this, user));
+            this.projectUsers.add(new ProjectUser(this, user, userType));
 
         return this;
     }
 
-    public Project removeProjectUser(User user) {
+    public Project removeProjectUser(User user, UserType userType) {
 
-        ProjectUser origin = this.findProjectUser(user);
+        ProjectUser origin = this.findProjectUser(user, userType);
 
         if(origin != null)
             this.projectUsers.remove(origin);
@@ -241,10 +231,10 @@ public class Project extends AbstractAuditingEntity implements Traceable {
         return this;
     }
 
-    private ProjectUser findProjectUser(User user) {
+    private ProjectUser findProjectUser(User user, UserType userType) {
         Optional<ProjectUser> origin = this.projectUsers.stream().filter(
             projectUser ->
-                projectUser.getUser().getId().equals(user.getId())
+                projectUser.getUser().getId().equals(user.getId()) && projectUser.getUserType().equals(userType)
         ).findFirst();
 
         if(origin.isPresent()) return origin.get();

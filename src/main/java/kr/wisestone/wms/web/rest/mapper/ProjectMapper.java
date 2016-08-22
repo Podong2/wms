@@ -17,20 +17,18 @@ public interface ProjectMapper {
 
     @Mapping(source = "status.id", target = "statusId")
     @Mapping(source = "status.name", target = "statusName")
-    @Mapping(source = "admin.id", target = "adminId")
-    @Mapping(source = "admin.name", target = "adminName")
     @Mapping(source = "projectParents", target = "projectParents", ignore = true)
     @Mapping(source = "projectChilds", target = "projectChilds", ignore = true)
     @Mapping(source = "projectUsers", target = "projectUsers", ignore = true)
+    @Mapping(source = "projectUsers", target = "projectAdmins", ignore = true)
     ProjectDTO projectToProjectDTO(Project project);
 
     List<ProjectDTO> projectsToProjectDTOs(List<Project> projects);
 
     @Mapping(source = "statusId", target = "status")
-    @Mapping(source = "adminId", target = "admin")
     @Mapping(source = "projectParents", target = "projectParents", ignore = true)
     @Mapping(source = "projectChilds", target = "projectChilds", ignore = true)
-    @Mapping(source = "projectUsers", target = "projectUsers", ignore = true)
+    @Mapping(target = "projectUsers", ignore = true)
     Project projectDTOToProject(ProjectDTO projectDTO);
 
     List<Project> projectDTOsToProjects(List<ProjectDTO> projectDTOs);

@@ -31,13 +31,18 @@ public class ProjectUser extends AbstractAuditingEntity implements Traceable {
     @JoinColumn(name = "user_id")
     private User user;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "user_type")
+    private UserType userType;
+
     public ProjectUser() {}
 
-    public ProjectUser(Project project, User user) {
+    public ProjectUser(Project project, User user, UserType userType) {
         super();
 
         this.setProject(project);
         this.setUser(user);
+        this.setUserType(userType);
     }
 
     public Long getId() {
@@ -62,6 +67,14 @@ public class ProjectUser extends AbstractAuditingEntity implements Traceable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
     }
 
     @Override

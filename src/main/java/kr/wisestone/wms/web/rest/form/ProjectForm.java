@@ -3,6 +3,7 @@ package kr.wisestone.wms.web.rest.form;
 import kr.wisestone.wms.domain.Code;
 import kr.wisestone.wms.domain.Project;
 import kr.wisestone.wms.domain.User;
+import kr.wisestone.wms.domain.UserType;
 import lombok.Data;
 import org.flywaydb.core.internal.util.StringUtils;
 
@@ -24,9 +25,11 @@ public class ProjectForm {
 
     private Long statusId;
 
-    private Long adminId;
-
     private Boolean folderYn = Boolean.FALSE;
+
+    private List<Long> projectAdminIds = new ArrayList<>();
+
+    private List<Long> removeProjectAdminIds = new ArrayList<>();
 
     private List<Long> projectUserIds = new ArrayList<>();
 
@@ -54,30 +57,46 @@ public class ProjectForm {
 
         project.setFolderYn(folderYn);
 
-        if(this.adminId != null) {
-            User admin = new User();
-            admin.setId(this.adminId);
-            project.setAdmin(admin);
-        }
-
         if(this.statusId != null) {
             Code status = new Code();
             status.setId(this.statusId);
+
             project.setStatus(status);
+        } else {
+            Code status = new Code();
+            status.setId(1L);
+
+            project.setStatus(status);
+        }
+
+        for(Long id : getProjectAdminIds()) {
+            User user = new User();
+            user.setId(id);
+
+            project.addProjectUser(user, UserType.ADMIN);
+        }
+
+
+        for(Long id : getRemoveProjectAdminIds()) {
+            User user = new User();
+            user.setId(id);
+
+            project.removeProjectUser(user, UserType.ADMIN);
         }
 
         for(Long id : getProjectUserIds()) {
             User user = new User();
             user.setId(id);
 
-            project.addProjectUser(user);
+            project.addProjectUser(user, UserType.SHARER);
         }
+
 
         for(Long id : getRemoveProjectUserIds()) {
             User user = new User();
             user.setId(id);
 
-            project.removeProjectUser(user);
+            project.removeProjectUser(user, UserType.SHARER);
         }
 
         for(Long id : getParentProjectIds()) {

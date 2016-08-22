@@ -25,13 +25,11 @@ public class ProjectDTO implements Serializable {
 
     private String statusName;
 
-    private Long adminId;
-
-    private String adminName;
-
     private List<ProjectDTO> projectParents = new ArrayList<>();
 
     private List<ProjectDTO> projectChilds = new ArrayList<>();
+
+    private List<UserDTO> projectAdmins = new ArrayList<>();
 
     private List<UserDTO> projectUsers = new ArrayList<>();
 
@@ -85,6 +83,14 @@ public class ProjectDTO implements Serializable {
         this.folderYn = folderYn;
     }
 
+    public List<UserDTO> getProjectAdmins() {
+        return projectAdmins;
+    }
+
+    public void setProjectAdmins(List<UserDTO> projectAdmins) {
+        this.projectAdmins = projectAdmins;
+    }
+
     public Long getStatusId() {
         return statusId;
     }
@@ -99,22 +105,6 @@ public class ProjectDTO implements Serializable {
 
     public void setStatusName(String statusName) {
         this.statusName = statusName;
-    }
-
-    public Long getAdminId() {
-        return adminId;
-    }
-
-    public void setAdminId(Long adminId) {
-        this.adminId = adminId;
-    }
-
-    public String getAdminName() {
-        return adminName;
-    }
-
-    public void setAdminName(String adminName) {
-        this.adminName = adminName;
     }
 
     public List<ProjectDTO> getProjectParents() {

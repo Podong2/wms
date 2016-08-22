@@ -57,16 +57,13 @@ public class ProjectService {
 
         Project project = projectForm.bind(new Project());
 
-        if(project.getAdmin() == null) {
+        List<User> originProjectAdmins = project.getPlainProjectUsers(UserType.ADMIN);
+
+        if(originProjectAdmins == null || originProjectAdmins.isEmpty()) {
             User user = SecurityUtils.getCurrentUser();
 
-            project.setAdmin(user);
+            project.addProjectUser(user, UserType.ADMIN);
         }
-
-        Code status = new Code();
-        status.setId(1L);
-
-        project.setStatus(status);
 
         project = projectRepository.save(project);
 
@@ -92,8 +89,16 @@ public class ProjectService {
 
     private void copyProjectRelationProperties(Project project, ProjectDTO projectDTO) {
 
-        if(project.getProjectUsers() != null && !project.getProjectUsers().isEmpty()) {
-            projectDTO.setProjectUsers(userMapper.usersToUserDTOs(project.getPlainProjectUsers()));
+        List<User> projectAdmins = project.getPlainProjectUsers(UserType.ADMIN);
+
+        if(projectAdmins != null && !projectAdmins.isEmpty()) {
+            projectDTO.setProjectAdmins(userMapper.usersToUserDTOs(projectAdmins));
+        }
+
+        List<User> projectUsers = project.getPlainProjectUsers(UserType.SHARER);
+
+        if(projectUsers != null && !projectUsers.isEmpty()) {
+            projectDTO.setProjectUsers(userMapper.usersToUserDTOs(projectUsers));
         }
 
         if(project.getProjectParents() != null && !project.getProjectParents().isEmpty()) {
@@ -154,13 +159,12 @@ public class ProjectService {
 
         BooleanBuilder predicate = new BooleanBuilder();
         predicate.and($project.status.id.eq(1L));
-        predicate.and($project.projectUsers.any().user.login.eq(login).or($project.admin.login.eq(login)));
+        predicate.and($project.projectUsers.any().user.login.eq(login));
 
         predicate.and(
                 $project.projectParents.isEmpty()
-                .or($project.projectParents.any().parent.admin.login.ne(login)
-                    .and($project.projectParents.any().parent.projectUsers.isEmpty()
-                        .or($project.projectParents.any().parent.projectUsers.any().user.login.ne(login))))
+                .or($project.projectParents.any().parent.projectUsers.isEmpty()
+                    .or($project.projectParents.any().parent.projectUsers.any().user.login.ne(login)))
                 );
 
         List<Project> projects = Lists.newArrayList(projectRepository.findAll(predicate));

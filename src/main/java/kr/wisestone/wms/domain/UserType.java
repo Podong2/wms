@@ -1,15 +1,17 @@
 package kr.wisestone.wms.domain;
 
-public enum TaskUserType {
+public enum UserType {
 
     ASSIGNEE("assignee", "담당자"),
     WATCHER("watcher", "참조자"),
+    ADMIN("admin", "관리자"),
+    SHARER("sharer", "공유자"),
     ;
 
     private String code;
     private String description;
 
-    TaskUserType(String code, String description) {
+    UserType(String code, String description) {
         this.code = code;
         this.description = description;
     }

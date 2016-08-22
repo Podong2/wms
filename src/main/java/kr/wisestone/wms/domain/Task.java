@@ -1,19 +1,12 @@
 package kr.wisestone.wms.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.common.base.Function;
-import com.google.common.base.Predicate;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import kr.wisestone.wms.common.util.DateUtil;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.util.ClassUtils;
-import org.springframework.util.StringUtils;
 
-import javax.annotation.Nullable;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
@@ -220,24 +213,24 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
         this.relatedTasks = relatedTasks;
     }
 
-    public Task addTaskUser(User user, TaskUserType taskUserType) {
+    public Task addTaskUser(User user, UserType userType) {
 
         Optional<TaskUser> origin = this.taskUsers.stream().filter(
             taskUser ->
-                taskUser.getUserType().equals(taskUserType) && taskUser.getUser().getId().equals(user.getId())
+                taskUser.getUserType().equals(userType) && taskUser.getUser().getId().equals(user.getId())
         ).findFirst();
 
         if(!origin.isPresent())
-            this.taskUsers.add(new TaskUser(this, user, taskUserType));
+            this.taskUsers.add(new TaskUser(this, user, userType));
 
         return this;
     }
 
-    public Task removeTaskUser(User user, TaskUserType taskUserType) {
+    public Task removeTaskUser(User user, UserType userType) {
 
         Optional<TaskUser> origin = this.taskUsers.stream().filter(
             taskUser ->
-                taskUser.getUserType().equals(taskUserType) && taskUser.getUser().getId().equals(user.getId())
+                taskUser.getUserType().equals(userType) && taskUser.getUser().getId().equals(user.getId())
         ).findFirst();
 
         if(origin.isPresent())
@@ -246,10 +239,10 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
         return this;
     }
 
-    public List<User> findTaskUsersByType(TaskUserType taskUserType) {
+    public List<User> findTaskUsersByType(UserType userType) {
 
         List<TaskUser> taskUsers = this.taskUsers.stream().filter(
-                                        taskUser -> taskUser.getUserType().equals(taskUserType)
+                                        taskUser -> taskUser.getUserType().equals(userType)
                                     ).collect(Collectors.toList());
 
         return taskUsers.stream().map(TaskUser::getUser).collect(Collectors.toList());

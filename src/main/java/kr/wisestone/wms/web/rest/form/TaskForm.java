@@ -99,21 +99,21 @@ public class TaskForm {
             User user = new User();
             user.setId(id);
 
-            task.addTaskUser(user, TaskUserType.ASSIGNEE);
+            task.addTaskUser(user, UserType.ASSIGNEE);
         }
 
         for(Long id : getRemoveAssigneeIds()) {
             User user = new User();
             user.setId(id);
 
-            task.removeTaskUser(user, TaskUserType.ASSIGNEE);
+            task.removeTaskUser(user, UserType.ASSIGNEE);
         }
 
         for(Long id : getWatcherIds()) {
             User user = new User();
             user.setId(id);
 
-            task.addTaskUser(user, TaskUserType.WATCHER);
+            task.addTaskUser(user, UserType.WATCHER);
         }
 
 
@@ -121,7 +121,7 @@ public class TaskForm {
             User user = new User();
             user.setId(id);
 
-            task.removeTaskUser(user, TaskUserType.WATCHER);
+            task.removeTaskUser(user, UserType.WATCHER);
         }
 
         for(Long id : getRelatedTaskIds()) {
@@ -153,14 +153,14 @@ public class TaskForm {
         if(this.getAssigneeId() != null) {
             User assignee = new User();
             assignee.setId(this.getAssigneeId());
-            subTask.addTaskUser(assignee, TaskUserType.ASSIGNEE);
+            subTask.addTaskUser(assignee, UserType.ASSIGNEE);
         }
 
         for(Long id : getAssigneeIds()) {
             User user = new User();
             user.setId(id);
 
-            subTask.addTaskUser(user, TaskUserType.ASSIGNEE);
+            subTask.addTaskUser(user, UserType.ASSIGNEE);
         }
 
         return subTask;

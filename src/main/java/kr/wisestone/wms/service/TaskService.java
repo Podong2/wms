@@ -150,8 +150,8 @@ public class TaskService {
 
     private void copyTaskRelationProperties(Task task, TaskDTO taskDTO) {
         if(task.getTaskUsers() != null && !task.getTaskUsers().isEmpty()) {
-            taskDTO.setAssignees(userMapper.usersToUserDTOs(task.findTaskUsersByType(TaskUserType.ASSIGNEE)));
-            taskDTO.setWatchers(userMapper.usersToUserDTOs(task.findTaskUsersByType(TaskUserType.WATCHER)));
+            taskDTO.setAssignees(userMapper.usersToUserDTOs(task.findTaskUsersByType(UserType.ASSIGNEE)));
+            taskDTO.setWatchers(userMapper.usersToUserDTOs(task.findTaskUsersByType(UserType.WATCHER)));
         }
 
         if(task.getSubTasks() != null && !task.getSubTasks().isEmpty())

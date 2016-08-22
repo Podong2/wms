@@ -34,11 +34,11 @@ public class TaskUser extends AbstractAuditingEntity implements Traceable {
 
     @Enumerated(EnumType.STRING)
     @Column(name = "user_type")
-    private TaskUserType userType;
+    private UserType userType;
 
     public TaskUser() {}
 
-    public TaskUser(Task task, User user, TaskUserType type) {
+    public TaskUser(Task task, User user, UserType type) {
         this.setTask(task);
         this.setUser(user);
         this.setUserType(type);
@@ -68,11 +68,11 @@ public class TaskUser extends AbstractAuditingEntity implements Traceable {
         this.user = user;
     }
 
-    public TaskUserType getUserType() {
+    public UserType getUserType() {
         return userType;
     }
 
-    public void setUserType(TaskUserType type) {
+    public void setUserType(UserType type) {
         this.userType = type;
     }
 
