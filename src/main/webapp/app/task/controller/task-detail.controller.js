@@ -264,8 +264,8 @@
             }).then(function (response) {
                 toastr.success('태스크 수정 완료', '태스크 수정 완료');
                 //$state.go("my-task", {}, {reload : true});
-                $state.go("my-task.detail", {}, {reload : true});
-                $rootScope.$broadcast("taskReload", {listType : $stateParams.listType});
+                //$state.go("my-task.detail", {}, {reload : true}); 수정 필요
+                //$rootScope.$broadcast("taskReload", {listType : $stateParams.listType});
                 vm.task.removeAssigneeIds = "";
                 vm.task.removeWatcherIds = "";
                 vm.task.removeRelatedTaskIds ="";

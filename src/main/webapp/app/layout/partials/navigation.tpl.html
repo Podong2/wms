@@ -205,6 +205,7 @@
             </li>
 
             <!-- 프로젝트 목록 -->
+
             <li data-menu-collapse ng-repeat="list in vm.projectList track by $index">
                 <a data-ui-sref="my-project({id:list.id})">
                     <i style="background: #9fda58; width: 25px; height: 10px"></i> <span class="menu-item-parent">{{list.name}}</span>

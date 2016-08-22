@@ -2020,4 +2020,19 @@ tags-input .tags:hover, tags-input .tags:focus {
 .projectAddSection.on{
     display: block;
 }
+.date-close-btn{
+    position: absolute;
+    top: 8px;
+    left: 83px;
+    z-index: 100;
+    cursor: pointer;
+}
+.project-menu-area{
+    width:100%;
+
+}
+.project-menu-area li{
+    float: left;
+    list-style:none;
+}
 /* project end */

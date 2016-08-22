@@ -3,45 +3,38 @@
 
     angular
         .module('wmsApp')
-        .controller('TaskDetailCtrl', TaskDetailCtrl);
+        .controller('projectDetailCtrl', projectDetailCtrl);
 
-    TaskDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', 'TaskAttachedFile', '$log', 'TaskEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'entity', 'TaskListSearch', 'dataService', 'Principal'];
+    projectDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', '$log', 'ProjectEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind'];
 
-    function TaskDetailCtrl($scope, $rootScope, $stateParams, Task, Code, TaskAttachedFile, $log, TaskEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, entity, TaskListSearch, dataService, Principal) {
+    function projectDetailCtrl($scope, $rootScope, $stateParams, Task, Code, $log, ProjectEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, TaskListSearch, dataService, Principal, ProjectFind ) {
         var vm = this;
 
         vm.openCalendar = openCalendar;
-        vm.taskUpload = taskUpload;
+        vm.projectUpload = projectUpload;
         vm.renderHtml = renderHtml;
         vm.fileDownLoad = fileDownLoad;
-        vm.subTaskSave = subTaskSave;
         vm.createComment = createComment;
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
 
-        vm.task = entity;
         vm.date = '';
         vm.assigneeUsers = [];
         vm.logArrayData = [];
         vm.codes = Code.query();
         vm.commentList = [];
+        vm.projectList=[];
+        vm.project = $stateParams.project;
+        vm.fileAreaOpen = false;
 
-        TaskListSearch.TaskAudigLog({'entityId' : vm.task.id, 'entityName' : 'Task'}).then(function(result){
-            vm.TaskAuditLog = result;
-            angular.forEach(vm.TaskAuditLog.data, function(val){
-                if(val.entityField == 'reply'){
-                    vm.commentList.push(val);
-                }
-            });
-            $log.debug("vm.commentList : ", vm.commentList)
-        });
 
-        vm.responseData = _.clone(vm.task);
-        $log.debug("vm.taskvm.taskvm.task", vm.task);
-        $log.debug("vm.userInfo : ", vm.userInfo);
+        vm.responseData = _.clone(vm.project);
+        $log.debug("vm.project  : ", vm.project );
 
-        //$log.debug("info :", vm.task)
-        $log.debug("$stateParams.listType :", $stateParams.listType);
+        vm.project.admin = [{
+            id : vm.project.adminId,
+            name :  vm.project.adminName
+        }];
 
 
         // 갤러리 썸네일 이미지
@@ -50,17 +43,12 @@
         // 코멘트 생성 데이터
         vm.comment = {
             id : vm.userInfo.id,
-            taskId : vm.task.id,
+            taskId : vm.project.id,
             contents : '',
             mentionIds : [],
             removeAttachedFileIds : ''
         };
 
-        // 하위작업, 파일첨부, 참조작업 클릭 이벤트 데이터
-        vm.subTaskOpen = false;
-        vm.fileAreaOpen = false;
-        vm.commentFileAreaOpen = false;
-        vm.relatedTaskOpen = false;
 
         $scope.files = [];
 
@@ -72,36 +60,45 @@
         ];
 
         // min date picker
-        this.dueDateFrom = {
-            date: "",
+        vm.dueDateFrom = {
+            date: DateUtils.toDate(vm.responseData.startDate),
             datepickerOptions: {
                 maxDate: null
             }
         };
         // max date picker
-        this.dueDateTo = {
-            date: "",
+        vm.dueDateTo = {
+            date: DateUtils.toDate(vm.responseData.endDate),
             datepickerOptions: {
                 minDate: null
             }
         };
 
-        /* sub task info */
-        vm.subTask = {
-            name : '',
-            parentId : vm.task.id,
-            assigneeId : vm.userInfo.id,
-            statusId : 1
-        };
+
+        function getProjectList(){
+            ProjectFind.query({name : ''}, onProjectSuccess, onProjectError);
+        }
+        function onProjectSuccess (result) {
+            vm.projectList = result;
+            $log.debug("프로젝트 목록 : ", result);
+        }
+        function onProjectError (result) {
+            $log.debug("프로젝트 목록 : ", result);
+            toastr.error('프로젝트 목록 불러오기 실패', '프로젝트 목록 불러오기 실패');
+        }
+        getProjectList();
+
+        TaskListSearch.TaskAudigLog({'entityId' : vm.project.id, 'entityName' : 'Project'}).then(function(result){
+            vm.TaskAuditLog = result;
+            angular.forEach(vm.TaskAuditLog.data, function(val){
+                if(val.entityField == 'reply'){
+                    vm.commentList.push(val);
+                }
+            });
+            $log.debug("vm.commentList : ", vm.commentList)
+        });
 
         // -------------------  broadcast start ------------------- //
-        //$scope.$on("showDetail", function(event, args){
-        //    vm.task = [];
-        //    Task.get({id : args["id"]}, function(result){
-        //        vm.task = result;
-        //        vm.responseData = _.clone(vm.task);
-        //    })
-        //});
         vm.tagArray = [];
         $scope.$on("tagRemoveId", function(event, args){
             vm.tagArray.push({id : args.id});
@@ -112,7 +109,7 @@
             }else if(args.tagType == "relatedTasks"){
                 userIdPush(vm.tagArray, "removeRelatedTaskIds")
             }
-            taskUpload();
+            projectUpload();
         });
 
         // 파일 목록 라이브러리에서 가져오기
@@ -134,79 +131,64 @@
 
         // content 데이터 변경 체크
         $scope.$on('editingUpload', function (event, args) {
-            if (!angular.equals(vm.responseData.contents, vm.task.contents)) {
-                vm.responseData.contents = vm.task.contents;
-                taskUpload();
+            if (!angular.equals(vm.responseData.contents, vm.project.contents)) {
+                vm.responseData.contents = vm.project.contents;
+                projectUpload();
             }
         });
 
-
-        //$scope.$on('$destroy', unsubscribe);
-        //var unsubscribe = $rootScope.$on('wmsApp:taskUpdate', function(event, result) {
-        //    vm.task = result;
-        //});
         // -------------------  broadcast end ------------------- //
 
         // date 포멧 변경
         $scope.$watch("vm.dueDateFrom.date", function(newValue, oldValue){
-            if(oldValue != newValue){
+            if(oldValue != newValue && newValue != ''){
                 var d = newValue;
                 var formatDate =
                     DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' +  DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
                 //DateUtils.datePickerFormat(d.getHours(), 2) + ':' + DateUtils.datePickerFormat(d.getMinutes(), 2) + ':' + DateUtils.datePickerFormat(d.getSeconds(), 2);
-                vm.task.startDate= formatDate;
+                vm.project.startDate= formatDate;
+            }else if(newValue == ''){
+                vm.project.startDate= '';
             }
 
         });
         // date 포멧 변경
         $scope.$watch("vm.dueDateTo.date", function(newValue, oldValue){
-            if(oldValue != newValue){
+            if(oldValue != newValue && newValue != ''){
                 var d = newValue;
                 var formatDate =
                     DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
                 //DateUtils.datePickerFormat(d.getHours(), 2) + ':' + DateUtils.datePickerFormat(d.getMinutes(), 2) + ':' + DateUtils.datePickerFormat(d.getSeconds(), 2);
-                vm.task.endDate = formatDate;
+                vm.project.endDate = formatDate;
+            }else if(newValue == ''){
+                vm.project.endDate = '';
             }
         });
 
-        $scope.$watchGroup(['vm.task.startDate', 'vm.task.endDate',  'vm.task.statusId', 'vm.task.importantYn'], function(newValue, oldValue){
+        $scope.$watchGroup(['vm.project.startDate', 'vm.project.endDate',  'vm.project.statusId', 'vm.project.importantYn'], function(newValue, oldValue){
             if(oldValue[0] != undefined && newValue[0] != undefined && oldValue != newValue) {
-                taskUpload();
+                projectUpload();
             }
         });
-        $scope.$watchCollection('vm.task.assignees', function(newValue, oldValue){
-            if(oldValue != undefined && newValue != undefined && oldValue !== newValue && oldValue.length < newValue.length) {
-                taskUpload();
+        $scope.$watchCollection('vm.project.admin', function(newValue, oldValue){
+            if(oldValue != undefined && newValue != undefined && oldValue !== newValue) {
+                projectUpload();
             }
         });
-        $scope.$watchCollection('vm.task.watchers', function(newValue, oldValue){
+        $scope.$watchCollection('vm.project.watchers', function(newValue, oldValue){
             if(oldValue != undefined && newValue != undefined && oldValue !== newValue && oldValue.length < newValue.length) {
-                taskUpload();
+                projectUpload();
             }
         });
-        $scope.$watchCollection('vm.task.relatedTasks', function(newValue, oldValue){
-            if(oldValue != undefined && newValue != undefined && oldValue !== newValue && oldValue.length < newValue.length) {
-                taskUpload();
+        $scope.$watchCollection('vm.project.parentProjectIds', function(newValue, oldValue){
+            if(oldValue !== newValue) {
+                projectUpload();
             }
         });
 
         // 달력 오픈
         function openCalendar(e, picker) {
             vm[picker].open = true;
-        }
-
-
-
-        /* 타스크의 서브타스크 등록 */
-        function subTaskSave(){
-            if(vm.subTask.name != '') SubTask.save(vm.subTask, onSubTaskSaveSuccess, onSaveError);
-        }
-
-        function onSubTaskSaveSuccess (result) {
-            toastr.success('sub 태스크 생성 완료', 'sub 태스크 생성 완료');
-            vm.task = entity;
-        }
-        function onSaveError () {
         }
 
         /* user picker */
@@ -220,40 +202,29 @@
             return deferred.promise;
         };
 
-        /* task picker */
-        $scope.findTasks = function(name) {
-            $log.debug("name - : ", name);
-            var deferred = $q.defer();
-            FindTasks.findByName(name).then(function(result){
-                deferred.resolve(result);
-                $log.debug("taskList : ", result);
-            }); //user search
-            return deferred.promise;
-        };
+        /* 프로젝트 업로드 */
+        function projectUpload(){
+            vm.project.adminId = vm.project.admin[0].id;
+            if(vm.project.projectUsers != [])userIdPush(vm.project.projectUsers, "projectUsers");
+            //if(vm.project.relatedTasks != [])userIdPush(vm.project.relatedTasks, "relatedTaskIds");
 
-        /* 타스크 업로드 */
-        function taskUpload(){
-            if(vm.task.assignees != [])userIdPush(vm.task.assignees, "assigneeIds");
-            if(vm.task.watchers != [])userIdPush(vm.task.watchers, "watcherIds");
-            if(vm.task.relatedTasks != [])userIdPush(vm.task.relatedTasks, "relatedTaskIds");
-
-            $log.debug("vm.task ;::::::", vm.task);
-            TaskEdit.uploadTask({
+            $log.debug("vm.project update ;::::::", vm.project);
+            ProjectEdit.uploadProject({
                 method : "POST",
                 file : $scope.files,
                 //	data 속성으로 별도의 데이터 전송
-                fields : vm.task,
+                fields : vm.project,
                 fileFormDataName : "file"
             }).then(function (response) {
-                toastr.success('태스크 수정 완료', '태스크 수정 완료');
-                //$state.go("my-task", {}, {reload : true});
-                $rootScope.$broadcast("taskReload", {listType : $stateParams.listType});
-                vm.task.removeAssigneeIds = "";
-                vm.task.removeWatcherIds = "";
-                vm.task.removeRelatedTaskIds ="";
-                vm.task.assigneeIds = "";
-                vm.task.watcherIds = "";
-                vm.task.relatedTaskIds ="";
+                toastr.success('프로젝트 수정 완료', '프로젝트 수정 완료');
+                $state.go("my-project.detail", {}, {reload : true});
+                //$rootScope.$broadcast("taskReload", {listType : $stateParams.listType});
+                vm.project.removeAssigneeIds = "";
+                vm.project.removeWatcherIds = "";
+                vm.project.removeRelatedTaskIds ="";
+                vm.project.assigneeIds = "";
+                vm.project.watcherIds = "";
+                vm.project.relatedTaskIds ="";
             });
         }
 
@@ -265,7 +236,7 @@
                 typeIds.push(val.id);
             });
 
-            vm.task[type] = typeIds.join(",");
+            vm.project[type] = typeIds.join(",");
         }
 
 
@@ -300,7 +271,7 @@
             }).attr("src", "/api/attachedFile/" + key);
         }
 
-        //setAttachedFiles(vm.task.attachedFiles); // 첨부파일목록 겔러리 세팅
+        //setAttachedFiles(vm.project.attachedFiles); // 첨부파일목록 겔러리 세팅
 
         // bootstrap file uploader plugin load
         $("#input-4").fileinput({
@@ -319,7 +290,7 @@
                 vm.mentionIds.push(value.id);
             });
             commentMentionIdPush(vm.mentionIds);
-            TaskEdit.createComment({
+            ProjectEdit.createComment({
                 method : "POST",
                 file : $scope.commentFiles,
                 //	data 속성으로 별도의 데이터 전송
@@ -328,7 +299,7 @@
             }).then(function (response) {
                 $scope.$emit('wmsApp:taskUpdate', response);
                 toastr.success('태스크 코멘트 생성 완료', '태스크 코멘트 생성 완료');
-                TaskListSearch.TaskAudigLog({'entityId' : vm.task.id, 'entityName' : 'Task'}).then(function(result){
+                TaskListSearch.TaskAudigLog({'entityId' : vm.project.id, 'entityName' : 'Project'}).then(function(result){
                     vm.TaskAuditLog = result;
                     vm.commentList=[];
                     angular.forEach(vm.TaskAuditLog.data, function(val){
