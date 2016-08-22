@@ -143,6 +143,13 @@ public class NotificationService {
         log.debug("Request to get Notification : {}", id);
         Notification notification = notificationRepository.findOne(id);
         NotificationDTO notificationDTO = notificationMapper.notificationToNotificationDTO(notification);
+
+        if("Task".equals(notificationDTO.getEntityName())) {
+            notificationDTO.setTaskDTO(taskService.findOne(notificationDTO.getEntityId()));
+        } else if("Project".equals(notificationDTO.getEntityName())) {
+            notificationDTO.setProjectDTO(projectService.findOne(notificationDTO.getEntityId()));
+        }
+
         return notificationDTO;
     }
 
