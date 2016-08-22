@@ -146,6 +146,22 @@ public class NotificationService {
         return notificationDTO;
     }
 
+    @Transactional(readOnly = true)
+    public Long unreadNotificationCounts() {
+        User loginUser = SecurityUtils.getCurrentUser();
+
+        QNotification $notification = QNotification.notification;
+
+        BooleanBuilder predicate = new BooleanBuilder();
+
+        predicate.and($notification.notificationRecipients.any().recipient.eq(loginUser.getId()));
+        predicate.and($notification.notificationRecipients.any().readYn.eq(Boolean.FALSE));
+
+        Long count = notificationRepository.count(predicate);
+
+        return count;
+    }
+
     @Transactional
     public NotificationDTO checkReadNotification(Long id) {
 

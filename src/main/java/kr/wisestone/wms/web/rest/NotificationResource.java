@@ -69,6 +69,19 @@ public class NotificationResource {
         return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/notifications/getUnreadCount",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<Long> getUnreadNotificationCount()
+
+        throws URISyntaxException {
+        log.debug("REST request to get a count of unread Notifications");
+        Long count = notificationService.unreadNotificationCounts();
+
+        return new ResponseEntity<>(count, HttpStatus.OK);
+    }
+
     /**
      * GET  /notifications/:id : get the "id" notification.
      *
