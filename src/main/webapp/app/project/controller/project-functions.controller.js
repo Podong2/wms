@@ -5,9 +5,11 @@
 
 angular.module('wmsApp')
     .controller("projectFunctionsCtrl", projectFunctionsCtrl);
-projectFunctionsCtrl.$inject=['$state'];
-        function projectFunctionsCtrl($state) {
+projectFunctionsCtrl.$inject=['$state', '$stateParams', '$log'];
+        function projectFunctionsCtrl($state, $stateParams, $log) {
             var vm = this;
+            $log.debug("function $stateParams : ", $stateParams)
+            vm.projectId = $stateParams.id;
 
             vm.stateInfo = $state.current.name;
             vm.state = $state.get(vm.stateInfo);

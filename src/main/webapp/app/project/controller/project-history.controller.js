@@ -13,11 +13,12 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
             vm.renderHtml = renderHtml;
             vm.createComment = createComment;
             vm.userInfo = Principal.getIdentity();
-
             vm.tasks=[];
             vm.history = [];
             vm.historyArea = [];
             vm.TaskAuditLog = [];
+            $scope.commentFiles = [];
+            vm.commentFileAreaOpen = false;
 
             $scope.dataService = dataService;
 
@@ -30,15 +31,20 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
                 removeAttachedFileIds : ''
             };
 
-            $("#input-5").fileinput({
-                showCaption: false, showUpload: false, uploadUrl:"1", uploadAsync: false
+            // 파일 목록 라이브러리에서 가져오기
+            $scope.$on('setCommentFiles', function (event, args) {
+                $scope.commentFiles = [];
+                angular.forEach(args, function(value){
+                    $scope.commentFiles.push(value)
+                });
+                $log.debug("코멘트 파일 목록 : ", $scope.commentFiles);
             });
 
-
+            // 타스크 목록 불러오기
             function getList(){
                 ProjectInfo.get({projectId : $stateParams.id, listType : 'TOTAL'}, onSuccess, onError);
             }
-            getList();
+        getList();
             function onSuccess(data) {
                 vm.tasks = data.tasks;
                 angular.forEach(vm.tasks, function(val){
@@ -50,6 +56,7 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
                 AlertService.error(error.data.message);
             }
 
+            // 타스크 히스토리 오픈&클로즈 처리 및 로그 불러오기
             function taskHistoryOpen(index, taskId, openYn){
                 angular.forEach(vm.tasks, function(value, key){
                     value.historyArea = false;
@@ -75,6 +82,7 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
                 }).attr("src", "/api/attachedFile/" + key);
             }
 
+            /* 코멘트 저장 */
             vm.mentionIds = []; // mention ids
             function createComment(taskId, index){
                 vm.comment.taskId = taskId;
@@ -94,6 +102,7 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
                 }).then(function (response) {
                     $scope.$emit('wmsApp:taskUpdate', response);
                     toastr.success('태스크 코멘트 생성 완료', '태스크 코멘트 생성 완료');
+                    vm.comment.contents = [];
                     TaskListSearch.TaskAudigLog({'entityId' : taskId, 'entityName' : 'Task'}).then(function(result){
                         vm.tasks[index].TaskAuditLog = result;
                     });

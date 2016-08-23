@@ -26,7 +26,7 @@
         </div>
 
         <!-- 히스토리 영역 -->
-        <div ng-show="task.historyArea">
+        <div ng-if="task.historyArea">
 
             <!-- Timeline Content -->
             <div class="smart-timeline">
@@ -88,13 +88,19 @@
                 </div>
             </div><!-- 댓글 입력 영역 끝 -->
 
-            <!-- 댓글 파일첨부 영역 -->
+            <!-- 댓글 파일첨부 영역 (수정중 ng-repeat 시 오류 현상)-->
             <div class="task-file-area" ng-class="vm.commentFileAreaOpen ? 'on' : ''">
-                <input id="input-5" name="input5[]" type="file" multiple class="file-loading" get-files file-type="comment">
+                <wms-add-file-element></wms-add-file-element>
             </div><!-- 댓글 파일첨부 영역 끝-->
 
         </div><!-- 히스토리 영역 끝-->
 
         </div>
+
     </div>
 </div>
+<script>
+    $("#input-5").fileinput({
+        showCaption: false, showUpload: false, uploadUrl:"1", uploadAsync: false
+    });
+</script>
