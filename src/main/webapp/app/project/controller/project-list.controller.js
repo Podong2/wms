@@ -115,11 +115,11 @@ projectListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
 
             vm.task = {
                 name : '',
-                projectIds : ''
+                projectId : $stateParams.id
             }
             function projectTaskAdd(){
                 projectIdPush()
-                if(vm.task.name != '') Task.save(vm.task, onSaveSuccess, onSaveError);
+                if(vm.task.name != '') Task.save({name : vm.task.name, projectId : vm.task.projectId}, onSaveSuccess, onSaveError);
             }
             function onSaveSuccess (result) {
                 toastr.success('태스크 생성 완료', '태스크 생성 완료');

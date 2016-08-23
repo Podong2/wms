@@ -31,10 +31,8 @@
         vm.responseData = _.clone(vm.project);
         $log.debug("vm.project  : ", vm.project );
 
-        vm.project.admin = [{
-            id : vm.project.adminId,
-            name :  vm.project.adminName
-        }];
+        //vm.project.projectAdminIds = vm.project.projectAdmins;
+        //vm.project.projectUserIds = vm.project.projectUsers;
 
 
         // 갤러리 썸네일 이미지
@@ -102,12 +100,10 @@
         vm.tagArray = [];
         $scope.$on("tagRemoveId", function(event, args){
             vm.tagArray.push({id : args.id});
-            if(args.tagType == "assignees") {
-                userIdPush(vm.tagArray, "removeAssigneeIds")
-            }else if(args.tagType == "watchers"){
-                userIdPush(vm.tagArray, "removeWatcherIds")
-            }else if(args.tagType == "relatedTasks"){
-                userIdPush(vm.tagArray, "removeRelatedTaskIds")
+            if(args.tagType == "projectUserIds") {
+                userIdPush(vm.tagArray, "removeProjectUserIds")
+            }else if(args.tagType == "projectAdminIds") {
+                userIdPush(vm.tagArray, "removeProjectAdminIds")
             }
             projectUpload();
         });
@@ -167,17 +163,17 @@
         });
 
         $scope.$watchGroup(['vm.project.startDate', 'vm.project.endDate',  'vm.project.statusId', 'vm.project.importantYn'], function(newValue, oldValue){
-            if(oldValue[0] != undefined && newValue[0] != undefined && oldValue != newValue) {
+            if( newValue[0] != undefined && oldValue != newValue) {
                 projectUpload();
             }
         });
-        $scope.$watchCollection('vm.project.admin', function(newValue, oldValue){
-            if(oldValue != undefined && newValue != undefined && oldValue !== newValue) {
+        $scope.$watchCollection('vm.project.projectAdmins', function(newValue, oldValue){
+            if(newValue != undefined && oldValue !== newValue && oldValue.length < newValue.length) {
                 projectUpload();
             }
         });
-        $scope.$watchCollection('vm.project.watchers', function(newValue, oldValue){
-            if(oldValue != undefined && newValue != undefined && oldValue !== newValue && oldValue.length < newValue.length) {
+        $scope.$watchCollection('vm.project.projectUsers', function(newValue, oldValue){
+            if(newValue != undefined && oldValue !== newValue && oldValue.length < newValue.length) {
                 projectUpload();
             }
         });
@@ -210,9 +206,8 @@
 
         /* 프로젝트 업로드 */
         function projectUpload(){
-            vm.project.adminId = vm.project.admin[0].id;
-            if(vm.project.projectUsers != [])userIdPush(vm.project.projectUsers, "projectUsers");
-            //if(vm.project.relatedTasks != [])userIdPush(vm.project.relatedTasks, "relatedTaskIds");
+            if(vm.project.projectAdmins != [])userIdPush(vm.project.projectAdmins, "projectAdminIds");
+            if(vm.project.projectUsers != [])userIdPush(vm.project.projectUsers, "projectUserIds");
 
             $log.debug("vm.project update ;::::::", vm.project);
             ProjectEdit.uploadProject({
@@ -223,14 +218,12 @@
                 fileFormDataName : "file"
             }).then(function (response) {
                 toastr.success('프로젝트 수정 완료', '프로젝트 수정 완료');
-                $state.go("my-project.detail", {}, {reload : true});
-                //$rootScope.$broadcast("taskReload", {listType : $stateParams.listType});
                 vm.project.removeAssigneeIds = "";
                 vm.project.removeWatcherIds = "";
                 vm.project.removeRelatedTaskIds ="";
-                vm.project.assigneeIds = "";
-                vm.project.watcherIds = "";
-                vm.project.relatedTaskIds ="";
+                vm.project.projectAdminIds = "";
+                vm.project.projectUserIds = "";
+                $state.go("my-project.detail", {}, {reload : true});
             });
         }
 

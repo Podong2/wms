@@ -1,0 +1,106 @@
+<div class="well" style="overflow-y: auto; background-color: #fff;">
+
+    <div ng-repeat="task in vm.tasks track by $index">
+        <!-- 작업 타이틀&사용자 아이콘 -->
+        <div style=" margin-bottom: 15px;">
+            <a ng-click="vm.taskHistoryOpen($index, task.id, task.historyArea)" class="project-history-title"><i class="fa " ng-class="task.historyArea ? 'fa-minus' : 'fa-plus'"></i> {{task.name}}   </a>
+
+            <ul class="list-inline friends-list" style="margin-bottom: 0">
+                <li><img src="/content/images/demo/1.png" alt="friend-1">
+                </li>
+                <li><img src="/content/images/demo/2.png" alt="friend-2">
+                </li>
+                <li><img src="/content/images/demo/3.png" alt="friend-3">
+                </li>
+                <li><img src="/content/images/demo/4.png" alt="friend-4">
+                </li>
+                <li><img src="/content/images/demo/5.png" alt="friend-5">
+                </li>
+                <li>
+                    <a href-void>413 more</a>
+                </li>
+            </ul>
+            <div class="project-history-info">
+                일정 : {{task.startDate | date : 'yyyy-MM-dd'}} ~ {{task.startDate | date : 'yyyy-MM-dd'}}, 담당자 : <span ng-repeat="user in task.assignees"> {{user.name}}</span>
+            </div>
+        </div>
+
+        <!-- 히스토리 영역 -->
+        <div ng-if="task.historyArea">
+
+            <!-- Timeline Content -->
+            <div class="smart-timeline">
+                <ul class="smart-timeline-list">
+                    <!-- 로그 보기 -->
+                    <li ng-repeat="data in task.TaskAuditLog.data" ng-if="!vm.commentViewType">
+                        <div class="smart-timeline-icon" ng-if="(task.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (task.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')">
+                            {{task.TaskAuditLog.data[$index].createdDate | date : 'MM/dd'}}
+                        </div>
+                        <div class="smart-timeline-content">
+                            <p ng-if="task.TaskAuditLog.data[$index].createdBy != task.TaskAuditLog.data[$index-1].createdBy
+                            || (task.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (task.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')"
+                               ng-class="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
+                            || (task.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (task.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
+                                <a href-void><strong>{{data.createdBy}}</strong> </a><a ng-click="">댓글</a>
+                            </p>
+                            <p class="pad-l15">
+                            <span ng-if="data.entityField == 'reply'">
+                                <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px"></span> {{data.createdDate | date : 'HH:mm'}}
+                                <br/>
+                            <p ng-repeat="file in data.attachedFiles" class="pad-l20">
+                                <a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>
+                            </p>
+                            </span>
+                            <span ng-if="data.entityField != 'reply'" class="pad-l20">
+                                {{data.createdBy}} 이 {{data.entityField}} {{data.newValue}}를 {{data.persistType}}하였습니다. {{data.createdDate | date : 'HH:mm'}}
+                                <br/>
+                                <p ng-repeat="file in data.attachedFiles" class="pad-l20">
+                                    <a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>
+                                </p>
+                            </span>
+                            </p>
+                        </div>
+                    </li>
+                </ul>
+            </div><!-- END Timeline Content -->
+
+            <!-- 댓글 입력 영역 -->
+            <div class="row comment-area" style="border-top: 1px solid #ddd; padding-top: 10px;">
+                <div class="col-md-11">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <a ng-click="vm.commentFileAreaOpen = !vm.commentFileAreaOpen">
+                                <i class="fa fa-paperclip pull-right" style="font-size: 30px; margin-top: 6px"></i>
+                            </a>
+
+                        </div>
+                        <div class="col-md-11">
+                            <summernote ng-model="vm.comment.contents" on-init="init()" on-enter="enter()" on-focus="focus(evt)" config="dataService.getSummerNoteOptions(false)"
+                                        on-blur="blur(evt)" on-paste="paste()" on-keyup="keyup(evt)" contenteditable="true"
+                                        on-keydown="keydown(evt)" on-change="change(contents)"
+                                        editable="editable" editor="editor" lang="ko-KR">
+                            </summernote>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <button type="button" class="btn btn_icon btn_customs" ng-click="vm.createComment(task.id, $index)" owl-btn-save></button>
+                </div>
+            </div><!-- 댓글 입력 영역 끝 -->
+
+            <!-- 댓글 파일첨부 영역 (수정중 ng-repeat 시 오류 현상)-->
+            <div class="task-file-area" ng-class="vm.commentFileAreaOpen ? 'on' : ''">
+                <wms-add-file-element></wms-add-file-element>
+            </div><!-- 댓글 파일첨부 영역 끝-->
+
+        </div><!-- 히스토리 영역 끝-->
+
+        </div>
+
+    </div>
+</div>
+<script>
+    $("#input-5").fileinput({
+        showCaption: false, showUpload: false, uploadUrl:"1", uploadAsync: false
+    });
+</script>

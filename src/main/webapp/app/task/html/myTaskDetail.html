@@ -280,16 +280,16 @@
                 </li>
 
                 <!-- 댓글만 보기 -->
-                <li ng-repeat="data in vm.commentList" ng-if="vm.commentViewType">
-                    <div class="smart-timeline-icon" ng-if="(vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')
+                <li ng-repeat="data in vm.commentList track by $index" ng-if="vm.commentViewType">
+                    <div class="smart-timeline-icon" ng-if="(data.createdDate | date : 'MM/dd') != (vm.commentList[$index-1].createdDate | date : 'MM/dd')
                     ">
-                        {{vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd'}}
+                        {{data.createdDate | date : 'MM/dd'}}
                     </div>
                     <div class="smart-timeline-content">
-                        <p ng-if="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
-                            || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')"
-                            ng-class="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
-                            || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
+                        <p ng-if="vm.commentList[$index].createdBy != vm.commentList[$index-1].createdBy
+                            || (vm.commentList[$index].createdDate | date : 'MM/dd') != (vm.commentList[$index-1].createdDate | date : 'MM/dd')"
+                            ng-class="vm.commentList[$index].createdBy != vm.commentList[$index-1].createdBy
+                            || (vm.commentList[$index].createdDate | date : 'MM/dd') != (vm.commentList[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
                             <a href-void><strong>{{data.createdBy}}</strong> </a><a ng-click="">댓글</a>
                         </p>
                         <p class="pad-l15">

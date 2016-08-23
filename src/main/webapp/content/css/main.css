@@ -1,6 +1,6 @@
 body {
     background: #fcfcfc;
-    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "나눔고딕", Helvetica, Arial, sans-serif;
     color: #333;
 }
 
@@ -933,12 +933,12 @@ li.active > a{
 
 .nav-tabs > li > span {
     display: block;
-    padding: 10px 15px 7px 15px;
+    padding: 10px 7px 7px 7px;
     cursor: pointer;
     margin-bottom: 1px;
     line-height: 1.8;
     /*border-radius: 4px 4px 0 0;*/
-    background-color: #e0e0e0;
+    background-color: #F5F5F5;
     margin-right: 2px;
 }
 
@@ -948,13 +948,13 @@ li.active > a{
     /*border-radius: 4px 4px 0 0;*/
     color: #fff;
     cursor: default;
-    background-color: #B6B6B6;;
+    background-color: #87A6F3;
 }
 
 .nav-tabs > li > span:hover,
 .nav-tabs > li > span:focus {
     color: #fff;
-    background-color: #F0E0A3;
+    background-color: #BFD2FF;
 }
 
 /* 슬라이드 css */
@@ -2034,5 +2034,14 @@ tags-input .tags:hover, tags-input .tags:focus {
 .project-menu-area li{
     float: left;
     list-style:none;
+}
+.project-history-title{
+    font-size: 24px; float:left;
+    margin-right: 10px; color : #999;
+    font-weight: 500;
+}
+.project-history-info{
+    margin-left: 27px;
+    font-size: 16px;
 }
 /* project end */
