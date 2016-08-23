@@ -3,6 +3,8 @@ package kr.wisestone.wms.web.rest.dto;
 
 import kr.wisestone.wms.domain.AttachedFile;
 
+import java.time.ZonedDateTime;
+
 public class AttachedFileDTO {
 
     private Long id;
@@ -13,6 +15,10 @@ public class AttachedFileDTO {
 
     private String contentType;
 
+    private String lastModifiedBy;
+
+    private ZonedDateTime lastModifiedDate;
+
     public AttachedFileDTO() {}
 
     public AttachedFileDTO(AttachedFile attachedFile) {
@@ -21,7 +27,8 @@ public class AttachedFileDTO {
         this.setName(attachedFile.getName());
         this.setContentType(attachedFile.getContentType());
         this.setSize(attachedFile.getSize());
-
+        this.setLastModifiedBy(attachedFile.getLastModifiedBy());
+        this.setLastModifiedDate(attachedFile.getLastModifiedDate());
     }
 
     public Long getId() {
@@ -54,5 +61,21 @@ public class AttachedFileDTO {
 
     public void setContentType(String contentType) {
         this.contentType = contentType;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public ZonedDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(ZonedDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 }
