@@ -1,6 +1,7 @@
 package kr.wisestone.wms.web.rest.form;
 
 import kr.wisestone.wms.domain.*;
+import kr.wisestone.wms.web.rest.dto.TaskRepeatScheduleDTO;
 import lombok.Data;
 import org.flywaydb.core.internal.util.StringUtils;
 
@@ -47,6 +48,8 @@ public class TaskForm {
     private List<Long> removeRelatedTaskIds = new ArrayList<>();
 
     private List<Long> removeTargetFiles = new ArrayList<>();
+
+    private TaskRepeatScheduleDTO taskRepeatSchedule;
 
     public Task bind(Task task) {
 
@@ -135,8 +138,12 @@ public class TaskForm {
             Task relatedTask = new Task();
             relatedTask.setId(id);
 
-            task.removeRelatedTask(task);
+            task.removeRelatedTask(relatedTask);
         }
+
+        TaskRepeatSchedule taskRepeatSchedule = new TaskRepeatSchedule(task, this.taskRepeatSchedule);
+
+        task.setTaskRepeatSchedule(taskRepeatSchedule);
 
         return task;
     }

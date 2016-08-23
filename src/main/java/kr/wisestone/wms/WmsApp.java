@@ -15,6 +15,7 @@ import org.springframework.boot.autoconfigure.web.MultipartAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.env.Environment;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
@@ -26,6 +27,7 @@ import java.util.Collection;
 @ComponentScan
 @EnableAutoConfiguration(exclude = { MetricFilterAutoConfiguration.class, MetricRepositoryAutoConfiguration.class, HazelcastAutoConfiguration.class, MultipartAutoConfiguration.class })
 @EnableConfigurationProperties({ JHipsterProperties.class })
+@EnableScheduling
 public class WmsApp {
 
     private static final Logger log = LoggerFactory.getLogger(WmsApp.class);

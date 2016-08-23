@@ -1,6 +1,7 @@
 package kr.wisestone.wms.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import kr.wisestone.wms.web.rest.dto.TaskRepeatScheduleDTO;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
@@ -22,9 +23,10 @@ public class TaskRepeatSchedule extends AbstractAuditingEntity implements Serial
 
     private static final long serialVersionUID = 1L;
 
-    public static final String REPEAT_TYPE_EVERY_DAY = "EVERY_DAY";
+    public static final String REPEAT_TYPE_DAILY = "DAILY";
     public static final String REPEAT_TYPE_WEEKLY = "WEEKLY";
-    public static final String REPEAT_TYPE_MONTHLY = "MONTHLY";
+    public static final String REPEAT_TYPE_MONTHLY_DATE = "MONTHLY_DATE";
+    public static final String REPEAT_TYPE_MONTHLY_WEEKDAY = "MONTHLY_WEEKDAY";
     public static final String REPEAT_TYPE_ANNUALLY = "ANNUALLY";
 
     @Id
@@ -53,6 +55,9 @@ public class TaskRepeatSchedule extends AbstractAuditingEntity implements Serial
     @Column(name = "weekdays")
     private String weekdays;
 
+    @Column(name = "monthly_criteria")
+    private String monthlyCriteria;
+
     @Column(name = "advent_date_start_time")
     private String adventDateStartTime;
 
@@ -63,10 +68,29 @@ public class TaskRepeatSchedule extends AbstractAuditingEntity implements Serial
     private String endDate;
 
     @Column(name = "permanent_yn")
+    @Type(type="yes_no")
     private Boolean permanentYn;
 
-    public TaskRepeatSchedule() {
+    @Column(name = "execute_date")
+    private String executeDate;
 
+    @Column(name = "task_snapshot")
+    private String taskSnapshot;
+
+    public TaskRepeatSchedule() {}
+
+    public TaskRepeatSchedule(Task task, TaskRepeatScheduleDTO taskRepeatSchedule) {
+
+        this.setTask(task);
+
+        this.setRepeatYn(taskRepeatSchedule.getRepeatYn());
+        this.setRepeatType(taskRepeatSchedule.getRepeatType());
+        this.setWeekdays(taskRepeatSchedule.getWeekdays());
+        this.setMonthlyCriteria(taskRepeatSchedule.getMonthlyCriteria());
+        this.setAdventDateStartTime(taskRepeatSchedule.getAdventDateStartTime());
+        this.setStartDate(taskRepeatSchedule.getStartDate());
+        this.setEndDate(taskRepeatSchedule.getEndDate());
+        this.setPermanentYn(taskRepeatSchedule.getPermanentYn());
     }
 
     public Long getId() {
@@ -109,6 +133,14 @@ public class TaskRepeatSchedule extends AbstractAuditingEntity implements Serial
         this.weekdays = weekdays;
     }
 
+    public String getMonthlyCriteria() {
+        return monthlyCriteria;
+    }
+
+    public void setMonthlyCriteria(String monthlyCriteria) {
+        this.monthlyCriteria = monthlyCriteria;
+    }
+
     public String getAdventDateStartTime() {
         return adventDateStartTime;
     }
@@ -139,6 +171,22 @@ public class TaskRepeatSchedule extends AbstractAuditingEntity implements Serial
 
     public void setPermanentYn(Boolean permanentYn) {
         this.permanentYn = permanentYn;
+    }
+
+    public String getExecuteDate() {
+        return executeDate;
+    }
+
+    public String getTaskSnapshot() {
+        return taskSnapshot;
+    }
+
+    public void setTaskSnapshot(String taskSnapshot) {
+        this.taskSnapshot = taskSnapshot;
+    }
+
+    public void setExecuteDate(String executeDate) {
+        this.executeDate = executeDate;
     }
 
     @Override

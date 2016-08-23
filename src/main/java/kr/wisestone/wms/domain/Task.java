@@ -153,6 +153,10 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
         this.taskAttachedFiles = taskAttachedFiles;
     }
 
+    public List<AttachedFile> getPlainTaskAttachedFiles() {
+        return taskAttachedFiles.stream().map(TaskAttachedFile::getAttachedFile).collect(Collectors.toList());
+    }
+
     public String getStartDate() {
         return startDate;
     }
