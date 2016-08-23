@@ -11,6 +11,8 @@ public class TraceLogForm {
 
     private Long id;
 
+    private String entityName;
+
     private Long entityId;
 
     private String contents;
@@ -22,7 +24,7 @@ public class TraceLogForm {
     public TraceLog bind() {
         TraceLog traceLog = new TraceLog();
 
-        traceLog.setEntityName("Task");
+        traceLog.setEntityName(this.getEntityName());
         traceLog.setEntityField("reply");
         traceLog.setEntityId(this.getEntityId());
         traceLog.setNewValue(this.getContents());
