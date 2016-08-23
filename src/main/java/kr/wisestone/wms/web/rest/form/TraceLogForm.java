@@ -11,7 +11,7 @@ public class TraceLogForm {
 
     private Long id;
 
-    private Long taskId;
+    private Long entityId;
 
     private String contents;
 
@@ -24,7 +24,7 @@ public class TraceLogForm {
 
         traceLog.setEntityName("Task");
         traceLog.setEntityField("reply");
-        traceLog.setEntityId(this.getTaskId());
+        traceLog.setEntityId(this.getEntityId());
         traceLog.setNewValue(this.getContents());
         traceLog.setPersistType("INSERT");
         traceLog.setReplyYn(Boolean.TRUE);
