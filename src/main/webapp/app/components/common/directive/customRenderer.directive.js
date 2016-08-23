@@ -13,6 +13,15 @@ function customRenderer($compile, $filter, $log, $sce) {
             data: "=",
             rendererCallback: "="
         },
+        controller : ['$scope', '$element', '$attrs', '$rootScope', function ($scope, $element, $attrs, $rootScope) {
+            // 첨부 파일 다운로드
+            $scope.fileDownLoad = function(key){
+                $log.debug("다운로드")
+                var iframe = $("<iframe/>").hide().appendTo("body").load(function() {
+                    iframe.remove();
+                }).attr("src", "/api/attachedFile/" + key.id);
+            }
+        }],
         link: function (scope, element, attrs) {
             /*	change value는 목록 화면에서 팝업을 통해 responseData값이 변경되었을 때
              * 	responseData의 값 변경을 스코프가 감지 못하는 현상때문에 changeValue 스코프 값
@@ -68,6 +77,35 @@ function customRenderer($compile, $filter, $log, $sce) {
                             "<a href='#'>"+ scope.data.name +"</a>" +
                             "<input type='text' class='form-control col-xs-2 title-focus' ng-model='data.name' bindonce id='searchQuery' aria-invalid='false' enter-submit='rendererCallback(data)' ng-blur='rendererCallback(data)'>" +
                             "</div>";
+                        break;
+                    case "file_name" :
+                        var contentType = scope.data.contentType.split('/');
+                        if(contentType[0] == 'image'){
+                            customTag = "<i class='fa fa-file-image-o'></i>"
+                        }else {
+                            if(contentType[1] == 'msword') customTag = "<i class='fa fa-file-word-o'></i>";
+                            else if(contentType[1] == 'pdf') customTag = "<i class='fa fa-file-pdf-o'></i>";
+                            else if(contentType[1] == 'excel') customTag = "<i class='fa fa-file-excel-o'></i>";
+                            else if(contentType[1] == 'vnd.ms-powerpoint') customTag = "<i class='fa fa-file-powerpoint-o'></i>";
+                            else customTag = "<i class='fa fa-file-text-o'></i>";
+                        }
+                        customTag += " <span ng-click='fileDownLoad(3)'>"+ scope.data.name + "</span>";
+                        break;
+                    case "file_location" :
+                        if(scope.data.locationType == 'TASK'){
+                            customTag = "<a ui-sref='my-task.detail({id \: " + scope.data.locationId + ", listType : \"TODAY\"})' >"+ scope.data.location +"</a>";
+                        }else{
+                            customTag = "<a ui-sref='my-project({id \: " + scope.data.locationId + "})' >"+ scope.data.location +"</a>";
+                        }
+                        break;
+                    case "file_download" :
+                            customTag = "<button type='button' class='btn' ng-click='fileDownLoad(data)'><i class='fa fa-download'></i></button>";
+                        break;
+                    case "file_upload" :
+                            customTag = "<button type='button' class='btn'><i class='fa fa-upload'></i></button>";
+                        break;
+                    case "file_remove" :
+                            customTag = "<button type='button' class='btn'><i class='fa fa-trash'></i></button>";
                         break;
                 }
 
