@@ -41,7 +41,8 @@
         // 코멘트 생성 데이터
         vm.comment = {
             id : vm.userInfo.id,
-            projectId : vm.project.id,
+            entityId : vm.project.id,
+            entityName : 'Project',
             contents : '',
             mentionIds : [],
             removeAttachedFileIds : ''

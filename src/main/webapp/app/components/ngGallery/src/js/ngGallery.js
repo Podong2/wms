@@ -9,9 +9,12 @@
 (function () {
     'use-strict';
 
-    angular.module('jkuri.gallery', []).directive('ngGallery', ngGallery);
+    angular.module('jkuri.gallery', [])
+        .directive('ngGallery', ngGallery)
+        .directive('wmsIamgeActive', wmsIamgeActive);
 
     ngGallery.$inject = ['$document', '$timeout', '$q', '$templateCache'];
+    wmsIamgeActive.$inject = ['$document', '$timeout', '$q', '$templateCache'];
 
     function ngGallery($document, $timeout, $q, $templateCache) {
 
@@ -37,9 +40,10 @@
         var template_url = defaults.templateUrl;
         // Set the default template
         $templateCache.put(template_url,
-            '<div class="{{ baseClass }}" style="white-space: nowrap;">' +
-            '  <div ng-repeat="i in images" style="display: inline-block">' +
-            '    <img ng-src="{{ i.thumb }}" class="{{ thumbClass }}" ng-click="openGallery($index)" alt="Image {{ $index + 1 }}" />' +
+            '<div class="{{ baseClass }}">' +
+            '  <div class="image-list-area" ng-repeat="i in images" wms-iamge-active ng-dblclick="openGallery($index)" style="display: inline-block">' +
+            '    <img ng-src="{{ i.thumb }}" class="{{ thumbClass }}" alt="Image {{ $index + 1 }}" />' +
+                '<div>{{i.description}}({{i.size}})</div>' +
             '  </div>' +
             '</div>' +
             '<div class="ng-overlay" ng-show="opened">' +
@@ -51,7 +55,7 @@
             '  <a class="nav-left" ng-click="prevImage()"><i class="fa fa-angle-left"></i></a>' +
             '  <img ondragstart="return false;" draggable="false" ng-src="{{ img }}" ng-click="nextImage()" ng-show="!loading" class="effect" />' +
             '  <a class="nav-right" ng-click="nextImage()"><i class="fa fa-angle-right"></i></a>' +
-            '  <span class="info-text">{{ index + 1 }}/{{ images.length }} - {{ description }}</span>' +
+            '  <span class="info-text" ng-click="fileDownLoad(images[index].id)">{{ index + 1 }}/{{ images.length }} - {{ description }} <i class="fa fa-download"></i></span>' +
             '  <div class="ng-thumbnails-wrapper">' +
             '    <div class="ng-thumbnails slide-left">' +
             '      <div ng-repeat="i in images">' +
@@ -176,6 +180,12 @@
                     });
                 };
 
+                scope.fileDownLoad = function(key){
+                    var iframe = $("<iframe/>").hide().appendTo("body").load(function() {
+                        iframe.remove();
+                    }).attr("src", "/api/attachedFile/" + key);
+                };
+
                 scope.closeGallery = function () {
                     scope.opened = false;
                 };
@@ -225,5 +235,16 @@
 
             }
         };
+    }
+
+    function wmsIamgeActive(){
+        return {
+            restrict: 'A',
+            link: function(scope, element, attr) {
+                element.on('click', function(_this) {
+                    element.toggleClass("on");
+                });
+            }
+        }
     }
 })();

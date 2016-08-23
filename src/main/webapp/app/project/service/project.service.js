@@ -5,11 +5,13 @@
         .factory('Project', Project)
         .factory('ProjectInfo', ProjectInfo)
         .factory('ProjectFind', ProjectFind)
+        .factory('ProjectAttachedList', ProjectAttachedList)
         .factory('ProjectEdit', ProjectEdit);
 
     Project.$inject = ['$resource'];
     ProjectInfo.$inject = ['$resource'];
     ProjectFind.$inject = ['$resource'];
+    ProjectAttachedList.$inject = ['$resource'];
     ProjectEdit.$inject = ['$log', '$upload', '$http', '$q'];
 
     function Project ($resource) {
@@ -50,6 +52,24 @@
 
     function ProjectFind ($resource) {
         var resourceUrl =  'api/projects/findByName:id';
+
+        return $resource(resourceUrl, {}, {
+            'query': { method: 'GET', isArray: true},
+            'get': {
+                method: 'GET',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    return data;
+                }
+            },
+            'update': { method:'PUT' }
+        });
+    }
+
+    function ProjectAttachedList ($resource) {
+        var resourceUrl =  'api/projects/findManagedAttachedFiles/:id';
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},

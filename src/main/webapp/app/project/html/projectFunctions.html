@@ -2,11 +2,11 @@
     <ul class="nav nav-tabs nav-justified project-menu-area">
         <li class="text-center"><span>목록</span></li>
         <li class="text-center"><span>차트</span></li>
-        <li class="text-center" data-ui-sref="my-project-functions.history({id : vm.projectId})" ng-class="vm.state.name == 'my-project-functions.history' ? 'active' : ''"><span>히스토리</span></li>
+        <li class="text-center" data-ui-sref="my-project-functions.history({id : vm.projectId})" ng-class="vm.state.name == 'my-project-functions.history' ? 'active' : ''" ng-click="vm.getStateName()"><span>히스토리</span></li>
         <li class="text-center"><span>리포트</span></li>
         <li class="text-center"><span>작업일정</span></li>
         <li class="text-center"><span>대화방</span></li>
-        <li class="text-center" data-ui-sref="my-project-functions.file({id : vm.projectId})" ng-class="vm.state.name == 'my-project-functions.file' ? 'active' : ''"><span>파일</span></li>
+        <li class="text-center" data-ui-sref="my-project-functions.file({id : vm.projectId})" ng-class="vm.state.name == 'my-project-functions.file' ? 'active' : ''" ng-click="vm.getStateName()"><span>파일</span></li>
         <li class="text-center"><span><i class="fa fa-ellipsis-v"></i></span></li>
     </ul>
 

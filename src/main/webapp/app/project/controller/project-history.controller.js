@@ -25,7 +25,8 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
             // 코멘트 생성 데이터
             vm.comment = {
                 id : vm.userInfo.id,
-                taskId : '',
+                entityId : '',
+                entityName : 'Task',
                 contents : '',
                 mentionIds : [],
                 removeAttachedFileIds : ''
@@ -85,7 +86,7 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
             /* 코멘트 저장 */
             vm.mentionIds = []; // mention ids
             function createComment(taskId, index){
-                vm.comment.taskId = taskId;
+                vm.comment.entityId = taskId;
                 var $mention = $(".comment-area .mentionUser");
                 vm.comment.mentionIds = [];
                 vm.mentionIds = [];
