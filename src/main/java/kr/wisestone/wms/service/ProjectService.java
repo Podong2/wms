@@ -230,7 +230,7 @@ public class ProjectService {
     @Transactional
     public void removeProjectFile(String entityName, Long entityId, Long attachedFileId) {
 
-        if("Task".equalsIgnoreCase(entityName)) {
+        if(entityName.equalsIgnoreCase(ProjectManagedAttachedFileDTO.LOCATION_TASK)) {
 
             Task task = taskService.findOne(entityId);
 
@@ -242,7 +242,7 @@ public class ProjectService {
 
             taskService.save(task);
 
-        } else {
+        } else if(entityName.equalsIgnoreCase(ProjectManagedAttachedFileDTO.LOCATION_PROJECT)) {
 
             Project project = projectRepository.findOne(entityId);
 
@@ -253,6 +253,14 @@ public class ProjectService {
             }
 
             projectRepository.save(project);
+
+        } else if(entityName.equalsIgnoreCase(ProjectManagedAttachedFileDTO.LOCATION_TASK_REPLY)) {
+
+            this.traceLogService.removeAttachedFileByEntityIdAndEntityNameAndAttachedFileId(entityId, "Task", attachedFileId);
+
+        } else if(entityName.equalsIgnoreCase(ProjectManagedAttachedFileDTO.LOCATION_PROJECT_REPLY)) {
+
+            this.traceLogService.removeAttachedFileByEntityIdAndEntityNameAndAttachedFileId(entityId, "Project", attachedFileId);
         }
     }
 

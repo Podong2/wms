@@ -199,7 +199,7 @@ public class TraceLog extends AbstractAuditingEntity {
 
     public TraceLogAttachedFile findAttachedFile(Long attachedFileId) {
         return this.traceLogAttachedFiles.stream().filter(
-            traceLogAttachedFile -> traceLogAttachedFile.getId().equals(attachedFileId)
+            traceLogAttachedFile -> traceLogAttachedFile.getAttachedFile().getId().equals(attachedFileId)
         ).findFirst().get();
     }
 

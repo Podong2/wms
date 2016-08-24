@@ -76,6 +76,22 @@ public class TraceLogService {
         return traceLogDTOs;
     }
 
+    public TraceLog removeAttachedFileByEntityIdAndEntityNameAndAttachedFileId(Long entityId, String entityName, Long attachedFileId) {
+
+        QTraceLog $traceLog = QTraceLog.traceLog;
+
+        BooleanBuilder predicate = new BooleanBuilder();
+        predicate.and($traceLog.entityName.eq(entityName));
+        predicate.and($traceLog.entityId.eq(entityId));
+        predicate.and($traceLog.traceLogAttachedFiles.any().attachedFile.id.eq(attachedFileId));
+
+        TraceLog traceLog = this.traceLogRepository.findOne(predicate);
+
+        traceLog.removeAttachedFile(attachedFileId);
+
+        return this.traceLogRepository.save(traceLog);
+    }
+
     private List<TraceLogDTO> findByPredicate(QTraceLog $traceLog, BooleanBuilder predicate) {
         List<TraceLog> traceLogs = Lists.newArrayList(traceLogRepository.findAll(predicate, $traceLog.createdDate.asc()));
 

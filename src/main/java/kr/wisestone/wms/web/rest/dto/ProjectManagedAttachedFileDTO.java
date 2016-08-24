@@ -5,8 +5,10 @@ import kr.wisestone.wms.domain.*;
 
 public class ProjectManagedAttachedFileDTO {
 
-    private static final String LOCATION_TASK = "TASK";
-    private static final String LOCATION_PROJECT = "TASK";
+    public static final String LOCATION_TASK = "TASK";
+    public static final String LOCATION_TASK_REPLY = "TASK_REPLY";
+    public static final String LOCATION_PROJECT = "PROJECT";
+    public static final String LOCATION_PROJECT_REPLY = "PROJECT_REPLY";
 
     private String location;
 
@@ -39,7 +41,7 @@ public class ProjectManagedAttachedFileDTO {
     public ProjectManagedAttachedFileDTO(Task task, AttachedFileDTO attachedFile) {
 
         this.setLocation(task.getName());
-        this.setLocationType(LOCATION_TASK);
+        this.setLocationType(LOCATION_TASK_REPLY);
         this.setLocationId(task.getId());
         this.setAttachedFile(attachedFile);
     }
@@ -47,7 +49,7 @@ public class ProjectManagedAttachedFileDTO {
     public ProjectManagedAttachedFileDTO(Project project, AttachedFileDTO attachedFile) {
 
         this.setLocation(project.getName());
-        this.setLocationType(LOCATION_PROJECT);
+        this.setLocationType(LOCATION_PROJECT_REPLY);
         this.setLocationId(project.getId());
         this.setAttachedFile(attachedFile);
     }
