@@ -56,11 +56,17 @@ public class TaskForm {
         if(StringUtils.hasText(this.name))
             task.setName(this.name);
 
-        if(StringUtils.hasText(this.startDate))
+        if(StringUtils.hasText(this.startDate)) {
             task.setStartDate(this.startDate);
+        } else {
+            task.setStartDate("");
+        }
 
-        if(StringUtils.hasText(this.endDate))
+        if(StringUtils.hasText(this.endDate)) {
             task.setEndDate(this.endDate);
+        } else {
+            task.setEndDate("");
+        }
 
         if(StringUtils.hasText(this.contents))
             task.setContents(this.contents);
