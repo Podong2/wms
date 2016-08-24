@@ -322,8 +322,8 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
 
     public TaskAttachedFile findAttachedFile(Long attachedFileId) {
         return this.taskAttachedFiles.stream().filter(
-            taskAttachedFile -> taskAttachedFile.getId().equals(attachedFileId)
-        ).findFirst().get();
+            taskAttachedFile -> taskAttachedFile.getAttachedFile().getId().equals(attachedFileId)
+        ).findFirst().orElse(null);
     }
 
     public Task removeAttachedFile(Long attachedFileId) {
