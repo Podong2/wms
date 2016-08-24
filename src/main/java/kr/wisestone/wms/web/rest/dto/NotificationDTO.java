@@ -1,6 +1,7 @@
 package kr.wisestone.wms.web.rest.dto;
 
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.Objects;
@@ -42,6 +43,8 @@ public class NotificationDTO implements Serializable {
     private TaskDTO taskDTO;
 
     private ProjectDTO projectDTO;
+
+    private ZonedDateTime createdDate;
 
     public Long getId() {
         return id;
@@ -163,6 +166,14 @@ public class NotificationDTO implements Serializable {
 
     public void setProjectDTO(ProjectDTO projectDTO) {
         this.projectDTO = projectDTO;
+    }
+
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
     }
 
     @Override
