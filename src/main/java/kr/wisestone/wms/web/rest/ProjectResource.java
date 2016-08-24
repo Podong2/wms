@@ -178,4 +178,20 @@ public class ProjectResource {
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
+    @RequestMapping(value = "/projects/removeManagedAttachedFiles",
+        method = RequestMethod.DELETE,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<Void> removeManagedAttachedFiles(
+            @RequestParam(name = "entityName") String entityName
+        , @RequestParam(name = "entityId") Long entityId
+        , @RequestParam(name = "attachedFileId") Long attachedFileId) {
+
+        log.debug("REST request to delete Project file : {}");
+
+        projectService.removeProjectFile(entityName, entityId, attachedFileId);
+
+        return ResponseEntity.ok().headers(HeaderUtil.createEntitySingleDeletionAlert("attachedFile", attachedFileId.toString())).build();
+    }
 }

@@ -217,7 +217,7 @@ public class TaskService {
      *  @return the entity
      */
     @Transactional(readOnly = true)
-    public TaskDTO findOne(Long id) {
+    public TaskDTO findOneDTO(Long id) {
         log.debug("Request to get Task : {}", id);
         Task task = taskRepository.findOne(id);
         TaskDTO taskDTO = taskMapper.taskToTaskDTO(task);
@@ -229,6 +229,10 @@ public class TaskService {
         }
 
         return taskDTO;
+    }
+
+    public Task findOne(Long id) {
+        return taskRepository.findOne(id);
     }
 
     /**
@@ -345,7 +349,7 @@ public class TaskService {
 
         List<User> notificationTargets = origin.getTaskUsers().stream().map(TaskUser::getUser).collect(Collectors.toList());
 
-        notificationService.sendIssueCreatedNotification(this.findOne(taskForm.getId()), notificationTargets, "04");
+        notificationService.sendIssueCreatedNotification(this.findOneDTO(taskForm.getId()), notificationTargets, "04");
 
         return result;
     }
@@ -490,5 +494,10 @@ public class TaskService {
         task = taskRepository.save(task);
 
         return taskMapper.taskToTaskDTO(task);
+    }
+
+    @Transactional
+    public Task save(Task task) {
+        return taskRepository.save(task);
     }
 }

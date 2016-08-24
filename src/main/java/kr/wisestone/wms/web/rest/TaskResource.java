@@ -233,7 +233,7 @@ public class TaskResource {
     @Timed
     public ResponseEntity<TaskDTO> getTask(@PathVariable Long id) {
         log.debug("REST request to get Task : {}", id);
-        TaskDTO taskDTO = taskService.findOne(id);
+        TaskDTO taskDTO = taskService.findOneDTO(id);
         return Optional.ofNullable(taskDTO)
             .map(result -> new ResponseEntity<>(
                 result,

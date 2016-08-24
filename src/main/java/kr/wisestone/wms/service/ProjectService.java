@@ -227,6 +227,35 @@ public class ProjectService {
         return projectManagedAttachedFileDTOs;
     }
 
+    @Transactional
+    public void removeProjectFile(String entityName, Long entityId, Long attachedFileId) {
+
+        if("Task".equals(entityName)) {
+
+            Task task = taskService.findOne(entityId);
+
+            TaskAttachedFile taskAttachedFile = task.findAttachedFile(attachedFileId);
+
+            if(taskAttachedFile != null) {
+                task.removeAttachedFile(attachedFileId);
+            }
+
+            taskService.save(task);
+
+        } else {
+
+            Project project = projectRepository.findOne(entityId);
+
+            ProjectAttachedFile projectAttachedFile = project.findAttachedFile(attachedFileId);
+
+            if(projectAttachedFile != null) {
+                project.removeAttachedFile(attachedFileId);
+            }
+
+            projectRepository.save(project);
+        }
+    }
+
     private void getProjectChildManagedAttachedFiles(Set<ProjectRelation> projectChilds, List<ProjectManagedAttachedFileDTO> projectManagedAttachedFileDTOs) {
 
         for(ProjectRelation projectRelation : projectChilds) {

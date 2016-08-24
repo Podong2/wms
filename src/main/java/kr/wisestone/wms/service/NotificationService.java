@@ -30,8 +30,6 @@ import org.springframework.stereotype.Service;
 
 import javax.inject.Inject;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
 
@@ -123,7 +121,7 @@ public class NotificationService {
         for(NotificationDTO notificationDTO : notificationDTOs) {
 
             if("Task".equals(notificationDTO.getEntityName())) {
-                notificationDTO.setTaskDTO(taskService.findOne(notificationDTO.getEntityId()));
+                notificationDTO.setTaskDTO(taskService.findOneDTO(notificationDTO.getEntityId()));
             } else if("Project".equals(notificationDTO.getEntityName())) {
                 notificationDTO.setProjectDTO(projectService.findOne(notificationDTO.getEntityId()));
             }
@@ -145,7 +143,7 @@ public class NotificationService {
         NotificationDTO notificationDTO = notificationMapper.notificationToNotificationDTO(notification);
 
         if("Task".equals(notificationDTO.getEntityName())) {
-            notificationDTO.setTaskDTO(taskService.findOne(notificationDTO.getEntityId()));
+            notificationDTO.setTaskDTO(taskService.findOneDTO(notificationDTO.getEntityId()));
         } else if("Project".equals(notificationDTO.getEntityName())) {
             notificationDTO.setProjectDTO(projectService.findOne(notificationDTO.getEntityId()));
         }
@@ -247,7 +245,7 @@ public class NotificationService {
 
         User loginUser = SecurityUtils.getCurrentUser();
 
-        TaskDTO task = taskService.findOne(traceLog.getTaskId());
+        TaskDTO task = taskService.findOneDTO(traceLog.getTaskId());
 
         Map<String, Object> contents = Maps.newHashMap(ImmutableMap.<String, Object>builder().
             put("task", task).
