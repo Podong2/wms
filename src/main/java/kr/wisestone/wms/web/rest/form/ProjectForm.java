@@ -17,9 +17,9 @@ public class ProjectForm {
 
     private String name;
 
-    private String startDate;
+    private String startDate = "";
 
-    private String endDate;
+    private String endDate = "";
 
     private String contents;
 
@@ -46,17 +46,8 @@ public class ProjectForm {
         if(StringUtils.hasText(this.name))
             project.setName(this.name);
 
-        if(StringUtils.hasText(this.startDate)) {
-            project.setStartDate(this.startDate);
-        } else {
-            project.setStartDate("");
-        }
-
-        if(StringUtils.hasText(this.endDate)) {
-            project.setEndDate(this.endDate);
-        } else {
-            project.setEndDate("");
-        }
+        project.setStartDate(this.startDate);
+        project.setEndDate(this.endDate);
 
         if(StringUtils.hasText(this.contents))
             project.setContents(this.contents);
