@@ -13,11 +13,10 @@ function customRenderer($compile, $filter, $log, $sce) {
             data: "=",
             rendererCallback: "="
         },
-        controller : ['$scope', '$element', '$attrs', '$rootScope', 'ProjectEdit',
-            function ($scope, $element, $attrs, $rootScope, ProjectEdit) {
+        controller : ['$scope', '$element', '$attrs', '$rootScope', 'DeleteAttachedFile',
+            function ($scope, $element, $attrs, $rootScope, DeleteAttachedFile) {
             // 첨부 파일 다운로드
             $scope.fileDownLoad = function(key){
-                $log.debug("다운로드")
                 var iframe = $("<iframe/>").hide().appendTo("body").load(function() {
                     iframe.remove();
                 }).attr("src", "/api/attachedFile/" + key.id);
@@ -29,9 +28,10 @@ function customRenderer($compile, $filter, $log, $sce) {
                     entityId : entityId,
                     attachedFileId : attachedFileId,
                 };
-                ProjectEdit.deleteAttachedFile($scope.params).then(function(result){
-
-                });
+                DeleteAttachedFile.delete({entityName : $scope.params.entityName, entityId : $scope.params.entityId, attachedFileId : $scope.params.attachedFileId},
+                    function (result) {
+                        $log.debug("프로젝트 파일 삭제 : ", result)
+                    });
             }
         }],
         link: function (scope, element, attrs) {

@@ -47,7 +47,6 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
             ProjectAttachedList.query({id : $stateParams.id}, onProjectSuccess, onProjectError);
             function onProjectSuccess (result) {
                 vm.projectAttachedList = result;
-                $log.debug("파일 목록 : ", result);
                 angular.forEach(result, function(value, index){
                     vm.projectAttachedList[index].name = value.attachedFile.name;
                     vm.projectAttachedList[index].id = value.attachedFile.id;

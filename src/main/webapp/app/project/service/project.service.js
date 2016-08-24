@@ -6,12 +6,14 @@
         .factory('ProjectInfo', ProjectInfo)
         .factory('ProjectFind', ProjectFind)
         .factory('ProjectAttachedList', ProjectAttachedList)
-        .factory('ProjectEdit', ProjectEdit);
+        .factory('ProjectEdit', ProjectEdit)
+        .factory('DeleteAttachedFile', DeleteAttachedFile);
 
     Project.$inject = ['$resource'];
     ProjectInfo.$inject = ['$resource'];
     ProjectFind.$inject = ['$resource'];
     ProjectAttachedList.$inject = ['$resource'];
+    DeleteAttachedFile.$inject = ['$resource'];
     ProjectEdit.$inject = ['$log', '$upload', '$http', '$q'];
 
     function Project ($resource) {
@@ -139,6 +141,24 @@
             });
             return deferred.promise;
         }
+    }
+
+    function DeleteAttachedFile ($resource) {
+        var resourceUrl =  'api/projects/removeManagedAttachedFiles';
+
+        return $resource(resourceUrl, {}, {
+            'query': { method: 'GET', isArray: true},
+            'get': {
+                method: 'GET',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    return data;
+                }
+            },
+            'update': { method:'PUT' }
+        });
     }
 
 })();
