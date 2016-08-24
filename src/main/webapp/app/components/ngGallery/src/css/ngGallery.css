@@ -276,10 +276,16 @@ uiload > div {
     font-weight: bold;
 }
 .image-list-area {
-    margin: 12px;
+    margin: 14px;
     background: #F5F5F5;
     padding: 7px;
     border-radius: 4px;
+}
+.image-list-area, x:-moz-any-link, x:default { /* 파이어 폭스 전용 css */
+    margin: 12px;
+}
+body:first-of-type .image-list-area{
+    margin: 25px;
 }
 .image-list-area div{
     overflow:hidden;

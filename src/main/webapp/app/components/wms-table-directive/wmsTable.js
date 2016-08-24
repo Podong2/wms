@@ -5,9 +5,11 @@
     'use strict';
 
     angular.module('wmsApp')
-        .directive('wmsTable', wmsTable);
+        .directive('wmsTable', wmsTable)
+        .directive('dynamicCtrl',dynamicCtrl);
 
     wmsTable.$inject = ['$log'];
+    dynamicCtrl.$inject = ['$compile', '$parse'];
 
     function wmsTable($log) {
 
@@ -16,7 +18,8 @@
             scope: {
                 ngModel: '=ngModel',
                 tableConfigs: '=tableConfigs',
-                updateCallback: '=updateCallback'
+                updateCallback: '=updateCallback',
+                controllerName : '@'
             },
             replace: false,
             templateUrl: 'app/components/wms-table-directive/wmsTable.html',
@@ -48,5 +51,19 @@
 
             }
         }
+    }
+
+    function dynamicCtrl($compile, $parse) {
+        return {
+            restrict: 'A',
+            terminal: true,
+            priority: 100000,
+            link: function(scope, elem) {
+                var name = $parse(elem.attr('dynamic-ctrl'))(scope);
+                elem.removeAttr('dynamic-ctrl');
+                elem.attr('ng-controller', name);
+                $compile(elem)(scope);
+            }
+        };
     }
 })();

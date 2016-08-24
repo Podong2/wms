@@ -92,8 +92,9 @@
             addProject : addProject,
             uploadProject : uploadProject,
             singleUpload : singleUpload,
-            createComment : createComment
-        }
+            createComment : createComment,
+            deleteAttachedFile : deleteAttachedFile
+        };
         return service;
 
         function addProject(parameter){
@@ -127,6 +128,16 @@
                 $log.debug("프로젝트 코멘트 생성 결과 : ", response);
                 return response;
             });
+        }
+
+        function deleteAttachedFile(parameter){
+            var deferred = $q.defer();
+            $log.debug("Project 파일 삭제 data : ", parameter)
+            $http.delete( 'api/projects/removeManagedAttachedFiles', {}, {entityName : parameter.entityName, entityId : parameter.entityId, attachedFileId : parameter.attachedFileId}).then(function (result) {
+                $log.debug("ProjectList : ", result);
+                deferred.resolve(result);
+            });
+            return deferred.promise;
         }
     }
 

@@ -13,13 +13,25 @@ function customRenderer($compile, $filter, $log, $sce) {
             data: "=",
             rendererCallback: "="
         },
-        controller : ['$scope', '$element', '$attrs', '$rootScope', function ($scope, $element, $attrs, $rootScope) {
+        controller : ['$scope', '$element', '$attrs', '$rootScope', 'ProjectEdit',
+            function ($scope, $element, $attrs, $rootScope, ProjectEdit) {
             // 첨부 파일 다운로드
             $scope.fileDownLoad = function(key){
                 $log.debug("다운로드")
                 var iframe = $("<iframe/>").hide().appendTo("body").load(function() {
                     iframe.remove();
                 }).attr("src", "/api/attachedFile/" + key.id);
+            };
+            // 첨부 파일 삭제
+            $scope.fileRemove = function(entityName, entityId, attachedFileId){
+                $scope.params = {
+                    entityName : entityName,
+                    entityId : entityId,
+                    attachedFileId : attachedFileId,
+                };
+                ProjectEdit.deleteAttachedFile($scope.params).then(function(result){
+
+                });
             }
         }],
         link: function (scope, element, attrs) {
@@ -105,7 +117,7 @@ function customRenderer($compile, $filter, $log, $sce) {
                             customTag = "<button type='button' class='btn'><i class='fa fa-upload'></i></button>";
                         break;
                     case "file_remove" :
-                            customTag = "<button type='button' class='btn'><i class='fa fa-trash'></i></button>";
+                            customTag = "<button type='button' class='btn' ng-click='fileRemove(data.locationType, data.locationId, data.id)'><i class='fa fa-trash'></i>" + scope.data + "</button>";
                         break;
                 }
 
