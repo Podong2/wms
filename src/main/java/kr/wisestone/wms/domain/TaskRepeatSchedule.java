@@ -74,9 +74,6 @@ public class TaskRepeatSchedule extends AbstractAuditingEntity implements Serial
     @Column(name = "execute_date")
     private String executeDate;
 
-    @Column(name = "task_snapshot")
-    private String taskSnapshot;
-
     public TaskRepeatSchedule() {}
 
     public TaskRepeatSchedule(Task task, TaskRepeatScheduleDTO taskRepeatSchedule) {
@@ -175,14 +172,6 @@ public class TaskRepeatSchedule extends AbstractAuditingEntity implements Serial
 
     public String getExecuteDate() {
         return executeDate;
-    }
-
-    public String getTaskSnapshot() {
-        return taskSnapshot;
-    }
-
-    public void setTaskSnapshot(String taskSnapshot) {
-        this.taskSnapshot = taskSnapshot;
     }
 
     public void setExecuteDate(String executeDate) {

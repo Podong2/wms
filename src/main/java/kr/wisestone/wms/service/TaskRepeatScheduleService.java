@@ -2,14 +2,9 @@ package kr.wisestone.wms.service;
 
 import com.google.common.collect.Lists;
 import com.mysema.query.BooleanBuilder;
-import kr.wisestone.wms.common.util.ConvertUtil;
 import kr.wisestone.wms.common.util.DateUtil;
 import kr.wisestone.wms.domain.*;
-import kr.wisestone.wms.repository.AttachedFileRepository;
-import kr.wisestone.wms.repository.ProjectRepository;
 import kr.wisestone.wms.repository.TaskRepository;
-import kr.wisestone.wms.repository.UserRepository;
-import kr.wisestone.wms.web.rest.dto.TaskSnapshotDTO;
 import org.flywaydb.core.internal.util.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
@@ -28,13 +23,7 @@ public class TaskRepeatScheduleService {
     private TaskRepository taskRepository;
 
     @Autowired
-    private ProjectRepository projectRepository;
-
-    @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private AttachedFileRepository attachedFileRepository;
+    private AttachedFileService attachedFileService;
 
     @Scheduled(fixedRate = 60000)
     @Transactional
@@ -87,7 +76,7 @@ public class TaskRepeatScheduleService {
             TaskRepeatSchedule taskRepeatSchedule = task.getTaskRepeatSchedule();
             taskRepeatSchedule.setExecuteDate(today);
 
-//            this.saveRepeatTask(task);
+            this.saveRepeatTask(task);
 
             taskRepository.save(task);
         }
@@ -97,61 +86,56 @@ public class TaskRepeatScheduleService {
     @Async
     private void saveRepeatTask(Task task) {
 
+        String today = DateUtil.getTodayWithYYYYMMDD();
+
         Task repeatTask = new Task();
 
-        TaskRepeatSchedule taskRepeatSchedule = task.getTaskRepeatSchedule();
+        repeatTask.setName(task.getName());
 
-        TaskSnapshotDTO taskSnapshotDTO = ConvertUtil.convertJsonToObject(taskRepeatSchedule.getTaskSnapshot(), TaskSnapshotDTO.class);
+        if(StringUtils.hasText(task.getContents()))
+            repeatTask.setContents(task.getContents());
 
-        if(StringUtils.hasText(taskSnapshotDTO.getName()))
-            repeatTask.setName(taskSnapshotDTO.getName());
+        repeatTask.setImportantYn(task.getImportantYn());
 
-        if(StringUtils.hasText(taskSnapshotDTO.getContents()))
-            repeatTask.setContents(taskSnapshotDTO.getContents());
-
-        repeatTask.setImportantYn(taskSnapshotDTO.getImportantYn());
+        repeatTask.setStartDate(today);
+        repeatTask.setEndDate(today);
 
         Code status = new Code();
         status.setId(1L);
         repeatTask.setStatus(status);
 
-        if(taskSnapshotDTO.getProjectIds() != null && !taskSnapshotDTO.getProjectIds().isEmpty()) {
+        if(task.getTaskProjects() != null && !task.getTaskProjects().isEmpty())
+            task.getPlainTaskProject().forEach(repeatTask::addTaskProject);
 
-            List<Project> projects = projectRepository.findAll(taskSnapshotDTO.getProjectIds());
+        List<User> assignees = task.findTaskUsersByType(UserType.ASSIGNEE);
+        List<User> watchers = task.findTaskUsersByType(UserType.WATCHER);
 
-            projects.forEach(repeatTask::addTaskProject);
-        }
+        if(assignees != null && !assignees.isEmpty()) {
 
-        if(taskSnapshotDTO.getAssigneeIds() != null && !taskSnapshotDTO.getAssigneeIds().isEmpty()) {
-
-            List<User> users = userRepository.findAll(taskSnapshotDTO.getAssigneeIds());
-
-            for(User user : users) {
+            for(User user : assignees) {
                 repeatTask.addTaskUser(user, UserType.ASSIGNEE);
             }
         }
 
-        if(taskSnapshotDTO.getWatcherIds() != null && !taskSnapshotDTO.getWatcherIds().isEmpty()) {
+        if(watchers != null && !watchers.isEmpty()) {
 
-            List<User> users = userRepository.findAll(taskSnapshotDTO.getWatcherIds());
-
-            for(User user : users) {
+            for(User user : watchers) {
                 repeatTask.addTaskUser(user, UserType.WATCHER);
             }
         }
 
-        if(taskSnapshotDTO.getRelatedTaskIds() != null && !taskSnapshotDTO.getRelatedTaskIds().isEmpty()) {
+        if(task.getRelatedTasks() != null && !task.getRelatedTasks().isEmpty())
+            task.getPlainRelatedTask().forEach(repeatTask::addRelatedTask);
 
-            List<Task> tasks = taskRepository.findAll(taskSnapshotDTO.getRelatedTaskIds());
+        if(task.getTaskAttachedFiles() != null && !task.getTaskAttachedFiles().isEmpty()) {
 
-            tasks.forEach(repeatTask::addRelatedTask);
-        }
+            List<AttachedFile> attachedFiles = task.getPlainTaskAttachedFiles();
 
-        if(taskSnapshotDTO.getAttachedFileIds() != null && !taskSnapshotDTO.getAttachedFileIds().isEmpty()) {
+            for(AttachedFile attachedFile : attachedFiles) {
+                AttachedFile copiedAttachedFile = this.attachedFileService.copyFile(attachedFile);
 
-            List<AttachedFile> attachedFiles = attachedFileRepository.findAll(taskSnapshotDTO.getAttachedFileIds());
-
-            attachedFiles.forEach(repeatTask::addAttachedFile);
+                task.addAttachedFile(copiedAttachedFile);
+            }
         }
 
         taskRepository.save(repeatTask);

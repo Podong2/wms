@@ -141,9 +141,11 @@ public class TaskForm {
             task.removeRelatedTask(relatedTask);
         }
 
-        TaskRepeatSchedule taskRepeatSchedule = new TaskRepeatSchedule(task, this.taskRepeatSchedule);
 
-        task.setTaskRepeatSchedule(taskRepeatSchedule);
+        if(this.taskRepeatSchedule != null) {
+            TaskRepeatSchedule taskRepeatSchedule = new TaskRepeatSchedule(task, this.taskRepeatSchedule);
+            task.setTaskRepeatSchedule(taskRepeatSchedule);
+        }
 
         return task;
     }

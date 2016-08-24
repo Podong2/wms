@@ -38,6 +38,18 @@ public class AttachedFileService {
     }
 
     @Transactional
+    public AttachedFile copyFile(AttachedFile targetAttachedFile) {
+
+        AttachedFile attachedFile = new AttachedFile();
+        attachedFile.setName(targetAttachedFile.getName());
+        attachedFile.setContentType(targetAttachedFile.getContentType());
+        attachedFile.setSize(targetAttachedFile.getSize());
+        attachedFile.setContent(targetAttachedFile.getContent());
+
+        return attachedFileRepository.save(attachedFile);
+    }
+
+    @Transactional
     public void removeFile(Long id) {
         attachedFileRepository.findOneById(id).ifPresent(af -> {
             attachedFileRepository.delete(af);

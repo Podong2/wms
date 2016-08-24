@@ -230,7 +230,7 @@ public class ProjectService {
     @Transactional
     public void removeProjectFile(String entityName, Long entityId, Long attachedFileId) {
 
-        if("Task".equals(entityName)) {
+        if("Task".equalsIgnoreCase(entityName)) {
 
             Task task = taskService.findOne(entityId);
 

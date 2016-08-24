@@ -105,7 +105,7 @@ public class TaskService {
 
         String statusGroup = "";
 
-        if(listType.equals(TaskCondition.LIST_TYPE_TODAY)) {
+        if(listType.equalsIgnoreCase(TaskCondition.LIST_TYPE_TODAY)) {
 
             statusGroup = "IN_PROGRESS";
 
@@ -126,7 +126,7 @@ public class TaskService {
                 }
             }
 
-        } else if(listType.equals(TaskCondition.LIST_TYPE_SCHEDULED) || listType.equals(TaskCondition.LIST_TYPE_HOLD) || listType.equals(TaskCondition.LIST_TYPE_COMPLETE)) {
+        } else if(listType.equalsIgnoreCase(TaskCondition.LIST_TYPE_SCHEDULED) || listType.equalsIgnoreCase(TaskCondition.LIST_TYPE_HOLD) || listType.equalsIgnoreCase(TaskCondition.LIST_TYPE_COMPLETE)) {
 
             if(taskDTO.getAssignees() != null) {
                 Optional<UserDTO> assignee = taskDTO.getAssignees().stream().filter(userDTO -> userDTO.getLogin().equals(login)).findFirst();
@@ -390,7 +390,7 @@ public class TaskService {
 
             String statusGroup = "SCHEDULED";
 
-            if(listType.equals(ProjectTaskCondition.LIST_TYPE_WEEK) || listType.equals(ProjectTaskCondition.LIST_TYPE_TOTAL)) {
+            if(listType.equalsIgnoreCase(ProjectTaskCondition.LIST_TYPE_WEEK) || listType.equalsIgnoreCase(ProjectTaskCondition.LIST_TYPE_TOTAL)) {
 
                 if(taskDTO.getStatusId().equals(Task.STATUS_COMPLETE)) {
 
@@ -437,7 +437,7 @@ public class TaskService {
 
         predicate.and($task.taskProjects.any().project.id.eq(project.getId()));
 
-        if(listType.equals(ProjectTaskCondition.LIST_TYPE_WEEK)) {
+        if(listType.equalsIgnoreCase(ProjectTaskCondition.LIST_TYPE_WEEK)) {
 
             Date weekStartDate = DateUtil.getWeekStartDate();
             Date weekEndDate = DateUtil.getWeekEndDate();
@@ -445,7 +445,7 @@ public class TaskService {
             predicate.and($task.endDate.goe(DateUtil.convertDateToYYYYMMDD(weekStartDate)));
             predicate.and($task.endDate.loe(DateUtil.convertDateToYYYYMMDD(weekEndDate)));
 
-        } else if(listType.equals(ProjectTaskCondition.LIST_TYPE_WEEK)) {
+        } else if(listType.equalsIgnoreCase(ProjectTaskCondition.LIST_TYPE_WEEK)) {
 
             String today = DateUtil.getTodayWithYYYYMMDD();
 

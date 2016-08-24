@@ -120,9 +120,9 @@ public class NotificationService {
 
         for(NotificationDTO notificationDTO : notificationDTOs) {
 
-            if("Task".equals(notificationDTO.getEntityName())) {
+            if("Task".equalsIgnoreCase(notificationDTO.getEntityName())) {
                 notificationDTO.setTaskDTO(taskService.findOneDTO(notificationDTO.getEntityId()));
-            } else if("Project".equals(notificationDTO.getEntityName())) {
+            } else if("Project".equalsIgnoreCase(notificationDTO.getEntityName())) {
                 notificationDTO.setProjectDTO(projectService.findOne(notificationDTO.getEntityId()));
             }
         }
@@ -142,9 +142,9 @@ public class NotificationService {
         Notification notification = notificationRepository.findOne(id);
         NotificationDTO notificationDTO = notificationMapper.notificationToNotificationDTO(notification);
 
-        if("Task".equals(notificationDTO.getEntityName())) {
+        if("Task".equalsIgnoreCase(notificationDTO.getEntityName())) {
             notificationDTO.setTaskDTO(taskService.findOneDTO(notificationDTO.getEntityId()));
-        } else if("Project".equals(notificationDTO.getEntityName())) {
+        } else if("Project".equalsIgnoreCase(notificationDTO.getEntityName())) {
             notificationDTO.setProjectDTO(projectService.findOne(notificationDTO.getEntityId()));
         }
 
