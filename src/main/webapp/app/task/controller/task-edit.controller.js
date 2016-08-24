@@ -228,10 +228,8 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
             }
             function onProjectSuccess (result) {
                 vm.projectList = result;
-                $log.debug("프로젝트 목록 : ", result);
             }
             function onProjectError (result) {
-                $log.debug("프로젝트 목록 : ", result);
                 toastr.error('프로젝트 목록 불러오기 실패', '프로젝트 목록 불러오기 실패');
             }
             getProjectList();

@@ -42,10 +42,8 @@
         }
         function onProjectSuccess (result) {
             vm.projectList = result;
-            $log.debug("프로젝트 목록 : ", result);
         }
         function onProjectError (result) {
-            $log.debug("프로젝트 목록 : ", result);
             toastr.error('프로젝트 목록 불러오기 실패', '프로젝트 목록 불러오기 실패');
         }
         getProjectList();
@@ -135,6 +133,7 @@
                 $scope.files.push(value)
             });
             $log.debug("파일 목록 : ", $scope.files);
+            taskUpload();
         });
         // 파일 목록 라이브러리에서 가져오기
         $scope.$on('setCommentFiles', function (event, args) {

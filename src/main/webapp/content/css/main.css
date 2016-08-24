@@ -2022,8 +2022,8 @@ tags-input .tags:hover, tags-input .tags:focus {
 }
 .date-close-btn{
     position: absolute;
-    top: 8px;
-    left: 83px;
+    top: 9px;
+    left: 86px;
     z-index: 100;
     cursor: pointer;
 }

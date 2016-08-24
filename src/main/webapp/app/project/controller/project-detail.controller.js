@@ -5,9 +5,9 @@
         .module('wmsApp')
         .controller('projectDetailCtrl', projectDetailCtrl);
 
-    projectDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', '$log', 'ProjectEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind'];
+    projectDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', '$log', 'ProjectEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectInfo'];
 
-    function projectDetailCtrl($scope, $rootScope, $stateParams, Task, Code, $log, ProjectEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, TaskListSearch, dataService, Principal, ProjectFind ) {
+    function projectDetailCtrl($scope, $rootScope, $stateParams, Task, Code, $log, ProjectEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, TaskListSearch, dataService, Principal, ProjectFind, ProjectInfo ) {
         var vm = this;
 
         vm.openCalendar = openCalendar;
@@ -79,10 +79,8 @@
         }
         function onProjectSuccess (result) {
             vm.projectList = result;
-            $log.debug("프로젝트 목록 : ", result);
         }
         function onProjectError (result) {
-            $log.debug("프로젝트 목록 : ", result);
             toastr.error('프로젝트 목록 불러오기 실패', '프로젝트 목록 불러오기 실패');
         }
         getProjectList();
@@ -224,8 +222,16 @@
                 vm.project.removeRelatedTaskIds ="";
                 vm.project.projectAdminIds = "";
                 vm.project.projectUserIds = "";
-                $state.go("my-project.detail", {}, {reload : true});
+                ProjectInfo.get({projectId : $stateParams.id, listType : 'TOTAL'}, onSuccess, onError);
+                //$state.go("my-project.detail", {}, {reload : true});
             });
+        }
+
+        function onSuccess(data){
+            vm.project = data.project;
+        }
+        function onError(){
+
         }
 
         function userIdPush(userInfo, type){
