@@ -39,7 +39,7 @@
                 authorities: [],
                 title : 'My Project Detail'
             },
-            params: {
+            params: { // project DTO 데이타 전달
                 project: {}
             },
             views: {//
@@ -54,9 +54,6 @@
                     $translatePartialLoader.addPart('task');
                     return $translate.refresh();
                 }]
-                //entity: ['$stateParams', 'Project', function($stateParams, Project) {
-                //    return Project.get({id : $stateParams.id}).$promise;
-                //}]
             }
         })
         .state('my-project.taskDetail', { // ui router에서 호출받을 state name 설정

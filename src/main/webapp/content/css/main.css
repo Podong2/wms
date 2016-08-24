@@ -2050,3 +2050,20 @@ tags-input .tags:hover, tags-input .tags:focus {
     margin: 3px 0px;
 }
 /* project end */
+
+/* notification */
+.notification-menu{
+    margin-top: 34px;
+    font-size: 16px;
+    margin-right: 5px;
+}
+.notification-menu span.active{
+    border-bottom: 3px solid #87A6F3;
+}
+.notification-menu span{
+    margin: 0 2px;
+}
+.notification-title{
+    padding: 5px;
+}
+/* notification end */

@@ -27,7 +27,6 @@ function wmsSelectBox($document, $log, $compile) {
         }],
         compile: function (element) {
             return function($scope){
-                console.log($scope);
                 var template = '';
                 if($scope.multiple == 'true'){
                     template = '<ol class="nya-bs-select col-sm-2" ng-model="selectedValue" style="padding: 0" actions-box="' + $scope.actionsBox + '" multiple data-size="'+ $scope.datasize +'" data-live-search="'+ $scope.datalivesearch +'" disabled="'+ $scope.disabled +'">' +

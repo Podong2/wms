@@ -54,7 +54,6 @@
                 params : params
             } ).then(function (result) {
                 deferred.resolve(result);
-                $log.debug("TaskAudigLogList : ", result);
             });
             return deferred.promise;
 

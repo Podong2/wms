@@ -1,0 +1,115 @@
+<!--
+  ~ Copyright (c) 2016. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+  ~ Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+  ~ Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+  ~ Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+  ~ Vestibulum commodo. Ut rhoncus gravida arcu.
+  -->
+<div id="content" ng-cloak>
+    <div class="layout-scroll" style="position: relative; background: #fff;
+    border: 1px solid #aaa; height: 1030px;">
+        <bg-splitter orientation="horizontal">
+
+            <bg-pane min-size="400">
+                <!--<div ui-view="taskList"></div>-->
+                    <div class="pull-right notification-menu">
+                        <span class="text-center active cursor" ng-class="vm.tabArea[0].status == true ? 'active' : ''" ng-click="vm.tabDisplay(0)"><span>새로운 알림</span></span>
+                        <span class="text-center cursor" ng-class="vm.tabArea[1].status == true ? 'active' : ''" ng-click="vm.tabDisplay(1)"><span>확인한 알림</span></span>
+                        <span><i class="fa fa-cog"></i></span>
+                    </div>
+                    <div class="notification-title">
+                        <h3>
+                            <strong>알림</strong>
+                        </h3>
+                    </div>
+
+                    <div class="table table-bordered table-hover " style="margin-bottom: 0;">
+                        <div>
+                            <div ng-repeat="data in vm.notifications" class="">
+                                <div  class="wms-tree-node-list task-list" ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
+                                      ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate"
+                                       ng-if="data.taskDTO != null">
+                                    <div class="pull-right">
+                                        <div>11:11</div>
+                                        <div class="wms-form">
+                                            <label class="radio state-success"><input type="radio"
+                                                                                    name="radio"><i></i></label>
+                                        </div>
+                                    </div>
+                                    <div class="cursor" ui-sref="my-notification.taskDetail({taskId : data.taskDTO.id, listType : 'TODAY'})">
+                                        <div>
+                                            {{data.title}} <i class="fa fa-user"/>
+                                        </div>
+                                        <div>
+                                            <i class="fa fa-user"/> {{data.notificationConfig}}
+                                        </div>
+                                        <div>
+                                            일정 {{data.taskDTO.startDate}} ~ {{data.taskDTO.endDate}}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div  class="wms-tree-node-list task-list" ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
+                                      ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate"
+                                       ng-if="data.projectDTO != null">
+                                    <div class="pull-right">
+                                        <div>11:11</div>
+                                        <div class="wms-form">
+                                            <label class="radio state-success"><input type="radio"
+                                                                                      name="radio"><i></i></label>
+                                        </div>
+                                    </div>
+                                    <div class="cursor" ui-sref="my-notification.projectDetail({project: data.projectDTO})">
+                                        <div>
+                                            {{data.title}} <i class="fa fa-user"/>
+                                        </div>
+                                        <div>
+                                            <i class="fa fa-user"/> {{data.notificationConfig}}
+                                        </div>
+                                        <div>
+                                            일정 {{data.projectDTO.startDate}} ~ {{data.projectDTO.endDate}}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="no-data" ng-if="vm.delayed.length == 0">
+                                데이터가 없습니다.
+                            </div>
+                        </div>
+                        </div>
+            </bg-pane>
+
+            <bg-pane min-size="800">
+                <div ui-view="notificationDetail"></div>
+            </bg-pane>
+
+        </bg-splitter>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
