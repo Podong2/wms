@@ -117,7 +117,7 @@ function customRenderer($compile, $filter, $log, $sce) {
                             customTag = "<button type='button' class='btn'><i class='fa fa-upload'></i></button>";
                         break;
                     case "file_remove" :
-                            customTag = "<button type='button' class='btn' ng-click='fileRemove(data.locationType, data.locationId, data.id)'><i class='fa fa-trash'></i>" + scope.data + "</button>";
+                            customTag = "<button type='button' class='btn' ng-click='fileRemove(data.locationType, data.locationId, data.id)'><i class='fa fa-trash'></i></button>";
                         break;
                 }
 
