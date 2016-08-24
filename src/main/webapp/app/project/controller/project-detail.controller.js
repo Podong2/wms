@@ -5,9 +5,9 @@
         .module('wmsApp')
         .controller('projectDetailCtrl', projectDetailCtrl);
 
-    projectDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', '$log', 'ProjectEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectInfo'];
+    projectDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', '$log', 'ProjectEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectInfo', 'ProjectFindByName'];
 
-    function projectDetailCtrl($scope, $rootScope, $stateParams, Task, Code, $log, ProjectEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, TaskListSearch, dataService, Principal, ProjectFind, ProjectInfo ) {
+    function projectDetailCtrl($scope, $rootScope, $stateParams, Task, Code, $log, ProjectEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, TaskListSearch, dataService, Principal, ProjectFind, ProjectInfo, ProjectFindByName ) {
         var vm = this;
 
         vm.openCalendar = openCalendar;
@@ -15,6 +15,7 @@
         vm.renderHtml = renderHtml;
         vm.fileDownLoad = fileDownLoad;
         vm.createComment = createComment;
+        vm.FindProjectList = FindProjectList;
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
 
@@ -48,6 +49,7 @@
             removeAttachedFileIds : ''
         };
 
+        vm.projectName = '';
 
         $scope.files = [];
 
@@ -77,6 +79,9 @@
         function getProjectList(){
             ProjectFind.query({name : ''}, onProjectSuccess, onProjectError);
         }
+        function FindProjectList(){
+            ProjectFindByName.query({name : vm.projectName},onProjectSuccess, onProjectError)
+        }
         function onProjectSuccess (result) {
             vm.projectList = result;
         }
@@ -85,6 +90,9 @@
         }
         getProjectList();
 
+
+
+
         TaskListSearch.TaskAudigLog({'entityId' : vm.project.id, 'entityName' : 'Project'}).then(function(result){
             vm.TaskAuditLog = result;
             angular.forEach(vm.TaskAuditLog.data, function(val){
@@ -92,7 +100,6 @@
                     vm.commentList.push(val);
                 }
             });
-            $log.debug("vm.commentList : ", vm.commentList)
         });
 
         // -------------------  broadcast start ------------------- //
@@ -177,7 +184,7 @@
             }
         });
         $scope.$watchCollection('vm.project.parentProjectIds', function(newValue, oldValue){
-            if(oldValue !== newValue) {
+            if(newValue != undefined && oldValue !== newValue) {
                 projectUpload();
             }
         });

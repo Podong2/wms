@@ -30,6 +30,7 @@ projectCtrl.$inject=['$scope', 'Code', '$log', 'toastr', '$state', '$timeout', '
             function onSuccess (result) {
                 vm.projectList = result;
                 $rootScope.$broadcast('projectListLoading')
+                $log.debug("vm.projectList : ", vm.projectList);
             }
             function onError (result) {
                 toastr.error('프로젝트 목록 불러오기 실패', '프로젝트 목록 불러오기 실패');

@@ -33,7 +33,7 @@
                 <div style="width: 300px;">
                     <div style="width: 300px;">
                         <div class="project-picker-search">
-                            <input class="project-picker-search-input" type="text" placeholder="Add to folder/project">
+                            <input class="project-picker-search-input" type="text" ng-model="vm.projectName" enter-submit="vm.FindProjectList()" placeholder="Add to folder/project">
                         </div>
                         <div class="project-picker-list-area">
                             <div class="project-picker-list">

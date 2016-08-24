@@ -5,8 +5,8 @@
 
 angular.module('wmsApp')
     .controller("taskEditCtrl", taskEditCtrl);
-taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'toastr', '$state', '$timeout', 'DateUtils', 'SubTask', 'Principal', 'findUser', '$q', 'TaskEdit', 'FindTasks', 'ProjectFind'];
-        function taskEditCtrl($scope, $uibModalInstance, Code, $log, Task, toastr, $state, $timeout, DateUtils, SubTask, Principal, findUser, $q, TaskEdit, FindTasks, ProjectFind) {
+taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'toastr', '$state', '$timeout', 'DateUtils', 'SubTask', 'Principal', 'findUser', '$q', 'TaskEdit', 'FindTasks', 'ProjectFind', 'ProjectFindByName'];
+        function taskEditCtrl($scope, $uibModalInstance, Code, $log, Task, toastr, $state, $timeout, DateUtils, SubTask, Principal, findUser, $q, TaskEdit, FindTasks, ProjectFind, ProjectFindByName) {
             var vm = this;
             vm.save = save;
             vm.subTaskSave = subTaskSave;
@@ -15,7 +15,7 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
             vm.cancel = cancel;
             vm.autoValueInit = autoValueInit;
             vm.taskUpload = taskUpload;
-            //vm.projectListAdd = projectListAdd;
+            vm.FindProjectList = FindProjectList;
             vm.userInfo = Principal.getIdentity();
 
             vm.codes = Code.query();
@@ -188,7 +188,7 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
                 if(vm.taskProject != [])userIdPush(vm.taskProject, "projectIds");
 
                 $log.debug("vm.task ;::::::", vm.task);
-                TaskEdit.uploadTask({
+                TaskEdit.saveTask({
                     method : "POST",
                     file : $scope.files,
                     //	data 속성으로 별도의 데이터 전송
@@ -225,6 +225,9 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
 
             function getProjectList(){
                 ProjectFind.query({name : ''}, onProjectSuccess, onProjectError);
+            }
+            function FindProjectList(){
+                ProjectFindByName.query({name : vm.projectName},onProjectSuccess, onProjectError)
             }
             function onProjectSuccess (result) {
                 vm.projectList = result;
