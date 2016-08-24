@@ -6,8 +6,8 @@
 
 angular.module('wmsApp')
     .controller("projectFileCtrl", projectFileCtrl);
-projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope', '$state', '$stateParams', 'toastr',  'Principal', 'ProjectAttachedList', 'tableService'];
-        function projectFileCtrl($scope, Code, $log, AlertService, $rootScope, $state, $stateParams, toastr,  Principal, ProjectAttachedList, tableService) {
+projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope', '$state', '$stateParams', 'toastr',  'Principal', 'ProjectAttachedList', 'tableService', 'ProjectEdit'];
+        function projectFileCtrl($scope, Code, $log, AlertService, $rootScope, $state, $stateParams, toastr,  Principal, ProjectAttachedList, tableService, ProjectEdit) {
             var vm = this;
             vm.userInfo = Principal.getIdentity();
             vm.projectAttachedList = [];
@@ -15,13 +15,20 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
             vm.imageList = [];
             vm.wmsTableData = [];
             vm.images = [];
-            $scope.fileDownLoad = fileDownLoad;
+            vm.removeFile = {
+                entityName : '',
+                entityId : '',
+                attachedFileId : ''
+            };
+            $scope.test= '12312313'
             vm.tabDisplay = tabDisplay;
 
             vm.tabArea = [
                 { status: false },  // 이미지
                 { status:  true },  // 파일
             ];
+
+
 
             //  탭메뉴 영역 표시 여부 지정
             function tabDisplay (number, type) {
@@ -85,12 +92,18 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
                     return (bytes/Math.pow(1024, Math.floor(e))).toFixed(2)+" "+s[e];
             }
 
-            // 첨부 파일 다운로드
-            function fileDownLoad(key){
-                $log.debug("다운로드")
-                var iframe = $("<iframe/>").hide().appendTo("body").load(function() {
-                    iframe.remove();
-                }).attr("src", "/api/attachedFile/" + key);
+            // 첨부 파일 다운로드 (커스텀 디렉티브에 존재)
+            //function fileDownLoad(key){
+            //    $log.debug("다운로드")
+            //    var iframe = $("<iframe/>").hide().appendTo("body").load(function() {
+            //        iframe.remove();
+            //    }).attr("src", "/api/attachedFile/" + key);
+            //}
+
+            function deleteAttachedFile(){
+                ProjectEdit.deleteAttachedFile(vm.removeFile).then(function(result){
+
+                });
             }
 
 
