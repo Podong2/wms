@@ -154,6 +154,14 @@ public class TraceLogInterceptor extends EmptyInterceptor {
             if (logRecord != null && traceLogService != null) {
                 traceLogService.save(logRecord);
             }
+
+//            if (entity instanceof TaskUser || entity instanceof RelatedTask) {
+//
+//                NotificationService notificationService = ApplicationContextUtil.getBean(NotificationService.class);
+//
+//                if(notificationService != null)
+//                    notificationService.sendTaskUpdateNotification(logRecord, "04");
+//            }
         }
 
         return true;
@@ -170,6 +178,14 @@ public class TraceLogInterceptor extends EmptyInterceptor {
             if (logRecord != null && traceLogService != null) {
                 traceLogService.remove(logRecord);
             }
+
+//            if (entity instanceof TaskUser || entity instanceof RelatedTask) {
+//
+//                NotificationService notificationService = ApplicationContextUtil.getBean(NotificationService.class);
+//
+//                if(notificationService != null)
+//                    notificationService.sendTaskUpdateNotification(logRecord, "04");
+//            }
         }
     }
 

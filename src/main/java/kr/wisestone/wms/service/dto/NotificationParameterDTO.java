@@ -74,7 +74,7 @@ public class NotificationParameterDTO {
         this.setEntityId(traceLog.getEntityId());
         this.setEntityField(traceLog.getEntityField());
         this.setEntityName(traceLog.getEntityName());
-        this.setEntityValue(traceLog.getEntityField());
+        this.setEntityValue(traceLog.getNewValue());
         this.setEtcValue(traceLog.getEtcValue());
     }
 
@@ -137,7 +137,7 @@ public class NotificationParameterDTO {
         notification.setEntityId(this.getEntityId());
         notification.setEntityField(this.getEntityField());
         notification.setEntityName(this.getEntityName());
-        notification.setEntityValue(this.getEntityField());
+        notification.setEntityValue(this.getEntityValue());
         notification.setEtcValue(this.getEtcValue());
 
         notification.addNotificationReceive(this.toUsers.stream().map(User::getId).collect(Collectors.toList()));

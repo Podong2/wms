@@ -1,14 +1,10 @@
 package kr.wisestone.wms.web.rest.dto;
 
-import kr.wisestone.wms.common.util.DateUtil;
 import kr.wisestone.wms.domain.TaskAttachedFile;
-import kr.wisestone.wms.web.rest.condition.TaskCondition;
-import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -65,6 +61,7 @@ public class TaskDTO implements Serializable {
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getName() {
         return name;
     }
@@ -72,6 +69,7 @@ public class TaskDTO implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
+
     public String getContents() {
         return contents;
     }
