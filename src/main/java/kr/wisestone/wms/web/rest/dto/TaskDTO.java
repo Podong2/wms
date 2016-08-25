@@ -1,6 +1,7 @@
 package kr.wisestone.wms.web.rest.dto;
 
 import kr.wisestone.wms.domain.TaskAttachedFile;
+import kr.wisestone.wms.domain.TaskRepeatSchedule;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -57,6 +58,8 @@ public class TaskDTO implements Serializable {
     private ZonedDateTime lastModifiedDate;
 
     private String lastModifiedBy;
+
+    private TaskRepeatScheduleDTO taskRepeatScheduleDTO;
 
     public Long getId() {
         return id;
@@ -232,6 +235,14 @@ public class TaskDTO implements Serializable {
 
     public void setLastModifiedBy(String lastModifiedBy) {
         this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public TaskRepeatScheduleDTO getTaskRepeatScheduleDTO() {
+        return taskRepeatScheduleDTO;
+    }
+
+    public void setTaskRepeatScheduleDTO(TaskRepeatScheduleDTO taskRepeatScheduleDTO) {
+        this.taskRepeatScheduleDTO = taskRepeatScheduleDTO;
     }
 
     @Override

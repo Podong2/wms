@@ -11,6 +11,7 @@ import kr.wisestone.wms.security.SecurityUtils;
 import kr.wisestone.wms.web.rest.condition.ProjectTaskCondition;
 import kr.wisestone.wms.web.rest.condition.TaskCondition;
 import kr.wisestone.wms.web.rest.dto.TaskDTO;
+import kr.wisestone.wms.web.rest.dto.TaskRepeatScheduleDTO;
 import kr.wisestone.wms.web.rest.dto.UserDTO;
 import kr.wisestone.wms.web.rest.form.TaskForm;
 import kr.wisestone.wms.web.rest.mapper.ProjectMapper;
@@ -227,6 +228,9 @@ public class TaskService {
         if(!task.getTaskAttachedFiles().isEmpty()) {
             taskDTO.setAttachedFiles(Lists.newArrayList(task.getTaskAttachedFiles()));
         }
+
+        if(task.getTaskRepeatSchedule() != null)
+            taskDTO.setTaskRepeatScheduleDTO(new TaskRepeatScheduleDTO(task.getTaskRepeatSchedule()));
 
         return taskDTO;
     }

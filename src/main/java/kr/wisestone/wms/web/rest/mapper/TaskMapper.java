@@ -6,6 +6,7 @@ import com.google.common.collect.Iterables;
 import kr.wisestone.wms.domain.*;
 import kr.wisestone.wms.web.rest.dto.TaskDTO;
 
+import kr.wisestone.wms.web.rest.dto.TaskRepeatScheduleDTO;
 import org.mapstruct.*;
 
 import javax.annotation.Nullable;
