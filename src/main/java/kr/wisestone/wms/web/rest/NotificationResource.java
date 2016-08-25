@@ -3,8 +3,6 @@ package kr.wisestone.wms.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import kr.wisestone.wms.domain.Notification;
 import kr.wisestone.wms.service.NotificationService;
-import kr.wisestone.wms.web.rest.dto.TaskDTO;
-import kr.wisestone.wms.web.rest.form.TaskForm;
 import kr.wisestone.wms.web.rest.util.HeaderUtil;
 import kr.wisestone.wms.web.rest.util.PaginationUtil;
 import kr.wisestone.wms.web.rest.dto.NotificationDTO;
@@ -21,15 +19,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
 
 import javax.inject.Inject;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.StreamSupport;
-
-import static org.elasticsearch.index.query.QueryBuilders.*;
 
 /**
  * REST controller for managing Notification.
@@ -106,10 +98,10 @@ public class NotificationResource {
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<NotificationDTO> checkReadNotification(@PathVariable Long id) throws URISyntaxException {
+    public ResponseEntity<NotificationDTO> checkReadNotification(@PathVariable Long id, @RequestParam(name = "checkType") String checkType) throws URISyntaxException {
         log.debug("REST request to read Notification : {}", id);
 
-        NotificationDTO notificationDTO = notificationService.checkReadNotification(id);
+        NotificationDTO notificationDTO = notificationService.checkNotification(id, checkType);
         return Optional.ofNullable(notificationDTO)
             .map(result -> new ResponseEntity<>(
                 result,

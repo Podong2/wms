@@ -35,6 +35,10 @@ public class NotificationRecipient extends AbstractAuditingEntity implements Ser
     @Type(type="yes_no")
     private Boolean readYn = Boolean.FALSE;
 
+    @Column(name = "confirm_yn")
+    @Type(type="yes_no")
+    private Boolean confirmYn = Boolean.FALSE;
+
     @ManyToOne
     @JoinColumn(name = "notification_id")
     private Notification notification;
@@ -64,6 +68,14 @@ public class NotificationRecipient extends AbstractAuditingEntity implements Ser
 
     public void setReadYn(Boolean readYn) {
         this.readYn = readYn;
+    }
+
+    public Boolean getConfirmYn() {
+        return confirmYn;
+    }
+
+    public void setConfirmYn(Boolean confirmYn) {
+        this.confirmYn = confirmYn;
     }
 
     public Notification getNotification() {

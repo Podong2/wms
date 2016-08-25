@@ -17,6 +17,7 @@ import kr.wisestone.wms.web.rest.dto.TaskDTO;
 import kr.wisestone.wms.web.rest.mapper.NotificationMapper;
 import kr.wisestone.wms.web.rest.mapper.TraceLogMapper;
 import kr.wisestone.wms.web.rest.mapper.UserMapper;
+import kr.wisestone.wms.web.rest.util.PaginationUtil;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,6 +25,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
@@ -114,17 +116,23 @@ public class NotificationService {
         }
 
         log.debug("Request to get all Notifications");
-        Page<Notification> result = notificationRepository.findAll(predicate, pageable);
+        Page<Notification> result = notificationRepository.findAll(predicate, PaginationUtil.applySort(pageable, Sort.Direction.DESC, "createdDate"));
 
-        List<NotificationDTO> notificationDTOs = notificationMapper.notificationsToNotificationDTOs(result.getContent());
+        List<NotificationDTO> notificationDTOs = Lists.newArrayList();
 
-        for(NotificationDTO notificationDTO : notificationDTOs) {
+        for(Notification notification : result.getContent()) {
+
+            NotificationDTO notificationDTO = notificationMapper.notificationToNotificationDTO(notification);
 
             if("Task".equalsIgnoreCase(notificationDTO.getEntityName())) {
                 notificationDTO.setTaskDTO(taskService.findOneDTO(notificationDTO.getEntityId()));
             } else if("Project".equalsIgnoreCase(notificationDTO.getEntityName())) {
                 notificationDTO.setProjectDTO(projectService.findOne(notificationDTO.getEntityId()));
             }
+
+            notificationDTO.setReadYn(notification.checkReadYn(loginUser.getId()));
+
+            notificationDTOs.add(notificationDTO);
         }
 
         return new PageImpl<>(notificationDTOs, pageable, result.getTotalElements());
@@ -160,7 +168,7 @@ public class NotificationService {
         BooleanBuilder predicate = new BooleanBuilder();
 
         predicate.and($notification.notificationRecipients.any().recipient.eq(loginUser.getId()));
-        predicate.and($notification.notificationRecipients.any().readYn.eq(Boolean.FALSE));
+        predicate.and($notification.notificationRecipients.any().confirmYn.eq(Boolean.FALSE));
 
         Long count = notificationRepository.count(predicate);
 
@@ -168,14 +176,20 @@ public class NotificationService {
     }
 
     @Transactional
-    public NotificationDTO checkReadNotification(Long id) {
+    public NotificationDTO checkNotification(Long id, String checkType) {
 
         User loginUser = SecurityUtils.getCurrentUser();
 
         Notification notification = notificationRepository.findOne(id);
 
         NotificationRecipient notificationRecipient = notification.findNotificationRecipient(loginUser.getId());
-        notificationRecipient.setReadYn(Boolean.TRUE);
+
+        if("read".equalsIgnoreCase(checkType)) {
+            notificationRecipient.setReadYn(Boolean.TRUE);
+        } else if("confirm".equalsIgnoreCase(checkType)) {
+            notificationRecipient.setReadYn(Boolean.TRUE);
+            notificationRecipient.setConfirmYn(Boolean.TRUE);
+        }
 
         return notificationMapper.notificationToNotificationDTO(notification);
     }

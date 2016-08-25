@@ -278,4 +278,16 @@ public class Notification extends AbstractAuditingEntity implements Serializable
             ", contents='" + contents + "'" +
             '}';
     }
+
+    public Boolean checkReadYn(Long id) {
+
+        NotificationRecipient findedNotificationRecipient = this.notificationRecipients.stream().filter(
+            notificationRecipient -> notificationRecipient.getRecipient().equals(id)
+        ).findFirst().orElse(null);
+
+        if(findedNotificationRecipient == null)
+            return Boolean.FALSE;
+
+        return findedNotificationRecipient.getReadYn();
+    }
 }

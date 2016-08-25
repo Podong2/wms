@@ -46,6 +46,8 @@ public class NotificationDTO implements Serializable {
 
     private ZonedDateTime createdDate;
 
+    private Boolean readYn = Boolean.FALSE;
+
     public Long getId() {
         return id;
     }
@@ -174,6 +176,14 @@ public class NotificationDTO implements Serializable {
 
     public void setCreatedDate(ZonedDateTime createdDate) {
         this.createdDate = createdDate;
+    }
+
+    public Boolean getReadYn() {
+        return readYn;
+    }
+
+    public void setReadYn(Boolean readYn) {
+        this.readYn = readYn;
     }
 
     @Override
