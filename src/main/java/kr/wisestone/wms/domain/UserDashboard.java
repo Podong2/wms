@@ -35,6 +35,13 @@ public class UserDashboard {
     @Type(type="yes_no")
     private Boolean defaultYn = Boolean.FALSE;
 
+    public UserDashboard() {}
+
+    public UserDashboard(User user, Dashboard dashboard) {
+        this.setUser(user);
+        this.setDashboard(dashboard);
+    }
+
     public Long getId() {
         return id;
     }

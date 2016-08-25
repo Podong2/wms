@@ -127,4 +127,8 @@ public class Dashboard {
     public void setUserDashboards(Set<UserDashboard> userDashboards) {
         this.userDashboards = userDashboards;
     }
+
+    public void addUserDashboard(UserDashboard userDashboard) {
+        this.userDashboards.add(userDashboard);
+    }
 }

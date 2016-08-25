@@ -152,7 +152,7 @@ public class TaskService {
         taskDTO.setStatusGroup(statusGroup);
     }
 
-    private void copyTaskRelationProperties(Task task, TaskDTO taskDTO) {
+    public void copyTaskRelationProperties(Task task, TaskDTO taskDTO) {
         if(task.getTaskUsers() != null && !task.getTaskUsers().isEmpty()) {
             taskDTO.setAssignees(userMapper.usersToUserDTOs(task.findTaskUsersByType(UserType.ASSIGNEE)));
             taskDTO.setWatchers(userMapper.usersToUserDTOs(task.findTaskUsersByType(UserType.WATCHER)));

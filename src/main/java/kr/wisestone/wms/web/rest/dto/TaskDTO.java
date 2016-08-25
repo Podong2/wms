@@ -54,6 +54,10 @@ public class TaskDTO implements Serializable {
 
     private String createdBy;
 
+    private ZonedDateTime lastModifiedDate;
+
+    private String lastModifiedBy;
+
     public Long getId() {
         return id;
     }
@@ -212,6 +216,22 @@ public class TaskDTO implements Serializable {
 
     public void setTaskProjects(List<ProjectDTO> taskProjects) {
         this.taskProjects = taskProjects;
+    }
+
+    public ZonedDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(ZonedDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
     }
 
     @Override

@@ -222,10 +222,7 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
 
     public Task addTaskUser(User user, UserType userType) {
 
-        Optional<TaskUser> origin = this.taskUsers.stream().filter(
-            taskUser ->
-                taskUser.getUserType().equals(userType) && taskUser.getUser().getId().equals(user.getId())
-        ).findFirst();
+        Optional<TaskUser> origin = findTaskUser(user, userType);
 
         if(!origin.isPresent())
             this.taskUsers.add(new TaskUser(this, user, userType));
@@ -233,12 +230,16 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
         return this;
     }
 
-    public Task removeTaskUser(User user, UserType userType) {
-
-        Optional<TaskUser> origin = this.taskUsers.stream().filter(
+    public Optional<TaskUser> findTaskUser(User user, UserType userType) {
+        return this.taskUsers.stream().filter(
             taskUser ->
                 taskUser.getUserType().equals(userType) && taskUser.getUser().getId().equals(user.getId())
         ).findFirst();
+    }
+
+    public Task removeTaskUser(User user, UserType userType) {
+
+        Optional<TaskUser> origin = findTaskUser(user, userType);
 
         if(origin.isPresent())
             this.taskUsers.remove(origin.get());
