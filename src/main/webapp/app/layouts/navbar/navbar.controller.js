@@ -51,6 +51,7 @@
 
         }
 
+
         function toggleNavbar() {
             vm.isNavbarCollapsed = !vm.isNavbarCollapsed;
         }

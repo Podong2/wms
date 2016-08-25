@@ -26,13 +26,15 @@
                     <div class="table table-bordered table-hover " style="margin-bottom: 0;">
                         <div>
                             <div ng-repeat="data in vm.notifications" class="">
+
+                                <!-- 타스크 영역 -->
                                 <div  class="wms-tree-node-list task-list" ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
                                       ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate"
                                        ng-if="data.taskDTO != null">
                                     <div class="pull-right">
                                         <div>11:11</div>
                                         <div class="wms-form">
-                                            <label class="radio state-success"><input type="radio"
+                                            <label class="radio state-success"><input type="radio" ng-click="vm.notificationReadChange(data.id)"
                                                                                     name="radio"><i></i></label>
                                         </div>
                                     </div>
@@ -48,6 +50,8 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                <!-- 프로젝트 영역 -->
                                 <div  class="wms-tree-node-list task-list" ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
                                       ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate"
                                        ng-if="data.projectDTO != null">
@@ -70,6 +74,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                             </div>
                             <div class="no-data" ng-if="vm.delayed.length == 0">
                                 데이터가 없습니다.

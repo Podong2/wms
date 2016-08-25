@@ -5,12 +5,16 @@
 
 angular.module('wmsApp')
     .controller("notificationListCtrl", notificationListCtrl);
-notificationListCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope', '$state', '$stateParams', 'toastr', 'Notification'];
-        function notificationListCtrl($scope, Code, $log, AlertService, $rootScope, $state, $stateParams, toastr, Notification) {
+notificationListCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope', '$state', '$stateParams', 'toastr', 'Notification', 'ReadUpload'];
+        function notificationListCtrl($scope, Code, $log, AlertService, $rootScope, $state, $stateParams, toastr, Notification, ReadUpload) {
             var vm = this;
             //vm.showDetail = showDetail;
+            vm.notificationReadChange = notificationReadChange;
 
             vm.notifications=[]; // 총 목록
+            vm.notification = {
+                id : ''
+            }
 
             function getList(){
                 Notification.query({}, onSuccess, onError);
@@ -27,6 +31,16 @@ notificationListCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootSc
                 AlertService.error(error.data.message);
             }
 
+            function notificationReadChange(id){
+                vm.notification.id = id;
+                Notification.update(vm.notification, onReadSuccess, onReadError);
+            }
+            function onReadSuccess(result){
+                getList();
+            }
+            function onReadError(){
+
+            }
 
 
         }

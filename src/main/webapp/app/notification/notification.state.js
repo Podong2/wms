@@ -54,9 +54,6 @@
                     $translatePartialLoader.addPart('task');
                     return $translate.refresh();
                 }]
-                //entity: ['$stateParams', 'notification', function($stateParams, notification) {
-                //    return notification.get({id : $stateParams.id}).$promise;
-                //}]
             }
         })
         .state('my-notification.taskDetail', { // ui router에서 호출받을 state name 설정
