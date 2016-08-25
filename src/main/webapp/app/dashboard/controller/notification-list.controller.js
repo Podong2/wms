@@ -10,41 +10,16 @@ notificationListCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootSc
             var vm = this;
             //vm.showDetail = showDetail;
             vm.notificationReadChange = notificationReadChange;
-            vm.getReadList = getReadList;
-            vm.getList = getList;
 
             vm.notifications=[]; // 총 목록
             vm.notification = {
                 id : ''
             }
 
-            vm.tabArea = [
-                { status: true },  // 새로운 알림
-                { status: false }  // 확인한 알림
-            ];
-
-            function getList(number){
-                tabDisplay(number);
-                Notification.query({listType : 'UN_READ'}, onSuccess, onError);
+            function getList(){
+                Notification.query({}, onSuccess, onError);
             }
-            vm.getList(0);
-
-            function getReadList(number){
-                tabDisplay(number);
-                Notification.query({listType : 'READ'}, onSuccess, onError);
-            }
-
-            //  탭메뉴 영역 표시 여부 지정
-            function tabDisplay (number) {
-                angular.forEach(vm.tabArea, function (tab, index) {
-                    if (number == index) {
-                        tab.status = true;
-                    }
-                    else {
-                        tab.status = false;
-                    }
-                });
-            }
+            getList();
 
             function onSuccess(data, headers) {
                 $log.debug("notifications : ", data);
@@ -57,9 +32,15 @@ notificationListCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootSc
             }
 
             function notificationReadChange(id){
-                ReadUpload.put(id).then(function(){
-                    getList();
-                });
+                vm.notification.id = id;
+                Notification.update(vm.notification, onReadSuccess, onReadError);
             }
+            function onReadSuccess(result){
+                getList();
+            }
+            function onReadError(){
+
+            }
+
 
         }

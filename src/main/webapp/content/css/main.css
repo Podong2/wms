@@ -2057,11 +2057,14 @@ tags-input .tags:hover, tags-input .tags:focus {
     font-size: 16px;
     margin-right: 5px;
 }
-.notification-menu span.active{
+.notification-menu a.active{
     border-bottom: 3px solid #87A6F3;
+    color:#666;
+    font-weight: bold;
 }
-.notification-menu span{
+.notification-menu a{
     margin: 0 2px;
+    color:#aaa;
 }
 .notification-title{
     padding: 5px;
