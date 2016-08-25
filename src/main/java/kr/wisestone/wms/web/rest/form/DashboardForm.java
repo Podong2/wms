@@ -16,11 +16,7 @@ public class DashboardForm {
 
     private Boolean useYn = Boolean.TRUE;
 
-    private Boolean sharedYn = Boolean.FALSE;
-
     private Boolean systemYn = Boolean.FALSE;
-
-    private Boolean loginYn = Boolean.FALSE;
 
 
     public Dashboard bind(Dashboard dashboard) {
@@ -32,9 +28,7 @@ public class DashboardForm {
         dashboard.setDashboardModel(this.getDashboardModel());
 
         dashboard.setUseYn(this.getUseYn());
-        dashboard.setSharedYn(this.getSharedYn());
         dashboard.setSystemYn(this.getSystemYn());
-        dashboard.setLoginYn(this.getLoginYn());
 
         return dashboard;
     }

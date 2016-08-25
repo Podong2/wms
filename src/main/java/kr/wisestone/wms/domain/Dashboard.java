@@ -14,7 +14,7 @@ import java.util.Set;
 @Table(name = "owl_dashboard")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "dashboard")
-public class Dashboard {
+public class Dashboard extends AbstractAuditingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "dashboardSeqGenerator")
@@ -40,17 +40,9 @@ public class Dashboard {
     @Type(type = "yes_no")
     private Boolean useYn = Boolean.TRUE;
 
-    @Column(name = "shared_yn")
-    @Type(type = "yes_no")
-    private Boolean sharedYn = Boolean.FALSE;
-
     @Column(name = "system_yn")
     @Type(type = "yes_no")
     private Boolean systemYn = Boolean.FALSE;
-
-    @Column(name = "login_yn")
-    @Type(type = "yes_no")
-    private Boolean loginYn = Boolean.FALSE;
 
     @OneToMany(mappedBy = "dashboard", cascade = { CascadeType.ALL }, orphanRemoval = true)
     private Set<UserDashboard> userDashboards = new HashSet<>();
@@ -96,28 +88,12 @@ public class Dashboard {
         this.useYn = useYn;
     }
 
-    public Boolean getSharedYn() {
-        return sharedYn;
-    }
-
-    public void setSharedYn(Boolean sharedYn) {
-        this.sharedYn = sharedYn;
-    }
-
     public Boolean getSystemYn() {
         return systemYn;
     }
 
     public void setSystemYn(Boolean systemYn) {
         this.systemYn = systemYn;
-    }
-
-    public Boolean getLoginYn() {
-        return loginYn;
-    }
-
-    public void setLoginYn(Boolean loginYn) {
-        this.loginYn = loginYn;
     }
 
     public Set<UserDashboard> getUserDashboards() {

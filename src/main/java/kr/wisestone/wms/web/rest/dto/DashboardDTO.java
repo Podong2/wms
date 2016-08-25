@@ -12,11 +12,7 @@ public class DashboardDTO {
 
     private Boolean useYn = Boolean.TRUE;
 
-    private Boolean sharedYn = Boolean.FALSE;
-
     private Boolean systemYn = Boolean.FALSE;
-
-    private Boolean loginYn = Boolean.FALSE;
 
     public Long getId() {
         return id;
@@ -58,27 +54,11 @@ public class DashboardDTO {
         this.useYn = useYn;
     }
 
-    public Boolean getSharedYn() {
-        return sharedYn;
-    }
-
-    public void setSharedYn(Boolean sharedYn) {
-        this.sharedYn = sharedYn;
-    }
-
     public Boolean getSystemYn() {
         return systemYn;
     }
 
     public void setSystemYn(Boolean systemYn) {
         this.systemYn = systemYn;
-    }
-
-    public Boolean getLoginYn() {
-        return loginYn;
-    }
-
-    public void setLoginYn(Boolean loginYn) {
-        this.loginYn = loginYn;
     }
 }

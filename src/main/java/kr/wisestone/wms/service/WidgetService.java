@@ -54,6 +54,8 @@ public class WidgetService {
             predicate.and($task.taskProjects.any().project.id.eq(widgetCondition.getProjectId()));
         }
 
+        predicate.and($task.endDate.isNotNull());
+
         switch (widgetCondition.getListType()) {
             case LIST_TYPE_TODAY:
 
@@ -77,8 +79,6 @@ public class WidgetService {
 
                 break;
             case LIST_TYPE_SCHEDULED:
-
-                predicate.and($task.endDate.isNotEmpty());
 
                 break;
         }
