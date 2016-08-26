@@ -32,7 +32,7 @@ public class DashboardService {
         return dashboardMapper.dashboardToDashboardDTO(dashboard);
     }
 
-    public DashboardDTO updateDashboardDTO(DashboardForm dashboardForm) {
+    public DashboardDTO updateDashboard(DashboardForm dashboardForm) {
 
         Dashboard origin = dashboardRepository.findOne(dashboardForm.getId());
         dashboardForm.bind(origin);

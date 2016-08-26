@@ -6,6 +6,7 @@ import kr.wisestone.wms.service.WidgetService;
 import kr.wisestone.wms.web.rest.condition.WidgetCondition;
 import kr.wisestone.wms.web.rest.dto.DashboardDTO;
 import kr.wisestone.wms.web.rest.dto.TaskListWidgetDTO;
+import kr.wisestone.wms.web.rest.form.DashboardForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -50,6 +51,36 @@ public class DashboardResource {
     public ResponseEntity<DashboardDTO> findUserDashboard() {
 
         DashboardDTO dashboardDTO = dashboardService.findUserDashboard();
+
+        return Optional.ofNullable(dashboardDTO)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @RequestMapping(value = "/dashboards",
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<DashboardDTO> saveDashboard(@RequestBody DashboardForm dashboardForm) {
+
+        DashboardDTO dashboardDTO = dashboardService.saveDashboard(dashboardForm);
+
+        return Optional.ofNullable(dashboardDTO)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @RequestMapping(value = "/dashboards",
+        method = RequestMethod.PUT,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<DashboardDTO> updateDashboard(@RequestBody DashboardForm dashboardForm) {
+
+        DashboardDTO dashboardDTO = dashboardService.updateDashboard(dashboardForm);
 
         return Optional.ofNullable(dashboardDTO)
             .map(result -> new ResponseEntity<>(

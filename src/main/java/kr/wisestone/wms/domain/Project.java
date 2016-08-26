@@ -73,6 +73,11 @@ public class Project extends AbstractAuditingEntity implements Traceable {
     @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<ProjectAttachedFile> projectAttachedFiles = new HashSet<>();
 
+    @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
+    @JsonIgnore
+    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+    private Set<ProjectSharedAttachedFile> projectSharedAttachedFiles = new HashSet<>();
+
     public Long getId() {
         return id;
     }
@@ -200,6 +205,52 @@ public class Project extends AbstractAuditingEntity implements Traceable {
             this.projectAttachedFiles.remove(projectAttachedFile);
 
         return this;
+    }
+
+    public List<AttachedFile> getPlainProjectAttachedFiles() {
+        return this.projectAttachedFiles.stream().map(ProjectAttachedFile::getAttachedFile).collect(Collectors.toList());
+    }
+
+    public Set<ProjectSharedAttachedFile> getProjectSharedAttachedFiles() {
+        return projectSharedAttachedFiles;
+    }
+
+    public void setProjectSharedAttachedFiles(Set<ProjectSharedAttachedFile> projectSharedAttachedFiles) {
+        this.projectSharedAttachedFiles = projectSharedAttachedFiles;
+    }
+
+
+    public ProjectSharedAttachedFile addSharedAttachedFile(AttachedFile attachedFile) {
+
+        if(attachedFile == null) {
+            return null;
+        }
+
+        ProjectSharedAttachedFile projectSharedAttachedFile = new ProjectSharedAttachedFile(this, attachedFile);
+
+        this.projectSharedAttachedFiles.add(projectSharedAttachedFile);
+
+        return projectSharedAttachedFile;
+    }
+
+    public ProjectSharedAttachedFile findSharedAttachedFile(Long attachedFileId) {
+        return this.projectSharedAttachedFiles.stream().filter(
+            projectSharedAttachedFile -> projectSharedAttachedFile.getId().equals(attachedFileId)
+        ).findFirst().get();
+    }
+
+    public Project removeSharedAttachedFile(Long attachedFileId) {
+
+        ProjectSharedAttachedFile projectSharedAttachedFile = this.findSharedAttachedFile(attachedFileId);
+
+        if(projectSharedAttachedFile != null)
+            this.projectSharedAttachedFiles.remove(projectSharedAttachedFile);
+
+        return this;
+    }
+
+    public List<AttachedFile> getPlainProjectSharedAttachedFiles() {
+        return this.projectSharedAttachedFiles.stream().map(ProjectSharedAttachedFile::getAttachedFile).collect(Collectors.toList());
     }
 
     public Project addProjectUser(User user, UserType userType) {

@@ -8,6 +8,7 @@ public class ProjectManagedAttachedFileDTO {
     public static final String LOCATION_TASK = "TASK";
     public static final String LOCATION_TASK_REPLY = "TASK_REPLY";
     public static final String LOCATION_PROJECT = "PROJECT";
+    public static final String LOCATION_PROJECT_SHARED = "PROJECT_SHARED";
     public static final String LOCATION_PROJECT_REPLY = "PROJECT_REPLY";
 
     private String location;
@@ -36,6 +37,16 @@ public class ProjectManagedAttachedFileDTO {
         this.setLocationType(LOCATION_PROJECT);
         this.setLocationId(project.getId());
         this.setAttachedFile(new AttachedFileDTO(projectAttachedFile.getAttachedFile()));
+    }
+
+    public ProjectManagedAttachedFileDTO(ProjectSharedAttachedFile projectSharedAttachedFile) {
+
+        Project project = projectSharedAttachedFile.getProject();
+
+        this.setLocation(project.getName());
+        this.setLocationType(LOCATION_PROJECT_SHARED);
+        this.setLocationId(project.getId());
+        this.setAttachedFile(new AttachedFileDTO(projectSharedAttachedFile.getAttachedFile()));
     }
 
     public ProjectManagedAttachedFileDTO(Task task, AttachedFileDTO attachedFile) {

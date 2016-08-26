@@ -6,10 +6,7 @@ import kr.wisestone.wms.service.ProjectService;
 import kr.wisestone.wms.service.TaskService;
 import kr.wisestone.wms.web.rest.condition.ProjectTaskCondition;
 import kr.wisestone.wms.web.rest.condition.TaskCondition;
-import kr.wisestone.wms.web.rest.dto.ProjectDTO;
-import kr.wisestone.wms.web.rest.dto.ProjectManagedAttachedFileDTO;
-import kr.wisestone.wms.web.rest.dto.ProjectTaskManageDTO;
-import kr.wisestone.wms.web.rest.dto.TaskDTO;
+import kr.wisestone.wms.web.rest.dto.*;
 import kr.wisestone.wms.web.rest.form.ProjectForm;
 import kr.wisestone.wms.web.rest.form.TaskForm;
 import kr.wisestone.wms.web.rest.mapper.ProjectMapper;
@@ -193,5 +190,23 @@ public class ProjectResource {
         projectService.removeProjectFile(entityName, entityId, attachedFileId);
 
         return ResponseEntity.ok().headers(HeaderUtil.createEntitySingleDeletionAlert("attachedFile", attachedFileId.toString())).build();
+    }
+
+    @RequestMapping(value = "/projects/addProjectSharedAttachedFile",
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<AttachedFileDTO>> addProjectSharedAttachedFile(@RequestParam(name = "projectId") Long projectId, MultipartHttpServletRequest request) throws URISyntaxException, IOException {
+        log.debug("REST request to update Project : {}", projectId);
+
+        List<MultipartFile> files = request.getFiles("file");
+
+        List<AttachedFileDTO> projectSharedAttachedFiles = projectService.addProjectSharedAttachedFile(projectId, files);
+
+        return Optional.ofNullable(projectSharedAttachedFiles)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 }

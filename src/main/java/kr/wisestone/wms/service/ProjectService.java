@@ -9,6 +9,7 @@ import kr.wisestone.wms.security.SecurityUtils;
 import kr.wisestone.wms.web.rest.condition.ProjectTaskCondition;
 import kr.wisestone.wms.web.rest.dto.*;
 import kr.wisestone.wms.web.rest.form.ProjectForm;
+import kr.wisestone.wms.web.rest.mapper.AttachedFileMapper;
 import kr.wisestone.wms.web.rest.mapper.ProjectMapper;
 import kr.wisestone.wms.web.rest.mapper.UserMapper;
 import org.slf4j.Logger;
@@ -50,6 +51,9 @@ public class ProjectService {
 
     @Inject
     private TraceLogService traceLogService;
+
+    @Inject
+    private AttachedFileMapper attachedFileMapper;
 
     @Transactional
     public ProjectDTO save(ProjectForm projectForm) {
@@ -254,6 +258,18 @@ public class ProjectService {
 
             projectRepository.save(project);
 
+        } else if(entityName.equalsIgnoreCase(ProjectManagedAttachedFileDTO.LOCATION_PROJECT_SHARED)) {
+
+            Project project = projectRepository.findOne(entityId);
+
+            ProjectSharedAttachedFile projectAttachedFile = project.findSharedAttachedFile(attachedFileId);
+
+            if(projectAttachedFile != null) {
+                project.removeSharedAttachedFile(attachedFileId);
+            }
+
+            projectRepository.save(project);
+
         } else if(entityName.equalsIgnoreCase(ProjectManagedAttachedFileDTO.LOCATION_TASK_REPLY)) {
 
             this.traceLogService.removeAttachedFileByEntityIdAndEntityNameAndAttachedFileId(entityId, "Task", attachedFileId);
@@ -277,6 +293,10 @@ public class ProjectService {
     private void getProjectManagedAttachedFiles(Project project, List<ProjectManagedAttachedFileDTO> projectManagedAttachedFileDTOs) {
         projectManagedAttachedFileDTOs.addAll(
             project.getProjectAttachedFiles().stream().map(ProjectManagedAttachedFileDTO::new).collect(Collectors.toList())
+        );
+
+        projectManagedAttachedFileDTOs.addAll(
+            project.getProjectSharedAttachedFiles().stream().map(ProjectManagedAttachedFileDTO::new).collect(Collectors.toList())
         );
 
         List<TraceLogDTO> traceLogDTOs
@@ -308,5 +328,21 @@ public class ProjectService {
                 );
             }
         }
+    }
+
+    public List<AttachedFileDTO> addProjectSharedAttachedFile(Long projectId, List<MultipartFile> files) {
+
+        Project project = this.projectRepository.findOne(projectId);
+
+        for(MultipartFile multipartFile : files) {
+
+            AttachedFile attachedFile = this.attachedFileService.saveFile(multipartFile);
+
+            project.addSharedAttachedFile(attachedFile);
+        }
+
+        project = this.projectRepository.save(project);
+
+        return this.attachedFileMapper.attachedFilesToAttachedFileDTOs(project.getPlainProjectSharedAttachedFiles());
     }
 }

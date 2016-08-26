@@ -12,4 +12,12 @@ public class ProjectTaskCondition {
     private Long projectId;
 
     private String listType = LIST_TYPE_TOTAL;
+
+    private String startDate;
+
+    private String endDate;
+
+    private Boolean importantYn;
+
+    private Long statusId;
 }

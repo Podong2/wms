@@ -110,9 +110,9 @@ public class NotificationService {
         predicate.and($notification.notificationRecipients.any().recipient.eq(loginUser.getId()));
 
         if("UN_READ".equals(listType)) {
-            predicate.and($notification.notificationRecipients.any().readYn.eq(Boolean.FALSE));
+            predicate.and($notification.notificationRecipients.any().confirmYn.eq(Boolean.FALSE));
         } else {
-            predicate.and($notification.notificationRecipients.any().readYn.eq(Boolean.TRUE));
+            predicate.and($notification.notificationRecipients.any().confirmYn.eq(Boolean.TRUE));
         }
 
         log.debug("Request to get all Notifications");
