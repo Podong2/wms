@@ -15,8 +15,10 @@
 'use strict';
 
 angular.module('wmsApp')
-    .directive('pickerToggle', pickerToggle);
+    .directive('pickerToggle', pickerToggle)
+    .directive('repeatPickerToggle', repeatPickerToggle);
 pickerToggle.$inject=['$timeout'];
+repeatPickerToggle.$inject=['$timeout', '$rootScope'];
         function pickerToggle($timeout) {
         return {
             restrict: 'A',
@@ -36,3 +38,25 @@ pickerToggle.$inject=['$timeout'];
             }
         }
     }
+    function repeatPickerToggle($timeout, $rootScope) {
+    return {
+        restrict: 'A',
+        link: function(scope, element) {
+            $('body').click(function (e) {
+                if ($('.repeat-edit-section').addClass("on")) {
+                    if (!$('#repeatEditSection').has(e.target).length) {
+                        $('.repeat-edit-section').removeClass("on");
+                    }
+                }
+            });
+            $rootScope.$on('repeatClose', function(){
+                $('.repeat-edit-section').removeClass("on");
+            });
+            element.on('click', function(_this) {
+                $timeout(function () {
+                    $(".startDate").focus();
+                }, 400);
+            });
+        }
+    }
+}
