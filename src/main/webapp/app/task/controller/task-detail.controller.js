@@ -17,6 +17,9 @@
         vm.subTaskSave = subTaskSave;
         vm.createComment = createComment;
         vm.FindProjectList = FindProjectList;
+        vm.selectDateTerm = selectDateTerm;
+        vm.setRepeatType = setRepeatType;
+        vm.setWeekday = setWeekday;
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
 
@@ -37,20 +40,6 @@
             });
             $log.debug("vm.commentList : ", vm.commentList)
         });
-
-        function getProjectList(){
-            ProjectFind.query({name : ''}, onProjectSuccess, onProjectError);
-        }
-        function FindProjectList(){
-            ProjectFindByName.query({name : vm.projectName},onProjectSuccess, onProjectError)
-        }
-        function onProjectSuccess (result) {
-            vm.projectList = result;
-        }
-        function onProjectError (result) {
-            toastr.error('프로젝트 목록 불러오기 실패', '프로젝트 목록 불러오기 실패');
-        }
-        getProjectList();
 
         vm.responseData = _.clone(vm.task);
 
@@ -88,18 +77,74 @@
 
         // min date picker
         this.dueDateFrom = {
-            date: "",
+            date: DateUtils.toDate(vm.responseData.startDate),
             datepickerOptions: {
                 maxDate: null
             }
         };
         // max date picker
         this.dueDateTo = {
+            date: DateUtils.toDate(vm.responseData.endDate),
+            datepickerOptions: {
+                minDate: null
+            }
+        };
+        // 반복작업 시작시간
+        this.adventStartTime = {
+            date: new Date('2015-03-01 12:30:00'),
+            timepickerOptions: {
+                readonlyInput: false,
+                showMeridian: true
+            }
+        };
+        // 반복작업 반복기간 시작일
+        this.repeatDueDateFrom = {
+            date: "",
+            datepickerOptions: {
+                maxDate: null
+            }
+        };
+        // 반복작업 반복기간 종료일
+        this.repeatDueDateTo = {
             date: "",
             datepickerOptions: {
                 minDate: null
             }
         };
+        // watch min and max dates to calculate difference
+        var unwatchMinMaxValues = $scope.$watch(function() {
+            return [vm.dueDateFrom, vm.dueDateTo];
+        }, function() {
+            // min max dates
+            vm.dueDateFrom.datepickerOptions.maxDate = vm.dueDateTo.date;
+            vm.dueDateTo.datepickerOptions.minDate = vm.dueDateFrom.date;
+
+            if (vm.dueDateFrom.date && vm.dueDateTo.date) {
+                var diff = vm.dueDateFrom.date.getTime() - vm.dueDateTo.date.getTime();
+                vm.dayRange = Math.round(Math.abs(diff/(1000*60*60*24))) + 1
+            } else {
+                vm.dayRange = '0';
+            }
+
+        }, true);
+
+        $scope.$on('$destroy', function() {
+            unwatchMinMaxValues();
+        });
+
+        // 반복설정 '매월' 설정기간 데이터
+        vm.weeks = [ {id : 1,name : '첫째주'},{id : 2,name : '둘째주'},{id : 3,name : '셋째주'},{id : 4,name : '넷째주'} ];
+
+        // 반복설정 상단 탭
+        vm.tapAreas = [];
+        vm.tapAreas = [
+            { status: true },  //today
+            { status: false }, //tomorrow
+            { status: false }, //nextWeek
+            { status: false }, //oneMonth
+            { status: false }, //directSelection
+            { status: false }  //Undefined
+        ];
 
         /* sub task info */
         vm.subTask = {
@@ -110,13 +155,6 @@
         };
 
         // -------------------  broadcast start ------------------- //
-        //$scope.$on("showDetail", function(event, args){
-        //    vm.task = [];
-        //    Task.get({id : args["id"]}, function(result){
-        //        vm.task = result;
-        //        vm.responseData = _.clone(vm.task);
-        //    })
-        //});
         vm.tagArray = [];
         $scope.$on("tagRemoveId", function(event, args){
             vm.tagArray.push({id : args.id});
@@ -184,6 +222,26 @@
                 vm.task.endDate = formatDate;
             }
         });
+        // date 포멧 변경
+        $scope.$watch("vm.repeatDueDateFrom.date", function(newValue, oldValue){
+            if(oldValue != newValue){
+                var d = newValue;
+                var formatDate =
+                    DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
+                //DateUtils.datePickerFormat(d.getHours(), 2) + ':' + DateUtils.datePickerFormat(d.getMinutes(), 2) + ':' + DateUtils.datePickerFormat(d.getSeconds(), 2);
+                vm.taskRepeatSchedule.startDate = formatDate;
+            }
+        });
+        // date 포멧 변경
+        $scope.$watch("vm.repeatDueDateTo.date", function(newValue, oldValue){
+            if(oldValue != newValue){
+                var d = newValue;
+                var formatDate =
+                    DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
+                //DateUtils.datePickerFormat(d.getHours(), 2) + ':' + DateUtils.datePickerFormat(d.getMinutes(), 2) + ':' + DateUtils.datePickerFormat(d.getSeconds(), 2);
+                vm.taskRepeatSchedule.endDate = formatDate;
+            }
+        });
 
         $scope.$watchGroup(['vm.task.startDate', 'vm.task.endDate',  'vm.task.statusId', 'vm.task.importantYn'], function(newValue, oldValue){
             if(oldValue[0] != undefined && newValue[0] != undefined && oldValue != newValue) {
@@ -210,6 +268,22 @@
                 taskUpload();
             }
         });
+
+        /* 프로젝트 목록 불러오기 */
+        function getProjectList(){
+            ProjectFind.query({name : ''}, onProjectSuccess, onProjectError);
+        }
+        /* 프로젝트 목록 검색 */
+        function FindProjectList(){
+            ProjectFindByName.query({name : vm.projectName},onProjectSuccess, onProjectError)
+        }
+        function onProjectSuccess (result) {
+            vm.projectList = result;
+        }
+        function onProjectError (result) {
+            toastr.error('프로젝트 목록 불러오기 실패', '프로젝트 목록 불러오기 실패');
+        }
+        getProjectList();
 
         // 달력 오픈
         function openCalendar(e, picker) {
@@ -253,10 +327,22 @@
         };
 
         /* 타스크 업로드 */
+        vm.task.taskRepeatSchedule={
+            adventDateStartTime : "",
+            endDate : "",
+            id : 0,
+            monthlyCriteria : '',
+            permanentYn : 'Y',
+            repeatType : "",
+            repeatYn : true,
+            startDate : "",
+            weekdays : []
+        };
         function taskUpload(){
             if(vm.task.assignees != [])userIdPush(vm.task.assignees, "assigneeIds");
             if(vm.task.watchers != [])userIdPush(vm.task.watchers, "watcherIds");
             if(vm.task.relatedTasks != [])userIdPush(vm.task.relatedTasks, "relatedTaskIds");
+            vm.task.taskRepeatSchedule = vm.taskRepeatSchedule;
 
             $log.debug("vm.task ;::::::", vm.task);
             TaskEdit.uploadTask({
@@ -295,26 +381,6 @@
 
             vm.task[type] = typeIds.join(",");
         }
-
-
-        //	겔러리 썸네일 정보 세팅
-        // 이미지 타입
-        //function setAttachedFiles(attachedFiles) {
-        //    vm.files = [];
-        //    vm.files = attachedFiles;
-        //    $log.debug("attachedFile : ", attachedFiles);
-        //    angular.forEach(attachedFiles, function(val, idx){
-        //        var fileType = val.attachedFile.contentType.split('/');
-        //        if(!angular.isUndefined(val) && fileType[0] == "image"){
-        //            vm.image = {
-        //                thumb: window.location.origin + "/api/attachedFile/" + val.attachedFile.id,
-        //                img: window.location.origin + "/api/attachedFile/" + val.attachedFile.id,
-        //                description: val.attachedFile.name
-        //            };
-        //            vm.images.push(vm.image);
-        //        }
-        //    });
-        //}
 
         //설명 html 형식으로 표현
         function renderHtml (data) {
@@ -384,6 +450,101 @@
         function onlyComment(){
 
         }
+
+        //  탭메뉴 영역 표시 여부 지정
+        function selectDateTerm (number) {
+            angular.forEach(vm.tapAreas, function (tab, index) {
+                if (number == index) {
+                    tab.status = true;
+                }
+                else {
+                    tab.status = false;
+                }
+            });
+            switch (number){
+                case 0 :
+                    break;
+                case 1 :
+                    break;
+                case 2 :
+                    break;
+                case 3 :
+                    break;
+                case 4 :
+                    break;
+                case 5 :
+                    break;
+            }
+        }
+
+        // 반복설정 임시 파라미터
+        vm.taskRepeatSchedule = {
+            adventDateStartTime : "",
+            endDate : "",
+            id : 0,
+            monthlyCriteria : '',
+            permanentYn : 'Y',
+            repeatType : "",
+            repeatYn : true,
+            startDate : "",
+            weekdays : []
+        };
+
+        // 매월 선택 시 날짜, 요일 영역 오픈
+        vm.monthlyAreaOpen = false;
+
+        // 반복설정 타입 주입
+        function setRepeatType(type){
+            vm.taskRepeatSchedule.weekdays = '';
+            angular.forEach(vm.weekDaysArea, function(val, index){
+                val.status = false;
+            });
+            if(type == 'MONTHLY'){
+                vm.taskRepeatSchedule.repeatType = 'MONTHLY_DATE';
+                vm.monthlyAreaOpen = true;
+
+            }else if(type == 'END_DATE_REMOVE'){
+                vm.taskRepeatSchedule.endDate = '';
+                vm.repeatDueDateTo.date = '';
+            }else if(type == ''){
+                vm.taskRepeatSchedule.monthlyCriteria = '';
+            }else{
+                vm.monthlyAreaOpen = false;
+                vm.taskRepeatSchedule.weekdays = '';
+                vm.taskRepeatSchedule.monthlyCriteria = '';
+
+                vm.taskRepeatSchedule.repeatType = type;
+            }
+        }
+
+        // 날짜 1~31까지 데이터 생성
+        vm.days = [];
+        for(var i=0; i <= 31; i++ ){
+            var day = {
+                id : i,
+                name : i + '일'
+            }
+            vm.days.push(day)
+        }
+
+        vm.weekDaysArea = [
+            {status : false},
+            {status : false},
+            {status : false},
+            {status : false},
+            {status : false},
+            {status : false},
+            {status : false},
+        ];
+        function setWeekday(value){
+            var typeIds = [];
+            vm.weekDaysArea[value -1].status = !vm.weekDaysArea[value -1].status;
+            angular.forEach(vm.weekDaysArea, function(val, index){
+                if(val.status) typeIds.push(index + 1);
+            });
+            vm.taskRepeatSchedule.weekdays = typeIds.join(",");
+        }
+
     }
 
 })();

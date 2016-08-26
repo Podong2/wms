@@ -4995,7 +4995,7 @@ textarea.clone {
 
 .wms-form .inline-group .checkbox, .wms-form .inline-group .radio {
     float: left;
-    margin-right: 30px
+    margin-right: 15px
 }
 
 .wms-form .inline-group .checkbox:last-child, .wms-form .inline-group .radio:last-child {

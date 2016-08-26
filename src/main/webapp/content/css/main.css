@@ -2009,6 +2009,7 @@ tags-input .tags:hover, tags-input .tags:focus {
     background: rgb(16,108,200);
     color: #fff;
 }
+
     /*<< comment css >>*/
     .comment-user-title{
         margin-top: 13px;
@@ -2070,3 +2071,107 @@ tags-input .tags:hover, tags-input .tags:focus {
     padding: 5px;
 }
 /* notification end */
+
+/* repeat date picker css */
+.date-picker-calendar{
+    padding-left: 0px;
+}
+.date-picker-calendar .date-picker-calendar-li{
+    list-style: none;
+    float: left;
+    width: 150px;
+    height: 32px;
+    padding: 3px;
+
+}
+.date-picker-calendar-title li{
+    text-align: left;
+
+}
+.date-picker-calendar .date-picker-calendar-center{
+    width: 20px;
+    line-height: 2;
+    text-align: center;
+}
+.repeat-edit-section{
+    position: absolute;
+    border: 1px solid #fdfdfd;
+    z-index: 1060;
+    width: 600px;
+    font-size: 14px;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 6px;
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    display: block;
+    padding: 10px;
+}
+.repeat-edit-section.on{
+    display: block;
+}
+.date-picker-settings .date-picker-settings-aera {
+    padding-left: 0px;
+}
+.date-picker-settings .date-picker-settings-aera li{
+    list-style: none;
+    float: left;
+    width: 60px;
+    text-align: center;
+    height: 28px;
+
+}
+.date-picker-settings-aera li:hover{
+    background: #BFD2FF;
+    color: #fff;
+}
+.date-picker-settings-aera li.active{
+    border-bottom: 3px solid #87A6F3;
+}
+.date-picker-calendar li .date-terms{
+    width:60px;
+}
+.repeat-settings-area{
+    padding-top: 10px;
+    border-top: 1px dashed #ddd;
+}
+.repeat-settings-area .start-time-area{
+    padding-left: 0px;
+    list-style: none;
+    height:30px;
+}
+.repeat-settings-area .start-time-area .start-time-li{
+    float: left;
+    width: 80px;
+    text-align: center;
+    height:30px;
+}
+.repeat-settings-area .start-time-area .start-time-li input{
+    width:80px;
+}
+.repeat-table tbody .repeat-table-tr{
+    border:1px solid #ccc;
+}
+.repeat-table tbody tr .repeat-table-th{
+    background-color: #ddd;
+}
+.repeat-table tbody tr .repeat-table-td, .repeat-table tbody tr .repeat-table-th{
+    border-left: 1px solid #ccc;
+    padding:5px;
+}
+.repeat-table tbody tr .repeat-table-th:first-child{
+    border-left: 0;
+}
+.repeat-table-n2 td{
+    padding:5px;
+}
+.repeatTypeBtn.active{
+    background-color: #ddd;
+}
+.weekdaysBtn.active{
+    background-color: #ddd;
+}
+/* repeat date picker css end */
+.clear-both{
+    clear: both;
+}
