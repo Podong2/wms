@@ -230,7 +230,7 @@ public class TaskService {
         }
 
         if(task.getTaskRepeatSchedule() != null)
-            taskDTO.setTaskRepeatScheduleDTO(new TaskRepeatScheduleDTO(task.getTaskRepeatSchedule()));
+            taskDTO.setTaskRepeatSchedule(new TaskRepeatScheduleDTO(task.getTaskRepeatSchedule()));
 
         return taskDTO;
     }
