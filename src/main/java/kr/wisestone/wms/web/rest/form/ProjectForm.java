@@ -46,16 +46,13 @@ public class ProjectForm {
         Period period = project.getPeriod();
 
         if(period == null) {
-            project.setPeriod(new Period(this.startDate, this.endDate));
+            period = new Period(this.startDate, this.endDate);
         } else {
-            if (StringUtils.hasText(this.startDate))
-                period.setStartDate(this.startDate);
-
-            if (StringUtils.hasText(this.endDate))
-                period.setEndDate(this.endDate);
-
-            project.setPeriod(period);
+            period.setStartDate(this.startDate);
+            period.setEndDate(this.endDate);
         }
+
+        project.setPeriod(period);
 
         if(StringUtils.hasText(this.contents))
             project.setContents(this.contents);
