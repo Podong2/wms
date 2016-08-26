@@ -104,7 +104,7 @@
         };
         // 반복작업 시작시간
         this.adventStartTime = {
-            date: DateUtils.toDate('2016-11-11 '+vm.task.taskRepeatSchedule.adventDateStartTime),
+            date: vm.task.taskRepeatSchedule == null ? '' : DateUtils.toDate('2016-11-11 '+vm.task.taskRepeatSchedule.adventDateStartTime),
             timepickerOptions: {
                 readonlyInput: false,
                 showMeridian: true
@@ -112,14 +112,14 @@
         };
         // 반복작업 반복기간 시작일
         this.repeatDueDateFrom = {
-            date: DateUtils.toDate(vm.task.taskRepeatSchedule.startDate),
+            date: vm.task.taskRepeatSchedule == null ? '' : DateUtils.toDate(vm.task.taskRepeatSchedule.startDate),
             datepickerOptions: {
                 maxDate: null
             }
         };
         // 반복작업 반복기간 종료일
         this.repeatDueDateTo = {
-            date: DateUtils.toDate(vm.task.taskRepeatSchedule.endDate),
+            date: vm.task.taskRepeatSchedule == null ? '' : DateUtils.toDate(vm.task.taskRepeatSchedule.endDate),
             datepickerOptions: {
                 minDate: null
             }
@@ -369,7 +369,7 @@
                 vm.task.watcherIds = "";
                 vm.task.relatedTaskIds ="";
                 vm.task.projectIds = "";
-                repeatClose(); // 반복설정 팝업 닫기
+                vm.repeatClose(); // 반복설정 팝업 닫기
                 Task.get({id : vm.task.id}, successTask, erorrTask);
             });
         }
@@ -504,27 +504,29 @@
 
         // 반복설정 임시 파라미터
         vm.taskRepeatSchedule = {
-            adventDateStartTime : vm.task.taskRepeatSchedule.adventDateStartTime,
-            endDate : vm.task.taskRepeatSchedule.endDate,
+            adventDateStartTime : vm.task.taskRepeatSchedule == null ? '' : vm.task.taskRepeatSchedule.adventDateStartTime,
+            endDate : vm.task.taskRepeatSchedule == null ? '' : vm.task.taskRepeatSchedule.endDate,
             id : 0,
-            monthlyCriteria : vm.task.taskRepeatSchedule.monthlyCriteria,
-            permanentYn : vm.task.taskRepeatSchedule.permanentYn ? 'true' : 'false',
-            repeatType : vm.task.taskRepeatSchedule.repeatType,
-            repeatYn : vm.task.taskRepeatSchedule.repeatYn,
-            startDate : vm.task.taskRepeatSchedule.startDate,
-            weekdays : vm.task.taskRepeatSchedule.weekdays
+            monthlyCriteria :vm.task.taskRepeatSchedule == null ? '' :  vm.task.taskRepeatSchedule.monthlyCriteria,
+            permanentYn : vm.task.taskRepeatSchedule == null ? 'true' : (vm.task.taskRepeatSchedule.permanentYn ? 'true' : 'false'),
+            repeatType : vm.task.taskRepeatSchedule == null ? '' : vm.task.taskRepeatSchedule.repeatType,
+            repeatYn : vm.task.taskRepeatSchedule == null ? true : vm.task.taskRepeatSchedule.repeatYn,
+            startDate : vm.task.taskRepeatSchedule == null ? '' : vm.task.taskRepeatSchedule.startDate,
+            weekdays : vm.task.taskRepeatSchedule == null ? '' : vm.task.taskRepeatSchedule.weekdays
         };
         weekDaysAreaSetting();
         function weekDaysAreaSetting() {
-            var weekday = vm.task.taskRepeatSchedule.weekdays.split(',');
-            angular.forEach(weekday, function (value, index) {
-                vm.weekDaysArea[value-1].status = true;
-            });
-            $log.debug("vm.weekDaysArea", vm.weekDaysArea)
+            if(vm.task.taskRepeatSchedule != null){
+                var weekday = vm.task.taskRepeatSchedule.weekdays.split(',');
+                angular.forEach(weekday, function (value, index) {
+                    vm.weekDaysArea[value-1].status = true;
+                });
+                $log.debug("vm.weekDaysArea", vm.weekDaysArea)
+            }
         }
 
         // 매월 선택 시 날짜, 요일 영역 오픈
-        vm.monthlyAreaOpen = vm.task.taskRepeatSchedule.repeatType == 'MONTHLY_DATE' || vm.task.taskRepeatSchedule.repeatType == 'MONTHLY_WEEKDAY' ? true : false;
+        vm.monthlyAreaOpen = vm.task.taskRepeatSchedule == null ? '' : (vm.task.taskRepeatSchedule.repeatType == 'MONTHLY_DATE' || vm.task.taskRepeatSchedule.repeatType == 'MONTHLY_WEEKDAY' ? true : false);
 
         // 반복설정 타입 주입
         function setRepeatType(type){
