@@ -84,7 +84,7 @@ public class TaskService {
 
         BooleanBuilder predicate = taskListPredicate(taskCondition);
 
-        List<Task> result = Lists.newArrayList(taskRepository.findAll(predicate, QTask.task.endDate.asc()));
+        List<Task> result = Lists.newArrayList(taskRepository.findAll(predicate, QTask.task.period.endDate.asc()));
 
         List<TaskDTO> taskDTOs = Lists.newArrayList();
 
@@ -187,13 +187,13 @@ public class TaskService {
         switch (taskCondition.getListType()) {
             case TaskCondition.LIST_TYPE_TODAY:
 
-                predicate.and($task.startDate.lt(today).or($task.endDate.isNull()));
+                predicate.and($task.period.startDate.lt(today).or($task.period.endDate.isNull()));
                 predicate.and($task.status.isNull().or($task.status.id.eq(1L)));
 
                 break;
             case TaskCondition.LIST_TYPE_SCHEDULED:
 
-                predicate.and($task.startDate.gt(today));
+                predicate.and($task.period.startDate.gt(today));
                 predicate.and($task.status.id.eq(1L));
 
                 break;
@@ -446,14 +446,14 @@ public class TaskService {
             Date weekStartDate = DateUtil.getWeekStartDate();
             Date weekEndDate = DateUtil.getWeekEndDate();
 
-            predicate.and($task.endDate.goe(DateUtil.convertDateToYYYYMMDD(weekStartDate)));
-            predicate.and($task.endDate.loe(DateUtil.convertDateToYYYYMMDD(weekEndDate)));
+            predicate.and($task.period.endDate.goe(DateUtil.convertDateToYYYYMMDD(weekStartDate)));
+            predicate.and($task.period.endDate.loe(DateUtil.convertDateToYYYYMMDD(weekEndDate)));
 
         } else if(listType.equalsIgnoreCase(ProjectTaskCondition.LIST_TYPE_WEEK)) {
 
             String today = DateUtil.getTodayWithYYYYMMDD();
 
-            predicate.and($task.endDate.gt(today));
+            predicate.and($task.period.endDate.gt(today));
         }
 
         List<Task> tasks = Lists.newArrayList(taskRepository.findAll(predicate));

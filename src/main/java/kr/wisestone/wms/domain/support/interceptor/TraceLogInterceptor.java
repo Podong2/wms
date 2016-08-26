@@ -40,7 +40,7 @@ public class TraceLogInterceptor extends EmptyInterceptor {
 
         if (entity instanceof Traceable) {
 
-            String[] ignoreFields = new String[] { "id", "taskAttachedFiles", "attachedFiles", "createdBy", "createdDate", "lastModifiedBy", "lastModifiedDate"};
+            String[] ignoreFields = new String[] { "id", "taskRepeatSchedule", "taskAttachedFiles", "attachedFiles", "createdBy", "createdDate", "lastModifiedBy", "lastModifiedDate"};
             Field[] allFields = this.getAllFields(entity.getClass(), null);
 
             fieldIteration: for (Field field : allFields) {
@@ -73,18 +73,10 @@ public class TraceLogInterceptor extends EmptyInterceptor {
                 logRecord.setEntityField(entityField);
 
                 if (propertyNewState != null) {
-                    if (!entityField.equals("contents") && propertyNewState.length() > 20) {
-                        logRecord.setNewValue(propertyNewState.substring(0, 20) + "...");
-                    } else {
-                        logRecord.setNewValue(propertyNewState);
-                    }
+                    logRecord.setNewValue(propertyNewState);
                 }
                 if (propertyOldState != null) {
-                    if (!entityField.equals("contents") && propertyOldState.length() > 20) {
-                        logRecord.setOldValue(propertyOldState.substring(0, 20) + "...");
-                    } else {
-                        logRecord.setOldValue(propertyOldState);
-                    }
+                    logRecord.setOldValue(propertyOldState);
                 }
 
                 if (logRecord != null && traceLogService != null) {

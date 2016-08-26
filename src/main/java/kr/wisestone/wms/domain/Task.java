@@ -43,11 +43,16 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
     @Column(name = "name")
     private String name;
 
-    @Column(name = "start_date")
-    private String startDate;
+    @Embedded
+    @AttributeOverrides({@AttributeOverride(name="startDate", column=@Column(name="start_date"))
+        ,@AttributeOverride(name="endDate", column=@Column(name="end_date"))})
+    private Period period;
 
-    @Column(name = "end_date")
-    private String endDate;
+//    @Column(name = "start_date")
+//    private String startDate;
+//
+//    @Column(name = "end_date")
+//    private String endDate;
 
     @Column(name = "contents")
     private String contents;
@@ -121,14 +126,6 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
         this.name = name;
     }
 
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
-
     public String getContents() {
         return contents;
     }
@@ -157,12 +154,12 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
         return taskAttachedFiles.stream().map(TaskAttachedFile::getAttachedFile).collect(Collectors.toList());
     }
 
-    public String getStartDate() {
-        return startDate;
+    public Period getPeriod() {
+        return period;
     }
 
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
+    public void setPeriod(Period period) {
+        this.period = period;
     }
 
     public Task getParent() {
@@ -383,7 +380,6 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
         return "Task{" +
             "id=" + id +
             ", name='" + name + "'" +
-            ", endDate='" + endDate + "'" +
             ", contents='" + contents + "'" +
             '}';
     }

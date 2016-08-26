@@ -1,9 +1,6 @@
 package kr.wisestone.wms.web.rest.form;
 
-import kr.wisestone.wms.domain.Code;
-import kr.wisestone.wms.domain.Project;
-import kr.wisestone.wms.domain.User;
-import kr.wisestone.wms.domain.UserType;
+import kr.wisestone.wms.domain.*;
 import lombok.Data;
 import org.flywaydb.core.internal.util.StringUtils;
 
@@ -46,8 +43,19 @@ public class ProjectForm {
         if(StringUtils.hasText(this.name))
             project.setName(this.name);
 
-        project.setStartDate(this.startDate);
-        project.setEndDate(this.endDate);
+        Period period = project.getPeriod();
+
+        if(period == null) {
+            project.setPeriod(new Period(this.startDate, this.endDate));
+        } else {
+            if (StringUtils.hasText(this.startDate))
+                period.setStartDate(this.startDate);
+
+            if (StringUtils.hasText(this.endDate))
+                period.setEndDate(this.endDate);
+
+            project.setPeriod(period);
+        }
 
         if(StringUtils.hasText(this.contents))
             project.setContents(this.contents);

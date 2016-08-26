@@ -54,28 +54,28 @@ public class WidgetService {
             predicate.and($task.taskProjects.any().project.id.eq(widgetCondition.getProjectId()));
         }
 
-        predicate.and($task.endDate.isNotNull());
+        predicate.and($task.period.endDate.isNotNull());
 
         switch (widgetCondition.getListType()) {
             case LIST_TYPE_TODAY:
 
                 String today = DateUtil.getTodayWithYYYYMMDD();
 
-                predicate.and($task.endDate.loe(today));
+                predicate.and($task.period.endDate.loe(today));
 
                 break;
             case LIST_TYPE_TOMORROW:
 
                 String tomorrow = DateUtil.convertDateToStr(DateUtil.addDays(new Date(), 1), "yyyy-MM-dd");
 
-                predicate.and($task.endDate.loe(tomorrow));
+                predicate.and($task.period.endDate.loe(tomorrow));
 
                 break;
             case LIST_TYPE_THIS_WEEK:
 
                 String weekEndDate = DateUtil.convertDateToStr(DateUtil.getWeekEndDate(), "yyyy-MM-dd");
 
-                predicate.and($task.endDate.loe(weekEndDate));
+                predicate.and($task.period.endDate.loe(weekEndDate));
 
                 break;
             case LIST_TYPE_SCHEDULED:
@@ -83,7 +83,7 @@ public class WidgetService {
                 break;
         }
 
-        List<Task> result = Lists.newArrayList(taskRepository.findAll(predicate, QTask.task.endDate.asc()));
+        List<Task> result = Lists.newArrayList(taskRepository.findAll(predicate, QTask.task.period.endDate.asc()));
 
         TaskListWidgetDTO taskListWidgetDTO = new TaskListWidgetDTO();
 

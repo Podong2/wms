@@ -97,8 +97,12 @@ public class TaskRepeatScheduleService {
 
         repeatTask.setImportantYn(task.getImportantYn());
 
-        repeatTask.setStartDate(today);
-        repeatTask.setEndDate(today);
+        Period period = new Period(today, today);
+
+        repeatTask.setPeriod(period);
+
+//        repeatTask.setStartDate(today);
+//        repeatTask.setEndDate(today);
 
         Code status = new Code();
         status.setId(1L);

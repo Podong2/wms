@@ -56,8 +56,19 @@ public class TaskForm {
         if(StringUtils.hasText(this.name))
             task.setName(this.name);
 
-        task.setStartDate(this.startDate);
-        task.setEndDate(this.endDate);
+        Period period = task.getPeriod();
+
+        if(period == null) {
+            task.setPeriod(new Period(this.startDate, this.endDate));
+        } else {
+            if (StringUtils.hasText(this.startDate))
+                period.setStartDate(this.startDate);
+
+            if (StringUtils.hasText(this.endDate))
+                period.setEndDate(this.endDate);
+
+            task.setPeriod(period);
+        }
 
         if(StringUtils.hasText(this.contents))
             task.setContents(this.contents);

@@ -15,6 +15,8 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {})
 public interface ProjectMapper {
 
+    @Mapping(source = "period.startDate", target = "startDate")
+    @Mapping(source = "period.endDate", target = "endDate")
     @Mapping(source = "status.id", target = "statusId")
     @Mapping(source = "status.name", target = "statusName")
     @Mapping(source = "projectParents", target = "projectParents", ignore = true)

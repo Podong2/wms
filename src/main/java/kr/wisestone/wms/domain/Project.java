@@ -34,11 +34,10 @@ public class Project extends AbstractAuditingEntity implements Traceable {
     @Column(name = "name")
     private String name;
 
-    @Column(name = "start_date")
-    private String startDate;
-
-    @Column(name = "end_date")
-    private String endDate;
+    @Embedded
+    @AttributeOverrides({@AttributeOverride(name="startDate", column=@Column(name="start_date"))
+        ,@AttributeOverride(name="endDate", column=@Column(name="end_date"))})
+    private Period period;
 
     @Column(name = "contents")
     private String contents;
@@ -90,20 +89,12 @@ public class Project extends AbstractAuditingEntity implements Traceable {
         this.name = name;
     }
 
-    public String getStartDate() {
-        return startDate;
+    public Period getPeriod() {
+        return period;
     }
 
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-
-    public String getEndDate() {
-        return endDate;
-    }
-
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
+    public void setPeriod(Period period) {
+        this.period = period;
     }
 
     public String getContents() {

@@ -20,9 +20,12 @@ import java.util.stream.Collectors;
 @Mapper(componentModel = "spring", uses = {})
 public interface TaskMapper {
 
+    @Mapping(source = "period.startDate", target = "startDate")
+    @Mapping(source = "period.endDate", target = "endDate")
     @Mapping(source = "status.id", target = "statusId")
     @Mapping(source = "status.name", target = "statusName")
     @Mapping(source = "subTasks", target = "subTasks", ignore = true)
+    @Mapping(source = "taskRepeatSchedule", target = "taskRepeatSchedule", ignore = true)
     @Mapping(source = "taskProjects", target = "taskProjects", ignore = true)
     @Mapping(source = "relatedTasks", target = "relatedTasks", ignore = true)
     TaskDTO taskToTaskDTO(Task task);
@@ -33,6 +36,7 @@ public interface TaskMapper {
     @Mapping(source = "subTasks", target = "subTasks", ignore = true)
     @Mapping(source = "taskProjects", target = "taskProjects", ignore = true)
     @Mapping(source = "relatedTasks", target = "relatedTasks", ignore = true)
+    @Mapping(source = "taskRepeatSchedule", target = "taskRepeatSchedule", ignore = true)
     Task taskDTOToTask(TaskDTO taskDTO);
 
     List<Task> taskDTOsToTasks(List<TaskDTO> taskDTOs);

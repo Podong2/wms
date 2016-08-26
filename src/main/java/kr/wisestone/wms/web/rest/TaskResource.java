@@ -338,7 +338,6 @@ public class TaskResource {
 
             Task task = new Task();
             task.setName("task-"+i);
-            task.setEndDate("2016-07-01");
             task.setContents("1231231234123");
             task.setStatus(code);
 

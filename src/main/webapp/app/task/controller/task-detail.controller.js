@@ -332,11 +332,11 @@
             endDate : "",
             id : 0,
             monthlyCriteria : '',
-            permanentYn : 'Y',
+            permanentYn : true,
             repeatType : "",
             repeatYn : true,
             startDate : "",
-            weekdays : []
+            weekdays : ""
         };
         function taskUpload(){
             if(vm.task.assignees != [])userIdPush(vm.task.assignees, "assigneeIds");
@@ -483,11 +483,11 @@
             endDate : "",
             id : 0,
             monthlyCriteria : '',
-            permanentYn : 'Y',
+            permanentYn : true,
             repeatType : "",
             repeatYn : true,
             startDate : "",
-            weekdays : []
+            weekdays : ""
         };
 
         // 매월 선택 시 날짜, 요일 영역 오픈
