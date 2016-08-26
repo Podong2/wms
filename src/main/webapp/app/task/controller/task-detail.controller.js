@@ -77,21 +77,21 @@
 
         // min date picker
         this.dueDateFrom = {
-            date: DateUtils.toDate(vm.responseData.startDate),
+            date: DateUtils.toDate(vm.task.startDate),
             datepickerOptions: {
                 maxDate: null
             }
         };
         // max date picker
         this.dueDateTo = {
-            date: DateUtils.toDate(vm.responseData.endDate),
+            date: DateUtils.toDate(vm.task.endDate),
             datepickerOptions: {
                 minDate: null
             }
         };
         // 반복작업 시작시간
         this.adventStartTime = {
-            date: new Date('2015-03-01 12:30:00'),
+            date: '',
             timepickerOptions: {
                 readonlyInput: false,
                 showMeridian: true
@@ -222,7 +222,7 @@
                 vm.task.endDate = formatDate;
             }
         });
-        // date 포멧 변경
+        // 반복작업 시작 시간 포멧 변경(기간)
         $scope.$watch("vm.repeatDueDateFrom.date", function(newValue, oldValue){
             if(oldValue != newValue){
                 var d = newValue;
@@ -232,7 +232,7 @@
                 vm.taskRepeatSchedule.startDate = formatDate;
             }
         });
-        // date 포멧 변경
+        // 반복작업 종료 시간 포멧 변경(기간)
         $scope.$watch("vm.repeatDueDateTo.date", function(newValue, oldValue){
             if(oldValue != newValue){
                 var d = newValue;
@@ -242,8 +242,16 @@
                 vm.taskRepeatSchedule.endDate = formatDate;
             }
         });
+        // 반복작업 시작 시간 포멧 변경
+        $scope.$watch("vm.adventStartTime.date", function(newValue, oldValue){
+            if(oldValue != newValue){
+                var d = newValue;
+                var formatDate = DateUtils.datePickerFormat(d.getHours(), 2) + ':' + DateUtils.datePickerFormat(d.getMinutes(), 2);
+                vm.taskRepeatSchedule.adventDateStartTime = formatDate;
+            }
+        });
 
-        $scope.$watchGroup(['vm.task.startDate', 'vm.task.endDate',  'vm.task.statusId', 'vm.task.importantYn'], function(newValue, oldValue){
+        $scope.$watchGroup(['vm.task.statusId', 'vm.task.importantYn'], function(newValue, oldValue){
             if(oldValue[0] != undefined && newValue[0] != undefined && oldValue != newValue) {
                 taskUpload();
             }
@@ -461,18 +469,34 @@
                     tab.status = false;
                 }
             });
+            var resultDates = '';
+            // 일정 선택 시 ()
             switch (number){
-                case 0 :
+                case 0 : // 오늘
+                    vm.dueDateFrom.date = DateUtils.toDate(new Date().format("yyyy-MM-dd"));
+                    vm.dueDateTo.date = DateUtils.toDate(new Date().format("yyyy-MM-dd"));
                     break;
-                case 1 :
+                case 1 : // 내일
+                    $log.debug(" DateUtils.getTomorrow() : ", DateUtils.getTomorrow());
+                    resultDates = DateUtils.getTomorrow();
+                    vm.dueDateFrom.date = DateUtils.toDate(resultDates.startDate);
+                    vm.dueDateTo.date = DateUtils.toDate(resultDates.endDate);
                     break;
-                case 2 :
+                case 2 : // 다음주
+                    $log.debug(" DateUtils.getTomorrow() : ", DateUtils.getAfterWeek());
+                    resultDates = DateUtils.getAfterWeek();
+                    vm.dueDateFrom.date = DateUtils.toDate(resultDates.startDate);
+                    vm.dueDateTo.date = DateUtils.toDate(resultDates.endDate);
                     break;
-                case 3 :
+                case 3 : // 한달
+                    $log.debug(" DateUtils.getTomorrow() : ", DateUtils.getMonthDays());
+                    resultDates = DateUtils.getMonthDays();
+                    vm.dueDateFrom.date = DateUtils.toDate(resultDates.startDate);
+                    vm.dueDateTo.date = DateUtils.toDate(resultDates.endDate);
                     break;
-                case 4 :
-                    break;
-                case 5 :
+                case 4 : // 미정
+                    vm.dueDateFrom.date = '';
+                    vm.dueDateTo.date = '';
                     break;
             }
         }
@@ -544,6 +568,8 @@
             });
             vm.taskRepeatSchedule.weekdays = typeIds.join(",");
         }
+
+
 
     }
 
