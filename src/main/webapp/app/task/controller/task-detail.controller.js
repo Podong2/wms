@@ -20,8 +20,10 @@
         vm.selectDateTerm = selectDateTerm;
         vm.setRepeatType = setRepeatType;
         vm.setWeekday = setWeekday;
+        vm.repeatClose = repeatClose;
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
+
 
         vm.task = entity;
         vm.date = '';
@@ -38,13 +40,13 @@
                     vm.commentList.push(val);
                 }
             });
-            $log.debug("vm.commentList : ", vm.commentList)
+            //$log.debug("vm.commentList : ", vm.commentList)
         });
 
         vm.responseData = _.clone(vm.task);
 
         $log.debug("info :", vm.task)
-        $log.debug("$stateParams.listType :", $stateParams.listType);
+        //$log.debug("$stateParams.listType :", $stateParams.listType);
 
 
         // 갤러리 썸네일 이미지
@@ -75,6 +77,17 @@
             { status: false }
         ];
 
+        // 반복설정 월~일 날짜 선택 버튼 상태값
+        vm.weekDaysArea = [
+            {status : false},
+            {status : false},
+            {status : false},
+            {status : false},
+            {status : false},
+            {status : false},
+            {status : false}
+        ];
+
         // min date picker
         this.dueDateFrom = {
             date: DateUtils.toDate(vm.task.startDate),
@@ -91,7 +104,7 @@
         };
         // 반복작업 시작시간
         this.adventStartTime = {
-            date: '',
+            date: DateUtils.toDate('2016-11-11 '+vm.task.taskRepeatSchedule.adventDateStartTime),
             timepickerOptions: {
                 readonlyInput: false,
                 showMeridian: true
@@ -99,14 +112,14 @@
         };
         // 반복작업 반복기간 시작일
         this.repeatDueDateFrom = {
-            date: "",
+            date: DateUtils.toDate(vm.task.taskRepeatSchedule.startDate),
             datepickerOptions: {
                 maxDate: null
             }
         };
         // 반복작업 반복기간 종료일
         this.repeatDueDateTo = {
-            date: "",
+            date: DateUtils.toDate(vm.task.taskRepeatSchedule.endDate),
             datepickerOptions: {
                 minDate: null
             }
@@ -236,8 +249,7 @@
         $scope.$watch("vm.repeatDueDateTo.date", function(newValue, oldValue){
             if(oldValue != newValue){
                 var d = newValue;
-                var formatDate =
-                    DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
+                if(newValue != '') var formatDate = DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
                 //DateUtils.datePickerFormat(d.getHours(), 2) + ':' + DateUtils.datePickerFormat(d.getMinutes(), 2) + ':' + DateUtils.datePickerFormat(d.getSeconds(), 2);
                 vm.taskRepeatSchedule.endDate = formatDate;
             }
@@ -335,17 +347,6 @@
         };
 
         /* 타스크 업로드 */
-        vm.task.taskRepeatSchedule={
-            adventDateStartTime : "",
-            endDate : "",
-            id : 0,
-            monthlyCriteria : '',
-            permanentYn : true,
-            repeatType : "",
-            repeatYn : true,
-            startDate : "",
-            weekdays : ""
-        };
         function taskUpload(){
             if(vm.task.assignees != [])userIdPush(vm.task.assignees, "assigneeIds");
             if(vm.task.watchers != [])userIdPush(vm.task.watchers, "watcherIds");
@@ -368,6 +369,7 @@
                 vm.task.watcherIds = "";
                 vm.task.relatedTaskIds ="";
                 vm.task.projectIds = "";
+                repeatClose(); // 반복설정 팝업 닫기
                 Task.get({id : vm.task.id}, successTask, erorrTask);
             });
         }
@@ -439,7 +441,6 @@
                         }
                     });
                 });
-
             });
         }
 
@@ -503,19 +504,27 @@
 
         // 반복설정 임시 파라미터
         vm.taskRepeatSchedule = {
-            adventDateStartTime : "",
-            endDate : "",
+            adventDateStartTime : vm.task.taskRepeatSchedule.adventDateStartTime,
+            endDate : vm.task.taskRepeatSchedule.endDate,
             id : 0,
-            monthlyCriteria : '',
-            permanentYn : true,
-            repeatType : "",
-            repeatYn : true,
-            startDate : "",
-            weekdays : ""
+            monthlyCriteria : vm.task.taskRepeatSchedule.monthlyCriteria,
+            permanentYn : vm.task.taskRepeatSchedule.permanentYn ? 'true' : 'false',
+            repeatType : vm.task.taskRepeatSchedule.repeatType,
+            repeatYn : vm.task.taskRepeatSchedule.repeatYn,
+            startDate : vm.task.taskRepeatSchedule.startDate,
+            weekdays : vm.task.taskRepeatSchedule.weekdays
         };
+        weekDaysAreaSetting();
+        function weekDaysAreaSetting() {
+            var weekday = vm.task.taskRepeatSchedule.weekdays.split(',');
+            angular.forEach(weekday, function (value, index) {
+                vm.weekDaysArea[value-1].status = true;
+            });
+            $log.debug("vm.weekDaysArea", vm.weekDaysArea)
+        }
 
         // 매월 선택 시 날짜, 요일 영역 오픈
-        vm.monthlyAreaOpen = false;
+        vm.monthlyAreaOpen = vm.task.taskRepeatSchedule.repeatType == 'MONTHLY_DATE' || vm.task.taskRepeatSchedule.repeatType == 'MONTHLY_WEEKDAY' ? true : false;
 
         // 반복설정 타입 주입
         function setRepeatType(type){
@@ -551,15 +560,6 @@
             vm.days.push(day)
         }
 
-        vm.weekDaysArea = [
-            {status : false},
-            {status : false},
-            {status : false},
-            {status : false},
-            {status : false},
-            {status : false},
-            {status : false},
-        ];
         function setWeekday(value){
             var typeIds = [];
             vm.weekDaysArea[value -1].status = !vm.weekDaysArea[value -1].status;
@@ -567,6 +567,11 @@
                 if(val.status) typeIds.push(index + 1);
             });
             vm.taskRepeatSchedule.weekdays = typeIds.join(",");
+        }
+
+
+        function repeatClose(){
+            $rootScope.$broadcast('repeatClose');
         }
 
 
