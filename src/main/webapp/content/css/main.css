@@ -2171,6 +2171,9 @@ tags-input .tags:hover, tags-input .tags:focus {
 .weekdaysBtn.active{
     background-color: #ddd;
 }
+.text-info{
+    color : #ce8483;
+}
 /* repeat date picker css end */
 .clear-both{
     clear: both;

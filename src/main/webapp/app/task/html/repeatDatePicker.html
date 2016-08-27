@@ -11,8 +11,7 @@
                 <li class="text-center cursor" ng-class="vm.tapAreas[1].status == true ? 'active' : ''" ng-click="vm.selectDateTerm(1)">내일</li>
                 <li class="text-center cursor" ng-class="vm.tapAreas[2].status == true ? 'active' : ''" ng-click="vm.selectDateTerm(2)">다음주</li>
                 <li class="text-center cursor" ng-class="vm.tapAreas[3].status == true ? 'active' : ''" ng-click="vm.selectDateTerm(3)">한달</li>
-                <li class="text-center cursor" ng-class="vm.tapAreas[4].status == true ? 'active' : ''" ng-click="vm.selectDateTerm(4)">직접선택</li>
-                <li class="text-center cursor" ng-class="vm.tapAreas[5].status == true ? 'active' : ''" ng-click="vm.selectDateTerm(5)">미정</li>
+                <li class="text-center cursor" ng-class="vm.tapAreas[4].status == true ? 'active' : ''" ng-click="vm.selectDateTerm(4)">미정</li>
             </ul>
         </div>
         <div class="clear-both">
@@ -170,10 +169,10 @@
                         <div class="wms-form">
                             <div class="inline-group">
                                 <label class="radio">
-                                    <input type="radio" name="radio-inline-2" ng-model="vm.taskRepeatSchedule.permanentYn" ng-click="vm.setRepeatType('END_DATE_REMOVE')" value="Y" checked="checked">
+                                    <input type="radio" name="radio-inline-2" ng-model="vm.taskRepeatSchedule.permanentYn" ng-click="vm.setRepeatType('END_DATE_REMOVE')" value="true" checked="checked">
                                     <i></i>계속 반복</label>
                                 <label class="radio">
-                                    <input type="radio" name="radio-inline-2" ng-model="vm.taskRepeatSchedule.permanentYn" value="N">
+                                    <input type="radio" name="radio-inline-2" ng-model="vm.taskRepeatSchedule.permanentYn" value="false">
                                     <i></i>종료일</label>
                             </div>
                         </div>
@@ -182,7 +181,7 @@
 
                         <span class="input-group">
                             <input type="text" class="form-control" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.repeatDueDateTo.date" is-open="vm.repeatDueDateTo.open"
-                                   datepicker-options="vm.repeatDueDateTo.datepickerOptions" close-text="Close" ng-disabled="vm.taskRepeatSchedule.permanentYn == 'Y'" />
+                                   datepicker-options="vm.repeatDueDateTo.datepickerOptions" close-text="Close" ng-disabled="vm.taskRepeatSchedule.permanentYn == 'true'" />
                             <span class="input-group-btn">
                                 <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'repeatDueDateTo')"><i class="fa fa-calendar"></i></button>
                             </span>
