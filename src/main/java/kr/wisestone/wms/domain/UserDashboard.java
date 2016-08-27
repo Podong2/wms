@@ -10,7 +10,7 @@ import javax.persistence.*;
 @Table(name = "owl_user_dashboard")
 @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "userdashboard")
-public class UserDashboard {
+public class UserDashboard extends AbstractAuditingEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "userDashboardSeqGenerator")

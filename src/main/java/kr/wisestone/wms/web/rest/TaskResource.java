@@ -10,6 +10,8 @@ import kr.wisestone.wms.repository.search.TaskSearchRepository;
 import kr.wisestone.wms.service.TaskService;
 import kr.wisestone.wms.service.UserService;
 import kr.wisestone.wms.web.rest.condition.TaskCondition;
+import kr.wisestone.wms.web.rest.conversion.TaskRepeatScheduleDTOPropertyEditor;
+import kr.wisestone.wms.web.rest.dto.TaskRepeatScheduleDTO;
 import kr.wisestone.wms.web.rest.form.TaskForm;
 import kr.wisestone.wms.web.rest.util.HeaderUtil;
 import kr.wisestone.wms.web.rest.util.PaginationUtil;
@@ -29,6 +31,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -68,6 +71,11 @@ public class TaskResource {
 
     @Inject
     private UserService userService;
+
+    @InitBinder
+    public void initBinder(WebDataBinder dataBinder) {
+        dataBinder.registerCustomEditor(TaskRepeatScheduleDTO.class, new TaskRepeatScheduleDTOPropertyEditor());
+    }
 
     /**
      * POST  /tasks : Create a new task.
@@ -138,7 +146,7 @@ public class TaskResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<TaskDTO> updateTask(TaskForm taskForm, MultipartHttpServletRequest request) throws URISyntaxException, IOException {
+    public ResponseEntity<TaskDTO> updateTask(@ModelAttribute TaskForm taskForm, MultipartHttpServletRequest request) throws URISyntaxException, IOException {
         log.debug("REST request to update Task : {}", taskForm);
         if (taskForm.getId() == null) {
 //            return createTask(taskForm);

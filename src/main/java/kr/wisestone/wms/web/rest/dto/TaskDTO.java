@@ -59,7 +59,7 @@ public class TaskDTO implements Serializable {
 
     private String lastModifiedBy;
 
-    private TaskRepeatScheduleDTO taskRepeatScheduleDTO;
+    private TaskRepeatScheduleDTO taskRepeatSchedule;
 
     public Long getId() {
         return id;
@@ -237,12 +237,12 @@ public class TaskDTO implements Serializable {
         this.lastModifiedBy = lastModifiedBy;
     }
 
-    public TaskRepeatScheduleDTO getTaskRepeatScheduleDTO() {
-        return taskRepeatScheduleDTO;
+    public TaskRepeatScheduleDTO getTaskRepeatSchedule() {
+        return taskRepeatSchedule;
     }
 
-    public void setTaskRepeatScheduleDTO(TaskRepeatScheduleDTO taskRepeatScheduleDTO) {
-        this.taskRepeatScheduleDTO = taskRepeatScheduleDTO;
+    public void setTaskRepeatSchedule(TaskRepeatScheduleDTO taskRepeatSchedule) {
+        this.taskRepeatSchedule = taskRepeatSchedule;
     }
 
     @Override
