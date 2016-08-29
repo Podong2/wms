@@ -283,6 +283,7 @@ public class UserService {
 
         user.setLogin(managedUserDTO.getLogin());
         user.setName(managedUserDTO.getName());
+        user.setPhone(managedUserDTO.getPhone());
         user.setEmail(managedUserDTO.getEmail());
         user.setActivated(managedUserDTO.isActivated());
         user.setLangKey(managedUserDTO.getLangKey());

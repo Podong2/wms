@@ -83,7 +83,6 @@ public class Notification extends AbstractAuditingEntity implements Serializable
 
     @OneToMany(mappedBy = "notification", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<NotificationRecipient> notificationRecipients = new HashSet<>();
 
     @Column(name = "sender_id")

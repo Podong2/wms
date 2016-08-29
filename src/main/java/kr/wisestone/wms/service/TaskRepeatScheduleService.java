@@ -44,7 +44,7 @@ public class TaskRepeatScheduleService {
         predicate.and($task.taskRepeatSchedule.isNotNull());
 
         predicate.and($task.taskRepeatSchedule.startDate.loe(today));
-        predicate.and($task.taskRepeatSchedule.endDate.goe(today).or($task.taskRepeatSchedule.permanentYn.eq(Boolean.TRUE)));
+        predicate.and($task.taskRepeatSchedule.endDate.goe(today).or($task.taskRepeatSchedule.permanentYn.eq(true)));
 
         //매일, 주간 설정 스케쥴 조건
         BooleanBuilder dailyWeeklyPredicate = new BooleanBuilder();

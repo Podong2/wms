@@ -110,6 +110,9 @@ public class User extends AbstractAuditingEntity implements UserDetails, Seriali
     @Column(name = "reset_key", length = 20)
     private String resetKey;
 
+    @Column(name = "phone")
+    private String phone;
+
     @Column(name = "reset_date", nullable = true)
     private ZonedDateTime resetDate = null;
 
@@ -301,6 +304,14 @@ public class User extends AbstractAuditingEntity implements UserDetails, Seriali
 
     public void setProfileImage(AttachedFile profileImage) {
         this.profileImage = profileImage;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     @Override

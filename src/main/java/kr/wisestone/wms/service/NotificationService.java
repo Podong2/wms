@@ -4,6 +4,9 @@ import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mysema.query.BooleanBuilder;
+import com.mysema.query.jpa.JPASubQuery;
+import com.mysema.query.jpa.JPQLQuery;
+import com.mysema.query.jpa.JPQLSubQuery;
 import kr.wisestone.wms.common.constant.NotificationConfig;
 import kr.wisestone.wms.common.util.WebAppUtil;
 import kr.wisestone.wms.domain.*;
@@ -104,16 +107,21 @@ public class NotificationService {
         User loginUser = SecurityUtils.getCurrentUser();
 
         QNotification $notification = QNotification.notification;
+        QNotificationRecipient $notificationRecipient = QNotificationRecipient.notificationRecipient;
 
         BooleanBuilder predicate = new BooleanBuilder();
-
-        predicate.and($notification.notificationRecipients.any().recipient.eq(loginUser.getId()));
+        BooleanBuilder readStatusPredicate = new BooleanBuilder();
 
         if("UN_READ".equals(listType)) {
-            predicate.and($notification.notificationRecipients.any().confirmYn.eq(Boolean.FALSE));
+            readStatusPredicate.and($notificationRecipient.confirmYn.isFalse());
         } else {
-            predicate.and($notification.notificationRecipients.any().confirmYn.eq(Boolean.TRUE));
+            readStatusPredicate.and($notificationRecipient.confirmYn.isTrue());
         }
+
+        predicate.and($notification.id.in(new JPASubQuery()
+            .from($notificationRecipient)
+            .where($notificationRecipient.recipient.eq(loginUser.getId()).and(readStatusPredicate))
+            .list($notificationRecipient.notification.id)));
 
         log.debug("Request to get all Notifications");
         Page<Notification> result = notificationRepository.findAll(predicate, PaginationUtil.applySort(pageable, Sort.Direction.DESC, "createdDate"));
@@ -164,11 +172,14 @@ public class NotificationService {
         User loginUser = SecurityUtils.getCurrentUser();
 
         QNotification $notification = QNotification.notification;
+        QNotificationRecipient $notificationRecipient = QNotificationRecipient.notificationRecipient;
 
         BooleanBuilder predicate = new BooleanBuilder();
 
-        predicate.and($notification.notificationRecipients.any().recipient.eq(loginUser.getId()));
-        predicate.and($notification.notificationRecipients.any().confirmYn.eq(Boolean.FALSE));
+        predicate.and($notification.id.in(new JPASubQuery()
+            .from($notificationRecipient)
+            .where($notificationRecipient.recipient.eq(loginUser.getId()).and($notificationRecipient.confirmYn.isFalse()))
+            .list($notificationRecipient.notification.id)));
 
         Long count = notificationRepository.count(predicate);
 
@@ -190,6 +201,8 @@ public class NotificationService {
             notificationRecipient.setReadYn(Boolean.TRUE);
             notificationRecipient.setConfirmYn(Boolean.TRUE);
         }
+
+        notificationRepository.save(notification);
 
         return notificationMapper.notificationToNotificationDTO(notification);
     }

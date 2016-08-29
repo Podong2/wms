@@ -52,6 +52,8 @@ public class UserDTO {
 
     private String resetKey;
 
+    private String phone;
+
     private AttachedFile profileImage;
 
     public UserDTO() {
@@ -61,10 +63,10 @@ public class UserDTO {
         this(user.getId(), user.getLogin(), user.getName(), user.getEmail()
             , user.getActivated(), user.getLangKey(),
             user.getAuthorities().stream().map(Authority::getName)
-                .collect(Collectors.toSet()), user.getCompany(), user.getDepartment(), user.getStatus());
+                .collect(Collectors.toSet()), user.getCompany(), user.getDepartment(), user.getStatus(), user.getPhone());
     }
 
-    public UserDTO(String login, String name, String email
+    public UserDTO(String login, String name, String email, String phone
                 , boolean activated, String langKey, Set<String> authorities) {
 
         this.login = login;
@@ -73,11 +75,12 @@ public class UserDTO {
         this.activated = activated;
         this.langKey = langKey;
         this.authorities = authorities;
+        this.phone = phone;
     }
 
     public UserDTO(Long id, String login, String name, String email, boolean activated
         , String langKey, Set<String> authorities, Company company, Department department
-        , String status) {
+        , String status, String phone) {
 
         this.id = id;
         this.login = login;
@@ -97,6 +100,7 @@ public class UserDTO {
         }
 
         this.status = status;
+        this.phone = phone;
     }
 
     public Long getId() {
@@ -225,6 +229,14 @@ public class UserDTO {
 
     public void setProfileImage(AttachedFile profileImage) {
         this.profileImage = profileImage;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
     @Override

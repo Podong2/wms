@@ -148,6 +148,7 @@ public class AccountResourceIntTest {
             "password",             // password
             "Joe",                  // firstName
             "joe@example.com",      // e-mail
+            "",
             true,                   // activated
             "ko",               // langKey
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
@@ -175,6 +176,7 @@ public class AccountResourceIntTest {
             "password",             // password
             "Funky",                // firstName
             "funky@example.com",    // e-mail
+            "",
             true,                   // activated
             "ko",               // langKey
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
@@ -202,6 +204,7 @@ public class AccountResourceIntTest {
             "password",         // password
             "Bob",              // firstName
             "invalid",          // e-mail <-- invalid
+            "",
             true,               // activated
             "ko",               // langKey
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
@@ -229,6 +232,7 @@ public class AccountResourceIntTest {
             "123",              // password with only 3 digits
             "Bob",              // firstName
             "bob@example.com",  // e-mail
+            "",
             true,               // activated
             "ko",               // langKey
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
@@ -257,6 +261,7 @@ public class AccountResourceIntTest {
             "password",             // password
             "Alice",                // firstName
             "alice@example.com",    // e-mail
+            "",
             true,                   // activated
             "ko",               // langKey
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
@@ -267,7 +272,7 @@ public class AccountResourceIntTest {
 
         // Duplicate login, different e-mail
         ManagedUserDTO duplicatedUser = new ManagedUserDTO(validUser.getId(), validUser.getLogin(), validUser.getPassword(), validUser.getName(),
-            "alicejr@example.com", true, validUser.getLangKey(), validUser.getAuthorities(), validUser.getCreatedDate(), validUser.getLastModifiedBy(), validUser.getLastModifiedDate());
+            "alicejr@example.com","", true, validUser.getLangKey(), validUser.getAuthorities(), validUser.getCreatedDate(), validUser.getLastModifiedBy(), validUser.getLastModifiedDate());
 
         // Good user
         restMvc.perform(
@@ -297,6 +302,7 @@ public class AccountResourceIntTest {
             "password",             // password
             "John",                 // firstName
             "john@example.com",     // e-mail
+            "",
             true,                   // activated
             "ko",               // langKey
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER)),
@@ -307,7 +313,7 @@ public class AccountResourceIntTest {
 
         // Duplicate e-mail, different login
         ManagedUserDTO duplicatedUser = new ManagedUserDTO(validUser.getId(), "johnjr", validUser.getPassword(), validUser.getName(),
-            validUser.getEmail(), true, validUser.getLangKey(), validUser.getAuthorities(), validUser.getCreatedDate(), validUser.getLastModifiedBy(), validUser.getLastModifiedDate());
+            validUser.getEmail(), validUser.getPhone(), true, validUser.getLangKey(), validUser.getAuthorities(), validUser.getCreatedDate(), validUser.getLastModifiedBy(), validUser.getLastModifiedDate());
 
         // Good user
         restMvc.perform(
@@ -336,6 +342,7 @@ public class AccountResourceIntTest {
             "password",             // password
             "Bad",                  // firstName
             "badguy@example.com",   // e-mail
+            "",
             true,                   // activated
             "ko",               // langKey
             new HashSet<>(Arrays.asList(AuthoritiesConstants.ADMIN)),
@@ -363,6 +370,7 @@ public class AccountResourceIntTest {
             "funky-log!n",          // login <-- invalid
             "Funky",                // firstName
             "funky@example.com",    // e-mail
+            "",
             true,                   // activated
             "ko",               // langKey
             new HashSet<>(Arrays.asList(AuthoritiesConstants.USER))
