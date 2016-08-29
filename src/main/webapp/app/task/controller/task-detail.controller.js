@@ -516,7 +516,7 @@
         };
         weekDaysAreaSetting();
         function weekDaysAreaSetting() {
-            if(vm.task.taskRepeatSchedule != null){
+            if(vm.task.taskRepeatSchedule != null && vm.task.taskRepeatSchedule.weekdays != ''){
                 var weekday = vm.task.taskRepeatSchedule.weekdays.split(',');
                 angular.forEach(weekday, function (value, index) {
                     vm.weekDaysArea[value-1].status = true;

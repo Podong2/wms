@@ -48,6 +48,7 @@
             'wms.widget.columnChart',
             'wms.widget.lineChart',
             'wms.widget.pieChart',
+            'wms.widget.myTaskList',
             'mwl.calendar',
             'angularMoment',
             'gantt',
