@@ -209,4 +209,20 @@ public class ProjectResource {
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
+    @RequestMapping(value = "/projects/statistics",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<ProjectStatisticsDTO>> getProjectStatistics(@RequestParam(name = "listType") String listType) {
+        log.debug("REST request to get Project dashboard : {}", listType);
+
+        List<ProjectStatisticsDTO> projectStatisticsDTOs = projectService.getProjectStatistics(listType);
+
+        return Optional.ofNullable(projectStatisticsDTOs)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
 }

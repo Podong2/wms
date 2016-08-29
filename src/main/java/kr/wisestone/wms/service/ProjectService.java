@@ -139,6 +139,7 @@ public class ProjectService {
         return result;
     }
 
+    @Transactional(readOnly = true)
     public List<ProjectDTO> findByNameLike(String name) {
 
         if(StringUtils.isEmpty(name)) {
@@ -330,6 +331,7 @@ public class ProjectService {
         }
     }
 
+    @Transactional
     public List<AttachedFileDTO> addProjectSharedAttachedFile(Long projectId, List<MultipartFile> files) {
 
         Project project = this.projectRepository.findOne(projectId);
@@ -344,5 +346,65 @@ public class ProjectService {
         project = this.projectRepository.save(project);
 
         return this.attachedFileMapper.attachedFilesToAttachedFileDTOs(project.getPlainProjectSharedAttachedFiles());
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProjectStatisticsDTO> getProjectStatistics(String listType) {
+
+        String login = SecurityUtils.getCurrentUserLogin();
+
+        QProject $project = QProject.project;
+
+        BooleanBuilder predicate = new BooleanBuilder();
+
+        if("IN_PROGRESS".equals(listType)) {
+            predicate.and($project.status.id.eq(1L));
+        } else if("COMPLETION".equals(listType)) {
+            predicate.and($project.status.id.eq(2L));
+        }
+
+        predicate.and($project.projectUsers.any().user.login.eq(login));
+
+        predicate.and(
+            $project.projectParents.isEmpty()
+                .or($project.projectParents.any().parent.projectUsers.isEmpty()
+                    .or($project.projectParents.any().parent.projectUsers.any().user.login.ne(login)))
+        );
+
+        List<Project> projects = Lists.newArrayList(projectRepository.findAll(predicate));
+
+        List<ProjectStatisticsDTO> projectStatisticsDTOs = Lists.newArrayList();
+
+        for(Project project : projects) {
+
+            ProjectDTO projectDTO = this.projectMapper.projectToProjectDTO(project);
+
+            List<Project> childProjects = Lists.newArrayList();
+            this.getChildProjectList(project.getProjectChilds(), childProjects);
+
+            Long childProjectCount = childProjects.stream().filter(childProject -> childProject.getFolderYn() == Boolean.FALSE).count();
+            Long childFolderCount = childProjects.stream().filter(childProject -> childProject.getFolderYn() == Boolean.TRUE).count();
+
+            List<TaskDTO> taskDTOs = taskService.findAllProjectManagedTasks(project, ProjectTaskCondition.LIST_TYPE_TOTAL);
+
+            Long taskCompleteCount = taskDTOs.stream().filter(taskDTO -> taskDTO.getStatusId().equals(2L)).count();
+            Long taskTotalCount = taskDTOs.stream().count();
+
+            ProjectStatisticsDTO projectStatisticsDTO = new ProjectStatisticsDTO(projectDTO, childProjectCount, childFolderCount, taskCompleteCount, taskTotalCount);
+
+            projectStatisticsDTOs.add(projectStatisticsDTO);
+        }
+
+        return projectStatisticsDTOs;
+    }
+
+    private void getChildProjectList(Set<ProjectRelation> projectChilds, List<Project> childProjects) {
+
+        for(ProjectRelation projectRelation : projectChilds) {
+
+            this.getChildProjectList(projectRelation.getChild().getProjectChilds(), childProjects);
+
+            childProjects.add(projectRelation.getChild());
+        }
     }
 }

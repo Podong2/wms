@@ -271,13 +271,18 @@ public class NotificationService {
 
         List<User> toUsers = Lists.newArrayList();
 
-        toUsers.addAll(userMapper.userDTOsToUsers(task.getAssignees()));
-        toUsers.addAll(userMapper.userDTOsToUsers(task.getWatchers()));
+        if(task.getAssignees() != null)
+            toUsers.addAll(userMapper.userDTOsToUsers(task.getAssignees()));
 
-        NotificationParameterDTO notificationParameterVo = new NotificationParameterDTO(
-            notificationConfig, notifyMethod, title, contents, userMapper.userToUserDTO(loginUser), toUsers, traceLog);
+        if(task.getWatchers() != null)
+            toUsers.addAll(userMapper.userDTOsToUsers(task.getWatchers()));
 
-        this.saveAndSendNotification(notificationParameterVo);
+        if(!toUsers.isEmpty()) {
+            NotificationParameterDTO notificationParameterVo = new NotificationParameterDTO(
+                notificationConfig, notifyMethod, title, contents, userMapper.userToUserDTO(loginUser), toUsers, traceLog);
+
+            this.saveAndSendNotification(notificationParameterVo);
+        }
     }
 
     private String getNotificationTitle(NotificationConfig notification) {
