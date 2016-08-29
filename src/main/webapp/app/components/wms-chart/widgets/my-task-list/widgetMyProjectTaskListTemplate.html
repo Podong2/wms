@@ -1,9 +1,28 @@
-<div ng-controller="myTaskListCtrl as vm">
+<div ng-controller="myProjectTaskListCtrl as vm">
     <div style="width : 100%; position: relative; top: -15px;">
-
         <div class="row clear-both" >
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bhoechie-tab-container">
-                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 bhoechie-tab-menu">
+                <div class="row">
+                    <div class="col-md-4" style="padding-right: 0">
+                        <div class="widget-project-list-area">
+                            <wms-select-box
+                                ng-model="vm.projectList"
+                                selected-value="vm.projectId"
+                                dataSize="5"
+                                dataLiveSearch="false"
+                            ></wms-select-box>
+                        </div>
+                    </div>
+                    <div class="col-md-8" style="padding-left: 0">
+                        <ul class="nav nav-tabs nav-justified my-task-top-menu">
+                            <li class="text-center"><span ng-class="vm.taskType == 'ASSIGNED' ? 'active' : ''"  ng-click="vm.taskTypeChange('ASSIGNED')"><i class="fa fa-calendar-plus-o"></i>담당자</span></li>
+                            <li class="text-center"><span ng-class="vm.taskType == 'CREATED' ? 'active' : ''" ng-click="vm.taskTypeChange('CREATED')"><i class="fa fa-calendar-plus-o"></i>요청한</span></li>
+                            <li class="text-center"><span ng-class="vm.taskType == 'WATCHED' ? 'active' : ''" ng-click="vm.taskTypeChange('WATCHED')"><i class="fa fa-calendar-plus-o"></i>참조</span></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 bhoechie-tab-menu project-list">
                     <div class="list-group">
                         <a class="list-group-item active text-center" ng-class="vm.listType == 'TODAY' ? 'active' : ''" ng-click="vm.getTodayTask('TODAY')">
                             <h4 class="glyphicon glyphicon-plane"></h4><br/>오늘
@@ -20,38 +39,6 @@
                     </div>
                 </div>
                 <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 bhoechie-tab">
-                    <ul class="nav nav-tabs nav-justified my-task-top-menu">
-                        <li class="text-center"><span ng-class="vm.taskType == 'SCHEDULED' ? 'active' : ''" ng-click="vm.taskTypeChange('SCHEDULED')"><i class="fa fa-calendar-plus-o"></i>스케줄</span></li>
-                        <li class="text-center"><span ng-class="vm.taskType == 'TEMPLATE' ? 'active' : ''"  ng-click="vm.taskTypeChange('TEMPLATE')"><i class="fa fa-calendar-plus-o"></i>템플릿</span></li>
-                        <li class="text-center"><span ng-class="vm.taskType == 'ASSIGNED' ? 'active' : ''"  ng-click="vm.taskTypeChange('ASSIGNED')"><i class="fa fa-calendar-plus-o"></i>담당자</span></li>
-                        <li class="text-center"><span ng-class="vm.taskType == 'CREATED' ? 'active' : ''" ng-click="vm.taskTypeChange('CREATED')"><i class="fa fa-calendar-plus-o"></i>요청한</span></li>
-                        <li class="text-center"><span ng-class="vm.taskType == 'WATCHED' ? 'active' : ''" ng-click="vm.taskTypeChange('WATCHED')"><i class="fa fa-calendar-plus-o"></i>참조</span></li>
-                    </ul>
-                    <!-- flight section -->
-                    <div class="bhoechie-tab-content active">
-                        <div ng-repeat="task in vm.task">
-                            {{}}
-                        </div>
-                    </div>
-                    <!-- SCHEDULED section -->
-                    <div class="bhoechie-tab-content" ng-show=" vm.taskType == 'SCHEDULED'">
-                        <div ng-repeat="data in vm.task.repeatScheduledTasks" class="wms-chart-list">
-                            <div  class="wms-tree-node-list task-list"
-                                  ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
-                                <div class="pull-right">
-                                    <div>{{data.endDate}}</div>
-                                    <div>
-                                        <span ng-if="data.parent.name != null">상위 1</span>
-                                        <span ng-if="data.subTasks.length > 0">하위 {{data.subTasks.length}}</span>
-                                        <span ng-if="data.watchers.length > 0">참조 {{data.watchers.length}}</span>
-                                        <!--<span>승인/미승인</span>-->
-                                    </div>
-                                </div>
-                                <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
-                                <i class="fa fa-user"/>
-                            </div>
-                        </div>
-                    </div>
 
                     <!-- ASSIGNED search -->
                     <div class="bhoechie-tab-content" ng-show=" vm.taskType == 'ASSIGNED'">

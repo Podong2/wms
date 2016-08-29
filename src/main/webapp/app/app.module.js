@@ -49,6 +49,8 @@
             'wms.widget.lineChart',
             'wms.widget.pieChart',
             'wms.widget.myTaskList',
+            'wms.widget.myProjectTaskList',
+            'wms.widget.myMonthlyTaskChart',
             'mwl.calendar',
             'angularMoment',
             'gantt',

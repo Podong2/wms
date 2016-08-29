@@ -1,0 +1,22 @@
+<div ng-controller="myMonthlyTaskChartCtrl as vm">
+    <div style="width : 100%; position: relative; top: -15px;">
+        <div class="clear-both" >
+            <div class="row">
+                <div class="col-md-4" style="padding-right: 0">
+                    <pie-chart data="pieData" options="pieOptions"></pie-chart>
+                </div>
+                <div class="col-md-8" style="padding-left: 0">
+                    <div class="progress progress-sm">
+                        <div class="progress-bar bg-color-greenLight" role="progressbar" ng-style="vm.assignedPercent"></div>{{vm.task.assignedTaskCompleteCount}}/{{vm.task.assignedTasks.length}}
+                    </div>
+                    <div class="progress progress-sm">
+                        <div class="progress-bar bg-color-greenLight" role="progressbar" ng-style="vm.createdPercent"></div>{{vm.task.createdTaskCompleteCount}}/{{vm.task.createdTasks.length}}
+                    </div>
+                    <div class="progress progress-sm">
+                        <div class="progress-bar bg-color-greenLight" role="progressbar" ng-style="vm.watchedPercent"></div>{{vm.task.watchedTaskCompleteCount}}/{{vm.task.watchedTasks.length}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

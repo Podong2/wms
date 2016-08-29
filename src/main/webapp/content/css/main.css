@@ -2178,3 +2178,108 @@ tags-input .tags:hover, tags-input .tags:focus {
 .clear-both{
     clear: both;
 }
+
+/* dashboard css */
+.my-task-top-menu li{
+    border-left: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    border-bottom: 1px solid #ccc;
+}
+.my-task-top-menu li i{
+    font-size: 20px;
+}
+.my-task-top-menu li span{
+    padding: 13px 7px 12px 7px;
+    background: #fff;
+    color: #333;
+}
+.my-task-top-menu li span:hover {
+    background: #fdfdfd;
+}
+.my-task-top-menu li span.active {
+    background: #5A55A3;
+    color:#FFF;
+}
+
+/*  bhoechie tab */
+div.bhoechie-tab-container{
+    z-index: 10;
+    background-color: #ffffff;
+    padding: 0 !important;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    -moz-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    background-clip: padding-box;
+    opacity: 0.97;
+    filter: alpha(opacity=97);
+}
+div.bhoechie-tab-menu{
+    padding-right: 0;
+    padding-left: 0;
+    padding-bottom: 0;
+    padding-top: 50px;
+}
+div.bhoechie-tab-menu.project-list{
+    padding-top: 0;
+}
+div.bhoechie-tab-menu div.list-group{
+    margin-bottom: 0;
+}
+div.bhoechie-tab-menu div.list-group>a{
+    margin-bottom: 0;
+}
+div.bhoechie-tab-menu div.list-group>a .glyphicon,
+div.bhoechie-tab-menu div.list-group>a .fa {
+    color: #5A55A3;
+}
+div.bhoechie-tab-menu div.list-group>a:first-child{
+    border-top-right-radius: 0;
+    -moz-border-top-right-radius: 0;
+}
+div.bhoechie-tab-menu div.list-group>a:last-child{
+    border-bottom-right-radius: 0;
+    -moz-border-bottom-right-radius: 0;
+}
+div.bhoechie-tab-menu div.list-group>a.active,
+div.bhoechie-tab-menu div.list-group>a.active .glyphicon,
+div.bhoechie-tab-menu div.list-group>a.active .fa{
+    background-color: #5A55A3;
+    color: #ffffff;
+}
+div.bhoechie-tab-menu div.list-group>a.active:after{
+    content: '';
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    margin-top: -13px;
+    border-left: 0;
+    border-bottom: 13px solid transparent;
+    border-top: 13px solid transparent;
+    border-left: 10px solid #5A55A3;
+}
+
+div.bhoechie-tab-content{
+    background-color: #ffffff;
+    padding: 10px 20px;
+    max-height: 284px;
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+div.bhoechie-tab{
+    padding:0;
+}
+.bhoechie-tab .wms-tree-node-list{
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+    padding: 15px 15px 20px 15px;
+}
+.wms-chart-list:last-child{
+    border-bottom: 1px solid #ddd;
+}
+.widget-project-list-area{
+    border-bottom: 1px solid #ddd;
+    padding: 9px 16px;
+}
+/* dashboard css end */
