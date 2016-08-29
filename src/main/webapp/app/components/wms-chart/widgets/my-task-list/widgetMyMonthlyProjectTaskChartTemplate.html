@@ -2,11 +2,11 @@
     <div style="width : 100%; position: relative; top: -15px;">
         <div class="clear-both" >
             <div class="row">
-                <div class="col-md-4" style="padding-right: 0">
-                    <div class="title">#작업 분포</div>
+                <div class="col-md-5" style="padding-right: 0">
+                    <h4 class="title">#작업 분포</h4>
                     <pie-chart data="pieData" options="pieOptions"></pie-chart>
                 </div>
-                <div class="col-md-8" style="padding-left: 0">
+                <div class="col-md-7 task-chart-area" style="padding-left: 0">
 
                     <div style="text-align: right">
                         <wms-select-box
@@ -16,15 +16,18 @@
                             dataLiveSearch="false"
                         ></wms-select-box>
                     </div>
-                    <div class="title">#작업 진척률</div>
-                    <div class="progress progress-sm">
-                        <div class="progress-bar bg-color-greenLight" role="progressbar" ng-style="vm.assignedPercent"></div>{{vm.task.assignedTaskCompleteCount}}/{{vm.task.assignedTasks.length}}
+                    <h4 class="title">#작업 진척률</h4>
+                    <div>- 내가 담당자인 작업</div>
+                    <div class="progress">
+                        <div class="progress-bar bg-color-blueLight" role="progressbar" ng-style="vm.assignedPercent">{{vm.assignedPercent.width}}</div><span>{{vm.taskCountInfo.assignedTaskCompleteCount}}/{{vm.taskCountInfo.assignedTaskTotalCount}}</span>
                     </div>
-                    <div class="progress progress-sm">
-                        <div class="progress-bar bg-color-greenLight" role="progressbar" ng-style="vm.createdPercent"></div>{{vm.task.createdTaskCompleteCount}}/{{vm.task.createdTasks.length}}
+                    <div>- 내가 요청한 작업</div>
+                    <div class="progress">
+                        <div class="progress-bar bg-color-greenLight" role="progressbar" ng-style="vm.createdPercent">{{vm.createdPercent.width}}</div><span>{{vm.taskCountInfo.createdTaskCompleteCount}}/{{vm.taskCountInfo.createdTaskTotalCount}}</span>
                     </div>
-                    <div class="progress progress-sm">
-                        <div class="progress-bar bg-color-greenLight" role="progressbar" ng-style="vm.watchedPercent"></div>{{vm.task.watchedTaskCompleteCount}}/{{vm.task.watchedTasks.length}}
+                    <div>- 참조된 작업</div>
+                    <div class="progress">
+                        <div class="progress-bar bg-color-yellow" role="progressbar" ng-style="vm.watchedPercent">{{vm.watchedPercent.width}}</div><span>{{vm.taskCountInfo.watchedTaskCompleteCount}}/{{vm.taskCountInfo.watchedTaskTotalCount}}</span>
                     </div>
                 </div>
             </div>

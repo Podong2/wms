@@ -2299,4 +2299,7 @@ div.bhoechie-tab{
     border-bottom: 1px solid #ddd;
     padding: 9px 16px;
 }
+.task-chart-area .progress{
+text-align: right;
+}
 /* dashboard css end */

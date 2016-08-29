@@ -56,7 +56,6 @@ angular.module('wms.widget.myTaskList', ['adf.provider'])
     getTodayTask();
     function success(result){
         vm.task = result;
-        $log.debug(vm.task);
     }
     function error(){
 

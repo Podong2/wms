@@ -62,7 +62,6 @@ angular.module('wms.widget.myProjectTaskList', ['adf.provider'])
     }
     function success(result){
         vm.task = result;
-        $log.debug(vm.task);
     }
     function error(){
 
@@ -78,7 +77,6 @@ angular.module('wms.widget.myProjectTaskList', ['adf.provider'])
         })
 
         //$rootScope.$broadcast('projectListLoading')
-        $log.debug("대시보드 위젯 프로젝트 목록 : ", vm.projectList);
     }
     function onError (result) {
     }

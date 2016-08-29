@@ -39,7 +39,7 @@ angular.module('wms.widget.myMonthlyProjectTaskChart', ['adf.provider'])
           controllerAs : 'vm'
         }
       });
-  }]).controller('myMonthlyProjectTaskChartCtrl', ["$scope", 'DashboardMyTask', '$log', 'Project', function($scope, DashboardMyTask, $log, Project){
+  }]).controller('myMonthlyProjectTaskChartCtrl', ["$scope", 'DashboardMyTask', '$log', 'Project', 'DashboardMyTaskCount', function($scope, DashboardMyTask, $log, Project, DashboardMyTaskCount){
     var vm = this;
     vm.getTodayTask = getTodayTask;
     vm.taskTypeChange = taskTypeChange;
@@ -63,32 +63,36 @@ angular.module('wms.widget.myMonthlyProjectTaskChart', ['adf.provider'])
         if(type !='' && type != undefined) vm.listType = type;
         DashboardMyTask.get({listType : vm.listType, projectId : vm.projectId}, success, error)
     }
-    function success(result){
-        vm.task = result;
-        $log.debug(vm.task);
+    function getTodayTaskCount(type, projectId){
+        if(type !='' && type != undefined) vm.listType = type;
+        DashboardMyTaskCount.get({listType : vm.listType, projectId : vm.projectId}, successCount, error)
+    }
+    function successCount(result){
+        vm.taskCountInfo = result;
+        $log.debug("vm.taskCountInfo : ", vm.taskCountInfo)
 
         vm.assignedPercent= {
-            width : (vm.task.assignedTasks.length / vm.task.assignedTaskCompleteCount * 100) + '%'
+            width : Math.floor(vm.taskCountInfo.assignedTaskCompleteCount / vm.taskCountInfo.assignedTaskTotalCount * 100) + '%'
         }
         vm.createdPercent= {
-            width : (vm.task.createdTasks.length / vm.task.createdTaskCompleteCount * 100) + '%'
+            width : Math.floor(vm.taskCountInfo.createdTaskCompleteCount / vm.taskCountInfo.createdTaskTotalCount * 100) + '%'
         }
         vm.watchedPercent= {
-            width : (vm.task.watchedTasks.length / vm.task.watchedTaskCompleteCount * 100) + '%'
+            width : Math.floor(vm.taskCountInfo.watchedTaskCompleteCount / vm.taskCountInfo.watchedTaskTotalCount * 100) + '%'
         }
 
         $scope.pieData = [
             {
                 key: "담당",
-                y: vm.task.assignedTasks.length
+                y: vm.taskCountInfo.assignedTaskTotalCount
             },
             {
                 key: "요청",
-                y: vm.task.createdTasks.length
+                y: vm.taskCountInfo.createdTaskTotalCount
             },
             {
                 key: "참조",
-                y: vm.task.watchedTasks.length
+                y: vm.taskCountInfo.watchedTaskTotalCount
             }
         ];
 
@@ -101,7 +105,7 @@ angular.module('wms.widget.myMonthlyProjectTaskChart', ['adf.provider'])
                 showLabels: true, //그래프 내에 표시될 텍스트 노출 유무
                 duration: 500,
                 donut : true,
-                title: "총 "+(vm.task.assignedTasks.length+vm.task.createdTasks.length+vm.task.watchedTasks.length)+"건",
+                title: "총 "+(vm.taskCountInfo.assignedTaskTotalCount+vm.taskCountInfo.createdTaskTotalCount+vm.taskCountInfo.watchedTaskTotalCount)+"건",
                 labelThreshold: 0.01,
                 labelSunbeamLayout: false, // 그래프 내 텍스트 회전 옵션
                 legend: {
@@ -127,6 +131,11 @@ angular.module('wms.widget.myMonthlyProjectTaskChart', ['adf.provider'])
             }
         };
     }
+    function success(result){
+        vm.task = result;
+
+
+    }
     function error(){
 
     }
@@ -147,12 +156,13 @@ angular.module('wms.widget.myMonthlyProjectTaskChart', ['adf.provider'])
     }
 
     $scope.$watchCollection('vm.projectId', function(oldValue, newValue){
-        DashboardMyTask.get({listType : vm.listType, projectId : vm.projectId}, success, error)
+        DashboardMyTaskCount.get({listType : vm.listType, projectId : vm.projectId}, successCount, error)
     });
 
 
     getTodayTask(); //오늘 작업
     getProjectList(); // 프로젝트 목록(최상위 프로젝트만 씀)
+    getTodayTaskCount(); //오늘 작업 count
 
 
   }]);

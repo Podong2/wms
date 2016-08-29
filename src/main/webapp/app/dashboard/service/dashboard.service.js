@@ -4,10 +4,12 @@
         .module('wmsApp')
         .factory('Dashboard', Dashboard)
         .factory('DashboardMyTask', DashboardMyTask)
+        .factory('DashboardMyTaskCount', DashboardMyTaskCount)
         .factory('MyDashboard', MyDashboard);
 
     Dashboard.$inject = ['$resource'];
     DashboardMyTask.$inject = ['$resource'];
+    DashboardMyTaskCount.$inject = ['$resource'];
     MyDashboard.$inject = ['$resource'];
     //MyDashboard.$inject = ['$q', '$http', '$log'];
 
@@ -49,6 +51,24 @@
 
     function DashboardMyTask ($resource) {
         var resourceUrl =  'api/dashboards/widget/findMyTasks';
+
+        return $resource(resourceUrl, {}, {
+            'query': { method: 'GET', isArray: true},
+            'get': {
+                method: 'GET',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    return data;
+                }
+            },
+            'update': { method:'PUT' }
+        });
+    }
+
+    function DashboardMyTaskCount ($resource) {
+        var resourceUrl =  'api/dashboards/widget/findMyTaskProgress';
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
