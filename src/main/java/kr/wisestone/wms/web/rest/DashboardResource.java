@@ -6,6 +6,7 @@ import kr.wisestone.wms.service.WidgetService;
 import kr.wisestone.wms.web.rest.condition.WidgetCondition;
 import kr.wisestone.wms.web.rest.dto.DashboardDTO;
 import kr.wisestone.wms.web.rest.dto.TaskListWidgetDTO;
+import kr.wisestone.wms.web.rest.dto.TaskProgressWidgetDTO;
 import kr.wisestone.wms.web.rest.form.DashboardForm;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,6 +37,21 @@ public class DashboardResource {
     public ResponseEntity<TaskListWidgetDTO> getMyTasks(@ModelAttribute WidgetCondition widgetCondition) {
 
         TaskListWidgetDTO taskListWidgetDTO = widgetService.getTaskListWidgetData(widgetCondition);
+
+        return Optional.ofNullable(taskListWidgetDTO)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @RequestMapping(value = "/dashboards/widget/findMyTaskProgress",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<TaskProgressWidgetDTO> getMyTaskProgress(@ModelAttribute WidgetCondition widgetCondition) {
+
+        TaskProgressWidgetDTO taskListWidgetDTO = widgetService.getTaskProgressWidgetData(widgetCondition);
 
         return Optional.ofNullable(taskListWidgetDTO)
             .map(result -> new ResponseEntity<>(

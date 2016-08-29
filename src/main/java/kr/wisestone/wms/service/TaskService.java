@@ -80,20 +80,35 @@ public class TaskService {
     public List<TaskDTO> findAll(TaskCondition taskCondition) {
         log.debug("Request to get all Tasks by condition");
 
-        String login = SecurityUtils.getCurrentUserLogin();
+        User loginUser = SecurityUtils.getCurrentUser();
 
         BooleanBuilder predicate = taskListPredicate(taskCondition);
 
         List<Task> result = Lists.newArrayList(taskRepository.findAll(predicate, QTask.task.period.endDate.asc()));
 
         List<TaskDTO> taskDTOs = Lists.newArrayList();
+        List<TaskDTO> assignedDTOs = Lists.newArrayList();
+        List<TaskDTO> watchedDTOs = Lists.newArrayList();
+        List<TaskDTO> createdDTOs = Lists.newArrayList();
 
         for(Task task : result) {
 
             TaskDTO taskDTO = taskMapper.taskToTaskDTO(task);
 
             this.copyTaskRelationProperties(task, taskDTO);
-            this.determineStatusGroup(taskDTO, taskCondition.getListType(), login);
+            this.determineStatusGroup(taskDTO, taskCondition.getListType(), loginUser.getLogin());
+
+//            if(task.findTaskUser(loginUser, UserType.ASSIGNEE).isPresent()) {
+//                assignedDTOs.add(taskDTO);
+//            }
+//
+//            if(task.findTaskUser(loginUser, UserType.WATCHER).isPresent()) {
+//                watchedDTOs.add(taskDTO);
+//            }
+//
+//            if(task.getCreatedBy().equals(loginUser.getLogin())) {
+//                createdDTOs.add(taskDTO);
+//            }
 
             taskDTOs.add(taskDTO);
         }

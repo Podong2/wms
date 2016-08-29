@@ -55,27 +55,22 @@ public class Project extends AbstractAuditingEntity implements Traceable {
 
     @OneToMany(mappedBy = "child", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<ProjectRelation> projectParents = new HashSet<>();
 
     @OneToMany(mappedBy = "parent", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    @org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<ProjectRelation> projectChilds = new HashSet<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<ProjectUser> projectUsers = new HashSet<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<ProjectAttachedFile> projectAttachedFiles = new HashSet<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<ProjectSharedAttachedFile> projectSharedAttachedFiles = new HashSet<>();
 
     public Long getId() {
@@ -287,7 +282,7 @@ public class Project extends AbstractAuditingEntity implements Traceable {
 
         ProjectRelation origin = this.findParentProject(parent);
 
-        if(origin == null)
+        if(origin == null && !this.checkIsDuplex(parent) && !parent.getId().equals(this.getId()))
             this.projectParents.add(new ProjectRelation(this, parent));
 
         return this;
@@ -311,6 +306,16 @@ public class Project extends AbstractAuditingEntity implements Traceable {
 
         if(origin.isPresent()) return origin.get();
         else return null;
+    }
+
+    private Boolean checkIsDuplex(Project parent) {
+        Optional<ProjectRelation> origin = this.projectParents.stream().filter(
+            projectParent ->
+                projectParent.getChild().getId().equals(parent.getId()) && projectParent.getParent().getId().equals(this.getId())
+        ).findFirst();
+
+        if(origin.isPresent()) return Boolean.TRUE;
+        else return Boolean.FALSE;
     }
 
     @Override

@@ -7,19 +7,23 @@ import kr.wisestone.wms.domain.QTask;
 import kr.wisestone.wms.domain.Task;
 import kr.wisestone.wms.domain.User;
 import kr.wisestone.wms.domain.UserType;
+import kr.wisestone.wms.domain.util.JSR310PersistenceConverters;
 import kr.wisestone.wms.repository.TaskRepository;
 import kr.wisestone.wms.security.SecurityUtils;
 import kr.wisestone.wms.web.rest.condition.TaskCondition;
 import kr.wisestone.wms.web.rest.condition.WidgetCondition;
 import kr.wisestone.wms.web.rest.dto.TaskDTO;
 import kr.wisestone.wms.web.rest.dto.TaskListWidgetDTO;
+import kr.wisestone.wms.web.rest.dto.TaskProgressWidgetDTO;
 import kr.wisestone.wms.web.rest.mapper.TaskMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.inject.Inject;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class WidgetService {
@@ -93,7 +97,6 @@ public class WidgetService {
 
             taskService.copyTaskRelationProperties(task, taskDTO);
 
-
             if(task.getTaskRepeatSchedule() != null) {
                 taskListWidgetDTO.addRepeatScheduledTasks(taskDTO);
             }
@@ -112,5 +115,59 @@ public class WidgetService {
         }
 
         return taskListWidgetDTO;
+    }
+
+    @Transactional(readOnly = true)
+    public TaskProgressWidgetDTO getTaskProgressWidgetData(WidgetCondition widgetCondition) {
+
+        TaskProgressWidgetDTO taskProgressWidgetDTO = new TaskProgressWidgetDTO();
+
+        List<Task> assignedTasks = this.getTaskByUserType(widgetCondition.getProjectId(), "assigned");
+        List<Task> watchedTasks = this.getTaskByUserType(widgetCondition.getProjectId(), "watched");
+        List<Task> createdTasks = this.getTaskByUserType(widgetCondition.getProjectId(), "created");
+
+        taskProgressWidgetDTO.setCreatedTaskTotalCount(assignedTasks.stream().count());
+        taskProgressWidgetDTO.setWatchedTaskTotalCount(watchedTasks.stream().count());
+        taskProgressWidgetDTO.setAssignedTaskTotalCount(createdTasks.stream().count());
+
+        taskProgressWidgetDTO.setCreatedTaskCompleteCount(getCompleteCountByList(createdTasks));
+        taskProgressWidgetDTO.setWatchedTaskCompleteCount(getCompleteCountByList(watchedTasks));
+        taskProgressWidgetDTO.setAssignedTaskCompleteCount(getCompleteCountByList(assignedTasks));
+
+        return taskProgressWidgetDTO;
+    }
+
+    private List<Task> getTaskByUserType(Long projectId, String type) {
+
+        User loginUser = SecurityUtils.getCurrentUser();
+
+        QTask $task = QTask.task;
+
+        Date startDate = DateUtil.getMonthStartDate();
+        Date endDate = DateUtil.getMonthEndDate();
+
+        BooleanBuilder predicate = new BooleanBuilder();
+
+        if(type.equals("assigned")) {
+            predicate.and($task.taskUsers.any().user.login.eq(loginUser.getLogin()).and($task.taskUsers.any().userType.eq(UserType.ASSIGNEE)));
+        } else if(type.equals("watched")) {
+            predicate.and($task.taskUsers.any().user.login.eq(loginUser.getLogin()).and($task.taskUsers.any().userType.eq(UserType.WATCHER)));
+        } else if(type.equals("created")) {
+            predicate.and($task.createdBy.eq(loginUser.getLogin()));
+        }
+
+        predicate.and($task.status.id.eq(1L).or($task.status.id.eq(2L)));
+        predicate.and($task.lastModifiedDate.goe(DateUtil.convertToZonedDateTime(startDate)));
+        predicate.and($task.lastModifiedDate.loe(DateUtil.convertToZonedDateTime(endDate)));
+
+        if(projectId != null) {
+            predicate.and($task.taskProjects.any().project.id.eq(projectId));
+        }
+
+        return Lists.newArrayList(taskRepository.findAll(predicate));
+    }
+
+    private Long getCompleteCountByList(List<Task> tasks) {
+        return tasks.stream().filter(taskDTO -> taskDTO.getStatus().getId().equals(2L)).count();
     }
 }

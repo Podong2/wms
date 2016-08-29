@@ -8,6 +8,8 @@ import org.elasticsearch.common.joda.time.Seconds;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -108,5 +110,25 @@ public class DateUtil {
         last.add(Calendar.DAY_OF_YEAR, 6);
 
         return last.getTime();
+    }
+
+    public static Date getMonthStartDate() {
+
+        Calendar first = Calendar.getInstance();
+        first.set(Calendar.DAY_OF_MONTH, 1);
+
+        return first.getTime();
+    }
+
+    public static Date getMonthEndDate() {
+        Calendar last = Calendar.getInstance();
+        last.set(Calendar.DAY_OF_MONTH, last.getActualMaximum(Calendar.DAY_OF_MONTH));
+
+        return last.getTime();
+    }
+
+    public static ZonedDateTime convertToZonedDateTime(Date date) {
+
+        return ZonedDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
 }

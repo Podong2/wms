@@ -71,7 +71,6 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
 
     @OneToMany(mappedBy = "parent")
     @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Task> subTasks = new HashSet<>();
 
     @Column(name = "important_yn")
@@ -85,17 +84,14 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
     @OrderBy(value = "id asc")
     @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<TaskUser> taskUsers = new HashSet<>();
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<RelatedTask> relatedTasks = new HashSet<>();
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<TaskProject> taskProjects = new HashSet<>();
 
     @OneToOne(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
