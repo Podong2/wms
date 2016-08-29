@@ -126,9 +126,9 @@ public class WidgetService {
         List<Task> watchedTasks = this.getTaskByUserType(widgetCondition.getProjectId(), "watched");
         List<Task> createdTasks = this.getTaskByUserType(widgetCondition.getProjectId(), "created");
 
-        taskProgressWidgetDTO.setCreatedTaskTotalCount(assignedTasks.stream().count());
+        taskProgressWidgetDTO.setCreatedTaskTotalCount(createdTasks.stream().count());
         taskProgressWidgetDTO.setWatchedTaskTotalCount(watchedTasks.stream().count());
-        taskProgressWidgetDTO.setAssignedTaskTotalCount(createdTasks.stream().count());
+        taskProgressWidgetDTO.setAssignedTaskTotalCount(assignedTasks.stream().count());
 
         taskProgressWidgetDTO.setCreatedTaskCompleteCount(getCompleteCountByList(createdTasks));
         taskProgressWidgetDTO.setWatchedTaskCompleteCount(getCompleteCountByList(watchedTasks));
