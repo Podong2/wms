@@ -56,8 +56,8 @@ notificationListCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootSc
                 AlertService.error(error.data.message);
             }
 
-            function notificationReadChange(id){
-                ReadUpload.put(id).then(function(){
+            function notificationReadChange(id, checkType){
+                ReadUpload.put(id, checkType).then(function(){
                     getList();
                 });
             }

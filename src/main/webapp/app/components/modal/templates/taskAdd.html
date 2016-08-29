@@ -19,7 +19,7 @@
             </div>
         </div>
     </div>
-    <div ng-class="viewTypeClass" style="margin-top: 10px; min-height: 500px" >
+    <div ng-class="viewTypeClass" style="margin-top: 10px; min-height: 560px" >
         <!-- 프로젝트/폴더 선택 -->
         <div id="projectPickerSection" class="taskAddProject">
             <label for="addProject" class="cursor projectValueSection" ><i class="fa fa-plus" id="addProject"></i> <span project-picker-edit-toggle>Project/Folder Add</span></label>
@@ -59,11 +59,11 @@
             <table class="table table-bordered">
                 <colgroup>
                     <col width="40px">
-                    <col width="98px">
-                    <col width="">
-                    <col width="">
-                    <col width="">
-                    <col width="">
+                    <col width="70px">
+                    <col width="60px">
+                    <col width="35%">
+                    <col width="60px">
+                    <col width="35%">
                 </colgroup>
                 <tbody>
                 <tr>
@@ -107,44 +107,18 @@
                     <div class="col-md-4">
 
 
-                        <div id="editSection">
+                        <div id="repeatAddSection">
                             <div class="form-group" style="margin-bottom: 0">
                                 <p class="input-group wms-form">
                                     <label class="input"> <i class="icon-append fa fa-calendar" style="z-index: 1000"></i>
-                                        <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="endDate" picker-toggle style="height: 30px; width: 100%">
+                                        <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="endDate" repeat-picker-add-toggle style="height: 30px; width: 100%">
                                     </label>
                                     <span class="dueDateValues" picker-toggle>{{vm.task.startDate + " ~ " + vm.task.endDate}}</span>
                                 </p>
                             </div>
-                            <div class="editSection" >
-                                <div class="title">
-                                    구간검색
-                                </div>
-                                <div class="pickerArea">
 
-                                    <label class="control-label">시작일</label>
-                                    <div class="">
-                                        <p class="input-group">
-                                            <input type="text" class="form-control startDate" edit-state="true" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.dueDateFrom.date" is-open="vm.dueDateFrom.open"
-                                                   datepicker-options="vm.dueDateFrom.datepickerOptions" close-text="Close" />
-                                          <span class="input-group-btn">
-                                              <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDateFrom')"><i class="fa fa-calendar"></i></button>
-                                          </span>
-                                        </p>
-                                    </div>
-
-                                    <label class="control-label">종료일</label>
-                                    <div class="">
-                                        <p class="input-group">
-                                            <input type="text" class="form-control" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.dueDateTo.date" is-open="vm.dueDateTo.open"
-                                                   datepicker-options="vm.dueDateTo.datepickerOptions" close-text="Close" />
-                                      <span class="input-group-btn">
-                                          <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDateTo')"><i class="fa fa-calendar"></i></button>
-                                      </span>
-                                        </p>
-                                    </div>
-                                </div>
-                            </div>
+                            <!-- 달력 팝업 -->
+                            <div wms-Include="app/task/html/repeatAddDatePicker.html"></div>
                         </div>
 
 
@@ -206,7 +180,7 @@
     </div>
 </div>
 <div class="modal-footer" >
-    <button type="button" class="btn btn_icon btn_customs" ng-click="vm.taskUpload()" ng-show="vm.task.id != ''" owl-btn-save></button>
+    <button type="button" class="btn btn_icon btn_customs" ng-click="vm.taskUpdate()" ng-show="vm.task.id != ''" owl-btn-save></button>
     <button type="button" class="btn btn_icon btn_customs2" ng-click="vm.cancel()" ng-show="vm.task.id != ''" owl-btn-cancel></button>
 </div>
 

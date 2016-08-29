@@ -34,11 +34,11 @@
                                     <div class="pull-right">
                                         <div>11:11</div>
                                         <div class="wms-form">
-                                            <label class="radio state-success"><input type="radio" ng-click="vm.notificationReadChange(data.id)"
+                                            <label class="radio state-success"><input type="radio" ng-click="vm.notificationReadChange(data.id, 'confirm')"
                                                                                     name="radio"><i></i></label>
                                         </div>
                                     </div>
-                                    <div class="cursor" ui-sref="my-notification.taskDetail({taskId : data.taskDTO.id, listType : 'TODAY'})">
+                                    <div class="cursor" ui-sref="my-notification.taskDetail({taskId : data.taskDTO.id, listType : 'TODAY'})" ng-click="vm.notificationReadChange(data.id, 'read')">
                                         <div>
                                             {{data.title}} <i class="fa fa-user"/>
                                         </div>
@@ -58,11 +58,11 @@
                                     <div class="pull-right">
                                         <div>11:11</div>
                                         <div class="wms-form">
-                                            <label class="radio state-success"><input type="radio" ng-click="vm.notificationReadChange(data.id)"
+                                            <label class="radio state-success"><input type="radio" ng-click="vm.notificationReadChange(data.id, 'confirm')"
                                                                                       name="radio"><i></i></label>
                                         </div>
                                     </div>
-                                    <div class="cursor" ui-sref="my-notification.projectDetail({project: data.projectDTO})">
+                                    <div class="cursor" ui-sref="my-notification.projectDetail({project: data.projectDTO})" ng-click="vm.notificationReadChange(data.id, 'read')">
                                         <div>
                                             {{data.title}} <i class="fa fa-user"/>
                                         </div>

@@ -15,7 +15,12 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
             vm.cancel = cancel;
             vm.autoValueInit = autoValueInit;
             vm.taskUpload = taskUpload;
+            vm.taskUpdate = taskUpdate;
             vm.FindProjectList = FindProjectList;
+            vm.setRepeatType = setRepeatType;
+            vm.setWeekday = setWeekday;
+            vm.repeatClose = repeatClose;
+            vm.selectDateTerm = selectDateTerm;
             vm.userInfo = Principal.getIdentity();
 
             vm.codes = Code.query();
@@ -56,6 +61,24 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
                 statusId : 1
             };
 
+            //  탭 메뉴 표시 여부 결정
+            vm.tabArea = [
+                { status: true },
+                { status: false },
+                { status: false }
+            ];
+
+            // 반복설정 월~일 날짜 선택 버튼 상태값
+            vm.weekDaysArea = [
+                {status : false},
+                {status : false},
+                {status : false},
+                {status : false},
+                {status : false},
+                {status : false},
+                {status : false}
+            ];
+
             // min date picker
             this.dueDateFrom = {
                 date: "",
@@ -70,6 +93,63 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
                     minDate: null
                 }
             };
+            // 반복작업 시작시간
+            this.adventStartTime = {
+                date: vm.task.taskRepeatSchedule == null ? '' : DateUtils.toDate('2016-11-11 '+vm.task.taskRepeatSchedule.adventDateStartTime),
+                timepickerOptions: {
+                    readonlyInput: false,
+                    showMeridian: true
+                }
+            };
+            // 반복작업 반복기간 시작일
+            this.repeatDueDateFrom = {
+                date: vm.task.taskRepeatSchedule == null ? '' : DateUtils.toDate(vm.task.taskRepeatSchedule.startDate),
+                datepickerOptions: {
+                    maxDate: null
+                }
+            };
+            // 반복작업 반복기간 종료일
+            this.repeatDueDateTo = {
+                date: vm.task.taskRepeatSchedule == null ? '' : DateUtils.toDate(vm.task.taskRepeatSchedule.endDate),
+                datepickerOptions: {
+                    minDate: null
+                }
+            };
+
+            // watch min and max dates to calculate difference
+            var unwatchMinMaxValues = $scope.$watch(function() {
+                return [vm.dueDateFrom, vm.dueDateTo];
+            }, function() {
+                // min max dates
+                vm.dueDateFrom.datepickerOptions.maxDate = vm.dueDateTo.date;
+                vm.dueDateTo.datepickerOptions.minDate = vm.dueDateFrom.date;
+
+                if (vm.dueDateFrom.date && vm.dueDateTo.date) {
+                    var diff = vm.dueDateFrom.date.getTime() - vm.dueDateTo.date.getTime();
+                    vm.dayRange = Math.round(Math.abs(diff/(1000*60*60*24))) + 1
+                } else {
+                    vm.dayRange = '0';
+                }
+
+            }, true);
+
+            $scope.$on('$destroy', function() {
+                unwatchMinMaxValues();
+            });
+
+            // 반복설정 '매월' 설정기간 데이터
+            vm.weeks = [ {id : 1,name : '첫째주'},{id : 2,name : '둘째주'},{id : 3,name : '셋째주'},{id : 4,name : '넷째주'} ];
+
+            // 반복설정 상단 탭
+            vm.tapAreas = [];
+            vm.tapAreas = [
+                { status: true },  //today
+                { status: false }, //tomorrow
+                { status: false }, //nextWeek
+                { status: false }, //oneMonth
+                { status: false }, //directSelection
+                { status: false }  //Undefined
+            ];
 
             $log.debug("vm.codes : ", vm.codes);
             $log.debug("vm.vm.userInfo : ", vm.userInfo);
@@ -103,6 +183,33 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
                         DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
                         //DateUtils.datePickerFormat(d.getHours(), 2) + ':' + DateUtils.datePickerFormat(d.getMinutes(), 2) + ':' + DateUtils.datePickerFormat(d.getSeconds(), 2);
                     vm.task.endDate = formatDate;
+                }
+            });
+            // 반복작업 시작 시간 포멧 변경(기간)
+            $scope.$watch("vm.repeatDueDateFrom.date", function(newValue, oldValue){
+                if(oldValue != newValue){
+                    var d = newValue;
+                    var formatDate =
+                        DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
+                    //DateUtils.datePickerFormat(d.getHours(), 2) + ':' + DateUtils.datePickerFormat(d.getMinutes(), 2) + ':' + DateUtils.datePickerFormat(d.getSeconds(), 2);
+                    vm.taskRepeatSchedule.startDate = formatDate;
+                }
+            });
+            // 반복작업 종료 시간 포멧 변경(기간)
+            $scope.$watch("vm.repeatDueDateTo.date", function(newValue, oldValue){
+                if(oldValue != newValue){
+                    var d = newValue;
+                    if(newValue != '') var formatDate = DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
+                    //DateUtils.datePickerFormat(d.getHours(), 2) + ':' + DateUtils.datePickerFormat(d.getMinutes(), 2) + ':' + DateUtils.datePickerFormat(d.getSeconds(), 2);
+                    vm.taskRepeatSchedule.endDate = formatDate;
+                }
+            });
+            // 반복작업 시작 시간 포멧 변경
+            $scope.$watch("vm.adventStartTime.date", function(newValue, oldValue){
+                if(oldValue != newValue){
+                    var d = newValue;
+                    var formatDate = DateUtils.datePickerFormat(d.getHours(), 2) + ':' + DateUtils.datePickerFormat(d.getMinutes(), 2);
+                    vm.taskRepeatSchedule.adventDateStartTime = formatDate;
                 }
             });
 
@@ -181,11 +288,12 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
                 return deferred.promise;
             };
 
-            function taskUpload(){
+            function taskUpdate(){
                 if($scope.assigneeUser != [])userIdPush($scope.assigneeUser, "assigneeIds");
                 if($scope.watchers != [])userIdPush($scope.watchers, "watcherIds");
                 if($scope.relatedTaskList != [])userIdPush($scope.relatedTaskList, "relatedTaskIds");
                 if(vm.taskProject != [])userIdPush(vm.taskProject, "projectIds");
+                vm.task.taskRepeatSchedule = vm.taskRepeatSchedule;
 
                 $log.debug("vm.task ;::::::", vm.task);
                 TaskEdit.saveTask({
@@ -236,5 +344,125 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
                 toastr.error('프로젝트 목록 불러오기 실패', '프로젝트 목록 불러오기 실패');
             }
             getProjectList();
+
+            //  탭메뉴 영역 표시 여부 지정
+            function selectDateTerm (number) {
+                angular.forEach(vm.tapAreas, function (tab, index) {
+                    if (number == index) {
+                        tab.status = true;
+                    }
+                    else {
+                        tab.status = false;
+                    }
+                });
+                var resultDates = '';
+                // 일정 선택 시 ()
+                switch (number){
+                    case 0 : // 오늘
+                        vm.dueDateFrom.date = DateUtils.toDate(new Date().format("yyyy-MM-dd"));
+                        vm.dueDateTo.date = DateUtils.toDate(new Date().format("yyyy-MM-dd"));
+                        break;
+                    case 1 : // 내일
+                        $log.debug(" DateUtils.getTomorrow() : ", DateUtils.getTomorrow());
+                        resultDates = DateUtils.getTomorrow();
+                        vm.dueDateFrom.date = DateUtils.toDate(resultDates.startDate);
+                        vm.dueDateTo.date = DateUtils.toDate(resultDates.endDate);
+                        break;
+                    case 2 : // 다음주
+                        $log.debug(" DateUtils.getTomorrow() : ", DateUtils.getAfterWeek());
+                        resultDates = DateUtils.getAfterWeek();
+                        vm.dueDateFrom.date = DateUtils.toDate(resultDates.startDate);
+                        vm.dueDateTo.date = DateUtils.toDate(resultDates.endDate);
+                        break;
+                    case 3 : // 한달
+                        $log.debug(" DateUtils.getTomorrow() : ", DateUtils.getMonthDays());
+                        resultDates = DateUtils.getMonthDays();
+                        vm.dueDateFrom.date = DateUtils.toDate(resultDates.startDate);
+                        vm.dueDateTo.date = DateUtils.toDate(resultDates.endDate);
+                        break;
+                    case 4 : // 미정
+                        vm.dueDateFrom.date = '';
+                        vm.dueDateTo.date = '';
+                        break;
+                }
+            }
+
+            // 반복설정 임시 파라미터
+            vm.taskRepeatSchedule = {
+                adventDateStartTime : vm.task.taskRepeatSchedule == null ? '' : vm.task.taskRepeatSchedule.adventDateStartTime,
+                endDate : vm.task.taskRepeatSchedule == null ? '' : vm.task.taskRepeatSchedule.endDate,
+                id : 0,
+                monthlyCriteria :vm.task.taskRepeatSchedule == null ? '' :  vm.task.taskRepeatSchedule.monthlyCriteria,
+                permanentYn : vm.task.taskRepeatSchedule == null ? 'true' : (vm.task.taskRepeatSchedule.permanentYn ? 'true' : 'false'),
+                repeatType : vm.task.taskRepeatSchedule == null ? '' : vm.task.taskRepeatSchedule.repeatType,
+                repeatYn : vm.task.taskRepeatSchedule == null ? true : vm.task.taskRepeatSchedule.repeatYn,
+                startDate : vm.task.taskRepeatSchedule == null ? '' : vm.task.taskRepeatSchedule.startDate,
+                weekdays : vm.task.taskRepeatSchedule == null ? '' : vm.task.taskRepeatSchedule.weekdays
+            };
+            weekDaysAreaSetting();
+            function weekDaysAreaSetting() {
+                if(vm.task.taskRepeatSchedule != null && vm.task.taskRepeatSchedule.weekdays != ''){
+                    var weekday = vm.task.taskRepeatSchedule.weekdays.split(',');
+                    angular.forEach(weekday, function (value, index) {
+                        vm.weekDaysArea[value-1].status = true;
+                    });
+                    $log.debug("vm.weekDaysArea", vm.weekDaysArea)
+                }
+            }
+
+            // 매월 선택 시 날짜, 요일 영역 오픈
+            vm.monthlyAreaOpen = vm.task.taskRepeatSchedule == null ? '' : (vm.task.taskRepeatSchedule.repeatType == 'MONTHLY_DATE' || vm.task.taskRepeatSchedule.repeatType == 'MONTHLY_WEEKDAY' ? true : false);
+
+            // 반복설정 타입 주입
+            function setRepeatType(type){
+                vm.taskRepeatSchedule.weekdays = '';
+                angular.forEach(vm.weekDaysArea, function(val, index){
+                    val.status = false;
+                });
+                if(type == 'MONTHLY'){
+                    vm.taskRepeatSchedule.repeatType = 'MONTHLY_DATE';
+                    vm.monthlyAreaOpen = true;
+
+                }else if(type == 'END_DATE_REMOVE'){
+                    vm.taskRepeatSchedule.endDate = '';
+                    vm.repeatDueDateTo.date = '';
+                }else if(type == ''){
+                    vm.taskRepeatSchedule.monthlyCriteria = '';
+                }else{
+                    vm.monthlyAreaOpen = false;
+                    vm.taskRepeatSchedule.weekdays = '';
+                    vm.taskRepeatSchedule.monthlyCriteria = '';
+
+                    vm.taskRepeatSchedule.repeatType = type;
+                }
+            }
+
+            // 날짜 1~31까지 데이터 생성
+            vm.days = [];
+            for(var i=0; i <= 31; i++ ){
+                var day = {
+                    id : i,
+                    name : i + '일'
+                }
+                vm.days.push(day)
+            }
+
+            function setWeekday(value){
+                var typeIds = [];
+                vm.weekDaysArea[value -1].status = !vm.weekDaysArea[value -1].status;
+                angular.forEach(vm.weekDaysArea, function(val, index){
+                    if(val.status) typeIds.push(index + 1);
+                });
+                vm.taskRepeatSchedule.weekdays = typeIds.join(",");
+            }
+
+
+            function repeatClose(){
+                $rootScope.$broadcast('repeatClose');
+            }
+
+            function taskUpload(){
+                vm.task.taskRepeatSchedule = vm.taskRepeatSchedule;
+            }
 
         }

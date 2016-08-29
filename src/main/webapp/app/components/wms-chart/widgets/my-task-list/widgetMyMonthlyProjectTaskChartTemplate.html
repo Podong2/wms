@@ -1,4 +1,4 @@
-<div ng-controller="myMonthlyTaskChartCtrl as vm">
+<div ng-controller="myMonthlyProjectTaskChartCtrl as vm">
     <div style="width : 100%; position: relative; top: -15px;">
         <div class="clear-both" >
             <div class="row">
@@ -7,6 +7,15 @@
                     <pie-chart data="pieData" options="pieOptions"></pie-chart>
                 </div>
                 <div class="col-md-8" style="padding-left: 0">
+
+                    <div style="text-align: right">
+                        <wms-select-box
+                            ng-model="vm.projectList"
+                            selected-value="vm.projectId"
+                            dataSize="5"
+                            dataLiveSearch="false"
+                        ></wms-select-box>
+                    </div>
                     <div class="title">#작업 진척률</div>
                     <div class="progress progress-sm">
                         <div class="progress-bar bg-color-greenLight" role="progressbar" ng-style="vm.assignedPercent"></div>{{vm.task.assignedTaskCompleteCount}}/{{vm.task.assignedTasks.length}}

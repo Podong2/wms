@@ -2110,6 +2110,23 @@ tags-input .tags:hover, tags-input .tags:focus {
 .repeat-edit-section.on{
     display: block;
 }
+.repeat-add-section{
+    position: absolute;
+    border: 1px solid #fdfdfd;
+    z-index: 1060;
+    width: 600px;
+    font-size: 14px;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 6px;
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    display: none;
+    padding: 10px;
+}
+.repeat-add-section.on{
+    display: block;
+}
 .date-picker-settings .date-picker-settings-aera {
     padding-left: 0px;
 }
