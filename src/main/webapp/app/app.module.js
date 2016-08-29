@@ -51,6 +51,7 @@
             'wms.widget.myTaskList',
             'wms.widget.myProjectTaskList',
             'wms.widget.myMonthlyTaskChart',
+            'wms.widget.myMonthlyProjectTaskChart',
             'mwl.calendar',
             'angularMoment',
             'gantt',

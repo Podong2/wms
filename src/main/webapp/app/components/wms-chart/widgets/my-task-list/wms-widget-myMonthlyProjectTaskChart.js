@@ -25,21 +25,21 @@
 
 
 
-angular.module('wms.widget.myMonthlyTaskChart', ['adf.provider'])
+angular.module('wms.widget.myMonthlyProjectTaskChart', ['adf.provider'])
   .config(["dashboardProvider", function(dashboardProvider){
     dashboardProvider
-      .widget('myMonthlyTaskChart', {
-        title: '이 달의 작업 진척도',
-        subject: 'myMonthlyTaskChart',
-        description: '이 달의 작업 진척도를 확인 할 수 있습니다.',
-        templateUrl: 'app/components/wms-chart/widgets/my-task-list/widgetMyMonthlyTaskChartTemplate.html',
+      .widget('myMonthlyProjectTaskChart', {
+        title: '이 달의 프로젝트 진척도',
+        subject: 'myMonthlyProjectTaskChart',
+        description: '이 달의 프로젝트 진척도를 확인 할 수 있습니다.',
+        templateUrl: 'app/components/wms-chart/widgets/my-task-list/widgetMyMonthlyProjectTaskChartTemplate.html',
         edit: {
           templateUrl: '{widgetsPath}/task/src/edit.html',
-          controller: 'myMonthlyTaskChartCtrl',
+          controller: 'myMonthlyProjectTaskChartCtrl',
           controllerAs : 'vm'
         }
       });
-  }]).controller('myMonthlyTaskChartCtrl', ["$scope", 'DashboardMyTask', '$log', 'Project', function($scope, DashboardMyTask, $log, Project){
+  }]).controller('myMonthlyProjectTaskChartCtrl', ["$scope", 'DashboardMyTask', '$log', 'Project', function($scope, DashboardMyTask, $log, Project){
     var vm = this;
     vm.getTodayTask = getTodayTask;
     vm.taskTypeChange = taskTypeChange;
@@ -131,12 +131,33 @@ angular.module('wms.widget.myMonthlyTaskChart', ['adf.provider'])
 
     }
 
+    function getProjectList(){
+        Project.query({}, onSuccess, onError);
+    }
+
+    function onSuccess (result) {
+        angular.forEach(result, function(val){
+            vm.projectList.push(val);
+        })
+
+        //$rootScope.$broadcast('projectListLoading')
+        $log.debug("대시보드 위젯 프로젝트 목록 : ", vm.projectList);
+    }
+    function onError (result) {
+    }
+
+    $scope.$watchCollection('vm.projectId', function(oldValue, newValue){
+        DashboardMyTask.get({listType : vm.listType, projectId : vm.projectId}, success, error)
+    });
+
+
     getTodayTask(); //오늘 작업
+    getProjectList(); // 프로젝트 목록(최상위 프로젝트만 씀)
 
 
   }]);
 
-    angular.module("wms.widget.myMonthlyTaskChart").
+    angular.module("wms.widget.myMonthlyProjectTaskChart").
     run(["$templateCache", function($templateCache) {
       $templateCache.put("{widgetsPath}/task/src/edit.html","<form class=form-inline role=form><div>"+
           "<button type=button class=\"btn btn-primary\" ng-click=addLink()><i class=\"fa fa-plus\"></i> Add</button></form>");

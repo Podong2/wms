@@ -54,10 +54,10 @@
         }
         return service;
 
-        function put(id){
+        function put(id, checkType){
             var deferred = $q.defer();
             //$log.debug("task 싱글 업로드 data : ", parameter)
-            $http.put( '/api/notifications/'+ id, {}, {id : id}).then(function (result) {
+            $http.put( '/api/notifications/'+ id , {}, {id : id, params : {checkType : checkType}}).then(function (result) {
                 $log.debug("taskList : ", result);
                 deferred.resolve(result);
             });

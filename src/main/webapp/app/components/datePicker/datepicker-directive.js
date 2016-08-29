@@ -16,9 +16,11 @@
 
 angular.module('wmsApp')
     .directive('pickerToggle', pickerToggle)
-    .directive('repeatPickerToggle', repeatPickerToggle);
+    .directive('repeatPickerToggle', repeatPickerToggle)
+    .directive('repeatPickerAddToggle', repeatPickerAddToggle);
 pickerToggle.$inject=['$timeout'];
 repeatPickerToggle.$inject=['$timeout', '$rootScope'];
+repeatPickerAddToggle.$inject=['$timeout', '$rootScope'];
         function pickerToggle($timeout) {
         return {
             restrict: 'A',
@@ -39,24 +41,46 @@ repeatPickerToggle.$inject=['$timeout', '$rootScope'];
         }
     }
     function repeatPickerToggle($timeout, $rootScope) {
-    return {
-        restrict: 'A',
-        link: function(scope, element) {
-            $('body').click(function (e) {
-                if ($('.repeat-edit-section').addClass("on")) {
-                    if (!$('#repeatEditSection').has(e.target).length) {
-                        $('.repeat-edit-section').removeClass("on");
+        return {
+            restrict: 'A',
+            link: function (scope, element) {
+                $('body').click(function (e) {
+                    if ($('.repeat-edit-section').addClass("on")) {
+                        if (!$('#repeatEditSection').has(e.target).length) {
+                            $('.repeat-edit-section').removeClass("on");
+                        }
                     }
-                }
-            });
-            $rootScope.$on('repeatClose', function(){
-                $('.repeat-edit-section').removeClass("on");
-            });
-            element.on('click', function(_this) {
-                $timeout(function () {
-                    $(".startDate").focus();
-                }, 400);
-            });
+                });
+                $rootScope.$on('repeatClose', function () {
+                    $('.repeat-edit-section').removeClass("on");
+                });
+                element.on('click', function (_this) {
+                    $timeout(function () {
+                        $(".startDate").focus();
+                    }, 400);
+                });
+            }
         }
     }
-}
+    function repeatPickerAddToggle($timeout, $rootScope) {
+        return {
+            restrict: 'A',
+            link: function (scope, element) {
+                $('body').click(function (e) {
+                    if ($('.repeat-add-section').addClass("on")) {
+                        if (!$('#repeatAddSection').has(e.target).length) {
+                            $('.repeat-add-section').removeClass("on");
+                        }
+                    }
+                });
+                $rootScope.$on('repeatClose', function () {
+                    $('.repeat-add-section').removeClass("on");
+                });
+                element.on('click', function (_this) {
+                    $timeout(function () {
+                        $(".startDate").focus();
+                    }, 400);
+                });
+            }
+        }
+    }
