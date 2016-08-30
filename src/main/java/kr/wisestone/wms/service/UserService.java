@@ -14,6 +14,9 @@ import kr.wisestone.wms.repository.search.UserSearchRepository;
 import kr.wisestone.wms.security.SecurityUtils;
 import kr.wisestone.wms.service.util.RandomUtil;
 import kr.wisestone.wms.web.rest.dto.ManagedUserDTO;
+import kr.wisestone.wms.web.rest.dto.UserDTO;
+import kr.wisestone.wms.web.rest.mapper.AttachedFileMapper;
+import kr.wisestone.wms.web.rest.mapper.UserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -39,6 +42,9 @@ public class UserService {
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
     @Inject
+    private UserMapper userMapper;
+
+    @Inject
     private SocialService socialService;
 
     @Inject
@@ -56,7 +62,6 @@ public class UserService {
     @Inject
     private DepartmentService departmentService;
 
-
     @Inject
     private PersistentTokenRepository persistentTokenRepository;
 
@@ -65,6 +70,9 @@ public class UserService {
 
     @Inject
     private AttachedFileService attachedFileService;
+
+    @Inject
+    private AttachedFileMapper attachedFileMapper;
 
     public Optional<User> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
@@ -236,10 +244,16 @@ public class UserService {
     }
 
     @Transactional(readOnly = true)
-    public User getUserWithAuthorities() {
+    public UserDTO getUserWithAuthorities() {
         User user = userRepository.findOneByLogin(SecurityUtils.getCurrentUserLogin()).get();
         user.getAuthorities().size(); // eagerly load the association
-        return user;
+
+        UserDTO userDTO = userMapper.userToUserDTO(user);
+
+        if(user.getProfileImage() != null)
+            userDTO.setProfileImage(attachedFileMapper.attachedFileToAttachedFileDTO(user.getProfileImage()));
+
+        return userDTO;
     }
 
     /**
@@ -285,21 +299,21 @@ public class UserService {
         user.setName(managedUserDTO.getName());
         user.setPhone(managedUserDTO.getPhone());
         user.setEmail(managedUserDTO.getEmail());
-        user.setActivated(managedUserDTO.isActivated());
-        user.setLangKey(managedUserDTO.getLangKey());
+//        user.setActivated(managedUserDTO.isActivated());
+//        user.setLangKey(managedUserDTO.getLangKey());
 
-        if(managedUserDTO.getCompanyId() != null)
-            user.setCompany(this.companyRepository.findOne(managedUserDTO.getCompanyId()));
+//        if(managedUserDTO.getCompanyId() != null)
+//            user.setCompany(this.companyRepository.findOne(managedUserDTO.getCompanyId()));
+//
+//        if(managedUserDTO.getDepartmentId() != null)
+//            user.setDepartment(this.departmentService.findOne(managedUserDTO.getDepartmentId()));
 
-        if(managedUserDTO.getDepartmentId() != null)
-            user.setDepartment(this.departmentService.findOne(managedUserDTO.getDepartmentId()));
-
-        Set<Authority> authorities = user.getAuthorities();
-        authorities.clear();
-        managedUserDTO.getAuthorities().stream().forEach(
-            authority -> authorities.add(authorityRepository.findOne(authority))
-        );
-        user.setAuthorities(authorities);
+//        Set<Authority> authorities = user.getAuthorities();
+//        authorities.clear();
+//        managedUserDTO.getAuthorities().stream().forEach(
+//            authority -> authorities.add(authorityRepository.findOne(authority))
+//        );
+//        user.setAuthorities(authorities);
 
 
         if(file != null) {
@@ -307,8 +321,8 @@ public class UserService {
             user.setProfileImage(attachedFile);
         }
 
-        if(StringUtils.hasText(managedUserDTO.getStatus()))
-            user.setStatus(managedUserDTO.getStatus());
+//        if(StringUtils.hasText(managedUserDTO.getStatus()))
+//            user.setStatus(managedUserDTO.getStatus());
 
         userRepository.save(user);
         userSearchRepository.save(user);

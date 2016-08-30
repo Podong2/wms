@@ -54,7 +54,7 @@ public class UserDTO {
 
     private String phone;
 
-    private AttachedFile profileImage;
+    private AttachedFileDTO profileImage;
 
     public UserDTO() {
     }
@@ -223,11 +223,11 @@ public class UserDTO {
         this.departmentName = departmentName;
     }
 
-    public AttachedFile getProfileImage() {
+    public AttachedFileDTO getProfileImage() {
         return profileImage;
     }
 
-    public void setProfileImage(AttachedFile profileImage) {
+    public void setProfileImage(AttachedFileDTO profileImage) {
         this.profileImage = profileImage;
     }
 

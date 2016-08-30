@@ -118,7 +118,7 @@ public class AccountResourceIntTest {
         user.setName("john");
         user.setEmail("john.doe@jhipter.com");
         user.setAuthorities(authorities);
-        when(mockUserService.getUserWithAuthorities()).thenReturn(user);
+//        when(mockUserService.getUserWithAuthorities()).thenReturn(user);
 
         restUserMockMvc.perform(get("/api/account")
                 .accept(MediaType.APPLICATION_JSON))

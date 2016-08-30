@@ -22,6 +22,7 @@ public interface UserMapper {
     @Mapping(source = "department.name", target = "departmentName")
     @Mapping(source = "company.id", target = "companyId")
     @Mapping(source = "department.id", target = "departmentId")
+    @Mapping(source = "profileImage", target = "profileImage", ignore = true)
     UserDTO userToUserDTO(User user);
 
     List<UserDTO> usersToUserDTOs(List<User> users);
@@ -35,6 +36,7 @@ public interface UserMapper {
     @Mapping(target = "resetKey", ignore = true)
     @Mapping(target = "resetDate", ignore = true)
     @Mapping(target = "password", ignore = true)
+    @Mapping(target = "profileImage", ignore = true)
     @Mapping(source = "companyId", target = "company")
     @Mapping(source = "departmentId", target = "department")
     User userDTOToUser(UserDTO userDTO);
