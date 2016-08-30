@@ -12,6 +12,7 @@ import kr.wisestone.wms.web.rest.condition.ProjectTaskCondition;
 import kr.wisestone.wms.web.rest.condition.TaskCondition;
 import kr.wisestone.wms.web.rest.dto.TaskDTO;
 import kr.wisestone.wms.web.rest.dto.TaskRepeatScheduleDTO;
+import kr.wisestone.wms.web.rest.dto.TaskStatisticsDTO;
 import kr.wisestone.wms.web.rest.dto.UserDTO;
 import kr.wisestone.wms.web.rest.form.TaskForm;
 import kr.wisestone.wms.web.rest.mapper.ProjectMapper;
@@ -87,9 +88,6 @@ public class TaskService {
         List<Task> result = Lists.newArrayList(taskRepository.findAll(predicate, QTask.task.period.endDate.asc()));
 
         List<TaskDTO> taskDTOs = Lists.newArrayList();
-        List<TaskDTO> assignedDTOs = Lists.newArrayList();
-        List<TaskDTO> watchedDTOs = Lists.newArrayList();
-        List<TaskDTO> createdDTOs = Lists.newArrayList();
 
         for(Task task : result) {
 
@@ -97,18 +95,6 @@ public class TaskService {
 
             this.copyTaskRelationProperties(task, taskDTO);
             this.determineStatusGroup(taskDTO, taskCondition.getListType(), loginUser.getLogin());
-
-//            if(task.findTaskUser(loginUser, UserType.ASSIGNEE).isPresent()) {
-//                assignedDTOs.add(taskDTO);
-//            }
-//
-//            if(task.findTaskUser(loginUser, UserType.WATCHER).isPresent()) {
-//                watchedDTOs.add(taskDTO);
-//            }
-//
-//            if(task.getCreatedBy().equals(loginUser.getLogin())) {
-//                createdDTOs.add(taskDTO);
-//            }
 
             taskDTOs.add(taskDTO);
         }
@@ -127,6 +113,35 @@ public class TaskService {
         BooleanBuilder predicate = taskListPredicate(taskCondition);
 
         return taskRepository.count(predicate);
+    }
+
+    /**
+     *  Get all the tasks.
+     *
+     *  @return the list of entities
+     */
+    @Transactional(readOnly = true)
+    public TaskStatisticsDTO getMyTaskStatistics(TaskCondition taskCondition) {
+
+        TaskStatisticsDTO taskStatisticsDTO = new TaskStatisticsDTO();
+
+        Long totalCount = taskRepository.count(taskListPredicate(taskCondition));
+
+        taskCondition.setFilterType(TaskCondition.FILTER_TYPE_ASSIGNED);
+        Long assignedCount = taskRepository.count(taskListPredicate(taskCondition));
+
+        taskCondition.setFilterType(TaskCondition.FILTER_TYPE_WATCHED);
+        Long watchedCount = taskRepository.count(taskListPredicate(taskCondition));
+
+        taskCondition.setFilterType(TaskCondition.FILTER_TYPE_REQUESTED);
+        Long createdCount = taskRepository.count(taskListPredicate(taskCondition));
+
+        taskStatisticsDTO.setTotalCount(totalCount);
+        taskStatisticsDTO.setAssignedCount(assignedCount);
+        taskStatisticsDTO.setWatchedCount(watchedCount);
+        taskStatisticsDTO.setCreatedCount(createdCount);
+
+        return taskStatisticsDTO;
     }
 
 
@@ -202,13 +217,21 @@ public class TaskService {
 
     private BooleanBuilder taskListPredicate(TaskCondition taskCondition) {
 
-        String login = SecurityUtils.getCurrentUserLogin();
+        User loginUser = SecurityUtils.getCurrentUser();
 
         QTask $task = QTask.task;
 
         BooleanBuilder predicate = new BooleanBuilder();
 
-        predicate.and($task.taskUsers.any().user.login.eq(login).or($task.createdBy.eq(login)));
+        if(taskCondition.getFilterType().equalsIgnoreCase(TaskCondition.FILTER_TYPE_ALL)) {
+            predicate.and($task.taskUsers.any().user.login.eq(loginUser.getLogin()).or($task.createdBy.eq(loginUser.getLogin())));
+        } else if(taskCondition.getFilterType().equalsIgnoreCase(TaskCondition.FILTER_TYPE_ASSIGNED)) {
+            predicate.and($task.taskUsers.any().user.login.eq(loginUser.getLogin()).and($task.taskUsers.any().userType.eq(UserType.ASSIGNEE)));
+        } else if(taskCondition.getFilterType().equalsIgnoreCase(TaskCondition.FILTER_TYPE_WATCHED)) {
+            predicate.and($task.taskUsers.any().user.login.eq(loginUser.getLogin()).and($task.taskUsers.any().userType.eq(UserType.WATCHER)));
+        } else if(taskCondition.getFilterType().equalsIgnoreCase(TaskCondition.FILTER_TYPE_REQUESTED)) {
+            predicate.and($task.createdBy.eq(loginUser.getLogin()));
+        }
 
         String today = DateUtil.getTodayWithYYYYMMDD();
 

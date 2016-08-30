@@ -11,7 +11,9 @@ import kr.wisestone.wms.service.TaskService;
 import kr.wisestone.wms.service.UserService;
 import kr.wisestone.wms.web.rest.condition.TaskCondition;
 import kr.wisestone.wms.web.rest.conversion.TaskRepeatScheduleDTOPropertyEditor;
+import kr.wisestone.wms.web.rest.dto.TaskListDTO;
 import kr.wisestone.wms.web.rest.dto.TaskRepeatScheduleDTO;
+import kr.wisestone.wms.web.rest.dto.TaskStatisticsDTO;
 import kr.wisestone.wms.web.rest.form.TaskForm;
 import kr.wisestone.wms.web.rest.util.HeaderUtil;
 import kr.wisestone.wms.web.rest.util.PaginationUtil;
@@ -244,11 +246,11 @@ public class TaskResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Long> getMyTaskStatistics(@ModelAttribute TaskCondition taskCondition) {
+    public ResponseEntity<TaskStatisticsDTO> getMyTaskStatistics(@ModelAttribute TaskCondition taskCondition) {
 
-        Long todayTaskCount = taskService.getTodayTaskCount(taskCondition);
+        TaskStatisticsDTO myTaskStatistics = taskService.getMyTaskStatistics(taskCondition);
 
-        return new ResponseEntity<>(todayTaskCount, HttpStatus.OK);
+        return new ResponseEntity<>(myTaskStatistics, HttpStatus.OK);
     }
 
     /**

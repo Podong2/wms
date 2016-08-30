@@ -36,7 +36,7 @@ spring:
         database-platform: org.hibernate.dialect.PostgreSQLDialect
 #        database: MYSQL
         database: PostgreSQL
-        show_sql: true
+        show_sql: false
         properties:
             hibernate.cache.use_second_level_cache: true
             hibernate.cache.use_query_cache: false

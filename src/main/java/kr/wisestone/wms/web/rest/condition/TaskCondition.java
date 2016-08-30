@@ -20,5 +20,5 @@ public class TaskCondition {
 
     private String listType = LIST_TYPE_TODAY;
 
-    private String filterType = FILTER_TYPE_ASSIGNED;
+    private String filterType = FILTER_TYPE_ALL;
 }

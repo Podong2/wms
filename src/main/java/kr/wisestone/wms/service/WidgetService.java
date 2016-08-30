@@ -148,11 +148,11 @@ public class WidgetService {
 
         BooleanBuilder predicate = new BooleanBuilder();
 
-        if(type.equals("assigned")) {
+        if(type.equalsIgnoreCase("assigned")) {
             predicate.and($task.taskUsers.any().user.login.eq(loginUser.getLogin()).and($task.taskUsers.any().userType.eq(UserType.ASSIGNEE)));
-        } else if(type.equals("watched")) {
+        } else if(type.equalsIgnoreCase("watched")) {
             predicate.and($task.taskUsers.any().user.login.eq(loginUser.getLogin()).and($task.taskUsers.any().userType.eq(UserType.WATCHER)));
-        } else if(type.equals("created")) {
+        } else if(type.equalsIgnoreCase("created")) {
             predicate.and($task.createdBy.eq(loginUser.getLogin()));
         }
 
