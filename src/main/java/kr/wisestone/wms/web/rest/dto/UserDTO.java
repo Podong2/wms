@@ -56,6 +56,8 @@ public class UserDTO {
 
     private AttachedFileDTO profileImage;
 
+    private Long profileImageId;
+
     public UserDTO() {
     }
 
@@ -237,6 +239,14 @@ public class UserDTO {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public Long getProfileImageId() {
+        return profileImageId;
+    }
+
+    public void setProfileImageId(Long profileImageId) {
+        this.profileImageId = profileImageId;
     }
 
     @Override

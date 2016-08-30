@@ -215,6 +215,9 @@ public class TaskService {
 
         if(task.getTaskProjects() != null && !task.getTaskProjects().isEmpty())
             taskDTO.setTaskProjects(projectMapper.projectsToProjectDTOs(task.getPlainTaskProject()));
+
+        if(task.getTaskRepeatSchedule() != null)
+            taskDTO.setTaskRepeatSchedule(new TaskRepeatScheduleDTO(task.getTaskRepeatSchedule()));
     }
 
     private BooleanBuilder taskListPredicate(TaskCondition taskCondition) {
@@ -281,9 +284,6 @@ public class TaskService {
         if(!task.getTaskAttachedFiles().isEmpty()) {
             taskDTO.setAttachedFiles(Lists.newArrayList(task.getTaskAttachedFiles()));
         }
-
-        if(task.getTaskRepeatSchedule() != null)
-            taskDTO.setTaskRepeatSchedule(new TaskRepeatScheduleDTO(task.getTaskRepeatSchedule()));
 
         return taskDTO;
     }

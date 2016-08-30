@@ -148,7 +148,15 @@ public class TaskForm {
 
 
         if(this.taskRepeatSchedule != null) {
-            TaskRepeatSchedule taskRepeatSchedule = new TaskRepeatSchedule(task, this.taskRepeatSchedule);
+
+            TaskRepeatSchedule taskRepeatSchedule = task.getTaskRepeatSchedule();
+
+            if(taskRepeatSchedule == null) {
+                taskRepeatSchedule = new TaskRepeatSchedule(task, this.taskRepeatSchedule);
+            } else {
+                taskRepeatSchedule.update(this.taskRepeatSchedule);
+            }
+
             task.setTaskRepeatSchedule(taskRepeatSchedule);
         }
 

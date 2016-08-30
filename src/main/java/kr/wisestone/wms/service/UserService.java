@@ -345,7 +345,7 @@ public class UserService {
         return user;
     }
 
-    public List<User> findByNameLike(String name) {
+    public List<UserDTO> findByNameLike(String name) {
 
         BooleanBuilder predicate = new BooleanBuilder();
 
@@ -353,6 +353,6 @@ public class UserService {
 
         List<User> users = Lists.newArrayList(this.userRepository.findAll(predicate));
 
-        return users;
+        return userMapper.usersToUserDTOs(users);
     }
 }

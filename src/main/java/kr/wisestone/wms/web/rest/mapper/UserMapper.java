@@ -22,6 +22,7 @@ public interface UserMapper {
     @Mapping(source = "department.name", target = "departmentName")
     @Mapping(source = "company.id", target = "companyId")
     @Mapping(source = "department.id", target = "departmentId")
+    @Mapping(source = "profileImage.id", target = "profileImageId")
     @Mapping(source = "profileImage", target = "profileImage", ignore = true)
     UserDTO userToUserDTO(User user);
 

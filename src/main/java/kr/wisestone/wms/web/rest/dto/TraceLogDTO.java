@@ -34,6 +34,8 @@ public class TraceLogDTO {
 
     private Long projectId;
 
+    private Long profileImageId;
+
     private String createdBy;
 
     private Date createdDate;
@@ -184,5 +186,13 @@ public class TraceLogDTO {
 
     public void setTaskName(String taskName) {
         this.taskName = taskName;
+    }
+
+    public Long getProfileImageId() {
+        return profileImageId;
+    }
+
+    public void setProfileImageId(Long profileImageId) {
+        this.profileImageId = profileImageId;
     }
 }

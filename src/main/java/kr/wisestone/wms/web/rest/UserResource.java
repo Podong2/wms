@@ -11,6 +11,7 @@ import kr.wisestone.wms.security.SecurityUtils;
 import kr.wisestone.wms.service.MailService;
 import kr.wisestone.wms.service.UserService;
 import kr.wisestone.wms.web.rest.dto.ManagedUserDTO;
+import kr.wisestone.wms.web.rest.dto.UserDTO;
 import kr.wisestone.wms.web.rest.util.HeaderUtil;
 import kr.wisestone.wms.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
@@ -284,16 +285,13 @@ public class UserResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<ManagedUserDTO>> findByName(@RequestParam("name") String name) {
+    public ResponseEntity<List<UserDTO>> findByName(@RequestParam("name") String name) {
         log.debug("REST request to get User name : {}", name);
 
-        List<User> users = userService.findByNameLike(name);
+        List<UserDTO> users = userService.findByNameLike(name);
 
-        List<ManagedUserDTO> managedUserDTOs = users.stream()
-            .map(ManagedUserDTO::new)
-            .collect(Collectors.toList());
 
-        return new ResponseEntity<>(managedUserDTOs, HttpStatus.OK);
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
     /**

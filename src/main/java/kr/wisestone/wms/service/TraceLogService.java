@@ -30,6 +30,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,6 +54,9 @@ public class TraceLogService {
 
     @Inject
     private TaskService taskService;
+
+    @Inject
+    private UserService userService;
 
     @Transactional(readOnly = true)
     public List<TraceLogDTO> findByEntityIdAndEntityName(Long entityId, String entityName, String entityField) {
@@ -193,13 +197,22 @@ public class TraceLogService {
 
         for(TraceLog traceLog : traceLogs) {
 
-
             TraceLogDTO traceLogDTO = traceLogMapper.traceLogToTraceLogDTO(traceLog);
 
             if("Task".equals(traceLog.getEntityName())) {
-                Task task = taskService.findOne(traceLog.getTaskId());
+                Task task = taskService.findOne(traceLog.getEntityId());
 
                 traceLogDTO.setTaskName(task.getName());
+            }
+
+            Optional<User> userOptional = userService.getUserWithAuthoritiesByLogin(traceLog.getCreatedBy());
+
+            if(userOptional.isPresent()) {
+
+                User user = userOptional.get();
+
+                if(user.getProfileImage() != null)
+                    traceLogDTO.setProfileImageId(user.getProfileImage().getId());
             }
 
             List<AttachedFileDTO> attachedFileDTOs = attachedFileMapper.attachedFilesToAttachedFileDTOs(
@@ -210,6 +223,7 @@ public class TraceLogService {
 
             traceLogDTOs.add(traceLogDTO);
         }
+
         return traceLogDTOs;
     }
 

@@ -90,6 +90,20 @@ public class TaskRepeatSchedule extends AbstractAuditingEntity implements Serial
         this.setPermanentYn(taskRepeatSchedule.getPermanentYn());
     }
 
+    public TaskRepeatSchedule update(TaskRepeatScheduleDTO taskRepeatSchedule) {
+
+        this.setRepeatYn(taskRepeatSchedule.getRepeatYn());
+        this.setRepeatType(taskRepeatSchedule.getRepeatType());
+        this.setWeekdays(taskRepeatSchedule.getWeekdays());
+        this.setMonthlyCriteria(taskRepeatSchedule.getMonthlyCriteria());
+        this.setAdventDateStartTime(taskRepeatSchedule.getAdventDateStartTime());
+        this.setStartDate(taskRepeatSchedule.getStartDate());
+        this.setEndDate(taskRepeatSchedule.getEndDate());
+        this.setPermanentYn(taskRepeatSchedule.getPermanentYn());
+
+        return this;
+    }
+
     public Long getId() {
         return id;
     }
