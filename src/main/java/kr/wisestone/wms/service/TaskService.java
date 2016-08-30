@@ -116,6 +116,19 @@ public class TaskService {
         return taskDTOs;
     }
 
+    /**
+     *  Get all the tasks.
+     *
+     *  @return the list of entities
+     */
+    @Transactional(readOnly = true)
+    public Long getTodayTaskCount(TaskCondition taskCondition) {
+
+        BooleanBuilder predicate = taskListPredicate(taskCondition);
+
+        return taskRepository.count(predicate);
+    }
+
 
     private void determineStatusGroup(TaskDTO taskDTO, String listType, String login) {
 

@@ -182,7 +182,7 @@ public class TaskResource {
             .body(result);
     }
 
-    @RequestMapping(value = "/tasks/{id}",
+    @RequestMapping(value = "/tasks/revert/{id}",
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
@@ -227,6 +227,28 @@ public class TaskResource {
         List<TaskDTO> taskDTOs = taskService.findByNameLike(name);
 
         return new ResponseEntity<>(taskDTOs, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/tasks/todayTaskCount",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<Long> getTodayTaskCount(@ModelAttribute TaskCondition taskCondition) {
+
+        Long todayTaskCount = taskService.getTodayTaskCount(taskCondition);
+
+        return new ResponseEntity<>(todayTaskCount, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/tasks/myTaskStatistics",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<Long> getMyTaskStatistics(@ModelAttribute TaskCondition taskCondition) {
+
+        Long todayTaskCount = taskService.getTodayTaskCount(taskCondition);
+
+        return new ResponseEntity<>(todayTaskCount, HttpStatus.OK);
     }
 
     /**
