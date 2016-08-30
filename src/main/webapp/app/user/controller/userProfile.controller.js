@@ -7,6 +7,7 @@ userProfileCtrl.$inject=['$scope', '$log', '$rootScope', '$state', '$stateParams
             var vm = this;
             vm.userInfo = Principal.getIdentity();
             var files = '';
+            vm.userUpload = userUpload;
             $scope.uploadFile = function(event){
                 files = event.target.files;
                 $log.debug("files, ", files)
