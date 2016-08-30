@@ -28,6 +28,8 @@ public class TraceLogDTO {
 
     private List<AttachedFileDTO> attachedFiles = new ArrayList<>();
 
+    private String taskName;
+
     private Long taskId;
 
     private Long projectId;
@@ -174,5 +176,13 @@ public class TraceLogDTO {
 
     public void setLastModifiedDate(Date lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
     }
 }

@@ -51,6 +51,9 @@ public class TraceLogService {
     @Inject
     private AttachedFileMapper attachedFileMapper;
 
+    @Inject
+    private TaskService taskService;
+
     @Transactional(readOnly = true)
     public List<TraceLogDTO> findByEntityIdAndEntityName(Long entityId, String entityName, String entityField) {
         QTraceLog $traceLog = QTraceLog.traceLog;
@@ -190,7 +193,14 @@ public class TraceLogService {
 
         for(TraceLog traceLog : traceLogs) {
 
+
             TraceLogDTO traceLogDTO = traceLogMapper.traceLogToTraceLogDTO(traceLog);
+
+            if("Task".equals(traceLog.getEntityName())) {
+                Task task = taskService.findOne(traceLog.getTaskId());
+
+                traceLogDTO.setTaskName(task.getName());
+            }
 
             List<AttachedFileDTO> attachedFileDTOs = attachedFileMapper.attachedFilesToAttachedFileDTOs(
                 traceLog.getTraceLogAttachedFiles().stream().map(TraceLogAttachedFile::getAttachedFile).collect(Collectors.toList())
