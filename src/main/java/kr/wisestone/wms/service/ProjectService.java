@@ -379,9 +379,9 @@ public class ProjectService {
 
         BooleanBuilder predicate = new BooleanBuilder();
 
-        if("IN_PROGRESS".equals(listType)) {
+        if("IN_PROGRESS".equalsIgnoreCase(listType)) {
             predicate.and($project.status.id.eq(1L));
-        } else if("COMPLETION".equals(listType)) {
+        } else if("COMPLETION".equalsIgnoreCase(listType)) {
             predicate.and($project.status.id.eq(2L));
         }
 
