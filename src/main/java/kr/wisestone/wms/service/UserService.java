@@ -295,7 +295,7 @@ public class UserService {
 
         User user = userRepository.findOne(managedUserDTO.getId());
 
-        user.setLogin(managedUserDTO.getLogin());
+//        user.setLogin(managedUserDTO.getLogin());
         user.setName(managedUserDTO.getName());
         user.setPhone(managedUserDTO.getPhone());
         user.setEmail(managedUserDTO.getEmail());
