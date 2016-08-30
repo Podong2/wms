@@ -2303,3 +2303,29 @@ div.bhoechie-tab{
 text-align: right;
 }
 /* dashboard css end */
+
+/* 사용자 css */
+.top-profile-img-btn{
+    height: 29px;
+    margin-top: 10px;
+    border-radius: 3px;
+}
+.user-profile-info .form-group label, .user-profile-info .form-group input{
+    margin-top: 15px;
+}
+/* 사용자 css end */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

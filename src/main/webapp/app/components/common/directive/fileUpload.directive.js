@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('wmsApp')
-    .directive('getFiles', getFiles);
+    .directive('getFiles', getFiles)
+    .directive('customOnChange', customOnChange);
 getFiles.$inject=['$log', '$rootScope'];
+customOnChange.$inject=['$log', '$rootScope'];
         function getFiles($log, $rootScope) {
         return {
             restrict: 'A',
@@ -25,3 +27,12 @@ getFiles.$inject=['$log', '$rootScope'];
             }
         }
     }
+function customOnChange() {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attrs) {
+            var onChangeHandler = scope.$eval(attrs.customOnChange);
+            element.bind('change', onChangeHandler);
+        }
+    };
+}
