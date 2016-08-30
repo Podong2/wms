@@ -25,12 +25,12 @@
 
                     <div class="table table-bordered table-hover " style="margin-bottom: 0;">
                         <div>
-                            <div ng-repeat="data in vm.notifications" class="">
+                            <div ng-repeat="data in vm.notifications track by $index" class="task-list-repeat" ng-class="data.readYn ? 'read' : ''">
 
                                 <!-- 타스크 영역 -->
-                                <div  class="wms-tree-node-list task-list" ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
+                                <div  class="wms-tree-node-list task-list"  ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
                                       ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate"
-                                       ng-if="data.taskDTO != null">
+                                       ng-if="data.taskDTO != null" >
                                     <div class="pull-right">
                                         <div>11:11</div>
                                         <div class="wms-form">
@@ -38,7 +38,7 @@
                                                                                     name="radio"><i></i></label>
                                         </div>
                                     </div>
-                                    <div class="cursor" ui-sref="my-notification.taskDetail({taskId : data.taskDTO.id, listType : 'TODAY'})" ng-click="vm.notificationReadChange(data.id, 'read')">
+                                    <div class="cursor" ui-sref="my-notification.taskDetail({taskId : data.taskDTO.id, listType : 'TODAY'})" ng-click="vm.notificationReadChange(data.id, 'read', $index)">
                                         <div>
                                             {{data.title}} <i class="fa fa-user"/>
                                         </div>

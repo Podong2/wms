@@ -1,6 +1,7 @@
 <div class="well" style="overflow-y: auto; background-color: #fff; height: 98%;">
     <div class="row">
         <div class="col-md-12">
+            <div><a ui-sref="my-task.detail({id : vm.task.parent.id, listType : vm.listType})" class="cursor">{{vm.task.parent.name}}</a></div>
             <div class="col-md-9">
                 <i class="fa fa-exclamation-circle task-circle" ng-class="vm.task.importantYn ? 'on' : ''" ng-click="vm.task.importantYn = !vm.task.importantYn"></i>
                 <input type="text" class="taskAddInput" ng-model="vm.task.name" enter-submit="vm.taskUpload()" placeholder="Task"/>
@@ -127,14 +128,17 @@
 
 
                         <div id="repeatEditSection">
+                            <i class="icon-append fa fa-calendar" style="float: left; padding: 8px;"></i>
+                            <i class="icon-append glyphicon glyphicon-retweet" ng-if="vm.task.taskRepeatSchedule.repeatType != '' && vm.task.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i>
                             <div class="form-group" style="margin-bottom: 0">
-                                <p class="input-group wms-form">
-                                    <label class="input"> <i class="icon-append fa fa-calendar" style="z-index: 1000"></i>
-                                        <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="endDate" repeat-picker-toggle style="height: 30px; width: 100%">
+
+                                <span class="input-group wms-form">
+                                    <label class="input">
+                                        <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="endDate" repeat-picker-toggle style="height: 30px; width: 100%; border : 0">
                                     </label>
 
                                     <span class="dueDateValues" picker-toggle>{{vm.task.startDate + " ~ " + vm.task.endDate}}</span>
-                                </p>
+                                </span>
                             </div>
 
                             <!-- 달력 팝업 -->

@@ -2,8 +2,8 @@
 
 angular.module('wmsApp')
     .controller("userProfileCtrl", userProfileCtrl);
-userProfileCtrl.$inject=['$scope', '$log', '$rootScope', '$state', '$stateParams', 'toastr', 'Principal', 'UserInfo'];
-        function userProfileCtrl($scope, $log, $rootScope, $state, $stateParams, toastr, Principal, UserInfo) {
+userProfileCtrl.$inject=['$scope', '$log', '$rootScope', '$state', '$stateParams', 'toastr', 'Principal', 'UserInfo', 'Account'];
+        function userProfileCtrl($scope, $log, $rootScope, $state, $stateParams, toastr, Principal, UserInfo, Account) {
             var vm = this;
             vm.userInfo = Principal.getIdentity();
             var files = '';
@@ -19,8 +19,10 @@ userProfileCtrl.$inject=['$scope', '$log', '$rootScope', '$state', '$stateParams
                 name : vm.userInfo.name,
                 phone : vm.userInfo.phone,
                 email : vm.userInfo.email,
-                login : vm.userInfo.login
+                login : vm.userInfo.login,
+
             }
+            $scope.userProfileImage = window.location.origin + '/api/attachedFile/' + vm.userInfo.profileImage.id
 
             function userUpload(){
                 $log.debug("vm.user ;::::::", vm.user);
@@ -32,7 +34,21 @@ userProfileCtrl.$inject=['$scope', '$log', '$rootScope', '$state', '$stateParams
                     fileFormDataName : "file"
                 }).then(function (response) {
                     toastr.success('유저 수정 완료', '유저 수정 완료');
+                    Account.get().$promise
+                        .then(getAccountThen)
+                        .catch(getAccountCatch);
                 });
             }
+
+            function getAccountThen(result){
+                $log.debug("result :::", result)
+                vm.userInfo = result.data;
+                $scope.userProfileImage = window.location.origin + '/api/attachedFile/' + vm.userInfo.profileImage.id;
+            }
+            function getAccountCatch(){
+
+            }
+
+
 
         }
