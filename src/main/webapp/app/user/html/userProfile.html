@@ -56,11 +56,11 @@
                                             <div class="form-group row">
                                                 <label class="col-md-2 control-label">이름</label>
                                                 <div class="col-md-10">
-                                                    <input class="form-control" ng-model="vm.userInfo.name" type="text">
+                                                    <input class="form-control" ng-model="vm.userInfo.name" enter-submit="vm.userUpload()" type="text">
                                                 </div>
                                                 <label class="col-md-2 control-label">전화번호</label>
                                                 <div class="col-md-10">
-                                                    <input class="form-control" ng-model="vm.userInfo.phone" ui-mask="999-9999-9999" type="text">
+                                                    <input class="form-control" ng-model="vm.userInfo.phone" enter-submit="vm.userUpload()" ui-mask="999-9999-9999" type="text">
                                                 </div>
                                             </div>
                                         </div>
