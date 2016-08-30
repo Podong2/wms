@@ -2,6 +2,7 @@ package kr.wisestone.wms.service;
 
 import com.google.common.collect.Lists;
 import com.mysema.query.BooleanBuilder;
+import com.mysema.query.types.OrderSpecifier;
 import kr.wisestone.wms.common.exception.CommonRuntimeException;
 import kr.wisestone.wms.common.util.DateUtil;
 import kr.wisestone.wms.domain.*;
@@ -31,6 +32,7 @@ import javax.inject.Inject;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -433,19 +435,46 @@ public class TaskService {
     }
 
     @Transactional(readOnly = true)
-    public List<TaskDTO> findAllProjectManagedTasks(Project project, String listType) {
+    public List<TaskDTO> findTasksByProjectIdsAndCondition(List<Long> projectIds, ProjectTaskCondition projectTaskCondition) {
 
         List<TaskDTO> taskDTOs = Lists.newArrayList();
 
-        taskDTOs.addAll(this.findDTOByProject(project, listType));
+        QTask $task = QTask.task;
 
-        this.crawlingTasksByProject(project, listType, taskDTOs);
+        BooleanBuilder predicate = new BooleanBuilder();
 
-        for(TaskDTO taskDTO : taskDTOs) {
+        predicate.and($task.taskProjects.any().project.id.in(projectIds));
+
+        if(projectTaskCondition.getStatusId() != null)
+            predicate.and($task.status.id.eq(projectTaskCondition.getStatusId()));
+
+        if(projectTaskCondition.getListType().equalsIgnoreCase(ProjectTaskCondition.LIST_TYPE_WEEK)) {
+
+            Date weekStartDate = DateUtil.getWeekStartDate();
+            Date weekEndDate = DateUtil.getWeekEndDate();
+
+            predicate.and($task.period.endDate.goe(DateUtil.convertDateToYYYYMMDD(weekStartDate)));
+            predicate.and($task.period.endDate.loe(DateUtil.convertDateToYYYYMMDD(weekEndDate)));
+
+        } else if(projectTaskCondition.getListType().equalsIgnoreCase(ProjectTaskCondition.LIST_TYPE_WEEK)) {
+
+            String today = DateUtil.getTodayWithYYYYMMDD();
+
+            predicate.and($task.period.endDate.gt(today));
+        }
+
+        List<Task> tasks = Lists.newArrayList(taskRepository.findAll(predicate));
+
+        for(Task task : tasks) {
+
+            TaskDTO taskDTO = taskMapper.taskToTaskDTO(task);
+
+            this.copyTaskRelationProperties(task, taskDTO);
 
             String statusGroup = "SCHEDULED";
 
-            if(listType.equalsIgnoreCase(ProjectTaskCondition.LIST_TYPE_WEEK) || listType.equalsIgnoreCase(ProjectTaskCondition.LIST_TYPE_TOTAL)) {
+            if(projectTaskCondition.getListType().equalsIgnoreCase(ProjectTaskCondition.LIST_TYPE_WEEK)
+                || projectTaskCondition.getListType().equalsIgnoreCase(ProjectTaskCondition.LIST_TYPE_TOTAL)) {
 
                 if(taskDTO.getStatusId().equals(Task.STATUS_COMPLETE)) {
 
@@ -468,7 +497,25 @@ public class TaskService {
             }
 
             taskDTO.setStatusGroup(statusGroup);
+
+            taskDTOs.add(taskDTO);
         }
+
+        return taskDTOs;
+    }
+
+    @Transactional(readOnly = true)
+    public List<TaskDTO> findTasksByProjectIds(List<Long> projectIds) {
+
+        QTask $task = QTask.task;
+
+        BooleanBuilder predicate = new BooleanBuilder();
+
+        predicate.and($task.taskProjects.any().project.id.in(projectIds));
+
+        List<Task> tasks = Lists.newArrayList(taskRepository.findAll(predicate));
+
+        List<TaskDTO> taskDTOs = taskMapper.tasksToTaskDTOs(tasks);
 
         return taskDTOs;
     }

@@ -212,7 +212,29 @@ public class ProjectService {
         if(project == null)
             throw new CommonRuntimeException("error.project.notFound");
 
-        return taskService.findAllProjectManagedTasks(project, projectTaskCondition.getListType());
+        List<Long> projectIds = getChildProjectIds(project);
+
+        List<TaskDTO> taskDTOs = taskService.findTasksByProjectIdsAndCondition(projectIds, projectTaskCondition);
+
+        return taskDTOs;
+    }
+
+    private List<Long> getChildProjectIds(Project project) {
+        List<Long> projectIds = Lists.newArrayList();
+
+        projectIds.add(project.getId());
+        this.crawlingChildProjectIds(project.getProjectChilds(), projectIds);
+        return projectIds;
+    }
+
+    private void crawlingChildProjectIds(Set<ProjectRelation> childProjects, List<Long> projectIds) {
+
+        for(ProjectRelation projectRelation : childProjects) {
+
+            projectIds.add(projectRelation.getChild().getId());
+
+            this.crawlingChildProjectIds(projectRelation.getChild().getProjectChilds(), projectIds);
+        }
     }
 
     @Transactional(readOnly = true)
@@ -385,7 +407,7 @@ public class ProjectService {
             Long childProjectCount = childProjects.stream().filter(childProject -> childProject.getFolderYn() == Boolean.FALSE).count();
             Long childFolderCount = childProjects.stream().filter(childProject -> childProject.getFolderYn() == Boolean.TRUE).count();
 
-            List<TaskDTO> taskDTOs = taskService.findAllProjectManagedTasks(project, ProjectTaskCondition.LIST_TYPE_TOTAL);
+            List<TaskDTO> taskDTOs = taskService.findTasksByProjectIds(getChildProjectIds(project));
 
             Long taskCompleteCount = taskDTOs.stream().filter(taskDTO -> taskDTO.getStatusId().equals(2L)).count();
             Long taskTotalCount = taskDTOs.stream().count();
