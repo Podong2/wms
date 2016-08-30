@@ -199,12 +199,12 @@
             </div>
         </div>
         <div>
+            <a class="cursor" ng-click="vm.taskRevertModalOpen()">복원</a>
             <div class="panel panel-default min-height-100-p detail-content" id="editingSection">
                 <div class="ibox">
                     <div class="ibox_content elementSection">
                         <span ng-bind-html="vm.renderHtml(vm.task.contents)" section-toggle></span>
                     </div>
-
                     <div class="content-edit editingSection" >
                         <summernote config="dataService.getSummerNoteOptions(true)"
                                     lang="ko-KR" ng-model="vm.task.contents"
