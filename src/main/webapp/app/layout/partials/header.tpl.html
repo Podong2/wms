@@ -25,12 +25,62 @@
 
     <div class="btn-header transparent pull-right"><a ui-sref="my-profile"><img class="top-profile-img-btn" src="/content/images/demo/male.png"></a></div>
 
+    <div class="btn-header transparent pull-right" id="taskHistorySection">
+        <span class="taskHistoryBtnSection"> <a gnb-task-history-toggle><i class="fa fa-rss"></i></a> </span>
+        <div class="gnb-task-history-area  taskHistorySection" ng-controller="taskRecentHistoryCtrl as vm">
+            <div class="pull-right searchBtn"><a class="cursor"><i class="fa fa-search" style=" font-size: 30px;"></i></a></div>
+            <h3>이력</h3>
+            <div class="gnb-task-history-list">
+                <div ng-repeat="history in vm.historyList track by $index">
+                    <div class="history-day-title"
+                        ng-if="(history.createdDate | date : 'MM/dd') == vm.day && (history.createdDate | date : 'MM/dd') != (vm.historyList[$index-1].createdDate | date : 'MM/dd')">
+                        오늘
+                    </div>
+                    <div class="history-day-title"
+                        ng-if="(vm.historyList[$index].createdDate | date : 'MM/dd') != vm.day && (history.createdDate | date : 'MM/dd') != (vm.historyList[$index-1].createdDate | date : 'MM/dd')">
+                        어제
+                    </div>
+                    <div ng-if="history.createdBy != vm.historyList[$index-1].createdBy
+                            || (history.createdDate | date : 'MM/dd') != (vm.historyList[$index-1].createdDate | date : 'MM/dd')" style="font-size: 15px">
+                        <strong>(icon) {{history.createdBy}}</strong>
+                    </div>
+                    <div ng-show="history.persistType == 'DELETE'">
+                        (icon) {{history.createdBy}}이 {{history.entityField}}의 {{history.etcValue}} {{history.oldValue}}를 {{history.persistType}} 하였습니다. {{history.createdDate | date : 'HH:mm'}}
+                    </div>
+                    <div ng-show="history.persistType == 'INSERT'">
+                        (icon) {{history.createdBy}}이 {{history.entityField == '' ? history.entityField : history.entityName}} {{history.etcValue}} {{history.newValue}}를 {{history.persistType}} 하였습니다. {{history.createdDate | date : 'HH:mm'}}
+                    </div>
+                    <div ng-show="history.persistType == 'UPDATE'">
+                        (icon) {{history.createdBy}}이 {{history.entityField == '' ? history.entityField : history.entityName}} {{history.etcValue}} {{history.newValue}}를 {{history.persistType}} 하였습니다. {{history.createdDate | date : 'HH:mm'}}
+                    </div>
+                </div>
+            </div>
+            <div class="gnb-task-history-plus-area"><a ng-click="vm.getCurrentHistory()"><i class="fa fa-plus"></i> 더보기</a></div>
+        </div>
+    </div>
+
     <!-- collapse menu button -->
     <div id="hide-menu" class="btn-header pull-right">
         <span> <a toggle-menu title="Collapse Menu"><i
                 class="fa fa-reorder"></i></a> </span>
     </div>
     <!-- end collapse menu -->
+
+    <!-- 코멘트 -->
+    <div class="btn-header pull-right">
+        <span class="activity"> <a><i class="fa fa-commenting-o"></i></a></span>
+    </div>
+
+    <!-- 알림 개수 -->
+    <div class="btn-header entity-count pull-right" ng-controller="NavbarController as vm">
+        <span class="activity"> <a ui-sref="my-notification"><i class="fa fa-bell-o"></i></a><b class="badge bg-color-red">{{vm.notificationCount}}</b></span>
+    </div>
+
+    <!-- 내 작업 개수 -->
+    <div class="btn-header entity-count pull-right" ng-controller="NavbarController as vm">
+        <span class="activity"> <a ui-sref="my-task"><i class="fa fa-check-circle"></i></a><b class="badge bg-color-red">{{vm.todayTotalCount}}</b></span>
+    </div>
+
 
     <!-- #MOBILE -->
     <!-- Top menu profile link : this shows only when top menu is active -->

@@ -4,13 +4,15 @@ angular.module('wmsApp')
     .directive('datePickerEditToggle', datePickerEditToggle)
     .directive('userPickerEditToggle', userPickerEditToggle)
     .directive('projectPickerEditToggle', projectPickerEditToggle)
-    .directive('projectAddToggle', projectAddToggle);
+    .directive('projectAddToggle', projectAddToggle)
+    .directive('gnbTaskHistoryToggle', gnbTaskHistoryToggle);
 toggleEvent.$inject=['$compile', '$filter', '$log', '$sce', '$timeout'];
 sectionToggle.$inject=['$timeout', '$rootScope'];
 datePickerEditToggle.$inject=['$timeout'];
 userPickerEditToggle.$inject=['$timeout'];
 projectPickerEditToggle.$inject=['$timeout'];
 projectAddToggle.$inject=['$timeout'];
+gnbTaskHistoryToggle.$inject=['$timeout'];
 function toggleEvent($compile, $filter, $log, $sce, $timeout) {
 
     return {
@@ -124,6 +126,26 @@ function projectAddToggle($timeout) {
                     if (!$('#projectAddSection').has(e.target).length) {
                         $('.projectAddSection').removeClass("on");
                         $('.projectAddValueSection').removeClass("on");
+                    }
+                }
+            });
+            element.on('click', function(_this) {
+                $timeout(function () {
+                    $(".project-focusing").focus();
+                }, 400);
+            });
+        }
+    }
+}
+function gnbTaskHistoryToggle($timeout) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attr) {
+            $('body').click(function (e) {
+                if ($('.taskHistorySection').addClass("on"), $('.taskHistoryBtnSection').addClass("on")) {
+                    if (!$('#taskHistorySection').has(e.target).length) {
+                        $('.taskHistorySection').removeClass("on");
+                        $('.taskHistoryBtnSection').removeClass("on");
                     }
                 }
             });

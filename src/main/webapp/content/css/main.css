@@ -1700,6 +1700,9 @@ i:active, .i:active, i:focus, .i:focus{
 .wms-tree-node-list{
     padding: 15px;
 }
+.task-list-repeat.read{
+    background-color: #f7f7f7;
+}
 .split-panes.horizontal > .split-pane1, .split-panes.horizontal > .split-pane2{
     overflow: hidden;
     overflow-y: auto;
@@ -2315,6 +2318,80 @@ text-align: right;
 }
 /* 사용자 css end */
 
+/* gnb task history */
+.gnb-task-history-area .searchBtn{
+    position: relative;
+    top: -5px;
+}
+.gnb-task-history-area{
+    position: absolute;
+    width: 300px;
+    height: 700px;
+    border: 1px solid rgb(221, 221, 221);
+    background-color: #474544;
+    right: 13px;
+    top: 50px;
+    padding: 10px;
+    color : #fafafa;
+    border-radius: 5px;
+    box-shadow: #0a0a0a;
+
+}
+.gnb-task-history-area .gnb-task-history-list .history-day-title{
+    text-align: center;
+    font-size: 14px;
+    font-weight: bold;
+    color:#9bcc60;
+}
+.gnb-task-history-area .gnb-task-history-list{
+    overflow: hidden;
+    overflow-y: auto;
+    height: 614px;
+}
+.gnb-task-history-plus-area{
+    text-align: center;
+    position: absolute;
+    bottom: 0px;
+    border-top: 1px solid #888;
+    width: 100%;
+    right: 0px;
+    background-color: #1e1b1d;
+    height: 24px;
+    line-height: 22px;
+
+}
+.gnb-task-history-plus-area a{
+    color: #fff;
+}
+.taskHistorySection{
+    display: none;
+}
+.taskHistorySection.on{
+    display: block;
+}
+.btn-header .activity .badge{
+    position: absolute;
+    top: 2px;
+    right: -3px;
+    cursor: pointer;
+    background: #0091d9;
+    display: inline-block;
+    font-size: 10px;
+    box-shadow: inset 1px 1px 0 rgba(0, 0, 0, .1), inset 0 -1px 0 rgba(0, 0, 0, .07);
+    color: #fff;
+    font-weight: 700;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    padding: 2px 4px 3px;
+    text-align: center;
+    line-height: normal;
+}
+.entity-count{
+    display: inline-block;
+    position: relative;
+}
+/* gnb task history end */
 
 
 

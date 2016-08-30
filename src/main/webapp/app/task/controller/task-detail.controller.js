@@ -46,8 +46,8 @@
         vm.responseData = _.clone(vm.task);
 
         $log.debug("info :", vm.task)
-        //$log.debug("$stateParams.listType :", $stateParams.listType);
-
+        $log.debug("$stateParams.listType :", $stateParams.listType);
+        vm.listType = $stateParams.listType;
 
         // 갤러리 썸네일 이미지
         vm.images = [];

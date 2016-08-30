@@ -5,9 +5,9 @@
         .module('wmsApp')
         .controller('NavbarController', NavbarController);
 
-    NavbarController.$inject = ['$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', '$scope', '$rootScope', 'navbarService', '$log', 'permissionCheck', 'UnreadCount'];
+    NavbarController.$inject = ['$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', '$scope', '$rootScope', 'navbarService', '$log', 'permissionCheck', 'UnreadCount', 'TodayTotalCount'];
 
-    function NavbarController ($state, Auth, Principal, ProfileService, LoginService, $scope, $rootScope, navbarService, $log, permissionCheck, UnreadCount) {
+    function NavbarController ($state, Auth, Principal, ProfileService, LoginService, $scope, $rootScope, navbarService, $log, permissionCheck, UnreadCount, TodayTotalCount) {
         var vm = this;
         //$log.debug("NavbarController 탔다");
         vm.isNavbarCollapsed = true;
@@ -49,6 +49,11 @@
         }
         function erorrNotification(){
 
+        }
+        vm.todayTotalCount = '';
+        TodayTotalCount.get({}, successTotalCount, erorrNotification);
+        function successTotalCount(result){
+            vm.todayTotalCount = result.count;
         }
 
 

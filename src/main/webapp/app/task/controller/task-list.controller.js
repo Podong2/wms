@@ -83,6 +83,7 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
                     if(task.statusGroup == "WATCHED_TASK") vm.watchedTask.push(task);
                     vm.tasks.push(task);
                 });
+                $log.debug('vm.tasks : ', vm.tasks);
                 //$state.go("my-task.detail", { id : vm.tasks[0].id, listType : vm.listType });
             }
             function onError(error) {
