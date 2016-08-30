@@ -214,7 +214,7 @@ public class ProjectResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<ProjectStatisticsDTO>> getProjectStatistics(@RequestParam(name = "listType") String listType) {
+    public ResponseEntity<List<ProjectStatisticsDTO>> getProjectStatistics(@RequestParam(name = "listType", required = false) String listType) {
         log.debug("REST request to get Project dashboard : {}", listType);
 
         List<ProjectStatisticsDTO> projectStatisticsDTOs = projectService.getProjectStatistics(listType);
