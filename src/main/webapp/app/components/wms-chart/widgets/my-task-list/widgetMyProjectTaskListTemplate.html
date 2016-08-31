@@ -15,9 +15,9 @@
                     </div>
                     <div class="col-md-8" style="padding-left: 0">
                         <ul class="nav nav-tabs nav-justified my-task-top-menu">
-                            <li class="text-center"><span ng-class="vm.taskType == 'ASSIGNED' ? 'active' : ''"  ng-click="vm.taskTypeChange('ASSIGNED')"><i class="fa fa-calendar-plus-o"></i>담당자 {{vm.task.assignedTasks.length}}</span></li>
-                            <li class="text-center"><span ng-class="vm.taskType == 'CREATED' ? 'active' : ''" ng-click="vm.taskTypeChange('CREATED')"><i class="fa fa-calendar-plus-o"></i>요청한 {{vm.task.createdTasks.length}}</span></li>
-                            <li class="text-center"><span ng-class="vm.taskType == 'WATCHED' ? 'active' : ''" ng-click="vm.taskTypeChange('WATCHED')"><i class="fa fa-calendar-plus-o"></i>참조 {{vm.task.watchedTasks.length}}</span></li>
+                            <li class="text-center"><span ng-class="vm.taskType == 'ASSIGNED' ? 'active' : ''"  ng-click="vm.taskTypeChange('ASSIGNED')"><i class="fa fa-list"></i>담당자 {{vm.task.assignedTasks.length}}</span></li>
+                            <li class="text-center"><span ng-class="vm.taskType == 'CREATED' ? 'active' : ''" ng-click="vm.taskTypeChange('CREATED')"><i class="fa fa-check-square-o"></i>요청한 {{vm.task.createdTasks.length}}</span></li>
+                            <li class="text-center"><span ng-class="vm.taskType == 'WATCHED' ? 'active' : ''" ng-click="vm.taskTypeChange('WATCHED')"><i class="fa fa-eye"></i>참조 {{vm.task.watchedTasks.length}}</span></li>
                         </ul>
                     </div>
                 </div>
@@ -25,16 +25,20 @@
                 <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2 bhoechie-tab-menu project-list">
                     <div class="list-group">
                         <a class="list-group-item active text-center" ng-class="vm.listType == 'TODAY' ? 'active' : ''" ng-click="vm.getTodayTask('TODAY')">
-                            <h4 class="glyphicon glyphicon-plane"></h4><br/>오늘
+                            <!--<h4 class="glyphicon glyphicon-time"></h4><br/>-->
+                            오늘
                         </a>
                         <a class="list-group-item text-center"ng-class="vm.listType == 'TOMORROW' ? 'active' : ''"  ng-click="vm.getTodayTask('TOMORROW')">
-                            <h4 class="glyphicon glyphicon-road"></h4><br/>내일
+                            <!--<h4 class="glyphicon glyphicon-road"></h4><br/>-->
+                            내일
                         </a>
                         <a class="list-group-item text-center" ng-class="vm.listType == 'THIS_WEEK' ? 'active' : ''" ng-click="vm.getTodayTask('THIS_WEEK')">
-                            <h4 class="glyphicon glyphicon-home"></h4><br/>이번주
+                            <!--<h4 class="glyphicon glyphicon-home"></h4><br/>-->
+                            이번주
                         </a>
                         <a class="list-group-item text-center" ng-class="vm.listType == 'SCHEDULED' ? 'active' : ''" ng-click="vm.getTodayTask('SCHEDULED')">
-                            <h4 class="glyphicon glyphicon-cutlery"></h4><br/>예정
+                            <!--<h4 class="glyphicon glyphicon-cutlery"></h4><br/>-->
+                            예정
                         </a>
                     </div>
                 </div>
