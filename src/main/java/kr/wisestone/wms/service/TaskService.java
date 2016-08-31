@@ -2,6 +2,7 @@ package kr.wisestone.wms.service;
 
 import com.google.common.collect.Lists;
 import com.mysema.query.BooleanBuilder;
+import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.types.OrderSpecifier;
 import kr.wisestone.wms.common.exception.CommonRuntimeException;
 import kr.wisestone.wms.common.util.DateUtil;
@@ -234,12 +235,20 @@ public class TaskService {
 
         BooleanBuilder predicate = new BooleanBuilder();
 
+
+
         if(taskCondition.getFilterType().equalsIgnoreCase(TaskCondition.FILTER_TYPE_ALL)) {
             predicate.and($task.taskUsers.any().user.login.eq(loginUser.getLogin()).or($task.createdBy.eq(loginUser.getLogin())));
         } else if(taskCondition.getFilterType().equalsIgnoreCase(TaskCondition.FILTER_TYPE_ASSIGNED)) {
-            predicate.and($task.taskUsers.any().user.login.eq(loginUser.getLogin()).and($task.taskUsers.any().userType.eq(UserType.ASSIGNEE)));
+            predicate.and($task.id.in(new JPASubQuery()
+                .from(QTaskUser.taskUser)
+                .where(QTaskUser.taskUser.user.login.eq(loginUser.getLogin()).and(QTaskUser.taskUser.userType.eq(UserType.ASSIGNEE)))
+                .list(QTaskUser.taskUser.task.id)));
         } else if(taskCondition.getFilterType().equalsIgnoreCase(TaskCondition.FILTER_TYPE_WATCHED)) {
-            predicate.and($task.taskUsers.any().user.login.eq(loginUser.getLogin()).and($task.taskUsers.any().userType.eq(UserType.WATCHER)));
+            predicate.and($task.id.in(new JPASubQuery()
+                .from(QTaskUser.taskUser)
+                .where(QTaskUser.taskUser.user.login.eq(loginUser.getLogin()).and(QTaskUser.taskUser.userType.eq(UserType.WATCHER)))
+                .list(QTaskUser.taskUser.task.id)));
         } else if(taskCondition.getFilterType().equalsIgnoreCase(TaskCondition.FILTER_TYPE_REQUESTED)) {
             predicate.and($task.createdBy.eq(loginUser.getLogin()));
         }
