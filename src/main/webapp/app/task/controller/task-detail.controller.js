@@ -321,7 +321,7 @@
 
         function onSubTaskSaveSuccess (result) {
             toastr.success('sub 태스크 생성 완료', 'sub 태스크 생성 완료');
-            vm.task = entity;
+            Task.get({id : vm.task.id}, successTask, erorrTask);
         }
         function onSaveError () {
         }

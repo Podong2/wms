@@ -22,8 +22,14 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             $scope.status = {
                 isCustomHeaderOpen: false,
                 isDelayedOpen: true,
+                isRegisteredTodayOpen: true,
+                inProgressOpen: true,
+                isNoneScheduledOpen: true,
                 isScheduledTodayOpen: true,
                 isScheduledOpen: true,
+                isCompleteOpen: true,
+                isHoldOpen: true,
+                isCancelOpen: true,
                 isFirstDisabled: false
             };
 
@@ -49,12 +55,15 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
 
             function onSuccess(data, headers) {
                 $log.debug("data", data);
-                vm.tasks=[]; vm.delayed=[]; vm.scheduledToday=[]; vm.complete=[]; vm.hold=[]; vm.scheduled=[];
+                vm.tasks=[]; vm.delayed=[]; vm.scheduledToday=[]; vm.registeredToday=[]; vm.inProgress=[]; vm.noneScheduled=[]; vm.complete=[]; vm.hold=[]; vm.scheduled=[];
                 vm.project = data.project;
                 vm.info = data;
                 angular.forEach(data.tasks, function(task){
-                    if(task.statusGroup == "DELAYED") vm.delayed.push(task); //지연
-                    if(task.statusGroup == "SCHEDULED_TODAY") vm.scheduledToday.push(task); // 오늘
+                    if(task.statusGroup == "DELAYED") vm.delayed.push(task);
+                    if(task.statusGroup == "SCHEDULED_TODAY") vm.scheduledToday.push(task);
+                    if(task.statusGroup == "REGISTERED_TODAY") vm.registeredToday.push(task);
+                    if(task.statusGroup == "IN_PROGRESS") vm.inProgress.push(task);
+                    if(task.statusGroup == "NONE_SCHEDULED") vm.noneScheduled.push(task);
                     if(task.statusGroup == "SCHEDULED") vm.scheduled.push(task); // 예정
                     if(task.statusGroup == "HOLD") vm.hold.push(task);  //보류
                     if(task.statusGroup == "COMPLETE") vm.complete.push(task); // 완료
@@ -62,6 +71,10 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 });
                 $state.go("my-project.detail", {project : vm.project});
                 //vm.page = pagingParams.page;
+
+                vm.coumplatePercent= {
+                    width : Math.floor(vm.info.completeCount / vm.tasks.length * 100) + '%'
+                };
 
                 $scope.pieData = [
                     {
@@ -131,11 +144,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             }
             function onSaveSuccess (result) {
                 toastr.success('태스크 생성 완료', '태스크 생성 완료');
-                vm.task.id = result.id;
-                vm.subTask.parentId = result.id;
-                $timeout(function(){ // state reload 명령과 충돌하는 문제 때문에 설정
-                    //$uibModalInstance.dismiss('cancel');
-                }, 100);
+                getList();
             }
             function onSaveError () {
             }

@@ -22,7 +22,7 @@ userProfileCtrl.$inject=['$scope', '$log', '$rootScope', '$state', '$stateParams
                 login : vm.userInfo.login,
 
             }
-            $scope.userProfileImage = window.location.origin + '/api/attachedFile/' + vm.userInfo.profileImage.id
+            if(vm.userInfo.profileImageId != null) $scope.userProfileImage = window.location.origin + '/api/attachedFile/' + vm.userInfo.profileImage.id
 
             function userUpload(){
                 $log.debug("vm.user ;::::::", vm.user);
