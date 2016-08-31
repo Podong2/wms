@@ -43,6 +43,14 @@ public class ProjectForm {
         if(StringUtils.hasText(this.name))
             project.setName(this.name);
 
+        if("null".equalsIgnoreCase(this.startDate)) {
+            this.startDate = "";
+        }
+
+        if("null".equalsIgnoreCase(this.endDate)) {
+            this.endDate = "";
+        }
+
         Period period = project.getPeriod();
 
         if(period == null) {

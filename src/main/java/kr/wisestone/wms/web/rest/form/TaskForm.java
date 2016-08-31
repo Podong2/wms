@@ -15,9 +15,9 @@ public class TaskForm {
 
     private String name;
 
-    private String startDate = "";
+    private String startDate;
 
-    private String endDate = "";
+    private String endDate;
 
     private String contents;
 
@@ -57,6 +57,14 @@ public class TaskForm {
             task.setName(this.name);
 
         Period period = task.getPeriod();
+
+        if("null".equalsIgnoreCase(this.startDate)) {
+            this.startDate = "";
+        }
+
+        if("null".equalsIgnoreCase(this.endDate)) {
+            this.endDate = "";
+        }
 
         if(period == null) {
             period = new Period(this.startDate, this.endDate);
