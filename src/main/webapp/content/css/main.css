@@ -2012,6 +2012,9 @@ tags-input .tags:hover, tags-input .tags:focus {
     background: rgb(16,108,200);
     color: #fff;
 }
+.task-list-right-info div{
+    width : 110px;
+}
 
     /*<< comment css >>*/
     .comment-user-title{

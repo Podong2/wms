@@ -58,6 +58,7 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
             }
 
 
+            /* 타스크 목록 불러오기 */
             function getList(type, filterType){
                 Task.query({listType : type, filterType : filterType}, onSuccess, onError);
             }
@@ -87,7 +88,7 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
                 });
                 $log.debug('vm.tasks : ', vm.tasks);
 
-                MyTaskStatistics.get({listType : vm.listType}, countSuccess, onError)
+                MyTaskStatistics.get({listType : vm.listType}, countSuccess, onError); // 타스크 목록 타운트 정보 조회
             }
             function countSuccess(result){
                 vm.taskCounts = JSON.parse(result.count);
