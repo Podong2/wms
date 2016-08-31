@@ -25,7 +25,7 @@
 
 
 
-angular.module('wms.widget.myMonthlyTaskChart', ['adf.provider'])
+angular.module('wms.widget.myMonthlyTaskChart', ['adf.provider', 'nvd3', 'wms.pie.chart'])
   .config(["dashboardProvider", function(dashboardProvider){
     dashboardProvider
       .widget('myMonthlyTaskChart', {
