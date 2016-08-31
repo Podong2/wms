@@ -14,7 +14,7 @@
             url: '/myProfile', // 표현 url 설정
             data: {
                 authorities: [],
-                title : 'My Profile'
+                title : '내 정보'
             },
             views: {//
                 'content@app': {//

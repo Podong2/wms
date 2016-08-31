@@ -14,7 +14,7 @@
             url: '/myNotification/{id}', // 표현 url 설정
             data: {
                 authorities: [],
-                title : 'My notification'
+                title : '알림'
             },
             views: {//
                 'content@app': {//
@@ -37,7 +37,7 @@
             url: '/projectDetail', // 표현 url 설정
             data: {
                 authorities: [],
-                title : 'My Project Detail'
+                title : '프로젝트 상세'
             },
             params: {
                 notification: {}
@@ -61,7 +61,7 @@
             url: '/taskDetail/{listType}/:taskId', // 표현 url 설정
             data: {
                 authorities: [],
-                title : 'My Task Detail'
+                title : '작업 상세'
             },
             views: {//
                 'notificationDetail': {//

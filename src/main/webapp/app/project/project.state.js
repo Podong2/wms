@@ -14,7 +14,7 @@
             url: '/myProject/{id}', // 표현 url 설정
             data: {
                 authorities: [],
-                title : 'My Project'
+                title : '프로젝트'
             },
             views: {//
                 'content@app': {//
@@ -37,7 +37,7 @@
             url: '/detail', // 표현 url 설정
             data: {
                 authorities: [],
-                title : 'My Project Detail'
+                title : '작업 상세'
             },
             params: { // project DTO 데이타 전달
                 project: {}
@@ -61,7 +61,7 @@
             url: '/detail/{listType}/:taskId', // 표현 url 설정
             data: {
                 authorities: [],
-                title : 'My Task Detail'
+                title : '작업 상세'
             },
             views: {//
                 'projectDetail': {//
@@ -107,7 +107,7 @@
             url: '/history/{id}', // 표현 url 설정
             data: {
                 authorities: [],
-                title : 'My Project History'
+                title : '프로젝트 히스토리'
             },
             views: {//
                 'functionView@my-project-functions': {//
@@ -130,7 +130,7 @@
             url: '/file/{id}', // 표현 url 설정
             data: {
                 authorities: [],
-                title : 'My Project File'
+                title : '프로젝트 파일'
             },
             views: {//
                 'functionView@my-project-functions': {//
@@ -151,7 +151,7 @@
             url: '/myProjectList', // 표현 url 설정
             data: {
                 authorities: [],
-                title : 'My Project List'
+                title : '프로젝트 작업 목록'
             },
             views: {//
                 'content@app': {//
