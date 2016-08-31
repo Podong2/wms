@@ -63,7 +63,7 @@
                     $state.go(previousState.name, previousState.params);
                 }
                 toastr.success('로그인을 성공 하였습니다.', 'WMS System Message');
-                $state.go('component');
+                $state.go('my-dashboard');
             }).catch(function (err) {
                 $log.debug("err : ", err.data.message);
                 vm.authenticationError = true;
