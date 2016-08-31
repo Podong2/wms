@@ -32,11 +32,9 @@
                         <div class="table table-bordered table-hover " style="margin-bottom: 0;">
                             <div>
                                 <div ng-repeat="data in vm.delayed" class="">
-                                    <div  class="wms-tree-node-list task-list" ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
+                                    <div  class="wms-tree-node-list task-list clear-both" ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
-                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
-                                        <i class="fa fa-user"/>
-                                        <div class="pull-right task-list-right-info">
+                                        <div class="pull-right">
                                             <div><i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i> {{data.endDate}}</div>
                                             <div>
                                                 <span ng-if="data.parent.name != null">상위 1</span>
@@ -45,6 +43,25 @@
                                                 <!--<span>승인/미승인</span>-->
                                             </div>
                                         </div>
+
+                                        <div style="float:left; padding-top: 10px; margin-right: 10px">
+                                            <input type="checkbox"/>
+                                            <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a>
+                                        </div>
+                                        <ul class="list-inline friends-list" style="margin-bottom: 0">
+                                            <li ng-repeat="user in data.assignees | limitTo:3">
+                                                <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
+                                                <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
+                                            </li>
+                                            <li ng-if="data.assignees.length > 3">
+                                                <a href-void>
+                                                    <span class="activity">
+                                                        <a><i class="fa fa-plus" style="font-size: 22px; position: relative; top: 5px;"></i><b class="badge bg-color-red" style="position: absolute;">{{data.assignees.length - 3}}</b></a>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul>
+
                                     </div>
                                 </div>
                                 <div class="no-data" ng-if="vm.delayed.length == 0">
@@ -57,10 +74,9 @@
                         <div class="table table-bordered table-hover " style="margin-bottom: 0;">
                             <div>
                                 <div ng-repeat="data in vm.scheduledToday">
-                                    <div  class="wms-tree-node-list task-list" ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
+                                    <div  class="wms-tree-node-list task-list clear-both" ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
-                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
-                                        <div class="pull-right task-list-right-info">
+                                        <div class="pull-right">
                                             <div><i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i> {{data.endDate}}</div>
                                             <div>
                                                 <span ng-if="data.parent.name != null">상위 1</span>
@@ -69,6 +85,25 @@
                                                 <!--<span>승인/미승인</span>-->
                                             </div>
                                         </div>
+
+                                        <div style="float:left; padding-top: 10px; margin-right: 10px">
+                                            <input type="checkbox"/>
+                                            <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a>
+                                        </div>
+                                        <ul class="list-inline friends-list" style="margin-bottom: 0">
+                                            <li ng-repeat="user in data.assignees | limitTo:3">
+                                                <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
+                                                <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
+                                            </li>
+                                            <li ng-if="data.assignees.length > 3">
+                                                <a href-void>
+                                                    <span class="activity">
+                                                        <a><i class="fa fa-plus" style="font-size: 22px; position: relative; top: 5px;"></i><b class="badge bg-color-red" style="position: absolute;">{{data.assignees.length - 3}}</b></a>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul>
+
                                     </div>
                                 </div>
                                 <div ng-if="vm.scheduledToday.length == 0">
@@ -81,10 +116,9 @@
                         <div class="table table-bordered table-hover " style="margin-bottom: 0;">
                             <div>
                                 <div ng-repeat="data in vm.registeredToday">
-                                    <div  class="wms-tree-node-list task-list" ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
+                                    <div  class="wms-tree-node-list task-list clear-both" ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
-                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
-                                        <div class="pull-right task-list-right-info">
+                                        <div class="pull-right">
                                             <div><i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i> {{data.endDate}}</div>
                                             <div>
                                                 <span ng-if="data.parent.name != null">상위 1</span>
@@ -93,6 +127,25 @@
                                                 <!--<span>승인/미승인</span>-->
                                             </div>
                                         </div>
+
+                                        <div style="float:left; padding-top: 10px; margin-right: 10px">
+                                            <input type="checkbox"/>
+                                            <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a>
+                                        </div>
+                                        <ul class="list-inline friends-list" style="margin-bottom: 0">
+                                            <li ng-repeat="user in data.assignees | limitTo:3">
+                                                <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
+                                                <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
+                                            </li>
+                                            <li ng-if="data.assignees.length > 3">
+                                                <a href-void>
+                                                    <span class="activity">
+                                                        <a><i class="fa fa-plus" style="font-size: 22px; position: relative; top: 5px;"></i><b class="badge bg-color-red" style="position: absolute;">{{data.assignees.length - 3}}</b></a>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul>
+
                                     </div>
                                 </div>
                                 <div ng-if="vm.registeredToday.length == 0">
@@ -105,10 +158,9 @@
                         <div class="table table-bordered table-hover " style="margin-bottom: 0;">
                             <div>
                                 <div ng-repeat="data in vm.inProgress">
-                                    <div  class="wms-tree-node-list task-list" ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
+                                    <div  class="wms-tree-node-list task-list clear-both" ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
-                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
-                                        <div class="pull-right task-list-right-info">
+                                        <div class="pull-right">
                                             <div><i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i> {{data.endDate}}</div>
                                             <div>
                                                 <span ng-if="data.parent.name != null">상위 1</span>
@@ -117,6 +169,25 @@
                                                 <!--<span>승인/미승인</span>-->
                                             </div>
                                         </div>
+
+                                        <div style="float:left; padding-top: 10px; margin-right: 10px">
+                                            <input type="checkbox"/>
+                                            <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a>
+                                        </div>
+                                        <ul class="list-inline friends-list" style="margin-bottom: 0">
+                                            <li ng-repeat="user in data.assignees | limitTo:3">
+                                                <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
+                                                <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
+                                            </li>
+                                            <li ng-if="data.assignees.length > 3">
+                                                <a href-void>
+                                                    <span class="activity">
+                                                        <a><i class="fa fa-plus" style="font-size: 22px; position: relative; top: 5px;"></i><b class="badge bg-color-red" style="position: absolute;">{{data.assignees.length - 3}}</b></a>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul>
+
                                     </div>
                                 </div>
                                 <div ng-if="vm.inProgress.length == 0">
@@ -129,10 +200,9 @@
                         <div class="table table-bordered table-hover " style="margin-bottom: 0;">
                             <div>
                                 <div ng-repeat="data in vm.noneScheduled">
-                                    <div  class="wms-tree-node-list task-list" ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
+                                    <div  class="wms-tree-node-list task-list clear-both" ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
-                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
-                                        <div class="pull-right task-list-right-info">
+                                        <div class="pull-right">
                                             <div><i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i> {{data.endDate}}</div>
                                             <div>
                                                 <span ng-if="data.parent.name != null">상위 1</span>
@@ -141,6 +211,26 @@
                                                 <!--<span>승인/미승인</span>-->
                                             </div>
                                         </div>
+
+                                        <div style="float:left; padding-top: 10px; margin-right: 10px">
+                                            <input type="checkbox"/>
+                                            <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a>
+                                        </div>
+                                        <ul class="list-inline friends-list " style="margin-bottom: 0">
+                                            <li ng-repeat="user in data.assignees | limitTo:3">
+                                                <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
+                                                <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
+                                            </li>
+                                            <li ng-if="data.assignees.length > 3">
+                                                <a href-void>
+                                                    <span class="activity">
+                                                        <a><i class="fa fa-plus" style="font-size: 22px; position: relative; top: 5px;"></i><b class="badge bg-color-red" style="position: absolute;">{{data.assignees.length - 3}}</b></a>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <div class="clear-both"></div>
+
                                     </div>
                                 </div>
                                 <div ng-if="vm.noneScheduled.length == 0">
@@ -153,10 +243,9 @@
                         <div class="table table-bordered table-hover " style="margin-bottom: 0;">
                             <div>
                                 <div ng-repeat="data in vm.myTask">
-                                    <div  class="wms-tree-node-list task-list" ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
+                                    <div  class="wms-tree-node-list task-list clear-both" ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
-                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
-                                        <div class="pull-right task-list-right-info">
+                                        <div class="pull-right">
                                             <div><i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i> {{data.endDate}}</div>
                                             <div>
                                                 <span ng-if="data.parent.name != null">상위 1</span>
@@ -165,6 +254,25 @@
                                                 <!--<span>승인/미승인</span>-->
                                             </div>
                                         </div>
+
+                                        <div style="float:left; padding-top: 10px; margin-right: 10px">
+                                            <input type="checkbox"/>
+                                            <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a>
+                                        </div>
+                                        <ul class="list-inline friends-list" style="margin-bottom: 0">
+                                            <li ng-repeat="user in data.assignees | limitTo:3">
+                                                <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
+                                                <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
+                                            </li>
+                                            <li ng-if="data.assignees.length > 3">
+                                                <a href-void>
+                                                    <span class="activity">
+                                                        <a><i class="fa fa-plus" style="font-size: 22px; position: relative; top: 5px;"></i><b class="badge bg-color-red" style="position: absolute;">{{data.assignees.length - 3}}</b></a>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul>
+
                                     </div>
                                 </div>
                                 <div ng-if="vm.myTask.length == 0">
@@ -177,10 +285,9 @@
                         <div class="table table-bordered table-hover " style="margin-bottom: 0;">
                             <div>
                                 <div ng-repeat="data in vm.requestTask">
-                                    <div  class="wms-tree-node-list task-list" ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
+                                    <div  class="wms-tree-node-list task-list clear-both" ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
-                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
-                                        <div class="pull-right task-list-right-info">
+                                        <div class="pull-right">
                                             <div><i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i> {{data.endDate}}</div>
                                             <div>
                                                 <span ng-if="data.parent.name != null">상위 1</span>
@@ -189,6 +296,25 @@
                                                 <!--<span>승인/미승인</span>-->
                                             </div>
                                         </div>
+
+                                        <div style="float:left; padding-top: 10px; margin-right: 10px">
+                                            <input type="checkbox"/>
+                                            <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a>
+                                        </div>
+                                        <ul class="list-inline friends-list" style="margin-bottom: 0">
+                                            <li ng-repeat="user in data.assignees | limitTo:3">
+                                                <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
+                                                <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
+                                            </li>
+                                            <li ng-if="data.assignees.length > 3">
+                                                <a href-void>
+                                                    <span class="activity">
+                                                        <a><i class="fa fa-plus" style="font-size: 22px; position: relative; top: 5px;"></i><b class="badge bg-color-red" style="position: absolute;">{{data.assignees.length - 3}}</b></a>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul>
+
                                     </div>
                                 </div>
                                 <div ng-if="vm.requestTask.length == 0">
@@ -203,8 +329,7 @@
                                 <div ng-repeat="data in vm.watchedTask">
                                     <div  class="wms-tree-node-list task-list" ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
-                                        <input type="checkbox"/> <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
-                                        <div class="pull-right task-list-right-info">
+                                        <div class="pull-right">
                                             <div><i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i> {{data.endDate}}</div>
                                             <div>
                                                 <span ng-if="data.parent.name != null">상위 1</span>
@@ -213,6 +338,25 @@
                                                 <!--<span>승인/미승인</span>-->
                                             </div>
                                         </div>
+
+                                        <div style="float:left; padding-top: 10px; margin-right: 10px">
+                                            <input type="checkbox"/>
+                                            <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a>
+                                        </div>
+                                        <ul ng-if="data.assignees.length > 0" class="list-inline friends-list" style="margin-bottom: 0;">
+                                            <li ng-repeat="user in data.assignees | limitTo:3">
+                                                <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
+                                                <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
+                                            </li>
+                                            <li ng-if="data.assignees.length > 3">
+                                                <a href-void>
+                                                    <span class="activity">
+                                                        <a><i class="fa fa-plus" style="font-size: 22px; position: relative; top: 5px;"></i><b class="badge bg-color-red" style="position: absolute;">{{data.assignees.length - 3}}</b></a>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul>
+
                                     </div>
                                 </div>
                                 <div ng-if="vm.watchedTask.length == 0">

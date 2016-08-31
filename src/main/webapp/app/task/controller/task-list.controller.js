@@ -8,6 +8,7 @@ angular.module('wmsApp')
 taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLinks', '$rootScope', '$state', 'MyTaskStatistics'];
         function taskListCtrl($scope, Code, $log, Task, AlertService, ParseLinks, $rootScope, $state, MyTaskStatistics) {
             var vm = this;
+            vm.baseUrl = window.location.origin;
             vm.tabDisplay = tabDisplay;
             vm.getList = getList;
             //vm.showDetail = showDetail;

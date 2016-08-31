@@ -40,10 +40,30 @@
                                     </div>
                                     <div class="cursor" ui-sref="my-notification.taskDetail({taskId : data.taskDTO.id, listType : 'TODAY'})" ng-click="vm.notificationReadChange(data.id, 'read', $index)">
                                         <div>
-                                            {{data.title}} <i class="fa fa-user"/>
+                                            <div class="float-left" style="line-height: 30px; margin-right: 10px;">{{data.title}} </div>
+
+                                            <ul class="list-inline friends-list" style="margin-bottom: 0">
+                                                <li ng-repeat="user in data.taskDTO.assignees | limitTo:3">
+                                                    <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
+                                                    <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
+                                                </li>
+                                                <li ng-if="data.taskDTO.assignees.length > 3">
+                                                    <a href-void>
+                                                    <span class="activity">
+                                                        <a><i class="fa fa-plus" style="font-size: 22px; position: relative; top: 5px;"></i><b class="badge bg-color-red" style="position: absolute;">{{data.taskDTO.assignees.length - 3}}</b></a>
+                                                    </span>
+                                                    </a>
+                                                </li>
+                                            </ul>
                                         </div>
                                         <div>
-                                            <i class="fa fa-user"/> {{data.notificationConfig}}
+                                            <ul class="list-inline friends-list float-left" style="margin-bottom: 0;">
+                                                <li>
+                                                    <img ng-src="/content/images/demo/male.png" ng-if="data.sender.profileImageId == null || data.sender.profileImageId == '' " uib-tooltip="{{data.sender.name}}">
+                                                    <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.sender.profileImageId}}" ng-if="data.sender.profileImageId != null" uib-tooltip="{{data.sender.name}}">
+                                                </li>
+                                            </ul>
+                                            <div>{{data.notificationConfig}}</div>
                                         </div>
                                         <div>
                                             일정 {{data.taskDTO.startDate}} ~ {{data.taskDTO.endDate}}

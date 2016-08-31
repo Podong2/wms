@@ -2415,7 +2415,9 @@ text-align: right;
     padding: 10px;
 }
 /* gnb task history end */
-
+.float-left {
+    float: left;
+}
 
 
 
