@@ -161,7 +161,7 @@
             url: '/myTask', // 표현 url 설정
             data: {
                 authorities: [],
-                title : 'My Task'
+                title : '내 작업'
             },
             views: {//
                 'content@app': {//
@@ -184,7 +184,7 @@
             url: '/detail/{listType}/{id}', // 표현 url 설정
             data: {
                 authorities: [],
-                title : 'My Task Detail'
+                title : '작업 상세'
             },
             views: {//
                 'taskDetail': {//

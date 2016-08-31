@@ -14,7 +14,7 @@
             url: '/myDashboard', // 표현 url 설정
             data: {
                 authorities: [],
-                title : 'My Dashboard'
+                title : '대시보드'
             },
             views: {//
                 'content@app': {//
