@@ -126,6 +126,39 @@
 
                             <section class="form-group">
                                 <label class="input"> <i class="icon-append fa fa-envelope"></i>
+                                    <input type="text" class="form-control" id="name" name="name" placeholder="{{'global.form.name.placeholder' | translate}}"
+                                           ng-model="vm.registerAccount.name" ng-minlength=2 ng-maxlength=30 required wms-kr-update>
+                                    <b class="tooltip tooltip-bottom-right">Needed to verify your account</b> </label>
+                                <div ng-show="form.name.$dirty && form.name.$invalid">
+                                    <p class="help-block"
+                                       ng-show="form.name.$error.required" translate="global.messages.validate.name.required">
+                                        Your name is required.
+                                    </p>
+                                    <p class="help-block"
+                                       ng-show="form.name.$error.minlength" translate="register.messages.validate.name.minlength">
+                                        Your name is required to be at least 2 character.
+                                    </p>
+                                    <p class="help-block"
+                                       ng-show="form.name.$error.maxlength" translate="register.messages.validate.name.maxlength">
+                                        Your name cannot be longer than 30 characters.
+                                    </p>
+                                </div>
+                                <!--<input-box-->
+                                    <!--input-type="email"-->
+                                    <!--form-name="form"-->
+                                    <!--input-name="email"-->
+                                    <!--ng-model="vm.registerAccount.email"-->
+                                    <!--pattern="/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/"-->
+                                    <!--required-text="global.messages.validate.email.required"-->
+                                    <!--pattern-text="global.messages.validate.email.pattern"-->
+                                    <!--placeholder-text="global.form.email.placeholder"-->
+                                    <!--tooltip="이메일을 입력하세요."-->
+                                    <!--tooltip-icon="fa-envelope"-->
+                                <!--&gt;</input-box>-->
+                            </section>
+
+                            <section class="form-group">
+                                <label class="input"> <i class="icon-append fa fa-envelope"></i>
                                     <input type="email" class="form-control" id="email" name="email" placeholder="{{'global.form.email.placeholder' | translate}}"
                                            ng-model="vm.registerAccount.email" ng-pattern="/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/" required wms-kr-update>
                                     <b class="tooltip tooltip-bottom-right">Needed to verify your account</b> </label>
@@ -196,21 +229,21 @@
                             </section>
                         </fieldset>
 
-                        <fieldset>
-                            <div class="row">
-                                <section class="col col-6">
-                                        <label translate="userManagement.company" for="field_company">Company</label>
-                                        <select class="form-control" id="field_company" name="company" ng-model="vm.registerAccount.companyId" ng-options="company.id as company.name for company in vm.companies">
-                                            <option value="" translate="entity.action.select"></option>
-                                        </select>
-                                </section>
-                                <section class="col col-6">
-                                    <label translate="userManagement.department" for="field_department">Parent</label>
-                                    <select class="form-control" id="field_department" name="department" ng-model="vm.registerAccount.departmentId" ng-options="department.id as department.name for department in vm.departments">
-                                        <option value="" translate="entity.action.select"></option>
-                                    </select>
-                                </section>
-                            </div>
+                        <!--<fieldset>-->
+                            <!--<div class="row">-->
+                                <!--<section class="col col-6">-->
+                                        <!--<label translate="userManagement.company" for="field_company">Company</label>-->
+                                        <!--<select class="form-control" id="field_company" name="company" ng-model="vm.registerAccount.companyId" ng-options="company.id as company.name for company in vm.companies">-->
+                                            <!--<option value="" translate="entity.action.select"></option>-->
+                                        <!--</select>-->
+                                <!--</section>-->
+                                <!--<section class="col col-6">-->
+                                    <!--<label translate="userManagement.department" for="field_department">Parent</label>-->
+                                    <!--<select class="form-control" id="field_department" name="department" ng-model="vm.registerAccount.departmentId" ng-options="department.id as department.name for department in vm.departments">-->
+                                        <!--<option value="" translate="entity.action.select"></option>-->
+                                    <!--</select>-->
+                                <!--</section>-->
+                            <!--</div>-->
 
                             <!--<div class="row">-->
                                 <!--<section class="col col-6">-->
@@ -237,7 +270,7 @@
                                     <!--<input type="checkbox" name="terms" id="terms">-->
                                     <!--<i></i>I agree with the <a href="#" data-toggle="modal" data-target="#myModal"> Terms and Conditions </a></label>-->
                             <!--</section>-->
-                        </fieldset>
+                        <!--</fieldset>-->
                         <footer>
                             <!--{{form.$invalid}}-->
                             <button type="submit" ng-disabled="form.$invalid" class="btn btn-primary" translate="register.form.button">Register</button>
