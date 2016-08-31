@@ -10,119 +10,198 @@
         -->
 
         <ul data-wms-Menu >
-            <li data-menu-collapse ng-repeat="menu in vm.menu track by $index"><!-- ng-show="menu.displayYn ? (permissionCheck.check(menu.permissionUrl) ? menu.displayYn : false) : false" -->
-                <a href="#">
-                    <i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent" translate="Entities"></span>
+            <!--<li data-menu-collapse ng-repeat="menu in vm.menu track by $index">&lt;!&ndash; ng-show="menu.displayYn ? (permissionCheck.check(menu.permissionUrl) ? menu.displayYn : false) : false" &ndash;&gt;-->
+                <!--<a href="#">-->
+                    <!--<i class="fa fa-lg fa-fw fa-home"></i> <span class="menu-item-parent" translate="Entities"></span>-->
+                    <!--&lt;!&ndash;<b class="collapse-sign"><em class="fa fa-plus-square-o"></em></b>&ndash;&gt;-->
+                <!--</a>-->
+                <!--<ul>-->
+                    <!--<li data-ui-sref-active="active" data-ng-repeat="child in vm.menu[0].childMenus track by $index">-->
+                        <!--<a data-ui-sref="{{child.urlPath}}">&lt;!&ndash; ng-show="child.name != null && child.displayYn ? (permissionCheck.check(child.permissionUrl) ? child.displayYn : false) : false" &ndash;&gt;-->
+                            <!--&lt;!&ndash;<span class="glyphicon glyphicon-asterisk"></span>&nbsp;&ndash;&gt;-->
+                            <!--<span translate="{{child.name}}">{{child.name}}</span>-->
+                        <!--</a>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</li>-->
+            <!--<li data-menu-collapse>-->
+                <!--<a href="#">-->
+                    <!--<i class="fa fa-lg fa-fw fa-flask"></i><span class="menu-item-parent" translate="ui-component">ui-component</span>-->
+                <!--</a>-->
+                <!--<ul>-->
+                    <!--<li data-menu-collapse>-->
+                        <!--<a href="#"><i class="fa fa-lg fa-fw fa-pencil-square-o"></i> Form-Elements</a>-->
+                        <!--<ul>-->
+                            <!--<li data-ui-sref-active="active">-->
+                                <!--<a ui-sref="selectBox" class="menu-item-parent" translate="Select box"></a>-->
+                            <!--</li>-->
+                            <!--<li data-ui-sref-active="active">-->
+                                <!--<a ui-sref="input" class="menu-item-parent" translate="Input box"></a>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+                    <!--</li>-->
+                    <!--<li data-menu-collapse>-->
+                        <!--<a href="#"><i class="fa fa-lg fa-fw fa-desktop"></i> UI-Elements</a>-->
+                        <!--<ul>-->
+                            <!--<li data-ui-sref-active="active">-->
+                                <!--<a ui-sref="alerts" class="menu-item-parent" translate="Alerts"></a>-->
+                            <!--</li>-->
+                            <!--<li data-ui-sref-active="active">-->
+                                <!--<a ui-sref="toast" class="menu-item-parent" translate="Toast"></a>-->
+                            <!--</li>-->
+                            <!--<li data-ui-sref-active="active">-->
+                                <!--<a ui-sref="tooltip" class="menu-item-parent" translate="Tooltip"></a>-->
+                            <!--</li>-->
+                            <!--<li data-ui-sref-active="active">-->
+                                <!--<a ui-sref="button" class="menu-item-parent" translate="Button"></a>-->
+                            <!--</li>-->
+                            <!--<li data-ui-sref-active="active">-->
+                                <!--<a ui-sref="ngGallery" class="menu-item-parent" translate="NgGallery"></a>-->
+                            <!--</li>-->
+                            <!--<li data-ui-sref-active="active">-->
+                                <!--<a ui-sref="pagination" class="menu-item-parent" translate="Pagination"></a>-->
+                            <!--</li>-->
+                            <!--<li data-ui-sref-active="active">-->
+                                <!--<a ui-sref="modal" class="menu-item-parent" translate="Modal"></a>-->
+                            <!--</li>-->
+                            <!--<li data-ui-sref-active="active">-->
+                                <!--<a ui-sref="progressbar" class="menu-item-parent" translate="ProgressBar"></a>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+                    <!--</li>-->
+                    <!--<li data-menu-collapse>-->
+                        <!--<a href="#"><i class="fa fa-lg fa-fw fa-bar-chart-o"></i> Chart</a>-->
+                        <!--<ul>-->
+                            <!--<li data-ui-sref-active="active">-->
+                                <!--<a ui-sref="chart" class="menu-item-parent" translate="Chart"></a>-->
+                            <!--</li>-->
+                            <!--<li data-ui-sref-active="active">-->
+                                <!--<a ui-sref="ganttChart" class="menu-item-parent" translate="Gantt chart"></a>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+                    <!--</li>-->
+                    <!--<li data-menu-collapse>-->
+                        <!--<a href="#"><i class="fa fa-lg fa-fw fa-table"></i> Table</a>-->
+                        <!--<ul>-->
+                            <!--<li data-ui-sref-active="active">-->
+                                <!--<a ui-sref="table" class="menu-item-parent" translate="Table"></a>-->
+                            <!--</li>-->
+                            <!--<li data-ui-sref-active="active">-->
+                                <!--<a ui-sref="tree" class="menu-item-parent" translate="Tree"></a>-->
+                            <!--</li>-->
+                            <!--<li data-ui-sref-active="active">-->
+                                <!--<a ui-sref="layout" class="menu-item-parent" translate="Detail Table"></a>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+                    <!--</li>-->
+                    <!--<li data-ui-sref-active="active">-->
+                        <!--<a ui-sref="datePicker" class="menu-item-parent"><i class="fa fa-lg fa-fw fa-calendar-o"></i> <span translate="DatePicker"></span></a>-->
+                    <!--</li>-->
+                    <!--<li data-ui-sref-active="active">-->
+                        <!--<a ui-sref="xeditable" class="menu-item-parent"><i class="fa fa-lg fa-fw fa-pencil"></i> <span translate="xeditable"></span></a>-->
+                    <!--</li>-->
+                    <!--<li data-ui-sref-active="active">-->
+                        <!--<a ui-sref="autoComplete" class="menu-item-parent"><i class="fa fa-lg fa-fw fa-magic"></i> <span translate="Auto-complete"></span></a>-->
+                    <!--</li>-->
+                    <!--<li data-ui-sref-active="active">-->
+                        <!--<a ui-sref="dashboard" class="menu-item-parent"><i class="fa fa-lg fa-fw fa-list-alt"></i> <span translate="Dashboard"></span></a>-->
+                    <!--</li>-->
+                    <!--<li data-ui-sref-active="active">-->
+                        <!--<a ui-sref="calender" class="menu-item-parent"><i class="fa fa-lg fa-fw fa-calendar"></i> <span translate="Calendar"></span></a>-->
+                    <!--</li>-->
+                    <!--<li data-ui-sref-active="active">-->
+                        <!--<a ui-sref="kanbanBoard" class="menu-item-parent"><i class="fa fa-lg fa-fw fa-clipboard"></i> <span translate="Kanban board"></span></a>-->
+                    <!--</li>-->
+                    <!--<li data-ui-sref-active="active">-->
+                        <!--<a ui-sref="summerNote" class="menu-item-parent"><i class="fa fa-lg fa-fw fa-keyboard-o"></i> <span translate="SummerNote"></span></a>-->
+                    <!--</li>-->
+                    <!--<li data-ui-sref-active="active">-->
+                        <!--<a ui-sref="ui-layout" class="menu-item-parent"><i class="fa fa-lg fa-fw fa-keyboard-o"></i> <span translate="ui-layout"></span></a>-->
+                    <!--</li>-->
+                    <!--<li data-ui-sref-active="active">-->
+                        <!--<a ui-sref="component" class="menu-item-parent"><span translate="All"></span></a>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</li>-->
+
+            <!-- 사용자 -->
+            <!--<li data-menu-collapse>-->
+                <!--<a href="#">-->
+                    <!--<i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent" translate="global.menu.account.main"></span>-->
+                <!--</a>-->
+                <!--<ul>-->
+                    <!--<li data-ui-sref-active="active">-->
+                        <!--<a ui-sref="settings" class="menu-item-parent" translate="global.menu.account.settings"></a>-->
+                    <!--</li>-->
+                    <!--<li data-ui-sref-active="active">-->
+                        <!--<a ui-sref="password" class="menu-item-parent" translate="global.menu.account.password"></a>-->
+                    <!--</li>-->
+                    <!--<li data-ui-sref-active="active">-->
+                        <!--<a ui-sref="sessions" class="menu-item-parent" translate="global.menu.account.sessions"></a>-->
+                    <!--</li>-->
+                <!--</ul>-->
+            <!--</li>-->
+            <li data-ui-sref-active="active">
+                <a ui-sref="my-notification" class="menu-item-parent">
+                    <i class="fa fa-lg fa-fw fa-bell"></i> <span class="menu-item-parent" translate="알림"></span> <span>{{vm.notificationCount}}</span>
+                </a>
+            </li>
+            <li data-ui-sref-active="active">
+                <a ui-sref="my-task" class="menu-item-parent">
+                    <i class="fa fa-lg fa-fw fa-tasks"></i> <span class="menu-item-parent" translate="내작업"></span>
+                </a>
+            </li>
+            <li data-ui-sref-active="active">
+                <a ui-sref="my-dashboard" class="menu-item-parent">
+                    <i class="fa fa-lg fa-fw fa-line-chart"></i> <span class="menu-item-parent" translate="대시보드"></span>
+                </a>
+            </li>
+        </ul>
+
+        <ul data-wms-Menu  data-ng-controller="projectCtrl as vm">
+
+            <!-- 프로젝트 생성 -->
+            <li data-ui-sref-active="active" id="projectAddSection">
+                <a class="menu-item-parent projectAddValueSection" project-add-toggle>
+                    <i class="fa fa-lg fa-fw fa-plus-circle"></i> <span class="menu-item-parent" translate="프로젝트/폴더 생성"></span>
+                </a>
+                <div class="project-picker projectAddSection" style="left: 100%;">
+                    <div style="width: 300px;">
+                        <div style="width: 300px;">
+                            <div class="project-picker-search">
+                                <label for="projectRadio"><input type="radio" name="addProject" id="projectRadio" value="false" checked="checked" ng-model="vm.project.folderYn">프로젝트</label>
+                                <label for="folderRadio"><input type="radio" name="addProject" id="folderRadio" value="true" ng-model="vm.project.folderYn">폴더</label>
+                            </div>
+                            <div class="project-picker-search">
+                                <input class="project-picker-search-input" type="text" ng-model="vm.project.name" enter-submit="vm.saveProject()" placeholder="제목을 입력하세요.">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+
+            <li data-ui-sref-active="active">
+                <a ui-sref="my-project-list" class="menu-item-parent">
+                    <i class="fa fa-th-large pull-right"></i> <span class="menu-item-parent" translate="프로젝트/폴더"></span>
+                </a>
+            </li>
+
+            <!-- 프로젝트 목록 -->
+
+            <li data-menu-collapse ng-repeat="list in vm.projectList track by $index">
+                <a data-ui-sref="my-project({id:list.id})">
+                    <i style="background: #9fda58; width: 25px; height: 10px"></i> <span class="menu-item-parent">{{list.name}}</span>
                     <!--<b class="collapse-sign"><em class="fa fa-plus-square-o"></em></b>-->
                 </a>
-                <ul>
-                    <li data-ui-sref-active="active" data-ng-repeat="child in vm.menu[0].childMenus track by $index">
-                        <a data-ui-sref="{{child.urlPath}}"><!-- ng-show="child.name != null && child.displayYn ? (permissionCheck.check(child.permissionUrl) ? child.displayYn : false) : false" -->
-                            <!--<span class="glyphicon glyphicon-asterisk"></span>&nbsp;-->
-                            <span translate="{{child.name}}">{{child.name}}</span>
-                        </a>
+                <ul uib-dropdown-menu>
+                    <li data-ui-sref-active="active" data-menu-collapse  data-ng-repeat="child in list.projectChilds track by $index" ng-include="'nodes_renderer.html'">
+                        <!--<a data-ui-sref="{{child.id}}">-->
+                            <!--<span translate="{{child.name}}">{{child.name}}</span>-->
+                        <!--</a>-->
                     </li>
                 </ul>
             </li>
-            <li data-menu-collapse>
-                <a href="#">
-                    <i class="fa fa-lg fa-fw fa-flask"></i><span class="menu-item-parent" translate="ui-component">ui-component</span>
-                </a>
-                <ul>
-                    <li data-menu-collapse>
-                        <a href="#"><i class="fa fa-lg fa-fw fa-pencil-square-o"></i> Form-Elements</a>
-                        <ul>
-                            <li data-ui-sref-active="active">
-                                <a ui-sref="selectBox" class="menu-item-parent" translate="Select box"></a>
-                            </li>
-                            <li data-ui-sref-active="active">
-                                <a ui-sref="input" class="menu-item-parent" translate="Input box"></a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li data-menu-collapse>
-                        <a href="#"><i class="fa fa-lg fa-fw fa-desktop"></i> UI-Elements</a>
-                        <ul>
-                            <li data-ui-sref-active="active">
-                                <a ui-sref="alerts" class="menu-item-parent" translate="Alerts"></a>
-                            </li>
-                            <li data-ui-sref-active="active">
-                                <a ui-sref="toast" class="menu-item-parent" translate="Toast"></a>
-                            </li>
-                            <li data-ui-sref-active="active">
-                                <a ui-sref="tooltip" class="menu-item-parent" translate="Tooltip"></a>
-                            </li>
-                            <li data-ui-sref-active="active">
-                                <a ui-sref="button" class="menu-item-parent" translate="Button"></a>
-                            </li>
-                            <li data-ui-sref-active="active">
-                                <a ui-sref="ngGallery" class="menu-item-parent" translate="NgGallery"></a>
-                            </li>
-                            <li data-ui-sref-active="active">
-                                <a ui-sref="pagination" class="menu-item-parent" translate="Pagination"></a>
-                            </li>
-                            <li data-ui-sref-active="active">
-                                <a ui-sref="modal" class="menu-item-parent" translate="Modal"></a>
-                            </li>
-                            <li data-ui-sref-active="active">
-                                <a ui-sref="progressbar" class="menu-item-parent" translate="ProgressBar"></a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li data-menu-collapse>
-                        <a href="#"><i class="fa fa-lg fa-fw fa-bar-chart-o"></i> Chart</a>
-                        <ul>
-                            <li data-ui-sref-active="active">
-                                <a ui-sref="chart" class="menu-item-parent" translate="Chart"></a>
-                            </li>
-                            <li data-ui-sref-active="active">
-                                <a ui-sref="ganttChart" class="menu-item-parent" translate="Gantt chart"></a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li data-menu-collapse>
-                        <a href="#"><i class="fa fa-lg fa-fw fa-table"></i> Table</a>
-                        <ul>
-                            <li data-ui-sref-active="active">
-                                <a ui-sref="table" class="menu-item-parent" translate="Table"></a>
-                            </li>
-                            <li data-ui-sref-active="active">
-                                <a ui-sref="tree" class="menu-item-parent" translate="Tree"></a>
-                            </li>
-                            <li data-ui-sref-active="active">
-                                <a ui-sref="layout" class="menu-item-parent" translate="Detail Table"></a>
-                            </li>
-                        </ul>
-                    </li>
-                    <li data-ui-sref-active="active">
-                        <a ui-sref="datePicker" class="menu-item-parent"><i class="fa fa-lg fa-fw fa-calendar-o"></i> <span translate="DatePicker"></span></a>
-                    </li>
-                    <li data-ui-sref-active="active">
-                        <a ui-sref="xeditable" class="menu-item-parent"><i class="fa fa-lg fa-fw fa-pencil"></i> <span translate="xeditable"></span></a>
-                    </li>
-                    <li data-ui-sref-active="active">
-                        <a ui-sref="autoComplete" class="menu-item-parent"><i class="fa fa-lg fa-fw fa-magic"></i> <span translate="Auto-complete"></span></a>
-                    </li>
-                    <li data-ui-sref-active="active">
-                        <a ui-sref="dashboard" class="menu-item-parent"><i class="fa fa-lg fa-fw fa-list-alt"></i> <span translate="Dashboard"></span></a>
-                    </li>
-                    <li data-ui-sref-active="active">
-                        <a ui-sref="calender" class="menu-item-parent"><i class="fa fa-lg fa-fw fa-calendar"></i> <span translate="Calendar"></span></a>
-                    </li>
-                    <li data-ui-sref-active="active">
-                        <a ui-sref="kanbanBoard" class="menu-item-parent"><i class="fa fa-lg fa-fw fa-clipboard"></i> <span translate="Kanban board"></span></a>
-                    </li>
-                    <li data-ui-sref-active="active">
-                        <a ui-sref="summerNote" class="menu-item-parent"><i class="fa fa-lg fa-fw fa-keyboard-o"></i> <span translate="SummerNote"></span></a>
-                    </li>
-                    <li data-ui-sref-active="active">
-                        <a ui-sref="ui-layout" class="menu-item-parent"><i class="fa fa-lg fa-fw fa-keyboard-o"></i> <span translate="ui-layout"></span></a>
-                    </li>
-                    <li data-ui-sref-active="active">
-                        <a ui-sref="component" class="menu-item-parent"><span translate="All"></span></a>
-                    </li>
-                </ul>
-            </li>
+
 
             <!-- 관리자 -->
             <li data-menu-collapse>
@@ -156,86 +235,6 @@
                     </li>
                 </ul>
             </li>
-
-            <!-- 사용자 -->
-            <li data-menu-collapse>
-                <a href="#">
-                    <i class="fa fa-lg fa-fw fa-user"></i> <span class="menu-item-parent" translate="global.menu.account.main"></span>
-                </a>
-                <ul>
-                    <li data-ui-sref-active="active">
-                        <a ui-sref="settings" class="menu-item-parent" translate="global.menu.account.settings"></a>
-                    </li>
-                    <li data-ui-sref-active="active">
-                        <a ui-sref="password" class="menu-item-parent" translate="global.menu.account.password"></a>
-                    </li>
-                    <li data-ui-sref-active="active">
-                        <a ui-sref="sessions" class="menu-item-parent" translate="global.menu.account.sessions"></a>
-                    </li>
-                </ul>
-            </li>
-            <li data-ui-sref-active="active">
-                <a ui-sref="my-task" class="menu-item-parent">
-                    <i class="fa fa-lg fa-fw fa-tasks"></i> <span class="menu-item-parent" translate="내작업"></span>
-                </a>
-            </li>
-            <li data-ui-sref-active="active">
-                <a ui-sref="my-notification" class="menu-item-parent">
-                    <i class="fa fa-lg fa-fw fa-tasks"></i> <span class="menu-item-parent" translate="알림"></span> <span>{{vm.notificationCount}}</span>
-                </a>
-            </li>
-            <li data-ui-sref-active="active">
-                <a ui-sref="my-dashboard" class="menu-item-parent">
-                    <i class="fa fa-lg fa-fw fa-tasks"></i> <span class="menu-item-parent" translate="대시보드"></span>
-                </a>
-            </li>
-        </ul>
-
-        <ul data-wms-Menu  data-ng-controller="projectCtrl as vm">
-
-            <!-- 프로젝트 생성 -->
-            <li data-ui-sref-active="active" id="projectAddSection">
-                <a class="menu-item-parent projectAddValueSection" project-add-toggle>
-                    <i class="fa fa-lg fa-fw fa-tasks"></i> <span class="menu-item-parent" translate="프로젝트/폴더 생성"></span>
-                </a>
-                <div class="project-picker projectAddSection" style="left: 100%;">
-                    <div style="width: 300px;">
-                        <div style="width: 300px;">
-                            <div class="project-picker-search">
-                                <label for="projectRadio"><input type="radio" name="addProject" id="projectRadio" value="false" checked="checked" ng-model="vm.project.folderYn">프로젝트</label>
-                                <label for="folderRadio"><input type="radio" name="addProject" id="folderRadio" value="true" ng-model="vm.project.folderYn">폴더</label>
-                            </div>
-                            <div class="project-picker-search">
-                                <input class="project-picker-search-input" type="text" ng-model="vm.project.name" enter-submit="vm.saveProject()" placeholder="제목을 입력하세요.">
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </li>
-
-            <li data-ui-sref-active="active">
-                <a ui-sref="my-project-list" class="menu-item-parent">
-                    <i class="fa fa-th-large pull-right"></i>
-                    <span class="menu-item-parent" translate="프로젝트/폴더"></span>
-                </a>
-            </li>
-
-            <!-- 프로젝트 목록 -->
-
-            <li data-menu-collapse ng-repeat="list in vm.projectList track by $index">
-                <a data-ui-sref="my-project({id:list.id})">
-                    <i style="background: #9fda58; width: 25px; height: 10px"></i> <span class="menu-item-parent">{{list.name}}</span>
-                    <!--<b class="collapse-sign"><em class="fa fa-plus-square-o"></em></b>-->
-                </a>
-                <ul uib-dropdown-menu>
-                    <li data-ui-sref-active="active" data-menu-collapse  data-ng-repeat="child in list.projectChilds track by $index" ng-include="'nodes_renderer.html'">
-                        <!--<a data-ui-sref="{{child.id}}">-->
-                            <!--<span translate="{{child.name}}">{{child.name}}</span>-->
-                        <!--</a>-->
-                    </li>
-                </ul>
-            </li>
-
         </ul>
 
         <!-- NOTE: This allows you to pull menu items from server -->

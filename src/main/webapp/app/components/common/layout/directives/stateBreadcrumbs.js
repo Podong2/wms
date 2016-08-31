@@ -12,7 +12,7 @@ stateBreadcrumbs.$inject=['$rootScope', '$state'];
         link: function (scope, element) {
 
             function setBreadcrumbs(breadcrumbs) {
-                var html = '<li>Home</li>';
+                var html = '<li>홈</li>';
                 angular.forEach(breadcrumbs, function (crumb) {
                     html += '<li>' + crumb + '</li>'
                 });

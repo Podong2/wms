@@ -56,7 +56,9 @@
             "confirmpassword": "新しいパスワード(確認)",
             "confirmpassword.placeholder": "新しいパスワード(確認)",
             "email": "メールアドレス",
-            "email.placeholder": "あなたのメールアドレス"
+            "email.placeholder": "あなたのメールアドレス",
+            "name": "名",
+            "name.placeholder": "あなたの名"
         },
         "messages": {
             "info": {
@@ -83,6 +85,11 @@
                     "invalid": "正しいメールアドレスを入力してください。",
                     "minlength": "メールアドレスは5文字以上で入力してください。",
                     "maxlength": "メールアドレスは50文字以下で入力してください。"
+                },
+                "name": {
+                    "required": "名を入力してください。",
+                    "minlength": "名は2文字以上で入力してください。",
+                    "maxlength": "名は30文字以下で入力してください。"
                 }
             }
         },

@@ -54,7 +54,9 @@
             "confirmpassword": "새 비밀번호 확인",
             "confirmpassword.placeholder": "새 비밀번호 확인",
             "email": "이메일",
-            "email.placeholder": "이메일을 입력하세요"
+            "email.placeholder": "이메일을 입력하세요",
+            "name": "이름",
+            "name.placeholder": "이름을 입력하세요"
         },
         "messages": {
             "info": {
@@ -82,6 +84,11 @@
                     "minlength": "이메일은 최소 5자 이상이어야 합니다",
                     "maxlength": "이메일은 최대 50자 까지입니다.",
                     "pattern": "이메일은 xx@xxx.xxx 형식으로 입력하세요."
+                },
+                "name": {
+                    "required": "이름 입력이 필요합니다.",
+                    "minlength": "이름일은 최소 2자 이상이어야 합니다",
+                    "maxlength": "이름은 최대 30자 까지입니다."
                 }
             }
         },
