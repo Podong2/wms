@@ -24,8 +24,8 @@ projectListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$roo
                 angular.forEach(vm.projectList, function(value, index){
                     vm.projectList[index].taskPercent = {
                         width : Math.floor(value.taskCompleteCount / value.taskTotalCount * 100) + '%'
-                    }
-                })
+                    };
+                });
                 $log.debug("전체 프로젝트 : ", vm.projectList);
             }
             function onError(error) {

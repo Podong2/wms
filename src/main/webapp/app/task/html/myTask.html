@@ -20,12 +20,12 @@
                         <li class="text-center" ng-class="vm.tabArea[3].status == true ? 'active' : ''" ng-click="vm.tabDisplay(3, 'COMPLETE')"><span>완료</span></li>
                     </ul>
                     <div style="font-weight: bold; font-size: 25px; background: #fff; padding: 0 10px;">
-                        <span>{{vm.tasks.length}}건</span>
+                        <span>{{vm.taskCounts.totalCount}}건</span>
                         <div class="pull-right">
-                            <span><i class="fa fa-file-text cursor "></i>1</span>
-                            <span><i class="fa fa-list cursor "></i>1</span>
-                            <span><i class="fa fa-check-square-o cursor "></i>1</span>
-                            <span><i class="fa fa-eye cursor "></i>1</span>
+                            <span class="cursor" ng-click="vm.getList( vm.listType, '')"><i class="fa fa-file-text"></i>{{vm.taskCounts.templateCount == null ? 0 : vm.taskCounts.templateCount}}</span>
+                            <span class="cursor" ng-click="vm.getList( vm.listType, 'ASSIGNED')"><i class="fa fa-list"></i>{{vm.taskCounts.assignedCount}}</span>
+                            <span class="cursor" ng-click="vm.getList( vm.listType, 'REQUESTED')"><i class="fa fa-check-square-o"></i>{{vm.taskCounts.createdCount}}</span>
+                            <span class="cursor" ng-click="vm.getList( vm.listType, 'WATCHED')"><i class="fa fa-eye"></i>{{vm.taskCounts.watchedCount}}</span>
                         </div>
                     </div>
                     <div uib-accordion-group class="panel-default" heading="지연된 작업  {{vm.delayed.length}}" is-open="status.isDelayedOpen" is-disabled="status.isFirstDisabled" ng-show="vm.tabArea[0].status">

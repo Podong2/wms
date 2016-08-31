@@ -8,6 +8,7 @@
         .factory('TaskRemove', TaskRemove)
         .factory('TodayTotalCount', TodayTotalCount)
         .factory('FindTaskRecentHistory', FindTaskRecentHistory)
+        .factory('MyTaskStatistics', MyTaskStatistics)
         .factory('TaskEdit', TaskEdit);
 
     Task.$inject = ['$resource'];
@@ -17,6 +18,7 @@
     TodayTotalCount.$inject = ['$resource'];
     TaskEdit.$inject = ['$log', '$upload', '$http', '$q'];
     FindTaskRecentHistory.$inject = ['$resource'];
+    MyTaskStatistics.$inject = ['$resource'];
 
     function Task ($resource) {
         var resourceUrl =  'api/tasks/:id';
@@ -101,6 +103,27 @@
 
     function TodayTotalCount ($resource) {
         var resourceUrl =  'api/tasks/todayTaskCount';
+
+        return $resource(resourceUrl, {}, {
+            'query': { method: 'GET', isArray: true},
+            'get': {
+                method: 'GET',
+                transformResponse: function (data) {
+                    if (data) {
+                        var notification =  {
+                            count : data
+                        }
+                        data = angular.fromJson(notification);
+                    }
+                    return data;
+                }
+            },
+            'update': { method:'PUT' }
+        });
+    }
+
+    function MyTaskStatistics ($resource) {
+        var resourceUrl =  'api/tasks/myTaskStatistics';
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},

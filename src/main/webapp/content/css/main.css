@@ -2408,6 +2408,8 @@ text-align: right;
     overflow: hidden;
     overflow-y: auto;
     box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+    text-align: left;
+    padding: 10px;
 }
 /* gnb task history end */
 
