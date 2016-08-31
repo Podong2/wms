@@ -401,6 +401,8 @@ public class ProjectService {
 
             ProjectDTO projectDTO = this.projectMapper.projectToProjectDTO(project);
 
+            this.copyProjectRelationProperties(project, projectDTO);
+            
             List<Project> childProjects = Lists.newArrayList();
             this.getChildProjectList(project.getProjectChilds(), childProjects);
 
