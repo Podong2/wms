@@ -519,6 +519,8 @@
             startDate : vm.task.taskRepeatSchedule == null ? '' : vm.task.taskRepeatSchedule.startDate,
             weekdays : vm.task.taskRepeatSchedule == null ? '' : vm.task.taskRepeatSchedule.weekdays
         };
+
+        // 반복설정 weekdays 화면 active 세팅
         weekDaysAreaSetting();
         function weekDaysAreaSetting() {
             if(vm.task.taskRepeatSchedule != null && vm.task.taskRepeatSchedule.weekdays != ''){
@@ -567,6 +569,7 @@
             vm.days.push(day)
         }
 
+        // 반복설정 weekdays 값 ',' 세팅
         function setWeekday(value){
             var typeIds = [];
             vm.weekDaysArea[value -1].status = !vm.weekDaysArea[value -1].status;
@@ -576,12 +579,12 @@
             vm.taskRepeatSchedule.weekdays = typeIds.join(",");
         }
 
-
+        // 반복설정 팝업 닫기
         function repeatClose(){
             $rootScope.$broadcast('repeatClose');
         }
 
-        // modal open
+        // 작업 본문 복원 팝업 오픈
         function taskRevertModalOpen(){
             var editModalConfig = {
                 size : "lg",
@@ -589,9 +592,7 @@
                 ctrl : "taskRevertCtrl",
                 data : vm.task
             };
-
             ModalService.openModal(editModalConfig);
-            //ModalService.open("title1", "content1", "taskAdd.html", 'TaskDialogController');
         }
 
 

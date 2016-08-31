@@ -5,10 +5,11 @@
 
 angular.module('wmsApp')
     .controller("taskListCtrl", taskListCtrl);
-taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLinks', '$rootScope', '$state'];
-        function taskListCtrl($scope, Code, $log, Task, AlertService, ParseLinks, $rootScope, $state) {
+taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLinks', '$rootScope', '$state', 'MyTaskStatistics'];
+        function taskListCtrl($scope, Code, $log, Task, AlertService, ParseLinks, $rootScope, $state, MyTaskStatistics) {
             var vm = this;
             vm.tabDisplay = tabDisplay;
+            vm.getList = getList;
             //vm.showDetail = showDetail;
 
             vm.tasks=[]; // 총 목록
@@ -56,8 +57,10 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
                 vm.listType = type;
             }
 
-            function getList(type){
-                Task.query({listType : type}, onSuccess, onError);
+
+            /* 타스크 목록 불러오기 */
+            function getList(type, filterType){
+                Task.query({listType : type, filterType : filterType}, onSuccess, onError);
             }
             getList();
 
@@ -84,11 +87,18 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
                     vm.tasks.push(task);
                 });
                 $log.debug('vm.tasks : ', vm.tasks);
-                //$state.go("my-task.detail", { id : vm.tasks[0].id, listType : vm.listType });
+
+                MyTaskStatistics.get({listType : vm.listType}, countSuccess, onError); // 타스크 목록 타운트 정보 조회
+            }
+            function countSuccess(result){
+                vm.taskCounts = JSON.parse(result.count);
+                $log.debug("vm.taskCounts  : ", vm.taskCounts )
             }
             function onError(error) {
                 AlertService.error(error.data.message);
             }
+
+
 
 
         }

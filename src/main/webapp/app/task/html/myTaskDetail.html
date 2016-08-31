@@ -199,7 +199,7 @@
             </div>
         </div>
         <div>
-            <a class="cursor" ng-click="vm.taskRevertModalOpen()">복원</a>
+
             <div class="panel panel-default min-height-100-p detail-content" id="editingSection">
                 <div class="ibox">
                     <div class="ibox_content elementSection">
@@ -211,6 +211,9 @@
                                     data-editor="editor"
                                     data-editable="editable"
                                     data-on-image-upload="imageUpload(files)"></summernote>
+                    </div>
+                    <div style="text-align: right">
+                        <button type="button" class="btn" ng-click="vm.taskRevertModalOpen()">복원</button>
                     </div>
                 </div>
             </div>

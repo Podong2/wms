@@ -10,11 +10,10 @@
                 <li ng-repeat="data in vm.projectList">
                     <div class="title">(icon) <span class="project-name">{{data.project.name}}</span> {{data.project.startDate | date : 'yyyy-MM-dd'}} ~ {{data.project.endDate | date : 'yyyy-MM-dd'}}</div>
                     <div style="min-height: 119px;">
-                        (icon) 프로젝트 1<br/>
-                        (icon) 프로젝트 1<br/>
-                        (icon) 프로젝트 1<br/>
-                        (icon) 폴더 1
+                        (icon) 프로젝트 {{data.projectCount}}<br/>
+                        (icon) 폴더 {{data.folderCount}}
                     </div>
+
                     <div>
                         <ul class="list-inline friends-list" style="margin-left: 100px">
                             <li><img src="/content/images/demo/1.png" alt="friend-1">
