@@ -6693,6 +6693,14 @@ tr.highlight td, tr.unread.highlight td {
     outline: 1px solid #bfbfbf;
     height: 35px;
 }
+.friends-list .plus-btn {
+    width: 35px;
+    /*border: 1px solid #fff;*/
+    /*outline: 1px solid #bfbfbf;*/
+    height: 35px;
+    padding: 5px;
+    font-size: 22px;
+}
 
 .profile-link-btn {
     color: #999;
