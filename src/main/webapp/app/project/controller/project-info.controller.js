@@ -8,15 +8,21 @@ angular.module('wmsApp')
 projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLinks', '$rootScope', '$state', 'ProjectInfo', '$stateParams', 'toastr'];
         function projectInfoCtrl($scope, Code, $log, Task, AlertService, ParseLinks, $rootScope, $state, ProjectInfo, $stateParams, toastr) {
             var vm = this;
+            vm.baseUrl = window.location.origin;
+            //vm.codes = Code.query();
+
             vm.projectTaskAdd = projectTaskAdd;
             vm.getTaskListInProject = getTaskListInProject;
             //vm.showDetail = showDetail;
-            vm.codes = [{"id":1,"name":"활성"},{"id":2,"name":"완료"},{"id":3,"name":"보류"},{"id":4,"name":"취소"}]
+            vm.codes = [{"id":'', "name":"선택"},{"id":1,"name":"활성"},{"id":2,"name":"완료"},{"id":3,"name":"보류"},{"id":4,"name":"취소"}]
             vm.sortType="1";
 
             vm.tasks=[]; // 총 목록
-
+            vm.projectTeam = [];// 프로젝트 팀원 (중복제거)
+            vm.statusId = '';
             vm.taskAdd = false;
+
+
 
             /* layout config option */
             $scope.status = {
@@ -33,15 +39,21 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 isFirstDisabled: false
             };
 
+            $scope.$watchCollection('vm.statusId', function(newValue, oldValue){
+                if(newValue != undefined && oldValue != newValue) {
+                    ProjectInfo.get({projectId : $stateParams.id, listType : vm.listType, statusId : vm.statusId}, onSuccess, onError);
+                }
+            });
+
             // 프로젝트 타스크 목록 필터
             function getTaskListInProject(listType){
                 vm.listType = listType;
-                ProjectInfo.get({projectId : $stateParams.id, listType : vm.listType}, onSuccess, onError);
+                ProjectInfo.get({projectId : $stateParams.id, listType : vm.listType, statusId : vm.statusId}, onSuccess, onError);
             }
 
             vm.listType = 'TOTAL'
             function getList(){
-                ProjectInfo.get({projectId : $stateParams.id, listType : vm.listType}, onSuccess, onError);
+                ProjectInfo.get({projectId : $stateParams.id, listType : vm.listType, statusId : vm.statusId}, onSuccess, onError);
             }
             getList();
 
@@ -52,7 +64,6 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             //function showDetail(id){
             //    $rootScope.$broadcast("showDetail", { id : id });
             //}
-
             function onSuccess(data, headers) {
                 $log.debug("data", data);
                 vm.tasks=[]; vm.delayed=[]; vm.scheduledToday=[]; vm.registeredToday=[]; vm.inProgress=[]; vm.noneScheduled=[]; vm.complete=[]; vm.hold=[]; vm.scheduled=[];
@@ -71,6 +82,20 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 });
                 $state.go("my-project.detail", {project : vm.project});
                 //vm.page = pagingParams.page;
+
+                // 프로젝트 팀원 중복제거
+                vm.projectTeam = _.clone(vm.project.projectAdmins);
+                var overlapYn = true;
+                angular.forEach(vm.project.projectUsers, function(user, index){
+                    angular.forEach(vm.projectTeam, function(admin, index){
+                        if(user.id == admin.id){
+                            overlapYn = false;
+                        }
+                    });
+                    if(overlapYn) vm.projectTeam.push(user);
+                    overlapYn = true;
+                });
+
 
                 vm.coumplatePercent= {
                     width : Math.floor(vm.info.completeCount / vm.tasks.length * 100) + '%'

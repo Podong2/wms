@@ -30,7 +30,7 @@ angular.module('wms.widget.myMonthlyTaskChart', ['adf.provider'])
     dashboardProvider
       .widget('myMonthlyTaskChart', {
         title: '이 달의 작업 진척도',
-        subject: 'myMonthlyTaskChart',
+        subject: '이 달의 작업 진척도',
         description: '이 달의 작업 진척도를 확인 할 수 있습니다.',
         templateUrl: 'app/components/wms-chart/widgets/my-task-list/widgetMyMonthlyTaskChartTemplate.html',
         edit: {

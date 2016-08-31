@@ -30,7 +30,7 @@ angular.module('wms.widget.myProjectTaskList', ['adf.provider'])
     dashboardProvider
       .widget('myProjectTaskList', {
         title: '내 프로젝트 작업 목록',
-        subject: 'myProjectTaskList',
+        subject: '내 프로젝트 작업 목록',
         description: '내 작업 목록을 확인 할 수 있습니다.',
         templateUrl: 'app/components/wms-chart/widgets/my-task-list/widgetMyProjectTaskListTemplate.html',
         edit: {
