@@ -12,10 +12,12 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {})
 public interface NotificationMapper {
 
+    @Mapping(source = "sender", target = "sender", ignore = true)
     NotificationDTO notificationToNotificationDTO(Notification notification);
 
     List<NotificationDTO> notificationsToNotificationDTOs(List<Notification> notifications);
 
+    @Mapping(target = "sender", ignore = true)
     @Mapping(target = "notificationRecipients", ignore = true)
     Notification notificationDTOToNotification(NotificationDTO notificationDTO);
 

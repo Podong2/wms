@@ -132,6 +132,11 @@ public class NotificationService {
 
             NotificationDTO notificationDTO = notificationMapper.notificationToNotificationDTO(notification);
 
+            if(notification.getSender() != null) {
+                User sender = this.userService.findOne(notification.getSender());
+                notificationDTO.setSender(this.userMapper.userToUserDTO(sender));
+            }
+
             if("Task".equalsIgnoreCase(notificationDTO.getEntityName())) {
                 notificationDTO.setTaskDTO(taskService.findOneDTO(notificationDTO.getEntityId()));
             } else if("Project".equalsIgnoreCase(notificationDTO.getEntityName())) {

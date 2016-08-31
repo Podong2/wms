@@ -355,4 +355,12 @@ public class UserService {
 
         return userMapper.usersToUserDTOs(users);
     }
+
+    public User findOne(Long sender) {
+
+        if(sender == null)
+            return null;
+
+        return this.userRepository.findOne(sender);
+    }
 }

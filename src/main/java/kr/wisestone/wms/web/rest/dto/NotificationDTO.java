@@ -48,6 +48,8 @@ public class NotificationDTO implements Serializable {
 
     private Boolean readYn = Boolean.FALSE;
 
+    private UserDTO sender;
+
     public Long getId() {
         return id;
     }
@@ -184,6 +186,14 @@ public class NotificationDTO implements Serializable {
 
     public void setReadYn(Boolean readYn) {
         this.readYn = readYn;
+    }
+
+    public UserDTO getSender() {
+        return sender;
+    }
+
+    public void setSender(UserDTO sender) {
+        this.sender = sender;
     }
 
     @Override
