@@ -471,11 +471,12 @@ public class TaskService {
             predicate.and($task.period.endDate.goe(DateUtil.convertDateToYYYYMMDD(weekStartDate)));
             predicate.and($task.period.endDate.loe(DateUtil.convertDateToYYYYMMDD(weekEndDate)));
 
-        } else if(projectTaskCondition.getListType().equalsIgnoreCase(ProjectTaskCondition.LIST_TYPE_WEEK)) {
+        } else if(projectTaskCondition.getListType().equalsIgnoreCase(ProjectTaskCondition.LIST_TYPE_DELAYED)) {
 
             String today = DateUtil.getTodayWithYYYYMMDD();
 
             predicate.and($task.period.endDate.gt(today));
+            predicate.and($task.status.id.eq(Task.STATUS_ACTIVE));
         }
 
         List<Task> tasks = Lists.newArrayList(taskRepository.findAll(predicate));
@@ -506,6 +507,12 @@ public class TaskService {
                     if(createdDate.equals(today)) {
                         statusGroup = "REGISTERED_TODAY";
                     }
+                }
+            } else {
+                String today = DateUtil.getTodayWithYYYYMMDD();
+
+                if(DateUtil.convertStrToDate(taskDTO.getEndDate(), "yyyy-MM-dd").getTime() < DateUtil.convertStrToDate(today, "yyyy-MM-dd").getTime()) {
+                    statusGroup = "DELAYED";
                 }
             }
 
