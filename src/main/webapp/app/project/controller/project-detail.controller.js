@@ -9,6 +9,7 @@
 
     function projectDetailCtrl($scope, $rootScope, $stateParams, Task, Code, $log, ProjectEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, TaskListSearch, dataService, Principal, ProjectFind, ProjectInfo, ProjectFindByName ) {
         var vm = this;
+        vm.baseUrl = window.location.origin;
 
         vm.openCalendar = openCalendar;
         vm.projectUpload = projectUpload;

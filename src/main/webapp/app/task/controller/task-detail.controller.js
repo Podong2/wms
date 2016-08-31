@@ -9,6 +9,7 @@
 
     function TaskDetailCtrl($scope, $rootScope, $stateParams, Task, Code, TaskAttachedFile, $log, TaskEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, entity, TaskListSearch, dataService, Principal, ProjectFind, ProjectFindByName, ModalService) {
         var vm = this;
+        vm.baseUrl = window.location.origin;
 
         vm.openCalendar = openCalendar;
         vm.taskUpload = taskUpload;
@@ -42,7 +43,8 @@
                     vm.commentList.push(val);
                 }
             });
-            //$log.debug("vm.commentList : ", vm.commentList)
+            $log.debug("vm.TaskAuditLog : ", vm.TaskAuditLog)
+            $log.debug("vm.commentList : ", vm.commentList)
         });
 
         vm.responseData = _.clone(vm.task);

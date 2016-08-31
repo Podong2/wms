@@ -8,6 +8,8 @@ angular.module('wmsApp')
 projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$rootScope', '$state', 'ProjectInfo', '$stateParams', 'toastr', 'TaskListSearch', '$sce', 'dataService', 'Principal', 'TaskEdit'];
         function projectHistoryCtrl($scope, Code, $log, Task, AlertService, $rootScope, $state, ProjectInfo, $stateParams, toastr, TaskListSearch, $sce, dataService, Principal, TaskEdit) {
             var vm = this;
+            vm.baseUrl = window.location.origin;
+
             vm.taskHistoryOpen = taskHistoryOpen;
             vm.fileDownLoad = fileDownLoad;
             vm.renderHtml = renderHtml;

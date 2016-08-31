@@ -8,6 +8,9 @@ angular.module('wmsApp')
 projectListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$rootScope', '$state', 'ProjectList', '$stateParams', 'toastr'];
         function projectListCtrl($scope, Code, $log, Task, AlertService, $rootScope, $state, ProjectList, $stateParams, toastr) {
             var vm = this;
+            vm.baseUrl = window.location.origin;
+
+            vm.projectTeam = [];// 프로젝트 팀원 (중복제거)
 
             $scope.$watchCollection('vm.listType', function(newValue){
                 ProjectList.query({listType : newValue}, onSuccess, onError);
@@ -25,8 +28,25 @@ projectListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$roo
                     vm.projectList[index].taskPercent = {
                         width : Math.floor(value.taskCompleteCount / value.taskTotalCount * 100) + '%'
                     };
+
+                    // 프로젝트 팀원 중복제거
+                    vm.projectTeam = _.clone(value.project.projectAdmins);
+                    var overlapYn = true;
+                    angular.forEach(value.project.projectUsers, function(user, index){
+                        angular.forEach(vm.projectTeam, function(admin, index){
+                            if(user.id == admin.id){
+                                overlapYn = false;
+                            }
+                        });
+                        if(overlapYn) vm.projectTeam.push(user);
+                        overlapYn = true;
+                    });
+                    value.projectTeam = vm.projectTeam;
                 });
                 $log.debug("전체 프로젝트 : ", vm.projectList);
+
+
+
             }
             function onError(error) {
                 AlertService.error(error.data.message);

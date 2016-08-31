@@ -8,28 +8,28 @@
         <div>
             <ul class="project-list-area">
                 <li ng-repeat="data in vm.projectList">
-                    <div class="title">(icon) <span class="project-name">{{data.project.name}}</span> {{data.project.startDate | date : 'yyyy-MM-dd'}} ~ {{data.project.endDate | date : 'yyyy-MM-dd'}}</div>
+                    <div class="title">(icon) <span class="project-name">{{data.project.name}}</span> {{data.project.startDate | date : 'yyyy-MM-dd'}} <span data-ng-show="data.project.startDate !=''">~</span> {{data.project.endDate | date : 'yyyy-MM-dd'}}</div>
                     <div style="min-height: 119px;">
                         (icon) 프로젝트 {{data.projectCount}}<br/>
                         (icon) 폴더 {{data.folderCount}}
                     </div>
 
                     <div>
-                        <ul class="list-inline friends-list" style="margin-left: 100px">
-                            <li><img src="/content/images/demo/1.png" alt="friend-1">
-                            </li>
-                            <li><img src="/content/images/demo/2.png" alt="friend-2">
-                            </li>
-                            <li><img src="/content/images/demo/3.png" alt="friend-3">
-                            </li>
-                            <li><img src="/content/images/demo/4.png" alt="friend-4">
-                            </li>
-                            <li><img src="/content/images/demo/5.png" alt="friend-5">
+
+                        <ul class="list-inline friends-list" style="margin-left: 2px;">
+                            <li ng-repeat="user in data.projectTeam | limitTo:4">
+                                <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null" uib-tooltip="{{user.name}}">
+                                <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
                             </li>
                             <li>
-                                <a href-void>413 more</a>
+                                <span href-void ng-if="data.projectTeam.length > 4">
+                                    <span class="activity">
+                                        <div class="plus-btn"><i class="fa fa-plus" style="font-size: 22px;"><b class="badge bg-color-red" style="position: absolute;">{{data.projectTeam.length - 4}}</b></i></div>
+                                    </span>
+                                </span>
                             </li>
                         </ul>
+
                         <div>
                             <span class="pull-right">{{data.taskCompleteCount}}/{{data.taskTotalCount}} 작업</span>
                             <span >{{data.taskPercent.width}} 완료</span>
