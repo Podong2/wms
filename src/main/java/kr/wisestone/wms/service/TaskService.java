@@ -174,24 +174,30 @@ public class TaskService {
 
         } else if(listType.equalsIgnoreCase(TaskCondition.LIST_TYPE_SCHEDULED) || listType.equalsIgnoreCase(TaskCondition.LIST_TYPE_HOLD) || listType.equalsIgnoreCase(TaskCondition.LIST_TYPE_COMPLETE)) {
 
-            if(taskDTO.getAssignees() != null) {
-                Optional<UserDTO> assignee = taskDTO.getAssignees().stream().filter(userDTO -> userDTO.getLogin().equals(login)).findFirst();
+            statusGroup = "MY_TASK";
 
-                if(assignee.isPresent()) {
-                    statusGroup = "MY_TASK";
-                }
-
-            } else if(taskDTO.getCreatedBy().equals(login)) {
-
-                statusGroup = "REQUEST_TASK";
-
-            } else if(taskDTO.getWatchers() != null) {
+            if(taskDTO.getWatchers() != null && !taskDTO.getWatchers().isEmpty()) {
 
                 Optional<UserDTO> watcher = taskDTO.getWatchers().stream().filter(userDTO -> userDTO.getLogin().equals(login)).findFirst();
 
                 if(watcher.isPresent()) {
                     statusGroup = "WATCHED_TASK";
                 }
+            }
+
+            if(taskDTO.getCreatedBy().equals(login)) {
+
+                statusGroup = "REQUEST_TASK";
+
+            }
+
+            if(taskDTO.getAssignees() != null && !taskDTO.getAssignees().isEmpty()) {
+                Optional<UserDTO> assignee = taskDTO.getAssignees().stream().filter(userDTO -> userDTO.getLogin().equals(login)).findFirst();
+
+                if(assignee.isPresent()) {
+                    statusGroup = "MY_TASK";
+                }
+
             }
         }
 
