@@ -155,7 +155,7 @@
             },
             views: {//
                 'content@app': {//
-                    templateUrl: 'app/project/html/project.html', // home에 사용될 template html 파일
+                    templateUrl: 'app/project/html/projectList.html', // home에 사용될 template html 파일
                     controller: 'projectListCtrl', // home에 사용될 controller 명
                     controllerAs: 'vm' // 별칭을 vm으로 설정
                 }

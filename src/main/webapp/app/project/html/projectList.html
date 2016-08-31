@@ -1,0 +1,64 @@
+<div class="well" style="overflow-y: auto; background-color: #fff; height: 100%; min-height: 500px">
+    <wms-select-box
+        ng-model="vm.projectListType"
+        selected-value="vm.listType"
+        dataSize="5"
+        dataLiveSearch="false"
+    ></wms-select-box>
+        <div>
+            <ul class="project-list-area">
+                <li ng-repeat="data in vm.projectList">
+                    <div class="title">(icon) <span class="project-name">{{data.project.name}}</span> {{data.project.startDate | date : 'yyyy-MM-dd'}} ~ {{data.project.endDate | date : 'yyyy-MM-dd'}}</div>
+                    <div style="min-height: 119px;">
+                        (icon) 프로젝트 1<br/>
+                        (icon) 프로젝트 1<br/>
+                        (icon) 프로젝트 1<br/>
+                        (icon) 폴더 1
+                    </div>
+                    <div>
+                        <ul class="list-inline friends-list" style="margin-left: 100px">
+                            <li><img src="/content/images/demo/1.png" alt="friend-1">
+                            </li>
+                            <li><img src="/content/images/demo/2.png" alt="friend-2">
+                            </li>
+                            <li><img src="/content/images/demo/3.png" alt="friend-3">
+                            </li>
+                            <li><img src="/content/images/demo/4.png" alt="friend-4">
+                            </li>
+                            <li><img src="/content/images/demo/5.png" alt="friend-5">
+                            </li>
+                            <li>
+                                <a href-void>413 more</a>
+                            </li>
+                        </ul>
+                        <div>
+                            <span class="pull-right">{{data.taskCompleteCount}}/{{data.taskTotalCount}} 작업</span>
+                            <span >{{data.taskPercent.width}} 완료</span>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar bg-color-green" role="progressbar" ng-style="data.taskPercent"></div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+</div>
+<style>
+    .project-list-area{
+        list-style: none;
+    }
+    .project-list-area > li .project-name{
+        font-size: 16px;
+        font-weight: bold;
+    }
+    .project-list-area > li{
+        float: left;
+        width: 400px;
+        height:250px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+        margin: 30px;
+        padding:10px;
+    }
+</style>
