@@ -13,26 +13,38 @@ function customRenderer($compile, $filter, $log, $sce) {
             data: "=",
             rendererCallback: "="
         },
-        controller : ['$scope', '$element', '$attrs', '$rootScope', 'DeleteAttachedFile',
-            function ($scope, $element, $attrs, $rootScope, DeleteAttachedFile) {
-            // 첨부 파일 다운로드
-            $scope.fileDownLoad = function(key){
-                var iframe = $("<iframe/>").hide().appendTo("body").load(function() {
-                    iframe.remove();
-                }).attr("src", "/api/attachedFile/" + key.id);
-            };
-            // 첨부 파일 삭제
-            $scope.fileRemove = function(entityName, entityId, attachedFileId){
-                $scope.params = {
-                    entityName : entityName,
-                    entityId : entityId,
-                    attachedFileId : attachedFileId,
+        controller : ['$scope', '$element', '$attrs', '$rootScope', 'DeleteAttachedFile', '$sce', 'TaskEdit', '$state',
+            function ($scope, $element, $attrs, $rootScope, DeleteAttachedFile, $sce, TaskEdit, $state) {
+                // 첨부 파일 다운로드
+                $scope.fileDownLoad = function(key){
+                    var iframe = $("<iframe/>").hide().appendTo("body").load(function() {
+                        iframe.remove();
+                    }).attr("src", "/api/attachedFile/" + key.id);
                 };
-                DeleteAttachedFile.delete({entityName : $scope.params.entityName, entityId : $scope.params.entityId, attachedFileId : $scope.params.attachedFileId},
-                    function (result) {
-                        $log.debug("프로젝트 파일 삭제 : ", result)
+                // 첨부 파일 삭제
+                $scope.fileRemove = function(entityName, entityId, attachedFileId){
+                    $scope.params = {
+                        entityName : entityName,
+                        entityId : entityId,
+                        attachedFileId : attachedFileId,
+                    };
+                    DeleteAttachedFile.delete({entityName : $scope.params.entityName, entityId : $scope.params.entityId, attachedFileId : $scope.params.attachedFileId},
+                        function (result) {
+                            $log.debug("프로젝트 파일 삭제 : ", result)
+                        });
+                }
+                //설명 html 형식으로 표현
+                $scope.renderHtml = function(data) {
+                    return $sce.trustAsHtml(data);
+                }
+                $scope.revertTaskContent = function(data){
+                    TaskEdit.putContentRevert(data.taskId, data.id).then(function(){
+                        $rootScope.$broadcast('task-detail-reload');
+                        $rootScope.$broadcast('cancel');
                     });
-            }
+                }
+
+
         }],
         link: function (scope, element, attrs) {
             /*	change value는 목록 화면에서 팝업을 통해 responseData값이 변경되었을 때
@@ -118,6 +130,14 @@ function customRenderer($compile, $filter, $log, $sce) {
                         break;
                     case "file_remove" :
                             customTag = "<button type='button' class='btn' ng-click='fileRemove(data.locationType, data.locationId, data.id)'><i class='fa fa-trash'></i></button>";
+                        break;
+                    case "revert_task_content" :
+                            customTag = "<span class='display-content'>본문내용" +
+                                "<span class='revert-content' ng-bind-html='renderHtml(data.newValue)'></span>" +
+                                "</span>";
+                        break;
+                    case "set_task_content" :
+                        customTag = "<button type='button' class='btn' ng-click='revertTaskContent(data)'><i class='fa fa-download'></i></button>";
                         break;
                 }
 

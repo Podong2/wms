@@ -2391,6 +2391,24 @@ text-align: right;
     display: inline-block;
     position: relative;
 }
+.display-content:hover .revert-content{
+    display: block;
+}
+.revert-content{
+    display: none;
+    position: absolute;
+    width:700px;
+    background-color: #fff;
+    border-radius: 5px;
+    border:1px solid #ddd;
+    top:15px;
+    left: 105px;
+    min-height: 300px;
+    max-height: 700px;
+    overflow: hidden;
+    overflow-y: auto;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+}
 /* gnb task history end */
 
 

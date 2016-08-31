@@ -8,7 +8,8 @@
         .factory('ProjectFindByName', ProjectFindByName)
         .factory('ProjectAttachedList', ProjectAttachedList)
         .factory('ProjectEdit', ProjectEdit)
-        .factory('DeleteAttachedFile', DeleteAttachedFile);
+        .factory('DeleteAttachedFile', DeleteAttachedFile)
+        .factory('ProjectList', ProjectList);
 
     Project.$inject = ['$resource'];
     ProjectInfo.$inject = ['$resource'];
@@ -16,6 +17,7 @@
     ProjectFindByName.$inject = ['$resource'];
     ProjectAttachedList.$inject = ['$resource'];
     DeleteAttachedFile.$inject = ['$resource'];
+    ProjectList.$inject = ['$resource'];
     ProjectEdit.$inject = ['$log', '$upload', '$http', '$q'];
 
     function Project ($resource) {
@@ -91,6 +93,23 @@
     }
     function ProjectFindByName ($resource) {
         var resourceUrl =  'api/projects/findByName';
+
+        return $resource(resourceUrl, {}, {
+            'query': { method: 'GET', isArray: true},
+            'get': {
+                method: 'GET',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    return data;
+                }
+            },
+            'update': { method:'PUT' }
+        });
+    }
+    function ProjectList($resource) {
+        var resourceUrl =  'api/projects/statistics';
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},

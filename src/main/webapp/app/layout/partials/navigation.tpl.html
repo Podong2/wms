@@ -213,6 +213,13 @@
                 </div>
             </li>
 
+            <li data-ui-sref-active="active">
+                <a ui-sref="my-project-list" class="menu-item-parent">
+                    <i class="fa fa-th-large pull-right"></i>
+                    <span class="menu-item-parent" translate="프로젝트/폴더"></span>
+                </a>
+            </li>
+
             <!-- 프로젝트 목록 -->
 
             <li data-menu-collapse ng-repeat="list in vm.projectList track by $index">

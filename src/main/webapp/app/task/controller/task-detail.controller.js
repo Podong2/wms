@@ -5,9 +5,9 @@
         .module('wmsApp')
         .controller('TaskDetailCtrl', TaskDetailCtrl);
 
-    TaskDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', 'TaskAttachedFile', '$log', 'TaskEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'entity', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectFindByName'];
+    TaskDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', 'TaskAttachedFile', '$log', 'TaskEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'entity', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectFindByName', 'ModalService'];
 
-    function TaskDetailCtrl($scope, $rootScope, $stateParams, Task, Code, TaskAttachedFile, $log, TaskEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, entity, TaskListSearch, dataService, Principal, ProjectFind, ProjectFindByName) {
+    function TaskDetailCtrl($scope, $rootScope, $stateParams, Task, Code, TaskAttachedFile, $log, TaskEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, entity, TaskListSearch, dataService, Principal, ProjectFind, ProjectFindByName, ModalService) {
         var vm = this;
 
         vm.openCalendar = openCalendar;
@@ -21,6 +21,7 @@
         vm.setRepeatType = setRepeatType;
         vm.setWeekday = setWeekday;
         vm.repeatClose = repeatClose;
+        vm.taskRevertModalOpen = taskRevertModalOpen;
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
 
@@ -374,6 +375,10 @@
             });
         }
 
+        $rootScope.$on('task-detail-reload', function(){
+            Task.get({id : vm.task.id}, successTask, erorrTask);
+        })
+
         function successTask(result){
             vm.task = result;
         }
@@ -576,6 +581,18 @@
             $rootScope.$broadcast('repeatClose');
         }
 
+        // modal open
+        function taskRevertModalOpen(){
+            var editModalConfig = {
+                size : "lg",
+                url : "taskRevertModal.html",
+                ctrl : "taskRevertCtrl",
+                data : vm.task
+            };
+
+            ModalService.openModal(editModalConfig);
+            //ModalService.open("title1", "content1", "taskAdd.html", 'TaskDialogController');
+        }
 
 
     }

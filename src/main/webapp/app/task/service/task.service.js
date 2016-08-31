@@ -126,7 +126,8 @@
             uploadTask : uploadTask,
             saveTask : saveTask,
             singleUpload : singleUpload,
-            createComment : createComment
+            createComment : createComment,
+            putContentRevert : putContentRevert
         }
         return service;
 
@@ -169,6 +170,16 @@
                 $log.debug("타스크 코멘트 생성 결과 : ", response);
                 return response;
             });
+        }
+
+        function putContentRevert(id, traceLogId){
+            var deferred = $q.defer();
+            //$log.debug("task 싱글 업로드 data : ", parameter)
+            $http.put( '/api/tasks/revert/'+ id , {}, {id : id, params : {traceLogId : traceLogId}}).then(function (result) {
+                $log.debug("taskList : ", result);
+                deferred.resolve(result);
+            });
+            return deferred.promise;
         }
 
     }

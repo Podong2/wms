@@ -1,0 +1,12 @@
+<owl-alert-close></owl-alert-close>
+<div class="modal-header modal-edit" draggable="">
+    <button type="button" class="close" ng-click="vm.cancel()">&times;</button>
+    <h4 class="modal-title" translate="작업 내용 복원"></h4>
+</div>
+
+<div class="modal-body" dynamic-scroll style="max-height: none">
+    <wms-table ng-model="vm.commentList" table-configs="vm.tableConfigs" update-callback="updateCallback"></wms-table>
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn_icon btn_customs2" ng-click="vm.cancel()" owl-btn-cancel></button>
+</div>
