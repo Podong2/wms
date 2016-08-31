@@ -34,12 +34,9 @@
             <div class="col-md-9">
                 <div class="pull-left">
                     <!-- 프로젝트/폴더 선택 -->
-                    <div id="projectPickerSection">
-                        <label for="addProject" class="cursor projectValueSection" ><i class="fa fa-plus" id="addProject"></i> <span project-picker-edit-toggle>프로젝트/폴더 선택</span></label>
-                        <span class="task-project" ng-repeat="project in vm.task.taskProjects">
-                            {{project.name}}
-                            <i class="fa fa-close"></i>
-                        </span>
+                    <div id="projectPickerSection" style="float:left;">
+                        <label for="addProject" class="cursor projectValueSection"><i class="fa fa-plus" id="addProject"></i> <span project-picker-edit-toggle>프로젝트/폴더 선택</span></label>
+                        &nbsp;
                         <div class="project-picker projectPickerSection">
                             <div style="width: 300px;">
                                 <div style="width: 300px;">
@@ -64,6 +61,10 @@
                                 </div>
                             </div>
                         </div>
+                    </div>
+                    <div class="task-project" ng-repeat="project in vm.task.taskProjects">
+                        {{project.name}}
+                        <i class="fa fa-close cursor" ng-click="vm.projectRemoveInTask(project.id)"></i>
                     </div>
                 </div>
             </div>

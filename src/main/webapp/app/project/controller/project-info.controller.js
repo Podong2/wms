@@ -9,6 +9,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
         function projectInfoCtrl($scope, Code, $log, Task, AlertService, ParseLinks, $rootScope, $state, ProjectInfo, $stateParams, toastr) {
             var vm = this;
             vm.projectTaskAdd = projectTaskAdd;
+            vm.getTaskListInProject = getTaskListInProject;
             //vm.showDetail = showDetail;
             vm.codes = [{"id":1,"name":"활성"},{"id":2,"name":"완료"},{"id":3,"name":"보류"},{"id":4,"name":"취소"}]
             vm.sortType="1";
@@ -26,8 +27,15 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 isFirstDisabled: false
             };
 
+            // 프로젝트 타스크 목록 필터
+            function getTaskListInProject(listType){
+                vm.listType = listType;
+                ProjectInfo.get({projectId : $stateParams.id, listType : vm.listType}, onSuccess, onError);
+            }
+
+            vm.listType = 'TOTAL'
             function getList(){
-                ProjectInfo.get({projectId : $stateParams.id, listType : 'TOTAL'}, onSuccess, onError);
+                ProjectInfo.get({projectId : $stateParams.id, listType : vm.listType}, onSuccess, onError);
             }
             getList();
 

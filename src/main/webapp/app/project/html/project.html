@@ -23,9 +23,9 @@
                             </div>
                             <div class="col-md-3">
                                 <ul>
-                                    <li>전체</li>
-                                    <li>이번주</li>
-                                    <li>지연된 작업</li>
+                                    <li><a class="cursor" ng-click="vm.getTaskListInProject('TOTAL')">전체</a></li>
+                                    <li><a class="cursor" ng-click="vm.getTaskListInProject('WEEK')">이번주</a></li>
+                                    <li><a class="cursor" ng-click="vm.getTaskListInProject('DELAYED')">지연된 작업</a></li>
                                 </ul>
                             </div>
                             <div class="col-md-3">

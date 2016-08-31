@@ -16,6 +16,7 @@
         vm.fileDownLoad = fileDownLoad;
         vm.createComment = createComment;
         vm.FindProjectList = FindProjectList;
+        vm.projectRemove = projectRemove;
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
 
@@ -340,6 +341,13 @@
         function onlyComment(){
 
         }
+
+        //프로젝트 x 버튼 눌러 삭제
+        function projectRemove(projectId){
+            vm.project.removeParentProjectIds = projectId;
+            projectUpload();
+        }
+
     }
 
 })();

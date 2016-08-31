@@ -22,6 +22,7 @@
         vm.setWeekday = setWeekday;
         vm.repeatClose = repeatClose;
         vm.taskRevertModalOpen = taskRevertModalOpen;
+        vm.projectRemoveInTask = projectRemoveInTask;
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
 
@@ -370,6 +371,7 @@
                 vm.task.watcherIds = "";
                 vm.task.relatedTaskIds ="";
                 vm.task.projectIds = "";
+                vm.task.removeProjectIds = "";
                 vm.repeatClose(); // 반복설정 팝업 닫기
                 Task.get({id : vm.task.id}, successTask, erorrTask);
             });
@@ -593,6 +595,12 @@
                 data : vm.task
             };
             ModalService.openModal(editModalConfig);
+        }
+
+        //타스크에 속한 프로젝트 x 버튼 눌러 삭제
+        function projectRemoveInTask(projectId){
+            vm.task.removeProjectIds = projectId;
+            taskUpload();
         }
 
 
