@@ -9,7 +9,6 @@
     <div class="layout-scroll" style="position: relative; background: #fff;
     border: 1px solid #aaa; height: 1030px;">
         <bg-splitter orientation="horizontal">
-
             <bg-pane min-size="400">
                 <!--<div ui-view="taskList"></div>-->
                 <uib-accordion close-others="oneAtATime">
@@ -18,18 +17,27 @@
                     </div>
                     <div style="background: #fff; padding: 0 10px; border-top : 1px solid #aaa">
                         <div class="row">
-                            <div class="col-md-6">
+                            <div class="col-md-5">
                                 <pie-chart data="pieData" options="pieOptions"></pie-chart>
                             </div>
-                            <div class="col-md-3">
+                            <div class="col-md-3" style="padding: 100px 0;">
                                 <ul>
                                     <li><a class="cursor" ng-click="vm.getTaskListInProject('TOTAL')">전체</a></li>
                                     <li><a class="cursor" ng-click="vm.getTaskListInProject('WEEK')">이번주</a></li>
                                     <li><a class="cursor" ng-click="vm.getTaskListInProject('DELAYED')">지연된 작업</a></li>
                                 </ul>
                             </div>
-                            <div class="col-md-3">
-                                <i class="fa fa-user"></i><i class="fa fa-user"></i><i class="fa fa-user"></i><i class="fa fa-user"></i>
+                            <div class="col-md-4" style="padding: 100px 0;">
+                                <ul class="list-inline friends-list" style="margin-bottom: 0">
+                                    <li ng-repeat="user in vm.projectTeam | limitTo:4">
+                                        <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null" uib-tooltip="{{user.name}}">
+                                        <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
+                                    </li>
+                                    <li>
+                                        <a href-void ng-if="vm.projectTeam.length > 4">외 {{vm.projectTeam.length - 4}}명</a>
+                                    </li>
+                                </ul>
+
                                 <br/>
                                 {{vm.coumplatePercent.width}}%완료 - 팀원 {{vm.project.projectAdmins.length + vm.project.projectUsers.length}}명
                                 <div class="progress progress-sm">
@@ -52,18 +60,22 @@
                         </ul>
                     </div>
 
-                    <wms-select-box
+<!--                    <wms-select-box
                         ng-model="vm.codes"
                         selected-value="vm.sortType"
                         dataSize="5"
                         dataLiveSearch="false"
-                    ></wms-select-box>
+                    ></wms-select-box>-->
                     <div style="clear: both">
                         <button class="btn btn-default btn-sm btn-radius" ng-click="vm.taskAdd = !vm.taskAdd">작업 생성+</button>
-                        <span>상태 : 활성</span>
-                        <span class="pull-right">
-
-                        </span>
+                        <ol class="nya-bs-select " ng-model="vm.statusId" style="width: 90px;">
+                            <li nya-bs-option="option in vm.codes" title="{{option.name}}" data-value="option.id">
+                                <a>
+                                    {{ option.name }}
+                                    <span class="glyphicon glyphicon-ok check-mark"></span>
+                                </a>
+                            </li>
+                        </ol>
                     </div>
                     <div ng-show="vm.taskAdd">
                         <input type="text" class="taskAddInput" ng-model="vm.task.name" enter-submit="vm.projectTaskAdd()" style="width: 100%; border-top: 1px solid #ddd" placeholder="작업명을 입력하세요."/>

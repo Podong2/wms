@@ -6690,7 +6690,8 @@ tr.highlight td, tr.unread.highlight td {
 .friends-list img {
     width: 35px;
     border: 1px solid #fff;
-    outline: 1px solid #bfbfbf
+    outline: 1px solid #bfbfbf;
+    height: 35px;
 }
 
 .profile-link-btn {

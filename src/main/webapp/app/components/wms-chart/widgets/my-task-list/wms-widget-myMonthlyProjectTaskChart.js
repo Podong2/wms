@@ -25,12 +25,12 @@
 
 
 
-angular.module('wms.widget.myMonthlyProjectTaskChart', ['adf.provider'])
+angular.module('wms.widget.myMonthlyProjectTaskChart', ['adf.provider', 'nvd3', 'wms.pie.chart'])
   .config(["dashboardProvider", function(dashboardProvider){
     dashboardProvider
       .widget('myMonthlyProjectTaskChart', {
         title: '이 달의 프로젝트 진척도',
-        subject: 'myMonthlyProjectTaskChart',
+        subject: '이 달의 프로젝트 진척도',
         description: '이 달의 프로젝트 진척도를 확인 할 수 있습니다.',
         templateUrl: 'app/components/wms-chart/widgets/my-task-list/widgetMyMonthlyProjectTaskChartTemplate.html',
         edit: {
