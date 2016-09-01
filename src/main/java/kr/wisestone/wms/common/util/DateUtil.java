@@ -117,7 +117,7 @@ public class DateUtil {
         Calendar first = Calendar.getInstance();
         first.set(Calendar.DAY_OF_MONTH, 1);
 
-        first.set(Calendar.HOUR, 0);
+        first.set(Calendar.HOUR_OF_DAY, 0);
         first.set(Calendar.MINUTE, 0);
         first.set(Calendar.SECOND, 0);
 
@@ -128,7 +128,7 @@ public class DateUtil {
         Calendar last = Calendar.getInstance();
         last.set(Calendar.DAY_OF_MONTH, last.getActualMaximum(Calendar.DAY_OF_MONTH));
 
-        last.set(Calendar.HOUR, 23);
+        last.set(Calendar.HOUR_OF_DAY, 23);
         last.set(Calendar.MINUTE, 59);
         last.set(Calendar.SECOND, 59);
 

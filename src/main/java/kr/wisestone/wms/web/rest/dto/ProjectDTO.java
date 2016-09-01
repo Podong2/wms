@@ -4,6 +4,7 @@ import kr.wisestone.wms.domain.*;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +35,14 @@ public class ProjectDTO implements Serializable {
     private List<UserDTO> projectUsers = new ArrayList<>();
 
     private List<ProjectAttachedFile> projectAttachedFiles = new ArrayList<>();
+
+    private String createdBy;
+
+    private ZonedDateTime createdDate;
+
+    private String lastModifiedBy;
+
+    private ZonedDateTime lastModifiedDate;
 
     public Long getId() {
         return id;
@@ -137,5 +146,37 @@ public class ProjectDTO implements Serializable {
 
     public void setProjectAttachedFiles(List<ProjectAttachedFile> projectAttachedFiles) {
         this.projectAttachedFiles = projectAttachedFiles;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
+    }
+
+    public ZonedDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(ZonedDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
     }
 }

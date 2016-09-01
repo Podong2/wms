@@ -225,6 +225,7 @@
                                 <span ng-if="data.entityField == 'projectAttachedFiles' && data.entityField != 'contents'">
 
                                     <span ng-if="data.persistType == 'INSERT' || data.persistType == 'UPDATE'">
+                                        <i class="fa fa-paperclip"></i>
                                         <a ng-click="vm.fileDownLoad(data.attachedFileId)">{{data.newValue}}</a>
                                     </span>
                                     <span ng-if="data.persistType == 'DELETE'">

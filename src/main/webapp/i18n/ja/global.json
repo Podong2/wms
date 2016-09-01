@@ -100,6 +100,47 @@
             "dev":"Development"
         }
     },
+    "audit": {
+        "entity": {
+            "task": "Task",
+            "project": "Project/Folder"
+        },
+        "field": {
+            "task": {
+                "name": "Subject",
+                "period": "Period",
+                "startDate": "StartDate",
+                "endDate": "EndDate",
+                "contents": "Contents",
+                "status": "Status",
+                "assignee": "Assignee",
+                "watcher": "Watcher",
+                "relatedTasks": "Related Task",
+                "subTasks": "Sub Task",
+                "taskProjects": "Project/Folder",
+                "taskRepeatSchedule": "Repeat Schedule",
+                "taskAttachedFiles": "AttachedFile",
+                "importantYn": "Important Check"
+            },
+            "project": {
+                "name": "Subject",
+                "period": "Period",
+                "startDate": "StartDate",
+                "endDate": "EndDate",
+                "contents": "Contents",
+                "status": "Status",
+                "admin": "Administrator",
+                "sharer": "Sharer",
+                "projectRelation": "Parent Project/Folder",
+                "projectAttachedFiles": "AttachedFile"
+            }
+        },
+        "persist-type": {
+            "INSERT": "Insert",
+            "UPDATE": "Update",
+            "DELETE": "Delete"
+        }
+    },
     "entity": {
         "action": {
             "addblob": "Add blob",
