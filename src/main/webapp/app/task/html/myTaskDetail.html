@@ -261,11 +261,42 @@
                                 </p>
                             </span>
                             <span ng-if="data.entityField != 'reply'" class="pad-l20">
-                                {{data.createdBy}} 이 {{data.entityField}} {{data.newValue}}를 {{data.persistType}}하였습니다. {{data.createdDate | date : 'HH:mm'}}
+                                <span translate="audit.entity.task" ng-if="data.entityField == null || data.entityField == ''">엔티티</span>
+                                <span translate="audit.field.task.{{data.entityField}}" ng-if="(data.entityField != null && data.entityField != '') && data.entityField != 'taskUsers'">필드</span>
+                                <span translate="audit.field.task.{{data.etcValue}}"  ng-if="(data.entityField != null && data.entityField != '') && data.entityField == 'taskUsers'">필드</span>
+                                <span translate="audit.persist-type.{{data.persistType}}">유형</span>
+                                <span ng-if="data.entityField != 'taskAttachedFiles' && data.entityField != 'taskRepeatSchedule' && data.entityField != 'contents'">
+                                    <span ng-if="data.persistType == 'INSERT' || data.persistType == 'UPDATE'">
+                                        <span ng-if="data.entityField == 'importantYn'">
+                                            <span ng-if="data.newValue == 'true'">
+                                                활성
+                                            </span>
+                                            <span ng-if="data.newValue == 'false'">
+                                                비활성
+                                            </span>
+                                        </span>
+                                        <span ng-if="data.entityField != 'importantYn'">
+                                            {{data.newValue}}
+                                        </span>
+                                    </span>
+                                    <span ng-if="data.persistType == 'DELETE'">
+                                        {{data.oldValue}}
+                                    </span>
+                                </span>
+                                <span ng-if="data.entityField == 'taskAttachedFiles' && data.entityField != 'taskRepeatSchedule' && data.entityField != 'contents'">
+
+                                    <span ng-if="data.persistType == 'INSERT' || data.persistType == 'UPDATE'">
+                                        <a ng-click="vm.fileDownLoad(data.attachedFileId)">{{data.newValue}}</a>
+                                    </span>
+                                    <span ng-if="data.persistType == 'DELETE'">
+                                        {{data.oldValue}}
+                                    </span>
+                                </span>
                                 <br/>
-                                <p ng-repeat="file in data.attachedFiles" class="pad-l20">
-                                    <a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>
-                                </p>
+                                <!--{{data.createdBy}} 이 {{data.entityField}} {{data.newValue}}를 {{data.persistType}}하였습니다. {{data.createdDate | date : 'HH:mm'}}-->
+                                <!--<p ng-repeat="file in data.attachedFiles" class="pad-l20">-->
+                                    <!--<a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>-->
+                                <!--</p>-->
                             </span>
                         </p>
                     </div>

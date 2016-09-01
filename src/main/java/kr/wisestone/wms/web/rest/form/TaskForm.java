@@ -176,6 +176,25 @@ public class TaskForm {
         if(StringUtils.hasText(this.getName()))
             subTask.setName(this.getName());
 
+        Period period = subTask.getPeriod();
+
+        if("null".equalsIgnoreCase(this.startDate)) {
+            this.startDate = "";
+        }
+
+        if("null".equalsIgnoreCase(this.endDate)) {
+            this.endDate = "";
+        }
+
+        if(period == null) {
+            period = new Period(this.startDate, this.endDate);
+        } else {
+            period.setStartDate(this.startDate);
+            period.setEndDate(this.endDate);
+        }
+
+        subTask.setPeriod(period);
+
         Task parent = new Task();
         parent.setId(this.getParentId());
         subTask.setParent(parent);

@@ -349,7 +349,7 @@ public class UserService {
 
         BooleanBuilder predicate = new BooleanBuilder();
 
-        predicate.and(QUser.user.name.contains(name));
+        predicate.and(QUser.user.name.containsIgnoreCase(name));
 
         List<User> users = Lists.newArrayList(this.userRepository.findAll(predicate));
 

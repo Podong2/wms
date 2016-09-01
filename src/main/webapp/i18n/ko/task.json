@@ -24,7 +24,10 @@
             "dueDate": "종료 날짜",
             "contents": "내용",
             "severity": "중요도",
-            "taskAttachedFiles": "태스크 첨부파일"
+            "taskAttachedFiles": "태스크 첨부파일",
+            "audit": {
+
+            }
         }
     }
 }

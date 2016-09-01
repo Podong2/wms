@@ -86,7 +86,7 @@ public class TaskUser extends AbstractAuditingEntity implements Traceable {
         logRecord.setEntityName(ClassUtils.getShortName(this.getTask().getClass()));
         logRecord.setEntityField("taskUsers");
         logRecord.setEntityId(this.getTask().getId());
-        logRecord.setEtcValue(this.getUserType().getDescription());
+        logRecord.setEtcValue(this.getUserType().getCode());
 
         if (Traceable.PERSIST_TYPE_INSERT.equals(persisType)) {
             logRecord.setNewValue(this.getUser().getName());

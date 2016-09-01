@@ -148,7 +148,7 @@ public class ProjectService {
 
         BooleanBuilder predicate = new BooleanBuilder();
 
-        predicate.and(QProject.project.name.contains(name));
+        predicate.and(QProject.project.name.containsIgnoreCase(name));
 
         List<Project> projects = Lists.newArrayList(this.projectRepository.findAll(predicate));
 

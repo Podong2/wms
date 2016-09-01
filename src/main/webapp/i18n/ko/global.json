@@ -99,6 +99,47 @@
             "dev":"Development"
         }
     },
+    "audit": {
+        "entity": {
+            "task": "작업",
+            "project": "프로젝트/폴더"
+        },
+        "field": {
+            "task": {
+                "name": "제목",
+                "period": "일정",
+                "startDate": "시작일",
+                "endDate": "종료일",
+                "contents": "본문",
+                "status": "상태",
+                "assignee": "담당자",
+                "watcher": "참조자",
+                "relatedTasks": "참조 작업",
+                "subTasks": "하위 작업",
+                "taskProjects": "프로젝트/폴더",
+                "taskRepeatSchedule": "반복일정",
+                "taskAttachedFiles": "첨부파일",
+                "importantYn": "중요여부"
+            },
+            "project": {
+                "name": "제목",
+                "period": "일정",
+                "startDate": "시작일",
+                "endDate": "종료일",
+                "contents": "본문",
+                "status": "상태",
+                "admin": "관리자",
+                "sharer": "공유자",
+                "projectRelation": "상위 프로젝트/폴더",
+                "projectAttachedFiles": "첨부파일"
+            }
+        },
+        "persist-type": {
+            "INSERT": "등록",
+            "UPDATE": "수정",
+            "DELETE": "삭제"
+        }
+    },
     "entity": {
         "action": {
             "addblob": "Blob 추가",

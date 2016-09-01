@@ -258,7 +258,7 @@ public class TaskService {
         switch (taskCondition.getListType()) {
             case TaskCondition.LIST_TYPE_TODAY:
 
-                predicate.and($task.period.startDate.lt(today).or($task.period.endDate.isNull()));
+                predicate.and($task.period.startDate.loe(today).or($task.period.endDate.isNull()));
                 predicate.and($task.status.isNull().or($task.status.id.eq(1L)));
 
                 break;
@@ -442,7 +442,7 @@ public class TaskService {
     public List<TaskDTO> findByNameLike(String name) {
         BooleanBuilder predicate = new BooleanBuilder();
 
-        predicate.and(QTask.task.name.contains(name));
+        predicate.and(QTask.task.name.containsIgnoreCase(name));
 
         List<Task> tasks = Lists.newArrayList(this.taskRepository.findAll(predicate));
 
