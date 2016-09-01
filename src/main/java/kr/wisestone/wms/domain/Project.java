@@ -63,6 +63,7 @@ public class Project extends AbstractAuditingEntity implements Traceable {
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
+    @OrderBy(value = "id ASC")
     private Set<ProjectUser> projectUsers = new HashSet<>();
 
     @OneToMany(mappedBy = "project", cascade = CascadeType.ALL, orphanRemoval = true)

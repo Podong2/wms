@@ -85,7 +85,7 @@ public class ProjectUser extends AbstractAuditingEntity implements Traceable {
         logRecord.setProjectId(this.getProject().getId());
         logRecord.setEntityName(ClassUtils.getShortName(this.getProject().getClass()));
         logRecord.setEntityField("projectUsers");
-        logRecord.setEntityId(this.getProject().getId());
+        logRecord.setEntityId(this.getUser().getId());
         logRecord.setEtcValue(this.getUserType().getCode());
 
         if (Traceable.PERSIST_TYPE_INSERT.equals(persisType)) {

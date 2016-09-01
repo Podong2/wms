@@ -63,10 +63,45 @@
                                                     <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.sender.profileImageId}}" ng-if="data.sender.profileImageId != null" uib-tooltip="{{data.sender.name}}">
                                                 </li>
                                             </ul>
-                                            <div>{{data.notificationConfig}}</div>
+                                            <div>
+                                                <!--{{data.notificationConfig}}-->
+
+                                                <span translate="audit.entity.task" ng-if="data.entityField == null || data.entityField == ''">엔티티</span>
+                                                <span translate="audit.field.task.{{data.entityField}}" ng-if="(data.entityField != null && data.entityField != '') && data.entityField != 'taskUsers'">필드</span>
+                                                <span translate="audit.field.task.{{data.etcValue}}"  ng-if="(data.entityField != null && data.entityField != '') && data.entityField == 'taskUsers'">필드</span>
+                                                <span translate="audit.persist-type.{{data.persistType}}">유형</span>
+                                                <span ng-if="data.entityField != 'taskAttachedFiles' && data.entityField != 'taskRepeatSchedule' && data.entityField != 'contents'">
+                                                    <span ng-if="data.entityField == 'importantYn'">
+                                                        <span ng-if="data.entityValue == 'true'">
+                                                            활성
+                                                        </span>
+                                                        <span ng-if="data.entityValue == 'false'">
+                                                            비활성
+                                                        </span>
+                                                    </span>
+                                                    <span ng-if="data.entityField != 'importantYn'">
+                                                        {{data.entityValue}}
+                                                    </span>
+                                                </span>
+                                                <span ng-if="data.entityField == 'taskAttachedFiles' && data.entityField != 'taskRepeatSchedule' && data.entityField != 'contents'">
+
+                                                    <span ng-if="data.persistType == 'INSERT' || data.persistType == 'UPDATE'">
+                                                        <i class="fa fa-paperclip"></i>
+                                                        <a ng-click="vm.fileDownLoad(data.attachedFileId)">{{data.entityValue}}</a>
+                                                    </span>
+                                                    <span ng-if="data.persistType == 'DELETE'">
+                                                        {{data.entityValue}}
+                                                    </span>
+                                                </span>
+                                                <br/>
+
+                                            </div>
                                         </div>
                                         <div>
-                                            일정 {{data.taskDTO.startDate}} ~ {{data.taskDTO.endDate}}
+                                            일정
+
+                                            <span ng-if="data.taskDTO.startDate == '' && data.taskDTO.endDate == ''">미정</span>
+                                            <span ng-if="data.taskDTO.startDate != '' || data.taskDTO.endDate != ''">{{data.taskDTO.startDate | date : 'yyyy-MM-dd'}} ~ {{data.taskDTO.endDate | date : 'yyyy-MM-dd'}}</span>
                                         </div>
                                     </div>
                                 </div>

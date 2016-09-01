@@ -40,6 +40,8 @@ public class NotificationDTO implements Serializable {
 
     private String entityField;
 
+    private String persistType;
+
     private TaskDTO taskDTO;
 
     private ProjectDTO projectDTO;
@@ -194,6 +196,14 @@ public class NotificationDTO implements Serializable {
 
     public void setSender(UserDTO sender) {
         this.sender = sender;
+    }
+
+    public String getPersistType() {
+        return persistType;
+    }
+
+    public void setPersistType(String persistType) {
+        this.persistType = persistType;
     }
 
     @Override

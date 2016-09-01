@@ -72,7 +72,7 @@ public class RelatedTask extends AbstractAuditingEntity implements Traceable {
         logRecord.setTaskId(this.getTask().getId());
         logRecord.setEntityName(ClassUtils.getShortName(this.getTask().getClass()));
         logRecord.setEntityField("relatedTasks");
-        logRecord.setEntityId(this.getTask().getId());
+        logRecord.setEntityId(this.getRelatedTask().getId());
 
         if (Traceable.PERSIST_TYPE_INSERT.equals(persisType)) {
             logRecord.setNewValue(this.getRelatedTask().getName());

@@ -71,7 +71,7 @@ public class TaskProject extends AbstractAuditingEntity implements Traceable {
         logRecord.setTaskId(this.getTask().getId());
         logRecord.setEntityName(ClassUtils.getShortName(this.getTask().getClass()));
         logRecord.setEntityField("taskProjects");
-        logRecord.setEntityId(this.getTask().getId());
+        logRecord.setEntityId(this.getProject().getId());
 
         if (Traceable.PERSIST_TYPE_INSERT.equals(persisType)) {
             logRecord.setNewValue(this.getProject().getName());

@@ -48,12 +48,6 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
         ,@AttributeOverride(name="endDate", column=@Column(name="end_date"))})
     private Period period;
 
-//    @Column(name = "start_date")
-//    private String startDate;
-//
-//    @Column(name = "end_date")
-//    private String endDate;
-
     @Column(name = "contents")
     private String contents;
 
@@ -82,7 +76,7 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
     private Boolean templateYn = Boolean.FALSE;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
-    @OrderBy(value = "id asc")
+    @OrderBy(value = "id ASC")
     @JsonIgnore
     private Set<TaskUser> taskUsers = new HashSet<>();
 

@@ -78,6 +78,9 @@ public class Notification extends AbstractAuditingEntity implements Serializable
     @Column(name = "etc_value")
     private String etcValue;
 
+    @Column(name = "persist_type")
+    private String persistType;
+
     @Column(name = "attached_file_id")
     private Long attachedFileId;
 
@@ -222,6 +225,14 @@ public class Notification extends AbstractAuditingEntity implements Serializable
 
     public void setSender(Long sender) {
         this.sender = sender;
+    }
+
+    public String getPersistType() {
+        return persistType;
+    }
+
+    public void setPersistType(String persistType) {
+        this.persistType = persistType;
     }
 
     public void addNotificationReceive(Long recvUserId) {

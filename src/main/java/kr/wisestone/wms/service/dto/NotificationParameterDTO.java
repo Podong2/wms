@@ -1,8 +1,5 @@
 package kr.wisestone.wms.service.dto;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 import kr.wisestone.wms.common.constant.NotificationConfig;
 import kr.wisestone.wms.common.util.ConvertUtil;
 import kr.wisestone.wms.domain.Notification;
@@ -12,8 +9,6 @@ import kr.wisestone.wms.web.rest.dto.TaskDTO;
 import kr.wisestone.wms.web.rest.dto.UserDTO;
 import lombok.Data;
 
-import javax.annotation.Nullable;
-import javax.persistence.Column;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -49,6 +44,8 @@ public class NotificationParameterDTO {
 
     private String etcValue;
 
+    private String persistType;
+
     NotificationParameterDTO() {}
 
     public NotificationParameterDTO(NotificationConfig notificationConfig, String notificationMethod, Map<String, Object> contents
@@ -76,6 +73,7 @@ public class NotificationParameterDTO {
         this.setEntityName(traceLog.getEntityName());
         this.setEntityValue(traceLog.getNewValue());
         this.setEtcValue(traceLog.getEtcValue());
+        this.setPersistType(traceLog.getPersistType());
     }
 
     public NotificationParameterDTO(NotificationConfig notificationConfig, String notificationMethod, String title, Map<String, Object> contents
@@ -139,6 +137,7 @@ public class NotificationParameterDTO {
         notification.setEntityName(this.getEntityName());
         notification.setEntityValue(this.getEntityValue());
         notification.setEtcValue(this.getEtcValue());
+        notification.setPersistType(this.getPersistType());
 
         notification.addNotificationReceive(this.toUsers.stream().map(User::getId).collect(Collectors.toList()));
 
