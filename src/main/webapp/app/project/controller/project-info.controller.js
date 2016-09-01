@@ -98,7 +98,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
 
 
                 vm.coumplatePercent= {
-                    width : Math.floor(vm.info.completeCount / vm.tasks.length * 100) + '%'
+                    width : vm.tasks.length == 0 ? '0%' : Math.floor(vm.info.completeCount / vm.tasks.length * 100) + '%'
                 };
 
                 $scope.pieData = [
