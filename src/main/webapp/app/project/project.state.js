@@ -82,9 +82,12 @@
         })
         .state('my-project-functions', { // ui router에서 호출받을 state name 설정
             parent: 'app',
-            url: '/myProjectFunctions/:id', // 표현 url 설정
+            url: '/myProjectFunctions/:projectId', // 표현 url 설정
             data: {
                 authorities: []
+            },
+            params : {
+              projectId : ''
             },
             views: {//
                 'content@app': {//

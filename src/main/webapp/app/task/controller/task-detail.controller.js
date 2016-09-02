@@ -27,14 +27,47 @@
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
 
+        // bootstrap file uploader plugin load
+        //$("#input-4").fileinput({
+        //    showCaption: false, showUpload: false, uploadUrl:"1", uploadAsync: false
+        //});
+        $("#input-5").fileinput({
+            showCaption: false, showUpload: false, uploadUrl:"1", uploadAsync: false
+        });
 
-        vm.task = entity;
+
+        vm.previewFIle = {
+            caption: '',
+            size: '',
+            url: '',
+            key: ''
+        };
+        vm.previewFIles=[];
+        vm.previewFIleUrl=[];
+        vm.task = getTask();
         vm.date = '';
         vm.assigneeUsers = [];
         vm.logArrayData = [];
         vm.codes = Code.query();
         vm.commentList = [];
         vm.projectList=[];
+
+
+
+        function getTask(){
+            vm.taskFiles = entity.attachedFiles;
+            angular.forEach(vm.taskFiles, function(value, index){
+                vm.previewFIle.caption = value.attachedFile.name;
+                vm.previewFIle.size = value.attachedFile.size;
+                vm.previewFIle.url = window.location.origin + "/api/attachedFile/" + value.attachedFile.id;
+                vm.previewFIle.key = value.attachedFile.id;
+                vm.previewFIles.push(vm.previewFIle);
+                vm.previewFIleUrl.push(vm.previewFIle.url);
+            });
+            $log.debug("vm.previewFIles : ", vm.previewFIles)
+            $log.debug("vm.previewFIleUrl : ", vm.previewFIleUrl)
+            return entity;
+        }
 
         TaskListSearch.TaskAudigLog({'entityId' : vm.task.id, 'entityName' : 'Task'}).then(function(result){
             vm.TaskAuditLog = result;
@@ -43,14 +76,31 @@
                     vm.commentList.push(val);
                 }
             });
-            $log.debug("vm.TaskAuditLog : ", vm.TaskAuditLog)
-            $log.debug("vm.commentList : ", vm.commentList)
+
+            $("#input-4").fileinput({
+                uploadUrl: "1",
+                uploadAsync: false,
+                overwriteInitial: false,
+                showCaption: false,
+                showUpload: false,
+                initialPreview: vm.previewFIleUrl,
+                initialPreviewAsData: true, // defaults markup
+                initialPreviewFileType: 'image', // image is the default and can be overridden in config below
+                initialPreviewConfig: vm.previewFIles,
+                uploadExtraData: {
+                    img_key: "1000",
+                    img_keywords: "happy, nature",
+                }
+            }).on('filesorted', function(e, params) {
+                console.log('File sorted params', params);
+            }).on('fileuploaded', function(e, params) {
+                console.log('File uploaded params', params);
+            });
         });
 
         vm.responseData = _.clone(vm.task);
 
         $log.debug("info :", vm.task)
-        $log.debug("$stateParams.listType :", $stateParams.listType);
         vm.listType = $stateParams.listType;
 
         // 갤러리 썸네일 이미지
@@ -330,7 +380,6 @@
 
         /* user picker */
         $scope.findUsers = function(name) {
-            $log.debug("name - : ", name);
             var deferred = $q.defer();
             findUser.findByName(name).then(function(result){
                 deferred.resolve(result);
@@ -341,7 +390,6 @@
 
         /* task picker */
         $scope.findTasks = function(name) {
-            $log.debug("name - : ", name);
             var deferred = $q.defer();
             FindTasks.findByName(name).then(function(result){
                 deferred.resolve(result);
@@ -358,7 +406,6 @@
             vm.task.taskRepeatSchedule = vm.taskRepeatSchedule;
 
             $log.debug("vm.task ;::::::", vm.task);
-            $log.debug("$scope.files ;::::::", $scope.files);
             TaskEdit.uploadTask({
                 method : "POST",
                 file : $scope.files,
@@ -386,6 +433,41 @@
 
         function successTask(result){
             vm.task = result;
+
+            vm.taskFiles = vm.task.attachedFiles;
+            angular.forEach(vm.taskFiles, function(value, index){
+                vm.previewFIle.caption = value.attachedFile.name;
+                vm.previewFIle.size = value.attachedFile.size;
+                vm.previewFIle.url = window.location.origin + "/api/attachedFile/" + value.attachedFile.id;
+                vm.previewFIle.key = value.attachedFile.id;
+                vm.previewFIles.push(vm.previewFIle);
+                vm.previewFIleUrl.push(vm.previewFIle.url);
+            });
+
+            $("#input-4").fileinput({
+                uploadUrl: "1",
+                uploadAsync: false,
+                overwriteInitial: false,
+                showCaption: false,
+                showUpload: false,
+                initialPreview: vm.previewFIleUrl,
+                initialPreviewAsData: true, // defaults markup
+                initialPreviewFileType: 'image', // image is the default and can be overridden in config below
+                initialPreviewConfig: vm.previewFIles,
+                uploadExtraData: {
+                    img_key: "1000",
+                    img_keywords: "happy, nature",
+                }
+            }).on('filesorted', function(e, params) {
+                console.log('File sorted params', params);
+            }).on('fileuploaded', function(e, params) {
+                console.log('File uploaded params', params);
+            });
+
+
+            $log.debug("내작업 정보 : ", vm.task);
+
+
         }
         function erorrTask(){
 
@@ -416,13 +498,6 @@
 
         //setAttachedFiles(vm.task.attachedFiles); // 첨부파일목록 겔러리 세팅
 
-        // bootstrap file uploader plugin load
-        $("#input-4").fileinput({
-            showCaption: false, showUpload: false, uploadUrl:"1", uploadAsync: false
-        });
-        $("#input-5").fileinput({
-            showCaption: false, showUpload: false, uploadUrl:"1", uploadAsync: false
-        });
 
         vm.mentionIds = []; // mention ids
         function createComment(){
