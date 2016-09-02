@@ -1,0 +1,36 @@
+<owl-alert-close></owl-alert-close>
+<div class="modal-header modal-edit" draggable="">
+    <button type="button" class="close" ng-click="vm.cancel()">&times;</button>
+    <h4 class="modal-title" translate="작업 현황"></h4>
+</div>
+
+<div class="modal-body" dynamic-scroll style="max-height: none">
+
+    <ul>
+        <li>
+            <a data-ui-sref="my-project({id:list.id})">
+                <span class="menu-item-parent">{{vm.taskProgressStatus.name}}</span>
+            </a>
+            <ul uib-dropdown-menu>
+                <li data-ui-sref-active="active"  ng-repeat="child in vm.taskProgressStatus.subTasks track by $index" ng-include="'nodes_renderer.html'">
+                </li>
+            </ul>
+        </li>
+    </ul>
+
+</div>
+<div class="modal-footer">
+    <button type="button" class="btn btn_icon btn_customs2" ng-click="vm.cancel()" owl-btn-cancel></button>
+</div>
+
+
+<script type="text/ng-template" id="nodes_renderer.html">
+    <a>
+        ㄴ  <span translate="{{child.name}}">{{child.name}}</span>
+    </a>
+    <ul>
+        <li ng-repeat="child in child.subTasks track by $index" ng-include="'nodes_renderer.html'">
+
+        </li>
+    </ul>
+</script>

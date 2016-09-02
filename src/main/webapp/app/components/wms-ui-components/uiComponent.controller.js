@@ -555,7 +555,7 @@
 
         // modal open
         function modalOpen(){
-            ModalService.open("title1", "content1", "alertModal.html");
+            ModalService.open("title1", "content1", "app/components/modal/templates/alertModal.html");
         }
 
         // xeditable datePicker open

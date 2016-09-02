@@ -31,12 +31,11 @@
         function taskAddModalOpen(){
             var editModalConfig = {
                 size : "lg",
-                url : "taskAdd.html",
+                url : "app/task/html/modal/taskAdd.html",
                 ctrl : "taskEditCtrl"
             };
 
             ModalService.openModal(editModalConfig);
-            //ModalService.open("title1", "content1", "taskAdd.html", 'TaskDialogController');
         }
 
         connectedUserList();

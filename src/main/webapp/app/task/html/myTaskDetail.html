@@ -159,7 +159,7 @@
                         <label for="subTaskAdd" class="cursor" ng-click="vm.relatedTaskOpen = !vm.relatedTaskOpen"><i class="fa fa-share-alt"></i> 참조 작업</label>
                     </div>
                     <div class="col-md-2">
-                        <label for="subTaskAdd" class="cursor" ><i class="fa fa-share-alt"></i> 작업 현황</label>
+                        <label for="subTaskAdd" class="cursor" ng-click="vm.getTaskProgressStatus()"><i class="fa fa-share-alt"></i> 작업 현황</label>
                     </div>
                 </div>
                 <div class="sub-task-area"  style="border-top: 1px solid #ddd; padding: 5px" ng-class="vm.subTaskOpen ? 'on' : ''">
@@ -220,7 +220,7 @@
             </div>
         </div>
 
-        <div ><!-- class="task-file-area"  ng-class="vm.fileAreaOpen ? 'on' : ''" -->
+        <div class="task-file-area"  ng-class="vm.fileAreaOpen ? 'on' : ''"><!--  -->
             <input id="input-4" name="input4[]" type="file" multiple class="file-loading" get-files>
             <!--<input id="input-pa" name="input-pa[]" type="file" multiple class="file-loading" get-files>-->
 
