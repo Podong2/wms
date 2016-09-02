@@ -1,7 +1,6 @@
 /**
  * Created by Jeong on 2016-03-16.
  */
-(function() {
 'use strict';
 
 angular.module('wmsApp')
@@ -12,6 +11,8 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
             vm.userInfo = Principal.getIdentity();
             vm.projectAttachedList = [];
             vm.fileList = [];
+            vm.files = [];
+            vm.filesCopy = [];
             vm.imageList = [];
             vm.wmsTableData = [];
             vm.images = [];
@@ -28,45 +29,32 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
                 { status:  true },  // 파일
             ];
 
-            //var files = '';
-            //$scope.uploadFile = function(event){
-            //    files = event.target.files;
-            //
-            //    projectFIleUpload(files)
-            //};
-
-            // bootstrap file uploader plugin load
-            $("#input-4").fileinput({
-                showCaption: false, showUpload: false, uploadUrl:"1", uploadAsync: false
-            });
-
             // 파일 목록 라이브러리에서 가져오기
             $scope.$on('setFiles', function (event, args) {
-                vm.files = [];
-                angular.forEach(args, function(value){
-                    vm.files.push(value)
-                });
-                $log.debug("파일 목록 : ", vm.files);
-                projectFIleUpload(vm.files)
+                if(vm.files.length == 0){
+                    vm.files = [];
+                    angular.forEach(args, function(value){
+                        vm.files.push(value)
+                    });
+                    $log.debug("파일 목록 : ", vm.files);
+                    //projectFIleUpload();
+                }
             });
 
-
-            function projectFIleUpload(files){
-                $log.debug("files, ", files);
+            function projectFIleUpload(){
+                $log.debug("파일 목록 : ", vm.files);
                 ProjectEdit.createProjectFiles({
                     method : "POST",
-                    file : files,
+                    file : vm.files,
                     //	data 속성으로 별도의 데이터 전송
                     fields : {projectId : $stateParams.id},
                     fileFormDataName : "file"
                 }).then(function (response) {
                     toastr.success('프로젝트 파일 생성 완료', '프로젝트 파일 생성 완료');
-
+                    getFileList();
                 });
 
             }
-
-
 
             //  탭메뉴 영역 표시 여부 지정
             function tabDisplay (number, type) {
@@ -82,15 +70,23 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
                 vm.listType = type;
             }
 
-            ProjectAttachedList.query({id : $stateParams.id}, onProjectSuccess, onProjectError);
+            // 프로젝트 파일 목록 불러오기
+            function getFileList(){
+                ProjectAttachedList.query({id : $stateParams.id}, onProjectSuccess, onProjectError);
+            }
+            getFileList();
             function onProjectSuccess (result) {
                 vm.projectAttachedList = result;
+                vm.imageList =[];
+                vm.fileList =[];
                 angular.forEach(result, function(value, index){
                     vm.projectAttachedList[index].name = value.attachedFile.name;
                     vm.projectAttachedList[index].id = value.attachedFile.id;
                     vm.projectAttachedList[index].size = byteCalculation(value.attachedFile.size);
                     vm.projectAttachedList[index].contentType = value.attachedFile.contentType;
                 });
+
+                // 이미지와 파일 나누기
                 angular.forEach(vm.projectAttachedList, function(value, index){
                     var contentType = value.contentType.split('/');
                     if(contentType[0] == 'image'){
@@ -103,6 +99,8 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
                 $log.debug("프로젝트 파일 목록 : ", vm.fileList);
                 $log.debug("프로젝트 이미지 목록 : ", vm.imageList);
 
+
+                // ng-gallery 주입
                 angular.forEach(vm.imageList, function(val, idx){
                         vm.image = {
                             thumb: window.location.origin + "/api/attachedFile/" + val.id,
@@ -129,17 +127,10 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
                     return (bytes/Math.pow(1024, Math.floor(e))).toFixed(2)+" "+s[e];
             }
 
-            // 첨부 파일 다운로드 (커스텀 디렉티브에 존재)
-            //function fileDownLoad(key){
-            //    $log.debug("다운로드")
-            //    var iframe = $("<iframe/>").hide().appendTo("body").load(function() {
-            //        iframe.remove();
-            //    }).attr("src", "/api/attachedFile/" + key);
-            //}
-
+            // 파일 단일 삭제
             function deleteAttachedFile(){
                 ProjectEdit.deleteAttachedFile(vm.removeFile).then(function(result){
-
+                    getFileList();
                 });
             }
 
@@ -188,4 +179,3 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
 
 
         }
-})();

@@ -5,7 +5,7 @@
         <div class="col-md-12">
             <div class="col-md-9">
                 <i class="fa fa-exclamation-circle task-circle" ng-class="vm.task.importantYn ? 'on' : ''" ng-click="vm.task.importantYn = !vm.task.importantYn"></i>
-                <input type="text" class="taskAddInput" ng-model="vm.task.name" enter-submit="vm.save()" placeholder="Task"/>
+                <input type="text" class="taskAddInput" ng-model="vm.task.name" maxlength="35" enter-submit="vm.save()" placeholder="Task"/>
             </div>
             <div class="col-md-3">
                 <span class="pull-right taskOptionBtnArea">
