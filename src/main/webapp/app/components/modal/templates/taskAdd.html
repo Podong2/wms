@@ -25,9 +25,8 @@
             <label for="addProject" class="cursor projectValueSection" ><i class="fa fa-plus" id="addProject"></i> <span project-picker-edit-toggle>프로젝트/폴더 선택</span></label>
                         <span class="task-project" ng-repeat="project in vm.task.taskProjects">
                             {{project.name}}
-                            <i class="fa fa-close"></i>
+                            <i class="fa fa-close" ng-click="project"></i>
                         </span>
-
             <div class="project-picker projectPickerSection">
                 <div style="width: 300px;">
                     <div style="width: 300px;">
