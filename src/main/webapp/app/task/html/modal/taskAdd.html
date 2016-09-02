@@ -107,13 +107,17 @@
 
 
                         <div id="repeatAddSection">
+                            <i class="icon-append fa fa-calendar" style="float: left; padding: 8px;"></i>
+                            <i class="icon-append glyphicon glyphicon-retweet" ng-if="vm.taskRepeatSchedule.repeatType != '' && vm.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i>
                             <div class="form-group" style="margin-bottom: 0">
-                                <p class="input-group wms-form">
-                                    <label class="input"> <i class="icon-append fa fa-calendar" style="z-index: 1000"></i>
-                                        <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="endDate" repeat-picker-add-toggle style="height: 30px; width: 100%">
+
+                                <span class="input-group wms-form">
+                                    <label class="input">
+                                        <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="endDate" repeat-picker-add-toggle style="height: 30px; width: 100%; border : 0">
                                     </label>
+
                                     <span class="dueDateValues" picker-toggle>{{vm.task.startDate + " ~ " + vm.task.endDate}}</span>
-                                </p>
+                                </span>
                             </div>
 
                             <!-- 달력 팝업 -->
