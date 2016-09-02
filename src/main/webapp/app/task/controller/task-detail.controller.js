@@ -358,6 +358,7 @@
             vm.task.taskRepeatSchedule = vm.taskRepeatSchedule;
 
             $log.debug("vm.task ;::::::", vm.task);
+            $log.debug("$scope.files ;::::::", $scope.files);
             TaskEdit.uploadTask({
                 method : "POST",
                 file : $scope.files,

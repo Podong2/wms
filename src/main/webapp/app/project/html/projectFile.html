@@ -23,9 +23,16 @@
         <div class="project-file-btn-area">
             <div class="pull-right">
                 <button type='button' class='btn'><i class='fa fa-download'></i></button>
-                <button type='button' class='btn'><i class='fa fa-upload'></i></button>
+                <label for="input-4" class="cursor"><span type='button' class='btn'><i class='fa fa-upload'></i></span></label>
                 <button type='button' class='btn'><i class='fa fa-trash'></i></button>
+                <!--<input type="file" custom-on-change="uploadFile"  id="uploadFile" style="display: none"/> &lt;!&ndash; multiple 다중파일 오류나서 예비로 단일 파일만 &ndash;&gt;-->
+                <input id="input-4" name="input4[]" type="file" multiple class="file-loading" get-files  style="display: none">
             </div>
+            <style>
+                .file-input{
+                    display: none;
+                }
+            </style>
         </div>
         <span style="clear: both"></span>
         <wms-table ng-model="vm.fileList" table-configs="vm.tableConfigs" update-callback="updateCallback" controller-name="projectFileCtrl"></wms-table>

@@ -20,13 +20,51 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
                 entityId : '',
                 attachedFileId : ''
             };
-            $scope.test= '12312313'
+
             vm.tabDisplay = tabDisplay;
 
             vm.tabArea = [
                 { status: false },  // 이미지
                 { status:  true },  // 파일
             ];
+
+            //var files = '';
+            //$scope.uploadFile = function(event){
+            //    files = event.target.files;
+            //
+            //    projectFIleUpload(files)
+            //};
+
+            // bootstrap file uploader plugin load
+            $("#input-4").fileinput({
+                showCaption: false, showUpload: false, uploadUrl:"1", uploadAsync: false
+            });
+
+            // 파일 목록 라이브러리에서 가져오기
+            $scope.$on('setFiles', function (event, args) {
+                vm.files = [];
+                angular.forEach(args, function(value){
+                    vm.files.push(value)
+                });
+                $log.debug("파일 목록 : ", vm.files);
+                projectFIleUpload(vm.files)
+            });
+
+
+            function projectFIleUpload(files){
+                $log.debug("files, ", files);
+                ProjectEdit.createProjectFiles({
+                    method : "POST",
+                    file : files,
+                    //	data 속성으로 별도의 데이터 전송
+                    fields : {projectId : $stateParams.id},
+                    fileFormDataName : "file"
+                }).then(function (response) {
+                    toastr.success('프로젝트 파일 생성 완료', '프로젝트 파일 생성 완료');
+
+                });
+
+            }
 
 
 
@@ -104,7 +142,6 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
 
                 });
             }
-
 
             vm.tableConfigs = [];
             vm.tableConfigs.push(tableService.getConfig("", "checked")

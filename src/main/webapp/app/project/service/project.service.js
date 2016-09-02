@@ -133,6 +133,7 @@
             uploadProject : uploadProject,
             singleUpload : singleUpload,
             createComment : createComment,
+            createProjectFiles : createProjectFiles,
             deleteAttachedFile : deleteAttachedFile
         };
         return service;
@@ -166,6 +167,14 @@
             parameter.url = "api/trace-log";
             return $upload.upload(parameter).then(function (response) {
                 $log.debug("프로젝트 코멘트 생성 결과 : ", response);
+                return response;
+            });
+        }
+
+        function createProjectFiles(parameter){
+            parameter.url = "api/projects/addProjectSharedAttachedFile";
+            return $upload.upload(parameter).then(function (response) {
+                $log.debug("프로젝트 파일 생성 결과 : ", response);
                 return response;
             });
         }
