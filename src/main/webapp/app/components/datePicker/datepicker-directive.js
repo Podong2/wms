@@ -66,21 +66,29 @@ repeatPickerAddToggle.$inject=['$timeout', '$rootScope'];
         return {
             restrict: 'A',
             link: function (scope, element) {
+                var displayYn = true;
+                element.on('click', function (_this) {
+                    displayYn = true;
+                    $timeout(function () {
+                        $(".startDate").focus();
+                    }, 400);
+                });
                 $('body').click(function (e) {
                     if ($('.repeat-add-section').addClass("on")) {
                         if (!$('#repeatAddSection').has(e.target).length) {
+                            $('.repeat-add-section').removeClass("on");
+                        }else if(displayYn){
+                            $('.repeat-add-section').addClass("on");
+                        }else if(!displayYn){
                             $('.repeat-add-section').removeClass("on");
                         }
                     }
                 });
                 $rootScope.$on('repeatClose', function () {
                     $('.repeat-add-section').removeClass("on");
+                    displayYn = false;
                 });
-                element.on('click', function (_this) {
-                    $timeout(function () {
-                        $(".startDate").focus();
-                    }, 400);
-                });
+
             }
         }
     }
