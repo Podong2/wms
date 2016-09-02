@@ -86,7 +86,7 @@ public class TaskForm {
             task.setStatus(status);
         } else {
             Code status = new Code();
-            status.setId(1L);
+            status.setId(Task.STATUS_ACTIVE);
             task.setStatus(status);
         }
 
@@ -194,6 +194,10 @@ public class TaskForm {
         }
 
         subTask.setPeriod(period);
+
+        Code status = new Code();
+        status.setId(Task.STATUS_ACTIVE);
+        subTask.setStatus(status);
 
         Task parent = new Task();
         parent.setId(this.getParentId());

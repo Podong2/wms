@@ -52,7 +52,7 @@ public class WidgetService {
         BooleanBuilder predicate = new BooleanBuilder();
 
         predicate.and($task.taskUsers.any().user.login.eq(loginUser.getLogin()).or($task.createdBy.eq(loginUser.getLogin())));
-        predicate.and($task.status.id.eq(1L));
+        predicate.and($task.status.id.eq(Task.STATUS_ACTIVE));
 
         if(widgetCondition.getProjectId() != null) {
             predicate.and($task.taskProjects.any().project.id.eq(widgetCondition.getProjectId()));
@@ -156,7 +156,7 @@ public class WidgetService {
             predicate.and($task.createdBy.eq(loginUser.getLogin()));
         }
 
-        predicate.and($task.status.id.eq(1L).or($task.status.id.eq(2L)));
+        predicate.and($task.status.id.eq(Task.STATUS_ACTIVE).or($task.status.id.eq(Task.STATUS_COMPLETE)));
         predicate.and($task.lastModifiedDate.goe(DateUtil.convertToZonedDateTime(startDate)));
         predicate.and($task.lastModifiedDate.loe(DateUtil.convertToZonedDateTime(endDate)));
 
@@ -168,6 +168,6 @@ public class WidgetService {
     }
 
     private Long getCompleteCountByList(List<Task> tasks) {
-        return tasks.stream().filter(taskDTO -> taskDTO.getStatus().getId().equals(2L)).count();
+        return tasks.stream().filter(taskDTO -> taskDTO.getStatus().getId().equals(Task.STATUS_COMPLETE)).count();
     }
 }

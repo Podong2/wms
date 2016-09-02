@@ -163,7 +163,7 @@ public class ProjectService {
         QProject $project = QProject.project;
 
         BooleanBuilder predicate = new BooleanBuilder();
-        predicate.and($project.status.id.eq(1L));
+        predicate.and($project.status.id.eq(Project.STATUS_ACTIVE));
         predicate.and($project.projectUsers.any().user.login.eq(login));
 
         predicate.and(
@@ -380,9 +380,9 @@ public class ProjectService {
         BooleanBuilder predicate = new BooleanBuilder();
 
         if("IN_PROGRESS".equalsIgnoreCase(listType)) {
-            predicate.and($project.status.id.eq(1L));
+            predicate.and($project.status.id.eq(Project.STATUS_ACTIVE));
         } else if("COMPLETION".equalsIgnoreCase(listType)) {
-            predicate.and($project.status.id.eq(2L));
+            predicate.and($project.status.id.eq(Project.STATUS_COMPLETE));
         }
 
         predicate.and($project.projectUsers.any().user.login.eq(login));
@@ -411,7 +411,7 @@ public class ProjectService {
 
             List<TaskDTO> taskDTOs = taskService.findTasksByProjectIds(getChildProjectIds(project));
 
-            Long taskCompleteCount = taskDTOs.stream().filter(taskDTO -> taskDTO.getStatusId().equals(2L)).count();
+            Long taskCompleteCount = taskDTOs.stream().filter(taskDTO -> taskDTO.getStatusId().equals(Task.STATUS_COMPLETE)).count();
             Long taskTotalCount = taskDTOs.stream().count();
 
             ProjectStatisticsDTO projectStatisticsDTO = new ProjectStatisticsDTO(projectDTO, childProjectCount, childFolderCount, taskCompleteCount, taskTotalCount);

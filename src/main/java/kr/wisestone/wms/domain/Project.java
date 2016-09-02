@@ -20,6 +20,11 @@ import java.util.stream.Collectors;
 @Document(indexName = "project")
 public class Project extends AbstractAuditingEntity implements Traceable {
 
+    public static final Long STATUS_ACTIVE = 1L;
+    public static final Long STATUS_COMPLETE = 2L;
+    public static final Long STATUS_HOLD = 3L;
+    public static final Long STATUS_CANCEL = 4L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.TABLE, generator = "projectSeqGenerator")
     @TableGenerator(name = "projectSeqGenerator"
