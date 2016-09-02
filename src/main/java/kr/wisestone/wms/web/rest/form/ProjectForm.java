@@ -74,7 +74,7 @@ public class ProjectForm {
             project.setStatus(status);
         } else {
             Code status = new Code();
-            status.setId(1L);
+            status.setId(Project.STATUS_ACTIVE);
 
             project.setStatus(status);
         }

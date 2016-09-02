@@ -11,13 +11,10 @@ import kr.wisestone.wms.service.TaskService;
 import kr.wisestone.wms.service.UserService;
 import kr.wisestone.wms.web.rest.condition.TaskCondition;
 import kr.wisestone.wms.web.rest.conversion.TaskRepeatScheduleDTOPropertyEditor;
-import kr.wisestone.wms.web.rest.dto.TaskListDTO;
-import kr.wisestone.wms.web.rest.dto.TaskRepeatScheduleDTO;
-import kr.wisestone.wms.web.rest.dto.TaskStatisticsDTO;
+import kr.wisestone.wms.web.rest.dto.*;
 import kr.wisestone.wms.web.rest.form.TaskForm;
 import kr.wisestone.wms.web.rest.util.HeaderUtil;
 import kr.wisestone.wms.web.rest.util.PaginationUtil;
-import kr.wisestone.wms.web.rest.dto.TaskDTO;
 import kr.wisestone.wms.web.rest.mapper.TaskMapper;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.MatchQueryBuilder;
@@ -267,6 +264,28 @@ public class TaskResource {
         log.debug("REST request to get Task : {}", id);
         TaskDTO taskDTO = taskService.findOneDTO(id);
         return Optional.ofNullable(taskDTO)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    /**
+     * GET  /tasks/subTaskState/:id : get the "id" task.
+     *
+     * @param id the id of the taskDTO to retrieve
+     * @return the ResponseEntity with status 200 (OK) and with body the taskDTO, or with status 404 (Not Found)
+     */
+    @RequestMapping(value = "/tasks/progressStatus/{id}",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<TaskProgressStatusDTO> getTaskProgressStatus(@PathVariable Long id) {
+        log.debug("REST request to get Task : {}", id);
+
+        TaskProgressStatusDTO taskProgressStatusDTO = taskService.getTaskProgressStatus(id);
+
+        return Optional.ofNullable(taskProgressStatusDTO)
             .map(result -> new ResponseEntity<>(
                 result,
                 HttpStatus.OK))

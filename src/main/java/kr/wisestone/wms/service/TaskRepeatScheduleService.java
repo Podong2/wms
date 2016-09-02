@@ -105,7 +105,7 @@ public class TaskRepeatScheduleService {
 //        repeatTask.setEndDate(today);
 
         Code status = new Code();
-        status.setId(1L);
+        status.setId(Task.STATUS_ACTIVE);
         repeatTask.setStatus(status);
 
         if(task.getTaskProjects() != null && !task.getTaskProjects().isEmpty())

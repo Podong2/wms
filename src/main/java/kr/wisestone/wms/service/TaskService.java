@@ -12,10 +12,7 @@ import kr.wisestone.wms.repository.search.TaskSearchRepository;
 import kr.wisestone.wms.security.SecurityUtils;
 import kr.wisestone.wms.web.rest.condition.ProjectTaskCondition;
 import kr.wisestone.wms.web.rest.condition.TaskCondition;
-import kr.wisestone.wms.web.rest.dto.TaskDTO;
-import kr.wisestone.wms.web.rest.dto.TaskRepeatScheduleDTO;
-import kr.wisestone.wms.web.rest.dto.TaskStatisticsDTO;
-import kr.wisestone.wms.web.rest.dto.UserDTO;
+import kr.wisestone.wms.web.rest.dto.*;
 import kr.wisestone.wms.web.rest.form.TaskForm;
 import kr.wisestone.wms.web.rest.mapper.ProjectMapper;
 import kr.wisestone.wms.web.rest.mapper.TaskMapper;
@@ -259,23 +256,23 @@ public class TaskService {
             case TaskCondition.LIST_TYPE_TODAY:
 
                 predicate.and($task.period.startDate.loe(today).or($task.period.endDate.isNull()));
-                predicate.and($task.status.isNull().or($task.status.id.eq(1L)));
+                predicate.and($task.status.isNull().or($task.status.id.eq(Task.STATUS_ACTIVE)));
 
                 break;
             case TaskCondition.LIST_TYPE_SCHEDULED:
 
                 predicate.and($task.period.startDate.gt(today));
-                predicate.and($task.status.id.eq(1L));
+                predicate.and($task.status.id.eq(Task.STATUS_ACTIVE));
 
                 break;
             case TaskCondition.LIST_TYPE_HOLD:
 
-                predicate.and($task.status.id.eq(3L));
+                predicate.and($task.status.id.eq(Task.STATUS_HOLD));
 
                 break;
             case TaskCondition.LIST_TYPE_COMPLETE:
 
-                predicate.and($task.status.id.eq(2L));
+                predicate.and($task.status.id.eq(Task.STATUS_COMPLETE));
                 break;
         }
 
@@ -629,5 +626,47 @@ public class TaskService {
     @Transactional
     public Task save(Task task) {
         return taskRepository.save(task);
+    }
+
+    @Transactional(readOnly = true)
+    public TaskProgressStatusDTO getTaskProgressStatus(Long id) {
+
+        if(id == null)
+            throw new CommonRuntimeException("error.task.targetIdIsNull");
+
+        Task task = taskRepository.findOne(id);
+
+        if(task == null)
+            throw new CommonRuntimeException("error.task.notFound");
+
+        TaskDTO taskDTO = this.taskMapper.taskToTaskDTO(task);
+        this.copyTaskRelationProperties(task, taskDTO);
+
+        List<TaskDTO> taskDTOs = Lists.newArrayList();
+        taskDTOs.add(taskDTO);
+
+        this.getSubTasksHierarchy(taskDTO, Lists.newArrayList(task.getSubTasks()), taskDTOs);
+
+        Long completeCount = taskDTOs.stream().filter(subTask -> subTask.getStatusId().equals(Task.STATUS_COMPLETE)).count();
+
+        return new TaskProgressStatusDTO(taskDTO, (long) taskDTOs.size(), completeCount);
+    }
+
+    private void getSubTasksHierarchy(TaskDTO taskDTO, List<Task> subTasks, List<TaskDTO> taskDTOs) {
+
+        List<TaskDTO> subTaskDTOs = Lists.newArrayList();
+
+        for(Task subTask : subTasks) {
+            TaskDTO subTaskDTO = this.taskMapper.taskToTaskDTO(subTask);
+            this.copyTaskRelationProperties(subTask, subTaskDTO);
+
+            this.getSubTasksHierarchy(subTaskDTO, Lists.newArrayList(subTask.getSubTasks()), taskDTOs);
+
+            subTaskDTOs.add(subTaskDTO);
+
+            taskDTOs.add(subTaskDTO);
+        }
+
+        taskDTO.setSubTasks(subTaskDTOs);
     }
 }
