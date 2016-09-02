@@ -17,12 +17,19 @@ function wmsAddProjectElement($log, $compile) {
                 $scope.addProjectId = function(id){
                     $scope.taskProject.push(id);
                 }
+                $scope.projectDelete = function(id, event){
+                    event.target.parentElement.remove()
+                    var index = $scope.taskProject.indexOf(id);
+                    if(index > -1){
+                        $scope.taskProject.splice(index, 1);
+                    }
+                }
 
             }],
             link: function (scope, element, attrs) {
                 element.on('click', function(){
                     if(scope.taskProject.indexOf(scope.project.id) == -1){
-                        var template = '<span class="task-project" ng-click="vm.deleteProjectElement($this)">'+scope.project.name+'<i class="fa fa-close"></i></span>';
+                        var template = '<span class="task-project" ng-click="vm.deleteProjectElement($this)">'+scope.project.name+'<i class="fa fa-close" ng-click="projectDelete(project.id, $event)"></i></span>';
                         scope.addProjectId(scope.project.id);
                         var linkFn = $compile(template);
                         var content = linkFn(scope);

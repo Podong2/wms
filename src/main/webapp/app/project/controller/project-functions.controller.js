@@ -9,7 +9,7 @@ projectFunctionsCtrl.$inject=['$state', '$stateParams', '$log', '$scope', '$time
         function projectFunctionsCtrl($state, $stateParams, $log, $scope, $timeout) {
             var vm = this;
             $log.debug("function $stateParams : ", $stateParams);
-            //vm.projectId = $stateParams.projectId;
+            vm.projectId = $stateParams.projectId;
 
             vm.stateInfo = $state.current.name;
             vm.state = $state.get(vm.stateInfo);

@@ -22,6 +22,10 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
                 attachedFileId : ''
             };
 
+            $("#input-4").fileinput({
+                showCaption: false, showUpload: false, uploadUrl:"1", uploadAsync: false
+            });
+
             vm.tabDisplay = tabDisplay;
 
             vm.tabArea = [
