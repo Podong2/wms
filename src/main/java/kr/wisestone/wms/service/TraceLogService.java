@@ -200,7 +200,7 @@ public class TraceLogService {
             TraceLogDTO traceLogDTO = traceLogMapper.traceLogToTraceLogDTO(traceLog);
 
             if("Task".equals(traceLog.getEntityName())) {
-                Task task = taskService.findOne(traceLog.getEntityId());
+                Task task = taskService.findOne(traceLog.getTaskId());
 
                 traceLogDTO.setTaskName(task.getName());
             }
