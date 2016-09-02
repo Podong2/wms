@@ -62,7 +62,7 @@ public class ProjectForm {
 
         project.setPeriod(period);
 
-        if(StringUtils.hasText(this.contents))
+        if(StringUtils.hasText(this.contents) && !"null".equalsIgnoreCase(this.contents))
             project.setContents(this.contents);
 
         project.setFolderYn(folderYn);

@@ -75,7 +75,7 @@ public class TaskForm {
 
         task.setPeriod(period);
 
-        if(StringUtils.hasText(this.contents))
+        if(StringUtils.hasText(this.contents) && !"null".equalsIgnoreCase(this.contents))
             task.setContents(this.contents);
 
         task.setImportantYn(importantYn);
