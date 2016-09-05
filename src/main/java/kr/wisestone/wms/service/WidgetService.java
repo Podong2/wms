@@ -93,7 +93,7 @@ public class WidgetService {
 
         for(Task task : result) {
 
-            TaskDTO taskDTO = taskMapper.taskToTaskDTO(task);
+            TaskDTO taskDTO = new TaskDTO(task);
 
             taskService.copyTaskRelationProperties(task, taskDTO);
 

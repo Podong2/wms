@@ -39,7 +39,7 @@ public class TaskAttachedFile extends AbstractAuditingEntity implements Traceabl
     @JsonIgnore
     private Task task;
 
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "attached_file_id")
     private AttachedFile attachedFile;
 

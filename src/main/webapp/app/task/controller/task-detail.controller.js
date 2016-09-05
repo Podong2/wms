@@ -82,12 +82,12 @@
             // 파일 목록 주입
             vm.taskFiles = entity.attachedFiles;
             angular.forEach(vm.taskFiles, function(value, index){
-                previewFile.caption = value.attachedFile.name;
+                previewFile.caption = value.name;
                 previewFile.locationType = 'Task';
                 previewFile.locationId = value.id;
-                previewFile.size = value.attachedFile.size;
-                previewFile.url = window.location.origin + "/api/attachedFile/" + value.attachedFile.id;
-                previewFile.id = value.attachedFile.id;
+                previewFile.size = value.size;
+                previewFile.url = window.location.origin + "/api/attachedFile/" + value.id;
+                previewFile.id = value.id;
                 var fileInfo = _.clone(previewFile);
                 vm.previewFiles.push(fileInfo);
                 vm.previewFileUrl.push(previewFile.url);
@@ -468,10 +468,12 @@
             vm.previewFiles = [];
             vm.previewFileUrl = [];
             angular.forEach(vm.taskFiles, function(value, index){
-                previewFile.caption = value.attachedFile.name;
-                previewFile.size = value.attachedFile.size;
-                previewFile.url = window.location.origin + "/api/attachedFile/" + value.attachedFile.id;
-                previewFile.key = value.attachedFile.id;
+                previewFile.caption = value.name;
+                previewFile.locationType = 'Task';
+                previewFile.locationId = value.id;
+                previewFile.size = value.size;
+                previewFile.url = window.location.origin + "/api/attachedFile/" + value.id;
+                previewFile.id = value.id;
                 var fileInfo = _.clone(previewFile);
                 vm.previewFiles.push(fileInfo);
                 vm.previewFileUrl.push(previewFile.url);

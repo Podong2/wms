@@ -42,9 +42,14 @@
                                             <div data-ng-repeat="project in vm.projectList">
                                                 <div class="project-picker-list-item" ng-click="vm.project.parentProjectIds = project.id">
                                                     <div>
-                                                        <div class="project-picker-list-item-title">{{project.name}} || {{project.id}}</div>
+                                                        <div class="project-picker-list-item-title">{{project.name}}</div>
                                                         <div class="project-picker-list-item-path" >
-                                                            <div>My Project</div>
+                                                            <div>
+                                                                <span ng-repeat="projectParent in project.projectParents track by $index">
+                                                                    <span ng-if="$index != 0">, </span>
+                                                                    [{{projectParent.name}}]
+                                                                </span>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>

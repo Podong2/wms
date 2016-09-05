@@ -152,7 +152,17 @@ public class ProjectService {
 
         List<Project> projects = Lists.newArrayList(this.projectRepository.findAll(predicate));
 
-        return projectMapper.projectsToProjectDTOs(projects);
+        List<ProjectDTO> projectDTOs = Lists.newArrayList();
+
+        for(Project project : projects) {
+            ProjectDTO projectDTO = projectMapper.projectToProjectDTO(project);
+
+            this.copyProjectRelationProperties(project, projectDTO);
+
+            projectDTOs.add(projectDTO);
+        }
+
+        return projectDTOs;
     }
 
     @Transactional(readOnly = true)
