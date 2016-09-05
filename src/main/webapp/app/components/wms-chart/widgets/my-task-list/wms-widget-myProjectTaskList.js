@@ -82,7 +82,7 @@ angular.module('wms.widget.myProjectTaskList', ['adf.provider'])
     }
 
     $scope.$watchCollection('vm.projectId', function(oldValue, newValue){
-        // DashboardMyTask.get({listType : vm.listType, projectId : vm.projectId}, success, error)
+        DashboardMyTask.get({listType : vm.listType, projectId : vm.projectId}, success, error)
     });
 
     getTodayTask(); //오늘 작업
