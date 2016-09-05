@@ -21,7 +21,7 @@
             </tr>
             </thead>
             <tbody>
-            <tr bindonce ng-repeat="row in displayCollection" ng-init="selectIndex = $index" ng-class="row.checked == true ? 'table-active' : ''">
+            <tr bindonce ng-repeat="row in displayCollection track by $index" ng-init="selectIndex = $index" ng-class="row.checked == true ? 'table-active' : ''">
                 <td bindonce ng-repeat="tableConfig in _tableConfigs" bo-class="[tableConfig.dAlign, tableConfig.visible]">
                     <div bo-switch="tableConfig.dType" style="color:{{row[tableConfig.dColor]}};">
                         <div bo-switch-when="check">

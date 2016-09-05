@@ -28,19 +28,23 @@
                             <div ng-repeat="data in vm.notifications track by $index" class="task-list-repeat" ng-class="data.readYn ? 'read' : ''">
 
                                 <!-- 타스크 영역 -->
-                                <div  class="wms-tree-node-list task-list"  ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
+                                <div  class="wms-tree-node-list task-list notification-list"  ng-class="data.taskDTO.statusId == 1 ? 'green' : (data.taskDTO.statusId == 2 ? 'blue' : (data.taskDTO.statusId == 3 ? 'black' : 'red'))"
                                       ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate"
                                        ng-if="data.taskDTO != null" >
+
+                                    <!-- 우측영역 -->
                                     <div class="pull-right">
-                                        <div>11:11</div>
+                                        <div>{{data.createdDate | date : 'yyyy-MM-dd HH:mm'}}</div>
                                         <div class="wms-form">
                                             <label class="radio state-success"><input type="radio" ng-click="vm.notificationReadChange(data.id, 'confirm')"
                                                                                     name="radio"><i></i></label>
                                         </div>
                                     </div>
-                                    <div class="cursor" ui-sref="my-notification.taskDetail({taskId : data.taskDTO.id, listType : 'TODAY'})" ng-click="vm.notificationReadChange(data.id, 'read', $index)">
+
+                                    <!-- 좌측영역 -->
+                                    <div class="cursor" ui-sref="my-notification.taskDetail({taskId : data.taskDTO.id, listType : 'TODAY'})" ng-click="vm.notificationReadChange(data.id, 'read', $index)"  notification-active>
                                         <div>
-                                            <div class="float-left" style="line-height: 30px; margin-right: 10px;">{{data.title}} </div>
+                                            <div class="float-left notification-name" style="line-height: 30px; margin-right: 10px;">{{data.title}} </div>
 
                                             <ul class="list-inline friends-list" style="margin-bottom: 0">
                                                 <li ng-repeat="user in data.taskDTO.assignees | limitTo:3">
@@ -111,7 +115,7 @@
                                       ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate"
                                        ng-if="data.projectDTO != null">
                                     <div class="pull-right">
-                                        <div>11:11</div>
+                                        <div>{{data.createdDate | date : 'yyyy-MM-dd HH:mm'}}</div>
                                         <div class="wms-form">
                                             <label class="radio state-success"><input type="radio" ng-click="vm.notificationReadChange(data.id, 'confirm')"
                                                                                       name="radio"><i></i></label>

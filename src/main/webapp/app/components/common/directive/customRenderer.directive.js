@@ -30,7 +30,8 @@ function customRenderer($compile, $filter, $log, $sce) {
                     };
                     DeleteAttachedFile.delete({entityName : $scope.params.entityName, entityId : $scope.params.entityId, attachedFileId : $scope.params.attachedFileId},
                         function (result) {
-                            $log.debug("프로젝트 파일 삭제 : ", result)
+                            $log.debug("프로젝트 파일 삭제 : ", result);
+                            $rootScope.$broadcast('task-detail-reload')
                         });
                 }
                 //설명 html 형식으로 표현

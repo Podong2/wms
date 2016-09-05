@@ -97,7 +97,7 @@
                                             </div>
                                         </div>
 
-                                        <div style="float:left; padding-top: 10px; margin-right: 10px">
+                                        <div ng-class="data.assignees.length > 0 ? 'task-list-title' : ''">
                                             <input type="checkbox"/>
                                             <a ui-sref="my-project.taskDetail({taskId : data.id, listType : vm.listType})">{{data.name}}</a>
                                         </div>
@@ -139,7 +139,7 @@
                                             </div>
                                         </div>
 
-                                        <div style="float:left; padding-top: 10px; margin-right: 10px">
+                                        <div ng-class="data.assignees.length > 0 ? 'task-list-title' : ''">
                                             <input type="checkbox"/>
                                             <a ui-sref="my-project.taskDetail({taskId : data.id, listType : vm.listType})">{{data.name}}</a>
                                         </div>
@@ -179,12 +179,11 @@
                                                 <!--<span>승인/미승인</span>-->
                                             </div>
                                         </div>
-
-                                        <div style="float:left; padding-top: 10px; margin-right: 10px">
+                                        <div ng-class="data.assignees.length > 0 ? 'task-list-title' : ''">
                                             <input type="checkbox"/>
                                             <a ui-sref="my-project.taskDetail({taskId : data.id, listType : vm.listType})">{{data.name}}</a>
                                         </div>
-                                        <ul class="list-inline friends-list" style="margin-bottom: 0">
+                                        <ul class="list-inline friends-list " style="margin-bottom: 0">
                                             <li ng-repeat="user in data.assignees | limitTo:3">
                                                 <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
                                                 <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
@@ -199,7 +198,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div ng-if="vm.scheduledToday.length == 0">
+                                <div ng-if="vm.registeredToday.length == 0">
                                     데이터가 없습니다.
                                 </div>
                             </div>
@@ -221,7 +220,7 @@
                                             </div>
                                         </div>
 
-                                        <div style="float:left; padding-top: 10px; margin-right: 10px">
+                                        <div ng-class="data.assignees.length > 0 ? 'task-list-title' : ''">
                                             <input type="checkbox"/>
                                             <a ui-sref="my-project.taskDetail({taskId : data.id, listType : vm.listType})">{{data.name}}</a>
                                         </div>
@@ -240,7 +239,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div ng-if="vm.scheduledToday.length == 0">
+                                <div ng-if="vm.inProgress.length == 0">
                                     데이터가 없습니다.
                                 </div>
                             </div>
@@ -264,7 +263,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div ng-if="vm.scheduledToday.length == 0">
+                                <div ng-if="vm.noneScheduled.length == 0">
                                     데이터가 없습니다.
                                 </div>
                             </div>
@@ -305,7 +304,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div ng-if="vm.noneScheduled.length == 0">
+                                <div ng-if="vm.scheduled.length == 0">
                                     데이터가 없습니다.
                                 </div>
                             </div>
@@ -346,7 +345,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div ng-if="vm.noneScheduled.length == 0">
+                                <div ng-if="vm.complete.length == 0">
                                     데이터가 없습니다.
                                 </div>
                             </div>
@@ -368,7 +367,7 @@
                                             </div>
                                         </div>
 
-                                        <div style="float:left; padding-top: 10px; margin-right: 10px">
+                                        <div ng-class="data.assignees.length > 0 ? 'task-list-title' : ''">
                                             <input type="checkbox"/>
                                             <a ui-sref="my-project.taskDetail({taskId : data.id, listType : vm.listType})">{{data.name}}</a>
                                         </div>
@@ -387,7 +386,7 @@
                                         </ul>
                                     </div>
                                 </div>
-                                <div ng-if="vm.noneScheduled.length == 0">
+                                <div ng-if="vm.hold.length == 0">
                                     데이터가 없습니다.
                                 </div>
                             </div>

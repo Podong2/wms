@@ -44,20 +44,27 @@ repeatPickerAddToggle.$inject=['$timeout', '$rootScope'];
         return {
             restrict: 'A',
             link: function (scope, element) {
+                var displayYn = true;
+                element.on('click', function (_this) {
+                    displayYn = true;
+                    $timeout(function () {
+                        $(".startDate").focus();
+                    }, 400);
+                });
                 $('body').click(function (e) {
                     if ($('.repeat-edit-section').addClass("on")) {
                         if (!$('#repeatEditSection').has(e.target).length) {
+                            $('.repeat-edit-section').removeClass("on");
+                        }else if(displayYn){
+                            $('.repeat-edit-section').addClass("on");
+                        }else if(!displayYn){
                             $('.repeat-edit-section').removeClass("on");
                         }
                     }
                 });
                 $rootScope.$on('repeatClose', function () {
                     $('.repeat-edit-section').removeClass("on");
-                });
-                element.on('click', function (_this) {
-                    $timeout(function () {
-                        $(".startDate").focus();
-                    }, 400);
+                    displayYn = false;
                 });
             }
         }

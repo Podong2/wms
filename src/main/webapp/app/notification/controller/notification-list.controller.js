@@ -53,8 +53,7 @@ notificationListCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootSc
             function onSuccess(data, headers) {
                 $log.debug("notifications : ", data);
                 vm.notifications = data;
-                //$state.go("my-project.detail", {project : vm.project});
-                //vm.page = pagingParams.page;
+                $state.go("my-notification.taskDetail", {taskId : vm.notifications[0].taskDTO.id, listType : 'TODAY'}); // 첫 알림 상세 오픈
             }
             function onError(error) {
                 AlertService.error(error.data.message);

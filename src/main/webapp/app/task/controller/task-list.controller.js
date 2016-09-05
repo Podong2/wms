@@ -87,7 +87,7 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
                     if(task.statusGroup == "WATCHED_TASK") vm.watchedTask.push(task);
                     vm.tasks.push(task);
                 });
-                $log.debug('vm.tasks : ', vm.tasks);
+                $log.debug('작업 목록 : ', vm.tasks);
 
                 MyTaskStatistics.get({listType : vm.listType}, countSuccess, onError); // 타스크 목록 타운트 정보 조회
             }

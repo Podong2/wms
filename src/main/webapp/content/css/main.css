@@ -2016,6 +2016,10 @@ tags-input .tags:hover, tags-input .tags:focus {
     width : 110px;
 }
 
+.task-list-title{
+    float:left; padding-top: 10px; margin-right: 10px
+}
+
     /*<< comment css >>*/
     .comment-user-title{
         margin-top: 13px;
@@ -2081,6 +2085,10 @@ tags-input .tags:hover, tags-input .tags:focus {
 .notification-title{
     padding: 5px;
 }
+.notification-list.active{
+    background-color: #FFE6E6 !important;
+}
+
 /* notification end */
 
 /* repeat date picker css */

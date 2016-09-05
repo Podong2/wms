@@ -5,9 +5,9 @@
         .module('wmsApp')
         .controller('TaskDetailCtrl', TaskDetailCtrl);
 
-    TaskDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', 'TaskAttachedFile', '$log', 'TaskEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'entity', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectFindByName', 'ModalService', 'TaskProgressStatus'];
+    TaskDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', 'TaskAttachedFile', '$log', 'TaskEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'entity', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectFindByName', 'ModalService', 'TaskProgressStatus', 'tableService'];
 
-    function TaskDetailCtrl($scope, $rootScope, $stateParams, Task, Code, TaskAttachedFile, $log, TaskEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, entity, TaskListSearch, dataService, Principal, ProjectFind, ProjectFindByName, ModalService, TaskProgressStatus) {
+    function TaskDetailCtrl($scope, $rootScope, $stateParams, Task, Code, TaskAttachedFile, $log, TaskEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, entity, TaskListSearch, dataService, Principal, ProjectFind, ProjectFindByName, ModalService, TaskProgressStatus, tableService) {
         var vm = this;
         vm.baseUrl = window.location.origin;
 
@@ -55,14 +55,19 @@
         }
 
 
-        vm.previewFIle = {
+        var previewFile = {
             caption: '',
             size: '',
             url: '',
             key: ''
         };
-        vm.previewFIles=[];
-        vm.previewFIleUrl=[];
+        vm.removeFile = {
+            entityName : '',
+            entityId : '',
+            attachedFileId : ''
+        };
+        vm.previewFiles=[]; // 파일 테이블 목록
+        vm.previewFileUrl=[]; // 파일 url 목록
         vm.task = getTask();
         vm.date = '';
         vm.assigneeUsers = [];
@@ -74,17 +79,21 @@
 
 
         function getTask(){
+            // 파일 목록 주입
             vm.taskFiles = entity.attachedFiles;
             angular.forEach(vm.taskFiles, function(value, index){
-                vm.previewFIle.caption = value.attachedFile.name;
-                vm.previewFIle.size = value.attachedFile.size;
-                vm.previewFIle.url = window.location.origin + "/api/attachedFile/" + value.attachedFile.id;
-                vm.previewFIle.key = value.attachedFile.id;
-                vm.previewFIles.push(vm.previewFIle);
-                vm.previewFIleUrl.push(vm.previewFIle.url);
+                previewFile.caption = value.attachedFile.name;
+                previewFile.locationType = 'Task';
+                previewFile.locationId = value.id;
+                previewFile.size = value.attachedFile.size;
+                previewFile.url = window.location.origin + "/api/attachedFile/" + value.attachedFile.id;
+                previewFile.id = value.attachedFile.id;
+                var fileInfo = _.clone(previewFile);
+                vm.previewFiles.push(fileInfo);
+                vm.previewFileUrl.push(previewFile.url);
             });
-            $log.debug("vm.previewFIles : ", vm.previewFIles)
-            $log.debug("vm.previewFIleUrl : ", vm.previewFIleUrl)
+            $log.debug("vm.previewFiles : ", vm.previewFiles)
+            //$log.debug("vm.previewFileUrl : ", vm.previewFileUrl)
             return entity;
         }
 
@@ -102,10 +111,10 @@
                 overwriteInitial: false,
                 showCaption: false,
                 showUpload: false,
-                initialPreview: vm.previewFIleUrl,
+                initialPreview: vm.previewFileUrl,
                 initialPreviewAsData: true, // defaults markup
                 initialPreviewFileType: 'image', // image is the default and can be overridden in config below
-                initialPreviewConfig: vm.previewFIles,
+                initialPreviewConfig: vm.previewFiles,
                 uploadExtraData: {
                     img_key: "1000",
                     img_keywords: "happy, nature",
@@ -117,7 +126,8 @@
             });
         });
 
-        vm.responseData = _.clone(vm.task);
+        vm.responseDataCheck = _.clone(vm.task);
+        vm.responseData = _.clone(vm.previewFiles);
 
         $log.debug("info :", vm.task)
         vm.listType = $stateParams.listType;
@@ -274,8 +284,8 @@
 
         // content 데이터 변경 체크
         $scope.$on('editingUpload', function (event, args) {
-            if (!angular.equals(vm.responseData.contents, vm.task.contents)) {
-                vm.responseData.contents = vm.task.contents;
+            if (!angular.equals(vm.responseDataCheck.contents, vm.task.contents)) {
+                vm.responseDataCheck.contents = vm.task.contents;
                 taskUpload();
             }
         });
@@ -450,18 +460,23 @@
             Task.get({id : vm.task.id}, successTask, erorrTask);
         })
 
+        // 타스크 불러오기 성공
         function successTask(result){
             vm.task = result;
 
             vm.taskFiles = vm.task.attachedFiles;
+            vm.previewFiles = [];
+            vm.previewFileUrl = [];
             angular.forEach(vm.taskFiles, function(value, index){
-                vm.previewFIle.caption = value.attachedFile.name;
-                vm.previewFIle.size = value.attachedFile.size;
-                vm.previewFIle.url = window.location.origin + "/api/attachedFile/" + value.attachedFile.id;
-                vm.previewFIle.key = value.attachedFile.id;
-                vm.previewFIles.push(vm.previewFIle);
-                vm.previewFIleUrl.push(vm.previewFIle.url);
+                previewFile.caption = value.attachedFile.name;
+                previewFile.size = value.attachedFile.size;
+                previewFile.url = window.location.origin + "/api/attachedFile/" + value.attachedFile.id;
+                previewFile.key = value.attachedFile.id;
+                var fileInfo = _.clone(previewFile);
+                vm.previewFiles.push(fileInfo);
+                vm.previewFileUrl.push(previewFile.url);
             });
+
 
             $("#input-4").fileinput({
                 uploadUrl: "1",
@@ -469,10 +484,10 @@
                 overwriteInitial: false,
                 showCaption: false,
                 showUpload: false,
-                initialPreview: vm.previewFIleUrl,
+                initialPreview: vm.previewFileUrl,
                 initialPreviewAsData: true, // defaults markup
                 initialPreviewFileType: 'image', // image is the default and can be overridden in config below
-                initialPreviewConfig: vm.previewFIles,
+                initialPreviewConfig: vm.previewFiles,
                 uploadExtraData: {
                     img_key: "1000",
                     img_keywords: "happy, nature",
@@ -485,6 +500,7 @@
 
 
             $log.debug("내작업 정보 : ", vm.task);
+            $log.debug("내작업 파일 불러온 정보 : ", vm.previewFiles);
 
 
         }
@@ -699,6 +715,30 @@
             vm.task.removeProjectIds = projectId;
             taskUpload();
         }
+
+        vm.tableConfigs = [];
+        vm.tableConfigs.push(tableService.getConfig("", "checked")
+            .setHWidth("width-30-p")
+            .setDAlign("text-center")
+            .setHAlign("text-center")
+            .setDType("check"));
+        vm.tableConfigs.push(tableService.getConfig("이름", "caption")
+            .setHWidth("width-200-p")
+            .setDAlign("text-center")
+            .setDColor('field1_color'));
+        vm.tableConfigs.push(tableService.getConfig("파일 크기", "size")
+            .setHWidth("width-200-p")
+            .setDAlign("text-center"));
+        vm.tableConfigs.push(tableService.getConfig("다운로드", "")
+            .setHWidth("width-80-p")
+            .setDAlign("text-center")
+            .setDType("renderer")
+            .setDRenderer("file_download"));
+        vm.tableConfigs.push(tableService.getConfig("삭제", "")
+            .setHWidth("width-80-p")
+            .setDAlign("text-center")
+            .setDType("renderer")
+            .setDRenderer("file_remove"));
 
     }
 
