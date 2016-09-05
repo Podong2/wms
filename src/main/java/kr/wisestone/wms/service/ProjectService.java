@@ -85,7 +85,7 @@ public class ProjectService {
         this.copyProjectRelationProperties(project, projectDTO);
 
         if(!project.getProjectAttachedFiles().isEmpty()) {
-            projectDTO.setProjectAttachedFiles(Lists.newArrayList(project.getProjectAttachedFiles()));
+            projectDTO.setAttachedFiles(project.getPlainProjectAttachedFiles().stream().map(AttachedFileDTO::new).collect(Collectors.toList()));
         }
 
         return projectDTO;

@@ -492,7 +492,17 @@ public class TaskService {
             predicate.and($task.status.id.eq(Task.STATUS_ACTIVE));
         }
 
-        List<Task> tasks = Lists.newArrayList(taskRepository.findAll(predicate));
+        List<OrderSpecifier> orderSpecifiers = Lists.newArrayList();
+
+        orderSpecifiers.add(QTask.task.period.endDate.asc());
+
+        if(ProjectTaskCondition.ORDER_TYPE_IMPORTANT.equalsIgnoreCase(projectTaskCondition.getOrderType())) {
+            orderSpecifiers.add(QTask.task.importantYn.desc());
+        } else if(ProjectTaskCondition.ORDER_TYPE_TASK_NAME.equalsIgnoreCase(projectTaskCondition.getOrderType())) {
+            orderSpecifiers.add(QTask.task.name.asc());
+        }
+
+        List<Task> tasks = Lists.newArrayList(taskRepository.findAll(predicate, orderSpecifiers.toArray(new OrderSpecifier[orderSpecifiers.size()])));
 
         for(Task task : tasks) {
 
