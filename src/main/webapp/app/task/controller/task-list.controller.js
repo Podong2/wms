@@ -67,7 +67,6 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
 
             vm.reloadYn = false;
             $rootScope.$on("taskReload", function(event, args){
-                alert(123123123)
                 vm.reloadYn = true;
                 getList(args.listType);
             });

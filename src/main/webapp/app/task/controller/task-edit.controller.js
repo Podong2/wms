@@ -25,6 +25,9 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
 
             vm.codes = Code.query();
 
+            vm.stateInfo = $state.current.name;
+            vm.state = $state.get(vm.stateInfo).name.split('.')[0];
+
             /* user picker info */
             $scope.assigneeUser = [];
             $scope.watchers = [];
@@ -307,6 +310,11 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                     $timeout(function(){ // state reload 명령과 충돌하는 문제 때문에 설정
                         $uibModalInstance.close();
                     }, 100);
+
+                    if(vm.state = 'my-task'){
+                        $rootScope.$broadcast('taskReload', {listType : 'TODAY'})
+                    }
+
                 });
             }
 

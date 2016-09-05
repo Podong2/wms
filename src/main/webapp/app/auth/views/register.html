@@ -78,50 +78,47 @@
                         </div>
 
                         <fieldset>
+                            <!--<section class="form-group">-->
+                                <!--<label class="input"> <i class="icon-append fa fa-user"></i>-->
+                                    <!--<input type="text" class="form-control" id="login" name="login" placeholder="{{'global.form.username.placeholder' | translate}}"-->
+                                           <!--ng-model="vm.registerAccount.login" ng-minlength=3 ng-maxlength=12 ng-pattern="/^[a-zA-Z][a-zA-Z0-9]{0,20}$/" required wms-kr-update>-->
+                                    <!--<b class="tooltip tooltip-bottom-right">Needed to enter the website</b>-->
+                                <!--</label>-->
+                                <!--<div ng-show="form.login.$dirty && form.login.$invalid">-->
+                                    <!--<p class="help-block"-->
+                                       <!--ng-show="form.login.$error.required" translate="register.messages.validate.login.required">-->
+                                        <!--Your username is required.-->
+                                    <!--</p>-->
+                                    <!--<p class="help-block"-->
+                                       <!--ng-show="form.login.$error.minlength" translate="register.messages.validate.login.minlength">-->
+                                        <!--Your username is required to be at least 3 character.-->
+                                    <!--</p>-->
+                                    <!--<p class="help-block"-->
+                                       <!--ng-show="form.login.$error.maxlength" translate="register.messages.validate.login.maxlength">-->
+                                        <!--Your username cannot be longer than 12 characters.-->
+                                    <!--</p>-->
+                                    <!--<p class="help-block"-->
+                                       <!--ng-show="form.login.$error.pattern" translate="register.messages.validate.login.pattern">-->
+                                        <!--Your username can only contain lower-case letters and digits.-->
+                                    <!--</p>-->
+                                <!--</div>-->
+                            <!--</section>-->
+
                             <section class="form-group">
-                                <label class="input"> <i class="icon-append fa fa-user"></i>
-                                    <input type="text" class="form-control" id="login" name="login" placeholder="{{'global.form.username.placeholder' | translate}}"
-                                           ng-model="vm.registerAccount.login" ng-minlength=3 ng-maxlength=12 ng-pattern="/^[a-zA-Z][a-zA-Z0-9]{0,20}$/" required wms-kr-update>
-                                    <b class="tooltip tooltip-bottom-right">Needed to enter the website</b>
-                                </label>
-                                <div ng-show="form.login.$dirty && form.login.$invalid">
+                                <label class="input"> <i class="icon-append fa fa-envelope"></i>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="{{'global.form.email.placeholder' | translate}}"
+                                           ng-model="vm.registerAccount.login" ng-pattern="/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/" required wms-kr-update>
+                                    <b class="tooltip tooltip-bottom-right">Needed to verify your account</b> </label>
+                                <div ng-show="form.email.$dirty && form.email.$invalid">
                                     <p class="help-block"
-                                       ng-show="form.login.$error.required" translate="register.messages.validate.login.required">
-                                        Your username is required.
+                                       ng-show="form.email.$error.required" translate="global.messages.validate.email.required">
+                                        Your e-mail is required.
                                     </p>
                                     <p class="help-block"
-                                       ng-show="form.login.$error.minlength" translate="register.messages.validate.login.minlength">
-                                        Your username is required to be at least 3 character.
-                                    </p>
-                                    <p class="help-block"
-                                       ng-show="form.login.$error.maxlength" translate="register.messages.validate.login.maxlength">
-                                        Your username cannot be longer than 12 characters.
-                                    </p>
-                                    <p class="help-block"
-                                       ng-show="form.login.$error.pattern" translate="register.messages.validate.login.pattern">
+                                       ng-show="form.email.$error.pattern" translate="global.messages.validate.email.pattern">
                                         Your username can only contain lower-case letters and digits.
                                     </p>
                                 </div>
-                                <!--<input-box-->
-                                    <!--input-type="text"-->
-                                    <!--form-name="form"-->
-                                    <!--input-name="login"-->
-                                    <!--minlength="3"-->
-                                    <!--maxlength="12"-->
-                                    <!--ng-model="vm.registerAccount.login"-->
-                                    <!--pattern="/^[a-zA-Z][a-zA-Z0-9]{0,20}$/"-->
-                                    <!--required-text="register.messages.validate.login.required"-->
-                                    <!--min-text="register.messages.validate.login.minlength"-->
-                                    <!--max-text="register.messages.validate.login.maxlength"-->
-                                    <!--pattern-text="register.messages.validate.login.pattern"-->
-                                    <!--placeholder-text="global.form.username.placeholder"-->
-                                    <!--tooltip="아이디를 입력하세요."-->
-                                    <!--tooltip-icon="fa-user"-->
-                                <!--&gt;</input-box>-->
-                                <!--required : {{form.login.$error.required}}<br/>-->
-                                <!--minlength : {{form.login.$error.minlength}}<br/>-->
-                                <!--maxlength : {{form.login.$error.maxlength}}<br/>-->
-                                <!--pattern : {{form.login.$error.pattern}}<br/>-->
                             </section>
 
                             <section class="form-group">
@@ -143,18 +140,6 @@
                                         Your name cannot be longer than 30 characters.
                                     </p>
                                 </div>
-                                <!--<input-box-->
-                                    <!--input-type="email"-->
-                                    <!--form-name="form"-->
-                                    <!--input-name="email"-->
-                                    <!--ng-model="vm.registerAccount.email"-->
-                                    <!--pattern="/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/"-->
-                                    <!--required-text="global.messages.validate.email.required"-->
-                                    <!--pattern-text="global.messages.validate.email.pattern"-->
-                                    <!--placeholder-text="global.form.email.placeholder"-->
-                                    <!--tooltip="이메일을 입력하세요."-->
-                                    <!--tooltip-icon="fa-envelope"-->
-                                <!--&gt;</input-box>-->
                             </section>
 
                             <section class="form-group">
@@ -172,18 +157,6 @@
                                         Your username can only contain lower-case letters and digits.
                                     </p>
                                 </div>
-                                <!--<input-box-->
-                                    <!--input-type="email"-->
-                                    <!--form-name="form"-->
-                                    <!--input-name="email"-->
-                                    <!--ng-model="vm.registerAccount.email"-->
-                                    <!--pattern="/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/"-->
-                                    <!--required-text="global.messages.validate.email.required"-->
-                                    <!--pattern-text="global.messages.validate.email.pattern"-->
-                                    <!--placeholder-text="global.form.email.placeholder"-->
-                                    <!--tooltip="이메일을 입력하세요."-->
-                                    <!--tooltip-icon="fa-envelope"-->
-                                <!--&gt;</input-box>-->
                             </section>
 
                             <section class="form-group">

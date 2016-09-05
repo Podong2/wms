@@ -134,7 +134,7 @@
 
 
                         <div id="repeatEditSection">
-                            <i class="icon-append fa fa-calendar" style="float: left; padding: 8px;"></i>
+                            <i class="icon-append fa fa-calendar cursor" style="float: left; padding: 8px;"></i>
                             <i class="icon-append glyphicon glyphicon-retweet" ng-if="vm.task.taskRepeatSchedule.repeatType != '' && vm.task.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i>
                             <div class="form-group" style="margin-bottom: 0">
 
@@ -143,7 +143,7 @@
                                         <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="endDate" repeat-picker-toggle style="height: 30px; width: 100%; border : 0">
                                     </label>
 
-                                    <span class="dueDateValues" repeat-picker-toggle>{{vm.task.startDate + " ~ " + vm.task.endDate}}</span>
+                                    <span class="dueDateValues" repeat-picker-toggle>{{vm.task.startDate}}  <span ng-show="vm.task.startDate != '' && vm.task.endDate != ''">~</span>  {{vm.task.endDate}}</span>
                                 </span>
                             </div>
 
@@ -225,8 +225,8 @@
 
             <div class="panel panel-default min-height-100-p detail-content" id="editingSection">
                 <div class="ibox">
-                    <div class="ibox_content elementSection">
-                        <span ng-bind-html="vm.renderHtml(vm.task.contents)" section-toggle></span>
+                    <div class="ibox_content elementSection"  section-toggle style="min-height: 50px">
+                        <span ng-bind-html="vm.renderHtml(vm.task.contents)" ></span>
                     </div>
                     <div class="content-edit editingSection" >
                         <summernote config="dataService.getSummerNoteOptions(true)"
@@ -235,10 +235,10 @@
                                     data-editable="editable"
                                     data-on-image-upload="imageUpload(files)"></summernote>
                     </div>
-                    <div style="text-align: right">
-                        <button type="button" class="btn" ng-click="vm.taskRevertModalOpen()">복원</button>
-                    </div>
                 </div>
+            </div>
+            <div style="text-align: right;">
+                <button type="button" class="btn" ng-click="vm.taskRevertModalOpen()">복원</button>
             </div>
         </div>
 

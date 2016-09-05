@@ -79,8 +79,8 @@
                         </div>
                     </td>
                     <td class="" ng-show="vm.taskRepeatSchedule.repeatType == 'MONTHLY_WEEKDAY'">
-                        <ol class="nya-bs-select " ng-model="vm.taskRepeatSchedule.monthlyCriteria" style="width: 90px;">
-                            <li nya-bs-option="option in vm.weeks" title="{{option.name}}" data-value="option.id">
+                        <ol class="nya-bs-select " data-size="5" ng-model="vm.taskRepeatSchedule.monthlyCriteria" style="width: 90px;">
+                            <li nya-bs-option="option in vm.weeks"  title="{{option.name}}" data-value="option.id">
                                 <a>
                                     {{ option.name }}
                                     <span class="glyphicon glyphicon-ok check-mark"></span>
@@ -89,7 +89,7 @@
                         </ol>
                     </td>
                     <td class="" ng-show="vm.taskRepeatSchedule.repeatType == 'MONTHLY_DATE'">
-                        <ol class="nya-bs-select " ng-model="vm.taskRepeatSchedule.monthlyCriteria" style="width: 90px;">
+                        <ol class="nya-bs-select " data-size="5" ng-model="vm.taskRepeatSchedule.monthlyCriteria" style="width: 90px;">
                             <li nya-bs-option="option in vm.days" title="{{option.name}}" data-value="option.id">
                                 <a>
                                     {{ option.name }}
@@ -118,7 +118,7 @@
             <table class="repeat-table">
                 <colgroup>
                     <col width="80">
-                    <col width="140">
+                    <col width="200">
                 </colgroup>
                 <tbody>
                 <tr class="repeat-table-tr">
