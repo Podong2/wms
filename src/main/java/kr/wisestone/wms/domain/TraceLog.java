@@ -12,11 +12,13 @@ import org.springframework.util.ClassUtils;
 import javax.persistence.*;
 import java.time.ZonedDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "owl_trace_log")
-@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+//@Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "tracelog")
 public class TraceLog extends AbstractAuditingEntity {
 
@@ -212,6 +214,10 @@ public class TraceLog extends AbstractAuditingEntity {
             this.traceLogAttachedFiles.remove(traceLogAttachedFile);
 
         return this;
+    }
+
+    public List<AttachedFile> getPlainAttachedFiles() {
+        return traceLogAttachedFiles.stream().map(TraceLogAttachedFile::getAttachedFile).collect(Collectors.toList());
     }
 
     public static TraceLog builder(Traceable entity, String auditLogType) {

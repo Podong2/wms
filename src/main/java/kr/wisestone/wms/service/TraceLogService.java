@@ -220,7 +220,7 @@ public class TraceLogService {
 
         for(TraceLog traceLog : traceLogs) {
 
-            TraceLogDTO traceLogDTO = traceLogMapper.traceLogToTraceLogDTO(traceLog);
+            TraceLogDTO traceLogDTO = new TraceLogDTO(traceLog);
 
             if("Task".equals(traceLog.getEntityName())) {
                 Task task = taskService.findOne(traceLog.getTaskId());
@@ -228,21 +228,15 @@ public class TraceLogService {
                 traceLogDTO.setTaskName(task.getName());
             }
 
-            Optional<User> userOptional = userService.getUserWithAuthoritiesByLogin(traceLog.getCreatedBy());
+            User user = userService.findByLogin(traceLog.getCreatedBy());
 
-            if(userOptional.isPresent()) {
-
-                User user = userOptional.get();
-
+            if(user != null) {
                 if(user.getProfileImage() != null)
                     traceLogDTO.setProfileImageId(user.getProfileImage().getId());
             }
 
-            List<AttachedFileDTO> attachedFileDTOs = attachedFileMapper.attachedFilesToAttachedFileDTOs(
-                traceLog.getTraceLogAttachedFiles().stream().map(TraceLogAttachedFile::getAttachedFile).collect(Collectors.toList())
-            );
-
-            traceLogDTO.setAttachedFiles(attachedFileDTOs);
+            if(traceLog.getPlainAttachedFiles() != null && !traceLog.getPlainAttachedFiles().isEmpty())
+                traceLogDTO.setAttachedFiles(traceLog.getPlainAttachedFiles().stream().map(AttachedFileDTO::new).collect(Collectors.toList()));
 
             traceLogDTOs.add(traceLogDTO);
         }
