@@ -3,12 +3,14 @@ package kr.wisestone.wms.web.rest.dto;
 import kr.wisestone.wms.domain.Task;
 import kr.wisestone.wms.domain.TaskAttachedFile;
 import kr.wisestone.wms.domain.TaskRepeatSchedule;
+import kr.wisestone.wms.domain.UserType;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 
 /**
@@ -72,6 +74,10 @@ public class TaskDTO implements Serializable {
         this.setContents(task.getContents());
         if(task.getStatus() != null)
             this.setStatusId(task.getStatus().getId());
+
+        if(task.getTaskUsers() != null && !task.getTaskUsers().isEmpty()) {
+            this.setAssignees(task.findTaskUsersByType(UserType.ASSIGNEE).stream().map(UserDTO::new).collect(Collectors.toList()));
+        }
     }
 
     public TaskDTO() {
