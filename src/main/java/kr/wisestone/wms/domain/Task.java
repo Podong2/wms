@@ -55,7 +55,7 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
     @JoinColumn(name = "status_id")
     private Code status;
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<TaskAttachedFile> taskAttachedFiles = new HashSet<>();
 
@@ -63,7 +63,7 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
     @JoinColumn(name = "parent_id")
     private Task parent;
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(mappedBy = "parent", fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<Task> subTasks = new HashSet<>();
 
@@ -75,20 +75,20 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
     @Type(type="yes_no")
     private Boolean templateYn = Boolean.FALSE;
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @OrderBy(value = "id ASC")
     @JsonIgnore
     private Set<TaskUser> taskUsers = new HashSet<>();
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<RelatedTask> relatedTasks = new HashSet<>();
 
-    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @JsonIgnore
     private Set<TaskProject> taskProjects = new HashSet<>();
 
-    @OneToOne(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private TaskRepeatSchedule taskRepeatSchedule;
 
     public Task() {

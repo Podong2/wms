@@ -57,10 +57,10 @@
         function getTask(){
             vm.taskFiles = entity.attachedFiles;
             angular.forEach(vm.taskFiles, function(value, index){
-                vm.previewFIle.caption = value.attachedFile.name;
-                vm.previewFIle.size = value.attachedFile.size;
-                vm.previewFIle.url = window.location.origin + "/api/attachedFile/" + value.attachedFile.id;
-                vm.previewFIle.key = value.attachedFile.id;
+                vm.previewFIle.caption = value.name;
+                vm.previewFIle.size = value.size;
+                vm.previewFIle.url = window.location.origin + "/api/attachedFile/" + value.id;
+                vm.previewFIle.key = value.id;
                 vm.previewFIles.push(vm.previewFIle);
                 vm.previewFIleUrl.push(vm.previewFIle.url);
             });

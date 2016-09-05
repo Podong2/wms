@@ -65,7 +65,8 @@ public class UserDTO {
         this(user.getId(), user.getLogin(), user.getName(), user.getEmail()
             , user.getActivated(), user.getLangKey(),
             user.getAuthorities().stream().map(Authority::getName)
-                .collect(Collectors.toSet()), user.getCompany(), user.getDepartment(), user.getStatus(), user.getPhone());
+                .collect(Collectors.toSet()), user.getCompany(), user.getDepartment(), user.getStatus(), user.getPhone()
+        , user.getProfileImage());
     }
 
     public UserDTO(String login, String name, String email, String phone
@@ -82,7 +83,7 @@ public class UserDTO {
 
     public UserDTO(Long id, String login, String name, String email, boolean activated
         , String langKey, Set<String> authorities, Company company, Department department
-        , String status, String phone) {
+        , String status, String phone, AttachedFile attachedFile) {
 
         this.id = id;
         this.login = login;
@@ -103,6 +104,10 @@ public class UserDTO {
 
         this.status = status;
         this.phone = phone;
+
+        if(attachedFile != null) {
+            this.setProfileImageId(attachedFile.getId());
+        }
     }
 
     public Long getId() {

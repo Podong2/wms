@@ -44,6 +44,23 @@ public class ProjectDTO implements Serializable {
 
     private ZonedDateTime lastModifiedDate;
 
+    public ProjectDTO() {
+
+    }
+
+    public ProjectDTO(Project project) {
+        this.setId(project.getId());
+        this.setName(project.getName());
+        if(project.getPeriod() != null) {
+            this.setStartDate(project.getPeriod().getStartDate());
+            this.setEndDate(project.getPeriod().getEndDate());
+        }
+        this.setContents(project.getContents());
+        this.setFolderYn(project.getFolderYn());
+        if(project.getStatus() != null)
+            this.setStatusId(project.getStatus().getId());
+    }
+
     public Long getId() {
         return id;
     }

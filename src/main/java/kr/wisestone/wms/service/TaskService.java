@@ -1,5 +1,7 @@
 package kr.wisestone.wms.service;
 
+import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.mysema.query.BooleanBuilder;
 import com.mysema.query.jpa.JPASubQuery;
@@ -14,6 +16,7 @@ import kr.wisestone.wms.web.rest.condition.ProjectTaskCondition;
 import kr.wisestone.wms.web.rest.condition.TaskCondition;
 import kr.wisestone.wms.web.rest.dto.*;
 import kr.wisestone.wms.web.rest.form.TaskForm;
+import kr.wisestone.wms.web.rest.mapper.AttachedFileMapper;
 import kr.wisestone.wms.web.rest.mapper.ProjectMapper;
 import kr.wisestone.wms.web.rest.mapper.TaskMapper;
 import kr.wisestone.wms.web.rest.mapper.UserMapper;
@@ -26,6 +29,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.util.Date;
 import java.util.List;
@@ -71,6 +75,8 @@ public class TaskService {
     @Inject
     private TraceLogService traceLogService;
 
+    @Inject
+    private AttachedFileMapper attachedFileMapper;
 
     /**
      *  Get all the tasks.
@@ -204,21 +210,22 @@ public class TaskService {
 
     public void copyTaskRelationProperties(Task task, TaskDTO taskDTO) {
         if(task.getTaskUsers() != null && !task.getTaskUsers().isEmpty()) {
-            taskDTO.setAssignees(userMapper.usersToUserDTOs(task.findTaskUsersByType(UserType.ASSIGNEE)));
-            taskDTO.setWatchers(userMapper.usersToUserDTOs(task.findTaskUsersByType(UserType.WATCHER)));
+            taskDTO.setAssignees(task.findTaskUsersByType(UserType.ASSIGNEE).stream().map(UserDTO::new).collect(Collectors.toList()));
+            taskDTO.setWatchers(task.findTaskUsersByType(UserType.WATCHER).stream().map(UserDTO::new).collect(Collectors.toList()));
         }
 
         if(task.getSubTasks() != null && !task.getSubTasks().isEmpty())
-            taskDTO.setSubTasks(taskMapper.tasksToTaskDTOs(Lists.newArrayList(task.getSubTasks())));
+            taskDTO.setSubTasks(task.getSubTasks().stream().map(TaskDTO::new).collect(Collectors.toList()));
 
         if(task.getRelatedTasks() != null && !task.getRelatedTasks().isEmpty())
-            taskDTO.setRelatedTasks(taskMapper.tasksToTaskDTOs(task.getPlainRelatedTask()));
+            taskDTO.setRelatedTasks(task.getPlainRelatedTask().stream().map(TaskDTO::new).collect(Collectors.toList()));
 
         if(task.getParent() != null)
-            taskDTO.setParent(taskMapper.taskToTaskDTO(task.getParent()));
+            taskDTO.setParent(new TaskDTO(task.getParent()));
 
-        if(task.getTaskProjects() != null && !task.getTaskProjects().isEmpty())
-            taskDTO.setTaskProjects(projectMapper.projectsToProjectDTOs(task.getPlainTaskProject()));
+        if(task.getTaskProjects() != null && !task.getTaskProjects().isEmpty()) {
+            taskDTO.setTaskProjects(task.getPlainTaskProject().stream().map(ProjectDTO::new).collect(Collectors.toList()));
+        }
 
         if(task.getTaskRepeatSchedule() != null)
             taskDTO.setTaskRepeatSchedule(new TaskRepeatScheduleDTO(task.getTaskRepeatSchedule()));
@@ -289,19 +296,28 @@ public class TaskService {
     public TaskDTO findOneDTO(Long id) {
         log.debug("Request to get Task : {}", id);
         Task task = taskRepository.findOne(id);
-        TaskDTO taskDTO = taskMapper.taskToTaskDTO(task);
+        TaskDTO taskDTO = new TaskDTO(task);
 
         this.copyTaskRelationProperties(task, taskDTO);
 
         if(!task.getTaskAttachedFiles().isEmpty()) {
-            taskDTO.setAttachedFiles(Lists.newArrayList(task.getTaskAttachedFiles()));
+            taskDTO.setAttachedFiles(task.getPlainTaskAttachedFiles().stream().map(AttachedFileDTO::new).collect(Collectors.toList()));
         }
 
         return taskDTO;
     }
 
     public Task findOne(Long id) {
-        return taskRepository.findOne(id);
+
+        if(id == null)
+            throw new CommonRuntimeException("error.task.targetIdIsNull");
+
+        Task task = taskRepository.findOne(id);
+
+        if(task == null)
+            throw new CommonRuntimeException("error.task.notFound");
+
+        return task;
     }
 
     /**

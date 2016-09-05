@@ -31,6 +31,11 @@ public class TraceLogForm {
         traceLog.setPersistType("INSERT");
         traceLog.setReplyYn(Boolean.TRUE);
 
+        if("Task".equalsIgnoreCase(this.getEntityName()))
+            traceLog.setTaskId(this.getEntityId());
+        else if("Project".equalsIgnoreCase(this.getEntityName()))
+            traceLog.setProjectId(this.getEntityId());
+
         return traceLog;
     }
 }

@@ -1,5 +1,6 @@
 package kr.wisestone.wms.web.rest.dto;
 
+import kr.wisestone.wms.domain.Task;
 import kr.wisestone.wms.domain.TaskAttachedFile;
 import kr.wisestone.wms.domain.TaskRepeatSchedule;
 
@@ -39,7 +40,7 @@ public class TaskDTO implements Serializable {
 
     private String statusGroup;
 
-    private List<TaskAttachedFile> attachedFiles;
+    private List<AttachedFileDTO> attachedFiles;
 
     private TaskDTO parent;
 
@@ -60,6 +61,22 @@ public class TaskDTO implements Serializable {
     private String lastModifiedBy;
 
     private TaskRepeatScheduleDTO taskRepeatSchedule;
+
+    public TaskDTO(Task task) {
+        this.setId(task.getId());
+        this.setName(task.getName());
+        if(task.getPeriod() != null) {
+            this.setEndDate(task.getPeriod().getEndDate());
+            this.setEndDate(task.getPeriod().getEndDate());
+        }
+        this.setContents(task.getContents());
+        if(task.getStatus() != null)
+            this.setStatusId(task.getStatus().getId());
+    }
+
+    public TaskDTO() {
+
+    }
 
     public Long getId() {
         return id;
@@ -99,14 +116,6 @@ public class TaskDTO implements Serializable {
 
     public void setStatusName(String statusName) {
         this.statusName = statusName;
-    }
-
-    public List<TaskAttachedFile> getAttachedFiles() {
-        return attachedFiles;
-    }
-
-    public void setAttachedFiles(List<TaskAttachedFile> attachedFiles) {
-        this.attachedFiles = attachedFiles;
     }
 
     public String getStartDate() {
@@ -243,6 +252,14 @@ public class TaskDTO implements Serializable {
 
     public void setTaskRepeatSchedule(TaskRepeatScheduleDTO taskRepeatSchedule) {
         this.taskRepeatSchedule = taskRepeatSchedule;
+    }
+
+    public List<AttachedFileDTO> getAttachedFiles() {
+        return attachedFiles;
+    }
+
+    public void setAttachedFiles(List<AttachedFileDTO> attachedFiles) {
+        this.attachedFiles = attachedFiles;
     }
 
     @Override

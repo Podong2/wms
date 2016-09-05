@@ -48,7 +48,7 @@ public class Department extends AbstractAuditingEntity implements Serializable {
 
     @OneToMany(mappedBy = "parent")
     @JsonIgnore
-    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
+//    @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
     private Set<Department> subDepartments = new HashSet<>();
 
     @ManyToOne(fetch = FetchType.LAZY)
