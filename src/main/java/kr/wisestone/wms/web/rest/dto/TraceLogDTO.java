@@ -1,5 +1,7 @@
 package kr.wisestone.wms.web.rest.dto;
 
+import kr.wisestone.wms.domain.TraceLog;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,6 +45,34 @@ public class TraceLogDTO {
     private String lastModifiedBy;
 
     private Date lastModifiedDate;
+
+    public TraceLogDTO() {
+
+    }
+
+    public TraceLogDTO(TraceLog traceLog) {
+        this.setId( traceLog.getId() );
+        this.setEntityId( traceLog.getEntityId() );
+        this.setEntityName( traceLog.getEntityName() );
+        this.setEntityField( traceLog.getEntityField() );
+        this.setPersistType( traceLog.getPersistType() );
+        this.setOldValue( traceLog.getOldValue() );
+        this.setNewValue( traceLog.getNewValue() );
+        this.setEtcValue( traceLog.getEtcValue() );
+        this.setReplyYn( traceLog.getReplyYn() );
+        this.setAttachedFileId( traceLog.getAttachedFileId() );
+        this.setTaskId( traceLog.getTaskId() );
+        this.setProjectId( traceLog.getProjectId() );
+        this.setCreatedBy( traceLog.getCreatedBy() );
+
+        if(traceLog.getCreatedDate() != null)
+            this.setCreatedDate( Date.from(traceLog.getCreatedDate().toInstant()) );
+
+        this.setLastModifiedBy( traceLog.getLastModifiedBy() );
+
+        if(traceLog.getLastModifiedDate() != null)
+            this.setLastModifiedDate( Date.from(traceLog.getLastModifiedDate().toInstant()) );
+    }
 
     public Long getId() {
         return id;

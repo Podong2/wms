@@ -363,4 +363,14 @@ public class UserService {
 
         return this.userRepository.findOne(sender);
     }
+
+    public User findByLogin(String login) {
+
+        if(login == null)
+            return null;
+
+        Optional<User> user = this.userRepository.findOneByLogin(login);
+
+        return user.orElseGet(null);
+    }
 }
