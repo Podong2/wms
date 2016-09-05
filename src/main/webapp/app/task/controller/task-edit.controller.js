@@ -249,6 +249,9 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 $timeout(function(){ // state reload 명령과 충돌하는 문제 때문에 설정
                     //$uibModalInstance.dismiss('cancel');
                 }, 100);
+                if(vm.state = 'my-task'){
+                    $rootScope.$broadcast('taskReload', {listType : 'TODAY'})
+                }
             }
 
             vm.subTaskList = [];
