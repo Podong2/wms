@@ -59,6 +59,12 @@ public class ProjectDTO implements Serializable {
         this.setFolderYn(project.getFolderYn());
         if(project.getStatus() != null)
             this.setStatusId(project.getStatus().getId());
+
+        this.setCreatedBy(project.getCreatedBy());
+        this.setCreatedDate(project.getCreatedDate());
+
+        this.setLastModifiedBy(project.getLastModifiedBy());
+        this.setLastModifiedDate(project.getLastModifiedDate());
     }
 
     public Long getId() {

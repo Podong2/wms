@@ -64,7 +64,14 @@ public class TraceLogService {
 
         BooleanBuilder predicate = new BooleanBuilder();
         predicate.and($traceLog.entityName.eq(entityName));
-        predicate.and($traceLog.entityId.eq(entityId));
+
+        if("Task".equalsIgnoreCase(entityName)) {
+            predicate.and($traceLog.taskId.eq(entityId));
+        } else if("Project".equalsIgnoreCase(entityName)) {
+            predicate.and($traceLog.projectId.eq(entityId));
+        } else {
+            predicate.and($traceLog.entityId.eq(entityId));
+        }
 
         if(StringUtils.hasText(entityField)) {
             predicate.and($traceLog.entityField.eq(entityField));
@@ -81,7 +88,15 @@ public class TraceLogService {
 
         BooleanBuilder predicate = new BooleanBuilder();
         predicate.and($traceLog.entityName.eq(entityName));
-        predicate.and($traceLog.entityId.eq(entityId));
+
+        if("Task".equalsIgnoreCase(entityName)) {
+            predicate.and($traceLog.taskId.eq(entityId));
+        } else if("Project".equalsIgnoreCase(entityName)) {
+            predicate.and($traceLog.projectId.eq(entityId));
+        } else {
+            predicate.and($traceLog.entityId.eq(entityId));
+        }
+
         predicate.and($traceLog.traceLogAttachedFiles.isNotEmpty());
 
         List<TraceLogDTO> traceLogDTOs = this.findByPredicate($traceLog, predicate);
@@ -95,7 +110,15 @@ public class TraceLogService {
 
         BooleanBuilder predicate = new BooleanBuilder();
         predicate.and($traceLog.entityName.eq(entityName));
-        predicate.and($traceLog.entityId.eq(entityId));
+
+        if("Task".equalsIgnoreCase(entityName)) {
+            predicate.and($traceLog.taskId.eq(entityId));
+        } else if("Project".equalsIgnoreCase(entityName)) {
+            predicate.and($traceLog.projectId.eq(entityId));
+        } else {
+            predicate.and($traceLog.entityId.eq(entityId));
+        }
+
         predicate.and($traceLog.traceLogAttachedFiles.any().attachedFile.id.eq(attachedFileId));
 
         TraceLog traceLog = this.traceLogRepository.findOne(predicate);
