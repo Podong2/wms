@@ -79,6 +79,12 @@ public class TaskDTO implements Serializable {
             this.setAssignees(task.findTaskUsersByType(UserType.ASSIGNEE).stream().map(UserDTO::new).collect(Collectors.toList()));
         }
 
+        this.setCreatedBy(task.getCreatedBy());
+        this.setCreatedDate(task.getCreatedDate());
+
+        this.setLastModifiedBy(task.getLastModifiedBy());
+        this.setLastModifiedDate(task.getLastModifiedDate());
+
         this.setImportantYn(task.getImportantYn());
     }
 
