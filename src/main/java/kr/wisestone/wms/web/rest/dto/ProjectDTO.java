@@ -34,7 +34,7 @@ public class ProjectDTO implements Serializable {
 
     private List<UserDTO> projectUsers = new ArrayList<>();
 
-    private List<ProjectAttachedFile> projectAttachedFiles = new ArrayList<>();
+    private List<AttachedFileDTO> attachedFiles = new ArrayList<>();
 
     private String createdBy;
 
@@ -163,12 +163,12 @@ public class ProjectDTO implements Serializable {
         this.projectUsers = projectUsers;
     }
 
-    public List<ProjectAttachedFile> getProjectAttachedFiles() {
-        return projectAttachedFiles;
+    public List<AttachedFileDTO> getAttachedFiles() {
+        return attachedFiles;
     }
 
-    public void setProjectAttachedFiles(List<ProjectAttachedFile> projectAttachedFiles) {
-        this.projectAttachedFiles = projectAttachedFiles;
+    public void setAttachedFiles(List<AttachedFileDTO> attachedFiles) {
+        this.attachedFiles = attachedFiles;
     }
 
     public String getCreatedBy() {
