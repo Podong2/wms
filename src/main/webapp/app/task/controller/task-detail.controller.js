@@ -5,9 +5,9 @@
         .module('wmsApp')
         .controller('TaskDetailCtrl', TaskDetailCtrl);
 
-    TaskDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', 'TaskAttachedFile', '$log', 'TaskEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'entity', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectFindByName', 'ModalService'];
+    TaskDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', 'TaskAttachedFile', '$log', 'TaskEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'entity', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectFindByName', 'ModalService', 'TaskProgressStatus'];
 
-    function TaskDetailCtrl($scope, $rootScope, $stateParams, Task, Code, TaskAttachedFile, $log, TaskEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, entity, TaskListSearch, dataService, Principal, ProjectFind, ProjectFindByName, ModalService) {
+    function TaskDetailCtrl($scope, $rootScope, $stateParams, Task, Code, TaskAttachedFile, $log, TaskEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, entity, TaskListSearch, dataService, Principal, ProjectFind, ProjectFindByName, ModalService, TaskProgressStatus) {
         var vm = this;
         vm.baseUrl = window.location.origin;
 
@@ -24,6 +24,7 @@
         vm.repeatClose = repeatClose;
         vm.taskRevertModalOpen = taskRevertModalOpen;
         vm.projectRemoveInTask = projectRemoveInTask;
+        vm.getTaskProgressStatus = getTaskProgressStatus;
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
 
@@ -34,6 +35,24 @@
         $("#input-5").fileinput({
             showCaption: false, showUpload: false, uploadUrl:"1", uploadAsync: false
         });
+
+        function getTaskProgressStatus(){
+            // 작업 본문 복원 팝업 오픈
+            var editModalConfig = {
+                size : "lg",
+                url : "app/task/html/modal/taskProgressStatusView.html",
+                ctrl : "TaskProgressStatusCtrl",
+                data : vm.task
+            };
+            ModalService.openModal(editModalConfig);
+        }
+        function taskProgressStatusSuccess(result){
+            vm.taskProgressStatus = result;
+            $log.debug("vm.taskProgressStatus : ", vm.taskProgressStatus)
+        }
+        function taskProgressStatusErorr(){
+
+        }
 
 
         vm.previewFIle = {
@@ -668,7 +687,7 @@
         function taskRevertModalOpen(){
             var editModalConfig = {
                 size : "lg",
-                url : "taskRevertModal.html",
+                url : "app/task/html/modal/taskRevertModal.html",
                 ctrl : "taskRevertCtrl",
                 data : vm.task
             };
@@ -680,7 +699,6 @@
             vm.task.removeProjectIds = projectId;
             taskUpload();
         }
-
 
     }
 

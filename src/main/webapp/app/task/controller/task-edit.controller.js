@@ -5,8 +5,8 @@
 
 angular.module('wmsApp')
     .controller("taskEditCtrl", taskEditCtrl);
-taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'toastr', '$state', '$timeout', 'DateUtils', 'SubTask', 'Principal', 'findUser', '$q', 'TaskEdit', 'FindTasks', 'ProjectFind', 'ProjectFindByName'];
-        function taskEditCtrl($scope, $uibModalInstance, Code, $log, Task, toastr, $state, $timeout, DateUtils, SubTask, Principal, findUser, $q, TaskEdit, FindTasks, ProjectFind, ProjectFindByName) {
+taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'toastr', '$state', '$timeout', 'DateUtils', 'SubTask', 'Principal', 'findUser', '$q', 'TaskEdit', 'FindTasks', 'ProjectFind', 'ProjectFindByName'];
+        function taskEditCtrl($rootScope, $scope, $uibModalInstance, Code, $log, Task, toastr, $state, $timeout, DateUtils, SubTask, Principal, findUser, $q, TaskEdit, FindTasks, ProjectFind, ProjectFindByName) {
             var vm = this;
             vm.save = save;
             vm.subTaskSave = subTaskSave;
@@ -463,6 +463,7 @@ taskEditCtrl.$inject=['$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'to
 
             function taskUpload(){
                 vm.task.taskRepeatSchedule = vm.taskRepeatSchedule;
+                repeatClose();
             }
 
         }

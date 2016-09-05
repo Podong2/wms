@@ -31,7 +31,7 @@
             if (modalInstance !== null) return;
             modalInstance = $uibModal.open({
                 animation: true,
-                templateUrl: 'app/components/modal/templates/' + url,
+                templateUrl: url,
                 controller: controller,
                 controllerAs: 'vm',
                 size: "lg",
@@ -64,7 +64,7 @@
         }
         function openModal(parameter) {
             modalInstance = $uibModal.open({
-                templateUrl: 'app/components/modal/templates/' + parameter.url,
+                templateUrl: parameter.url,
                 controller: parameter.ctrl,
                 controllerAs: 'vm',
                 size: parameter.size,
