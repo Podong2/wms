@@ -203,6 +203,13 @@ public class TaskForm {
         parent.setId(this.getParentId());
         subTask.setParent(parent);
 
+        if(this.projectId != null) {
+            Project project = new Project();
+            project.setId(this.projectId);
+
+            subTask.addTaskProject(project);
+        }
+
         if(this.getAssigneeId() != null) {
             User assignee = new User();
             assignee.setId(this.getAssigneeId());
