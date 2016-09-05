@@ -20,13 +20,13 @@ public class TaskDTO implements Serializable {
 
     private Long id;
 
-    private String name;
+    private String name = "";
 
-    private String startDate;
+    private String startDate = "";
 
-    private String endDate;
+    private String endDate = "";
 
-    private String contents;
+    private String contents = "";
 
     private Long statusId;
 
@@ -36,9 +36,9 @@ public class TaskDTO implements Serializable {
 
     private List<UserDTO> watchers;
 
-    private Boolean importantYn;
+    private Boolean importantYn = Boolean.FALSE;
 
-    private Boolean templateYn;
+    private Boolean templateYn = Boolean.FALSE;
 
     private String statusGroup;
 
@@ -68,7 +68,7 @@ public class TaskDTO implements Serializable {
         this.setId(task.getId());
         this.setName(task.getName());
         if(task.getPeriod() != null) {
-            this.setEndDate(task.getPeriod().getEndDate());
+            this.setStartDate(task.getPeriod().getStartDate());
             this.setEndDate(task.getPeriod().getEndDate());
         }
         this.setContents(task.getContents());
@@ -78,11 +78,11 @@ public class TaskDTO implements Serializable {
         if(task.getTaskUsers() != null && !task.getTaskUsers().isEmpty()) {
             this.setAssignees(task.findTaskUsersByType(UserType.ASSIGNEE).stream().map(UserDTO::new).collect(Collectors.toList()));
         }
+
+        this.setImportantYn(task.getImportantYn());
     }
 
-    public TaskDTO() {
-
-    }
+    public TaskDTO() {}
 
     public Long getId() {
         return id;

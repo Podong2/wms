@@ -12,13 +12,13 @@ public class ProjectDTO implements Serializable {
 
     private Long id;
 
-    private String name;
+    private String name = "";
 
-    private String startDate;
+    private String startDate = "";
 
-    private String endDate;
+    private String endDate = "";
 
-    private String contents;
+    private String contents = "";
 
     private Boolean folderYn = Boolean.FALSE;
 
