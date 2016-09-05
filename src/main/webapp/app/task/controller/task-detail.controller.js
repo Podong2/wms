@@ -28,6 +28,7 @@
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
 
+
         // bootstrap file uploader plugin load
         //$("#input-4").fileinput({
         //    showCaption: false, showUpload: false, uploadUrl:"1", uploadAsync: false
@@ -84,7 +85,7 @@
             angular.forEach(vm.taskFiles, function(value, index){
                 previewFile.caption = value.name;
                 previewFile.locationType = 'Task';
-                previewFile.locationId = value.id;
+                previewFile.locationId = entity.id;
                 previewFile.size = value.size;
                 previewFile.url = window.location.origin + "/api/attachedFile/" + value.id;
                 previewFile.id = value.id;
@@ -173,14 +174,14 @@
 
         // min date picker
         this.dueDateFrom = {
-            date: DateUtils.toDate(vm.task.startDate),
+            date: DateUtils.toDate(vm.task.startDate == null ? '' : vm.task.startDate),
             datepickerOptions: {
                 maxDate: null
             }
         };
         // max date picker
         this.dueDateTo = {
-            date: DateUtils.toDate(vm.task.endDate),
+            date: DateUtils.toDate(vm.task.endDate == null ? '' : vm.task.endDate),
             datepickerOptions: {
                 minDate: null
             }
@@ -247,7 +248,8 @@
             name : '',
             parentId : vm.task.id,
             assigneeId : vm.userInfo.id,
-            statusId : 1
+            statusId : 1,
+            projectId : $stateParams.projectId
         };
 
         // -------------------  broadcast start ------------------- //
@@ -347,7 +349,7 @@
         });
 
         $scope.$watchGroup(['vm.task.statusId', 'vm.task.importantYn'], function(newValue, oldValue){
-            if(oldValue[0] != undefined && newValue[0] != undefined && oldValue != newValue) {
+            if(oldValue[0] != undefined && newValue[0] != undefined && newValue[1] != null&& oldValue != newValue) {
                 taskUpload();
             }
         });
@@ -403,6 +405,11 @@
         function onSubTaskSaveSuccess (result) {
             toastr.success('sub 태스크 생성 완료', 'sub 태스크 생성 완료');
             Task.get({id : vm.task.id}, successTask, erorrTask);
+            if($stateParams.parentType == 'project'){
+                $rootScope.$broadcast('projectReload');
+            }else if($stateParams.parentType == 'task'){
+                $rootScope.$broadcast('taskReload', $stateParams.listType);
+            }
         }
         function onSaveError () {
         }
@@ -433,8 +440,10 @@
             if(vm.task.watchers != [])userIdPush(vm.task.watchers, "watcherIds");
             if(vm.task.relatedTasks != [])userIdPush(vm.task.relatedTasks, "relatedTaskIds");
             vm.task.taskRepeatSchedule = vm.taskRepeatSchedule;
+            vm.task.importantYn = vm.task.importantYn == null ? '': vm.task.importantYn;
 
-            $log.debug("vm.task ;::::::", vm.task);
+            $log.debug("업로드 작업 정보 : ", vm.task);
+            $log.debug("업로드 파일 정보 : ", $scope.files);
             TaskEdit.uploadTask({
                 method : "POST",
                 file : $scope.files,
@@ -467,10 +476,11 @@
             vm.taskFiles = vm.task.attachedFiles;
             vm.previewFiles = [];
             vm.previewFileUrl = [];
+            vm.responseData = [];
             angular.forEach(vm.taskFiles, function(value, index){
                 previewFile.caption = value.name;
                 previewFile.locationType = 'Task';
-                previewFile.locationId = value.id;
+                previewFile.locationId = vm.task.id;
                 previewFile.size = value.size;
                 previewFile.url = window.location.origin + "/api/attachedFile/" + value.id;
                 previewFile.id = value.id;
@@ -478,7 +488,7 @@
                 vm.previewFiles.push(fileInfo);
                 vm.previewFileUrl.push(previewFile.url);
             });
-
+            vm.responseData = _.clone(vm.previewFiles);
 
             $("#input-4").fileinput({
                 uploadUrl: "1",
@@ -500,6 +510,7 @@
                 console.log('File uploaded params', params);
             });
 
+            getTaskAudigLog();
 
             $log.debug("내작업 정보 : ", vm.task);
             $log.debug("내작업 파일 불러온 정보 : ", vm.previewFiles);
@@ -554,15 +565,7 @@
             }).then(function (response) {
                 $scope.$emit('wmsApp:taskUpdate', response);
                 toastr.success('태스크 코멘트 생성 완료', '태스크 코멘트 생성 완료');
-                TaskListSearch.TaskAudigLog({'entityId' : vm.task.id, 'entityName' : 'Task'}).then(function(result){
-                    vm.TaskAuditLog = result;
-                    vm.commentList=[];
-                    angular.forEach(vm.TaskAuditLog.data, function(val){
-                        if(val.entityField == 'reply'){
-                            vm.commentList.push(val);
-                        }
-                    });
-                });
+                getTaskAudigLog();
             });
         }
 
@@ -580,6 +583,18 @@
         vm.commentViewType = false;
         function onlyComment(){
 
+        }
+
+        function getTaskAudigLog(){
+            TaskListSearch.TaskAudigLog({'entityId' : vm.task.id, 'entityName' : 'Task'}).then(function(result){
+                vm.TaskAuditLog = result;
+                vm.commentList=[];
+                angular.forEach(vm.TaskAuditLog.data, function(val){
+                    if(val.entityField == 'reply'){
+                        vm.commentList.push(val);
+                    }
+                });
+            });
         }
 
         //  탭메뉴 영역 표시 여부 지정

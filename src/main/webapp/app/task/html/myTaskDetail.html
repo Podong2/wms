@@ -177,6 +177,7 @@
                         <tbody>
                             <tr ng-repeat="list in vm.task.subTasks">
                                 <td>
+                                    <span class="pull-right">{{list.createdDate | date : 'yyyy-MM-dd'}}</span>
                                     <input type="checkbox"/>
                                     <span class="cursor" ui-sref="my-task.detail({id : list.id, listType : vm.listType})">{{list.name}}</span>
                                     <ul class="list-inline friends-list" style="margin-bottom: 0">
@@ -192,7 +193,7 @@
                                             </a>
                                         </li>
                                     </ul>
-                                    <span class="pull-right">{{list.endDate}}</span>
+
                                 </td>
                             </tr>
                         </tbody>

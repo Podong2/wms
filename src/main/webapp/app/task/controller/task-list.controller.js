@@ -65,7 +65,10 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
             }
             getList();
 
-            $scope.$on("taskReload", function(event, args){
+            vm.reloadYn = false;
+            $rootScope.$on("taskReload", function(event, args){
+                alert(123123123)
+                vm.reloadYn = true;
                 getList(args.listType);
             });
 
@@ -89,7 +92,9 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
                 });
                 $log.debug('작업 목록 : ', vm.tasks);
 
-                MyTaskStatistics.get({listType : vm.listType}, countSuccess, onError); // 타스크 목록 타운트 정보 조회
+                MyTaskStatistics.get({listType : vm.listType}, countSuccess, onError); // 타스크 목록 카운트 정보 조회
+
+                if(!vm.reloadYn) $state.go("my-task.detail", {id : vm.tasks[0].id, listType : 'TODAY'});
             }
             function countSuccess(result){
                 vm.taskCounts = JSON.parse(result.count);

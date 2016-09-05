@@ -57,9 +57,11 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             }
             getList();
 
-            //$scope.$on("taskReload", function(event, args){
-            //    getList(args.listType);
-            //});
+            vm.reloadYn = false;
+            $scope.$on("projectReload", function(event, args){
+                vm.reloadYn = true;
+                getList();
+            });
 
             //function showDetail(id){
             //    $rootScope.$broadcast("showDetail", { id : id });
@@ -80,7 +82,8 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     if(task.statusGroup == "COMPLETE") vm.complete.push(task); // 완료
                     vm.tasks.push(task);
                 });
-                $state.go("my-project.detail", {project : vm.project});
+                if(!vm.reloadYn) $state.go("my-project.detail", {project : vm.project});
+
                 //vm.page = pagingParams.page;
 
                 // 프로젝트 팀원 중복제거
@@ -168,8 +171,12 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 if(vm.task.name != '') Task.save({name : vm.task.name, projectId : vm.task.projectId}, onSaveSuccess, onSaveError);
             }
             function onSaveSuccess (result) {
+                vm.reloadYn = true;
+                vm.taskAdd = false;
+                $log.debug("프로젝트 타스크 생성 결과 : ", result);
                 toastr.success('태스크 생성 완료', '태스크 생성 완료');
                 getList();
+                $state.go('my-project.taskDetail', {taskId : result.id, listType : vm.listType, projectId : vm.project.id});
             }
             function onSaveError () {
             }

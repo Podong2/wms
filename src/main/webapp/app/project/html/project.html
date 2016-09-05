@@ -99,7 +99,7 @@
 
                                         <div ng-class="data.assignees.length > 0 ? 'task-list-title' : ''">
                                             <input type="checkbox"/>
-                                            <a ui-sref="my-project.taskDetail({taskId : data.id, listType : vm.listType})">{{data.name}}</a>
+                                            <a ui-sref="my-project.taskDetail({taskId : data.id, listType : vm.listType, projectId : vm.project.id})">{{data.name}}</a>
                                         </div>
                                         <ul class="list-inline friends-list" style="margin-bottom: 0">
                                             <li ng-repeat="user in data.assignees | limitTo:3">
@@ -141,7 +141,7 @@
 
                                         <div ng-class="data.assignees.length > 0 ? 'task-list-title' : ''">
                                             <input type="checkbox"/>
-                                            <a ui-sref="my-project.taskDetail({taskId : data.id, listType : vm.listType})">{{data.name}}</a>
+                                            <a ui-sref="my-project.taskDetail({taskId : data.id, listType : vm.listType, projectId : vm.project.id})">{{data.name}}</a>
                                         </div>
                                         <ul class="list-inline friends-list" style="margin-bottom: 0">
                                             <li ng-repeat="user in data.assignees | limitTo:3">
@@ -181,7 +181,7 @@
                                         </div>
                                         <div ng-class="data.assignees.length > 0 ? 'task-list-title' : ''">
                                             <input type="checkbox"/>
-                                            <a ui-sref="my-project.taskDetail({taskId : data.id, listType : vm.listType})">{{data.name}}</a>
+                                            <a ui-sref="my-project.taskDetail({taskId : data.id, listType : vm.listType, projectId : vm.project.id})">{{data.name}}</a>
                                         </div>
                                         <ul class="list-inline friends-list " style="margin-bottom: 0">
                                             <li ng-repeat="user in data.assignees | limitTo:3">
@@ -222,7 +222,7 @@
 
                                         <div ng-class="data.assignees.length > 0 ? 'task-list-title' : ''">
                                             <input type="checkbox"/>
-                                            <a ui-sref="my-project.taskDetail({taskId : data.id, listType : vm.listType})">{{data.name}}</a>
+                                            <a ui-sref="my-project.taskDetail({taskId : data.id, listType : vm.listType, projectId : vm.project.id})">{{data.name}}</a>
                                         </div>
                                         <ul class="list-inline friends-list" style="margin-bottom: 0">
                                             <li ng-repeat="user in data.assignees | limitTo:3">
@@ -251,7 +251,7 @@
                                 <div ng-repeat="data in vm.noneScheduled">
                                     <div  class="wms-tree-node-list task-list" ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
-                                        <input type="checkbox"/> <a ui-sref="my-project.taskDetail({taskId : data.id, listType : vm.listType})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
+                                        <input type="checkbox"/> <a ui-sref="my-project.taskDetail({taskId : data.id, listType : vm.listType, projectId : vm.project.id})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
                                         <div class="pull-right">
                                             <div>{{data.endDate}}</div>
                                             <div>
@@ -287,7 +287,7 @@
 
                                         <div style="float:left; padding-top: 10px; margin-right: 10px">
                                             <input type="checkbox"/>
-                                            <a ui-sref="my-project.taskDetail({taskId : data.id, listType : vm.listType})">{{data.name}}</a>
+                                            <a ui-sref="my-project.taskDetail({taskId : data.id, listType : vm.listType, projectId : vm.project.id})">{{data.name}}</a>
                                         </div>
                                         <ul class="list-inline friends-list" style="margin-bottom: 0">
                                             <li ng-repeat="user in data.assignees | limitTo:3">
@@ -328,7 +328,7 @@
 
                                         <div style="float:left; padding-top: 10px; margin-right: 10px">
                                             <input type="checkbox"/>
-                                            <a ui-sref="my-project.taskDetail({taskId : data.id, listType : vm.listType})">{{data.name}}</a>
+                                            <a ui-sref="my-project.taskDetail({taskId : data.id, listType : vm.listType, projectId : vm.project.id})">{{data.name}}</a>
                                         </div>
                                         <ul class="list-inline friends-list" style="margin-bottom: 0">
                                             <li ng-repeat="user in data.assignees | limitTo:3">
@@ -369,7 +369,7 @@
 
                                         <div ng-class="data.assignees.length > 0 ? 'task-list-title' : ''">
                                             <input type="checkbox"/>
-                                            <a ui-sref="my-project.taskDetail({taskId : data.id, listType : vm.listType})">{{data.name}}</a>
+                                            <a ui-sref="my-project.taskDetail({taskId : data.id, listType : vm.listType, projectId : vm.project.id})">{{data.name}}</a>
                                         </div>
                                         <ul class="list-inline friends-list" style="margin-bottom: 0">
                                             <li ng-repeat="user in data.assignees | limitTo:3">

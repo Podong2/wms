@@ -349,6 +349,86 @@
             projectUpload();
         }
 
+        //var previewFile = {
+        //    caption: '',
+        //    size: '',
+        //    url: '',
+        //    key: ''
+        //};
+        //vm.removeFile = {
+        //    entityName : '',
+        //    entityId : '',
+        //    attachedFileId : ''
+        //};
+        //vm.previewFiles=[]; // 파일 테이블 목록
+        //vm.previewFileUrl=[]; // 파일 url 목록
+        //function setProjectAttachedFiles(){
+        //    vm.projectFiles = vm.project.attachedFiles;
+        //    vm.previewFiles = [];
+        //    vm.previewFileUrl = [];
+        //    vm.responseData = [];
+        //    angular.forEach(vm.projectFiles, function(value, index){
+        //        previewFile.caption = value.name;
+        //        previewFile.locationType = 'Project';
+        //        previewFile.locationId = vm.project.id;
+        //        previewFile.size = value.size;
+        //        previewFile.url = window.location.origin + "/api/attachedFile/" + value.id;
+        //        previewFile.id = value.id;
+        //        var fileInfo = _.clone(previewFile);
+        //        vm.previewFiles.push(fileInfo);
+        //        vm.previewFileUrl.push(previewFile.url);
+        //    });
+        //    vm.responseData = _.clone(vm.previewFiles);
+        //
+        //    $("#input-4").fileinput({
+        //        uploadUrl: "1",
+        //        uploadAsync: false,
+        //        overwriteInitial: false,
+        //        showCaption: false,
+        //        showUpload: false,
+        //        initialPreview: vm.previewFileUrl,
+        //        initialPreviewAsData: true, // defaults markup
+        //        initialPreviewFileType: 'image', // image is the default and can be overridden in config below
+        //        initialPreviewConfig: vm.previewFiles,
+        //        uploadExtraData: {
+        //            img_key: "1000",
+        //            img_keywords: "happy, nature",
+        //        }
+        //    }).on('filesorted', function(e, params) {
+        //        console.log('File sorted params', params);
+        //    }).on('fileuploaded', function(e, params) {
+        //        console.log('File uploaded params', params);
+        //    });
+        //}
+        //
+        //// 프로젝트 파일첨부 테이블 정보
+        //vm.tableConfigs = [];
+        //vm.tableConfigs.push(tableService.getConfig("", "checked")
+        //    .setHWidth("width-30-p")
+        //    .setDAlign("text-center")
+        //    .setHAlign("text-center")
+        //    .setDType("check"));
+        //vm.tableConfigs.push(tableService.getConfig("이름", "caption")
+        //    .setHWidth("width-200-p")
+        //    .setDAlign("text-center")
+        //    .setDColor('field1_color'));
+        //vm.tableConfigs.push(tableService.getConfig("파일 크기", "size")
+        //    .setHWidth("width-200-p")
+        //    .setDAlign("text-center"));
+        //vm.tableConfigs.push(tableService.getConfig("다운로드", "")
+        //    .setHWidth("width-80-p")
+        //    .setDAlign("text-center")
+        //    .setDType("renderer")
+        //    .setDRenderer("file_download"));
+        //vm.tableConfigs.push(tableService.getConfig("삭제", "")
+        //    .setHWidth("width-80-p")
+        //    .setDAlign("text-center")
+        //    .setDType("renderer")
+        //    .setDRenderer("file_remove"));
+        //
+        //
+        //setProjectAttachedFiles();
+
     }
 
 })();

@@ -11,7 +11,7 @@ sectionToggle.$inject=['$timeout', '$rootScope'];
 datePickerEditToggle.$inject=['$timeout'];
 userPickerEditToggle.$inject=['$timeout'];
 projectPickerEditToggle.$inject=['$timeout'];
-projectAddToggle.$inject=['$timeout'];
+projectAddToggle.$inject=['$timeout', '$rootScope'];
 gnbTaskHistoryToggle.$inject=['$timeout'];
 function toggleEvent($compile, $filter, $log, $sce, $timeout) {
 
@@ -117,7 +117,7 @@ function projectPickerEditToggle($timeout) {
         }
     }
 }
-function projectAddToggle($timeout) {
+function projectAddToggle($timeout, $rootScope) {
     return {
         restrict: 'A',
         link: function(scope, element, attr) {
@@ -128,6 +128,10 @@ function projectAddToggle($timeout) {
                         $('.projectAddValueSection').removeClass("on");
                     }
                 }
+            });
+            $rootScope.$on('projectAddClose', function(){
+                $('.projectAddSection').removeClass("on");
+                $('.projectAddValueSection').removeClass("on");
             });
             element.on('click', function(_this) {
                 $timeout(function () {

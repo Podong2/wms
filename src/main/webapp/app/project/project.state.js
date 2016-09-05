@@ -63,6 +63,10 @@
                 authorities: [],
                 title : '작업 상세'
             },
+            params : {
+                parentType : 'project',
+                projectId : ''
+            },
             views: {//
                 'projectDetail': {//
                     templateUrl: 'app/task/html/myTaskDetail.html', // home에 사용될 template html 파일

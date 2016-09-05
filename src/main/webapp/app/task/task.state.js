@@ -60,6 +60,9 @@
                 pageTitle: 'wmsApp.task.detail.title',
                 title : 'Detail'
             },
+            params : {
+                parentType : 'task'
+            },
             views: {
                 'content@app': {
                     templateUrl: 'app/entities/task/task-detail.html',
