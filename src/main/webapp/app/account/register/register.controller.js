@@ -21,6 +21,7 @@
         vm.departments = Department.query();
         vm.companies = Company.query();
 
+
         $timeout(function (){angular.element('#login').focus();});
 
         function register () {
@@ -32,6 +33,7 @@
                 vm.error = null;
                 vm.errorUserExists = null;
                 vm.errorEmailExists = null;
+                vm.registerAccount.email = vm.registerAccount.login;
 
                 Auth.createAccount(vm.registerAccount).then(function () {
                     vm.success = 'OK';
