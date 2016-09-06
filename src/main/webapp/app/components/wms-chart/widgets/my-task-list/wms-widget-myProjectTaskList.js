@@ -41,6 +41,7 @@ angular.module('wms.widget.myProjectTaskList', ['adf.provider'])
       });
   }]).controller('myProjectTaskListCtrl', ["$scope", 'DashboardMyTask', '$log', 'Project', function($scope, DashboardMyTask, $log, Project){
     var vm = this;
+    vm.baseUrl = window.location.origin;
     vm.getTodayTask = getTodayTask;
     vm.taskTypeChange = taskTypeChange;
     vm.listType = "TODAY";
