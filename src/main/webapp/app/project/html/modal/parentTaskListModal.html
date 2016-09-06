@@ -1,0 +1,14 @@
+<div>
+    <div class="task-popup-body parentBody">
+        <ul>
+            <li>
+                <a ui-sref="my-project.taskDetail({taskId : data.parent.id, listType : vm.listType, projectId : vm.project.id})">{{data.parent.name}}</a>
+            </li>
+        </ul>
+    </div>
+    <div class="task-popup-bottom">
+        <div style="text-align: right">
+            <button type="button" class="btn btn_icon btn_customs2" ng-click="vm.taskPopup = false">닫기</button>
+        </div>
+    </div>
+</div>
