@@ -85,7 +85,7 @@
                     </div>
                     <div ng-if="history.taskName != vm.historyList[$index-1].taskName
                             || (history.createdDate | date : 'MM/dd') != (vm.historyList[$index-1].createdDate | date : 'MM/dd')" style="font-size: 15px">
-                        <a ui-sref="my-task.detail({id : history.taskId, listType : 'TODAY', taskId : history.taskId})" href="#/myTask/detail/TODAY/10571"><strong>{{history.taskName}}</strong></a>
+                        <a class="recent-history-task" ui-sref="my-task.detail({id : history.taskId, listType : 'TODAY', taskId : history.taskId})" href="#/myTask/detail/TODAY/10571"><strong>{{history.taskName}}</strong></a>
                     </div>
                     <div ng-if="(history.taskName != vm.historyList[$index-1].taskName
                             || (history.createdDate | date : 'MM/dd') != (vm.historyList[$index-1].createdDate | date : 'MM/dd'))
