@@ -397,9 +397,9 @@ public class TaskService {
 
         Task task = this.taskRepository.findByName(taskForm.getName());
 
-        if(task != null) {
-            throw new CommonRuntimeException("error.task.taskNameDuplicate");
-        }
+//        if(task != null) {
+//            throw new CommonRuntimeException("error.task.taskNameDuplicate");
+//        }
 
         task = taskForm.bind(new Task());
 
