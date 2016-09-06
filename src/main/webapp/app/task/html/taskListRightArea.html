@@ -1,12 +1,12 @@
-<span ng-if="data.parent.name != null" task-list-popup type='parent'>
+<span class="cursor" ng-if="data.parent.name != null" task-list-popup type='parent'>
     상위 1
     <ng-include src="'app/task/html/modal/parentTaskListModal.html'" class="sub-task-area-popup" ng-class="vm.taskPopup ? 'on' : ''"></ng-include>
 </span>
-<span ng-if="data.subTasks.length > 0" task-list-popup type='sub'>
+<span class="cursor" ng-if="data.subTasks.length > 0" task-list-popup type='sub'>
     하위 {{data.subTasks.length}}
     <ng-include src="'app/task/html/modal/subTaskListModal.html'" class="sub-task-area-popup" ng-class="vm.taskPopup ? 'on' : ''"></ng-include>
 </span>
-<span ng-if="data.relatedTasks.length > 0" task-list-popup type='related'>
+<span class="cursor" ng-if="data.relatedTasks.length > 0" task-list-popup type='related'>
     참조 {{data.relatedTasks.length}}
     <ng-include src="'app/task/html/modal/relatedTaskListModal.html'" class="sub-task-area-popup" ng-class="vm.taskPopup ? 'on' : ''"></ng-include>
 </span>

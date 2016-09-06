@@ -52,10 +52,7 @@
                                 <div class="pull-right">
                                     <div>{{data.endDate}}</div>
                                     <div>
-                                        <span ng-if="data.parent.name != null">상위 1</span>
-                                        <span ng-if="data.subTasks.length > 0">하위 {{data.subTasks.length}}</span>
-                                        <span ng-if="data.watchers.length > 0">참조 {{data.watchers.length}}</span>
-                                        <!--<span>승인/미승인</span>-->
+                                        <ng-include src="'app/task/html/taskListRightArea.html'"></ng-include>
                                     </div>
                                 </div>
                                 <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
@@ -71,10 +68,7 @@
                                 <div class="pull-right">
                                     <div>{{data.endDate}}</div>
                                     <div>
-                                        <span ng-if="data.parent.name != null">상위 1</span>
-                                        <span ng-if="data.subTasks.length > 0">하위 {{data.subTasks.length}}</span>
-                                        <span ng-if="data.watchers.length > 0">참조 {{data.watchers.length}}</span>
-                                        <!--<span>승인/미승인</span>-->
+                                        <ng-include src="'app/task/html/taskListRightArea.html'"></ng-include>
                                     </div>
                                 </div>
                                 <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
@@ -91,10 +85,7 @@
                                 <div class="pull-right">
                                     <div>{{data.endDate}}</div>
                                     <div>
-                                        <span ng-if="data.parent.name != null">상위 1</span>
-                                        <span ng-if="data.subTasks.length > 0">하위 {{data.subTasks.length}}</span>
-                                        <span ng-if="data.watchers.length > 0">참조 {{data.watchers.length}}</span>
-                                        <!--<span>승인/미승인</span>-->
+                                        <ng-include src="'app/task/html/taskListRightArea.html'"></ng-include>
                                     </div>
                                 </div>
                                 <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
