@@ -54,17 +54,33 @@
                             <fieldset>
                                 <section class="form-group">
                                     <input-box
-                                        input-type="email"
+                                        input-type="text"
                                         form-name="loginForm"
-                                        input-name="email"
+                                        input-name="username"
+                                        minlength="3"
+                                        maxlength="12"
+                                        pattern="/^[a-zA-Z][a-zA-Z0-9]{0,20}$/"
                                         ng-model="vm.username"
-                                        pattern="/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/"
-                                        required-text="global.messages.validate.email.required"
-                                        pattern-text="global.messages.validate.email.pattern"
-                                        placeholder-text="global.form.email.placeholder"
-                                        tooltip="이메일을 입력하세요."
-                                        tooltip-icon="fa-envelope"
+                                        required-text="register.messages.validate.login.required"
+                                        min-text="register.messages.validate.login.minlength"
+                                        max-text="register.messages.validate.login.maxlength"
+                                        pattern-text="register.messages.validate.login.pattern"
+                                        placeholder-text="global.form.username.placeholder"
+                                        tooltip="아이디를 입력하세요."
+                                        tooltip-icon="fa-user"
                                     ></input-box>
+                                    <!--<input-box-->
+                                        <!--input-type="email"-->
+                                        <!--form-name="loginForm"-->
+                                        <!--input-name="email"-->
+                                        <!--ng-model="vm.username"-->
+                                        <!--pattern="/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/"-->
+                                        <!--required-text="global.messages.validate.email.required"-->
+                                        <!--pattern-text="global.messages.validate.email.pattern"-->
+                                        <!--placeholder-text="global.form.email.placeholder"-->
+                                        <!--tooltip="이메일을 입력하세요."-->
+                                        <!--tooltip-icon="fa-envelope"-->
+                                    <!--&gt;</input-box>-->
 
                                 </section>
                                 <section class="form-group">
