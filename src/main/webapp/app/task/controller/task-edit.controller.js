@@ -55,6 +55,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
 
             /* 프로젝트 목록 */
             vm.projectList = [];
+            $scope.projectName = '';
 
             /* sub task info */
             vm.subTask = {
@@ -346,7 +347,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 ProjectFind.query({name : ''}, onProjectSuccess, onProjectError);
             }
             function FindProjectList(){
-                ProjectFindByName.query({name : vm.projectName},onProjectSuccess, onProjectError)
+                ProjectFindByName.query({name : $scope.projectName},onProjectSuccess, onProjectError)
             }
             function onProjectSuccess (result) {
                 vm.projectList = result;
@@ -355,6 +356,9 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 toastr.error('프로젝트 목록 불러오기 실패', '프로젝트 목록 불러오기 실패');
             }
             getProjectList();
+            $scope.$watchCollection('projectName', function(){
+                FindProjectList();
+            });
 
             //  탭메뉴 영역 표시 여부 지정
             function selectDateTerm (number) {
