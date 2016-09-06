@@ -80,6 +80,8 @@ public class ProjectForm {
         }
 
         for(Long id : getProjectAdminIds()) {
+            if(id == null) continue;
+
             User user = new User();
             user.setId(id);
 
@@ -88,6 +90,8 @@ public class ProjectForm {
 
 
         for(Long id : getRemoveProjectAdminIds()) {
+            if(id == null) continue;
+
             User user = new User();
             user.setId(id);
 
@@ -95,6 +99,8 @@ public class ProjectForm {
         }
 
         for(Long id : getProjectUserIds()) {
+            if(id == null) continue;
+
             User user = new User();
             user.setId(id);
 
@@ -103,6 +109,8 @@ public class ProjectForm {
 
 
         for(Long id : getRemoveProjectUserIds()) {
+            if(id == null) continue;
+
             User user = new User();
             user.setId(id);
 
@@ -110,6 +118,8 @@ public class ProjectForm {
         }
 
         for(Long id : getParentProjectIds()) {
+            if(id == null) continue;
+
             Project parent = new Project();
             parent.setId(id);
 
@@ -118,6 +128,8 @@ public class ProjectForm {
 
 
         for(Long id : getRemoveParentProjectIds()) {
+            if(id == null) continue;
+
             Project parent = new Project();
             parent.setId(id);
 
