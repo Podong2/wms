@@ -2032,6 +2032,11 @@ tags-input .tags:hover, tags-input .tags:focus {
         bottom: 10px;
         margin: 0 2px;
     }
+    .comment-user-recent{
+        position: inherit;
+        bottom: 10px;
+        margin: 0 2px;
+    }
     /*<< comment css end >>*/
 /*---------------------------- task css end ------------------------------*/
 

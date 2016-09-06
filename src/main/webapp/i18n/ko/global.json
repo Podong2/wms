@@ -119,7 +119,8 @@
                 "taskProjects": "프로젝트/폴더",
                 "taskRepeatSchedule": "반복일정",
                 "taskAttachedFiles": "첨부파일",
-                "importantYn": "중요여부"
+                "importantYn": "중요여부",
+                "reply" : "댓글"
             },
             "project": {
                 "name": "제목",
