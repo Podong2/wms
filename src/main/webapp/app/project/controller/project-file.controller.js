@@ -89,6 +89,7 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
                     vm.projectAttachedList[index].id = value.attachedFile.id;
                     vm.projectAttachedList[index].size = byteCalculation(value.attachedFile.size);
                     vm.projectAttachedList[index].contentType = value.attachedFile.contentType;
+                    vm.projectAttachedList[index].lastModifiedDate = value.attachedFile.lastModifiedDate;
                 });
 
                 // 이미지와 파일 나누기
@@ -155,7 +156,7 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
             vm.tableConfigs.push(tableService.getConfig("파일 크기", "size")
                 .setHWidth("width-200-p")
                 .setDAlign("text-center"));
-            vm.tableConfigs.push(tableService.getConfig("최종 수정", "location")
+            vm.tableConfigs.push(tableService.getConfig("최종 수정", "lastModifiedDate")
                 .setHWidth("width-200-p")
                 .setDAlign("text-center"));
             vm.tableConfigs.push(tableService.getConfig("위치", "location")

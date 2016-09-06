@@ -25,6 +25,7 @@
         vm.taskRevertModalOpen = taskRevertModalOpen;
         vm.projectRemoveInTask = projectRemoveInTask;
         vm.getTaskProgressStatus = getTaskProgressStatus;
+        vm.removeComment = removeComment;
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
 
@@ -589,7 +590,7 @@
                 fileFormDataName : "file"
             }).then(function (response) {
                 $scope.$emit('wmsApp:taskUpdate', response);
-                toastr.success('태스크 코멘트 생성 완료', '태스크 코멘트 생성 완료');
+                toastr.success('태스크 댓글 생성 완료', '태스크 댓글 생성 완료');
                 getTaskAudigLog();
             });
         }
@@ -756,6 +757,13 @@
         function projectRemoveInTask(projectId){
             vm.task.removeProjectIds = projectId;
             taskUpload();
+        }
+
+        function removeComment(traceLogId) {
+            TaskEdit.removeComment(traceLogId).then(function(response){
+                toastr.error('태스크 댓글 삭제 완료', '태스크 댓글 삭제 완료');
+                getTaskAudigLog();
+            });
         }
 
         vm.tableConfigs = [];

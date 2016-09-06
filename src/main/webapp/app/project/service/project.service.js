@@ -134,7 +134,8 @@
             singleUpload : singleUpload,
             createComment : createComment,
             createProjectFiles : createProjectFiles,
-            deleteAttachedFile : deleteAttachedFile
+            deleteAttachedFile : deleteAttachedFile,
+            removeComment : removeComment
         };
         return service;
 
@@ -184,6 +185,15 @@
             $log.debug("Project 파일 삭제 data : ", parameter)
             $http.delete( 'api/projects/removeManagedAttachedFiles', {}, {entityName : parameter.entityName, entityId : parameter.entityId, attachedFileId : parameter.attachedFileId}).then(function (result) {
                 $log.debug("ProjectList : ", result);
+                deferred.resolve(result);
+            });
+            return deferred.promise;
+        }
+
+        function removeComment (parameter) {
+            var deferred = $q.defer();
+            $http.delete('/api/trace-log/'+parameter, {}, {}).then(function (result) {
+                $log.debug("result : ", result);
                 deferred.resolve(result);
             });
             return deferred.promise;

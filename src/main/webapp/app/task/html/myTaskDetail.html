@@ -278,7 +278,7 @@
                         </p>
                         <p class="pad-l15">
                             <span ng-if="data.entityField == 'reply'">
-                                <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px"></span> {{data.createdDate | date : 'HH:mm'}}
+                                <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px"></span> {{data.createdDate | date : 'HH:mm'}} <span class="fa fa-times" ng-click="vm.removeComment(data.id)"></span>
                                 <br/>
                                 <p ng-repeat="file in data.attachedFiles" class="pad-l20">
                                     <a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>

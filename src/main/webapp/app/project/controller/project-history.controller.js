@@ -14,6 +14,7 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
             vm.fileDownLoad = fileDownLoad;
             vm.renderHtml = renderHtml;
             vm.createComment = createComment;
+            vm.removeComment = removeComment;
             vm.userInfo = Principal.getIdentity();
             vm.tasks=[];
             vm.history = [];
@@ -104,12 +105,21 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
                     fileFormDataName : "file"
                 }).then(function (response) {
                     $scope.$emit('wmsApp:taskUpdate', response);
-                    toastr.success('태스크 코멘트 생성 완료', '태스크 코멘트 생성 완료');
+                    toastr.success('태스크 댓글 등록 완료', '태스크 댓글 등록 완료');
                     vm.comment.contents = [];
                     TaskListSearch.TaskAudigLog({'entityId' : taskId, 'entityName' : 'Task'}).then(function(result){
                         vm.tasks[index].TaskAuditLog = result;
                     });
 
+                });
+            }
+
+            function removeComment(taskId, index, traceLogId) {
+                TaskEdit.removeComment(traceLogId).then(function(response){
+                    toastr.error('태스크 댓글 삭제 완료', '태스크 댓글 삭제 완료');
+                    TaskListSearch.TaskAudigLog({'entityId' : taskId, 'entityName' : 'Task'}).then(function(result){
+                        vm.tasks[index].TaskAuditLog = result;
+                    });
                 });
             }
 
