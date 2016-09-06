@@ -63,7 +63,7 @@ public class DashboardService {
 
         if(dashboard == null) {
             dashboard = new Dashboard();
-            dashboard.setName(loginUser.getName()+"'s dashboard");
+            dashboard.setName("대시보드");
             dashboard.addUserDashboard(new UserDashboard(loginUser, dashboard));
 
             dashboard = dashboardRepository.save(dashboard);
