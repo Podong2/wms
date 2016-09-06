@@ -56,11 +56,11 @@
                                             <div class="form-group row">
                                                 <label class="col-md-3 control-label">이름</label>
                                                 <div class="col-md-9">
-                                                    <input class="form-control" ng-model="vm.user.name" enter-submit="vm.userUpload()" type="text">
+                                                    <input class="form-control" ng-model="vm.user.name" type="text">
                                                 </div>
                                                 <label class="col-md-3 control-label">전화번호</label>
                                                 <div class="col-md-9">
-                                                    <input class="form-control" ng-model="vm.user.phone" enter-submit="vm.userUpload()" ui-mask="999-9999-9999" type="text">
+                                                    <input class="form-control" ng-model="vm.user.phone" ui-mask="999-9999-9999" type="text">
                                                 </div>
                                             </div>
                                         </div>
@@ -107,12 +107,19 @@
                                 <div class="col-sm-12">
                                     <div class="row">
                                         <hr>
-                                        <div class="col-sm-4 user-profile-info">
-
+                                        <div class="col-sm-12 user-profile-info text-center margin-bottom-10">
+                                            <button type="button" class="btn btn_icon btn_customs cursor btn-success btn-sm btn-radius" ng-click="vm.userUpload()" ng-show="vm.task.id != ''" name="save" aria-hidden="false">
+                                                <span translate="entity.action.change">변경</span>
+                                            </button>
+                                            <button type="submit"
+                                                    onclick="window.history.back()"
+                                                    class="btn btn-info" owl-btn-cancel-back>
+                                            </button>
+                                            <br/>
                                         </div>
-                                        <div class="col-sm-8 user-profile-info">
+                                        <!--<div class="col-sm-8 user-profile-info">-->
 
-                                        </div>
+                                        <!--</div>-->
                                     </div>
                                 </div>
                             </div>

@@ -32,6 +32,7 @@ angular.module('wmsApp')
     .directive('owlBtnLink', owlBtnLink)
     .directive('owlBtnSearch', owlBtnSearch)
     .directive('owlBtnBack', owlBtnBack)
+    .directive('owlBtnCancelBack', owlBtnCancelBack)
     .directive('owlBtnFileDownload', owlBtnFileDownload);
 
     btnService.$inject = [];
@@ -367,6 +368,21 @@ owlBtnBack.$inject=['btnService'];
                 var btnClass = "btn btn-default dropdown-toggle btn-sm btn-radius";
                 var btnIcon = "glyphicon glyphicon-arrow-left";
                 var i18n = "entity.action.back";
+
+                btnService.makeElement(tElement, tAttrs, btnName, btnClass, btnIcon, i18n);
+            }
+        };
+    }
+
+owlBtnCancelBack.$inject=['btnService'];
+     function owlBtnCancelBack(btnService) {
+        return {
+            restrict: 'A',
+            compile: function (tElement, tAttrs) {
+                var btnName = "etcFunc";
+                var btnClass = "btn btn-default dropdown-toggle btn-sm btn-radius";
+                var btnIcon = "";
+                var i18n = "entity.action.cancel";
 
                 btnService.makeElement(tElement, tAttrs, btnName, btnClass, btnIcon, i18n);
             }

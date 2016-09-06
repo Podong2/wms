@@ -185,7 +185,8 @@
             "fullScreen" : "fullScreen",
             "refresh" : "refresh",
             "content" : "content",
-            "fileDownload" : "Attachment File"
+            "fileDownload" : "Attachment File",
+            "change" : "Change"
         },
         "detail": {
             "field": "フィールド",

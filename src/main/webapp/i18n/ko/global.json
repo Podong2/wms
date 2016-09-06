@@ -187,7 +187,8 @@
             "fullScreen" : "크게보기",
             "refresh" : "새로고침",
             "content" : "내용",
-            "fileDownload" : "첨부파일"
+            "fileDownload" : "첨부파일",
+            "change" : "변경"
         },
         "detail": {
             "field": "필드",
