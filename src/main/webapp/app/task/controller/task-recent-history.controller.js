@@ -5,8 +5,8 @@
 
 angular.module('wmsApp')
     .controller("taskRecentHistoryCtrl", taskRecentHistoryCtrl);
-taskRecentHistoryCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', 'ParseLinks', '$rootScope', '$state', 'paginationConstants', 'FindTaskRecentHistory', 'PaginationUtil', '$stateParams', 'UnreadCount'];
-        function taskRecentHistoryCtrl($scope, Code, $log, AlertService, ParseLinks, $rootScope, $state, paginationConstants, FindTaskRecentHistory, PaginationUtil, $stateParams, UnreadCount) {
+taskRecentHistoryCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', 'ParseLinks', '$rootScope', '$state', 'paginationConstants', 'FindTaskRecentHistory', 'PaginationUtil', '$stateParams', 'UnreadCount', '$translate','$translatePartialLoader'];
+        function taskRecentHistoryCtrl($scope, Code, $log, AlertService, ParseLinks, $rootScope, $state, paginationConstants, FindTaskRecentHistory, PaginationUtil, $stateParams, UnreadCount, $translate, $translatePartialLoader) {
             var vm = this;
             vm.getCurrentHistory = getCurrentHistory;
 
@@ -48,6 +48,8 @@ taskRecentHistoryCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', 'ParseL
             }
             function onSuccess(result){
                 vm.historyList = result;
+                $translatePartialLoader.addPart('global');
+                $translate.refresh();
             }
 
             function onError(){

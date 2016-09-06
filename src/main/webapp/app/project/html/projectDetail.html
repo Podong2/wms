@@ -175,6 +175,7 @@
 
         <div class="task-file-area" ng-class="vm.fileAreaOpen ? 'on' : ''">
             <input id="input-4" name="input4[]" type="file" multiple class="file-loading" get-files>
+            <wms-table ng-model="vm.previewFiles" table-configs="vm.tableConfigs" update-callback="updateCallback"></wms-table>
         </div>
 
         <!-- Timeline Content -->

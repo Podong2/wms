@@ -24,6 +24,7 @@
             resolve: {// 라우팅 전에 특정 설정파일들을 설정한다.
                 mainTranslatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate,$translatePartialLoader) {
                     $translatePartialLoader.addPart('home'); // home.json의 다국어 파일을 주입
+                    $translatePartialLoader.addPart('global'); // home.json의 다국어 파일을 주입
                     return $translate.refresh();
                 }]
             }

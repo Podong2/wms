@@ -28,6 +28,7 @@
                     $translatePartialLoader.addPart('home'); // home.json의 다국어 파일을 주입
                     $translatePartialLoader.addPart('login'); // home.json의 다국어 파일을 주입
                     $translatePartialLoader.addPart('register'); // home.json의 다국어 파일을 주입
+                    $translatePartialLoader.addPart('global');
                     return $translate.refresh();
                 }]
             }
@@ -52,6 +53,7 @@
             resolve: {//
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('task');
+                    $translatePartialLoader.addPart('global');
                     return $translate.refresh();
                 }]
             }
@@ -77,6 +79,7 @@
             resolve: {//
                 translatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate, $translatePartialLoader) {
                     $translatePartialLoader.addPart('task');
+                    $translatePartialLoader.addPart('global');
                     return $translate.refresh();
                 }],
                 entity: ['$stateParams', 'Task', function($stateParams, Task) {
@@ -105,6 +108,7 @@
                     $translatePartialLoader.addPart('home'); // home.json의 다국어 파일을 주입
                     $translatePartialLoader.addPart('login'); // home.json의 다국어 파일을 주입
                     $translatePartialLoader.addPart('register'); // home.json의 다국어 파일을 주입
+                    $translatePartialLoader.addPart('global');
                     return $translate.refresh();
                 }]
             }
@@ -128,6 +132,7 @@
                     $translatePartialLoader.addPart('home'); // home.json의 다국어 파일을 주입
                     $translatePartialLoader.addPart('login'); // home.json의 다국어 파일을 주입
                     $translatePartialLoader.addPart('register'); // home.json의 다국어 파일을 주입
+                    $translatePartialLoader.addPart('global');
                     return $translate.refresh();
                 }]
             }
@@ -149,6 +154,7 @@
             resolve: {//
                 mainTranslatePartialLoader: ['$translate', '$translatePartialLoader', function ($translate,$translatePartialLoader) {
                     $translatePartialLoader.addPart('home'); // home.json의 다국어 파일을 주입
+                    $translatePartialLoader.addPart('global');
                     return $translate.refresh();
                 }]
             }
@@ -172,6 +178,7 @@
                     $translatePartialLoader.addPart('home'); // home.json의 다국어 파일을 주입
                     $translatePartialLoader.addPart('login'); // home.json의 다국어 파일을 주입
                     $translatePartialLoader.addPart('register'); // home.json의 다국어 파일을 주입
+                    $translatePartialLoader.addPart('global');
                     return $translate.refresh();
                 }]
             }

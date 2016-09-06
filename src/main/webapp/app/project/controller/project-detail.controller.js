@@ -5,9 +5,9 @@
         .module('wmsApp')
         .controller('projectDetailCtrl', projectDetailCtrl);
 
-    projectDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', '$log', 'ProjectEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectInfo', 'ProjectFindByName'];
+    projectDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', '$log', 'ProjectEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectInfo', 'ProjectFindByName', 'tableService'];
 
-    function projectDetailCtrl($scope, $rootScope, $stateParams, Task, Code, $log, ProjectEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, TaskListSearch, dataService, Principal, ProjectFind, ProjectInfo, ProjectFindByName ) {
+    function projectDetailCtrl($scope, $rootScope, $stateParams, Task, Code, $log, ProjectEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, TaskListSearch, dataService, Principal, ProjectFind, ProjectInfo, ProjectFindByName, tableService ) {
         var vm = this;
         vm.baseUrl = window.location.origin;
 
@@ -26,12 +26,58 @@
         vm.logArrayData = [];
         vm.codes = Code.query();
         vm.commentList = [];
-        vm.projectList=[];
-        vm.project = $stateParams.project;
+        vm.projectList = [];
+        vm.responseData = [];
+        vm.previewFiles = []; // 파일 테이블 목록
+        vm.previewFileUrl = []; // 파일 url 목록
+        vm.project = getProject();
+
+        var previewFile = {
+            caption: '',
+            size: '',
+            url: '',
+            key: ''
+        };
+        vm.removeFile = {
+            entityName : '',
+            entityId : '',
+            attachedFileId : ''
+        };
+
+        $log.debug("$stateParams.project :" ,$stateParams.project);
+
+        function getProject(){
+            var previewFile = {
+                caption: '',
+                size: '',
+                url: '',
+                key: ''
+            };
+            // 파일 목록 주입
+            vm.projectFiles = $stateParams.project.attachedFiles;
+            angular.forEach(vm.projectFiles, function(value, index){
+                previewFile.caption = value.name;
+                previewFile.locationType = 'Project';
+                previewFile.locationId = $stateParams.project.id;
+                previewFile.size = byteCalculation(value.size);
+                previewFile.url = window.location.origin + "/api/attachedFile/" + value.id;
+                previewFile.id = value.id;
+                var fileInfo = _.clone(previewFile);
+                vm.previewFiles.push(fileInfo);
+                vm.previewFileUrl.push(previewFile.url);
+            });
+            $log.debug("vm.previewFiles : ", vm.previewFiles);
+            vm.responseData = _.clone(vm.previewFiles);
+
+            fileViewConfig();
+
+            return $stateParams.project;
+        }
+
         vm.fileAreaOpen = false;
 
 
-        vm.responseData = _.clone(vm.project);
+        vm.responseProjectData = _.clone(vm.project);
         $log.debug("vm.project  : ", vm.project );
 
         //vm.project.projectAdminIds = vm.project.projectAdmins;
@@ -64,14 +110,14 @@
 
         // min date picker
         vm.dueDateFrom = {
-            date: DateUtils.toDate(vm.responseData.startDate),
+            date: DateUtils.toDate(vm.responseProjectData.startDate),
             datepickerOptions: {
                 maxDate: null
             }
         };
         // max date picker
         vm.dueDateTo = {
-            date: DateUtils.toDate(vm.responseData.endDate),
+            date: DateUtils.toDate(vm.responseProjectData.endDate),
             datepickerOptions: {
                 minDate: null
             }
@@ -138,8 +184,8 @@
 
         // content 데이터 변경 체크
         $scope.$on('editingUpload', function (event, args) {
-            if (!angular.equals(vm.responseData.contents, vm.project.contents)) {
-                vm.responseData.contents = vm.project.contents;
+            if (!angular.equals(vm.responseProjectData.contents, vm.project.contents)) {
+                vm.responseProjectData.contents = vm.project.contents;
                 projectUpload();
             }
         });
@@ -239,7 +285,9 @@
         }
 
         function onSuccess(data){
+            $log.debug("프로젝트 수정 결과 : ", data.project);
             vm.project = data.project;
+            setProjectAttachedFiles();
         }
         function onError(){
 
@@ -291,9 +339,6 @@
         //setAttachedFiles(vm.project.attachedFiles); // 첨부파일목록 겔러리 세팅
 
         // bootstrap file uploader plugin load
-        $("#input-4").fileinput({
-            showCaption: false, showUpload: false, uploadUrl:"1", uploadAsync: false
-        });
         $("#input-5").fileinput({
             showCaption: false, showUpload: false, uploadUrl:"1", uploadAsync: false
         });
@@ -325,7 +370,6 @@
                         }
                     });
                 });
-
             });
         }
 
@@ -351,85 +395,96 @@
             projectUpload();
         }
 
-        //var previewFile = {
-        //    caption: '',
-        //    size: '',
-        //    url: '',
-        //    key: ''
-        //};
-        //vm.removeFile = {
-        //    entityName : '',
-        //    entityId : '',
-        //    attachedFileId : ''
-        //};
-        //vm.previewFiles=[]; // 파일 테이블 목록
-        //vm.previewFileUrl=[]; // 파일 url 목록
-        //function setProjectAttachedFiles(){
-        //    vm.projectFiles = vm.project.attachedFiles;
-        //    vm.previewFiles = [];
-        //    vm.previewFileUrl = [];
-        //    vm.responseData = [];
-        //    angular.forEach(vm.projectFiles, function(value, index){
-        //        previewFile.caption = value.name;
-        //        previewFile.locationType = 'Project';
-        //        previewFile.locationId = vm.project.id;
-        //        previewFile.size = value.size;
-        //        previewFile.url = window.location.origin + "/api/attachedFile/" + value.id;
-        //        previewFile.id = value.id;
-        //        var fileInfo = _.clone(previewFile);
-        //        vm.previewFiles.push(fileInfo);
-        //        vm.previewFileUrl.push(previewFile.url);
-        //    });
-        //    vm.responseData = _.clone(vm.previewFiles);
-        //
-        //    $("#input-4").fileinput({
-        //        uploadUrl: "1",
-        //        uploadAsync: false,
-        //        overwriteInitial: false,
-        //        showCaption: false,
-        //        showUpload: false,
-        //        initialPreview: vm.previewFileUrl,
-        //        initialPreviewAsData: true, // defaults markup
-        //        initialPreviewFileType: 'image', // image is the default and can be overridden in config below
-        //        initialPreviewConfig: vm.previewFiles,
-        //        uploadExtraData: {
-        //            img_key: "1000",
-        //            img_keywords: "happy, nature",
-        //        }
-        //    }).on('filesorted', function(e, params) {
-        //        console.log('File sorted params', params);
-        //    }).on('fileuploaded', function(e, params) {
-        //        console.log('File uploaded params', params);
-        //    });
-        //}
-        //
-        //// 프로젝트 파일첨부 테이블 정보
-        //vm.tableConfigs = [];
-        //vm.tableConfigs.push(tableService.getConfig("", "checked")
-        //    .setHWidth("width-30-p")
-        //    .setDAlign("text-center")
-        //    .setHAlign("text-center")
-        //    .setDType("check"));
-        //vm.tableConfigs.push(tableService.getConfig("이름", "caption")
-        //    .setHWidth("width-200-p")
-        //    .setDAlign("text-center")
-        //    .setDColor('field1_color'));
-        //vm.tableConfigs.push(tableService.getConfig("파일 크기", "size")
-        //    .setHWidth("width-200-p")
-        //    .setDAlign("text-center"));
-        //vm.tableConfigs.push(tableService.getConfig("다운로드", "")
-        //    .setHWidth("width-80-p")
-        //    .setDAlign("text-center")
-        //    .setDType("renderer")
-        //    .setDRenderer("file_download"));
-        //vm.tableConfigs.push(tableService.getConfig("삭제", "")
-        //    .setHWidth("width-80-p")
-        //    .setDAlign("text-center")
-        //    .setDType("renderer")
-        //    .setDRenderer("file_remove"));
-        //
-        //
-        //setProjectAttachedFiles();
+
+        function setProjectAttachedFiles(){
+            var previewFile = {
+                caption: '',
+                size: '',
+                url: '',
+                key: ''
+            };
+            // 파일 목록 주입
+            vm.previewFiles=[];
+            vm.previewFileUrl=[];
+            vm.responseData = [];
+            vm.projectFiles = vm.project.attachedFiles;
+            angular.forEach(vm.projectFiles, function(value, index){
+                previewFile.caption = value.name;
+                previewFile.locationType = 'Project';
+                previewFile.locationId = vm.project.id;
+                previewFile.size = byteCalculation(value.size);
+                previewFile.url = window.location.origin + "/api/attachedFile/" + value.id;
+                previewFile.id = value.id;
+                var fileInfo = _.clone(previewFile);
+                vm.previewFiles.push(fileInfo);
+                vm.previewFileUrl.push(previewFile.url);
+            });
+            $log.debug("vm.previewFiles : ", vm.previewFiles);
+            vm.responseData = _.clone(vm.previewFiles);
+
+            fileViewConfig();
+
+        }
+
+        function fileViewConfig(){
+            $("#input-4").fileinput({
+                uploadUrl : '1',
+                showCaption: true,
+                showUpload: false,
+                showRemove: false,
+                uploadAsync: false,
+                overwriteInitial: false,
+                initialPreview: vm.previewFileUrl,
+                initialPreviewAsData: true, // defaults markup
+                initialPreviewFileType: 'image', // image is the default and can be overridden in config below
+                initialPreviewConfig: vm.previewFiles,
+                uploadExtraData: {
+                    img_key: "1000",
+                    img_keywords: "happy, nature",
+                }
+            }).on('filesorted', function(e, params) {
+                console.log('File sorted params', params);
+            }).on('fileuploaded', function(e, params) {
+                console.log('File uploaded params', params);
+            });
+        }
+
+        //byte를 용량 계산해서 반환
+        function byteCalculation(bytes) {
+            var bytes = parseInt(bytes);
+            var s = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
+            var e = Math.floor(Math.log(bytes)/Math.log(1024));
+
+            if(e == "-Infinity") return "0 "+s[0];
+            else
+                return (bytes/Math.pow(1024, Math.floor(e))).toFixed(2)+" "+s[e];
+        }
+
+        // 프로젝트 파일첨부 테이블 정보
+        vm.tableConfigs = [];
+        vm.tableConfigs.push(tableService.getConfig("", "checked")
+            .setHWidth("width-30-p")
+            .setDAlign("text-center")
+            .setHAlign("text-center")
+            .setDType("check"));
+        vm.tableConfigs.push(tableService.getConfig("이름", "caption")
+            .setHWidth("width-200-p")
+            .setDAlign("text-center")
+            .setDColor('field1_color'));
+        vm.tableConfigs.push(tableService.getConfig("파일 크기", "size")
+            .setHWidth("width-200-p")
+            .setDAlign("text-center"));
+        vm.tableConfigs.push(tableService.getConfig("다운로드", "")
+            .setHWidth("width-80-p")
+            .setDAlign("text-center")
+            .setDType("renderer")
+            .setDRenderer("file_download"));
+        vm.tableConfigs.push(tableService.getConfig("삭제", "")
+            .setHWidth("width-80-p")
+            .setDAlign("text-center")
+            .setDType("renderer")
+            .setDRenderer("file_remove"));
+
 
     }
 
