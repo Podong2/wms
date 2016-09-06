@@ -139,7 +139,9 @@
             toastr.error('프로젝트 목록 불러오기 실패', '프로젝트 목록 불러오기 실패');
         }
         getProjectList();
-
+        $scope.$watchCollection('projectName', function(){
+            FindProjectList();
+        });
 
 
 

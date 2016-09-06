@@ -77,6 +77,7 @@
         vm.codes = Code.query();
         vm.commentList = [];
         vm.projectList=[];
+        $scope.projectName = '';
 
 
 
@@ -406,7 +407,7 @@
         }
         /* 프로젝트 목록 검색 */
         function FindProjectList(){
-            ProjectFindByName.query({name : vm.projectName},onProjectSuccess, onProjectError)
+            ProjectFindByName.query({name : $scope.projectName},onProjectSuccess, onProjectError)
         }
         function onProjectSuccess (result) {
             vm.projectList = result;
@@ -420,6 +421,9 @@
         function openCalendar(e, picker) {
             vm[picker].open = true;
         }
+        $scope.$watchCollection('projectName', function(){
+            FindProjectList();
+        });
 
 
 
