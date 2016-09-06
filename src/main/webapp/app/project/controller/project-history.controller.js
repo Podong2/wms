@@ -48,13 +48,17 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
             function getList(){
                 ProjectInfo.get({projectId : $stateParams.id, listType : 'TOTAL'}, onSuccess, onError);
             }
-        getList();
+
+            getList();
+
             function onSuccess(data) {
                 vm.tasks = data.tasks;
                 angular.forEach(vm.tasks, function(val){
                     val.historyArea = false;
-                })
-                $log.debug("vm.tasks : ", vm.tasks)
+                });
+                $log.debug("vm.tasks : ", vm.tasks);
+
+                taskHistoryOpen(0, vm.tasks[0].id, vm.tasks[0].historyArea);
             }
             function onError(error) {
                 AlertService.error(error.data.message);
