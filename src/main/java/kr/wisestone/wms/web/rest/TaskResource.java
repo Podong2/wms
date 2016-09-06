@@ -194,7 +194,18 @@ public class TaskResource {
             .body(result);
     }
 
+    @RequestMapping(value = "/tasks/modifySubTask",
+        method = RequestMethod.PUT,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<TaskDTO> modifySubTask(TaskForm taskForm) throws URISyntaxException {
+        log.debug("REST request to update Task id : {}", taskForm.getId());
 
+        TaskDTO result = taskService.modifySubTask(taskForm);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert("task", result.getId().toString()))
+            .body(result);
+    }
 
     /**
      * GET  /tasks : get all the tasks.

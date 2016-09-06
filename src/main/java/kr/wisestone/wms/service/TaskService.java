@@ -395,15 +395,13 @@ public class TaskService {
     @Transactional
     public TaskDTO create(TaskForm taskForm) {
 
-        Task task = this.taskRepository.findByName(taskForm.getName());
+//        Task task = this.taskRepository.findByName(taskForm.getName());
 
 //        if(task != null) {
 //            throw new CommonRuntimeException("error.task.taskNameDuplicate");
 //        }
 
-        task = taskForm.bind(new Task());
-
-        task = this.taskRepository.save(task);
+        Task task = this.taskRepository.save(taskForm.bind(new Task()));
 
         return taskMapper.taskToTaskDTO(task);
     }
@@ -688,5 +686,19 @@ public class TaskService {
         }
 
         taskDTO.setSubTasks(subTaskDTOs);
+    }
+
+    @Transactional
+    public TaskDTO modifySubTask(TaskForm taskForm) {
+
+        Task origin = this.taskRepository.findOne(taskForm.getId());
+
+        origin = taskForm.updateSubTask(origin);
+
+        origin = taskRepository.save(origin);
+//        taskSearchRepository.save(origin);
+        TaskDTO result = taskMapper.taskToTaskDTO(origin);
+
+        return result;
     }
 }
