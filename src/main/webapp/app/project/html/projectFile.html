@@ -25,13 +25,13 @@
                 <button type='button' class='btn'><i class='fa fa-download'></i></button>
                 <label for="input-4" class="cursor"><span type='button' class='btn'><i class='fa fa-upload'></i></span></label>
                 <button type='button' class='btn'><i class='fa fa-trash'></i></button>
-                <input id="input-4" name="input4[]" type="file" multiple class="file-loading" style="display: none">
+                <input id="input-4" name="input4[]" type="file" multiple class="file-loading" style="display: none" get-files>
             </div>
-            <style>
-                .file-input{
-                    display: none;
-                }
-            </style>
+            <!--<style>-->
+                <!--.file-input{-->
+                    <!--display: none;-->
+                <!--}-->
+            <!--</style>-->
         </div>
         <span style="clear: both"></span>
         <wms-table ng-model="vm.fileList" table-configs="vm.tableConfigs" update-callback="updateCallback" controller-name="projectFileCtrl"></wms-table>

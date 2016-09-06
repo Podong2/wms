@@ -1876,6 +1876,9 @@ i:active, .i:active, i:focus, .i:focus{
 .projectPickerSection.on{
     display: block;
 }
+.projectPickerAddSection.on{
+    display: block;
+}
 /*---------------------------- project picker css end ------------------------------*/
 
 /*---------------------------- task css ------------------------------*/

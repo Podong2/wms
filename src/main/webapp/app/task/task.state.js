@@ -166,6 +166,9 @@
                 authorities: [],
                 title : '내 작업'
             },
+            params : {
+                type : ''
+            },
             views: {//
                 'content@app': {//
                     templateUrl: 'app/task/html/myTask.html', // home에 사용될 template html 파일

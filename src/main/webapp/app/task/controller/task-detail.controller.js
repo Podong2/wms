@@ -255,6 +255,7 @@
         // -------------------  broadcast start ------------------- //
         vm.tagArray = [];
         $scope.$on("tagRemoveId", function(event, args){
+            vm.tagArray = [];
             vm.tagArray.push({id : args.id});
             if(args.tagType == "assignees") {
                 userIdPush(vm.tagArray, "removeAssigneeIds")
@@ -354,18 +355,30 @@
             }
         });
         $scope.$watchCollection('vm.task.assignees', function(newValue, oldValue){
-            if(oldValue != undefined && newValue != undefined && oldValue !== newValue && oldValue.length < newValue.length) {
-                taskUpload();
+            if(newValue != undefined && oldValue !== newValue) {
+                if(oldValue == null && newValue.length > 0){
+                    taskUpload();
+                }else if(oldValue.length < newValue.length){
+                    taskUpload();
+                }
             }
         });
         $scope.$watchCollection('vm.task.watchers', function(newValue, oldValue){
-            if(oldValue != undefined && newValue != undefined && oldValue !== newValue && oldValue.length < newValue.length) {
-                taskUpload();
+            if(newValue != undefined && oldValue !== newValue) {
+                if(oldValue == null && newValue.length > 0){
+                    taskUpload();
+                }else if(oldValue != null && oldValue.length < newValue.length){
+                    taskUpload();
+                }
             }
         });
         $scope.$watchCollection('vm.task.relatedTasks', function(newValue, oldValue){
-            if(oldValue != undefined && newValue != undefined && oldValue !== newValue && oldValue.length < newValue.length) {
-                taskUpload();
+            if(newValue != undefined && oldValue !== newValue) {
+                if(oldValue == null && newValue.length > 0){
+                    taskUpload();
+                }else if(oldValue != null && oldValue.length < newValue.length){
+                    taskUpload();
+                }
             }
         });
         $scope.$watchCollection('vm.task.projectIds', function(newValue, oldValue){
@@ -523,8 +536,7 @@
 
         function userIdPush(userInfo, type){
 
-            var typeIds = new Array();
-
+            var typeIds = [];
             angular.forEach(userInfo, function(val){
                 typeIds.push(val.id);
             });

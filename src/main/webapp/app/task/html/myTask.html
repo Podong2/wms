@@ -130,7 +130,7 @@
 
                                         <div ng-class="data.assignees.length > 0 ? 'task-list-title' : ''">
                                             <input type="checkbox"/>
-                                            <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a>
+                                            <a ui-sref="my-task.detail({id : data.id, listType : vm.listType,taskId : data.id})">{{data.name}}</a>
                                         </div>
                                         <ul class="list-inline friends-list" style="margin-bottom: 0">
                                             <li ng-repeat="user in data.assignees | limitTo:3">

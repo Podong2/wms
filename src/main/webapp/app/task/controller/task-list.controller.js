@@ -5,8 +5,8 @@
 
 angular.module('wmsApp')
     .controller("taskListCtrl", taskListCtrl);
-taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLinks', '$rootScope', '$state', 'MyTaskStatistics'];
-        function taskListCtrl($scope, Code, $log, Task, AlertService, ParseLinks, $rootScope, $state, MyTaskStatistics) {
+taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLinks', '$rootScope', '$state', 'MyTaskStatistics', '$stateParams'];
+        function taskListCtrl($scope, Code, $log, Task, AlertService, ParseLinks, $rootScope, $state, MyTaskStatistics, $stateParams) {
             var vm = this;
             vm.baseUrl = window.location.origin;
             vm.tabDisplay = tabDisplay;
@@ -43,6 +43,8 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
                 { status: false },  // 보류
                 { status: false }   // 완료
             ];
+
+            $log.debug("$stateParams", $stateParams);
 
             //  탭메뉴 영역 표시 여부 지정
             function tabDisplay (number, type) {
@@ -93,7 +95,7 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
 
                 MyTaskStatistics.get({listType : vm.listType}, countSuccess, onError); // 타스크 목록 카운트 정보 조회
 
-                if(!vm.reloadYn) $state.go("my-task.detail", {id : vm.tasks[0].id, listType : 'TODAY'});
+                if($stateParams.type != '') $state.go("my-task.detail", {id : vm.tasks[0].id, listType : 'TODAY'});
             }
             function countSuccess(result){
                 vm.taskCounts = JSON.parse(result.count);
