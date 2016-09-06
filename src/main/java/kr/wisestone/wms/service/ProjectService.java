@@ -82,6 +82,9 @@ public class ProjectService {
         Project project = projectRepository.findOne(id);
         ProjectDTO projectDTO = projectMapper.projectToProjectDTO(project);
 
+        User user = userService.findByLogin(project.getCreatedBy());
+        projectDTO.setCreatedByName(user.getName());
+
         this.copyProjectRelationProperties(project, projectDTO);
 
         if(!project.getProjectAttachedFiles().isEmpty()) {
@@ -96,17 +99,17 @@ public class ProjectService {
         List<User> projectAdmins = project.getPlainProjectUsers(UserType.ADMIN);
 
         if(projectAdmins != null && !projectAdmins.isEmpty()) {
-            projectDTO.setProjectAdmins(userMapper.usersToUserDTOs(projectAdmins));
+            projectDTO.setProjectAdmins(projectAdmins.stream().map(UserDTO::new).collect(Collectors.toList()));
         }
 
         List<User> projectUsers = project.getPlainProjectUsers(UserType.SHARER);
 
         if(projectUsers != null && !projectUsers.isEmpty()) {
-            projectDTO.setProjectUsers(userMapper.usersToUserDTOs(projectUsers));
+            projectDTO.setProjectUsers(projectUsers.stream().map(UserDTO::new).collect(Collectors.toList()));
         }
 
         if(project.getProjectParents() != null && !project.getProjectParents().isEmpty()) {
-            projectDTO.setProjectParents(projectMapper.projectsToProjectDTOs(project.getPlainProjectParent()));
+            projectDTO.setProjectParents(project.getPlainProjectParent().stream().map(ProjectDTO::new).collect(Collectors.toList()));
         }
     }
 

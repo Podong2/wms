@@ -67,16 +67,7 @@ public class TaskService {
     private TaskMapper taskMapper;
 
     @Inject
-    private UserMapper userMapper;
-
-    @Inject
-    private ProjectMapper projectMapper;
-
-    @Inject
     private TraceLogService traceLogService;
-
-    @Inject
-    private AttachedFileMapper attachedFileMapper;
 
     /**
      *  Get all the tasks.
@@ -297,6 +288,9 @@ public class TaskService {
         log.debug("Request to get Task : {}", id);
         Task task = taskRepository.findOne(id);
         TaskDTO taskDTO = new TaskDTO(task);
+
+        User user = userService.findByLogin(task.getCreatedBy());
+        taskDTO.setCreatedByName(user.getName());
 
         this.copyTaskRelationProperties(task, taskDTO);
 

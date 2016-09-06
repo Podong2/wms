@@ -58,6 +58,8 @@ public class TaskDTO implements Serializable {
 
     private String createdBy;
 
+    private String createdByName;
+
     private ZonedDateTime lastModifiedDate;
 
     private String lastModifiedBy;
@@ -272,6 +274,14 @@ public class TaskDTO implements Serializable {
 
     public void setAttachedFiles(List<AttachedFileDTO> attachedFiles) {
         this.attachedFiles = attachedFiles;
+    }
+
+    public String getCreatedByName() {
+        return createdByName;
+    }
+
+    public void setCreatedByName(String createdByName) {
+        this.createdByName = createdByName;
     }
 
     @Override

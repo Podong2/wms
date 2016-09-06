@@ -69,7 +69,7 @@
             </div>
             <div class="col-md-3">
                 <div class="pull-right" style="margin-top: 14px;">
-                    <span class="task-create-date"><span class="task-create-date-text">{{vm.project.createdBy}} </span> {{ (vm.project.createdDate | date:"yyyy-MM-dd HH:mm") || 'empty' }}</span>
+                    <span class="task-create-date"><span class="task-create-date-text">{{vm.project.createdByName}} </span> {{ (vm.project.createdDate | date:"yyyy-MM-dd HH:mm") || 'empty' }}</span>
                 </div>
             </div>
         </div>
@@ -194,8 +194,8 @@
                             ng-class="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
                             || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
                             <li>
-                                <img ng-src="/content/images/demo/male.png" ng-if="data.profileImageId == null || data.profileImageId == '' " uib-tooltip="{{data.createdBy}}">
-                                <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.profileImageId}}" ng-if="data.profileImageId != null" uib-tooltip="{{data.createdBy}}">
+                                <img ng-src="/content/images/demo/male.png" ng-if="data.profileImageId == null || data.profileImageId == '' " uib-tooltip="{{data.createdByName}}">
+                                <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.profileImageId}}" ng-if="data.profileImageId != null" uib-tooltip="{{data.createdByName}}">
                             </li>
                         </ul>
 
@@ -203,7 +203,7 @@
                             || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')"
                            ng-class="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
                             || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
-                            <a href-void><strong>{{data.createdBy}}</strong> </a><a ng-click="">댓글</a>
+                            <a href-void><strong>{{data.createdByName}}</strong> </a><a ng-click="">댓글</a>
                         </p>
                         <p class="pad-l15">
                             <span ng-if="data.entityField == 'reply'">
@@ -263,8 +263,8 @@
                             ng-class="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
                             || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
                             <li>
-                                <img ng-src="/content/images/demo/male.png" ng-if="data.profileImageId == null || data.profileImageId == '' " uib-tooltip="{{data.createdBy}}">
-                                <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.profileImageId}}" ng-if="data.profileImageId != null" uib-tooltip="{{data.createdBy}}">
+                                <img ng-src="/content/images/demo/male.png" ng-if="data.profileImageId == null || data.profileImageId == '' " uib-tooltip="{{data.createdByName}}">
+                                <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.profileImageId}}" ng-if="data.profileImageId != null" uib-tooltip="{{data.createdByName}}">
                             </li>
                         </ul>
 
@@ -272,7 +272,7 @@
                             || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')"
                            ng-class="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
                             || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
-                            <a href-void><strong>{{data.createdBy}}</strong> </a><a ng-click="">댓글</a>
+                            <a href-void><strong>{{data.createdByName}}</strong> </a><a ng-click="">댓글</a>
                         </p>
                         <p class="pad-l15">
                             <span ng-if="data.entityField == 'reply'">

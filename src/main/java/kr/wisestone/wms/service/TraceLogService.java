@@ -233,6 +233,8 @@ public class TraceLogService {
             if(user != null) {
                 if(user.getProfileImage() != null)
                     traceLogDTO.setProfileImageId(user.getProfileImage().getId());
+
+                traceLogDTO.setCreatedByName(user.getName());
             }
 
             if(traceLog.getPlainAttachedFiles() != null && !traceLog.getPlainAttachedFiles().isEmpty())
