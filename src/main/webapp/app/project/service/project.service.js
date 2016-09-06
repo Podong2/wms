@@ -150,7 +150,7 @@
         function uploadProject(parameter){
             parameter.url = "api/projects/update";
             return $upload.upload(parameter).then(function (response) {
-                $log.debug("프로젝트 수정 결과 : ", response);
+                $log.debug("프로젝트 수정 data : ", response);
                 return response;
             });
         }

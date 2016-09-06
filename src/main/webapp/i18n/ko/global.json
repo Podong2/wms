@@ -131,7 +131,10 @@
                 "admin": "관리자",
                 "sharer": "공유자",
                 "projectRelation": "상위 프로젝트/폴더",
-                "projectAttachedFiles": "첨부파일"
+                "projectAttachedFiles": "첨부파일",
+                "taskAttachedFiles": "첨부파일",
+                "taskUsers" : "공유자",
+                "reply" : "댓글"
             }
         },
         "persist-type": {
