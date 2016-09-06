@@ -2210,6 +2210,9 @@ tags-input .tags:hover, tags-input .tags:focus {
 .text-info{
     color : #ce8483;
 }
+.repeat-btn-group button:focus{
+    background-color: #fff;
+}
 /* repeat date picker css end */
 .clear-both{
     clear: both;
