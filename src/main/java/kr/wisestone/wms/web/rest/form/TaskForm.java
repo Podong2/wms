@@ -243,4 +243,52 @@ public class TaskForm {
 
         return subTask;
     }
+
+    public Task updateSubTask(Task subTask) {
+
+        Period period = subTask.getPeriod();
+
+        if("null".equalsIgnoreCase(this.startDate)) {
+            this.startDate = "";
+        }
+
+        if("null".equalsIgnoreCase(this.endDate)) {
+            this.endDate = "";
+        }
+
+        if(period == null) {
+            period = new Period(this.startDate, this.endDate);
+        } else {
+            period.setStartDate(this.startDate);
+            period.setEndDate(this.endDate);
+        }
+
+        subTask.setPeriod(period);
+
+        if(this.getAssigneeId() != null) {
+            User assignee = new User();
+            assignee.setId(this.getAssigneeId());
+            subTask.addTaskUser(assignee, UserType.ASSIGNEE);
+        }
+
+        for(Long id : getAssigneeIds()) {
+            if(id == null) continue;
+
+            User user = new User();
+            user.setId(id);
+
+            subTask.addTaskUser(user, UserType.ASSIGNEE);
+        }
+
+        for(Long id : getRemoveAssigneeIds()) {
+            if(id == null) continue;
+
+            User user = new User();
+            user.setId(id);
+
+            subTask.removeTaskUser(user, UserType.ASSIGNEE);
+        }
+
+        return subTask;
+    }
 }
