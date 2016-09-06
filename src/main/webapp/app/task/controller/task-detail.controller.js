@@ -486,6 +486,7 @@
                 vm.task.projectIds = "";
                 vm.task.removeProjectIds = "";
                 vm.repeatClose(); // 반복설정 팝업 닫기
+                $scope.files = [];
                 Task.get({id : vm.task.id}, successTask, erorrTask);
             });
         }

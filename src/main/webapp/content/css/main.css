@@ -1917,10 +1917,13 @@ tags-input .tags:hover, tags-input .tags:focus {
     border: 1px dashed black;
     cursor: auto;
 }
-.sub-task-area{
+.sub-task-area.on{
+    display: block;
+}
+.add-sub-task{
     display: none;
 }
-.sub-task-area.on{
+.add-sub-task.on{
     display: block;
 }
 .task-file-area{
@@ -2437,8 +2440,47 @@ text-align: right;
 .float-left {
     float: left;
 }
+.cursor-none{
+    cursor:auto !important;
+}
+.sub-task-area-popup{
+    position: absolute;
+    width:300px;
 
+    background-color: #fff;
+    border : 1px solid #ddd;
+    display: none;
+    right: 0;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, .3);
+    border-radius: 3px;
+    padding: 10px;
+}
+.sub-task-area-popup .task-popup-body{
+    overflow: hidden;
+    overflow-y: auto;
+    max-height: 200px;
+}
+.sub-task-area-popup .task-popup-body.parentBody{
+    height: 40px;
+}
+.sub-task-area-popup .task-popup-bottom{
+    height: 30px;
+}
+.sub-task-area-popup.on{
+    display: block;
+}
+.sub-task-area-popup ul {
+    list-style: none;
+    padding: 0;
+}
+.sub-task-area-popup ul li {
+    border-top: 1px solid #ddd;
+    padding: 5px;
 
+}
+.sub-task-area-popup ul li:first-child {
+    border-top: 0;
+}
 
 
 

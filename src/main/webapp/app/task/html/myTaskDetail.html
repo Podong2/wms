@@ -164,10 +164,11 @@
                         <label for="subTaskAdd" class="cursor" ng-click="vm.relatedTaskOpen = !vm.relatedTaskOpen"><i class="fa fa-share-alt"></i> 참조 작업</label>
                     </div>
                     <div class="col-md-2">
-                        <label for="subTaskAdd" class="cursor" ng-click="vm.getTaskProgressStatus()"><i class="fa fa-share-alt"></i> 작업 현황</label>
+                        <label for="subTaskAdd" class="cursor" ng-class="vm.task.relatedTasks.length == 0 && vm.task.subTasks.length == 0 ? 'cursor-none' : ''" ng-click="vm.getTaskProgressStatus()"><i class="fa fa-share-alt"></i> 작업 현황</label>
                     </div>
                 </div>
-                <div class="sub-task-area"  style="border-top: 1px solid #ddd; padding: 5px" ng-class="vm.subTaskOpen ? 'on' : ''">
+                {{vm.task.relatedTasks.length}}//{{vm.task.subTasks.length}}
+                <div class="sub-task-area"  style="border-top: 1px solid #ddd; padding: 5px">
                     <table class="table table-bordered"  ng-show="vm.task.subTasks != []">
                         <thead>
                         <tr>
@@ -199,11 +200,11 @@
                         </tbody>
                     </table>
 
-                    <div class="add-sub-task">
+                    <div class="add-sub-task"  ng-class="vm.subTaskOpen ? 'on' : ''">
                         <input type="text" class="form-control" ng-model="vm.subTask.name" enter-submit="vm.subTaskSave()" placeholder=" 추가할 작업명을 입력하세요."/>
                     </div>
                 </div>
-                <div class="related-task-area" ng-class="vm.relatedTaskOpen ? 'on' : ''" style="border-top: 1px solid #ddd">
+                <div class="related-task-area" ng-class="vm.relatedTaskOpen ? 'on' : ''"  style="border-top: 1px solid #ddd">
                     <table class="table table-bordered">
                         <colgroup>
                             <col width="15%">

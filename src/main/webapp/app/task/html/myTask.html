@@ -37,10 +37,7 @@
                                         <div class="pull-right">
                                             <div><i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i> {{data.endDate}}</div>
                                             <div>
-                                                <span ng-if="data.parent.name != null">상위 1</span>
-                                                <span ng-if="data.subTasks.length > 0">하위 {{data.subTasks.length}}</span>
-                                                <span ng-if="data.watchers.length > 0">참조 {{data.watchers.length}}</span>
-                                                <!--<span>승인/미승인</span>-->
+                                                <ng-include src="'app/task/html/taskListRightArea.html'"></ng-include>
                                             </div>
                                         </div>
 
@@ -79,10 +76,7 @@
                                         <div class="pull-right">
                                             <div><i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i> {{data.endDate}}</div>
                                             <div>
-                                                <span ng-if="data.parent.name != null">상위 1</span>
-                                                <span ng-if="data.subTasks.length > 0">하위 {{data.subTasks.length}}</span>
-                                                <span ng-if="data.watchers.length > 0">참조 {{data.watchers.length}}</span>
-                                                <!--<span>승인/미승인</span>-->
+                                                <ng-include src="'app/task/html/taskListRightArea.html'"></ng-include>
                                             </div>
                                         </div>
 
@@ -121,11 +115,9 @@
                                         <div class="pull-right">
                                             <div><i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i> {{data.endDate}}</div>
                                             <div>
-                                                <span ng-if="data.parent.name != null">상위 1</span>
-                                                <span ng-if="data.subTasks.length > 0">하위 {{data.subTasks.length}}</span>
-                                                <span ng-if="data.watchers.length > 0">참조 {{data.watchers.length}}</span>
-                                                <!--<span>승인/미승인</span>-->
+                                                <ng-include src="'app/task/html/taskListRightArea.html'"></ng-include>
                                             </div>
+
                                         </div>
 
                                         <div ng-class="data.assignees.length > 0 ? 'task-list-title' : ''">
@@ -163,10 +155,7 @@
                                         <div class="pull-right">
                                             <div><i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i> {{data.endDate}}</div>
                                             <div>
-                                                <span ng-if="data.parent.name != null">상위 1</span>
-                                                <span ng-if="data.subTasks.length > 0">하위 {{data.subTasks.length}}</span>
-                                                <span ng-if="data.watchers.length > 0">참조 {{data.watchers.length}}</span>
-                                                <!--<span>승인/미승인</span>-->
+                                                <ng-include src="'app/task/html/taskListRightArea.html'"></ng-include>
                                             </div>
                                         </div>
 
@@ -205,10 +194,7 @@
                                         <div class="pull-right">
                                             <div><i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i> {{data.endDate}}</div>
                                             <div>
-                                                <span ng-if="data.parent.name != null">상위 1</span>
-                                                <span ng-if="data.subTasks.length > 0">하위 {{data.subTasks.length}}</span>
-                                                <span ng-if="data.watchers.length > 0">참조 {{data.watchers.length}}</span>
-                                                <!--<span>승인/미승인</span>-->
+                                                <ng-include src="'app/task/html/taskListRightArea.html'"></ng-include>
                                             </div>
                                         </div>
 
@@ -248,10 +234,7 @@
                                         <div class="pull-right">
                                             <div><i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i> {{data.endDate}}</div>
                                             <div>
-                                                <span ng-if="data.parent.name != null">상위 1</span>
-                                                <span ng-if="data.subTasks.length > 0">하위 {{data.subTasks.length}}</span>
-                                                <span ng-if="data.watchers.length > 0">참조 {{data.watchers.length}}</span>
-                                                <!--<span>승인/미승인</span>-->
+                                                <ng-include src="'app/task/html/taskListRightArea.html'"></ng-include>
                                             </div>
                                         </div>
 
@@ -290,10 +273,7 @@
                                         <div class="pull-right">
                                             <div><i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i> {{data.endDate}}</div>
                                             <div>
-                                                <span ng-if="data.parent.name != null">상위 1</span>
-                                                <span ng-if="data.subTasks.length > 0">하위 {{data.subTasks.length}}</span>
-                                                <span ng-if="data.watchers.length > 0">참조 {{data.watchers.length}}</span>
-                                                <!--<span>승인/미승인</span>-->
+                                                <ng-include src="'app/task/html/taskListRightArea.html'"></ng-include>
                                             </div>
                                         </div>
 
@@ -332,10 +312,7 @@
                                         <div class="pull-right">
                                             <div><i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i> {{data.endDate}}</div>
                                             <div>
-                                                <span ng-if="data.parent.name != null">상위 1</span>
-                                                <span ng-if="data.subTasks.length > 0">하위 {{data.subTasks.length}}</span>
-                                                <span ng-if="data.watchers.length > 0">참조 {{data.watchers.length}}</span>
-                                                <!--<span>승인/미승인</span>-->
+                                                <ng-include src="'app/task/html/taskListRightArea.html'"></ng-include>
                                             </div>
                                         </div>
 

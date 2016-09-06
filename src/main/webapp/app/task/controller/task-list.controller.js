@@ -11,6 +11,7 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
             vm.baseUrl = window.location.origin;
             vm.tabDisplay = tabDisplay;
             vm.getList = getList;
+            vm.taskListPopup = taskListPopup;
             //vm.showDetail = showDetail;
 
             vm.tasks=[]; // 총 목록
@@ -23,6 +24,33 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
             vm.requestTask=[]; // 요청받은작업
             vm.watchedTask=[]; // 참조작업
             vm.listType = "TODAY";
+
+            vm.taskPopup = false;
+            vm.subTaskPopup = false;
+            vm.parentTaskPopup = false;
+            vm.relatedTaskPopup = false;
+            //var listType = '';
+            //function taskListPopup(type, event){
+            //    $log.debug("type : ", type)
+            //    vm.taskPopup = true;
+            //    $(event.target.children).addClass('on');
+            //    if(type == listType){
+            //        vm.taskPopup = false;
+            //        listType = '';
+            //    }else{
+            //        vm.subTaskPopup = false;
+            //        vm.parentTaskPopup = false;
+            //        vm.relatedTaskPopup = false;
+            //        if(type == 'parent'){
+            //            vm.parentTaskPopup = true;
+            //        }else if(type == 'sub'){
+            //            vm.subTaskPopup = true;
+            //        }else if(type == 'related'){
+            //            vm.relatedTaskPopup = true;
+            //        }
+            //        listType = type
+            //    }
+            //}
 
             /* layout config option */
             $scope.status = {
