@@ -35,7 +35,8 @@
                             <div style="width: 300px;">
                                 <div style="width: 300px;">
                                     <div class="project-picker-search">
-                                        <input class="project-picker-search-input" type="text" ng-model="vm.projectName" enter-submit="vm.FindProjectList()" placeholder="프로젝트 또는 폴더를 선택하세요.">
+                                        <input class="project-picker-search-input" type="text" ng-model="projectName" enter-submit="vm.FindProjectList()"
+                                               placeholder="프로젝트 또는 폴더를 선택하세요." wms-kr-update> <!-- ng-keydown="vm.FindProjectList($this.val())"-->
                                     </div>
                                     <div class="project-picker-list-area">
                                         <div class="project-picker-list">
@@ -157,8 +158,8 @@
         <div>
             <div class="panel panel-default min-height-100-p detail-content" id="editingSection">
                 <div class="ibox">
-                    <div class="ibox_content elementSection">
-                        <span ng-bind-html="vm.renderHtml(vm.project.contents)" section-toggle></span>
+                    <div class="ibox_content elementSection"  section-toggle style="min-height: 30px">
+                        <span ng-bind-html="vm.renderHtml(vm.project.contents)"></span>
                     </div>
 
                     <div class="content-edit editingSection" >

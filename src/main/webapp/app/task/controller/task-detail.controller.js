@@ -86,7 +86,7 @@
                 previewFile.caption = value.name;
                 previewFile.locationType = 'Task';
                 previewFile.locationId = entity.id;
-                previewFile.size = value.size;
+                previewFile.size = byteCalculation(value.size);
                 previewFile.url = window.location.origin + "/api/attachedFile/" + value.id;
                 previewFile.id = value.id;
                 var fileInfo = _.clone(previewFile);
@@ -98,6 +98,17 @@
             return entity;
         }
 
+        //byte를 용량 계산해서 반환
+        function byteCalculation(bytes) {
+            var bytes = parseInt(bytes);
+            var s = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
+            var e = Math.floor(Math.log(bytes)/Math.log(1024));
+
+            if(e == "-Infinity") return "0 "+s[0];
+            else
+                return (bytes/Math.pow(1024, Math.floor(e))).toFixed(2)+" "+s[e];
+        }
+
         TaskListSearch.TaskAudigLog({'entityId' : vm.task.id, 'entityName' : 'Task'}).then(function(result){
             vm.TaskAuditLog = result;
             angular.forEach(vm.TaskAuditLog.data, function(val){
@@ -107,11 +118,12 @@
             });
 
             $("#input-4").fileinput({
-                uploadUrl: "1",
+                uploadUrl : '1',
+                showCaption: true,
+                showUpload: false,
+                showRemove: false,
                 uploadAsync: false,
                 overwriteInitial: false,
-                showCaption: false,
-                showUpload: false,
                 initialPreview: vm.previewFileUrl,
                 initialPreviewAsData: true, // defaults markup
                 initialPreviewFileType: 'image', // image is the default and can be overridden in config below
@@ -504,11 +516,12 @@
             vm.responseData = _.clone(vm.previewFiles);
 
             $("#input-4").fileinput({
-                uploadUrl: "1",
+                uploadUrl : '1',
+                showCaption: true,
+                showUpload: false,
+                showRemove: false,
                 uploadAsync: false,
                 overwriteInitial: false,
-                showCaption: false,
-                showUpload: false,
                 initialPreview: vm.previewFileUrl,
                 initialPreviewAsData: true, // defaults markup
                 initialPreviewFileType: 'image', // image is the default and can be overridden in config below

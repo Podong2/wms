@@ -51,7 +51,7 @@
             removeAttachedFileIds : ''
         };
 
-        vm.projectName = '';
+        $scope.projectName = '';
 
         $scope.files = [];
 
@@ -82,7 +82,8 @@
             ProjectFind.query({name : ''}, onProjectSuccess, onProjectError);
         }
         function FindProjectList(){
-            ProjectFindByName.query({name : vm.projectName},onProjectSuccess, onProjectError)
+            $log.debug($scope.projectName);
+            ProjectFindByName.query({name : $scope.projectName},onProjectSuccess, onProjectError)
         }
         function onProjectSuccess (result) {
             vm.projectList = result;
