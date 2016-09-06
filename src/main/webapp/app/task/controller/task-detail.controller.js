@@ -376,7 +376,7 @@
             if(newValue != undefined && oldValue !== newValue) {
                 if(oldValue == null && newValue.length > 0){
                     taskUpload();
-                }else if(oldValue.length < newValue.length){
+                }else if(oldValue != null && oldValue.length < newValue.length){
                     taskUpload();
                 }
             }

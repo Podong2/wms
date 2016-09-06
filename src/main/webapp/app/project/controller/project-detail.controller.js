@@ -107,6 +107,7 @@
         // -------------------  broadcast start ------------------- //
         vm.tagArray = [];
         $scope.$on("tagRemoveId", function(event, args){
+            vm.tagArray=[];
             vm.tagArray.push({id : args.id});
             if(args.tagType == "projectUserIds") {
                 userIdPush(vm.tagArray, "removeProjectUserIds")
