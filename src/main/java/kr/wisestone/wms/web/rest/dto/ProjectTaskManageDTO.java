@@ -73,6 +73,7 @@ public class ProjectTaskManageDTO {
                 -> taskDTO.getStatusGroup().equals("REGISTERED_TODAY")
                 || taskDTO.getStatusGroup().equals("SCHEDULED_TODAY")
                 || taskDTO.getStatusGroup().equals("IN_PROGRESS")
+                || taskDTO.getStatusGroup().equals("NONE_SCHEDULED")
         ).count();
 
         this.completeCount = completeCount;
