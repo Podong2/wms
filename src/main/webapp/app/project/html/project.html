@@ -88,7 +88,10 @@
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
 
                                         <div class="pull-right">
-                                            <div>{{data.endDate}}</div>
+                                            <div>
+                                                <i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i>
+                                                <i class="fa fa-hourglass-end" style="float: left; padding: 8px; color:red;"></i>{{data.endDate}}
+                                            </div>
                                             <div>
                                                 <ng-include src="'app/project/html/taskListRightArea.html'"></ng-include>
                                             </div>
@@ -127,7 +130,7 @@
                                     <div  class="wms-tree-node-list task-list" ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
                                         <div class="pull-right">
-                                            <div>{{data.endDate}}</div>
+                                            <div><i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i>{{data.endDate}}</div>
                                             <div>
                                                 <ng-include src="'app/project/html/taskListRightArea.html'"></ng-include>
                                             </div>
@@ -165,7 +168,7 @@
                                     <div  class="wms-tree-node-list task-list" ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
                                         <div class="pull-right">
-                                            <div>{{data.endDate}}</div>
+                                            <div><i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i>{{data.endDate}}</div>
                                             <div>
                                                 <ng-include src="'app/project/html/taskListRightArea.html'"></ng-include>
                                             </div>
@@ -202,7 +205,7 @@
                                     <div  class="wms-tree-node-list task-list" ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
                                         <div class="pull-right">
-                                            <div>{{data.endDate}}</div>
+                                            <div><i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i>{{data.endDate}}</div>
                                             <div>
                                                 <ng-include src="'app/project/html/taskListRightArea.html'"></ng-include>
                                             </div>
@@ -241,7 +244,7 @@
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
                                         <input type="checkbox"/> <a ui-sref="my-project.taskDetail({taskId : data.id, listType : vm.listType, projectId : vm.project.id})">{{data.name}}</a><span ng-class="node.icon ? node.icon : ''"></span>
                                         <div class="pull-right">
-                                            <div>{{data.endDate}}</div>
+                                            <div><i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i>{{data.endDate}}</div>
                                             <div>
                                                 <ng-include src="'app/project/html/taskListRightArea.html'"></ng-include>
                                             </div>
@@ -261,7 +264,7 @@
                                     <div  class="wms-tree-node-list task-list" ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
                                         <div class="pull-right">
-                                            <div>{{data.endDate}}</div>
+                                            <div><i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i>{{data.endDate}}</div>
                                             <div>
                                                 <ng-include src="'app/project/html/taskListRightArea.html'"></ng-include>
                                             </div>
@@ -299,7 +302,7 @@
                                     <div  class="wms-tree-node-list task-list" ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
                                         <div class="pull-right">
-                                            <div>{{data.endDate}}</div>
+                                            <div><i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i>{{data.endDate}}</div>
                                             <div>
                                                 <ng-include src="'app/project/html/taskListRightArea.html'"></ng-include>
                                             </div>
@@ -337,7 +340,7 @@
                                     <div  class="wms-tree-node-list task-list" ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
                                           ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
                                         <div class="pull-right">
-                                            <div>{{data.endDate}}</div>
+                                            <div><i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i>{{data.endDate}}</div>
                                             <div>
                                                 <ng-include src="'app/project/html/taskListRightArea.html'"></ng-include>
                                             </div>
