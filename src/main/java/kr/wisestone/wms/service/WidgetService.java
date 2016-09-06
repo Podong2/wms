@@ -97,7 +97,7 @@ public class WidgetService {
 
             taskService.copyTaskRelationProperties(task, taskDTO);
 
-            if(task.getTaskRepeatSchedule() != null) {
+            if(task.getTaskRepeatSchedule() != null && task.getTaskRepeatSchedule().getRepeatYn()) {
                 taskListWidgetDTO.addRepeatScheduledTasks(taskDTO);
             }
 

@@ -7,6 +7,7 @@ import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.util.ClassUtils;
+import org.springframework.util.StringUtils;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -47,7 +48,7 @@ public class TaskRepeatSchedule extends AbstractAuditingEntity implements Serial
 
     @Column(name = "repeat_yn")
     @Type(type="yes_no")
-    private Boolean repeatYn;
+    private Boolean repeatYn = Boolean.FALSE;
 
     @Column(name = "repeat_type")
     private String repeatType;
@@ -81,6 +82,10 @@ public class TaskRepeatSchedule extends AbstractAuditingEntity implements Serial
         this.setTask(task);
 
         this.setRepeatYn(taskRepeatSchedule.getRepeatYn());
+
+        if(StringUtils.isEmpty(taskRepeatSchedule.getRepeatType()))
+            this.setRepeatYn(Boolean.FALSE);
+
         this.setRepeatType(taskRepeatSchedule.getRepeatType());
         this.setWeekdays(taskRepeatSchedule.getWeekdays());
         this.setMonthlyCriteria(taskRepeatSchedule.getMonthlyCriteria());
@@ -93,6 +98,10 @@ public class TaskRepeatSchedule extends AbstractAuditingEntity implements Serial
     public TaskRepeatSchedule update(TaskRepeatScheduleDTO taskRepeatSchedule) {
 
         this.setRepeatYn(taskRepeatSchedule.getRepeatYn());
+
+        if(StringUtils.isEmpty(taskRepeatSchedule.getRepeatType()))
+            this.setRepeatYn(Boolean.FALSE);
+
         this.setRepeatType(taskRepeatSchedule.getRepeatType());
         this.setWeekdays(taskRepeatSchedule.getWeekdays());
         this.setMonthlyCriteria(taskRepeatSchedule.getMonthlyCriteria());
