@@ -2035,6 +2035,11 @@ tags-input .tags:hover, tags-input .tags:focus {
         bottom: 10px;
         margin: 0 2px;
     }
+    .comment-user-recent{
+        position: inherit;
+        bottom: 10px;
+        margin: 0 2px;
+    }
     /*<< comment css end >>*/
 /*---------------------------- task css end ------------------------------*/
 
@@ -2443,10 +2448,13 @@ text-align: right;
 .cursor-none{
     cursor:auto !important;
 }
+.recent-history-task {
+    color: #00b3ee;
+    font-size: 16px;
+}
 .sub-task-area-popup{
     position: absolute;
     width:300px;
-
     background-color: #fff;
     border : 1px solid #ddd;
     display: none;

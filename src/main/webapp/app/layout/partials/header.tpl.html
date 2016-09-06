@@ -2,7 +2,7 @@
 <div id="logo-group">
 
     <!-- PLACE YOUR LOGO HERE -->
-    <span id="logo"> <img src="content/images/logo.png" alt="WMS"></span>
+    <span id="logo"><a ui-sref="my-task({type : first})"><img src="content/images/logo.png" alt="WMS"></a></span>
     <!-- END LOGO PLACEHOLDER -->
 
     <!-- Note: The activity badge color changes when clicked and resets the number to 0
@@ -83,20 +83,60 @@
                         ng-if="(vm.historyList[$index].createdDate | date : 'MM/dd') != vm.day && (history.createdDate | date : 'MM/dd') != (vm.historyList[$index-1].createdDate | date : 'MM/dd')">
                         어제
                     </div>
-                    <div ng-if="history.createdBy != vm.historyList[$index-1].createdBy
+                    <div ng-if="history.taskName != vm.historyList[$index-1].taskName
                             || (history.createdDate | date : 'MM/dd') != (vm.historyList[$index-1].createdDate | date : 'MM/dd')" style="font-size: 15px">
-                        <strong>{{history.createdBy}}</strong>
+                        <a class="recent-history-task" ui-sref="my-task.detail({id : history.taskId, listType : 'TODAY', taskId : history.taskId})" href="#/myTask/detail/TODAY/10571"><strong>{{history.taskName}}</strong></a>
                     </div>
-                    <span translate="audit.entity.project" ng-if="data.entityField == null || data.entityField == ''">엔티티 {{'audit.entity.project' | translate}}</span>
-                    <span translate="audit.field.project.{{history.entityField}}" ng-if="(history.entityField != null && history.entityField != '') && history.entityField != 'projectUsers'">필드</span>
-                    <span translate="audit.field.project.{{history.etcValue}}"  ng-if="(history.entityField != null && history.entityField != '') && history.entityField == 'projectUsers'">필드</span>
-                    <span translate="audit.persist-type.{{history.persistType}}">유형</span>
-                    <span ng-show="history.persistType == 'DELETE'">
-                        {{history.oldValue}} {{history.createdDate | date : 'HH:mm'}}
-                    </span>
-                    <span ng-show="history.persistType == 'INSERT' || history.persistType == 'UPDATE'">
-                        {{history.newValue}} {{history.createdDate | date : 'HH:mm'}}
-                    </span>
+                    <div ng-if="(history.taskName != vm.historyList[$index-1].taskName
+                            || (history.createdDate | date : 'MM/dd') != (vm.historyList[$index-1].createdDate | date : 'MM/dd'))
+                            || (history.createdBy != vm.historyList[$index-1].createdBy
+                            || (history.createdDate | date : 'MM/dd') != (vm.historyList[$index-1].createdDate | date : 'MM/dd'))" style="font-size: 15px">
+                        <!--<strong>{{history.createdByName}}</strong>-->
+                        <ul class="list-inline friends-list comment-user-recent margin-top-5">
+                            <li>
+                                <img ng-src="/content/images/demo/male.png" ng-if="history.profileImageId == null || history.profileImageId == '' " uib-tooltip="{{history.createdByName}}">
+                                <img ng-src="api/attachedFile/{{history.profileImageId}}" ng-if="history.profileImageId != null" uib-tooltip="{{history.createdByName}}">
+                                <strong>{{history.createdByName}}</strong>
+                            </li>
+                        </ul>
+                    </div>
+                    <div>
+                        <!--<span translate="audit.entity.project" ng-if="data.entityField == null || data.entityField == ''">엔티티 {{'audit.entity.project' | translate}}</span>-->
+
+                        <span translate="audit.entity.task" ng-if="history.entityField == null || history.entityField == ''">엔티티</span>
+                        <span translate="audit.field.task.{{history.entityField}}" ng-if="(history.entityField != null && history.entityField != '') && history.entityField != 'taskUsers'">필드</span>
+                        <span translate="audit.field.task.{{history.etcValue}}"  ng-if="(history.entityField != null && history.entityField != '') && history.entityField == 'taskUsers'">필드</span>
+                        <span translate="audit.persist-type.{{history.persistType}}">유형</span>
+                        <span ng-if="history.entityField != 'taskAttachedFiles' && history.entityField != 'taskRepeatSchedule' && history.entityField != 'contents'">
+                            <span ng-if="history.persistType == 'INSERT' || history.persistType == 'UPDATE'">
+                                <span ng-if="history.entityField == 'importantYn'">
+                                    <span ng-if="history.newValue == 'true'">
+                                        활성 {{history.createdDate | date : 'HH:mm'}}
+                                    </span>
+                                    <span ng-if="history.newValue == 'false'">
+                                        비활성 {{history.createdDate | date : 'HH:mm'}}
+                                    </span>
+                                </span>
+                                <span ng-if="history.entityField != 'importantYn'">
+                                    {{history.newValue}} {{history.createdDate | date : 'HH:mm'}}
+                                </span>
+                            </span>
+                            <span ng-if="history.persistType == 'DELETE'">
+                                {{history.oldValue}} {{history.createdDate | date : 'HH:mm'}}
+                            </span>
+                        </span>
+                        <span ng-if="history.entityField == 'taskAttachedFiles' && history.entityField != 'taskRepeatSchedule' && history.entityField != 'contents'">
+
+                            <span ng-if="history.persistType == 'INSERT' || history.persistType == 'UPDATE'">
+                                <i class="fa fa-paperclip"></i>
+                                <a ng-click="vm.fileDownLoad(history.attachedFileId)">{{history.newValue}}</a> {{history.createdDate | date : 'HH:mm'}}
+                            </span>
+                            <span ng-if="history.persistType == 'DELETE'">
+                                {{history.oldValue}} {{history.createdDate | date : 'HH:mm'}}
+                            </span>
+                        </span>
+
+                    </div>
                 </div>
             </div>
             <div class="gnb-task-history-plus-area"><a ng-click="vm.getCurrentHistory()"><i class="fa fa-plus"></i> 더보기</a></div>

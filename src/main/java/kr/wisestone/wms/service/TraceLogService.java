@@ -201,6 +201,7 @@ public class TraceLogService {
         BooleanBuilder predicate = new BooleanBuilder();
 
         predicate.and($traceLog.entityName.eq("Task"));
+        predicate.and($traceLog.replyYn.eq(Boolean.FALSE));
         predicate.and($traceLog.taskId.in(new JPASubQuery()
                     .from($task)
                     .where($task.taskUsers.any().user.login.eq(loginUser.getLogin()).or($task.createdBy.eq(loginUser.getLogin())))

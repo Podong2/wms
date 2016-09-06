@@ -3,6 +3,8 @@ package kr.wisestone.wms.web.rest.dto;
 
 import kr.wisestone.wms.domain.*;
 
+import java.time.ZonedDateTime;
+
 public class ProjectManagedAttachedFileDTO {
 
     public static final String LOCATION_TASK = "TASK";
@@ -18,6 +20,14 @@ public class ProjectManagedAttachedFileDTO {
     private Long locationId;
 
     private AttachedFileDTO attachedFile;
+
+    private String createdBy;
+
+    private ZonedDateTime createdDate;
+
+    private String lastModifiedBy;
+
+    private ZonedDateTime lastModifiedDate;
 
     public ProjectManagedAttachedFileDTO(TaskAttachedFile taskAttachedFile) {
 
@@ -37,6 +47,7 @@ public class ProjectManagedAttachedFileDTO {
         this.setLocationType(LOCATION_PROJECT);
         this.setLocationId(project.getId());
         this.setAttachedFile(new AttachedFileDTO(projectAttachedFile.getAttachedFile()));
+
     }
 
     public ProjectManagedAttachedFileDTO(ProjectSharedAttachedFile projectSharedAttachedFile) {
@@ -95,5 +106,37 @@ public class ProjectManagedAttachedFileDTO {
 
     public void setAttachedFile(AttachedFileDTO attachedFile) {
         this.attachedFile = attachedFile;
+    }
+
+    public ZonedDateTime getLastModifiedDate() {
+        return lastModifiedDate;
+    }
+
+    public void setLastModifiedDate(ZonedDateTime lastModifiedDate) {
+        this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
+    }
+
+    public String getLastModifiedBy() {
+        return lastModifiedBy;
+    }
+
+    public void setLastModifiedBy(String lastModifiedBy) {
+        this.lastModifiedBy = lastModifiedBy;
     }
 }

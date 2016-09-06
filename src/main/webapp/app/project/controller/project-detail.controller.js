@@ -18,6 +18,7 @@
         vm.createComment = createComment;
         vm.FindProjectList = FindProjectList;
         vm.projectRemove = projectRemove;
+        vm.removeComment = removeComment;
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
 
@@ -360,7 +361,7 @@
                 fileFormDataName : "file"
             }).then(function (response) {
                 $scope.$emit('wmsApp:taskUpdate', response);
-                toastr.success('태스크 코멘트 생성 완료', '태스크 코멘트 생성 완료');
+                toastr.success('프로젝트 댓글 등록 완료', '프로젝트 댓글 등록 완료');
                 TaskListSearch.TaskAudigLog({'entityId' : vm.project.id, 'entityName' : 'Project'}).then(function(result){
                     vm.TaskAuditLog = result;
                     vm.commentList=[];
@@ -387,6 +388,21 @@
         vm.commentViewType = false;
         function onlyComment(){
 
+        }
+
+        function removeComment(traceLogId) {
+            ProjectEdit.removeComment(traceLogId).then(function(response){
+                toastr.error('프로젝트 댓글 삭제 완료', '프로젝트 댓글 삭제 완료');
+                TaskListSearch.TaskAudigLog({'entityId' : vm.project.id, 'entityName' : 'Project'}).then(function(result){
+                    vm.TaskAuditLog = result;
+                    vm.commentList=[];
+                    angular.forEach(vm.TaskAuditLog.data, function(val){
+                        if(val.entityField == 'reply'){
+                            vm.commentList.push(val);
+                        }
+                    });
+                });
+            });
         }
 
         //프로젝트 x 버튼 눌러 삭제

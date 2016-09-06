@@ -120,7 +120,8 @@
                 "taskProjects": "Project/Folder",
                 "taskRepeatSchedule": "Repeat Schedule",
                 "taskAttachedFiles": "AttachedFile",
-                "importantYn": "Important Check"
+                "importantYn": "Important Check",
+                "reply" : "Reply"
             },
             "project": {
                 "name": "Subject",
@@ -132,7 +133,8 @@
                 "admin": "Administrator",
                 "sharer": "Sharer",
                 "projectRelation": "Parent Project/Folder",
-                "projectAttachedFiles": "AttachedFile"
+                "projectAttachedFiles": "AttachedFile",
+                "reply" : "Reply"
             }
         },
         "persist-type": {
@@ -185,7 +187,8 @@
             "fullScreen" : "fullScreen",
             "refresh" : "refresh",
             "content" : "content",
-            "fileDownload" : "Attachment File"
+            "fileDownload" : "Attachment File",
+            "change" : "Change"
         },
         "detail": {
             "field": "Field",

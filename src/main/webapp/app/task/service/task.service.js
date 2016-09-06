@@ -170,7 +170,8 @@
             saveTask : saveTask,
             singleUpload : singleUpload,
             createComment : createComment,
-            putContentRevert : putContentRevert
+            putContentRevert : putContentRevert,
+            removeComment : removeComment
         }
         return service;
 
@@ -220,6 +221,15 @@
             //$log.debug("task 싱글 업로드 data : ", parameter)
             $http.put( '/api/tasks/revert/'+ id , {}, {id : id, params : {traceLogId : traceLogId}}).then(function (result) {
                 $log.debug("taskList : ", result);
+                deferred.resolve(result);
+            });
+            return deferred.promise;
+        }
+
+        function removeComment (parameter) {
+            var deferred = $q.defer();
+            $http.delete('/api/trace-log/'+parameter, {}, {}).then(function (result) {
+                $log.debug("result : ", result);
                 deferred.resolve(result);
             });
             return deferred.promise;
