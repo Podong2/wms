@@ -53,7 +53,7 @@
                             </header>
                             <fieldset>
                                 <section class="form-group">
-                                    <input-box
+                                    <!--<input-box
                                         input-type="text"
                                         form-name="loginForm"
                                         input-name="username"
@@ -68,19 +68,19 @@
                                         placeholder-text="global.form.username.placeholder"
                                         tooltip="아이디를 입력하세요."
                                         tooltip-icon="fa-user"
+                                    ></input-box>-->
+                                    <input-box
+                                        input-type="email"
+                                        form-name="loginForm"
+                                        input-name="email"
+                                        ng-model="vm.username"
+                                        pattern="/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/"
+                                        required-text="global.messages.validate.email.required"
+                                        pattern-text="global.messages.validate.email.pattern"
+                                        placeholder-text="global.form.email.placeholder"
+                                        tooltip="이메일을 입력하세요."
+                                        tooltip-icon="fa-envelope"
                                     ></input-box>
-                                    <!--<input-box-->
-                                        <!--input-type="email"-->
-                                        <!--form-name="loginForm"-->
-                                        <!--input-name="email"-->
-                                        <!--ng-model="vm.username"-->
-                                        <!--pattern="/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/"-->
-                                        <!--required-text="global.messages.validate.email.required"-->
-                                        <!--pattern-text="global.messages.validate.email.pattern"-->
-                                        <!--placeholder-text="global.form.email.placeholder"-->
-                                        <!--tooltip="이메일을 입력하세요."-->
-                                        <!--tooltip-icon="fa-envelope"-->
-                                    <!--&gt;</input-box>-->
 
                                 </section>
                                 <section class="form-group">
