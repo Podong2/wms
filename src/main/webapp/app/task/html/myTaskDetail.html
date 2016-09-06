@@ -167,7 +167,6 @@
                         <label for="subTaskAdd" class="cursor" ng-class="vm.task.relatedTasks.length == 0 && vm.task.subTasks.length == 0 ? 'cursor-none' : ''" ng-click="vm.getTaskProgressStatus()"><i class="fa fa-share-alt"></i> 작업 현황</label>
                     </div>
                 </div>
-                {{vm.task.relatedTasks.length}}//{{vm.task.subTasks.length}}
                 <div class="sub-task-area"  style="border-top: 1px solid #ddd; padding: 5px">
                     <table class="table table-bordered"  ng-show="vm.task.subTasks != []">
                         <thead>

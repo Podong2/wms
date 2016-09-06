@@ -4,6 +4,7 @@
         .module('wmsApp')
         .factory('Project', Project)
         .factory('ProjectInfo', ProjectInfo)
+        .factory('ProjectHistoryTasksInfo', ProjectHistoryTasksInfo)
         .factory('ProjectFind', ProjectFind)
         .factory('ProjectFindByName', ProjectFindByName)
         .factory('ProjectAttachedList', ProjectAttachedList)
@@ -13,6 +14,7 @@
 
     Project.$inject = ['$resource'];
     ProjectInfo.$inject = ['$resource'];
+    ProjectHistoryTasksInfo.$inject = ['$http', '$log', '$q'];
     ProjectFind.$inject = ['$resource'];
     ProjectFindByName.$inject = ['$resource'];
     ProjectAttachedList.$inject = ['$resource'];
@@ -54,6 +56,26 @@
             },
             'update': { method:'PUT' }
         });
+    }
+
+    function ProjectHistoryTasksInfo ($http, $log, $q) {
+
+        var service = {
+            findHistoryTasks : findHistoryTasks
+        };
+        return service;
+
+        function findHistoryTasks(projectId){
+            var deferred = $q.defer();
+            $http({
+                url :'/api/projects/findHistoryTasks',
+                params : {projectId : projectId}
+            }).success(function (result) {
+                deferred.resolve(result);
+                $log.debug("find by Tasks : ", result);
+            });
+            return deferred.promise;
+        }
     }
 
     function ProjectFind ($resource) {
