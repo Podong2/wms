@@ -260,7 +260,7 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
 
         Optional<RelatedTask> origin = this.relatedTasks.stream().filter(
             relatedTask ->
-                relatedTask.getTask().getId().equals(task.getId())
+                relatedTask.getRelatedTask().getId().equals(task.getId())
         ).findFirst();
 
         if(origin.isPresent())

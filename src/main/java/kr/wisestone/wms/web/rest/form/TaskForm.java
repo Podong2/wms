@@ -98,6 +98,8 @@ public class TaskForm {
         }
 
         for(Long id : getProjectIds()) {
+            if(id == null) continue;
+
             Project project = new Project();
             project.setId(id);
 
@@ -105,6 +107,8 @@ public class TaskForm {
         }
 
         for(Long id : getRemoveProjectIds()) {
+            if(id == null) continue;
+
             Project project = new Project();
             project.setId(id);
 
@@ -112,6 +116,8 @@ public class TaskForm {
         }
 
         for(Long id : getAssigneeIds()) {
+            if(id == null) continue;
+
             User user = new User();
             user.setId(id);
 
@@ -119,6 +125,8 @@ public class TaskForm {
         }
 
         for(Long id : getRemoveAssigneeIds()) {
+            if(id == null) continue;
+
             User user = new User();
             user.setId(id);
 
@@ -126,6 +134,8 @@ public class TaskForm {
         }
 
         for(Long id : getWatcherIds()) {
+            if(id == null) continue;
+
             User user = new User();
             user.setId(id);
 
@@ -134,6 +144,8 @@ public class TaskForm {
 
 
         for(Long id : getRemoveWatcherIds()) {
+            if(id == null) continue;
+
             User user = new User();
             user.setId(id);
 
@@ -141,6 +153,8 @@ public class TaskForm {
         }
 
         for(Long id : getRelatedTaskIds()) {
+            if(id == null) continue;
+
             Task relatedTask = new Task();
             relatedTask.setId(id);
 
@@ -148,6 +162,8 @@ public class TaskForm {
         }
 
         for(Long id : getRemoveRelatedTaskIds()) {
+            if(id == null) continue;
+
             Task relatedTask = new Task();
             relatedTask.setId(id);
 
@@ -217,6 +233,8 @@ public class TaskForm {
         }
 
         for(Long id : getAssigneeIds()) {
+            if(id == null) continue;
+
             User user = new User();
             user.setId(id);
 

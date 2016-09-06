@@ -12,8 +12,12 @@ import kr.wisestone.wms.web.rest.form.ProjectForm;
 import kr.wisestone.wms.web.rest.mapper.AttachedFileMapper;
 import kr.wisestone.wms.web.rest.mapper.ProjectMapper;
 import kr.wisestone.wms.web.rest.mapper.UserMapper;
+import kr.wisestone.wms.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ClassUtils;
@@ -145,13 +149,24 @@ public class ProjectService {
     @Transactional(readOnly = true)
     public List<ProjectDTO> findByNameLike(String name) {
 
+        String login = SecurityUtils.getCurrentUserLogin();
+
         if(StringUtils.isEmpty(name)) {
-            return projectMapper.projectsToProjectDTOs(this.projectRepository.findTop3ByOrderByCreatedDateDesc());
+
+            BooleanBuilder predicate = new BooleanBuilder();
+            predicate.and(QProject.project.projectUsers.any().user.login.eq(login));
+
+            Pageable pageable = new PageRequest(0, 3, Sort.Direction.DESC, "createdDate");
+
+            List<Project> projects = Lists.newArrayList(this.projectRepository.findAll(predicate, pageable));
+
+            return projectMapper.projectsToProjectDTOs(projects);
         }
 
         BooleanBuilder predicate = new BooleanBuilder();
 
         predicate.and(QProject.project.name.containsIgnoreCase(name));
+        predicate.and(QProject.project.projectUsers.any().user.login.eq(login));
 
         List<Project> projects = Lists.newArrayList(this.projectRepository.findAll(predicate));
 
