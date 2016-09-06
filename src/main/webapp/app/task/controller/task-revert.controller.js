@@ -48,7 +48,7 @@
             .setDAlign("text-center")
             .setDType("renderer")
             .setDRenderer("revert_task_content"));
-        vm.tableConfigs.push(tableService.getConfig("수정자", "createdBy")
+        vm.tableConfigs.push(tableService.getConfig("수정자", "createdByName")
             .setHWidth("width-200-p")
             .setDAlign("text-center"));
         vm.tableConfigs.push(tableService.getConfig("수정일", "createdDate")

@@ -40,6 +40,8 @@ public class TraceLogDTO {
 
     private String createdBy;
 
+    private String createdByName;
+
     private Date createdDate;
 
     private String lastModifiedBy;
@@ -224,5 +226,13 @@ public class TraceLogDTO {
 
     public void setProfileImageId(Long profileImageId) {
         this.profileImageId = profileImageId;
+    }
+
+    public String getCreatedByName() {
+        return createdByName;
+    }
+
+    public void setCreatedByName(String createdByName) {
+        this.createdByName = createdByName;
     }
 }

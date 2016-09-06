@@ -38,6 +38,8 @@ public class ProjectDTO implements Serializable {
 
     private String createdBy;
 
+    private String createdByName;
+
     private ZonedDateTime createdDate;
 
     private String lastModifiedBy;
@@ -201,5 +203,13 @@ public class ProjectDTO implements Serializable {
 
     public void setLastModifiedDate(ZonedDateTime lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public String getCreatedByName() {
+        return createdByName;
+    }
+
+    public void setCreatedByName(String createdByName) {
+        this.createdByName = createdByName;
     }
 }

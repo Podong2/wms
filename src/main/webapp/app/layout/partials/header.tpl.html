@@ -88,13 +88,13 @@
                         <strong>(icon) {{history.createdBy}}</strong>
                     </div>
                     <div ng-show="history.persistType == 'DELETE'">
-                        (icon) {{history.createdBy}}이 {{history.entityField}}의 {{history.etcValue}} {{history.oldValue}}를 {{history.persistType}} 하였습니다. {{history.createdDate | date : 'HH:mm'}}
+                        (icon) {{history.createdByName}}이 {{history.entityField}}의 {{history.etcValue}} {{history.oldValue}}를 {{history.persistType}} 하였습니다. {{history.createdDate | date : 'HH:mm'}}
                     </div>
                     <div ng-show="history.persistType == 'INSERT'">
-                        (icon) {{history.createdBy}}이 {{history.entityField == '' ? history.entityField : history.entityName}} {{history.etcValue}} {{history.newValue}}를 {{history.persistType}} 하였습니다. {{history.createdDate | date : 'HH:mm'}}
+                        (icon) {{history.createdByName}}이 {{history.entityField == '' ? history.entityField : history.entityName}} {{history.etcValue}} {{history.newValue}}를 {{history.persistType}} 하였습니다. {{history.createdDate | date : 'HH:mm'}}
                     </div>
                     <div ng-show="history.persistType == 'UPDATE'">
-                        (icon) {{history.createdBy}}이 {{history.entityField == '' ? history.entityField : history.entityName}} {{history.etcValue}} {{history.newValue}}를 {{history.persistType}} 하였습니다. {{history.createdDate | date : 'HH:mm'}}
+                        (icon) {{history.createdByName}}이 {{history.entityField == '' ? history.entityField : history.entityName}} {{history.etcValue}} {{history.newValue}}를 {{history.persistType}} 하였습니다. {{history.createdDate | date : 'HH:mm'}}
                     </div>
                 </div>
             </div>
