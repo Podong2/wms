@@ -21,13 +21,13 @@
     </div>
     <div ng-class="viewTypeClass" style="margin-top: 10px; min-height: 560px" >
         <!-- 프로젝트/폴더 선택 -->
-        <div id="projectPickerSection" class="taskAddProject">
-            <label for="addProject" class="cursor projectValueSection" ><i class="fa fa-plus" id="addProject"></i> <span project-picker-edit-toggle>프로젝트/폴더 선택</span></label>
+        <div id="projectPickerAddSection" class="taskAddProject">
+            <label for="addProject" class="cursor projectValueAddSection" ><i class="fa fa-plus" id="addProject"></i> <span project-picker-add-toggle>프로젝트/폴더 선택</span></label>
                         <span class="task-project" ng-repeat="project in vm.task.taskProjects">
                             {{project.name}}
                             <i class="fa fa-close" ng-click="project"></i>
                         </span>
-            <div class="project-picker projectPickerSection">
+            <div class="project-picker projectPickerAddSection">
                 <div style="width: 300px;">
                     <div style="width: 300px;">
                         <div class="project-picker-search">

@@ -41,7 +41,7 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
                         vm.files.push(value)
                     });
                     $log.debug("파일 목록 : ", vm.files);
-                    //projectFIleUpload();
+                    projectFIleUpload();
                 }
             });
 
@@ -80,6 +80,7 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
             }
             getFileList();
             function onProjectSuccess (result) {
+                vm.projectAttachedList = [];
                 vm.projectAttachedList = result;
                 vm.imageList =[];
                 vm.fileList =[];
