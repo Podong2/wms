@@ -5,6 +5,7 @@ import kr.wisestone.wms.web.rest.dto.TaskRepeatScheduleDTO;
 import lombok.Data;
 import org.flywaydb.core.internal.util.StringUtils;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -182,16 +183,13 @@ public class TaskForm {
                 }
 
             } else {
-
-                if(this.taskRepeatSchedule != null && StringUtils.hasText(this.taskRepeatSchedule.getRepeatType())) {
-                    taskRepeatSchedule.update(this.taskRepeatSchedule);
-                } else {
-                    taskRepeatSchedule = null;
-                }
+                taskRepeatSchedule.update(this.taskRepeatSchedule);
             }
 
             task.setTaskRepeatSchedule(taskRepeatSchedule);
         }
+
+        task.setLastModifiedDate(ZonedDateTime.now());
 
         return task;
     }
@@ -297,6 +295,8 @@ public class TaskForm {
 
             subTask.removeTaskUser(user, UserType.ASSIGNEE);
         }
+
+        subTask.setLastModifiedDate(ZonedDateTime.now());
 
         return subTask;
     }
