@@ -44,6 +44,7 @@ wmsMenu.$inject=['$state', '$rootScope', '$timeout'];
         link: function (scope, element, attrs) {
             $rootScope.$on('projectListLoading', function(){
                 $timeout(function(){
+                    //$('.collapse-sign').remove();
                     var $collapsible = element.find('li[data-menu-collapse]');
                     bindEvents($collapsible);
                 }, 1000);

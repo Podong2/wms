@@ -238,6 +238,7 @@
         });
         $scope.$watchCollection('vm.project.parentProjectIds', function(newValue, oldValue){
             if(newValue != undefined && oldValue !== newValue) {
+                vm.projectReload = true;
                 projectUpload();
             }
         });
@@ -277,11 +278,13 @@
                 fileFormDataName : "file"
             }).then(function (response) {
                 toastr.success('프로젝트 수정 완료', '프로젝트 수정 완료');
+                if(vm.projectReload) $rootScope.$broadcast('projectReloading');
                 vm.project.removeAssigneeIds = "";
                 vm.project.removeWatcherIds = "";
                 vm.project.removeRelatedTaskIds ="";
                 vm.project.projectAdminIds = "";
                 vm.project.projectUserIds = "";
+                vm.projectReload = false;
                 ProjectInfo.get({projectId : $stateParams.id, listType : 'TOTAL'}, onSuccess, onError);
                 //$state.go("my-project.detail", {}, {reload : true});
             });
@@ -410,6 +413,7 @@
         //프로젝트 x 버튼 눌러 삭제
         function projectRemove(projectId){
             vm.project.removeParentProjectIds = projectId;
+            vm.projectReload = true;
             projectUpload();
         }
 

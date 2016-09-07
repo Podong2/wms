@@ -23,6 +23,10 @@ projectCtrl.$inject=['$scope', 'Code', '$log', 'toastr', '$state', '$timeout', '
             };
             vm.projectList=[];
 
+            $rootScope.$on('projectReloading', function(){
+                getList();
+            });
+
             function getList(){
                 Project.query({}, onSuccess, onError);
             }
@@ -33,7 +37,7 @@ projectCtrl.$inject=['$scope', 'Code', '$log', 'toastr', '$state', '$timeout', '
                 $log.debug("vm.projectList : ", vm.projectList);
             }
             function onError (result) {
-                toastr.error('프로젝트 목록 불러오기 실패', '프로젝트 목록 불러오기 실패');
+                //toastr.error('프로젝트 목록 불러오기 실패', '프로젝트 목록 불러오기 실패');
             }
             getList();
 

@@ -60,14 +60,20 @@
     <!-- end collapse menu -->
 
     <!-- logout button -->
-    <div id="logout" class="btn-header transparent pull-right">
+<!--    <div id="logout" class="btn-header transparent pull-right">
         <span> <a ng-click="vm.logout()" title="Sign Out" data-action="userLogout"
                   data-logout-msg="You can improve your security further after logging out by closing this opened browser"><i
             class="fa fa-sign-out"></i></a> </span>
-    </div>
+    </div>-->
     <!-- end logout button -->
 
-    <div class="btn-header transparent pull-right"><a ui-sref="my-profile"><img class="top-profile-img-btn" src="/content/images/demo/male.png"></a></div>
+    <div class="btn-header transparent pull-right dropdown">
+        <a class="dropdown-toggle" data-toggle="dropdown"><img class="top-profile-img-btn" src="/content/images/demo/male.png"></a>
+        <ul class="dropdown-menu">
+            <li><a ui-sref="my-profile">프로필 설정</a></li>
+            <li><a ng-click="vm.logout()" title="Sign Out" data-action="userLogout" data-logout-msg="You can improve your security further after logging out by closing this opened browser">로그아웃</a></li>
+        </ul>
+    </div>
 
     <div class="btn-header transparent pull-right" id="taskHistorySection">
         <span class="taskHistoryBtnSection"> <a gnb-task-history-toggle><i class="fa fa-rss"></i></a> </span>
