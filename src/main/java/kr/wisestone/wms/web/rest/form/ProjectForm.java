@@ -4,6 +4,7 @@ import kr.wisestone.wms.domain.*;
 import lombok.Data;
 import org.flywaydb.core.internal.util.StringUtils;
 
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -135,6 +136,8 @@ public class ProjectForm {
 
             project.removeParentProject(parent);
         }
+
+        project.setLastModifiedDate(ZonedDateTime.now());
 
         return project;
     }
