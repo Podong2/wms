@@ -2,6 +2,7 @@ package kr.wisestone.wms.web.rest.dto;
 
 import kr.wisestone.wms.domain.TaskRepeatSchedule;
 import lombok.Data;
+import org.springframework.util.StringUtils;
 
 @Data
 public class TaskRepeatScheduleDTO {

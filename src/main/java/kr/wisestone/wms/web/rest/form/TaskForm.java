@@ -176,9 +176,18 @@ public class TaskForm {
             TaskRepeatSchedule taskRepeatSchedule = task.getTaskRepeatSchedule();
 
             if(taskRepeatSchedule == null) {
-                taskRepeatSchedule = new TaskRepeatSchedule(task, this.taskRepeatSchedule);
+
+                if(this.taskRepeatSchedule != null && StringUtils.hasText(this.taskRepeatSchedule.getRepeatType())) {
+                    taskRepeatSchedule = new TaskRepeatSchedule(task, this.taskRepeatSchedule);
+                }
+
             } else {
-                taskRepeatSchedule.update(this.taskRepeatSchedule);
+
+                if(this.taskRepeatSchedule != null && StringUtils.hasText(this.taskRepeatSchedule.getRepeatType())) {
+                    taskRepeatSchedule.update(this.taskRepeatSchedule);
+                } else {
+                    taskRepeatSchedule = null;
+                }
             }
 
             task.setTaskRepeatSchedule(taskRepeatSchedule);

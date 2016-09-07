@@ -172,11 +172,6 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
                 .setDAlign("text-center")
                 .setDType("renderer")
                 .setDRenderer("file_download"));
-            vm.tableConfigs.push(tableService.getConfig("업로드", "")
-                .setHWidth("width-80-p")
-                .setDAlign("text-center")
-                .setDType("renderer")
-                .setDRenderer("file_upload"));
             vm.tableConfigs.push(tableService.getConfig("삭제", "")
                 .setHWidth("width-80-p")
                 .setDAlign("text-center")

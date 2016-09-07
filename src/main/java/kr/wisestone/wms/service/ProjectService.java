@@ -247,6 +247,21 @@ public class ProjectService {
         return taskDTOs;
     }
 
+    @Transactional(readOnly = true)
+    public List<TaskDTO> findHistoryTasks(Long projectId) {
+
+        Project project = projectRepository.findOne(projectId);
+
+        if(project == null)
+            throw new CommonRuntimeException("error.project.notFound");
+
+        List<Long> projectIds = getChildProjectIds(project);
+
+        List<TaskDTO> taskDTOs = taskService.findHistoryTasksByProjectIds(projectIds);
+
+        return taskDTOs;
+    }
+
     private List<Long> getChildProjectIds(Project project) {
         List<Long> projectIds = Lists.newArrayList();
 

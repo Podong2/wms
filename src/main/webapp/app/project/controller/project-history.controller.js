@@ -5,8 +5,8 @@
 
 angular.module('wmsApp')
     .controller("projectHistoryCtrl", projectHistoryCtrl);
-projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$rootScope', '$state', 'ProjectInfo', '$stateParams', 'toastr', 'TaskListSearch', '$sce', 'dataService', 'Principal', 'TaskEdit'];
-        function projectHistoryCtrl($scope, Code, $log, Task, AlertService, $rootScope, $state, ProjectInfo, $stateParams, toastr, TaskListSearch, $sce, dataService, Principal, TaskEdit) {
+projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$rootScope', '$state', 'ProjectHistoryTasksInfo', '$stateParams', 'toastr', 'TaskListSearch', '$sce', 'dataService', 'Principal', 'TaskEdit'];
+        function projectHistoryCtrl($scope, Code, $log, Task, AlertService, $rootScope, $state, ProjectHistoryTasksInfo, $stateParams, toastr, TaskListSearch, $sce, dataService, Principal, TaskEdit) {
             var vm = this;
             vm.baseUrl = window.location.origin;
 
@@ -46,13 +46,23 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
 
             // 타스크 목록 불러오기
             function getList(){
-                ProjectInfo.get({projectId : $stateParams.id, listType : 'TOTAL'}, onSuccess, onError);
+                ProjectHistoryTasksInfo.findHistoryTasks($stateParams.id).then(function(result){
+                    vm.tasks = result;
+                    angular.forEach(vm.tasks, function(val){
+                        val.historyArea = false;
+                    });
+                    $log.debug("vm.tasks : ", vm.tasks);
+
+                    taskHistoryOpen(0, vm.tasks[0].id, vm.tasks[0].historyArea);
+                }, function(reason) {
+                    AlertService.error(reason);
+                });
             }
 
             getList();
 
             function onSuccess(data) {
-                vm.tasks = data.tasks;
+                vm.tasks = data;
                 angular.forEach(vm.tasks, function(val){
                     val.historyArea = false;
                 });

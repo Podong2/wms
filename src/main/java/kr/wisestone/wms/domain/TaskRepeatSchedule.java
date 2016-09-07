@@ -1,6 +1,7 @@
 package kr.wisestone.wms.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import kr.wisestone.wms.common.util.ConvertUtil;
 import kr.wisestone.wms.web.rest.dto.TaskRepeatScheduleDTO;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -20,7 +21,7 @@ import java.util.Objects;
 @Table(name = "owl_task_repeat_schedule")
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @Document(indexName = "taskrepeatschedule")
-public class TaskRepeatSchedule extends AbstractAuditingEntity implements Serializable {
+public class TaskRepeatSchedule extends AbstractAuditingEntity implements Traceable, Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -199,6 +200,25 @@ public class TaskRepeatSchedule extends AbstractAuditingEntity implements Serial
 
     public void setExecuteDate(String executeDate) {
         this.executeDate = executeDate;
+    }
+
+    @Override
+    public TraceLog getTraceLog(String persisType) {
+
+        TraceLog logRecord = TraceLog.builder(this, persisType);
+
+        logRecord.setTaskId(this.getTask().getId());
+        logRecord.setEntityName(ClassUtils.getShortName(this.getTask().getClass()));
+        logRecord.setEntityField("taskRepeatSchedule");
+        logRecord.setEntityId(this.getId());
+
+        if (Traceable.PERSIST_TYPE_INSERT.equals(persisType)) {
+            logRecord.setNewValue(ConvertUtil.convertObjectToJson(this));
+        } else if (Traceable.PERSIST_TYPE_DELETE.equals(persisType)) {
+            logRecord.setOldValue(ConvertUtil.convertObjectToJson(this));
+        }
+
+        return logRecord;
     }
 
     @Override

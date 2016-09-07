@@ -548,6 +548,35 @@ public class TaskService {
     }
 
     @Transactional(readOnly = true)
+    public List<TaskDTO> findHistoryTasksByProjectIds(List<Long> projectIds) {
+
+        List<TaskDTO> taskDTOs = Lists.newArrayList();
+
+        QTask $task = QTask.task;
+
+        BooleanBuilder predicate = new BooleanBuilder();
+
+        predicate.and($task.taskProjects.any().project.id.in(projectIds));
+
+        List<OrderSpecifier> orderSpecifiers = Lists.newArrayList();
+
+        orderSpecifiers.add(QTask.task.lastModifiedDate.desc());
+
+        List<Task> tasks = Lists.newArrayList(taskRepository.findAll(predicate, orderSpecifiers.toArray(new OrderSpecifier[orderSpecifiers.size()])));
+
+        for(Task task : tasks) {
+
+            TaskDTO taskDTO = taskMapper.taskToTaskDTO(task);
+
+            this.copyTaskRelationProperties(task, taskDTO);
+
+            taskDTOs.add(taskDTO);
+        }
+
+        return taskDTOs;
+    }
+
+    @Transactional(readOnly = true)
     public List<TaskDTO> findTasksByProjectIds(List<Long> projectIds) {
 
         QTask $task = QTask.task;

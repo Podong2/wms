@@ -1,5 +1,7 @@
 package kr.wisestone.wms.domain.support.interceptor;
 
+import com.google.common.collect.Lists;
+import kr.wisestone.wms.common.util.ConvertUtil;
 import kr.wisestone.wms.domain.*;
 import kr.wisestone.wms.service.NotificationService;
 import kr.wisestone.wms.service.TraceLogService;
@@ -15,6 +17,7 @@ import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.util.List;
 import java.util.Set;
 
 public class TraceLogInterceptor extends EmptyInterceptor {
@@ -39,6 +42,8 @@ public class TraceLogInterceptor extends EmptyInterceptor {
         }
 
         if (entity instanceof Traceable) {
+
+            List<TraceLog> taskRepeatScheduleChanges = Lists.newArrayList();
 
             String[] ignoreFields = new String[] { "id", "taskRepeatSchedule", "taskAttachedFiles", "attachedFiles", "createdBy", "createdDate", "lastModifiedBy", "lastModifiedDate"};
             Field[] allFields = this.getAllFields(entity.getClass(), null);
@@ -80,15 +85,29 @@ public class TraceLogInterceptor extends EmptyInterceptor {
                 }
 
                 if (logRecord != null && traceLogService != null) {
-                    traceLogService.save(logRecord);
 
-                    if(notificationService != null) {
+                    if(entity instanceof TaskRepeatSchedule) {
+                        taskRepeatScheduleChanges.add(logRecord);
+                    } else {
+                        traceLogService.save(logRecord);
 
-                        if(entity instanceof Task) {
-                            notificationService.sendTaskUpdateNotification(logRecord, "04");
+                        if(notificationService != null) {
+
+                            if(entity instanceof Task) {
+                                notificationService.sendTaskUpdateNotification(logRecord, "04");
+                            }
                         }
                     }
                 }
+            }
+
+            if(!taskRepeatScheduleChanges.isEmpty()) {
+                TraceLog logRecord = taskRepeatScheduleChanges.get(0);
+
+                logRecord.setEntityField("taskRepeatSchedule");
+                logRecord.setNewValue(ConvertUtil.convertObjectToJson(entity));
+
+                traceLogService.save(logRecord);
             }
         }
 
