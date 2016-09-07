@@ -10,6 +10,7 @@
         .factory('FindTaskRecentHistory', FindTaskRecentHistory)
         .factory('MyTaskStatistics', MyTaskStatistics)
         .factory('TaskProgressStatus', TaskProgressStatus)
+        .factory('ModifySubTask', ModifySubTask)
         .factory('TaskEdit', TaskEdit);
 
     Task.$inject = ['$resource'];
@@ -21,6 +22,7 @@
     FindTaskRecentHistory.$inject = ['$resource'];
     MyTaskStatistics.$inject = ['$resource'];
     TaskProgressStatus.$inject = ['$resource'];
+    ModifySubTask.$inject = ['$resource'];
 
     function Task ($resource) {
         var resourceUrl =  'api/tasks/:id';
@@ -163,6 +165,24 @@
         });
     }
 
+    function ModifySubTask ($resource) {
+        var resourceUrl =  'api/tasks/modifySubTask';
+
+        return $resource(resourceUrl, {}, {
+            'query': { method: 'GET', isArray: true},
+            'get': {
+                method: 'GET',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    return data;
+                }
+            },
+            'update': { method:'PUT' }
+        });
+    }
+
     function TaskEdit($log, $upload, $http, $q){
         var service = {
             addTask : addTask,
@@ -171,7 +191,8 @@
             singleUpload : singleUpload,
             createComment : createComment,
             putContentRevert : putContentRevert,
-            removeComment : removeComment
+            removeComment : removeComment,
+            putSubTask : putSubTask
         }
         return service;
 
@@ -218,7 +239,6 @@
 
         function putContentRevert(id, traceLogId){
             var deferred = $q.defer();
-            //$log.debug("task 싱글 업로드 data : ", parameter)
             $http.put( '/api/tasks/revert/'+ id , {}, {id : id, params : {traceLogId : traceLogId}}).then(function (result) {
                 $log.debug("taskList : ", result);
                 deferred.resolve(result);
@@ -230,6 +250,15 @@
             var deferred = $q.defer();
             $http.delete('/api/trace-log/'+parameter, {}, {}).then(function (result) {
                 $log.debug("result : ", result);
+                deferred.resolve(result);
+            });
+            return deferred.promise;
+        }
+
+        function putSubTask(parameter){
+            var deferred = $q.defer();
+            $http.put( '/api/tasks/modifySubTask', {}, {params : parameter}).then(function (result) {
+                $log.debug("하위 작업 수정 결과 service : ", result);
                 deferred.resolve(result);
             });
             return deferred.promise;

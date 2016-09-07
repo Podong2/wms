@@ -2063,6 +2063,24 @@ tags-input .tags:hover, tags-input .tags:focus {
 .sub-task-area-popup ul li:first-child {
     border-top: 0;
 }
+.subTask-edit-section{
+    position: absolute;
+    right:0;
+    border: 1px solid #fdfdfd;
+    z-index: 1060;
+    width: 350px;
+    font-size: 14px;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(0,0,0,.2);
+    border-radius: 6px;
+    box-shadow: 0 5px 10px rgba(0,0,0,.2);
+    display: none;
+    padding: 10px;
+}
+.subTask-edit-section.on{
+    display: block;
+}
 
     /*<< comment css >>*/
     .comment-user-title{

@@ -8,6 +8,8 @@ angular.module('wmsApp')
 taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'toastr', '$state', '$timeout', 'DateUtils', 'SubTask', 'Principal', 'findUser', '$q', 'TaskEdit', 'FindTasks', 'ProjectFind', 'ProjectFindByName'];
         function taskEditCtrl($rootScope, $scope, $uibModalInstance, Code, $log, Task, toastr, $state, $timeout, DateUtils, SubTask, Principal, findUser, $q, TaskEdit, FindTasks, ProjectFind, ProjectFindByName) {
             var vm = this;
+            vm.baseUrl = window.location.origin;
+
             vm.save = save;
             vm.subTaskSave = subTaskSave;
             vm.openCalendar = openCalendar;
@@ -21,6 +23,10 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             vm.setWeekday = setWeekday;
             vm.repeatClose = repeatClose;
             vm.selectDateTerm = selectDateTerm;
+            vm.subTaskUserAdd = subTaskUserAdd;
+            vm.subTaskUpdate = subTaskUpdate;
+            vm.setDatePickerInput = setDatePickerInput;
+            vm.subTaskClose = subTaskClose;
             vm.userInfo = Principal.getIdentity();
 
             vm.codes = Code.query();
@@ -56,6 +62,17 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             /* 프로젝트 목록 */
             vm.projectList = [];
             $scope.projectName = '';
+
+            vm.userList = [];
+            vm.userName = '';
+            $scope.userName = '';
+            // 하위 작업 업데이트 파라미터
+            vm.subTaskUpdateForm = {
+                id : '',
+                assigneeIds : '',
+                startDate : '',
+                endDate : '',
+            }
 
             /* sub task info */
             vm.subTask = {
@@ -119,6 +136,20 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                     minDate: null
                 }
             };
+            // 하위 작업 일정 시작일
+            this.subTaskDueDateFrom = {
+                date: '',
+                datepickerOptions: {
+                    maxDate: null
+                }
+            };
+            // 하위 작업 일정 종료일
+            this.subTaskDueDateTo = {
+                date: '',
+                datepickerOptions: {
+                    minDate: null
+                }
+            };
 
             // watch min and max dates to calculate difference
             var unwatchMinMaxValues = $scope.$watch(function() {
@@ -168,6 +199,15 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 $log.debug("파일 목록 : ", $scope.files);
             });
 
+            /* user picker */
+            $scope.pickerFindUsers = function(name) {
+
+                findUser.findByName(name).then(function(result){
+                    $log.debug("userList : ", result);
+                    vm.userList = result;
+                }); //user search
+            };
+
             // date 포멧 변경
             $scope.$watch("vm.dueDateFrom.date", function(newValue, oldValue){
                 if(oldValue != newValue){
@@ -216,6 +256,23 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                     vm.taskRepeatSchedule.adventDateStartTime = formatDate;
                 }
             });
+            // 하위 작업 시작 시간 포멧 변경(기간)
+            $scope.$watch("vm.subTaskDueDateFrom.date", function(newValue, oldValue){
+                if(oldValue != newValue){
+                    var d = newValue;
+                    var formatDate =
+                        DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
+                    vm.subTaskUpdateForm.startDate = formatDate;
+                }
+            });
+            // 하위 작업 종료 시간 포멧 변경(기간)
+            $scope.$watch("vm.subTaskDueDateTo.date", function(newValue, oldValue){
+                if(oldValue != newValue){
+                    var d = newValue;
+                    if(newValue != '') var formatDate = DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
+                    vm.subTaskUpdateForm.endDate = formatDate;
+                }
+            });
 
 
             // 달력 오픈
@@ -244,7 +301,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             }
 
             function onSaveSuccess (result) {
-                toastr.success('태스크 생성 완료', '태스크 생성 완료');
+                toastr.success('작업 생성 완료', '작업 생성 완료');
                 vm.task.id = result.id;
                 vm.subTask.parentId = result.id;
                 $timeout(function(){ // state reload 명령과 충돌하는 문제 때문에 설정
@@ -257,11 +314,8 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
 
             vm.subTaskList = [];
             function onSubTaskSaveSuccess (result) {
-                toastr.success('태스크 생성 완료', '태스크 생성 완료');
-                vm.subTaskList.push(result);
-                $timeout(function(){ // state reload 명령과 충돌하는 문제 때문에 설정
-                    //$uibModalInstance.dismiss('cancel');
-                }, 100);
+                toastr.success('하위 작업 생성 완료', '하위 작업 생성 완료');
+                getTaskInfo();
             }
 
             function onSaveError () {
@@ -343,9 +397,11 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 $log.debug(_this)
             }
 
+            // 프로젝트 목록 불러오기
             function getProjectList(){
                 ProjectFind.query({name : ''}, onProjectSuccess, onProjectError);
             }
+            // 프로젝트목록 필터링
             function FindProjectList(){
                 ProjectFindByName.query({name : $scope.projectName},onProjectSuccess, onProjectError)
             }
@@ -355,10 +411,42 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             function onProjectError (result) {
                 toastr.error('프로젝트 목록 불러오기 실패', '프로젝트 목록 불러오기 실패');
             }
-            getProjectList();
+            getProjectList(); // 프로젝트 목록 불러오기
+
+            // 프로젝트 명 실시간 검색
             $scope.$watchCollection('projectName', function(){
                 FindProjectList();
             });
+
+            // 사용자 명 실시간 검색
+            $scope.$watchCollection('vm.userName', function(newValue){
+                $log.debug("vm.userName : ", newValue);
+                $scope.userName = newValue;
+                $scope.pickerFindUsers(newValue);
+            });
+
+            /* 하위 작업 저장 */
+            function subTaskUserAdd(userId){
+                vm.subTaskUpdateForm.assigneeIds = userId;
+                subTaskUpdate();
+            }
+            function subTaskUpdate(){
+                TaskEdit.putSubTask(vm.subTaskUpdateForm).then(function(result){
+                    getTaskInfo();
+                    subTaskClose();
+                    toastr.success('하위작업 수정 완료', '하위작업 수정 완료');
+                });
+            }
+
+            function getTaskInfo(){
+                Task.get({id : vm.task.id}, successTask, erorrTask);
+            }
+            function successTask(result){
+                vm.subTaskList = result.subTasks;
+            }
+            function erorrTask(){
+
+            }
 
             //  탭메뉴 영역 표시 여부 지정
             function selectDateTerm (number) {
@@ -475,10 +563,21 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             function repeatClose(){
                 $rootScope.$broadcast('repeatClose');
             }
+            // 반복설정 팝업 닫기
+            function subTaskClose(){
+                $rootScope.$broadcast('subTaskClose');
+            }
 
             function taskUpload(){
                 vm.task.taskRepeatSchedule = vm.taskRepeatSchedule;
                 repeatClose();
+            }
+
+            // 하위 작업 날짜 폼 입력 및 하위 작업 정보 주입
+            function setDatePickerInput(subTask){
+                vm.subTaskUpdateForm = subTask;
+                vm.subTaskDueDateFrom.date = DateUtils.toDate(subTask.startDate)
+                vm.subTaskDueDateTo.date = DateUtils.toDate(subTask.endDate)
             }
 
         }

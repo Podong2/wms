@@ -1,0 +1,46 @@
+<div class="subTask-edit-section" >
+    <div class="title">
+        일정 설정
+    </div>
+    <!-- 일정 날짜 설정 영역 -->
+    <div class="date-picker-area">
+        <div class="clear-both">
+            <ul class="date-picker-calendar date-picker-calendar-title">
+                <li class="input-group date-picker-calendar-li">
+                    날짜
+                </li>
+                <li class="input-group date-picker-calendar-li date-picker-calendar-center">
+                </li>
+                <li class="input-group date-picker-calendar-li">
+                </li>
+            </ul>
+            <ul class="date-picker-calendar clear-both">
+                <li class="input-group date-picker-calendar-li">
+                    <input type="text" class="form-control startDate" edit-state="true" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.subTaskDueDateFrom.date" is-open="vm.subTaskDueDateFrom.open"
+                           enable-time="false" datepicker-options="vm.subTaskDueDateFrom.datepickerOptions"/>
+                    <span class="input-group-btn">
+                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'subTaskDueDateFrom')"><i class="fa fa-calendar"></i></button>
+                    </span>
+                </li>
+                <li class="input-group date-picker-calendar-li date-picker-calendar-center">
+                    ~
+                </li>
+                <li class="input-group date-picker-calendar-li">
+                    <input type="text" class="form-control" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.subTaskDueDateTo.date" is-open="vm.subTaskDueDateTo.open"
+                           enable-time="false" datepicker-options="vm.subTaskDueDateTo.datepickerOptions"/>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'subTaskDueDateTo')"><i class="fa fa-calendar"></i></button>
+                    </span>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <br/>
+
+    <div class="modal-footer" style="border:0;">
+        <button type="button" class="btn btn_icon btn_customs" ng-click="vm.subTaskUpdate()" ng-show="vm.task.id != ''" owl-btn-save></button>
+        <button type="button" class="btn btn_icon btn_customs2 " ng-click="vm.subTaskClose()" ng-show="vm.task.id != ''" owl-btn-cancel></button>
+    </div>
+
+
+</div><!-- 달력 팝업 끝 -->

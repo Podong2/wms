@@ -5,9 +5,11 @@
         .module('wmsApp')
         .controller('TaskDetailCtrl', TaskDetailCtrl);
 
-    TaskDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', 'TaskAttachedFile', '$log', 'TaskEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'entity', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectFindByName', 'ModalService', 'TaskProgressStatus', 'tableService'];
+    TaskDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', 'TaskAttachedFile', '$log', 'TaskEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask',
+        'FindTasks', 'entity', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectFindByName', 'ModalService', 'TaskProgressStatus', 'tableService', 'ModifySubTask'];
 
-    function TaskDetailCtrl($scope, $rootScope, $stateParams, Task, Code, TaskAttachedFile, $log, TaskEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, entity, TaskListSearch, dataService, Principal, ProjectFind, ProjectFindByName, ModalService, TaskProgressStatus, tableService) {
+    function TaskDetailCtrl($scope, $rootScope, $stateParams, Task, Code, TaskAttachedFile, $log, TaskEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask,
+                            FindTasks, entity, TaskListSearch, dataService, Principal, ProjectFind, ProjectFindByName, ModalService, TaskProgressStatus, tableService, ModifySubTask) {
         var vm = this;
         vm.baseUrl = window.location.origin;
 
@@ -22,10 +24,14 @@
         vm.setRepeatType = setRepeatType;
         vm.setWeekday = setWeekday;
         vm.repeatClose = repeatClose;
+        vm.subTaskClose = subTaskClose;
         vm.taskRevertModalOpen = taskRevertModalOpen;
         vm.projectRemoveInTask = projectRemoveInTask;
         vm.getTaskProgressStatus = getTaskProgressStatus;
         vm.removeComment = removeComment;
+        vm.subTaskUserAdd = subTaskUserAdd;
+        vm.subTaskUpdate = subTaskUpdate;
+        vm.setDatePickerInput = setDatePickerInput;
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
 
@@ -78,6 +84,16 @@
         vm.commentList = [];
         vm.projectList=[];
         $scope.projectName = '';
+        vm.userList = [];
+        vm.userName = '';
+        $scope.userName = '';
+        // 하위 작업 업데이트 파라미터
+        vm.subTaskUpdateForm = {
+            id : '',
+            assigneeIds : '',
+            startDate : '',
+            endDate : '',
+        }
 
 
 
@@ -100,17 +116,7 @@
             return entity;
         }
 
-        //byte를 용량 계산해서 반환
-        function byteCalculation(bytes) {
-            var bytes = parseInt(bytes);
-            var s = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
-            var e = Math.floor(Math.log(bytes)/Math.log(1024));
-
-            if(e == "-Infinity") return "0 "+s[0];
-            else
-                return (bytes/Math.pow(1024, Math.floor(e))).toFixed(2)+" "+s[e];
-        }
-
+        /* 로그& 댓글 불러오기 */
         TaskListSearch.TaskAudigLog({'entityId' : vm.task.id, 'entityName' : 'Task'}).then(function(result){
             vm.TaskAuditLog = result;
             angular.forEach(vm.TaskAuditLog.data, function(val){
@@ -222,6 +228,21 @@
                 minDate: null
             }
         };
+        // 하위 작업 일정 시작일
+        this.subTaskDueDateFrom = {
+            date: vm.task.taskRepeatSchedule == null ? '' : DateUtils.toDate(vm.task.taskRepeatSchedule.startDate),
+            datepickerOptions: {
+                maxDate: null
+            }
+        };
+        // 하위 작업 일정 종료일
+        this.subTaskDueDateTo = {
+            date: vm.task.taskRepeatSchedule == null ? '' : DateUtils.toDate(vm.task.taskRepeatSchedule.endDate),
+            datepickerOptions: {
+                minDate: null
+            }
+        };
+
         // watch min and max dates to calculate difference
         var unwatchMinMaxValues = $scope.$watch(function() {
             return [vm.dueDateFrom, vm.dueDateTo];
@@ -320,7 +341,6 @@
                 var d = newValue;
                 var formatDate =
                     DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' +  DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
-                //DateUtils.datePickerFormat(d.getHours(), 2) + ':' + DateUtils.datePickerFormat(d.getMinutes(), 2) + ':' + DateUtils.datePickerFormat(d.getSeconds(), 2);
                 vm.task.startDate= formatDate;
             }
 
@@ -331,7 +351,6 @@
                 var d = newValue;
                 var formatDate =
                     DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
-                //DateUtils.datePickerFormat(d.getHours(), 2) + ':' + DateUtils.datePickerFormat(d.getMinutes(), 2) + ':' + DateUtils.datePickerFormat(d.getSeconds(), 2);
                 vm.task.endDate = formatDate;
             }
         });
@@ -341,7 +360,6 @@
                 var d = newValue;
                 var formatDate =
                     DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
-                //DateUtils.datePickerFormat(d.getHours(), 2) + ':' + DateUtils.datePickerFormat(d.getMinutes(), 2) + ':' + DateUtils.datePickerFormat(d.getSeconds(), 2);
                 vm.taskRepeatSchedule.startDate = formatDate;
             }
         });
@@ -350,7 +368,6 @@
             if(oldValue != newValue){
                 var d = newValue;
                 if(newValue != '') var formatDate = DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
-                //DateUtils.datePickerFormat(d.getHours(), 2) + ':' + DateUtils.datePickerFormat(d.getMinutes(), 2) + ':' + DateUtils.datePickerFormat(d.getSeconds(), 2);
                 vm.taskRepeatSchedule.endDate = formatDate;
             }
         });
@@ -362,6 +379,24 @@
                 vm.taskRepeatSchedule.adventDateStartTime = formatDate;
             }
         });
+        // 하위 작업 시작 시간 포멧 변경(기간)
+        $scope.$watch("vm.subTaskDueDateFrom.date", function(newValue, oldValue){
+            if(oldValue != newValue){
+                var d = newValue;
+                var formatDate =
+                    DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
+                vm.subTaskUpdateForm.startDate = formatDate;
+            }
+        });
+        // 하위 작업 종료 시간 포멧 변경(기간)
+        $scope.$watch("vm.subTaskDueDateTo.date", function(newValue, oldValue){
+            if(oldValue != newValue){
+                var d = newValue;
+                if(newValue != '') var formatDate = DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
+                vm.subTaskUpdateForm.endDate = formatDate;
+            }
+        });
+
 
         $scope.$watchGroup(['vm.task.statusId', 'vm.task.importantYn'], function(newValue, oldValue){
             if(oldValue[0] != undefined && newValue[0] != undefined && newValue[1] != null&& oldValue != newValue) {
@@ -421,10 +456,31 @@
         function openCalendar(e, picker) {
             vm[picker].open = true;
         }
+
+        // 프로젝트 실시간 검색
         $scope.$watchCollection('projectName', function(){
             FindProjectList();
         });
 
+        // 담당자 실시간 검색
+        $scope.$watchCollection('vm.userName', function(newValue){
+            $log.debug("vm.userName : ", newValue);
+            $scope.userName = newValue;
+            $scope.pickerFindUsers(newValue);
+        });
+
+        /* 하위 작업 저장 */
+        function subTaskUserAdd(userId){
+            vm.subTaskUpdateForm.assigneeIds = userId;
+            subTaskUpdate();
+        }
+        function subTaskUpdate(){
+            TaskEdit.putSubTask(vm.subTaskUpdateForm).then(function(result){
+                getTaskInfo();
+                subTaskClose();
+                toastr.success('하위작업 수정 완료', '하위작업 수정 완료');
+            });
+        }
 
 
         /* 타스크의 서브타스크 등록 */
@@ -434,7 +490,7 @@
 
         function onSubTaskSaveSuccess (result) {
             toastr.success('sub 태스크 생성 완료', 'sub 태스크 생성 완료');
-            Task.get({id : vm.task.id}, successTask, erorrTask);
+            getTaskInfo();
             if($stateParams.parentType == 'project'){
                 $rootScope.$broadcast('projectReload');
             }else if($stateParams.parentType == 'task'){
@@ -453,6 +509,16 @@
             }); //user search
             return deferred.promise;
         };
+
+        /* user picker */
+        $scope.pickerFindUsers = function(name) {
+
+            findUser.findByName(name).then(function(result){
+                $log.debug("userList : ", result);
+                vm.userList = result;
+            }); //user search
+        };
+
 
         /* task picker */
         $scope.findTasks = function(name) {
@@ -492,12 +558,17 @@
                 vm.task.removeProjectIds = "";
                 vm.repeatClose(); // 반복설정 팝업 닫기
                 $scope.files = [];
-                Task.get({id : vm.task.id}, successTask, erorrTask);
+                getTaskInfo();
             });
         }
 
-        $rootScope.$on('task-detail-reload', function(){
+        // 작업 정보 불러오기
+        function getTaskInfo(){
             Task.get({id : vm.task.id}, successTask, erorrTask);
+        }
+
+        $rootScope.$on('task-detail-reload', function(){
+            getTaskInfo();
         })
 
         // 타스크 불러오기 성공
@@ -746,6 +817,10 @@
         function repeatClose(){
             $rootScope.$broadcast('repeatClose');
         }
+        // 반복설정 팝업 닫기
+        function subTaskClose(){
+            $rootScope.$broadcast('subTaskClose');
+        }
 
         // 작업 본문 복원 팝업 오픈
         function taskRevertModalOpen(){
@@ -769,6 +844,24 @@
                 toastr.error('태스크 댓글 삭제 완료', '태스크 댓글 삭제 완료');
                 getTaskAudigLog();
             });
+        }
+
+        //byte를 용량 계산해서 반환
+        function byteCalculation(bytes) {
+            var bytes = parseInt(bytes);
+            var s = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
+            var e = Math.floor(Math.log(bytes)/Math.log(1024));
+
+            if(e == "-Infinity") return "0 "+s[0];
+            else
+                return (bytes/Math.pow(1024, Math.floor(e))).toFixed(2)+" "+s[e];
+        }
+
+        // 하위 작업 날짜 폼 입력 및 하위 작업 정보 주입
+        function setDatePickerInput(subTask){
+            vm.subTaskUpdateForm = subTask;
+            vm.subTaskDueDateFrom.date = DateUtils.toDate(subTask.startDate)
+            vm.subTaskDueDateTo.date = DateUtils.toDate(subTask.endDate)
         }
 
         vm.tableConfigs = [];

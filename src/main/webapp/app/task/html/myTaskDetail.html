@@ -176,12 +176,37 @@
                             <td>하위 작업 목록</td>
                         </tr>
                         </thead>
-                        <tbody>
+                        <tbody id="userPickerSection">
                             <tr ng-repeat="list in vm.task.subTasks">
                                 <td>
-                                    <span class="pull-right">{{list.createdDate | date : 'yyyy-MM-dd'}}</span>
-                                    <input type="checkbox"/>
-                                    <span class="cursor" ui-sref="my-task.detail({id : list.id, listType : vm.listType})">{{list.name}}</span>
+
+                                    <!-- 우측 영역 -->
+                                    <span class="pull-right">
+                                        <!--{{list.createdDate | date : 'yyyy-MM-dd'}}-->
+                                        <div id="subTaskEditSection">
+                                            <i class="icon-append fa fa-calendar cursor" style="float: left; padding: 8px;" sub-task-picker-toggle ng-click="vm.setDatePickerInput(list)"></i>
+                                            <div class="form-group" style="margin-bottom: 0">
+
+                                                <span class="input-group wms-form">
+                                                    <label class="input" ng-show="list.startDate != '' || list.startDate != ''">
+                                                        <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="subTaskEndDate" style="height: 30px; width: 100%; border : 0">
+                                                    </label>
+
+                                                    <span class="dueDateValues" sub-task-picker-toggle ng-click="vm.setDatePickerInput(list)">{{list.endDate}}</span>
+                                                </span>
+                                            </div>
+                                            <div wms-Include="app/task/html/subTaskDatePicker.html"></div>
+                                        </div>
+                                    </span>
+
+                                    <!-- 제목 영역 -->
+                                    <div ng-class="list.assignees.length > 0 ? 'task-list-title' : ''">
+                                        <input type="checkbox"/>
+                                        <span class="cursor" ui-sref="my-task.detail({id : list.id, listType : vm.listType})">{{list.name}}</span>
+
+                                    </div>
+
+                                    <!-- 사용자 아이콘 -->
                                     <ul class="list-inline friends-list" style="margin-bottom: 0">
                                         <li ng-repeat="user in list.assignees | limitTo:3">
                                             <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
@@ -195,6 +220,38 @@
                                             </a>
                                         </li>
                                     </ul>
+
+                                    <!-- 사용자 검색 -->
+                                    <button class="userValueSection" ng-click="vm.subTaskUpdateForm = list" user-picker-edit-toggle> <i class="fa fa-plus" id="assigneeAddBtn" user-picker-edit-toggle></i><span user-picker-edit-toggle></span></button>
+                                    <div class="project-picker userPickerSection">
+                                        <div style="width: 300px;">
+                                            <div style="width: 300px;">
+                                                <div class="project-picker-search">
+                                                    <input class="project-picker-search-input" type="text" ng-model="vm.userName" enter-submit="pickerFindUsers(userName)" placeholder="사용자 명을 입력하세요."  wms-kr-update>
+                                                </div>
+                                                <div class="project-picker-list-area">
+                                                    <div class="project-picker-list">
+                                                        <div data-ng-repeat="user in vm.userList">
+                                                            <div class="project-picker-list-item" ng-click="vm.subTaskUserAdd(user.id)">
+                                                                <div>
+                                                                    <div class="project-picker-list-item-title">
+                                                                        <ul class="list-inline friends-list float-left comment-user-profile">
+                                                                            <li>
+                                                                                <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.createdByName}}">
+                                                                                <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.createdByName}}">
+                                                                            </li>
+                                                                        </ul>
+                                                                        {{user.name}}
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
 
                                 </td>
                             </tr>

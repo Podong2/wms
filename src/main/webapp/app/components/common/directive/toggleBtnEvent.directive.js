@@ -79,19 +79,32 @@ function datePickerEditToggle($timeout) {
         }
     }
 }
+/**
+ * 사용자 검색 팝업 토글
+ * @param $timeout
+ * @returns {{restrict: string, link: link}}
+ */
 function userPickerEditToggle($timeout) {
     return {
         restrict: 'A',
         link: function(scope, element, attr) {
+            var openYn = false;
+            var elementTarget = '';
             $('body').click(function (e) {
-                if ($('.userPickerSection').addClass("on"), $('.userValueSection').addClass("on")) {
-                    if (!$('#userPickerSection').has(e.target).length) {
+                if(elementTarget != ''){
+                    if (!$(elementTarget).has(e.target).length) {
                         $('.userPickerSection').removeClass("on");
                         $('.userValueSection').removeClass("on");
+                        elementTarget = '';
                     }
                 }
             });
             element.on('click', function(_this) {
+                openYn = true;
+                elementTarget = _this.target.parentElement.parentElement;
+                $('.userPickerSection').removeClass("on");
+                $(_this.target.nextElementSibling).addClass("on");
+                $(_this.target.parentElement.nextElementSibling).addClass("on");
                 $timeout(function () {
                     $(".user-focusing").focus();
                 }, 400);
@@ -99,6 +112,11 @@ function userPickerEditToggle($timeout) {
         }
     }
 }
+/**
+ * 작업 등록화면 프로젝트 모달 토글
+ * @param $timeout
+ * @returns {{restrict: string, link: link}}
+ */
 function projectPickerAddToggle($timeout) {
     return {
         restrict: 'A',
@@ -119,6 +137,11 @@ function projectPickerAddToggle($timeout) {
         }
     }
 }
+/**
+ * 작업 상세 화면 프로젝트 모달 토글
+ * @param $timeout
+ * @returns {{restrict: string, link: link}}
+ */
 function projectPickerEditToggle($timeout) {
     return {
         restrict: 'A',
@@ -139,6 +162,12 @@ function projectPickerEditToggle($timeout) {
         }
     }
 }
+/**
+ * 좌측메뉴 프로젝트 등록 모달 토글
+ * @param $timeout
+ * @param $rootScope
+ * @returns {{restrict: string, link: link}}
+ */
 function projectAddToggle($timeout, $rootScope) {
     return {
         restrict: 'A',
@@ -163,6 +192,11 @@ function projectAddToggle($timeout, $rootScope) {
         }
     }
 }
+/**
+ * 헤더 작업 히스토리 모달 토글
+ * @param $timeout
+ * @returns {{restrict: string, link: link}}
+ */
 function gnbTaskHistoryToggle($timeout) {
     return {
         restrict: 'A',

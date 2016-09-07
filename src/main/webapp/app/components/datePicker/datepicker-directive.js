@@ -17,10 +17,12 @@
 angular.module('wmsApp')
     .directive('pickerToggle', pickerToggle)
     .directive('repeatPickerToggle', repeatPickerToggle)
-    .directive('repeatPickerAddToggle', repeatPickerAddToggle);
+    .directive('repeatPickerAddToggle', repeatPickerAddToggle)
+    .directive('subTaskPickerToggle', subTaskPickerToggle);
 pickerToggle.$inject=['$timeout'];
 repeatPickerToggle.$inject=['$timeout', '$rootScope'];
 repeatPickerAddToggle.$inject=['$timeout', '$rootScope'];
+subTaskPickerToggle.$inject=['$timeout', '$rootScope'];
         function pickerToggle($timeout) {
         return {
             restrict: 'A',
@@ -40,7 +42,14 @@ repeatPickerAddToggle.$inject=['$timeout', '$rootScope'];
             }
         }
     }
-    function repeatPickerToggle($timeout, $rootScope) {
+
+/**
+ * 반복설정 일정 설정 수정
+ * @param $timeout
+ * @param $rootScope
+ * @returns {{restrict: string, link: link}}
+ */
+function repeatPickerToggle($timeout, $rootScope) {
         return {
             restrict: 'A',
             link: function (scope, element) {
@@ -69,31 +78,77 @@ repeatPickerAddToggle.$inject=['$timeout', '$rootScope'];
             }
         }
     }
-    function repeatPickerAddToggle($timeout, $rootScope) {
+
+/**
+ * 반복 작업 일정설정 등록 팝업
+ * @param $timeout
+ * @param $rootScope
+ * @returns {{restrict: string, link: link}}
+ */
+function repeatPickerAddToggle($timeout, $rootScope) {
+    return {
+        restrict: 'A',
+        link: function (scope, element) {
+            var displayYn = true;
+            element.on('click', function (_this) {
+                displayYn = true;
+                $timeout(function () {
+                    $(".startDate").focus();
+                }, 400);
+            });
+            $('body').click(function (e) {
+                if ($('.repeat-add-section').addClass("on")) {
+                    if (!$('#repeatAddSection').has(e.target).length) {
+                        $('.repeat-add-section').removeClass("on");
+                    }else if(displayYn){
+                        $('.repeat-add-section').addClass("on");
+                    }else if(!displayYn){
+                        $('.repeat-add-section').removeClass("on");
+                    }
+                }
+            });
+            $rootScope.$on('repeatClose', function () {
+                $('.repeat-add-section').removeClass("on");
+                displayYn = false;
+            });
+
+        }
+    }
+}
+
+/**
+ * 하위 작업 일정 설정 picker
+ * @param $timeout
+ * @param $rootScope
+ * @returns {{restrict: string, link: link}}
+ */
+function subTaskPickerToggle($timeout, $rootScope) {
         return {
             restrict: 'A',
             link: function (scope, element) {
-                var displayYn = true;
+                var openYn = false;
+                var elementTarget = '';
                 element.on('click', function (_this) {
-                    displayYn = true;
+                    openYn = true;
+                    elementTarget = _this.target.parentElement.parentElement.parentElement;
+                    $('.subTask-edit-section').removeClass("on");
+                    $(_this.target.parentElement.parentElement.nextElementSibling).addClass("on");
+                    $(_this.target.parentElement.lastElementChild).addClass("on");
                     $timeout(function () {
                         $(".startDate").focus();
                     }, 400);
                 });
-                $('body').click(function (e) {
-                    if ($('.repeat-add-section').addClass("on")) {
-                        if (!$('#repeatAddSection').has(e.target).length) {
-                            $('.repeat-add-section').removeClass("on");
-                        }else if(displayYn){
-                            $('.repeat-add-section').addClass("on");
-                        }else if(!displayYn){
-                            $('.repeat-add-section').removeClass("on");
-                        }
-                    }
-                });
-                $rootScope.$on('repeatClose', function () {
-                    $('.repeat-add-section').removeClass("on");
-                    displayYn = false;
+                //$('body').click(function (e) {
+                //    if(elementTarget != ''){
+                //        if (!$(elementTarget).has(e.target).length) {
+                //            $('.subTask-edit-section').removeClass("on");
+                //            elementTarget = '';
+                //        }
+                //    }
+                //});
+                $rootScope.$on('subTaskClose', function () {
+                    $('.subTask-edit-section').removeClass("on");
+                    openYn = false;
                 });
 
             }
