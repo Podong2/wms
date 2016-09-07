@@ -53,133 +53,137 @@
     <br/><br/>
     <!-- 일정 반복 설정 영역 -->
     <div class="repeat-settings-area clear-both">
-        - 반복설정
-        <div class="" style="clear:both; margin-bottom: 5px;">
-            <div class="btn-group" role="group" aria-label="..." style="margin-bottom: 5px">
-                <button type="button" class="btn btn-default repeatTypeBtn" ng-class="vm.taskRepeatSchedule.repeatType == 'DAILY'? 'active' : ''" ng-click="vm.setRepeatType('DAILY')">매일</button>
-                <button type="button" class="btn btn-default repeatTypeBtn" ng-class="vm.taskRepeatSchedule.repeatType == 'WEEKLY'? 'active' : ''" ng-click="vm.setRepeatType('WEEKLY')">매주</button>
-                <button type="button" class="btn btn-default repeatTypeBtn" ng-class="vm.monthlyAreaOpen ? 'active' : ''" ng-click="vm.setRepeatType('MONTHLY')">매월</button>
-            </div>
-            <br/>
-            <table class="repeat-table-n2" style="float: left">
-                <colgroup>
-                </colgroup>
-                <tbody>
-                <tr class="">
-                    <td class="" ng-show="vm.monthlyAreaOpen">
-                        <div class="wms-form">
-                            <div class="inline-group">
-                                <label class="radio">
-                                    <input type="radio" name="radio-inline-1" ng-model="vm.taskRepeatSchedule.repeatType" ng-click="vm.setRepeatType('')" value="MONTHLY_DATE" checked="checked">
-                                    <i></i>날짜</label>
-                                <label class="radio">
-                                    <input type="radio" name="radio-inline-1" ng-model="vm.taskRepeatSchedule.repeatType" ng-click="vm.setRepeatType('')" value="MONTHLY_WEEKDAY">
-                                    <i></i>요일</label>
-                            </div>
-                        </div>
-                    </td>
-                    <td class="" ng-show="vm.taskRepeatSchedule.repeatType == 'MONTHLY_WEEKDAY'">
-                        <ol class="nya-bs-select " data-size="5" size="5" ng-model="vm.taskRepeatSchedule.monthlyCriteria" style="width: 90px;">
-                            <li nya-bs-option="option in vm.weeks"  title="{{option.name}}" data-value="option.id">
-                                <a>
-                                    {{ option.name }}
-                                    <span class="glyphicon glyphicon-ok check-mark"></span>
-                                </a>
-                            </li>
-                        </ol>
-                    </td>
-                    <td class="" ng-show="vm.taskRepeatSchedule.repeatType == 'MONTHLY_DATE'">
-                        <ol class="nya-bs-select " data-size="5" size="5" ng-model="vm.taskRepeatSchedule.monthlyCriteria" style="width: 90px;">
-                            <li nya-bs-option="option in vm.days" title="{{option.name}}" data-value="option.id">
-                                <a>
-                                    {{ option.name }}
-                                    <span class="glyphicon glyphicon-ok check-mark"></span>
-                                </a>
-                            </li>
-                        </ol>
-                    </td>
-                    <td ng-show="vm.taskRepeatSchedule.repeatType != 'MONTHLY_DATE'">
-                        <div class="btn-group repeat-btn-group" role="group" aria-label="...">
-                            <button type="button" class="btn btn-default weekdaysBtn" ng-class="vm.weekDaysArea[0].status ? 'active' : ''" ng-click="vm.setWeekday(1)">일</button>
-                            <button type="button" class="btn btn-default weekdaysBtn" ng-class="vm.weekDaysArea[1].status ? 'active' : ''"  ng-click="vm.setWeekday(2)">월</button>
-                            <button type="button" class="btn btn-default weekdaysBtn" ng-class="vm.weekDaysArea[2].status ? 'active' : ''"  ng-click="vm.setWeekday(3)">화</button>
-                            <button type="button" class="btn btn-default weekdaysBtn" ng-class="vm.weekDaysArea[3].status ? 'active' : ''"  ng-click="vm.setWeekday(4)">수</button>
-                            <button type="button" class="btn btn-default weekdaysBtn" ng-class="vm.weekDaysArea[4].status ? 'active' : ''"  ng-click="vm.setWeekday(5)">목</button>
-                            <button type="button" class="btn btn-default weekdaysBtn" ng-class="vm.weekDaysArea[5].status ? 'active' : ''"  ng-click="vm.setWeekday(6)">금</button>
-                            <button type="button" class="btn btn-default weekdaysBtn" ng-class="vm.weekDaysArea[6].status ? 'active' : ''"  ng-click="vm.setWeekday(7)">토</button>
-                        </div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+        <div class="pull-right" ng-click="vm.repeatOpenYn = !vm.repeatOpenYn">
+            {{vm.repeatOpenYn ? '접기▲' : '펴기▼'}}
         </div>
+        - 반복설정<br/><br/>
+        <div ng-show="vm.repeatOpenYn">
+            <div class="" style="clear:both; margin-bottom: 5px;">
+                <div class="btn-group" role="group" aria-label="..." style="margin-bottom: 5px">
+                    <button type="button" class="btn btn-default repeatTypeBtn" ng-class="vm.taskRepeatSchedule.repeatType == 'DAILY'? 'active' : ''" ng-click="vm.setRepeatType('DAILY')">매일</button>
+                    <button type="button" class="btn btn-default repeatTypeBtn" ng-class="vm.taskRepeatSchedule.repeatType == 'WEEKLY'? 'active' : ''" ng-click="vm.setRepeatType('WEEKLY')">매주</button>
+                    <button type="button" class="btn btn-default repeatTypeBtn" ng-class="vm.monthlyAreaOpen ? 'active' : ''" ng-click="vm.setRepeatType('MONTHLY')">매월</button>
+                </div>
+                <br/>
+                <table class="repeat-table-n2" style="float: left">
+                    <colgroup>
+                    </colgroup>
+                    <tbody>
+                    <tr class="">
+                        <td class="" ng-show="vm.monthlyAreaOpen">
+                            <div class="wms-form">
+                                <div class="inline-group">
+                                    <label class="radio">
+                                        <input type="radio" name="radio-inline-1" ng-model="vm.taskRepeatSchedule.repeatType" ng-click="vm.setRepeatType('')" value="MONTHLY_DATE" checked="checked">
+                                        <i></i>날짜</label>
+                                    <label class="radio">
+                                        <input type="radio" name="radio-inline-1" ng-model="vm.taskRepeatSchedule.repeatType" ng-click="vm.setRepeatType('')" value="MONTHLY_WEEKDAY">
+                                        <i></i>요일</label>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="" ng-show="vm.taskRepeatSchedule.repeatType == 'MONTHLY_WEEKDAY'">
+                            <ol class="nya-bs-select " data-size="5" size="5" ng-model="vm.taskRepeatSchedule.monthlyCriteria" style="width: 90px;">
+                                <li nya-bs-option="option in vm.weeks"  title="{{option.name}}" data-value="option.id">
+                                    <a>
+                                        {{ option.name }}
+                                        <span class="glyphicon glyphicon-ok check-mark"></span>
+                                    </a>
+                                </li>
+                            </ol>
+                        </td>
+                        <td class="" ng-show="vm.taskRepeatSchedule.repeatType == 'MONTHLY_DATE'">
+                            <ol class="nya-bs-select " data-size="5" size="5" ng-model="vm.taskRepeatSchedule.monthlyCriteria" style="width: 90px;">
+                                <li nya-bs-option="option in vm.days" title="{{option.name}}" data-value="option.id">
+                                    <a>
+                                        {{ option.name }}
+                                        <span class="glyphicon glyphicon-ok check-mark"></span>
+                                    </a>
+                                </li>
+                            </ol>
+                        </td>
+                        <td ng-show="vm.taskRepeatSchedule.repeatType != 'MONTHLY_DATE'">
+                            <div class="btn-group repeat-btn-group" role="group" aria-label="...">
+                                <button type="button" class="btn btn-default weekdaysBtn" ng-class="vm.weekDaysArea[0].status ? 'active' : ''" ng-click="vm.setWeekday(1)">일</button>
+                                <button type="button" class="btn btn-default weekdaysBtn" ng-class="vm.weekDaysArea[1].status ? 'active' : ''"  ng-click="vm.setWeekday(2)">월</button>
+                                <button type="button" class="btn btn-default weekdaysBtn" ng-class="vm.weekDaysArea[2].status ? 'active' : ''"  ng-click="vm.setWeekday(3)">화</button>
+                                <button type="button" class="btn btn-default weekdaysBtn" ng-class="vm.weekDaysArea[3].status ? 'active' : ''"  ng-click="vm.setWeekday(4)">수</button>
+                                <button type="button" class="btn btn-default weekdaysBtn" ng-class="vm.weekDaysArea[4].status ? 'active' : ''"  ng-click="vm.setWeekday(5)">목</button>
+                                <button type="button" class="btn btn-default weekdaysBtn" ng-class="vm.weekDaysArea[5].status ? 'active' : ''"  ng-click="vm.setWeekday(6)">금</button>
+                                <button type="button" class="btn btn-default weekdaysBtn" ng-class="vm.weekDaysArea[6].status ? 'active' : ''"  ng-click="vm.setWeekday(7)">토</button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
 
-        <div class="clear-both" style="margin-bottom: 5px">
-            <table class="repeat-table">
-                <colgroup>
-                    <col width="80">
-                    <col width="200">
-                </colgroup>
-                <tbody>
-                <tr class="repeat-table-tr">
-                    <th class="repeat-table-th">
-                        시작시간
-                    </th>
-                    <td class="repeat-table-td">
-                        <p class="input-group">
-                            <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="vm.adventStartTime.date" is-open="vm.adventStartTime.open" enable-date="false"
-                                   timepicker-options="vm.adventStartTime.timepickerOptions" close-on-selection="true" />
+            <div class="clear-both" style="margin-bottom: 5px">
+                <table class="repeat-table">
+                    <colgroup>
+                        <col width="80">
+                        <col width="200">
+                    </colgroup>
+                    <tbody>
+                    <tr class="repeat-table-tr">
+                        <th class="repeat-table-th">
+                            시작시간
+                        </th>
+                        <td class="repeat-table-td">
+                            <p class="input-group">
+                                <input type="text" class="form-control" datetime-picker="HH:mm" ng-model="vm.adventStartTime.date" is-open="vm.adventStartTime.open" enable-date="false"
+                                       timepicker-options="vm.adventStartTime.timepickerOptions" close-on-selection="true" />
                             <span class="input-group-btn">
                               <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'adventStartTime')"><i class="fa fa-clock-o"></i></button>
                             </span>
-                        </p>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-        </div>
+                            </p>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
 
-        <div>
-            # 반복 기간
-        </div>
-        <div>
-            <table class="repeat-table">
-                <colgroup>
-                    <col width="55">
-                    <col width="150">
-                    <col width="55">
-                    <col width="170">
-                    <col width="150">
-                </colgroup>
-                <tbody>
-                <tr class="repeat-table-tr">
-                    <th class="repeat-table-th">
-                        시작일
-                    </th>
-                    <td class="input-group repeat-table-td">
-                        <input type="text" class="form-control startDate" edit-state="true" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd"
-                               ng-model="vm.repeatDueDateFrom.date" is-open="vm.repeatDueDateFrom.open"
-                               datepicker-options="vm.repeatDueDateFrom.datepickerOptions" close-text="Close" />
+            <div>
+                # 반복 기간
+            </div>
+            <div>
+                <table class="repeat-table">
+                    <colgroup>
+                        <col width="55">
+                        <col width="150">
+                        <col width="55">
+                        <col width="170">
+                        <col width="150">
+                    </colgroup>
+                    <tbody>
+                    <tr class="repeat-table-tr">
+                        <th class="repeat-table-th">
+                            시작일
+                        </th>
+                        <td class="input-group repeat-table-td">
+                            <input type="text" class="form-control startDate" edit-state="true" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd"
+                                   ng-model="vm.repeatDueDateFrom.date" is-open="vm.repeatDueDateFrom.open"
+                                   datepicker-options="vm.repeatDueDateFrom.datepickerOptions" close-text="Close" />
                         <span class="input-group-btn">
                           <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'repeatDueDateFrom')"><i class="fa fa-calendar"></i></button>
                         </span>
-                    </td>
-                    <th class="repeat-table-th">
-                        종료일
-                    </th>
-                    <td class="repeat-table-td">
-                        <div class="wms-form">
-                            <div class="inline-group">
-                                <label class="radio">
-                                    <input type="radio" name="radio-inline-2" ng-model="vm.taskRepeatSchedule.permanentYn" ng-click="vm.setRepeatType('END_DATE_REMOVE')" value="true" checked="checked">
-                                    <i></i>계속 반복</label>
-                                <label class="radio">
-                                    <input type="radio" name="radio-inline-2" ng-model="vm.taskRepeatSchedule.permanentYn" value="false">
-                                    <i></i>종료일</label>
+                        </td>
+                        <th class="repeat-table-th">
+                            종료일
+                        </th>
+                        <td class="repeat-table-td">
+                            <div class="wms-form">
+                                <div class="inline-group">
+                                    <label class="radio">
+                                        <input type="radio" name="radio-inline-2" ng-model="vm.taskRepeatSchedule.permanentYn" ng-click="vm.setRepeatType('END_DATE_REMOVE')" value="true" checked="checked">
+                                        <i></i>계속 반복</label>
+                                    <label class="radio">
+                                        <input type="radio" name="radio-inline-2" ng-model="vm.taskRepeatSchedule.permanentYn" value="false">
+                                        <i></i>종료일</label>
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                    <td class="repeat-table-td">
+                        </td>
+                        <td class="repeat-table-td">
 
                         <span class="input-group">
                             <input type="text" class="form-control" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.repeatDueDateTo.date" is-open="vm.repeatDueDateTo.open"
@@ -188,11 +192,13 @@
                                 <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'repeatDueDateTo')"><i class="fa fa-calendar"></i></button>
                             </span>
                         </span>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
+
 
         <div class="modal-footer" >
             <button type="button" class="btn btn_icon btn_customs" ng-click="vm.taskUpload()" ng-show="vm.task.id != ''" owl-btn-save></button>
