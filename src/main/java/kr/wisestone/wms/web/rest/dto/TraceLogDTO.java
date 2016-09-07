@@ -42,6 +42,8 @@ public class TraceLogDTO {
 
     private String createdByName;
 
+    private Long createdById;
+
     private Date createdDate;
 
     private String lastModifiedBy;
@@ -234,5 +236,13 @@ public class TraceLogDTO {
 
     public void setCreatedByName(String createdByName) {
         this.createdByName = createdByName;
+    }
+
+    public Long getCreatedById() {
+        return createdById;
+    }
+
+    public void setCreatedById(Long createdById) {
+        this.createdById = createdById;
     }
 }
