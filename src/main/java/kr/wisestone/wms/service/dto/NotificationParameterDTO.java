@@ -68,7 +68,14 @@ public class NotificationParameterDTO {
         this.fromUser = fromUser;
         this.toUsers = toUsers;
 
-        this.setEntityId(traceLog.getEntityId());
+        if("Task".equals(traceLog.getEntityName())) {
+            this.setEntityId(traceLog.getTaskId());
+        } else if("Project".equals(traceLog.getEntityName())) {
+            this.setEntityId(traceLog.getProjectId());
+        } else {
+            this.setEntityId(traceLog.getEntityId());
+        }
+
         this.setEntityField(traceLog.getEntityField());
         this.setEntityName(traceLog.getEntityName());
         this.setEntityValue(traceLog.getNewValue());
