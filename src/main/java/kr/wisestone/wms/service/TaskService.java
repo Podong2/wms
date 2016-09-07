@@ -486,12 +486,14 @@ public class TaskService {
 
         List<OrderSpecifier> orderSpecifiers = Lists.newArrayList();
 
-        orderSpecifiers.add(QTask.task.period.endDate.asc());
-
-        if(ProjectTaskCondition.ORDER_TYPE_IMPORTANT.equalsIgnoreCase(projectTaskCondition.getOrderType())) {
-            orderSpecifiers.add(QTask.task.importantYn.desc());
-        } else if(ProjectTaskCondition.ORDER_TYPE_TASK_NAME.equalsIgnoreCase(projectTaskCondition.getOrderType())) {
-            orderSpecifiers.add(QTask.task.name.asc());
+        if(StringUtils.isEmpty(projectTaskCondition.getOrderType())) {
+            orderSpecifiers.add(QTask.task.period.endDate.asc());
+        } else {
+            if(ProjectTaskCondition.ORDER_TYPE_IMPORTANT.equalsIgnoreCase(projectTaskCondition.getOrderType())) {
+                orderSpecifiers.add(QTask.task.importantYn.desc());
+            } else if(ProjectTaskCondition.ORDER_TYPE_TASK_NAME.equalsIgnoreCase(projectTaskCondition.getOrderType())) {
+                orderSpecifiers.add(QTask.task.name.asc());
+            }
         }
 
         List<Task> tasks = Lists.newArrayList(taskRepository.findAll(predicate, orderSpecifiers.toArray(new OrderSpecifier[orderSpecifiers.size()])));

@@ -237,7 +237,6 @@ public class NotificationService {
     }
 
     @Transactional
-    @Async
     public void sendIssueCreatedNotification(TaskDTO createdTaskDTO, List<User> toUsers, String notifyMethod) {
         NotificationConfig notificationConfig = NotificationConfig.TASK_CREATED;
 
