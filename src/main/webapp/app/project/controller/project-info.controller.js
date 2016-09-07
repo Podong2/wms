@@ -15,12 +15,15 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             vm.getTaskListInProject = getTaskListInProject;
             //vm.showDetail = showDetail;
             vm.codes = [{"id":'', "name":"선택"},{"id":1,"name":"활성"},{"id":2,"name":"완료"},{"id":3,"name":"보류"},{"id":4,"name":"취소"}]
+            vm.orderTypes = [{"id":'', "name":"선택"},{"id":'IMPORTANT',"name":"중요도"},{"id":'TASK_NAME',"name":"텍스트 오름 차순"}];
             vm.sortType="1";
 
             vm.tasks=[]; // 총 목록
             vm.projectTeam = [];// 프로젝트 팀원 (중복제거)
             vm.statusId = '';
             vm.taskAdd = false;
+            vm.orderType = '';
+            vm.listType = '';
 
 
 
@@ -41,19 +44,25 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
 
             $scope.$watchCollection('vm.statusId', function(newValue, oldValue){
                 if(newValue != undefined && oldValue != newValue) {
-                    ProjectInfo.get({projectId : $stateParams.id, listType : vm.listType, statusId : vm.statusId}, onSuccess, onError);
+                    getList();
+                }
+            });
+            $scope.$watchCollection('vm.orderType', function(newValue, oldValue){
+                if(newValue != undefined && oldValue != newValue) {
+                    getList();
                 }
             });
 
             // 프로젝트 타스크 목록 필터
             function getTaskListInProject(listType){
                 vm.listType = listType;
-                ProjectInfo.get({projectId : $stateParams.id, listType : vm.listType, statusId : vm.statusId}, onSuccess, onError);
+                getList();
             }
+
 
             vm.listType = 'TOTAL'
             function getList(){
-                ProjectInfo.get({projectId : $stateParams.id, listType : vm.listType, statusId : vm.statusId}, onSuccess, onError);
+                ProjectInfo.get({projectId : $stateParams.id, listType : vm.listType, statusId : vm.statusId, orderType : vm.orderType}, onSuccess, onError);
             }
             getList();
 

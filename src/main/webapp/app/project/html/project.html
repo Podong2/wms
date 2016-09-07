@@ -66,6 +66,16 @@
                     </div>
 
                     <div style="clear: both">
+                        <div class="pull-right">
+                            <ol class="nya-bs-select " ng-model="vm.orderType" style="width: 90px;">
+                                <li nya-bs-option="option in vm.orderTypes" title="{{option.name}}" data-value="option.id">
+                                    <a>
+                                        {{ option.name }}
+                                        <span class="glyphicon glyphicon-ok check-mark"></span>
+                                    </a>
+                                </li>
+                            </ol>
+                        </div>
                         <button class="btn btn-default btn-sm btn-radius" ng-click="vm.taskAdd = !vm.taskAdd">작업 생성+</button>
                         <ol class="nya-bs-select " ng-model="vm.statusId" style="width: 90px;">
                             <li nya-bs-option="option in vm.codes" title="{{option.name}}" data-value="option.id">
