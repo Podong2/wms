@@ -279,6 +279,7 @@
             }).then(function (response) {
                 toastr.success('프로젝트 수정 완료', '프로젝트 수정 완료');
                 if(vm.projectReload) $rootScope.$broadcast('projectReloading');
+                $rootScope.$broadcast('projectEditClose');
                 vm.project.removeAssigneeIds = "";
                 vm.project.removeWatcherIds = "";
                 vm.project.removeRelatedTaskIds ="";

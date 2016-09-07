@@ -11,8 +11,8 @@ toggleEvent.$inject=['$compile', '$filter', '$log', '$sce', '$timeout'];
 sectionToggle.$inject=['$timeout', '$rootScope'];
 datePickerEditToggle.$inject=['$timeout'];
 userPickerEditToggle.$inject=['$timeout'];
-projectPickerEditToggle.$inject=['$timeout'];
-projectPickerAddToggle.$inject=['$timeout'];
+projectPickerEditToggle.$inject=['$timeout', '$rootScope'];
+projectPickerAddToggle.$inject=['$timeout', '$rootScope'];
 projectAddToggle.$inject=['$timeout', '$rootScope'];
 gnbTaskHistoryToggle.$inject=['$timeout'];
 function toggleEvent($compile, $filter, $log, $sce, $timeout) {
@@ -117,17 +117,27 @@ function userPickerEditToggle($timeout) {
  * @param $timeout
  * @returns {{restrict: string, link: link}}
  */
-function projectPickerAddToggle($timeout) {
+function projectPickerAddToggle($timeout, $rootScope) {
     return {
         restrict: 'A',
         link: function(scope, element, attr) {
+            var openYn = true;
             $('body').click(function (e) {
-                if ($('.projectPickerAddSection').addClass("on"), $('.projectValueAddSection').addClass("on")) {
-                    if (!$('#projectPickerAddSection').has(e.target).length) {
-                        $('.projectPickerAddSection').removeClass("on");
-                        $('.projectValueAddSection').removeClass("on");
+                if(openYn){
+                    if ($('.projectPickerAddSection').addClass("on"), $('.projectValueAddSection').addClass("on")) {
+                        if (!$('#projectPickerAddSection').has(e.target).length) {
+                            $('.projectPickerAddSection').removeClass("on");
+                            $('.projectValueAddSection').removeClass("on");
+                            openYn = true;
+                        }
                     }
-                }
+                }else openYn = true;
+
+            });
+            $rootScope.$on('projectPickerAddClose', function(event, args){
+                openYn = args;
+                $('.projectPickerAddSection').removeClass("on");
+                $('.projectValueAddSection').removeClass("on");
             });
             element.on('click', function(_this) {
                 $timeout(function () {
@@ -142,7 +152,7 @@ function projectPickerAddToggle($timeout) {
  * @param $timeout
  * @returns {{restrict: string, link: link}}
  */
-function projectPickerEditToggle($timeout) {
+function projectPickerEditToggle($timeout, $rootScope) {
     return {
         restrict: 'A',
         link: function(scope, element, attr) {
@@ -153,6 +163,10 @@ function projectPickerEditToggle($timeout) {
                         $('.projectValueSection').removeClass("on");
                     }
                 }
+            });
+            $rootScope.$on('projectEditClose', function(){
+                $('.projectPickerSection').removeClass("on");
+                $('.projectValueSection').removeClass("on");
             });
             element.on('click', function(_this) {
                 $timeout(function () {
