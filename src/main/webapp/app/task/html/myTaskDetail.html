@@ -168,8 +168,8 @@
                         <label for="subTaskAdd" class="cursor" ng-class="vm.task.relatedTasks.length == 0 && vm.task.subTasks.length == 0 ? 'cursor-none' : ''" ng-click="vm.getTaskProgressStatus()"><i class="fa fa-share-alt"></i> 작업 현황</label>
                     </div>
                 </div>
-                <div class="sub-task-area"  style="border-top: 1px solid #ddd; padding: 5px">
-                    <table class="table table-bordered"  ng-show="vm.task.subTasks != []">
+                <div class="sub-task-area" style="border-top: 1px solid #ddd; padding: 5px" >
+                    <table class="table table-bordered" ng-show="vm.task.subTasks.length != 0">
                         <thead>
                         <tr>
                             <td>하위 작업 목록</td>
@@ -206,52 +206,53 @@
                                     </div>
 
                                     <!-- 사용자 아이콘 -->
-                                    <ul class="list-inline friends-list" style="margin-bottom: 0">
-                                        <li ng-repeat="user in list.assignees | limitTo:3">
-                                            <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
-                                            <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
-                                        </li>
-                                        <li ng-if="list.assignees.length > 3">
-                                            <a href-void>
-                                                    <span class="activity">
-                                                        <a><i class="fa fa-plus" style="font-size: 22px; position: relative; top: 5px;"></i><b class="badge bg-color-red" style="position: absolute;">{{list.assignees.length - 3}}</b></a>
-                                                    </span>
-                                            </a>
-                                        </li>
-                                    </ul>
-
-                                    <!-- 사용자 검색 -->
-                                    <button class="userValueSection" ng-click="vm.subTaskUpdateForm = list" user-picker-edit-toggle> <i class="fa fa-plus" id="assigneeAddBtn" user-picker-edit-toggle></i><span user-picker-edit-toggle></span></button>
-                                    <div class="project-picker userPickerSection">
-                                        <div style="width: 300px;">
+                                    <div>
+                                        <!-- 사용자 검색 -->
+                                        <span class="taskUserValueSection pull-left" ng-click="vm.subTaskUpdateForm = list" user-picker-edit-toggle> <i class="fa fa-lg fa-plus" id="assigneeAddBtn"></i></span>
+                                        <div class="project-picker userPickerSection">
                                             <div style="width: 300px;">
-                                                <div class="project-picker-search">
-                                                    <input class="project-picker-search-input" type="text" ng-model="vm.userName" enter-submit="pickerFindUsers(userName)" placeholder="사용자 명을 입력하세요."  wms-kr-update>
-                                                </div>
-                                                <div class="project-picker-list-area">
-                                                    <div class="project-picker-list">
-                                                        <div data-ng-repeat="user in vm.userList">
-                                                            <div class="project-picker-list-item" ng-click="vm.subTaskUserAdd(user.id)">
-                                                                <div>
-                                                                    <div class="project-picker-list-item-title">
-                                                                        <ul class="list-inline friends-list float-left comment-user-profile">
-                                                                            <li>
-                                                                                <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.createdByName}}">
-                                                                                <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.createdByName}}">
-                                                                            </li>
-                                                                        </ul>
-                                                                        {{user.name}}
+                                                <div style="width: 300px;">
+                                                    <div class="project-picker-search">
+                                                        <input class="project-picker-search-input" type="text" ng-model="vm.userName" enter-submit="pickerFindUsers(userName)" placeholder="사용자 명을 입력하세요."  wms-kr-update>
+                                                    </div>
+                                                    <div class="project-picker-list-area">
+                                                        <div class="project-picker-list">
+                                                            <div data-ng-repeat="user in vm.userList">
+                                                                <div class="project-picker-list-item" ng-click="vm.subTaskUserAdd(user.id)">
+                                                                    <div>
+                                                                        <div class="project-picker-list-item-title">
+                                                                            <ul class="list-inline friends-list float-left comment-user-profile">
+                                                                                <li>
+                                                                                    <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.createdByName}}">
+                                                                                    <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.createdByName}}">
+                                                                                </li>
+                                                                            </ul>
+                                                                            {{user.name}}
+                                                                        </div>
                                                                     </div>
                                                                 </div>
                                                             </div>
-                                                        </div>
 
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
 
+                                        <ul class="list-inline friends-list" style="margin-bottom: 0">
+                                            <li ng-repeat="user in list.assignees">
+                                                <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
+                                                <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
+                                            </li>
+                                            <!--<li ng-if="list.assignees.length > 3">-->
+                                            <!--<a href-void>-->
+                                            <!--<span class="activity">-->
+                                            <!--<a><i class="fa fa-plus" style="font-size: 22px; position: relative; top: 5px;"></i><b class="badge bg-color-red" style="position: absolute;">{{list.assignees.length - 3}}</b></a>-->
+                                            <!--</span>-->
+                                            <!--</a>-->
+                                            <!--</li>-->
+                                        </ul>
+                                    </div>
                                 </td>
                             </tr>
                         </tbody>
@@ -336,7 +337,7 @@
                         </p>
                         <p class="pad-l15">
                             <span ng-if="data.entityField == 'reply'">
-                                <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px"></span> {{data.createdDate | date : 'HH:mm'}} <span class="fa fa-times" ng-click="vm.removeComment(data.id)"></span>
+                                <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px"></span> {{data.createdDate | date : 'HH:mm'}} <span ng-if="data.createdBy == vm.userInfo.login" class="fa fa-times" ng-click="vm.removeComment(data.id)"></span>
                                 <br/>
                                 <p ng-repeat="file in data.attachedFiles" class="pad-l20">
                                     <a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>
@@ -410,7 +411,7 @@
                         </p>
                         <p class="pad-l15">
                             <span ng-if="data.entityField == 'reply'">
-                                <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px"></span> {{data.createdDate | date : 'HH:mm'}}
+                                <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px"></span> {{data.createdDate | date : 'HH:mm'}} <span ng-if="data.createdBy == vm.userInfo.login"  class="fa fa-times" ng-click="vm.removeComment(data.id)"></span>
                                 <br/>
                                 <p ng-repeat="file in data.attachedFiles" class="pad-l20">
                                     <a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>

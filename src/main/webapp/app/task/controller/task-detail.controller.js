@@ -282,7 +282,7 @@
         vm.subTask = {
             name : '',
             parentId : vm.task.id,
-            assigneeId : vm.userInfo.id,
+            assigneeId : '',
             statusId : 1,
             projectId : $stateParams.projectId
         };
