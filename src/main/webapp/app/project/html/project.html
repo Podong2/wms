@@ -437,6 +437,49 @@
                             </div>
                         </div>
                     </div>
+                    <div uib-accordion-group class="panel-default" heading="취소된 작업 {{status.isCancelOpen ? '▼' : '▲'}}  {{vm.cancel.length}}" is-open="status.isCancelOpen" >
+                        <div class="table table-bordered table-hover " style="margin-bottom: 0;">
+                            <div>
+                                <div ng-repeat="data in vm.cancel">
+                                    <div  class="wms-tree-node-list task-list" ng-class="data.statusId == 1 ? 'green' : (data.statusId == 2 ? 'blue' : (data.statusId == 3 ? 'black' : 'red'))"
+                                          ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
+                                        <div class="pull-right">
+                                            <div><i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i>{{data.endDate}}</div>
+                                            <div>
+                                                <ng-include src="'app/project/html/taskListRightArea.html'"></ng-include>
+                                            </div>
+                                        </div>
+
+                                        <div ng-class="data.assignees.length > 0 ? 'task-list-title' : ''">
+                                            <input type="checkbox"/>
+                                            <a ui-sref="my-project.taskDetail({taskId : data.id, listType : vm.listType, projectId : vm.project.id})">{{data.name}}</a>
+                                        </div>
+                                        <ul class="list-inline friends-list" style="margin-bottom: 0">
+                                            <li ng-repeat="user in data.assignees | limitTo:3">
+                                                <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
+                                                <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
+                                            </li>
+                                            <li ng-if="data.assignees.length > 3">
+                                                <a href-void>
+                                                    <span class="activity">
+                                                        <a><i class="fa fa-plus" style="font-size: 22px; position: relative; top: 5px;"></i><b class="badge bg-color-red" style="position: absolute;">{{data.assignees.length - 3}}</b></a>
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                        <span class="clear-both"></span>
+
+                                        <div class="task-project-list-area">
+                                            <span class="task-project-icon" ng-repeat="project in data.taskProjects">[{{project.folderYn ? '폴더' : '프로젝트'}}] {{project.name}}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-if="vm.cancel.length == 0">
+                                    데이터가 없습니다.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </uib-accordion>
 
             </bg-pane>

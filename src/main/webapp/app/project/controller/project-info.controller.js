@@ -77,7 +77,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             //}
             function onSuccess(data, headers) {
                 $log.debug("data", data);
-                vm.tasks=[]; vm.delayed=[]; vm.scheduledToday=[]; vm.registeredToday=[]; vm.inProgress=[]; vm.noneScheduled=[]; vm.complete=[]; vm.hold=[]; vm.scheduled=[];
+                vm.tasks=[]; vm.delayed=[]; vm.scheduledToday=[]; vm.registeredToday=[]; vm.inProgress=[]; vm.noneScheduled=[]; vm.complete=[]; vm.hold=[]; vm.scheduled=[];  vm.cancel=[];
                 vm.project = data.project;
                 vm.info = data;
                 angular.forEach(data.tasks, function(task){
@@ -89,6 +89,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     if(task.statusGroup == "SCHEDULED") vm.scheduled.push(task); // 예정
                     if(task.statusGroup == "HOLD") vm.hold.push(task);  //보류
                     if(task.statusGroup == "COMPLETE") vm.complete.push(task); // 완료
+                    if(task.statusGroup == "CANCEL") vm.cancel.push(task); // 완료
                     vm.tasks.push(task);
                 });
                 if(!vm.reloadYn) $state.go("my-project.detail", {project : vm.project});
