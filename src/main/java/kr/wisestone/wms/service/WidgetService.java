@@ -16,6 +16,7 @@ import kr.wisestone.wms.web.rest.dto.TaskDTO;
 import kr.wisestone.wms.web.rest.dto.TaskListWidgetDTO;
 import kr.wisestone.wms.web.rest.dto.TaskProgressWidgetDTO;
 import kr.wisestone.wms.web.rest.mapper.TaskMapper;
+import org.flywaydb.core.internal.util.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -97,7 +98,7 @@ public class WidgetService {
 
             taskService.copyTaskRelationProperties(task, taskDTO);
 
-            if(task.getTaskRepeatSchedule() != null && task.getTaskRepeatSchedule().getRepeatYn()) {
+            if(task.getTaskRepeatSchedule() != null && StringUtils.hasText(task.getTaskRepeatSchedule().getRepeatType())) {
                 taskListWidgetDTO.addRepeatScheduledTasks(taskDTO);
             }
 

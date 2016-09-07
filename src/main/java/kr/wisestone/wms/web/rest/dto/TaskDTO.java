@@ -1,9 +1,11 @@
 package kr.wisestone.wms.web.rest.dto;
 
+import kr.wisestone.wms.common.util.DateUtil;
 import kr.wisestone.wms.domain.Task;
 import kr.wisestone.wms.domain.TaskAttachedFile;
 import kr.wisestone.wms.domain.TaskRepeatSchedule;
 import kr.wisestone.wms.domain.UserType;
+import org.flywaydb.core.internal.util.StringUtils;
 
 import java.io.Serializable;
 import java.time.ZonedDateTime;
@@ -282,6 +284,19 @@ public class TaskDTO implements Serializable {
 
     public void setCreatedByName(String createdByName) {
         this.createdByName = createdByName;
+    }
+
+    public Boolean getDelayYn() {
+
+        if(StringUtils.hasText(this.endDate)) {
+            String today = DateUtil.getTodayWithYYYYMMDD();
+
+            if(DateUtil.convertStrToDate(this.endDate, "yyyy-MM-dd").getTime() < DateUtil.convertStrToDate(today, "yyyy-MM-dd").getTime()) {
+                return Boolean.TRUE;
+            }
+        }
+
+        return Boolean.FALSE;
     }
 
     @Override

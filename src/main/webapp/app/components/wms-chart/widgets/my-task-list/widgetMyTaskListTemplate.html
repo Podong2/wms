@@ -43,7 +43,11 @@
                             <div  class="wms-tree-node-list task-list"
                                   ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
                                 <div class="pull-right">
-                                    <div>{{data.endDate}}</div>
+                                    <div>
+                                        <i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule != null && data.taskRepeatSchedule.repeatType != ''" style="float: left; padding: 8px;"></i>
+                                        <i class="fa fa-hourglass-end" style="float: left; padding: 8px; color:red;" ng-if="data.delayYn == true"></i>
+                                        {{data.endDate}}
+                                    </div>
                                     <div>
                                         <ng-include src="'app/task/html/taskListRightArea.html'"></ng-include>
                                     </div>
@@ -79,7 +83,11 @@
                             <div  class="wms-tree-node-list task-list"
                                   ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
                                 <div class="pull-right">
-                                    <div>{{data.endDate}}</div>
+                                    <div>
+                                        <i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule != null && data.taskRepeatSchedule.repeatType != ''" style="float: left; padding: 8px;"></i>
+                                        <i class="fa fa-hourglass-end" style="float: left; padding: 8px; color:red;" ng-if="data.delayYn == true"></i>
+                                        {{data.endDate}}
+                                    </div>
                                     <div>
                                         <ng-include src="'app/task/html/taskListRightArea.html'"></ng-include>
                                     </div>
@@ -114,7 +122,11 @@
                             <div  class="wms-tree-node-list task-list"
                                   ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
                                 <div class="pull-right">
-                                    <div>{{data.endDate}}</div>
+                                    <div>
+                                        <i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule != null && data.taskRepeatSchedule.repeatType != ''" style="float: left; padding: 8px;"></i>
+                                        <i class="fa fa-hourglass-end" style="float: left; padding: 8px; color:red;" ng-if="data.delayYn == true"></i>
+                                        {{data.endDate}}
+                                    </div>
                                     <div>
                                         <ng-include src="'app/task/html/taskListRightArea.html'"></ng-include>
                                     </div>
@@ -150,7 +162,11 @@
                             <div  class="wms-tree-node-list task-list"
                                   ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
                                 <div class="pull-right">
-                                    <div>{{data.endDate}}</div>
+                                    <div>
+                                        <i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule != null && data.taskRepeatSchedule.repeatType != ''" style="float: left; padding: 8px;"></i>
+                                        <i class="fa fa-hourglass-end" style="float: left; padding: 8px; color:red;" ng-if="data.delayYn == true"></i>
+                                        {{data.endDate}}
+                                    </div>
                                     <div>
                                         <ng-include src="'app/task/html/taskListRightArea.html'"></ng-include>
                                     </div>
