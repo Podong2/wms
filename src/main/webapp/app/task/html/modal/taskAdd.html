@@ -5,7 +5,7 @@
         <div class="col-md-12">
             <div class="col-md-9">
                 <i class="fa fa-exclamation-circle task-circle" ng-class="vm.task.importantYn ? 'on' : ''" ng-click="vm.task.importantYn = !vm.task.importantYn"></i>
-                <input type="text" class="taskAddInput" ng-model="vm.task.name" maxlength="35" enter-submit="vm.save()" placeholder="Task"/>
+                <input type="text" class="taskAddInput" ng-model="vm.task.name" maxlength="35" enter-submit="vm.save()" placeholder="생성할 작업명을 입력하세요."/>
             </div>
             <div class="col-md-3">
                 <span class="pull-right taskOptionBtnArea">
@@ -20,6 +20,9 @@
         </div>
     </div>
     <div ng-class="viewTypeClass" style="margin-top: 10px; min-height: 560px" >
+            <div class="pull-right" style="margin-top: 14px;">
+                <span class="task-create-date"><span class="task-create-date-text">{{vm.userInfo.name}} </span> {{ ( vm.date | date:"yyyy-MM-dd HH:mm") || 'empty' }}</span>
+            </div>
         <!-- 프로젝트/폴더 선택 -->
         <div id="projectPickerAddSection" class="taskAddProject">
             <label for="addProject" class="cursor projectValueAddSection" ><i class="fa fa-plus" id="addProject"></i> <span project-picker-add-toggle>프로젝트/폴더 선택</span></label>
