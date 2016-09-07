@@ -1431,6 +1431,9 @@ table th {
     color: #428bca;
     border-bottom: dashed 1px #428bca;
 }
+.taskUserValueSection{
+    margin: 10px;
+}
 .tooltip-inner {
     padding: 3px 4px !important;
 }

@@ -78,7 +78,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             vm.subTask = {
                 name : '',
                 parentId : '',
-                assigneeId : 3,
+                assigneeId : '',
                 statusId : 1
             };
 

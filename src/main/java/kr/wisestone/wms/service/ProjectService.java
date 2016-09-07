@@ -194,17 +194,17 @@ public class ProjectService {
         predicate.and($project.status.id.eq(Project.STATUS_ACTIVE));
         predicate.and($project.projectUsers.any().user.login.eq(login));
 
-        predicate.and(
-                $project.projectParents.isEmpty()
-                .or($project.projectParents.any().parent.projectUsers.isEmpty()
-                    .or($project.projectParents.any().parent.projectUsers.any().user.login.ne(login)))
-                );
+        predicate.and($project.projectParents.isEmpty()
+                    .or($project.projectParents.any().parent.projectUsers.any().user.login.ne(login))
+        );
 
         List<Project> projects = Lists.newArrayList(projectRepository.findAll(predicate));
 
         List<ProjectDTO> projectDTOs = Lists.newArrayList();
 
         for(Project project : projects) {
+
+            if(isParentRelatedToLoginUser(project)) continue;
 
             ProjectDTO projectDTO = projectMapper.projectToProjectDTO(project);
 
@@ -214,6 +214,26 @@ public class ProjectService {
         }
 
         return projectDTOs;
+    }
+
+    private Boolean isParentRelatedToLoginUser(Project project) {
+
+        String login = SecurityUtils.getCurrentUserLogin();
+
+        List<Project> parentProjects = project.getPlainProjectParent();
+
+        List<Project> filteredProjects = parentProjects.stream().filter(
+            projectParent -> {
+                List<ProjectUser> projectUsers = projectParent.getProjectUsers().stream().filter(
+                    projectUser
+                        -> projectUser.getUser().getLogin().equals(login)
+                ).collect(Collectors.toList());
+
+                return projectUsers != null && !projectUsers.isEmpty();
+            }
+        ).collect(Collectors.toList());
+
+        return filteredProjects != null && !filteredProjects.isEmpty();
     }
 
     private void bindChildProjects(ProjectDTO parent, Set<ProjectRelation> projectChilds) {

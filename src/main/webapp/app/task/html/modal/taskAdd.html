@@ -146,14 +146,14 @@
                 </div>
 
                 <!-- 하위 작업 목록 영역 -->
-                <div class="sub-task-area" style="border-top: 1px solid #ddd; padding: 5px" >
+                <div class="sub-task-area" style="border-top: 1px solid #ddd; padding: 5px"  >
                     <!--<div class="sub-task-area-title">하위 작업 목록</div>-->
                     <!--<div ng-repeat="list in vm.subTaskList" ng-show="vm.subTaskList != []" class="sub-task-area-list">-->
 
                         <!--{{list.name}}-->
 
                     <!--</div>-->
-                    <table class="table table-bordered"  ng-show="vm.subTaskList != []">
+                    <table class="table table-bordered" ng-show="vm.subTaskList.length != 0">
                         <thead>
                         <tr>
                             <td>하위 작업 목록</td>
@@ -190,50 +190,51 @@
                                 </div>
 
                                 <!-- 사용자 아이콘 -->
-                                <ul class="list-inline friends-list" style="margin-bottom: 0">
-                                    <li ng-repeat="user in list.assignees | limitTo:3">
-                                        <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
-                                        <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
-                                    </li>
-                                    <li ng-if="list.assignees.length > 3">
-                                        <a href-void>
-                                                    <span class="activity">
-                                                        <a><i class="fa fa-plus" style="font-size: 22px; position: relative; top: 5px;"></i><b class="badge bg-color-red" style="position: absolute;">{{list.assignees.length - 3}}</b></a>
-                                                    </span>
-                                        </a>
-                                    </li>
-                                </ul>
-
-                                <!-- 사용자 검색 -->
-                                <button class="userValueSection" ng-click="vm.subTaskUpdateForm = list" user-picker-edit-toggle> <i class="fa fa-plus" id="assigneeAddBtn" user-picker-edit-toggle></i><span user-picker-edit-toggle></span></button>
-                                <div class="project-picker userPickerSection">
-                                    <div style="width: 300px;">
+                                <div>
+                                    <!-- 사용자 검색 -->
+                                    <span class="taskUserValueSection pull-left" ng-click="vm.subTaskUpdateForm = list" user-picker-edit-toggle> <i class="fa fa-lg fa-plus" id="assigneeAddBtn"></i></span>
+                                    <div class="project-picker userPickerSection">
                                         <div style="width: 300px;">
-                                            <div class="project-picker-search">
-                                                <input class="project-picker-search-input" type="text" ng-model="vm.userName" enter-submit="pickerFindUsers(userName)" placeholder="사용자 명을 입력하세요."  wms-kr-update>
-                                            </div>
-                                            <div class="project-picker-list-area">
-                                                <div class="project-picker-list">
-                                                    <div data-ng-repeat="user in vm.userList">
-                                                        <div class="project-picker-list-item" ng-click="vm.subTaskUserAdd(user.id)">
-                                                            <div>
-                                                                <div class="project-picker-list-item-title">
-                                                                    <ul class="list-inline friends-list float-left comment-user-profile">
-                                                                        <li>
-                                                                            <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.createdByName}}">
-                                                                            <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.createdByName}}">
-                                                                        </li>
-                                                                    </ul>
-                                                                    {{user.name}}
+                                            <div style="width: 300px;">
+                                                <div class="project-picker-search">
+                                                    <input class="project-picker-search-input" type="text" ng-model="vm.userName" enter-submit="pickerFindUsers(userName)" placeholder="사용자 명을 입력하세요."  wms-kr-update>
+                                                </div>
+                                                <div class="project-picker-list-area">
+                                                    <div class="project-picker-list">
+                                                        <div data-ng-repeat="user in vm.userList">
+                                                            <div class="project-picker-list-item" ng-click="vm.subTaskUserAdd(user.id)">
+                                                                <div>
+                                                                    <div class="project-picker-list-item-title">
+                                                                        <ul class="list-inline friends-list float-left comment-user-profile">
+                                                                            <li>
+                                                                                <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.createdByName}}">
+                                                                                <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.createdByName}}">
+                                                                            </li>
+                                                                        </ul>
+                                                                        {{user.name}}
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                    </div>
 
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
+                                    <ul class="list-inline friends-list" style="margin-bottom: 0">
+                                        <li ng-repeat="user in list.assignees | limitTo:3">
+                                            <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
+                                            <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
+                                        </li>
+                                        <li ng-if="list.assignees.length > 3">
+                                            <a href-void>
+                                                    <span class="activity">
+                                                        <a><i class="fa fa-plus" style="font-size: 22px; position: relative; top: 5px;"></i><b class="badge bg-color-red" style="position: absolute;">{{list.assignees.length - 3}}</b></a>
+                                                    </span>
+                                            </a>
+                                        </li>
+                                    </ul>
                                 </div>
 
                             </td>
