@@ -34,6 +34,8 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             vm.stateInfo = $state.current.name;
             vm.state = $state.get(vm.stateInfo).name.split('.')[0];
 
+            vm.date = new Date();
+
             /* user picker info */
             $scope.assigneeUser = [];
             $scope.watchers = [];

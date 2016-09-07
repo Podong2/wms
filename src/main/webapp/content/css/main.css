@@ -2536,6 +2536,10 @@ text-align: right;
 .st-sort-descent:before{
     content: '\25BC';
 }
+.tags{
+    border: 0px none !important;
+    box-shadow: none;
+}
 
 
 

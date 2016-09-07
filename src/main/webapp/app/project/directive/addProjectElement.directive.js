@@ -5,8 +5,8 @@
 
 angular.module('wmsApp')
     .directive('wmsAddProjectElement', wmsAddProjectElement);
-wmsAddProjectElement.$inject=['$log', '$compile'];
-function wmsAddProjectElement($log, $compile) {
+wmsAddProjectElement.$inject=['$log', '$compile', '$rootScope'];
+function wmsAddProjectElement($log, $compile, $rootScope) {
         return {
             restrict: 'A',
             scope : {
@@ -34,6 +34,7 @@ function wmsAddProjectElement($log, $compile) {
                         var linkFn = $compile(template);
                         var content = linkFn(scope);
                         $('.taskAddProject').append(content);
+                        $rootScope.$broadcast('projectPickerAddClose', false);
                     }
                 });
 

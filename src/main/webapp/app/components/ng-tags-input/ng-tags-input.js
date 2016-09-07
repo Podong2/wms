@@ -688,6 +688,8 @@ tagsInput.directive('autoComplete', ["$document", "$timeout", "$sce", "$q", "tag
         controller: ["$scope", "$element", "$attrs", function($scope, $element, $attrs) {
             $scope.events = tiUtil.simplePubSub();
 
+            $scope.openYn = false;
+
             tagsInputConfig.load('autoComplete', $scope, $attrs, {
                 template: [String, 'ngTagsInput/auto-complete-match.html'],
                 debounceDelay: [Number, 100],
@@ -731,6 +733,7 @@ tagsInput.directive('autoComplete', ["$document", "$timeout", "$sce", "$q", "tag
             scope.templateScope = tagsInput.getTemplateScope();
 
             scope.addSuggestionByIndex = function(index) {
+                scope.openYn = false;
                 if(attrs.multiple == 'false'){
                     tagsInput.resetTag();
                 }
@@ -1197,7 +1200,14 @@ tagsInput.factory('tiUtil', ["$timeout", "$q", function($timeout, $q) {
 /* HTML templates */
 tagsInput.run(["$templateCache", function($templateCache) {
     $templateCache.put('ngTagsInput/tags-input.html',
-    "<div class=\"host\" tabindex=\"-1\" ng-click=\"eventHandlers.host.click()\" ti-transclude-append><div class=\"tags\" ng-class=\"{focused: hasFocus}\"><ul class=\"tag-list\"><li class=\"tag-item\" ng-repeat=\"tag in tagList.items track by track(tag)\" ng-class=\"getTagClass(tag, $index)\" ng-click=\"eventHandlers.tag.click(tag)\"><ti-tag-item scope=\"templateScope\" data=\"::tag\"></ti-tag-item></li></ul><input class=\"input\" wms-kr-update autocomplete=\"off\" ng-model=\"newTag.text\" ng-model-options=\"{getterSetter: true}\" ng-keydown=\"eventHandlers.input.keydown($event)\" ng-focus=\"eventHandlers.input.focus($event)\" ng-blur=\"eventHandlers.input.blur($event)\" ng-paste=\"eventHandlers.input.paste($event)\" ng-trim=\"false\" ng-class=\"{'invalid-tag': newTag.invalid}\" ng-disabled=\"disabled\" ti-bind-attrs=\"{type: options.type, placeholder: options.placeholder, tabindex: options.tabindex, spellcheck: options.spellcheck}\" ti-autosize></div></div>"
+    "<div class=\"host\" tabindex=\"-1\" ng-click=\"eventHandlers.host.click()\" ti-transclude-append><div class=\"tags\" ng-class=\"{focused: hasFocus}\">" +
+    "<button class='btn' ng-show='!openYn' ng-click='openYn = !openYn' style='width: 30xp; height: 30px; float: left; margin: 0 5px;'>+</button><ul class=\"tag-list\">" +
+    "<li class=\"tag-item\" ng-repeat=\"tag in tagList.items track by track(tag)\" ng-class=\"getTagClass(tag, $index)\" ng-click=\"eventHandlers.tag.click(tag)\">" +
+    "<ti-tag-item scope=\"templateScope\" data=\"::tag\"></ti-tag-item>" +
+    "</li>" +
+    "</ul>" +
+    "<input class=\"input\" ng-show='openYn' wms-kr-update autocomplete=\"off\" ng-model=\"newTag.text\" ng-model-options=\"{getterSetter: true}\" ng-keydown=\"eventHandlers.input.keydown($event)\" ng-focus=\"eventHandlers.input.focus($event)\" ng-blur=\"eventHandlers.input.blur($event)\" ng-paste=\"eventHandlers.input.paste($event)\" ng-trim=\"false\" ng-class=\"{'invalid-tag': newTag.invalid}\" ng-disabled=\"disabled\" ti-bind-attrs=\"{type: options.type, placeholder: options.placeholder, tabindex: options.tabindex, spellcheck: options.spellcheck}\" ti-autosize>" +
+    "</div></div>"
   );
 
   $templateCache.put('ngTagsInput/tag-item.html',
