@@ -67,8 +67,11 @@
     </div>-->
     <!-- end logout button -->
 
-    <div class="btn-header transparent pull-right dropdown">
-        <a class="dropdown-toggle" data-toggle="dropdown"><img class="top-profile-img-btn" src="/content/images/demo/male.png"></a>
+    <div class="btn-header transparent pull-right dropdown" ng-controller="NavbarController as vm">
+        <a class="dropdown-toggle" data-toggle="dropdown" >
+            <img class="top-profile-img-btn" ng-src="/content/images/demo/male.png" ng-if="vm.userInfo.profileImageId == null" style="width: 30px;">
+            <img class="top-profile-img-btn" ng-src="{{vm.baseUrl}}/api/attachedFile/{{vm.userInfo.profileImageId}}" ng-if="vm.userInfo.profileImageId != null" style="width: 30px;">
+        </a>
         <ul class="dropdown-menu">
             <li><a ui-sref="my-profile">프로필 설정</a></li>
             <li><a ng-click="vm.logout()" title="Sign Out" data-action="userLogout" data-logout-msg="You can improve your security further after logging out by closing this opened browser">로그아웃</a></li>

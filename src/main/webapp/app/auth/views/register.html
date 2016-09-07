@@ -14,45 +14,45 @@
     <!-- MAIN CONTENT -->
     <div id="content" class="container">
 
-        <div class="row">
-            <div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 hidden-xs hidden-sm">
-                <h1 class="txt-color-red login-header-big">WMS</h1>
-                <div class="hero">
+        <div class="row" >
+            <!--<div class="col-xs-12 col-sm-12 col-md-7 col-lg-7 hidden-xs hidden-sm" ng-show="!vm.successYn">-->
+                <!--<h1 class="txt-color-red login-header-big">WMS</h1>-->
+                <!--<div class="hero">-->
 
-                    <div class="pull-left login-desc-box-l">
-                        <h4 class="paragraph-header">WMS 프로토타입</h4>
-                        <!--<div class="login-app-icons">-->
-                            <!--<a href-void class="btn btn-danger btn-sm">Frontend Template</a>-->
-                            <!--<a href-void class="btn btn-danger btn-sm">Find out more</a>-->
-                        <!--</div>-->
-                    </div>
-
-
-                </div>
-
-                <!--<div class="row">-->
-                    <!--<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">-->
-                        <!--<h5 class="about-heading">About WMS - Prototype</h5>-->
-                        <!--<p>-->
-                            <!--Prototype-->
-                        <!--</p>-->
+                    <!--<div class="pull-left login-desc-box-l">-->
+                        <!--<h4 class="paragraph-header">WMS 프로토타입</h4>-->
+                        <!--&lt;!&ndash;<div class="login-app-icons">&ndash;&gt;-->
+                            <!--&lt;!&ndash;<a href-void class="btn btn-danger btn-sm">Frontend Template</a>&ndash;&gt;-->
+                            <!--&lt;!&ndash;<a href-void class="btn btn-danger btn-sm">Find out more</a>&ndash;&gt;-->
+                        <!--&lt;!&ndash;</div>&ndash;&gt;-->
                     <!--</div>-->
-                    <!--<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">-->
-                        <!--<h5 class="about-heading">Version - 0.0.1</h5>-->
-                        <!--<p>-->
-                            <!--Prototype-->
-                        <!--</p>-->
-                    <!--</div>-->
+
+
                 <!--</div>-->
 
-            </div>
-            <div class="col-xs-12 col-sm-12 col-md-5 col-lg-5">
-                <div class="well no-padding">
+                <!--&lt;!&ndash;<div class="row">&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<h5 class="about-heading">About WMS - Prototype</h5>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<p>&ndash;&gt;-->
+                            <!--&lt;!&ndash;Prototype&ndash;&gt;-->
+                        <!--&lt;!&ndash;</p>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                    <!--&lt;!&ndash;<div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">&ndash;&gt;-->
+                        <!--&lt;!&ndash;<h5 class="about-heading">Version - 0.0.1</h5>&ndash;&gt;-->
+                        <!--&lt;!&ndash;<p>&ndash;&gt;-->
+                            <!--&lt;!&ndash;Prototype&ndash;&gt;-->
+                        <!--&lt;!&ndash;</p>&ndash;&gt;-->
+                    <!--&lt;!&ndash;</div>&ndash;&gt;-->
+                <!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+            <!--</div>-->
+            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12" >
+                <div class="well no-padding" style="width: 500px; margin: 0px auto;">
 
 
-                    <form ng-show="!vm.success" name="form" role="form" novalidate ng-submit="vm.register()" class="wms-form" show-validation>
+                    <form D name="form" ng-show="!vm.successYn" role="form" novalidate ng-submit="vm.register()" class="wms-form" show-validation>
                         <header>
-                            WMS 프로토타입 계정 생성
+                            WMS
                         </header>
 
                         <div>
@@ -257,6 +257,29 @@
                         </div>
                     </form>
 
+                    <form ng-show="vm.successYn" name="form" role="form" novalidate ng-submit="vm.register()" class="wms-form" show-validation>
+                        <header style="text-align: center">
+                            WMS
+                        </header>
+
+
+                        <fieldset>
+                            <div style="text-align: center;">
+                                {{vm.registerAccount.login}}님 WMS에 가입해 주셔서 감사합니다.<br/>
+                                WMS 워크스페이스 이(가) 생성되었습니다.
+                            </div>
+                            <div style="padding: 20px;">
+                                <h3><i class="fa fa-plus"></i> 팀원 초대</h3>
+                                <textarea name="team" id="" style="width: 100%; margin-top: 10px;" rows="8"></textarea>
+                            </div>
+
+                        </fieldset>
+                        <footer style="text-align: center">
+                            <button type="button" ui-sref="login" ng-disabled="form.$invalid" class="btn btn-primary" translate="entity.action.check">확인</button>
+                        </footer>
+
+                    </form>
+
                 </div>
 
                 <!--<p class="note text-center">*FREE Registration ends on October 2015.</p>-->
@@ -274,6 +297,9 @@
                 <!--</ul>-->
             </div>
         </div>
+
+
+
     </div>
 
 </div>

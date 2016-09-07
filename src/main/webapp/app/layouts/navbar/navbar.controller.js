@@ -9,10 +9,12 @@
 
     function NavbarController ($state, Auth, Principal, ProfileService, LoginService, $scope, $rootScope, navbarService, $log, permissionCheck, UnreadCount, TodayTotalCount) {
         var vm = this;
+        vm.baseUrl = window.location.origin;
         //$log.debug("NavbarController 탔다");
         vm.isNavbarCollapsed = true;
         $scope.permissionCheck = permissionCheck;
         vm.isAuthenticated = Principal.isAuthenticated;
+        vm.userInfo = Principal.getIdentity();
 
         //$log.debug(!$scope.permissionCheck.check("/menu"));
 

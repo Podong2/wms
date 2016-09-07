@@ -18,6 +18,7 @@
         vm.register = register;
         vm.registerAccount = {};
         vm.success = null;
+        vm.successYn = false;
         vm.departments = Department.query();
         vm.companies = Company.query();
 
@@ -38,7 +39,8 @@
                 Auth.createAccount(vm.registerAccount).then(function () {
                     vm.success = 'OK';
                     toastr.success('가입을 성공 하였습니다. 로그인하여 이용하세요.', 'WMS System Message');
-                    $state.go('login');
+                    //$state.go('login');
+                    vm.successYn = true;
                 }).catch(function (response) {
                     vm.success = null;
                     if (response.status === 400 && response.data === 'login already in use') {
