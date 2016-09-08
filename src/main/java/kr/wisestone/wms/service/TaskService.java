@@ -9,6 +9,7 @@ import com.mysema.query.types.OrderSpecifier;
 import kr.wisestone.wms.common.exception.CommonRuntimeException;
 import kr.wisestone.wms.common.util.DateUtil;
 import kr.wisestone.wms.domain.*;
+import kr.wisestone.wms.repository.CodeRepository;
 import kr.wisestone.wms.repository.TaskRepository;
 import kr.wisestone.wms.repository.search.TaskSearchRepository;
 import kr.wisestone.wms.security.SecurityUtils;
@@ -31,6 +32,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -68,6 +70,9 @@ public class TaskService {
 
     @Inject
     private TraceLogService traceLogService;
+
+    @Inject
+    private CodeRepository codeRepository;
 
     /**
      *  Get all the tasks.
@@ -370,6 +375,10 @@ public class TaskService {
 
         origin = taskForm.bind(origin);
 
+        if(taskForm.getStatusId() != null) {
+            origin.setStatus(this.codeRepository.findOne(taskForm.getStatusId()));
+        }
+
         for(MultipartFile multipartFile : files) {
 
             AttachedFile attachedFile = this.attachedFileService.saveFile(multipartFile);
@@ -393,6 +402,16 @@ public class TaskService {
     }
 
     @Transactional
+    public Task updateLastModifiedDate(Long taskId) {
+
+        Task origin = taskRepository.findOne(taskId);
+
+        origin.setLastModifiedDate(ZonedDateTime.now());
+
+        return taskRepository.save(origin);
+    }
+
+    @Transactional
     public TaskDTO create(TaskForm taskForm) {
 
 //        Task task = this.taskRepository.findByName(taskForm.getName());
@@ -412,6 +431,10 @@ public class TaskService {
         Task origin = taskRepository.findOne(taskForm.getId());
 
         origin = taskForm.bind(origin);
+
+        if(taskForm.getStatusId() != null) {
+            origin.setStatus(this.codeRepository.findOne(taskForm.getStatusId()));
+        }
 
         for(MultipartFile multipartFile : files) {
 
@@ -435,8 +458,11 @@ public class TaskService {
     public TaskDTO createSubTask(TaskForm taskForm) {
 
         Task subTask = taskForm.bindSubTask(new Task());
+        Task parentTask = taskRepository.findOne(taskForm.getParentId());
+        parentTask.setLastModifiedDate(ZonedDateTime.now());
 
         subTask = taskRepository.save(subTask);
+        taskRepository.save(parentTask);
 
         TaskDTO result = taskMapper.taskToTaskDTO(subTask);
 

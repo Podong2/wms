@@ -56,6 +56,9 @@ public class TraceLogService {
     private TaskService taskService;
 
     @Inject
+    private ProjectService projectService;
+
+    @Inject
     private UserService userService;
 
     @Transactional(readOnly = true)
@@ -158,6 +161,12 @@ public class TraceLogService {
 
         traceLog = traceLogRepository.save(traceLog);
 
+        if(traceLog.getReplyYn() && traceLog.getEntityName().equals("Task")) {
+            taskService.updateLastModifiedDate(traceLog.getTaskId());
+        } else if(traceLog.getReplyYn() && traceLog.getEntityName().equals("Project")) {
+            projectService.updateLastModifiedDate(traceLog.getProjectId());
+        }
+
         return traceLog;
     }
 
@@ -181,6 +190,12 @@ public class TraceLogService {
 
                 origin.removeAttachedFile(targetFileId);
             }
+        }
+
+        if(origin.getReplyYn() && origin.getEntityName().equals("Task")) {
+            taskService.updateLastModifiedDate(origin.getTaskId());
+        } else if(origin.getReplyYn() && origin.getEntityName().equals("Project")) {
+            projectService.updateLastModifiedDate(origin.getProjectId());
         }
 
         origin = traceLogRepository.save(origin);
