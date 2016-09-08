@@ -108,9 +108,10 @@
             });
 
             $("#input-4").fileinput({
-                uploadUrl : '1',
+                uploadUrl : '/api/tasks/update2',
+                task : vm.task,
                 showCaption: true,
-                showUpload: false,
+                showUpload: true,
                 showRemove: false,
                 uploadAsync: false,
                 overwriteInitial: false,
@@ -118,9 +119,13 @@
                 initialPreviewAsData: true, // defaults markup
                 initialPreviewFileType: 'image', // image is the default and can be overridden in config below
                 initialPreviewConfig: vm.previewFiles,
-                uploadExtraData: {
-                    img_key: "1000",
-                    img_keywords: "happy, nature",
+                uploadExtraData: function (previewId, index) {
+                    var obj = {};
+                    $('.file-form').find('input').each(function() {
+                        var id = $(this).attr('id'), val = $(this).val();
+                        obj[id] = val;
+                    });
+                    return obj;
                 }
             }).on('filesorted', function(e, params) {
                 console.log('File sorted params', params);

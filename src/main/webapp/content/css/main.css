@@ -2548,7 +2548,9 @@ text-align: right;
 .wms-tree-node-list .pull-right {
     text-align: right;
 }
-
+.project-color{
+    background: #9fda58; width: 25px; height: 10px;
+}
 
 
 

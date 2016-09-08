@@ -18,6 +18,7 @@ notificationListCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootSc
             vm.notification = {
                 id : ''
             }
+            vm.firstYn = true;
 
             vm.tabArea = [
                 { status: true },  // 새로운 알림
@@ -54,7 +55,7 @@ notificationListCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootSc
                 $log.debug("notifications : ", data);
                 if(data.length > 0){
                     vm.notifications = data;
-                    $state.go("my-notification.taskDetail", {taskId : vm.notifications[0].taskDTO.id, listType : 'TODAY'}); // 첫 알림 상세 오픈
+                    if(vm.firstYn) $state.go("my-notification.taskDetail", {taskId : vm.notifications[0].taskDTO.id, listType : 'TODAY'}); // 첫 알림 상세 오픈
                 }
             }
             function onError(error) {
@@ -62,6 +63,7 @@ notificationListCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootSc
             }
 
             function notificationReadChange(id, checkType, index){
+                vm.firstYn = false;
                 if(checkType != 'confirm') vm.notifications[index].readYn = true;
                 ReadUpload.put(id, checkType).then(function(){
                     Notification.query({listType : vm.listType}, onSuccess, onError);

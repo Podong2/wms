@@ -134,20 +134,22 @@
                     <div class="col-md-4">
 
 
-                        <div id="repeatEditSection">
-                            <i class="icon-append fa fa-calendar cursor" style="float: left; padding: 8px;"></i>
-                            <i class="icon-append glyphicon glyphicon-retweet" ng-if="vm.task.taskRepeatSchedule.repeatType != '' && vm.task.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i>
-                            <div class="form-group" style="margin-bottom: 0">
+                        <div id="repeatEditSection" >
+                            <div repeat-picker-toggle>
+                                <i class="icon-append fa fa-calendar cursor" style="float: left; padding: 8px;"></i>
+                                <i class="icon-append glyphicon glyphicon-retweet" ng-if="vm.task.taskRepeatSchedule.repeatType != '' && vm.task.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i>
+                                <div class="form-group" style="margin-bottom: 0">
 
                                 <span class="input-group wms-form">
                                     <label class="input">
-                                        <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="endDate" repeat-picker-toggle style="height: 30px; width: 100%; border : 0">
+                                        <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="endDate" style="height: 30px; width: 100%; border : 0">
                                     </label>
 
-                                    <span class="dueDateValues" repeat-picker-toggle>{{vm.task.startDate}} {{vm.task.startDate =='' && vm.task.endDate == '' ? '일정' : '~'}} {{vm.task.endDate}}</span>
+                                    <span class="dueDateValues" >{{vm.task.startDate}} {{vm.task.startDate =='' && vm.task.endDate == '' ? '일정' : '~'}} {{vm.task.endDate}}</span>
                                 </span>
-                            </div>
+                                </div>
 
+                            </div>
                             <!-- 달력 팝업 -->
                             <div wms-Include="app/task/html/repeatDatePicker.html"></div>
                         </div>
@@ -303,7 +305,7 @@
         </div>
 
         <div class="task-file-area"  ng-class="vm.fileAreaOpen ? 'on' : ''"><!--  -->
-            <input id="input-4" name="input4[]" type="file" multiple class="file-loading" get-files>
+            <input id="input-4" name="input4[]" type="file" multiple class="file-loading"> <!--  get-files -->
             <!--<input id="input-pa" name="input-pa[]" type="file" multiple class="file-loading" get-files>-->
             <wms-table ng-model="vm.previewFiles" table-configs="vm.tableConfigs" update-callback="updateCallback"></wms-table>
         </div>

@@ -62,8 +62,7 @@ wmsMenu.$inject=['$state', '$rootScope', '$timeout'];
             var bindEvents = function($collapsible){
                 $collapsible.each(function (idx, li) {
                     var $li = $(li);
-                    $li
-                        .on('click', '>a', function (e) {
+                    $li.on('click', '>a', function (e) {
 
                             // collapse all open siblings
                             $li.siblings('.open').smartCollapseToggle();
@@ -78,7 +77,7 @@ wmsMenu.$inject=['$state', '$rootScope', '$timeout'];
 
                             e.preventDefault();
                         })
-                        .find('>a').append('<b class="collapse-sign"><em class="fa fa-plus-square-o"></em></b>');
+                        //.find('>a').append('<b class="collapse-sign"><em class="fa fa-plus-square-o"></em></b>');
 
                     // initialization toggle
                     if ($li.find('li.active').length) {
