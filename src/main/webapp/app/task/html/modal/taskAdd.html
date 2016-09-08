@@ -73,7 +73,7 @@
                 </colgroup>
                 <tbody>
                 <tr>
-                    <td>
+                    <td class="task-list" ng-class="vm.task.statusId == 1 ? 'green' : (vm.task.statusId == 2 ? 'blue' : (vm.task.statusId == 3 ? 'black' : 'red'))">
                             <span class="custom-control custom-checkbox" style="margin-bottom: 0;">
                                 <input type="checkbox" ng-click="vm.task.statusId = 2" class="custom-control-input">
                             </span>
@@ -123,7 +123,7 @@
                                         <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="endDate" repeat-picker-add-toggle style="height: 30px; width: 100%; border : 0">
                                     </label>
 
-                                    <span class="dueDateValues" repeat-picker-add-toggle>{{vm.task.startDate + " ~ " + vm.task.endDate}}</span>
+                                    <span class="dueDateValues" repeat-picker-add-toggle>{{vm.task.startDate}} {{vm.task.startDate =='' && vm.task.endDate == '' ? '일정' : '~'}} {{vm.task.endDate}}</span>
                                 </span>
                             </div>
 
@@ -286,8 +286,8 @@
 
     </div>
 </div>
-<div class="modal-footer" >
-    <button type="button" class="btn btn_icon btn_customs" ng-click="vm.taskUpdate()" ng-show="vm.task.id != ''" owl-btn-save></button>
+<div class="modal-footer" style="text-align: center;">
+    <button type="button" class="btn btn_icon btn_customs" ng-click="vm.taskUpdate()" ng-disabled="vm.task.id == ''" owl-btn-save></button>
     <button type="button" class="btn btn_icon btn_customs2" ng-click="vm.cancel()" owl-btn-cancel></button>
 </div>
 

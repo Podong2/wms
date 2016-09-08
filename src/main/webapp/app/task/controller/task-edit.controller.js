@@ -352,6 +352,10 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             };
 
             function taskUpdate(){
+                if(vm.task.name == null || vm.task.name == '') {
+                    toastr.warning('작업명을 입력하세요', '작업 생성');
+                    return false;
+                }
                 if($scope.assigneeUser != [])userIdPush($scope.assigneeUser, "assigneeIds");
                 if($scope.watchers != [])userIdPush($scope.watchers, "watcherIds");
                 if($scope.relatedTaskList != [])userIdPush($scope.relatedTaskList, "relatedTaskIds");
@@ -488,6 +492,8 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                     case 4 : // 미정
                         vm.dueDateFrom.date = '';
                         vm.dueDateTo.date = '';
+                        vm.task.startDate = '';
+                        vm.task.endDate = '';
                         break;
                 }
             }

@@ -144,7 +144,7 @@
                                         <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="endDate" repeat-picker-toggle style="height: 30px; width: 100%; border : 0">
                                     </label>
 
-                                    <span class="dueDateValues" repeat-picker-toggle>{{vm.task.startDate}}  <span ng-show="vm.task.startDate != '' && vm.task.endDate != ''">~</span>  {{vm.task.endDate}}</span>
+                                    <span class="dueDateValues" repeat-picker-toggle>{{vm.task.startDate}} {{vm.task.startDate =='' && vm.task.endDate == '' ? '일정' : '~'}} {{vm.task.endDate}}</span>
                                 </span>
                             </div>
 
@@ -165,7 +165,9 @@
                         <label for="subTaskAdd" class="cursor" ng-click="vm.relatedTaskOpen = !vm.relatedTaskOpen"><i class="fa fa-share-alt"></i> 참조 작업</label>
                     </div>
                     <div class="col-md-2">
-                        <label for="subTaskAdd" class="cursor" ng-class="vm.task.relatedTasks.length == 0 && vm.task.subTasks.length == 0 ? 'cursor-none' : ''" ng-click="vm.getTaskProgressStatus()"><i class="fa fa-share-alt"></i> 작업 현황</label>
+                        <label for="subTaskAdd" class="cursor" ng-class="vm.task.relatedTasks.length == 0 && vm.task.subTasks.length == 0 ? 'btn-none' : ''" ng-click="vm.getTaskProgressStatus()">
+                            <i class="fa fa-share-alt"></i> 작업 현황
+                        </label>
                     </div>
                 </div>
                 <div class="sub-task-area" style="border-top: 1px solid #ddd; padding: 5px" >
