@@ -59,13 +59,12 @@ public class WidgetService {
             predicate.and($task.taskProjects.any().project.id.eq(widgetCondition.getProjectId()));
         }
 
-        predicate.and($task.period.endDate.isNotNull());
-
         switch (widgetCondition.getListType()) {
             case LIST_TYPE_TODAY:
 
                 String today = DateUtil.getTodayWithYYYYMMDD();
 
+                predicate.and($task.period.endDate.isNotEmpty());
                 predicate.and($task.period.endDate.loe(today));
 
                 break;
@@ -73,6 +72,7 @@ public class WidgetService {
 
                 String tomorrow = DateUtil.convertDateToStr(DateUtil.addDays(new Date(), 1), "yyyy-MM-dd");
 
+                predicate.and($task.period.endDate.isNotEmpty());
                 predicate.and($task.period.endDate.loe(tomorrow));
 
                 break;
@@ -80,6 +80,7 @@ public class WidgetService {
 
                 String weekEndDate = DateUtil.convertDateToStr(DateUtil.getWeekEndDate(), "yyyy-MM-dd");
 
+                predicate.and($task.period.endDate.isNotEmpty());
                 predicate.and($task.period.endDate.loe(weekEndDate));
 
                 break;
