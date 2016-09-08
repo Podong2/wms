@@ -1704,7 +1704,7 @@ i:active, .i:active, i:focus, .i:focus{
     padding: 15px;
 }
 .task-list-repeat.read{
-    background-color: #f7f7f7;
+    background-color: #f0f0f0;
 }
 .split-panes.horizontal > .split-pane1, .split-panes.horizontal > .split-pane2{
     overflow: hidden;
@@ -2303,7 +2303,8 @@ tags-input .tags:hover, tags-input .tags:focus {
     color: #333;
 }
 .my-task-top-menu li span:hover {
-    background: #fdfdfd;
+    background: #f0f0f0;
+    color:#000000;
 }
 .my-task-top-menu li span.active {
     background: #5A55A3;
