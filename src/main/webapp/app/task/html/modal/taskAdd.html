@@ -114,7 +114,7 @@
 
 
                         <div id="repeatAddSection">
-                            <i class="icon-append fa fa-calendar" style="float: left; padding: 8px;"></i>
+                            <i class="icon-append fa fa-calendar" style="float: left; padding: 8px;" repeat-picker-toggle></i>
                             <i class="icon-append glyphicon glyphicon-retweet" ng-if="vm.taskRepeatSchedule.repeatType != '' && vm.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i>
                             <div class="form-group" style="margin-bottom: 0">
 
@@ -195,7 +195,7 @@
                                 <!-- 사용자 아이콘 -->
                                 <div>
                                     <!-- 사용자 검색 -->
-                                    <span class="taskUserValueSection pull-left" ng-click="vm.subTaskUpdateForm = list" user-picker-edit-toggle> <i class="fa fa-lg fa-plus" id="assigneeAddBtn"></i></span>
+                                    <span class="taskUserValueSection pull-left" ng-click="vm.updateSubTaskForm(list)" user-picker-edit-toggle> <i class="fa fa-lg fa-plus" id="assigneeAddBtn"></i></span>
                                     <div class="project-picker userPickerSection">
                                         <div style="width: 300px;">
                                             <div style="width: 300px;">

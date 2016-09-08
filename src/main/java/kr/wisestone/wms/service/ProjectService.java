@@ -25,6 +25,7 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -144,6 +145,16 @@ public class ProjectService {
         ProjectDTO result = projectMapper.projectToProjectDTO(origin);
 
         return result;
+    }
+
+    @Transactional
+    public Project updateLastModifiedDate(Long projectId) {
+
+        Project origin = projectRepository.findOne(projectId);
+
+        origin.setLastModifiedDate(ZonedDateTime.now());
+
+        return projectRepository.save(origin);
     }
 
     @Transactional(readOnly = true)

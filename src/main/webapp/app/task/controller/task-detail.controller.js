@@ -31,6 +31,7 @@
         vm.removeComment = removeComment;
         vm.subTaskUserAdd = subTaskUserAdd;
         vm.subTaskUpdate = subTaskUpdate;
+        vm.updateSubTaskForm = updateSubTaskForm;
         vm.setDatePickerInput = setDatePickerInput;
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
@@ -456,6 +457,13 @@
             $scope.pickerFindUsers(newValue);
         });
 
+        function updateSubTaskForm(subTask) {
+
+            $log.debug("subTask : ", subTask);
+            vm.subTaskUpdateForm = subTask;
+            $scope.pickerFindUsers('');
+        }
+
         /* 하위 작업 저장 */
         function subTaskUserAdd(userId){
             vm.subTaskUpdateForm.assigneeIds = userId;
@@ -500,7 +508,14 @@
         /* user picker */
         $scope.pickerFindUsers = function(name) {
 
-            findUser.findByName(name).then(function(result){
+            var userIds = [];
+            angular.forEach(vm.subTaskUpdateForm.assignees, function(val){
+                userIds.push(val.id);
+            });
+
+            var excludeUserIds = userIds.join(",");
+            
+            findUser.findByNameAndExcludeIds(name, excludeUserIds).then(function(result){
                 $log.debug("userList : ", result);
                 vm.userList = result;
             }); //user search

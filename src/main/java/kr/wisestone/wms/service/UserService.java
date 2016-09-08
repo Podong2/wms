@@ -2,14 +2,10 @@ package kr.wisestone.wms.service;
 
 import com.google.common.collect.Lists;
 import com.mysema.query.BooleanBuilder;
-import kr.wisestone.wms.domain.AttachedFile;
-import kr.wisestone.wms.domain.Authority;
-import kr.wisestone.wms.domain.QUser;
-import kr.wisestone.wms.domain.User;
-import kr.wisestone.wms.repository.AuthorityRepository;
-import kr.wisestone.wms.repository.CompanyRepository;
-import kr.wisestone.wms.repository.PersistentTokenRepository;
-import kr.wisestone.wms.repository.UserRepository;
+import com.mysema.query.jpa.JPASubQuery;
+import com.mysema.query.jpa.JPQLSubQuery;
+import kr.wisestone.wms.domain.*;
+import kr.wisestone.wms.repository.*;
 import kr.wisestone.wms.repository.search.UserSearchRepository;
 import kr.wisestone.wms.security.SecurityUtils;
 import kr.wisestone.wms.service.util.RandomUtil;
@@ -31,6 +27,7 @@ import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import javax.inject.Inject;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * Service class for managing users.
@@ -73,6 +70,12 @@ public class UserService {
 
     @Inject
     private AttachedFileMapper attachedFileMapper;
+
+    @Inject
+    private TaskRepository taskRepository;
+
+    @Inject
+    private ProjectRepository projectRepository;
 
     public Optional<User> activateRegistration(String key) {
         log.debug("Activating user for activation key {}", key);
@@ -350,6 +353,20 @@ public class UserService {
         BooleanBuilder predicate = new BooleanBuilder();
 
         predicate.and(QUser.user.name.containsIgnoreCase(name));
+
+        List<User> users = Lists.newArrayList(this.userRepository.findAll(predicate));
+
+        return userMapper.usersToUserDTOs(users);
+    }
+
+    public List<UserDTO> findByNameLikeAndExcludeIds(String name, List<Long> excludeIds) {
+
+        BooleanBuilder predicate = new BooleanBuilder();
+
+        predicate.and(QUser.user.name.containsIgnoreCase(name));
+
+        if(excludeIds != null && !excludeIds.isEmpty())
+            predicate.and(QUser.user.id.notIn(excludeIds));
 
         List<User> users = Lists.newArrayList(this.userRepository.findAll(predicate));
 
