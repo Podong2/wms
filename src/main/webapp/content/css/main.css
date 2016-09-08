@@ -2540,6 +2540,13 @@ text-align: right;
     border: 0px none !important;
     box-shadow: none;
 }
+.wms-tree-node-list .pull-right div:last-child{
+    width: 132px;
+}
+.wms-tree-node-list .pull-right {
+    text-align: right;
+}
+
 
 
 
