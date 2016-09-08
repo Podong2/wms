@@ -2303,7 +2303,8 @@ tags-input .tags:hover, tags-input .tags:focus {
     color: #333;
 }
 .my-task-top-menu li span:hover {
-    background: #fdfdfd;
+    background: #f0f0f0;
+    color:#000000;
 }
 .my-task-top-menu li span.active {
     background: #5A55A3;
