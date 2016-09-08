@@ -25,6 +25,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             vm.selectDateTerm = selectDateTerm;
             vm.subTaskUserAdd = subTaskUserAdd;
             vm.subTaskUpdate = subTaskUpdate;
+            vm.updateSubTaskForm = updateSubTaskForm;
             vm.setDatePickerInput = setDatePickerInput;
             vm.subTaskClose = subTaskClose;
             vm.userInfo = Principal.getIdentity();
@@ -204,11 +205,19 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             /* user picker */
             $scope.pickerFindUsers = function(name) {
 
-                findUser.findByName(name).then(function(result){
+                var userIds = [];
+                angular.forEach(vm.subTaskUpdateForm.assignees, function(val){
+                    userIds.push(val.id);
+                });
+
+                var excludeUserIds = userIds.join(",");
+
+                findUser.findByNameAndExcludeIds(name, excludeUserIds).then(function(result){
                     $log.debug("userList : ", result);
                     vm.userList = result;
                 }); //user search
             };
+
 
             // date 포멧 변경
             $scope.$watch("vm.dueDateFrom.date", function(newValue, oldValue){
@@ -297,6 +306,13 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 if(vm.task.name != '') Task.save(vm.task, onSaveSuccess, onSaveError);
             }
 
+            function updateSubTaskForm(subTask) {
+
+                $log.debug("subTask : ", subTask);
+                vm.subTaskUpdateForm = subTask;
+                $scope.pickerFindUsers('');
+            }
+            
             /* 타스크의 서브타스크 등록 */
             function subTaskSave(){
                 if(vm.subTask.name != '') SubTask.save(vm.subTask, onSubTaskSaveSuccess, onSaveError);

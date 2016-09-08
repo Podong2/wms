@@ -30,6 +30,7 @@
     function findUser($http, $log, $q){
         var service = {
             findByName : findByName
+            , findByNameAndExcludeIds : findByNameAndExcludeIds
         }
         return service;
 
@@ -41,6 +42,18 @@
             }).success(function (result) {
                 deferred.resolve(result);
                 $log.debug("find by Users : ", result);
+            });
+            return deferred.promise;
+        }
+
+        function findByNameAndExcludeIds(name, excludeIds){
+            var deferred = $q.defer();
+            $http({
+                url :'/api/users/findByNameAndEntityId',
+                params : {name : name, excludeIds : excludeIds}
+            }).success(function (result) {
+                deferred.resolve(result);
+                $log.debug("find by Tasks : ", result);
             });
             return deferred.promise;
         }

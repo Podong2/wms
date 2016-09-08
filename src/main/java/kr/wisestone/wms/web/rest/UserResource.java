@@ -293,6 +293,26 @@ public class UserResource {
     }
 
     /**
+     * GET  /users/findByName : get the user by name.
+     *
+     * @param name the name of the user to find
+     * @return the ResponseEntity with status 200 (OK) and with body the "login" user, or with status 404 (Not Found)
+     */
+    @RequestMapping(value = "/users/findByNameAndEntityId",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<UserDTO>> findByNameAndEntityId(@RequestParam("name") String name
+                                                            , @RequestParam(value = "excludeIds", required = true) List<Long> excludeIds) {
+        log.debug("REST request to get User name : {}", name);
+
+        List<UserDTO> users = userService.findByNameLikeAndExcludeIds(name, excludeIds);
+
+
+        return new ResponseEntity<>(users, HttpStatus.OK);
+    }
+
+    /**
      * DELETE  USER :login : delete the "login" User.
      *
      * @param login the login of the user to delete
