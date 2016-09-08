@@ -6,10 +6,10 @@
         .controller('TaskDetailCtrl', TaskDetailCtrl);
 
     TaskDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', 'TaskAttachedFile', '$log', 'TaskEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask',
-        'FindTasks', 'entity', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectFindByName', 'ModalService', 'TaskProgressStatus', 'tableService', 'ModifySubTask'];
+        'FindTasks', 'entity', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectFindByName', 'ModalService', 'TaskProgressStatus', 'tableService', 'ModifySubTask', '$http'];
 
     function TaskDetailCtrl($scope, $rootScope, $stateParams, Task, Code, TaskAttachedFile, $log, TaskEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask,
-                            FindTasks, entity, TaskListSearch, dataService, Principal, ProjectFind, ProjectFindByName, ModalService, TaskProgressStatus, tableService, ModifySubTask) {
+                            FindTasks, entity, TaskListSearch, dataService, Principal, ProjectFind, ProjectFindByName, ModalService, TaskProgressStatus, tableService, ModifySubTask, $http) {
         var vm = this;
         vm.baseUrl = window.location.origin;
 
@@ -119,6 +119,7 @@
         /* 로그& 댓글 불러오기 */
         TaskListSearch.TaskAudigLog({'entityId' : vm.task.id, 'entityName' : 'Task'}).then(function(result){
             vm.TaskAuditLog = result;
+            $log.debug("작업 로그 목록 : ", vm.TaskAuditLog);
             angular.forEach(vm.TaskAuditLog.data, function(val){
                 if(val.entityField == 'reply'){
                     vm.commentList.push(val);
@@ -659,6 +660,7 @@
                 vm.mentionIds.push(value.id);
             });
             commentMentionIdPush(vm.mentionIds);
+            $log.debug('댓글 저장 정보 : ', vm.comment)
             TaskEdit.createComment({
                 method : "POST",
                 file : $scope.commentFiles,
@@ -888,6 +890,16 @@
             .setDAlign("text-center")
             .setDType("renderer")
             .setDRenderer("file_remove"));
+
+        //$scope.tags = [];
+        //$scope.loadCountries = function($query) {
+        //    return $http.get('countries.json', { cache: true}).then(function(response) {
+        //        var countries = response.data;
+        //        return countries.filter(function(country) {
+        //            return country.name.toLowerCase().indexOf($query.toLowerCase()) != -1;
+        //        });
+        //    });
+        //};
 
     }
 

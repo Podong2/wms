@@ -333,7 +333,7 @@
                             ng-class="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
                             || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
 
-                            <a href-void><strong>{{data.createdByName}}</strong> </a><a ng-click="">댓글</a>
+                            <a href-void><strong>{{data.createdByName}}</strong> </a><a editor-mention-write user-name="data.createdByName" user-id="data.createdById">댓글</a>
                         </p>
                         <p class="pad-l15">
                             <span ng-if="data.entityField == 'reply'">
@@ -407,7 +407,7 @@
                             || (vm.commentList[$index].createdDate | date : 'MM/dd') != (vm.commentList[$index-1].createdDate | date : 'MM/dd')"
                             ng-class="vm.commentList[$index].createdBy != vm.commentList[$index-1].createdBy
                             || (vm.commentList[$index].createdDate | date : 'MM/dd') != (vm.commentList[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
-                            <a href-void><strong>{{data.createdByName}}</strong> </a><a ng-click="">댓글</a>
+                            <a ><strong>{{data.createdByName}}</strong> </a><span editor-mention-write user-name="data.createdByName" user-id="data.createdById">댓글</span>
                         </p>
                         <p class="pad-l15">
                             <span ng-if="data.entityField == 'reply'">
@@ -454,8 +454,58 @@
 
     </div>
 </div>
+<!--<tags-input ng-model="tags" display-property="name" placeholder="Add a country" replace-spaces-with-dashes="false">-->
+<!--<auto-complete source="loadCountries"-->
+<!--min-length="0"-->
+<!--load-on-focus="true"-->
+<!--load-on-empty="true"-->
+<!--max-results-to-show="32"></auto-complete>-->
+<!--</tags-input>-->
 
 
-<script>
+<!--<script type="text/ng-template" id="my-custom-template">-->
+<!--<div class="left-panel">-->
+    <!--<img ng-src="http://mbenford.github.io/ngTagsInput/images/flags/{{data.flag}}" />-->
+<!--</div>-->
+<!--<div class="right-panel">-->
+    <!--<span ng-bind-html="$highlight($getDisplayText())"></span>-->
+    <!--<span>({{data.rank}})</span>-->
+    <!--<span>{{data.confederation}}</span>-->
+<!--</div>-->
+<!--</script>-->
+<!--<style>-->
+<!--.left-panel {-->
+    <!--float: left;-->
+<!--}-->
 
-</script>
+<!--.left-panel img {-->
+    <!--width: 48px;-->
+    <!--height: 48px;-->
+    <!--vertical-align: middle;-->
+<!--}-->
+
+<!--.right-panel {-->
+    <!--float: left;-->
+    <!--margin-left: 5px;-->
+    <!--margin-top: 7px;-->
+<!--}-->
+
+<!--.right-panel span:first-child {-->
+    <!--font-size: 16px;-->
+<!--}-->
+
+<!--.right-panel span:nth-child(2) {-->
+    <!--font-size: 14px;-->
+    <!--color: gray;-->
+<!--}-->
+
+<!--.right-panel span:last-child {-->
+    <!--display: block;-->
+    <!--font-size: 14px;-->
+    <!--font-style: italic;-->
+<!--}-->
+
+
+
+
+<!--</style>-->
