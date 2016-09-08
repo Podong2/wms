@@ -52,7 +52,7 @@
                             || (task.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (task.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')"
                                ng-class="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
                             || (task.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (task.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
-                                <a href-void><strong>{{data.createdByName}}</strong> </a><a ng-click="">댓글</a>
+                                <a href-void><strong>{{data.createdByName}}</strong> </a><a editor-mention-write user-name="data.createdByName" user-id="data.createdById">댓글</a>
                             </p>
                             <p class="pad-l15">
                             <span ng-if="data.entityField == 'reply'">
