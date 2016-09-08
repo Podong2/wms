@@ -209,7 +209,7 @@ tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tag
         templateUrl: 'ngTagsInput/tags-input.html',
         controller: ["$scope", "$attrs", "$element", "$rootScope", function($scope, $attrs, $element, $rootScope) {
             $scope.events = tiUtil.simplePubSub();
-
+            $scope.baseUrl = window.location.origin;
             tagsInputConfig.load('tagsInput', $scope, $attrs, {
                 template: [String, 'ngTagsInput/tag-item.html'],
                 type: [String, 'text', validateType],
@@ -687,7 +687,7 @@ tagsInput.directive('autoComplete', ["$document", "$timeout", "$sce", "$q", "tag
         templateUrl: 'ngTagsInput/auto-complete.html',
         controller: ["$scope", "$element", "$attrs", function($scope, $element, $attrs) {
             $scope.events = tiUtil.simplePubSub();
-
+            $scope.baseUrl = window.location.origin;
             $scope.openYn = false;
 
             tagsInputConfig.load('autoComplete', $scope, $attrs, {
@@ -1211,7 +1211,15 @@ tagsInput.run(["$templateCache", function($templateCache) {
   );
 
   $templateCache.put('ngTagsInput/tag-item.html',
-    "<span class='text-cuting' uib-tooltip='{{$getDisplayText()}}' ng-bind=\"$getDisplayText()\"></span> <a class=\"remove-button\" ng-click=\"$removeTag()\" ng-bind=\"::$$removeTagSymbol\"></a>"
+    "<div class='tag-template'>" +
+    "<div class='left-panel'>" +
+    "<img ng-src='/api/attachedFile/{{data.profileImageId}}' ng-if='data.profileImageId !=null' /><img ng-src='/content/images/demo/male.png' ng-if='data.profileImageId ==null' />" +
+    "</div>" +
+    "<div class='right-panel'>" +
+    "<span>{{$getDisplayText()}}</span>" +
+    "<a class='remove-button' ng-click='$removeTag()'>&#10006;</a>" +
+    "</div>" +
+    "</div>"
   );
 
   $templateCache.put('ngTagsInput/auto-complete.html',
@@ -1219,8 +1227,22 @@ tagsInput.run(["$templateCache", function($templateCache) {
   );
 
   $templateCache.put('ngTagsInput/auto-complete-match.html',
-    "<span ng-bind-html=\"$highlight($getDisplayText())\"></span>"
+    "<div class='left-panel'>" +
+    "<img ng-src='/api/attachedFile/{{data.profileImageId}}' ng-if='data.profileImageId !=null' /><img ng-src='/content/images/demo/male.png' ng-if='data.profileImageId ==null' />" +
+    "</div>" +
+    "<div class='right-panel'>" +
+    "<span ng-bind-html='$highlight($getDisplayText())'></span>" +
+    "<span>({{data.email}})</span>" +
+    "<span>{{data.name}}</span>" +
+    "</div>"
   );
 }]);
+
+
+
+
+
+
+
 
 }());
