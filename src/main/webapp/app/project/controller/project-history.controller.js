@@ -103,6 +103,10 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
             /* 코멘트 저장 */
             vm.mentionIds = []; // mention ids
             function createComment(taskId, index){
+                if(vm.comment.contents == ''){
+                    toastr.warning('코멘트를 입력해주세요.', '코멘트 내용');
+                    return false;
+                }
                 vm.comment.entityId = taskId;
                 var $mention = $(".comment-area .mentionUser");
                 vm.comment.mentionIds = [];

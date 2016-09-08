@@ -514,7 +514,7 @@
             });
 
             var excludeUserIds = userIds.join(",");
-            
+
             findUser.findByNameAndExcludeIds(name, excludeUserIds).then(function(result){
                 $log.debug("userList : ", result);
                 vm.userList = result;
@@ -654,6 +654,10 @@
 
         vm.mentionIds = []; // mention ids
         function createComment(){
+            if(vm.comment.contents == ''){
+                toastr.warning('코멘트를 입력해주세요.', '코멘트 내용');
+                return false;
+            }
             var $mention = $(".comment-area .mentionUser");
             vm.comment.mentionIds = [];
             vm.mentionIds = [];
