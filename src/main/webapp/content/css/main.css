@@ -2505,8 +2505,9 @@ text-align: right;
 .float-left {
     float: left;
 }
-.cursor-none{
+.btn-none{
     cursor:auto !important;
+    color : #aaa;
 }
 .recent-history-task {
     color: #00b3ee;

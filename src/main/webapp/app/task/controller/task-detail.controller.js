@@ -44,25 +44,6 @@
             showCaption: false, showUpload: false, uploadUrl:"1", uploadAsync: false
         });
 
-        function getTaskProgressStatus(){
-            // 작업 본문 복원 팝업 오픈
-            var editModalConfig = {
-                size : "lg",
-                url : "app/task/html/modal/taskProgressStatusView.html",
-                ctrl : "TaskProgressStatusCtrl",
-                data : vm.task
-            };
-            ModalService.openModal(editModalConfig);
-        }
-        function taskProgressStatusSuccess(result){
-            vm.taskProgressStatus = result;
-            $log.debug("vm.taskProgressStatus : ", vm.taskProgressStatus)
-        }
-        function taskProgressStatusErorr(){
-
-        }
-
-
         var previewFile = {
             caption: '',
             size: '',
@@ -740,6 +721,8 @@
                 case 4 : // 미정
                     vm.dueDateFrom.date = '';
                     vm.dueDateTo.date = '';
+                    vm.task.startDate = '';
+                    vm.task.endDate = '';
                     break;
             }
         }
@@ -865,6 +848,18 @@
             vm.subTaskUpdateForm = subTask;
             vm.subTaskDueDateFrom.date = DateUtils.toDate(subTask.startDate)
             vm.subTaskDueDateTo.date = DateUtils.toDate(subTask.endDate)
+        }
+
+        //
+        function getTaskProgressStatus(){
+            // 작업 본문 복원 팝업 오픈
+            var editModalConfig = {
+                size : "lg",
+                url : "app/task/html/modal/taskProgressStatusView.html",
+                ctrl : "TaskProgressStatusCtrl",
+                data : vm.task
+            };
+            if(vm.task.relatedTasks.length != 0 || vm.task.subTasks.length != 0)ModalService.openModal(editModalConfig);
         }
 
         vm.tableConfigs = [];
