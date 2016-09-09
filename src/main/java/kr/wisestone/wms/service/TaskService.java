@@ -758,4 +758,22 @@ public class TaskService {
 
         return result;
     }
+
+    @Transactional
+    public TaskDTO uploadFile(Long id, List<MultipartFile> files) {
+
+        Task origin = taskRepository.findOne(id);
+
+        for(MultipartFile multipartFile : files) {
+
+            AttachedFile attachedFile = this.attachedFileService.saveFile(multipartFile);
+
+            origin.addAttachedFile(attachedFile);
+        }
+
+        origin = taskRepository.save(origin);
+        TaskDTO result = taskMapper.taskToTaskDTO(origin);
+
+        return result;
+    }
 }
