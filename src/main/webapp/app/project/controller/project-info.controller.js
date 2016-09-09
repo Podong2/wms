@@ -142,7 +142,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                         showLabels: true, //그래프 내에 표시될 텍스트 노출 유무
                         duration: 500,
                         donut : true,
-                        title: "총 "+vm.tasks.length+"건",
+                        title: "총 "+(vm.info.delayedCount + vm.info.holdCount + vm.info.inProgressCount + vm.info.completeCount)+"건",
                         labelThreshold: 0.01,
                         labelSunbeamLayout: false, // 그래프 내 텍스트 회전 옵션
                         legend: {
