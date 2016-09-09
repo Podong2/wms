@@ -506,7 +506,8 @@ public class TaskService {
 
             String today = DateUtil.getTodayWithYYYYMMDD();
 
-            predicate.and($task.period.endDate.gt(today));
+            predicate.and($task.period.endDate.isNotEmpty());
+            predicate.and($task.period.endDate.lt(today));
             predicate.and($task.status.id.eq(Task.STATUS_ACTIVE));
         }
 
@@ -770,6 +771,18 @@ public class TaskService {
 
             origin.addAttachedFile(attachedFile);
         }
+
+        origin = taskRepository.save(origin);
+        TaskDTO result = taskMapper.taskToTaskDTO(origin);
+
+        return result;
+    }
+
+    public TaskDTO removeFile(Long taskId, Long attachedFileId) {
+
+        Task origin = taskRepository.findOne(taskId);
+
+        origin.removeAttachedFile(attachedFileId);
 
         origin = taskRepository.save(origin);
         TaskDTO result = taskMapper.taskToTaskDTO(origin);

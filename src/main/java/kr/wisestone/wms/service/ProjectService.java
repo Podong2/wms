@@ -85,7 +85,7 @@ public class ProjectService {
     public ProjectDTO findOne(Long id) {
         log.debug("Request to get Project : {}", id);
         Project project = projectRepository.findOne(id);
-        ProjectDTO projectDTO = projectMapper.projectToProjectDTO(project);
+        ProjectDTO projectDTO = new ProjectDTO(project);
 
         User user = userService.findByLogin(project.getCreatedBy());
         projectDTO.setCreatedByName(user.getName());

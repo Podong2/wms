@@ -103,7 +103,10 @@
                     <td colspan="3">
                         <autocomplete source="findUsers" tags="vm.project.projectUsers" display-property="name" multiple="true" max-results-to-show="20" tag-type="projectUserIds"></autocomplete>
                     </td>
-                    <td ng-attr-rowspan="vm.project.folderYn ? 2 : 1">
+                    <td rowspan="2" ng-if="vm.project.folderYn == false">
+                        <i class="fa fa-paperclip" ng-click="vm.fileAreaOpen = !vm.fileAreaOpen" style="font-size: 25px"></i>
+                    </td>
+                    <td rowspan="1" ng-if="vm.project.folderYn == true">
                         <i class="fa fa-paperclip" ng-click="vm.fileAreaOpen = !vm.fileAreaOpen" style="font-size: 25px"></i>
                     </td>
                 </tr>

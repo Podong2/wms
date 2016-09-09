@@ -1234,7 +1234,6 @@ tagsInput.run(["$templateCache", function($templateCache) {
     "</div>" +
     "<div class='right-panel'>" +
     "<span ng-bind-html='$highlight($getDisplayText())'></span>" +
-    "<span></span>" +
     "<span>{{data.email}}</span>" +
     "</div>"
   );
