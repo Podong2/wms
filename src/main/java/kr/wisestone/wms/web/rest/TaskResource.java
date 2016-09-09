@@ -162,7 +162,8 @@ public class TaskResource {
 
 
     @RequestMapping(value = "/tasks/uploadFile",
-        method = RequestMethod.POST)
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<TaskDTO> uploadFile(@ModelAttribute TaskForm taskForm, MultipartHttpServletRequest request) throws URISyntaxException, IOException {
 
@@ -171,8 +172,8 @@ public class TaskResource {
         TaskDTO result = taskService.uploadFile(taskForm.getId(), files);
 
         return ResponseEntity.ok()
-            .headers(HeaderUtil.createEntityUpdateAlert("task", "1"))
-            .body(null);
+            .headers(HeaderUtil.createEntityUpdateAlert("task", taskForm.getId().toString()))
+            .body(result);
     }
 
     /**
