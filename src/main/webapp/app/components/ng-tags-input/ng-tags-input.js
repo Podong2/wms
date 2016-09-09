@@ -1210,6 +1210,7 @@ tagsInput.run(["$templateCache", function($templateCache) {
     "</div></div>"
   );
 
+    // hsy 태그 아이템 템플릿 영역 커스텀
   $templateCache.put('ngTagsInput/tag-item.html',
     "<div class='tag-template'>" +
     "<div class='left-panel'>" +
@@ -1226,6 +1227,7 @@ tagsInput.run(["$templateCache", function($templateCache) {
     "<div class=\"autocomplete\" ng-if=\"suggestionList.visible\"><ul class=\"suggestion-list\"><li class=\"suggestion-item\" ng-repeat=\"item in suggestionList.items track by track(item)\" ng-class=\"getSuggestionClass(item, $index)\" ng-click=\"addSuggestionByIndex($index)\" ng-mouseenter=\"suggestionList.select($index)\"><ti-autocomplete-match scope=\"templateScope\" data=\"::item\"></ti-autocomplete-match></li></ul></div>"
   );
 
+    // hsy 옵션 템플릿 영역 커스텀
   $templateCache.put('ngTagsInput/auto-complete-match.html',
     "<div class='left-panel'>" +
     "<img ng-src='/api/attachedFile/{{data.profileImageId}}' ng-if='data.profileImageId !=null' /><img ng-src='/content/images/demo/male.png' ng-if='data.profileImageId ==null' />" +
