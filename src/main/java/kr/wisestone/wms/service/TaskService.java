@@ -777,4 +777,16 @@ public class TaskService {
 
         return result;
     }
+
+    public TaskDTO removeFile(Long taskId, Long attachedFileId) {
+
+        Task origin = taskRepository.findOne(taskId);
+
+        origin.removeAttachedFile(attachedFileId);
+
+        origin = taskRepository.save(origin);
+        TaskDTO result = taskMapper.taskToTaskDTO(origin);
+
+        return result;
+    }
 }

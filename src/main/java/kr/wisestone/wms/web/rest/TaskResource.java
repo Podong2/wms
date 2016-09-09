@@ -176,6 +176,19 @@ public class TaskResource {
             .body(result);
     }
 
+    @RequestMapping(value = "/tasks/uploadFile",
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<TaskDTO> uploadFile(@RequestParam("taskId") Long taskId, @RequestParam("attachedFileId") Long attachedFileId) throws URISyntaxException, IOException {
+
+        TaskDTO result = taskService.removeFile(taskId, attachedFileId);
+
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert("task", taskId.toString()))
+            .body(result);
+    }
+
     /**
      * PUT  /tasks : Updates an existing task.
      *
