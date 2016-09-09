@@ -298,6 +298,9 @@
         removeIcon: '<i class="glyphicon glyphicon-trash text-danger"></i>',
         removeClass: 'btn btn-xs btn-default',
         removeTitle: '파일 삭제',
+        downloadIcon: '<i class="glyphicon glyphicon-download text-danger"></i>',
+        downloadClass: 'btn btn-xs btn-default',
+        downloadTitle: '파일 다운로드',
         uploadIcon: '<i class="glyphicon glyphicon-upload text-info"></i>',
         uploadClass: 'btn btn-xs btn-default',
         uploadTitle: '파일 업로드',
@@ -381,8 +384,8 @@
         '    <div class="file-upload-indicator" title="{indicatorTitle}">{indicator}</div>\n' +
         '    <div class="clearfix"></div>\n' +
         '</div>';
-    tActionDelete = '<button type="button" class="kv-file-remove {removeClass}" ' +
-        'title="{removeTitle}" data-task-id="{taskId}" data-attached-file-id="{attachedFileId}" {dataUrl}{dataKey}>{removeIcon}</button>\n'; // hsy 파일 삭제
+    tActionDelete = '<button type="button" class="kv-file-remove {removeClass}" title="{removeTitle}" data-task-id="{taskId}" data-attached-file-id="{attachedFileId}" {dataUrl}{dataKey}>{removeIcon}</button>\n' +
+        '<button type="button" class="kv-file-download {removeClass}" title="{removeTitle}" data-task-id="{taskId}" data-attached-file-id="{attachedFileId}" {dataUrl}{dataKey}>{downloadIcon}</button>'; // hsy 파일 삭제
     tActionUpload = '<button type="button" class="kv-file-upload {uploadClass}" title="{uploadTitle}">' +
         '{uploadIcon}</button>';
     tActionZoom = '<button type="button" class="kv-file-zoom {zoomClass}" title="{zoomTitle}">{zoomIcon}</button>';
@@ -1435,17 +1438,21 @@
                 });
             });
         },
-        _initRemoveButton: function () {
+        _initDownLoadButton: function () {
             var self = this;
-            self.$preview.find('.kv-file-remove').each(function () {
+            self.$preview.find('.kv-file-download').each(function () {
                 var $el = $(this);
-                //handler($el, 'click', function () {
-                //
-                //    var taskId = $el.data('taskId');
-                //    var attachedFileId = $el.data('attachedFileId');
-                //
-                //    self._removeFile(taskId, attachedFileId);
-                //});
+                handler($el, 'click', function () {
+
+                    var taskId = $el.data('taskId');
+                    var attachedFileId = $el.data('attachedFileId');
+                    var vUrl = $el.data('url');
+                    var iframe = $("<iframe/>").hide().appendTo("body").load(function() {
+                        iframe.remove();
+                    }).attr("src", vUrl);
+
+                    //self._removeFile(taskId, attachedFileId);
+                });
             });
         },
         _initPreviewActions: function () {
@@ -1458,7 +1465,7 @@
                     }
                 };
             self._initZoomButton();
-            self._initRemoveButton();
+            self._initDownLoadButton();
             /* hsy 파일 삭제 커스텀 */
             self.$preview.find('.kv-file-remove').each(function () {
                 var $el = $(this), vUrl = $el.data('url') || self.deleteUrl, vKey = $el.data('key');
@@ -2108,7 +2115,7 @@
                 return;
             }
             self._initZoomButton();
-            self._initRemoveButton();
+            self._initDownLoadButton();
             self.$preview.find('.kv-file-remove').each(function () {
                 var $el = $(this), $frame = $el.closest('.file-preview-frame'), hasError,
                     id = $frame.attr('id'), ind = $frame.attr('data-fileindex'), n, cap, status;
@@ -2795,6 +2802,7 @@
                 btnDelete = self._getLayoutTemplate('actionDelete')
                     .replace(/\{removeClass}/g, removeClass)
                     .replace(/\{removeIcon}/g, config.removeIcon)
+                    .replace(/\{downloadIcon}/g, config.downloadIcon)
                     .replace(/\{removeTitle}/g, config.removeTitle)
                     .replace(/\{taskId}/g, self.task.id)
                     .replace(/\{attachedFileId}/g, url || url != '' ? pieces[pieces.length-1] : '')
@@ -3280,6 +3288,7 @@
         browseIcon: '<i class="glyphicon glyphicon-folder-open"></i>&nbsp;',
         browseClass: 'btn btn-primary',
         removeIcon: '<i class="glyphicon glyphicon-trash"></i>',
+        downloadIcon: '<i class="glyphicon glyphicon-download"></i>',
         removeClass: 'btn btn-default',
         cancelIcon: '<i class="glyphicon glyphicon-ban-circle"></i>',
         cancelClass: 'btn btn-default',

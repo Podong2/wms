@@ -69,6 +69,7 @@
         vm.userList = [];
         vm.userName = '';
         $scope.userName = '';
+        vm.fileListYn = false;
         // 하위 작업 업데이트 파라미터
         vm.subTaskUpdateForm = {
             id : '',
