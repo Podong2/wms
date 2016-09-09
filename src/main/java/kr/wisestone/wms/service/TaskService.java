@@ -506,7 +506,8 @@ public class TaskService {
 
             String today = DateUtil.getTodayWithYYYYMMDD();
 
-            predicate.and($task.period.endDate.gt(today));
+            predicate.and($task.period.endDate.isNotEmpty());
+            predicate.and($task.period.endDate.lt(today));
             predicate.and($task.status.id.eq(Task.STATUS_ACTIVE));
         }
 
