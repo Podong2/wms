@@ -40,6 +40,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.elasticsearch.index.query.QueryBuilders.*;
@@ -157,6 +158,17 @@ public class TaskResource {
         return ResponseEntity.ok()
             .headers(HeaderUtil.createEntityUpdateAlert("task", taskForm.getId().toString()))
             .body(result);
+    }
+
+
+    @RequestMapping(value = "/tasks/uploadFile",
+        method = RequestMethod.POST)
+    @Timed
+    public ResponseEntity<TaskDTO> uploadFile(@RequestBody  Map<String, Object> datas) throws URISyntaxException, IOException {
+
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert("task", "1"))
+            .body(null);
     }
 
     /**
