@@ -382,7 +382,7 @@
         '    <div class="clearfix"></div>\n' +
         '</div>';
     tActionDelete = '<button type="button" class="kv-file-remove {removeClass}" ' +
-        'title="{removeTitle}" {dataUrl}{dataKey}>{removeIcon}</button>\n';
+        'title="{removeTitle}" data-task-id="{taskId}" data-attached-file-id="{attachedFileId}" {dataUrl}{dataKey}>{removeIcon}</button>\n'; // hsy 파일 삭제
     tActionUpload = '<button type="button" class="kv-file-upload {uploadClass}" title="{uploadTitle}">' +
         '{uploadIcon}</button>';
     tActionZoom = '<button type="button" class="kv-file-zoom {zoomClass}" title="{zoomTitle}">{zoomIcon}</button>';
@@ -421,8 +421,8 @@
         size: tSize,
         footer: tFooter,
         actions: tActions,
-        //actionDelete: tActionDelete,
-        //actionUpload: tActionUpload,
+        actionDelete: tActionDelete,
+        actionUpload: tActionUpload,
         actionZoom: tActionZoom,
         actionDrag: tActionDrag,
         btnDefault: tBtnDefault,
@@ -995,7 +995,8 @@
             self.$dropZone.removeClass('file-highlighted');
         },
         _zoneDrop: function (e) {
-            var self = this;
+            var self = this, $el = self.$element;
+            //handler($el, 'change', $.proxy(self._change, self));
             e.preventDefault();
             /** @namespace e.originalEvent.dataTransfer */
             if (self.isDisabled || isEmpty(e.originalEvent.dataTransfer.files)) {
@@ -1003,6 +1004,9 @@
             }
             self._change(e, 'dragdrop');
             self.$dropZone.removeClass('file-highlighted');
+            // hsy 업로드 버튼 이벤트
+            var uploadBtnClickEvent = $.Event('click');
+            $('.fileinput-upload-button').trigger(uploadBtnClickEvent);
         },
         _uploadClick: function (e) {
             var self = this, $btn = self.$container.find('.fileinput-upload'), $form,
@@ -1310,6 +1314,96 @@
             self.$modal.modal('show');
             self._initZoomButtons();
         },
+        _removeFile: function (taskId, attachedFileId) {
+            var self = this, deleteExtraData = self.deleteExtraData || {};
+            console.log(taskId+'/'+attachedFileId);
+            var formData = new FormData();
+            formData.append("taskId", taskId);
+            formData.append("attachedFileId", attachedFileId);
+
+            var resetProgress = function () {
+                var hasFiles = self.isUploadable ? previewCache.count(self.id) : self.$element.get(0).files.length;
+                if (self.$preview.find('.kv-file-remove').length === 0 && !hasFiles) {
+                    self.reset();
+                    self.initialCaption = '';
+                }
+            };
+
+            var $el = $(this), vUrl = $el.data('url') || self.deleteUrl, vKey = $el.data('key');
+            //if (isEmpty(vUrl) || vKey === undefined) {
+            //    return;
+            //}
+            var $frame = $el.closest('.file-preview-frame'), cache = previewCache.data[self.id],
+                settings, params, index = $frame.data('fileindex'), config, extraData;
+            index = parseInt(index.replace('init_', ''));
+            config = isEmpty(cache.config) && isEmpty(cache.config[index]) ? null : cache.config[index];
+            extraData = isEmpty(config) || isEmpty(config.extra) ? deleteExtraData : config.extra;
+            if (typeof extraData === "function") {
+                extraData = extraData();
+            }
+            params = {id: $el.attr('id'), key: vKey, extra: extraData};
+
+            $.ajax({
+                headers: {
+                    Accept: "application/json; text/plain; */*"
+                    ,"X-CSRF-TOKEN": self.token
+                },
+                url: '/api/tasks/removeFile/' + taskId + '/' + attachedFileId ,
+                processData: false,
+                contentType: false,
+                data: formData,
+                type: 'POST',
+                beforeSend: function (jqXHR) {
+                    self.ajaxAborted = false;
+                    self._raise('filepredelete', [vKey, jqXHR, extraData]);
+                    if (self.ajaxAborted) {
+                        jqXHR.abort();
+                    } else {
+                        addCss($frame, 'file-uploading');
+                        addCss($el, 'disabled');
+                    }
+                },
+                success: function (data, textStatus, jqXHR) {
+                    var n, cap;
+                    if (isEmpty(data) || isEmpty(data.error)) {
+                        previewCache.unset(self.id, index);
+                        n = previewCache.count(self.id);
+                        cap = n > 0 ? self._getMsgSelected(n) : '';
+                        self._raise('filedeleted', [vKey, jqXHR, extraData]);
+                        self._setCaption(cap);
+                    } else {
+                        params.jqXHR = jqXHR;
+                        params.response = data;
+                        self._showError(data.error, params, 'filedeleteerror');
+                        $frame.removeClass('file-uploading');
+                        $el.removeClass('disabled');
+                        resetProgress();
+                        return;
+                    }
+                    $frame.removeClass('file-uploading').addClass('file-deleted');
+                    $frame.fadeOut('slow', function () {
+                        self._clearObjects($frame);
+                        $frame.remove();
+                        resetProgress();
+                        if (!n && self.getFileStack().length === 0) {
+                            self._setCaption('');
+                            self.reset();
+                        }
+                    });
+                },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    var errMsg = self._parseError(jqXHR, errorThrown);
+                    params.jqXHR = jqXHR;
+                    params.response = {};
+                    self._showError(errMsg, params, 'filedeleteerror');
+                    $frame.removeClass('file-uploading');
+                    resetProgress();
+                }
+            }, self.ajaxDeleteSettings);
+
+
+
+        },
         _zoomSlideShow: function (dir, previewId) {
             var self = this, $btn = self.$modal.find('.kv-zoom-actions .btn-' + dir), $targFrame, i,
                 frames = self.$preview.find('.file-preview-frame').toArray(), len = frames.length, out;
@@ -1341,6 +1435,19 @@
                 });
             });
         },
+        _initRemoveButton: function () {
+            var self = this;
+            self.$preview.find('.kv-file-remove').each(function () {
+                var $el = $(this);
+                //handler($el, 'click', function () {
+                //
+                //    var taskId = $el.data('taskId');
+                //    var attachedFileId = $el.data('attachedFileId');
+                //
+                //    self._removeFile(taskId, attachedFileId);
+                //});
+            });
+        },
         _initPreviewActions: function () {
             var self = this, deleteExtraData = self.deleteExtraData || {},
                 resetProgress = function () {
@@ -1351,8 +1458,16 @@
                     }
                 };
             self._initZoomButton();
+            self._initRemoveButton();
+            /* hsy 파일 삭제 커스텀 */
             self.$preview.find('.kv-file-remove').each(function () {
                 var $el = $(this), vUrl = $el.data('url') || self.deleteUrl, vKey = $el.data('key');
+                var taskId = $el.data('taskId');
+                var attachedFileId = $el.data('attachedFileId');
+                var formData = new FormData();
+                formData.append("taskId", taskId);
+                formData.append("attachedFileId", attachedFileId);
+
                 if (isEmpty(vUrl) || vKey === undefined) {
                     return;
                 }
@@ -1366,9 +1481,12 @@
                 }
                 params = {id: $el.attr('id'), key: vKey, extra: extraData};
                 settings = $.extend(true, {}, {
-                    url: vUrl,
+                    headers: {
+                        Accept: "application/json; text/plain; */*"
+                        ,"X-CSRF-TOKEN": self.token
+                    },
+                    url: '/api/tasks/removeFile/' + taskId + '/' + attachedFileId ,
                     type: 'POST',
-                    dataType: 'json',
                     data: $.extend(true, {}, {key: vKey}, extraData),
                     beforeSend: function (jqXHR) {
                         self.ajaxAborted = false;
@@ -1599,24 +1717,28 @@
             var self = this, settings;
             self._raise('filepreajax', [previewId, index]);
             self._uploadExtra(previewId, index);
-            settings = $.extend(true, {}, {
-                xhr: function () {
-                    var xhrobj = $.ajaxSettings.xhr();
-                    return self._initXhr(xhrobj, previewId, self.getFileStack().length);
+            // hsy 파일 업로드 수정
+            var formData = new FormData();
+            $.each(self.fileList, function (key, data) {
+                if (!isEmpty(self.fileList[key])) {
+                    formData.append("file", data, self.filenames[key]);
+                }
+            });
+            formData.append("id", JSON.stringify(self.task.id));
+            $.ajax({
+                headers: {
+                    Accept: "application/json; text/plain; */*"
+                    ,"X-CSRF-TOKEN": self.token
                 },
-                url: self.uploadUrl,
-                type: 'POST',
-                dataType: 'json',
-                data: self.formdata,
-                cache: false,
+                url: '/api/tasks/uploadFile',
                 processData: false,
                 contentType: false,
-                beforeSend: fnBefore,
+                data: formData,
+                type: 'POST',
                 success: fnSuccess,
                 complete: fnComplete,
                 error: fnError
-            }, self.ajaxSettings);
-            self.ajaxRequests.push($.ajax(settings));
+            });
         },
         _initUploadSuccess: function (out, $thumb, allFiles) {
             var self = this, append, data, index, $newThumb, content, config, tags, i;
@@ -1986,6 +2108,7 @@
                 return;
             }
             self._initZoomButton();
+            self._initRemoveButton();
             self.$preview.find('.kv-file-remove').each(function () {
                 var $el = $(this), $frame = $el.closest('.file-preview-frame'), hasError,
                     id = $frame.attr('id'), ind = $frame.attr('data-fileindex'), n, cap, status;
@@ -2659,6 +2782,7 @@
             if (!showUpload && !showDelete && !showZoom && !showDrag) {
                 return '';
             }
+            if(url || url != '') var pieces = url.split(/[\s/]+/); // hsy 파일 삭제 커스텀
             var self = this,
                 vUrl = url === false ? '' : ' data-url="' + url + '"',
                 vKey = key === false ? '' : ' data-key="' + key + '"',
@@ -2667,10 +2791,13 @@
                 otherButtons = self.otherActionButtons.replace(/\{dataKey}/g, vKey),
                 removeClass = disabled ? config.removeClass + ' disabled' : config.removeClass;
             if (showDelete) {
+                // hsy 파일 삭제 커스텀
                 btnDelete = self._getLayoutTemplate('actionDelete')
                     .replace(/\{removeClass}/g, removeClass)
                     .replace(/\{removeIcon}/g, config.removeIcon)
                     .replace(/\{removeTitle}/g, config.removeTitle)
+                    .replace(/\{taskId}/g, self.task.id)
+                    .replace(/\{attachedFileId}/g, url || url != '' ? pieces[pieces.length-1] : '')
                     .replace(/\{dataUrl}/g, vUrl)
                     .replace(/\{dataKey}/g, vKey);
             }
@@ -2724,6 +2851,7 @@
                         p2 = {id: previewId, index: index, file: file, files: files};
                     return self.isUploadable ? self._showUploadError(mesg, p1) : self._showError(mesg, p2);
                 };
+            self.fileList = isDragDrop ? e.originalEvent.dataTransfer.files : $el.get(0).files; // hsy 파일 업로드 수정
             self.reader = null;
             self._resetUpload();
             self._hideFileIcon();
@@ -3158,6 +3286,9 @@
         uploadIcon: '<i class="glyphicon glyphicon-upload"></i>',
         uploadClass: 'btn btn-default',
         uploadUrl: null,
+        task: null, // hsy 타스크 정보
+        token: null, // hsy 토큰 정보
+        fileList : [], // hsy 파일 리스트 정보
         uploadAsync: true,
         uploadExtraData: {},
         zoomModalHeight: 480,
