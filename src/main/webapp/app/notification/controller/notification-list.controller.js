@@ -29,6 +29,7 @@ notificationListCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootSc
             function getList(number){
                 tabDisplay(number);
                 vm.listType = 'UN_READ';
+                vm.notifications = [];
                 Notification.query({listType : 'UN_READ'}, onSuccess, onError);
             }
             vm.getList(0);
@@ -36,6 +37,7 @@ notificationListCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootSc
             function getReadList(number){
                 tabDisplay(number);
                 vm.listType = 'READ';
+                vm.notifications = [];
                 Notification.query({listType : 'READ'}, onSuccess, onError);
             }
 
@@ -55,7 +57,7 @@ notificationListCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootSc
                 $log.debug("notifications : ", data);
                 if(data.length > 0){
                     vm.notifications = data;
-                    if(vm.firstYn) $state.go("my-notification.taskDetail", {taskId : vm.notifications[0].taskDTO.id, listType : 'TODAY'}); // 첫 알림 상세 오픈
+                    //if(vm.firstYn) $state.go("my-notification.taskDetail", {taskId : vm.notifications[0].taskDTO.id, listType : 'TODAY'}); // 첫 알림 상세 오픈
                 }
             }
             function onError(error) {
