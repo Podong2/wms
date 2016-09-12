@@ -384,8 +384,8 @@
         '    <div class="file-upload-indicator" title="{indicatorTitle}">{indicator}</div>\n' +
         '    <div class="clearfix"></div>\n' +
         '</div>';
-    tActionDelete = '<button type="button" class="kv-file-remove {removeClass}" title="{removeTitle}" data-task-id="{taskId}" data-attached-file-id="{attachedFileId}" {dataUrl}{dataKey}>{removeIcon}</button>\n' +
-        '<button type="button" class="kv-file-download {removeClass}" title="{removeTitle}" data-task-id="{taskId}" data-attached-file-id="{attachedFileId}" {dataUrl}{dataKey}>{downloadIcon}</button>'; // hsy 파일 삭제
+    tActionDelete = '<button type="button" class="kv-file-remove {removeClass}" title="{removeTitle}" data-task-id="{taskId}" data-project-id="{projectId}" data-attached-file-id="{attachedFileId}" {dataUrl}{dataKey}>{removeIcon}</button>\n' +
+        '<button type="button" class="kv-file-download {removeClass}" title="{removeTitle}" data-task-id="{taskId}" data-project-id="{projectId}" data-attached-file-id="{attachedFileId}" {dataUrl}{dataKey}>{downloadIcon}</button>'; // hsy 파일 삭제
     tActionUpload = '<button type="button" class="kv-file-upload {uploadClass}" title="{uploadTitle}">' +
         '{uploadIcon}</button>';
     tActionZoom = '<button type="button" class="kv-file-zoom {zoomClass}" title="{zoomTitle}">{zoomIcon}</button>';
@@ -1351,7 +1351,7 @@
                     Accept: "application/json; text/plain; */*"
                     ,"X-CSRF-TOKEN": self.token
                 },
-                url: '/api/tasks/removeFile/' + taskId + '/' + attachedFileId ,
+                url: '/api/tasks/removeFile/' + id + '/' + attachedFileId ,
                 processData: false,
                 contentType: false,
                 data: formData,
@@ -1470,10 +1470,21 @@
             self.$preview.find('.kv-file-remove').each(function () {
                 var $el = $(this), vUrl = $el.data('url') || self.deleteUrl, vKey = $el.data('key');
                 var taskId = $el.data('taskId');
+                var projectId = $el.data('projectId');
                 var attachedFileId = $el.data('attachedFileId');
                 var formData = new FormData();
                 formData.append("taskId", taskId);
+                formData.append("projectId", projectId);
                 formData.append("attachedFileId", attachedFileId);
+                var id = '';
+                var url = '';
+                if(self.type == 'task'){
+                    url = '/api/tasks/removeFile/';
+                    id = taskId;
+                }else if(self.type == 'project'){
+                    url = '/api/projects/removeFile/';
+                    id = projectId;
+                }
 
                 if (isEmpty(vUrl) || vKey === undefined) {
                     return;
@@ -1492,7 +1503,7 @@
                         Accept: "application/json; text/plain; */*"
                         ,"X-CSRF-TOKEN": self.token
                     },
-                    url: '/api/tasks/removeFile/' + taskId + '/' + attachedFileId ,
+                    url: url + id + '/' + attachedFileId ,
                     type: 'POST',
                     data: $.extend(true, {}, {key: vKey}, extraData),
                     beforeSend: function (jqXHR) {
@@ -1724,6 +1735,8 @@
             var self = this, settings;
             self._raise('filepreajax', [previewId, index]);
             self._uploadExtra(previewId, index);
+            var url = '';
+
             // hsy 파일 업로드 수정
             var formData = new FormData();
             $.each(self.fileList, function (key, data) {
@@ -1731,13 +1744,20 @@
                     formData.append("file", data, self.filenames[key]);
                 }
             });
-            formData.append("id", JSON.stringify(self.task.id));
+            if(self.type == 'task'){
+                url = '/api/tasks/uploadFile';
+                formData.append("id", JSON.stringify(self.task.id));
+            }else if(self.type == 'project'){
+                url = '/api/projects/uploadFile';
+                formData.append("id", JSON.stringify(self.project.id));
+            }
+
             $.ajax({
                 headers: {
                     Accept: "application/json; text/plain; */*"
                     ,"X-CSRF-TOKEN": self.token
                 },
-                url: '/api/tasks/uploadFile',
+                url: url,
                 processData: false,
                 contentType: false,
                 data: formData,
@@ -2804,7 +2824,8 @@
                     .replace(/\{removeIcon}/g, config.removeIcon)
                     .replace(/\{downloadIcon}/g, config.downloadIcon)
                     .replace(/\{removeTitle}/g, config.removeTitle)
-                    .replace(/\{taskId}/g, self.task.id)
+                    .replace(/\{taskId}/g, self.task == null ? '' : self.task.id)
+                    .replace(/\{projectId}/g, self.project == null ? '' : self.project.id)
                     .replace(/\{attachedFileId}/g, url || url != '' ? pieces[pieces.length-1] : '')
                     .replace(/\{dataUrl}/g, vUrl)
                     .replace(/\{dataKey}/g, vKey);
@@ -3296,8 +3317,10 @@
         uploadClass: 'btn btn-default',
         uploadUrl: null,
         task: null, // hsy 타스크 정보
+        project: null, // hsy project 정보
         token: null, // hsy 토큰 정보
         fileList : [], // hsy 파일 리스트 정보
+        type : '', // hsy 파일 업로드 타입
         uploadAsync: true,
         uploadExtraData: {},
         zoomModalHeight: 480,

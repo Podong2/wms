@@ -121,6 +121,7 @@
             $("#input-4").fileinput({
                 uploadUrl : '/tasks/uploadFile',
                 task : vm.task,
+                type : 'task',
                 token : $scope.getToken(),
                 showCaption: true,
                 showUpload: true,
@@ -607,9 +608,12 @@
             vm.responseData = _.clone(vm.previewFiles);
 
             $("#input-4").fileinput({
-                uploadUrl : '1',
+                uploadUrl : '/tasks/uploadFile',
+                task : vm.task,
+                type : 'task',
+                token : $scope.getToken(),
                 showCaption: true,
-                showUpload: false,
+                showUpload: true,
                 showRemove: false,
                 uploadAsync: false,
                 overwriteInitial: false,

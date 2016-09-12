@@ -5,9 +5,9 @@
         .module('wmsApp')
         .controller('projectDetailCtrl', projectDetailCtrl);
 
-    projectDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', '$log', 'ProjectEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectInfo', 'ProjectFindByName', 'tableService'];
+    projectDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', '$log', 'ProjectEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectInfo', 'ProjectFindByName', 'tableService', '$cookies'];
 
-    function projectDetailCtrl($scope, $rootScope, $stateParams, Task, Code, $log, ProjectEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, TaskListSearch, dataService, Principal, ProjectFind, ProjectInfo, ProjectFindByName, tableService ) {
+    function projectDetailCtrl($scope, $rootScope, $stateParams, Task, Code, $log, ProjectEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, TaskListSearch, dataService, Principal, ProjectFind, ProjectInfo, ProjectFindByName, tableService, $cookies ) {
         var vm = this;
         vm.baseUrl = window.location.origin;
 
@@ -22,6 +22,11 @@
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
 
+        $scope.getToken = function() {
+            return $cookies.get("CSRF-TOKEN");
+        };
+        $scope.getToken()
+
         vm.date = '';
         vm.assigneeUsers = [];
         vm.logArrayData = [];
@@ -32,6 +37,7 @@
         vm.previewFiles = []; // 파일 테이블 목록
         vm.previewFileUrl = []; // 파일 url 목록
         vm.project = getProject();
+        vm.fileListYn = false;
 
         var previewFile = {
             caption: '',
@@ -455,10 +461,12 @@
 
         function fileViewConfig(project){
             $("#input-4").fileinput({
-                uploadUrl : '/tasks/uploadFile',
-                task : project,
+                uploadUrl : '/api/projects/uploadFile',
+                project : project,
+                type : 'project',
+                token : $scope.getToken(),
                 showCaption: true,
-                showUpload: false,
+                showUpload: true,
                 showRemove: false,
                 uploadAsync: false,
                 overwriteInitial: false,
