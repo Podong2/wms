@@ -209,6 +209,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 angular.forEach(args, function(value){
                     $scope.files.push(value)
                 });
+                $scope.$apply();
                 $log.debug("파일 목록 : ", $scope.files);
             });
 
@@ -367,6 +368,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                     angular.forEach(params, function(value){
                         $scope.files.push(value)
                     });
+                    $scope.$apply();
                     $log.debug("파일 목록 : ", $scope.files);
                 })
             }

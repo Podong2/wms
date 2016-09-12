@@ -342,7 +342,7 @@
         '    <div class="kv-fileinput-error"></div>\n' +
         '    </div>\n' +
         '</div>';
-    //tClose = '<div class="close fileinput-remove">&times;</div>\n';
+    //tClose = '<div class="close fileinput-remove">&times;</div>\n';  //hsy 수정
     tClose = '';
     tFileIcon = '<i class="glyphicon glyphicon-file kv-caption-icon"></i>';
     tCaption = '<div tabindex="500" class="form-control file-caption {class}">\n' +
@@ -389,8 +389,9 @@
         '<button type="button" class="kv-file-download {removeClass}" title="{removeTitle}" data-task-id="{taskId}" data-project-id="{projectId}" data-attached-file-id="{attachedFileId}" {dataUrl}{dataKey}>{downloadIcon}</button>'; // hsy 파일 삭제
     tActionUpload = '';
     //tActionUpload = '<button type="button" class="kv-file-upload {uploadClass}" title="{uploadTitle}">' +
-    //    '{uploadIcon}</button>';
-    tActionZoom = '<button type="button" class="kv-file-zoom {zoomClass}" title="{zoomTitle}">{zoomIcon}</button>';
+    //    '{uploadIcon}</button>'; //hsy 수정
+    tActionZoom = '';
+    //tActionZoom = '<button type="button" class="kv-file-zoom {zoomClass}" title="{zoomTitle}">{zoomIcon}</button>'; //hsy 수정
     tActionDrag = '<span class="file-drag-handle {dragClass}" title="{dragTitle}">{dragIcon}</span>';
     tTagBef = '<div class="file-preview-frame{frameClass}" id="{previewId}" data-fileindex="{fileindex}"' +
         ' data-template="{template}"';
@@ -1788,6 +1789,10 @@
                 });
             }else{
                 self._raise('getFileupload', [self.fileList]);
+                //hsy 수정
+                var event = $.Event('click');
+                $('.fileinput-cancel-button').trigger(event)
+
             }
 
         },
