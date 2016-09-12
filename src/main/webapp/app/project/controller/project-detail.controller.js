@@ -301,6 +301,7 @@
                 vm.previewFiles=[];
                 vm.previewFileUrl=[];
                 projectDetailReload();
+                $scope.getTraceLog(vm.project.id);
                 //$state.go("my-project.detail", {}, {reload : true});
             });
         }
@@ -390,14 +391,28 @@
             }).then(function (response) {
                 $scope.$emit('wmsApp:taskUpdate', response);
                 toastr.success('프로젝트 댓글 등록 완료', '프로젝트 댓글 등록 완료');
-                TaskListSearch.TaskAudigLog({'entityId' : vm.project.id, 'entityName' : 'Project'}).then(function(result){
-                    vm.TaskAuditLog = result;
-                    vm.commentList=[];
-                    angular.forEach(vm.TaskAuditLog.data, function(val){
-                        if(val.entityField == 'reply'){
-                            vm.commentList.push(val);
-                        }
-                    });
+                // TaskListSearch.TaskAudigLog({'entityId' : vm.project.id, 'entityName' : 'Project'}).then(function(result){
+                //     vm.TaskAuditLog = result;
+                //     vm.commentList=[];
+                //     angular.forEach(vm.TaskAuditLog.data, function(val){
+                //         if(val.entityField == 'reply'){
+                //             vm.commentList.push(val);
+                //         }
+                //     });
+                // });
+
+                $scope.getTraceLog(vm.project.id);
+            });
+        }
+
+        $scope.getTraceLog = function(projectId) {
+            TaskListSearch.TaskAudigLog({'entityId' : projectId, 'entityName' : 'Project'}).then(function(result){
+                vm.TaskAuditLog = result;
+                vm.commentList=[];
+                angular.forEach(vm.TaskAuditLog.data, function(val){
+                    if(val.entityField == 'reply'){
+                        vm.commentList.push(val);
+                    }
                 });
             });
         }
