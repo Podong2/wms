@@ -280,7 +280,7 @@
             </summernote>
         </div>
 
-        <div class="task-file-area" ng-class="vm.fileAreaOpen ? 'on' : ''">
+        <div class="task-file-area" ng-class="(vm.fileAreaOpen || vm.files.length > 0) ? 'on' : ''">
             <div class="file-header-area">
                 <ul>
                     <li>파일 ({{vm.files.length == 0 ? 0 : vm.files.length}})</li>

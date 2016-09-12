@@ -304,7 +304,7 @@
             </div>
         </div>
 
-        <div class="task-file-area"  ng-class="vm.fileAreaOpen ? 'on' : ''">
+        <div class="task-file-area"  ng-class="(vm.fileAreaOpen || vm.previewFiles.length > 0) ? 'on' : ''">
             <div class="file-header-area">
                 <ul>
                     <li>파일 ({{vm.previewFiles.length}})</li>

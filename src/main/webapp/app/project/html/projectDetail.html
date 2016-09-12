@@ -7,13 +7,13 @@
             </div>
             <div class="col-md-3">
                 <span class="pull-right taskOptionBtnArea">
-                    <span class="taskModalBtn" ng-click="taskAddModalOpen()" class="pull-right">
+                    <span class="taskModalBtn" class="pull-right">
                         <i class="fa fa-star"></i>
                     </span>
-                    <span class="taskModalBtn" ng-click="taskAddModalOpen()" class="pull-right">
+                    <span class="taskModalBtn" class="pull-right">
                         <i class="fa fa-link"></i>
                     </span>
-                    <span class="taskModalBtn" ng-click="taskAddModalOpen()" class="pull-right">
+                    <span class="taskModalBtn" class="pull-right">
                         <i class="fa fa-ellipsis-v"></i>
                     </span>
                 </span>
@@ -176,7 +176,7 @@
             </div>
         </div>
 
-        <div class="task-file-area" ng-class="vm.fileAreaOpen ? 'on' : ''">
+        <div class="task-file-area" ng-class="(vm.fileAreaOpen || vm.previewFiles.length > 0) ? 'on' : ''">
             <div class="file-header-area">
                 <ul>
                     <li>파일 ({{vm.previewFiles.length}})</li>
