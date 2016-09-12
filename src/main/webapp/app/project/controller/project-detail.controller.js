@@ -199,6 +199,11 @@
             }
         });
 
+        /* 프로젝트 리로드 */
+        $rootScope.$on('project-detail-reload', function(){
+            projectDetailReload();
+        });
+
         // -------------------  broadcast end ------------------- //
 
         // date 포멧 변경
@@ -292,7 +297,10 @@
                 vm.project.projectAdminIds = "";
                 vm.project.projectUserIds = "";
                 vm.projectReload = false;
-                ProjectInfo.get({projectId : $stateParams.id, listType : 'TOTAL'}, onSuccess, onError);
+                vm.responseData = [];
+                vm.previewFiles=[];
+                vm.previewFileUrl=[];
+                projectDetailReload();
                 //$state.go("my-project.detail", {}, {reload : true});
             });
         }
@@ -304,6 +312,10 @@
         }
         function onError(){
 
+        }
+
+        function projectDetailReload(){
+            ProjectInfo.get({projectId : $stateParams.id, listType : 'TOTAL'}, onSuccess, onError);
         }
 
         function userIdPush(userInfo, type){
@@ -465,7 +477,7 @@
                 project : project,
                 type : 'project',
                 token : $scope.getToken(),
-                showCaption: true,
+                showCaption: false,
                 showUpload: true,
                 showRemove: false,
                 uploadAsync: false,

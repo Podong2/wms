@@ -123,7 +123,7 @@
                 task : vm.task,
                 type : 'task',
                 token : $scope.getToken(),
-                showCaption: true,
+                showCaption: false,
                 showUpload: true,
                 showRemove: false,
                 uploadAsync: false,

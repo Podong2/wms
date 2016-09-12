@@ -190,6 +190,14 @@
             </div>
             <input id="input-4" name="input4[]" type="file" multiple class="file-loading" get-files><br/>
             <wms-table ng-model="vm.previewFiles" table-configs="vm.tableConfigs" update-callback="updateCallback" ng-show="vm.fileListYn"></wms-table>
+            <style>
+                .fileinput-upload {
+                    display: none !important;
+                }
+                .btn-file{
+                    display: none !important;
+                }
+            </style>
         </div>
 
         <!-- Timeline Content -->
