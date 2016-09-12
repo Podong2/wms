@@ -5,8 +5,8 @@
 
 angular.module('wmsApp')
     .controller("taskEditCtrl", taskEditCtrl);
-taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'toastr', '$state', '$timeout', 'DateUtils', 'SubTask', 'Principal', 'findUser', '$q', 'TaskEdit', 'FindTasks', 'ProjectFind', 'ProjectFindByName'];
-        function taskEditCtrl($rootScope, $scope, $uibModalInstance, Code, $log, Task, toastr, $state, $timeout, DateUtils, SubTask, Principal, findUser, $q, TaskEdit, FindTasks, ProjectFind, ProjectFindByName) {
+taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'toastr', '$state', '$timeout', 'DateUtils', 'SubTask', 'Principal', 'findUser', '$q', 'TaskEdit', 'FindTasks', 'ProjectFind', 'ProjectFindByName', '$cookies'];
+        function taskEditCtrl($rootScope, $scope, $uibModalInstance, Code, $log, Task, toastr, $state, $timeout, DateUtils, SubTask, Principal, findUser, $q, TaskEdit, FindTasks, ProjectFind, ProjectFindByName, $cookies) {
             var vm = this;
             vm.baseUrl = window.location.origin;
 
@@ -41,6 +41,11 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             $scope.assigneeUser = [];
             $scope.watchers = [];
             $scope.relatedTaskList = [];
+
+            $scope.getToken = function() {
+                return $cookies.get("CSRF-TOKEN");
+            };
+            $scope.getToken()
 
             /* task info */
             vm.task = {
@@ -194,7 +199,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
 
             $scope.files = [];
             // 파일 목록 라이브러리에서 가져오기
-            $scope.$on('setFiles', function (event, args) {
+            $scope.$on('setTaskAddFiles', function (event, args) {
                 $scope.files = [];
                 angular.forEach(args, function(value){
                     $scope.files.push(value)
@@ -312,7 +317,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 vm.subTaskUpdateForm = subTask;
                 $scope.pickerFindUsers('');
             }
-            
+
             /* 타스크의 서브타스크 등록 */
             function subTaskSave(){
                 if(vm.subTask.name != '') SubTask.save(vm.subTask, onSubTaskSaveSuccess, onSaveError);
@@ -328,6 +333,37 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 if(vm.state = 'my-task'){
                     $rootScope.$broadcast('taskReload', {listType : 'TODAY'})
                 }
+
+                $("#input-3").fileinput({
+                    uploadUrl : '/tasks/uploadFile',
+                    task : vm.task,
+                    type : 'task-add',
+                    token : $scope.getToken(),
+                    showCaption: false,
+                    showUpload: true,
+                    showRemove: false,
+                    uploadAsync: false,
+                    overwriteInitial: false,
+                    initialPreviewAsData: true, // defaults markup
+                    initialPreviewFileType: 'image', // image is the default and can be overridden in config below
+                    uploadExtraData: function (previewId, index) {
+                        var obj = {};
+                        $('.file-form').find('input').each(function() {
+                            var id = $(this).attr('id'), val = $(this).val();
+                            obj[id] = val;
+                        });
+                        return obj;
+                    }
+                }).on('filesorted', function(e, params) {
+                    console.log('File sorted params', params);
+                }).on('fileuploaded', function(e, params) {
+                    console.log('File uploaded params', params);
+                }).on('getFileupload', function(e, params) {
+                    angular.forEach(params, function(value){
+                        $scope.files.push(value)
+                    });
+                    $log.debug("파일 목록 : ", $scope.files);
+                })
             }
 
             vm.subTaskList = [];
@@ -379,6 +415,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 vm.task.taskRepeatSchedule = vm.taskRepeatSchedule;
 
                 $log.debug("vm.task ;::::::", vm.task);
+                $log.debug("파일 목록 ;::::::", $scope.files);
                 TaskEdit.saveTask({
                     method : "POST",
                     file : $scope.files,

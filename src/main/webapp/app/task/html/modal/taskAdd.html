@@ -281,7 +281,23 @@
         </div>
 
         <div class="task-file-area" ng-class="vm.fileAreaOpen ? 'on' : ''">
-            <input id="input-4" name="input4[]" type="file" multiple class="file-loading" get-files>
+            <div class="file-header-area">
+                <ul>
+                    <li>파일 ({{vm.files.length == 0 ? 0 : vm.files.length}})</li>
+                    <li><label for="input-3" class="cursor"><i class='fa fa-paperclip'></i></label></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
+            <input id="input-3" name="input3[]" type="file" multiple class="file-loading" get-files file-type="task-add">
+            <style>
+                .kv-upload-progress {
+                    display: none;
+                }
+                .fileinput-cancel {
+                    display: none;
+                }
+            </style>
         </div>
 
     </div>
@@ -291,7 +307,3 @@
     <button type="button" class="btn btn_icon btn_customs2" ng-click="vm.cancel()" owl-btn-cancel></button>
 </div>
 
-
-<script>
-    $("#input-4").fileinput({showCaption: false, showUpload: false, uploadUrl:"1", uploadAsync: false});
-</script>
