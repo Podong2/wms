@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.mysema.query.BooleanBuilder;
 import kr.wisestone.wms.common.exception.CommonRuntimeException;
 import kr.wisestone.wms.domain.*;
+import kr.wisestone.wms.repository.CodeRepository;
 import kr.wisestone.wms.repository.ProjectRepository;
 import kr.wisestone.wms.security.SecurityUtils;
 import kr.wisestone.wms.web.rest.condition.ProjectTaskCondition;
@@ -59,6 +60,9 @@ public class ProjectService {
 
     @Inject
     private AttachedFileMapper attachedFileMapper;
+
+    @Inject
+    private CodeRepository codeRepository;
 
     @Transactional
     public ProjectDTO save(ProjectForm projectForm) {
@@ -124,6 +128,10 @@ public class ProjectService {
         Project origin = projectRepository.findOne(projectForm.getId());
 
         origin = projectForm.bind(origin);
+
+        if(projectForm.getStatusId() != null) {
+            origin.setStatus(this.codeRepository.findOne(projectForm.getStatusId()));
+        }
 
         for(MultipartFile multipartFile : files) {
 
