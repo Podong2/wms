@@ -92,11 +92,11 @@ public class ProjectResource {
             .body(result);
     }
 
-    @RequestMapping(value = "/projects/removeFile",
+    @RequestMapping(value = "/projects/removeFile/{projectId}/{attachedFileId}",
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<ProjectDTO> removeFile(@RequestParam("projectId") Long projectId, @RequestParam("attachedFileId") Long attachedFileId) throws URISyntaxException, IOException {
+    public ResponseEntity<ProjectDTO> removeFile(@PathVariable("projectId") Long projectId, @PathVariable("attachedFileId") Long attachedFileId) throws URISyntaxException, IOException {
 
         ProjectDTO result = projectService.removeFile(projectId, attachedFileId);
 
