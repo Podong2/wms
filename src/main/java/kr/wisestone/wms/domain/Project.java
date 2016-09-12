@@ -194,7 +194,7 @@ public class Project extends AbstractAuditingEntity implements Traceable {
 
     public ProjectAttachedFile findAttachedFile(Long attachedFileId) {
         return this.projectAttachedFiles.stream().filter(
-            projectAttachedFile -> projectAttachedFile.getId().equals(attachedFileId)
+            projectAttachedFile -> projectAttachedFile.getAttachedFile().getId().equals(attachedFileId)
         ).findFirst().get();
     }
 
@@ -236,7 +236,7 @@ public class Project extends AbstractAuditingEntity implements Traceable {
 
     public ProjectSharedAttachedFile findSharedAttachedFile(Long attachedFileId) {
         return this.projectSharedAttachedFiles.stream().filter(
-            projectSharedAttachedFile -> projectSharedAttachedFile.getId().equals(attachedFileId)
+            projectSharedAttachedFile -> projectSharedAttachedFile.getAttachedFile().getId().equals(attachedFileId)
         ).findFirst().get();
     }
 
