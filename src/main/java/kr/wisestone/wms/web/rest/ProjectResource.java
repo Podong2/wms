@@ -77,6 +77,34 @@ public class ProjectResource {
             .body(result);
     }
 
+    @RequestMapping(value = "/projects/uploadFile",
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<ProjectDTO> uploadFile(@ModelAttribute ProjectForm projectForm, MultipartHttpServletRequest request) throws URISyntaxException, IOException {
+
+        List<MultipartFile> files = request.getFiles("file");
+
+        ProjectDTO result = projectService.uploadFile(projectForm.getId(), files);
+
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert("project", projectForm.getId().toString()))
+            .body(result);
+    }
+
+    @RequestMapping(value = "/projects/removeFile",
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<ProjectDTO> removeFile(@RequestParam("projectId") Long projectId, @RequestParam("attachedFileId") Long attachedFileId) throws URISyntaxException, IOException {
+
+        ProjectDTO result = projectService.removeFile(projectId, attachedFileId);
+
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert("project", projectId.toString()))
+            .body(result);
+    }
+
     @RequestMapping(value = "/projects",
         method = RequestMethod.PUT,
         produces = MediaType.APPLICATION_JSON_VALUE)

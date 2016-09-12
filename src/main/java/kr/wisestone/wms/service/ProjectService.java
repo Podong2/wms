@@ -157,6 +157,40 @@ public class ProjectService {
         return projectRepository.save(origin);
     }
 
+    @Transactional
+    public ProjectDTO uploadFile(Long id, List<MultipartFile> files) {
+
+        Project origin = projectRepository.findOne(id);
+
+        for(MultipartFile multipartFile : files) {
+
+            AttachedFile attachedFile = this.attachedFileService.saveFile(multipartFile);
+
+            origin.addAttachedFile(attachedFile);
+        }
+
+        origin.setLastModifiedDate(ZonedDateTime.now());
+
+        origin = projectRepository.save(origin);
+        ProjectDTO result = projectMapper.projectToProjectDTO(origin);
+
+        return result;
+    }
+
+    @Transactional
+    public ProjectDTO removeFile(Long projectId, Long attachedFileId) {
+
+        Project origin = projectRepository.findOne(projectId);
+
+        origin.removeAttachedFile(attachedFileId);
+        origin.setLastModifiedDate(ZonedDateTime.now());
+
+        origin = projectRepository.save(origin);
+        ProjectDTO result = projectMapper.projectToProjectDTO(origin);
+
+        return result;
+    }
+
     @Transactional(readOnly = true)
     public List<ProjectDTO> findByNameLike(String name) {
 

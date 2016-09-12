@@ -772,17 +772,21 @@ public class TaskService {
             origin.addAttachedFile(attachedFile);
         }
 
+        origin.setLastModifiedDate(ZonedDateTime.now());
+
         origin = taskRepository.save(origin);
         TaskDTO result = taskMapper.taskToTaskDTO(origin);
 
         return result;
     }
 
+    @Transactional
     public TaskDTO removeFile(Long taskId, Long attachedFileId) {
 
         Task origin = taskRepository.findOne(taskId);
 
         origin.removeAttachedFile(attachedFileId);
+        origin.setLastModifiedDate(ZonedDateTime.now());
 
         origin = taskRepository.save(origin);
         TaskDTO result = taskMapper.taskToTaskDTO(origin);
