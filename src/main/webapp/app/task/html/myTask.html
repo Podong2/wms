@@ -297,7 +297,7 @@
                             </div>
                         </div>
                     </div>
-                    <div uib-accordion-group class="panel-default" heading="요청 받은 작업 {{status.isRequestTaskOpen ? '▼' : '▲'}} {{vm.requestTask.length}}" is-open="status.isRequestTaskOpen" ng-show="!vm.tabArea[0].status">
+                    <div uib-accordion-group class="panel-default" heading="요청 한 작업 {{status.isRequestTaskOpen ? '▼' : '▲'}} {{vm.requestTask.length}}" is-open="status.isRequestTaskOpen" ng-show="!vm.tabArea[0].status">
                         <div class="table table-bordered table-hover " style="margin-bottom: 0;">
                             <div>
                                 <div ng-repeat="data in vm.requestTask">
