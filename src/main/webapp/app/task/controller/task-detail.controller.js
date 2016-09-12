@@ -568,6 +568,7 @@
             }).then(function (response) {
                 toastr.success('태스크 수정 완료', '태스크 수정 완료');
                 $rootScope.$broadcast('projectEditClose');
+                $rootScope.$broadcast('taskReload', $stateParams.listType);
                 vm.task.removeAssigneeIds = "";
                 vm.task.removeWatcherIds = "";
                 vm.task.removeRelatedTaskIds ="";
