@@ -6,6 +6,7 @@ angular.module('wmsApp')
     .directive('projectPickerEditToggle', projectPickerEditToggle)
     .directive('projectPickerAddToggle', projectPickerAddToggle)
     .directive('projectAddToggle', projectAddToggle)
+    .directive('userPickerBtnToggle', userPickerBtnToggle)
     .directive('gnbTaskHistoryToggle', gnbTaskHistoryToggle);
 toggleEvent.$inject=['$compile', '$filter', '$log', '$sce', '$timeout'];
 sectionToggle.$inject=['$timeout', '$rootScope'];
@@ -14,6 +15,7 @@ userPickerEditToggle.$inject=['$timeout'];
 projectPickerEditToggle.$inject=['$timeout', '$rootScope'];
 projectPickerAddToggle.$inject=['$timeout', '$rootScope'];
 projectAddToggle.$inject=['$timeout', '$rootScope'];
+userPickerBtnToggle.$inject=['$timeout'];
 gnbTaskHistoryToggle.$inject=['$timeout'];
 function toggleEvent($compile, $filter, $log, $sce, $timeout) {
 
@@ -227,6 +229,29 @@ function gnbTaskHistoryToggle($timeout) {
                 $timeout(function () {
                     $(".project-focusing").focus();
                 }, 400);
+            });
+        }
+    }
+}
+/**
+ * user picker +버튼 보임 안보임 처리
+ * @param $timeout
+ * @returns {{restrict: string, link: link}}
+ */
+function userPickerBtnToggle($timeout) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attr) {
+            var $elements = element;
+            $('body').click(function (e) {
+                if (!$($elements).has(e.target).length) {
+                    $($elements).find('.user-picker-plus-btn').removeClass("on");
+                    $($elements).find('.user-picker-input').removeClass("on");
+                }
+            });
+            element.on('click', function(_this) {
+                $($elements).find('.user-picker-plus-btn').addClass("on");
+                $($elements).find('.user-picker-input').addClass("on");
             });
         }
     }

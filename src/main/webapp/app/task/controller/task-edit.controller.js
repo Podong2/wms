@@ -112,14 +112,19 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             this.dueDateFrom = {
                 date: "",
                 datepickerOptions: {
-                    maxDate: null
+                    customClass: '',
+                    minDate: new Date(),
+                    showWeeks: true
                 }
             };
+
             // max date picker
             this.dueDateTo = {
                 date: "",
                 datepickerOptions: {
-                    minDate: null
+                    customClass: '',
+                    minDate: new Date(),
+                    showWeeks: true
                 }
             };
             // 반복작업 시작시간

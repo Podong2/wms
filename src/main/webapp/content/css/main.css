@@ -2186,7 +2186,7 @@ i:active, .i:active, i:focus, .i:focus{
     position: absolute;
     border: 1px solid #fdfdfd;
     z-index: 1060;
-    width: 600px;
+    width: 665px;
     font-size: 14px;
     background-color: #fff;
     background-clip: padding-box;
@@ -2203,7 +2203,7 @@ i:active, .i:active, i:focus, .i:focus{
     position: absolute;
     border: 1px solid #fdfdfd;
     z-index: 1060;
-    width: 600px;
+    width: 665px;
     font-size: 14px;
     background-color: #fff;
     background-clip: padding-box;
@@ -2648,6 +2648,18 @@ text-align: right;
 }
 .file-input.on{
     display: none;
+}
+.user-picker-plus-btn{
+    display: block;
+}
+.user-picker-plus-btn.on{
+    display: none;
+}
+.user-picker-input{
+    display: none;
+}
+.user-picker-input.on{
+    display: block;
 }
 
 

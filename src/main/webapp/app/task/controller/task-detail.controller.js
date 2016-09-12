@@ -196,14 +196,19 @@
         this.dueDateFrom = {
             date: DateUtils.toDate(vm.task.startDate == null ? '' : vm.task.startDate),
             datepickerOptions: {
-                maxDate: null
+                customClass: '',
+                minDate: new Date(),
+                showWeeks: true
             }
         };
+
         // max date picker
         this.dueDateTo = {
             date: DateUtils.toDate(vm.task.endDate == null ? '' : vm.task.endDate),
             datepickerOptions: {
-                minDate: null
+                customClass: '',
+                minDate: new Date(),
+                showWeeks: true
             }
         };
         // 반복작업 시작시간
