@@ -6,10 +6,10 @@
         .controller('TaskDetailCtrl', TaskDetailCtrl);
 
     TaskDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', 'TaskAttachedFile', '$log', 'TaskEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask',
-        'FindTasks', 'entity', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectFindByName', 'ModalService', 'TaskProgressStatus', 'tableService', 'ModifySubTask', '$http'];
+        'FindTasks', 'entity', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectFindByName', 'ModalService', 'TaskProgressStatus', 'tableService', 'ModifySubTask', '$http', '$cookies'];
 
     function TaskDetailCtrl($scope, $rootScope, $stateParams, Task, Code, TaskAttachedFile, $log, TaskEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask,
-                            FindTasks, entity, TaskListSearch, dataService, Principal, ProjectFind, ProjectFindByName, ModalService, TaskProgressStatus, tableService, ModifySubTask, $http) {
+                            FindTasks, entity, TaskListSearch, dataService, Principal, ProjectFind, ProjectFindByName, ModalService, TaskProgressStatus, tableService, ModifySubTask, $http, $cookies) {
         var vm = this;
         vm.baseUrl = window.location.origin;
 
@@ -69,6 +69,7 @@
         vm.userList = [];
         vm.userName = '';
         $scope.userName = '';
+        vm.fileListYn = false;
         // 하위 작업 업데이트 파라미터
         vm.subTaskUpdateForm = {
             id : '',
@@ -98,6 +99,15 @@
             return entity;
         }
 
+        $scope.getToken = function() {
+            return $cookies.get("CSRF-TOKEN");
+        };
+        $scope.getToken()
+
+        $scope.fileRemove = function(url, id){
+            $log.debug(url, id)
+        }
+
         /* 로그& 댓글 불러오기 */
         TaskListSearch.TaskAudigLog({'entityId' : vm.task.id, 'entityName' : 'Task'}).then(function(result){
             vm.TaskAuditLog = result;
@@ -109,8 +119,9 @@
             });
 
             $("#input-4").fileinput({
-                uploadUrl : '/api/tasks/update2',
+                uploadUrl : '/tasks/uploadFile',
                 task : vm.task,
+                token : $scope.getToken(),
                 showCaption: true,
                 showUpload: true,
                 showRemove: false,

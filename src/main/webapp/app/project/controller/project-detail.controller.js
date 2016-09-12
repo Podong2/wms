@@ -70,7 +70,7 @@
             $log.debug("vm.previewFiles : ", vm.previewFiles);
             vm.responseData = _.clone(vm.previewFiles);
 
-            fileViewConfig();
+            fileViewConfig($stateParams.project);
 
             return $stateParams.project;
         }
@@ -453,9 +453,10 @@
 
         }
 
-        function fileViewConfig(){
+        function fileViewConfig(project){
             $("#input-4").fileinput({
-                uploadUrl : '1',
+                uploadUrl : '/tasks/uploadFile',
+                task : project,
                 showCaption: true,
                 showUpload: false,
                 showRemove: false,
@@ -465,9 +466,13 @@
                 initialPreviewAsData: true, // defaults markup
                 initialPreviewFileType: 'image', // image is the default and can be overridden in config below
                 initialPreviewConfig: vm.previewFiles,
-                uploadExtraData: {
-                    img_key: "1000",
-                    img_keywords: "happy, nature",
+                uploadExtraData: function (previewId, index) {
+                    var obj = {};
+                    $('.file-form').find('input').each(function() {
+                        var id = $(this).attr('id'), val = $(this).val();
+                        obj[id] = val;
+                    });
+                    return obj;
                 }
             }).on('filesorted', function(e, params) {
                 console.log('File sorted params', params);

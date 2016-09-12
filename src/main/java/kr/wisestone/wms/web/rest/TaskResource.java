@@ -176,11 +176,11 @@ public class TaskResource {
             .body(result);
     }
 
-    @RequestMapping(value = "/tasks/removeFile",
+    @RequestMapping(value = "/tasks/removeFile/{taskId}/{attachedFileId}",
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<TaskDTO> removeFile(@RequestParam("taskId") Long taskId, @RequestParam("attachedFileId") Long attachedFileId) throws URISyntaxException, IOException {
+    public ResponseEntity<TaskDTO> removeFile(@PathVariable("taskId") Long taskId, @PathVariable("attachedFileId") Long attachedFileId) throws URISyntaxException, IOException {
 
         TaskDTO result = taskService.removeFile(taskId, attachedFileId);
 
