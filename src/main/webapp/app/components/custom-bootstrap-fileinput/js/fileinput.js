@@ -342,7 +342,8 @@
         '    <div class="kv-fileinput-error"></div>\n' +
         '    </div>\n' +
         '</div>';
-    tClose = '<div class="close fileinput-remove">&times;</div>\n';
+    //tClose = '<div class="close fileinput-remove">&times;</div>\n';
+    tClose = '';
     tFileIcon = '<i class="glyphicon glyphicon-file kv-caption-icon"></i>';
     tCaption = '<div tabindex="500" class="form-control file-caption {class}">\n' +
         '   <div class="file-caption-name"></div>\n' +
@@ -1543,6 +1544,13 @@
                                 self.reset();
                             }
                         });
+
+                        var evt = $.Event('click');
+                        if(self.type == 'task'){
+                            $('.task-reload-btn').trigger(evt);
+                        }else if(self.type == 'project'){
+                            $('.project-reload-btn').trigger(evt);
+                        }
                     },
                     error: function (jqXHR, textStatus, errorThrown) {
                         var errMsg = self._parseError(jqXHR, errorThrown);
@@ -1762,10 +1770,20 @@
                 contentType: false,
                 data: formData,
                 type: 'POST',
-                success: fnSuccess,
+                success: function(){
+
+                    return fnSuccess;
+                },
                 complete: fnComplete,
                 error: fnError
             });
+
+            var evt = $.Event('click');
+            if(self.type == 'task'){
+                $('.task-reload-btn').trigger(evt);
+            }else if(self.type == 'project'){
+                $('.project-reload-btn').trigger(evt);
+            }
         },
         _initUploadSuccess: function (out, $thumb, allFiles) {
             var self = this, append, data, index, $newThumb, content, config, tags, i;

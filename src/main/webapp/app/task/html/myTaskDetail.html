@@ -308,17 +308,25 @@
             <div class="file-header-area">
                 <ul>
                     <li>파일 ({{vm.previewFiles.length}})</li>
-                    <li><i class="fa fa-download"></i></li>
-                    <li><i class="fa fa-clipboard"></i></li>
-                    <li><i class="fa fa-list" ng-click="vm.fileListYn = !vm.fileListYn" file-list-yn></i></li>
-                    <li><i class="fa fa-trash"></i></li>
+                    <li><label class="cursor"><i class="fa fa-download"></i></label></li>
+                    <li><label for="input-4" class="cursor"><i class='fa fa-paperclip'></i></label></li>
+                    <li><label class="cursor"><i class="fa fa-list" ng-click="vm.fileListYn = !vm.fileListYn" file-list-yn></i></label></li>
+                    <li><label class="cursor"><i class="fa fa-trash"></i></label></li>
                     <li></li>
                     <li></li>
                 </ul>
             </div>
-            <input id="input-4" name="input4[]" type="file" multiple class="file-loading" > <!--  get-files -->
+            <input id="input-4" name="input4[]" type="file" multiple class="file-loading" get-files> <!--  get-files -->
             <!--<input id="input-pa" name="input-pa[]" type="file" multiple class="file-loading" get-files>--><br/>
             <wms-table ng-model="vm.previewFiles" table-configs="vm.tableConfigs" update-callback="updateCallback" ng-show="vm.fileListYn"></wms-table>
+            <style>
+                .fileinput-upload {
+                    display: none !important;
+                }
+                .btn-file{
+                    display: none !important;
+                }
+            </style>
         </div>
         <!-- Timeline Content -->
         <div class="smart-timeline">
