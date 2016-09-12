@@ -25,6 +25,12 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             vm.orderType = '';
             vm.listType = '';
 
+            // 작업 목록 필터값
+            $scope.chartFilterYn = false;
+            $scope.completeYn = true;
+            $scope.delayYn = true;
+            $scope.holdYn = true;
+            $scope.inProgressYn = true;
 
 
             /* layout config option */
@@ -44,11 +50,13 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
 
             $scope.$watchCollection('vm.statusId', function(newValue, oldValue){
                 if(newValue != undefined && oldValue != newValue) {
+                    $scope.chartFilterYn = false;
                     getList();
                 }
             });
             $scope.$watchCollection('vm.orderType', function(newValue, oldValue){
                 if(newValue != undefined && oldValue != newValue) {
+                    $scope.chartFilterYn = false;
                     getList();
                 }
             });
@@ -56,6 +64,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             // 프로젝트 타스크 목록 필터
             function getTaskListInProject(listType){
                 vm.listType = listType;
+                $scope.chartFilterYn = false;
                 getList();
             }
 
@@ -117,19 +126,31 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 $scope.pieData = [
                     {
                         key: "지연",
-                        y: vm.info.delayedCount
+                        y: vm.info.delayedCount,
+                        callback: function () {
+                            chartFiltering('delay');
+                        }
                     },
                     {
                         key: "보류",
-                        y: vm.info.holdCount
+                        y: vm.info.holdCount,
+                        callback: function () {
+                            chartFiltering('hold');
+                        }
                     },
                     {
                         key: "진행",
-                        y: vm.info.inProgressCount
+                        y: vm.info.inProgressCount,
+                        callback: function () {
+                            chartFiltering('inProgress');
+                        }
                     },
                     {
                         key: "완료",
-                        y: vm.info.completeCount
+                        y: vm.info.completeCount,
+                        callback: function () {
+                            chartFiltering('complete');
+                        }
                     }
                 ];
 
@@ -170,6 +191,25 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             }
             function onError(error) {
                 AlertService.error(error.data.message);
+            }
+
+
+            function chartFiltering(type){
+                $scope.chartFilterYn = true;
+                $scope.holdYn = false;
+                $scope.inProgressYn = false;
+                $scope.completeYn = false;
+                $scope.delayYn = false;
+                if(type == 'delay'){
+                    $scope.delayYn = true;
+                }else if(type == 'complete'){
+                    $scope.completeYn = true;
+                }else if(type == 'hold'){
+                    $scope.holdYn = true;
+                }else if(type == 'inProgress'){
+                    $scope.inProgressYn = true;
+                }
+                $scope.$apply()
             }
 
             vm.task = {

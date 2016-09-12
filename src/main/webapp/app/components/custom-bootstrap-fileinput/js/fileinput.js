@@ -386,7 +386,7 @@
         '    <div class="clearfix"></div>\n' +
         '</div>';
     tActionDelete = '<button type="button" class="kv-file-remove {removeClass}" title="{removeTitle}" data-task-id="{taskId}" data-project-id="{projectId}" data-attached-file-id="{attachedFileId}" {dataUrl}{dataKey}>{removeIcon}</button>\n' +
-        '<button type="button" class="kv-file-download {removeClass}" title="{removeTitle}" data-task-id="{taskId}" data-project-id="{projectId}" data-attached-file-id="{attachedFileId}" {dataUrl}{dataKey}>{downloadIcon}</button>'; // hsy 파일 삭제
+        '<button type="button" class="kv-file-download {removeClass}" title="{downloadTitle}" data-task-id="{taskId}" data-project-id="{projectId}" data-attached-file-id="{attachedFileId}" {dataUrl}{dataKey}>{downloadIcon}</button>'; // hsy 파일 삭제
     tActionUpload = '';
     //tActionUpload = '<button type="button" class="kv-file-upload {uploadClass}" title="{uploadTitle}">' +
     //    '{uploadIcon}</button>'; //hsy 수정
@@ -2854,6 +2854,7 @@
                         .replace(/\{removeIcon}/g, config.removeIcon)
                         .replace(/\{downloadIcon}/g, config.downloadIcon)
                         .replace(/\{removeTitle}/g, config.removeTitle)
+                        .replace(/\{downloadTitle}/g, config.downloadTitle)
                         .replace(/\{taskId}/g, self.task == null ? '' : self.task.id)
                         .replace(/\{projectId}/g, self.project == null ? '' : self.project.id)
                         .replace(/\{attachedFileId}/g, url || url != '' ? pieces[pieces.length-1] : '')

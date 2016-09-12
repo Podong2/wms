@@ -39,7 +39,7 @@ angular.module('wms.widget.myMonthlyTaskChart', ['adf.provider', 'nvd3', 'wms.pi
           controllerAs : 'vm'
         }
       });
-  }]).controller('myMonthlyTaskChartCtrl', ["$scope", 'DashboardMyTask', '$log', 'DashboardMyTaskCount', function($scope, DashboardMyTask, $log, DashboardMyTaskCount){
+  }]).controller('myMonthlyTaskChartCtrl', ["$scope", 'DashboardMyTask', '$log', 'DashboardMyTaskCount', '$rootScope', function($scope, DashboardMyTask, $log, DashboardMyTaskCount, $rootScope){
     var vm = this;
     vm.getTodayTask = getTodayTask;
     vm.taskTypeChange = taskTypeChange;
