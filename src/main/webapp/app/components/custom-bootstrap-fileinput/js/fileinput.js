@@ -387,8 +387,9 @@
         '</div>';
     tActionDelete = '<button type="button" class="kv-file-remove {removeClass}" title="{removeTitle}" data-task-id="{taskId}" data-project-id="{projectId}" data-attached-file-id="{attachedFileId}" {dataUrl}{dataKey}>{removeIcon}</button>\n' +
         '<button type="button" class="kv-file-download {removeClass}" title="{removeTitle}" data-task-id="{taskId}" data-project-id="{projectId}" data-attached-file-id="{attachedFileId}" {dataUrl}{dataKey}>{downloadIcon}</button>'; // hsy 파일 삭제
-    tActionUpload = '<button type="button" class="kv-file-upload {uploadClass}" title="{uploadTitle}">' +
-        '{uploadIcon}</button>';
+    tActionUpload = '';
+    //tActionUpload = '<button type="button" class="kv-file-upload {uploadClass}" title="{uploadTitle}">' +
+    //    '{uploadIcon}</button>';
     tActionZoom = '<button type="button" class="kv-file-zoom {zoomClass}" title="{zoomTitle}">{zoomIcon}</button>';
     tActionDrag = '<span class="file-drag-handle {dragClass}" title="{dragTitle}">{dragIcon}</span>';
     tTagBef = '<div class="file-preview-frame{frameClass}" id="{previewId}" data-fileindex="{fileindex}"' +
