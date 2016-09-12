@@ -2099,6 +2099,16 @@ i:active, .i:active, i:focus, .i:focus{
         bottom: 10px;
         margin: 0 2px;
     }
+    .comment-first-area.first{
+        position: relative;
+        top: 10px;
+        right: 40px;
+    }
+    .comment-first-area.comment-first{
+        position: relative;
+        top: 10px;
+        right: 24px;
+    }
     /*<< comment css end >>*/
 /*---------------------------- task css end ------------------------------*/
 
