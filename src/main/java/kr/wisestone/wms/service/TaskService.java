@@ -622,16 +622,6 @@ public class TaskService {
     }
 
     @Transactional(readOnly = true)
-    private void crawlingTasksByProject(Project project, String listType, List<TaskDTO> tasks) {
-        for(ProjectRelation projectRelation : project.getProjectChilds()) {
-
-            tasks.addAll(this.findDTOByProject(projectRelation.getChild(), listType));
-
-            this.crawlingTasksByProject(projectRelation.getChild(), listType, tasks);
-        }
-    }
-
-    @Transactional(readOnly = true)
     public List<Task> findByProject(Project project, String listType) {
 
         QTask $task = QTask.task;
@@ -658,25 +648,6 @@ public class TaskService {
         List<Task> tasks = Lists.newArrayList(taskRepository.findAll(predicate));
 
         return tasks;
-    }
-
-    @Transactional(readOnly = true)
-    public List<TaskDTO> findDTOByProject(Project project, String listType) {
-
-        List<Task> tasks = this.findByProject(project, listType);
-
-        List<TaskDTO> taskDTOs = Lists.newArrayList();
-
-        for(Task task : tasks) {
-
-            TaskDTO taskDTO = taskMapper.taskToTaskDTO(task);
-
-            this.copyTaskRelationProperties(task, taskDTO);
-
-            taskDTOs.add(taskDTO);
-        }
-
-        return taskDTOs;
     }
 
     @Transactional
