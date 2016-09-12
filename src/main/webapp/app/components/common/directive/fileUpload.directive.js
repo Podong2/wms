@@ -16,7 +16,9 @@ customOnChange.$inject=['$log', '$rootScope'];
                     if(scope.fileType == 'comment') {
                         $rootScope.$broadcast('setCommentFiles', changeEvent.target.files);
                     }
-                    else {
+                    else if(scope.fileType == 'task-add'){
+                        $rootScope.$broadcast('setTaskAddFiles', changeEvent.target.files);
+                    } else {
                         $rootScope.$broadcast('setFiles', changeEvent.target.files);
                     }
                     $(".kv-file-upload").remove();

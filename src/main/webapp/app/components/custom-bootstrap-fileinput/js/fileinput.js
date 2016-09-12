@@ -387,8 +387,9 @@
         '</div>';
     tActionDelete = '<button type="button" class="kv-file-remove {removeClass}" title="{removeTitle}" data-task-id="{taskId}" data-project-id="{projectId}" data-attached-file-id="{attachedFileId}" {dataUrl}{dataKey}>{removeIcon}</button>\n' +
         '<button type="button" class="kv-file-download {removeClass}" title="{removeTitle}" data-task-id="{taskId}" data-project-id="{projectId}" data-attached-file-id="{attachedFileId}" {dataUrl}{dataKey}>{downloadIcon}</button>'; // hsy 파일 삭제
-    tActionUpload = '<button type="button" class="kv-file-upload {uploadClass}" title="{uploadTitle}">' +
-        '{uploadIcon}</button>';
+    tActionUpload = '';
+    //tActionUpload = '<button type="button" class="kv-file-upload {uploadClass}" title="{uploadTitle}">' +
+    //    '{uploadIcon}</button>';
     tActionZoom = '<button type="button" class="kv-file-zoom {zoomClass}" title="{zoomTitle}">{zoomIcon}</button>';
     tActionDrag = '<span class="file-drag-handle {dragClass}" title="{dragTitle}">{dragIcon}</span>';
     tTagBef = '<div class="file-preview-frame{frameClass}" id="{previewId}" data-fileindex="{fileindex}"' +
@@ -882,6 +883,7 @@
                 case 'filebatchuploadcomplete':
                 case 'filebatchuploadsuccess':
                 case 'fileuploaded':
+                case 'getFileupload':
                 case 'fileclear':
                 case 'filecleared':
                 case 'filereset':
@@ -1470,103 +1472,105 @@
             /* hsy 파일 삭제 커스텀 */
             self.$preview.find('.kv-file-remove').each(function () {
                 var $el = $(this), vUrl = $el.data('url') || self.deleteUrl, vKey = $el.data('key');
-                var taskId = $el.data('taskId');
-                var projectId = $el.data('projectId');
-                var attachedFileId = $el.data('attachedFileId');
-                var formData = new FormData();
-                formData.append("taskId", taskId);
-                formData.append("projectId", projectId);
-                formData.append("attachedFileId", attachedFileId);
-                var id = '';
-                var url = '';
-                if(self.type == 'task'){
-                    url = '/api/tasks/removeFile/';
-                    id = taskId;
-                }else if(self.type == 'project'){
-                    url = '/api/projects/removeFile/';
-                    id = projectId;
-                }
+                if(self.type != 'task-add'){
+                    var taskId = $el.data('taskId');
+                    var projectId = $el.data('projectId');
+                    var attachedFileId = $el.data('attachedFileId');
+                    var formData = new FormData();
+                    formData.append("taskId", taskId);
+                    formData.append("projectId", projectId);
+                    formData.append("attachedFileId", attachedFileId);
+                    var id = '';
+                    var url = '';
+                    if(self.type == 'task'){
+                        url = '/api/tasks/removeFile/';
+                        id = taskId;
+                    }else if(self.type == 'project'){
+                        url = '/api/projects/removeFile/';
+                        id = projectId;
+                    }
 
-                if (isEmpty(vUrl) || vKey === undefined) {
-                    return;
-                }
-                var $frame = $el.closest('.file-preview-frame'), cache = previewCache.data[self.id],
-                    settings, params, index = $frame.data('fileindex'), config, extraData;
-                index = parseInt(index.replace('init_', ''));
-                config = isEmpty(cache.config) && isEmpty(cache.config[index]) ? null : cache.config[index];
-                extraData = isEmpty(config) || isEmpty(config.extra) ? deleteExtraData : config.extra;
-                if (typeof extraData === "function") {
-                    extraData = extraData();
-                }
-                params = {id: $el.attr('id'), key: vKey, extra: extraData};
-                settings = $.extend(true, {}, {
-                    headers: {
-                        Accept: "application/json; text/plain; */*"
-                        ,"X-CSRF-TOKEN": self.token
-                    },
-                    url: url + id + '/' + attachedFileId ,
-                    type: 'POST',
-                    data: $.extend(true, {}, {key: vKey}, extraData),
-                    beforeSend: function (jqXHR) {
-                        self.ajaxAborted = false;
-                        self._raise('filepredelete', [vKey, jqXHR, extraData]);
-                        if (self.ajaxAborted) {
-                            jqXHR.abort();
-                        } else {
-                            addCss($frame, 'file-uploading');
-                            addCss($el, 'disabled');
-                        }
-                    },
-                    success: function (data, textStatus, jqXHR) {
-                        var n, cap;
-                        if (isEmpty(data) || isEmpty(data.error)) {
-                            previewCache.unset(self.id, index);
-                            n = previewCache.count(self.id);
-                            cap = n > 0 ? self._getMsgSelected(n) : '';
-                            self._raise('filedeleted', [vKey, jqXHR, extraData]);
-                            self._setCaption(cap);
-                        } else {
-                            params.jqXHR = jqXHR;
-                            params.response = data;
-                            self._showError(data.error, params, 'filedeleteerror');
-                            $frame.removeClass('file-uploading');
-                            $el.removeClass('disabled');
-                            resetProgress();
-                            return;
-                        }
-                        $frame.removeClass('file-uploading').addClass('file-deleted');
-                        $frame.fadeOut('slow', function () {
-                            self._clearObjects($frame);
-                            $frame.remove();
-                            resetProgress();
-                            if (!n && self.getFileStack().length === 0) {
-                                self._setCaption('');
-                                self.reset();
+                    if (isEmpty(vUrl) || vKey === undefined) {
+                        return;
+                    }
+                    var $frame = $el.closest('.file-preview-frame'), cache = previewCache.data[self.id],
+                        settings, params, index = $frame.data('fileindex'), config, extraData;
+                    index = parseInt(index.replace('init_', ''));
+                    config = isEmpty(cache.config) && isEmpty(cache.config[index]) ? null : cache.config[index];
+                    extraData = isEmpty(config) || isEmpty(config.extra) ? deleteExtraData : config.extra;
+                    if (typeof extraData === "function") {
+                        extraData = extraData();
+                    }
+                    params = {id: $el.attr('id'), key: vKey, extra: extraData};
+                    settings = $.extend(true, {}, {
+                        headers: {
+                            Accept: "application/json; text/plain; */*"
+                            ,"X-CSRF-TOKEN": self.token
+                        },
+                        url: url + id + '/' + attachedFileId ,
+                        type: 'POST',
+                        data: $.extend(true, {}, {key: vKey}, extraData),
+                        beforeSend: function (jqXHR) {
+                            self.ajaxAborted = false;
+                            self._raise('filepredelete', [vKey, jqXHR, extraData]);
+                            if (self.ajaxAborted) {
+                                jqXHR.abort();
+                            } else {
+                                addCss($frame, 'file-uploading');
+                                addCss($el, 'disabled');
                             }
-                        });
+                        },
+                        success: function (data, textStatus, jqXHR) {
+                            var n, cap;
+                            if (isEmpty(data) || isEmpty(data.error)) {
+                                previewCache.unset(self.id, index);
+                                n = previewCache.count(self.id);
+                                cap = n > 0 ? self._getMsgSelected(n) : '';
+                                self._raise('filedeleted', [vKey, jqXHR, extraData]);
+                                self._setCaption(cap);
+                            } else {
+                                params.jqXHR = jqXHR;
+                                params.response = data;
+                                self._showError(data.error, params, 'filedeleteerror');
+                                $frame.removeClass('file-uploading');
+                                $el.removeClass('disabled');
+                                resetProgress();
+                                return;
+                            }
+                            $frame.removeClass('file-uploading').addClass('file-deleted');
+                            $frame.fadeOut('slow', function () {
+                                self._clearObjects($frame);
+                                $frame.remove();
+                                resetProgress();
+                                if (!n && self.getFileStack().length === 0) {
+                                    self._setCaption('');
+                                    self.reset();
+                                }
+                            });
 
-                        var evt = $.Event('click');
-                        if(self.type == 'task'){
-                            $('.task-reload-btn').trigger(evt);
-                        }else if(self.type == 'project'){
-                            $('.project-reload-btn').trigger(evt);
+                            var evt = $.Event('click');
+                            if(self.type == 'task'){
+                                $('.task-reload-btn').trigger(evt);
+                            }else if(self.type == 'project'){
+                                $('.project-reload-btn').trigger(evt);
+                            }
+                        },
+                        error: function (jqXHR, textStatus, errorThrown) {
+                            var errMsg = self._parseError(jqXHR, errorThrown);
+                            params.jqXHR = jqXHR;
+                            params.response = {};
+                            self._showError(errMsg, params, 'filedeleteerror');
+                            $frame.removeClass('file-uploading');
+                            resetProgress();
                         }
-                    },
-                    error: function (jqXHR, textStatus, errorThrown) {
-                        var errMsg = self._parseError(jqXHR, errorThrown);
-                        params.jqXHR = jqXHR;
-                        params.response = {};
-                        self._showError(errMsg, params, 'filedeleteerror');
-                        $frame.removeClass('file-uploading');
-                        resetProgress();
-                    }
-                }, self.ajaxDeleteSettings);
-                handler($el, 'click', function () {
-                    if (!self._validateMinCount()) {
-                        return false;
-                    }
-                    $.ajax(settings);
-                });
+                    }, self.ajaxDeleteSettings);
+                    handler($el, 'click', function () {
+                        if (!self._validateMinCount()) {
+                            return false;
+                        }
+                        $.ajax(settings);
+                    });
+                }
             });
         },
         _clearObjects: function ($el) {
@@ -1741,49 +1745,51 @@
         },
         _ajaxSubmit: function (fnBefore, fnSuccess, fnComplete, fnError, previewId, index) {
             var self = this, settings;
-            self._raise('filepreajax', [previewId, index]);
-            self._uploadExtra(previewId, index);
-            var url = '';
+            if(self.type != 'task-add'){
+                self._raise('filepreajax', [previewId, index]);
+                self._uploadExtra(previewId, index);
+                var url = '';
 
-            // hsy 파일 업로드 수정
-            var formData = new FormData();
-            $.each(self.fileList, function (key, data) {
-                if (!isEmpty(self.fileList[key])) {
-                    formData.append("file", data, self.filenames[key]);
+                // hsy 파일 업로드 수정
+                var formData = new FormData();
+                $.each(self.fileList, function (key, data) {
+                    if (!isEmpty(self.fileList[key])) {
+                        formData.append("file", data, self.filenames[key]);
+                    }
+                });
+                if(self.type == 'task'){
+                    url = '/api/tasks/uploadFile';
+                    formData.append("id", JSON.stringify(self.task.id));
+                }else if(self.type == 'project'){
+                    url = '/api/projects/uploadFile';
+                    formData.append("id", JSON.stringify(self.project.id));
                 }
-            });
-            if(self.type == 'task'){
-                url = '/api/tasks/uploadFile';
-                formData.append("id", JSON.stringify(self.task.id));
-            }else if(self.type == 'project'){
-                url = '/api/projects/uploadFile';
-                formData.append("id", JSON.stringify(self.project.id));
+                var evt = $.Event('click');
+                $.ajax({
+                    headers: {
+                        Accept: "application/json; text/plain; */*"
+                        ,"X-CSRF-TOKEN": self.token
+                    },
+                    url: url,
+                    processData: false,
+                    contentType: false,
+                    data: formData,
+                    type: 'POST',
+                    success: function(){
+                        if(self.type == 'task'){
+                            $('.task-reload-btn').trigger(evt);
+                        }else if(self.type == 'project'){
+                            $('.project-reload-btn').trigger(evt);
+                        }
+                        return fnSuccess;
+                    },
+                    complete: fnComplete,
+                    error: fnError
+                });
+            }else{
+                self._raise('getFileupload', [self.fileList]);
             }
 
-            $.ajax({
-                headers: {
-                    Accept: "application/json; text/plain; */*"
-                    ,"X-CSRF-TOKEN": self.token
-                },
-                url: url,
-                processData: false,
-                contentType: false,
-                data: formData,
-                type: 'POST',
-                success: function(){
-
-                    return fnSuccess;
-                },
-                complete: fnComplete,
-                error: fnError
-            });
-
-            var evt = $.Event('click');
-            if(self.type == 'task'){
-                $('.task-reload-btn').trigger(evt);
-            }else if(self.type == 'project'){
-                $('.project-reload-btn').trigger(evt);
-            }
         },
         _initUploadSuccess: function (out, $thumb, allFiles) {
             var self = this, append, data, index, $newThumb, content, config, tags, i;
@@ -2835,24 +2841,26 @@
                 template = self._getLayoutTemplate('actions'), config = self.fileActionSettings,
                 otherButtons = self.otherActionButtons.replace(/\{dataKey}/g, vKey),
                 removeClass = disabled ? config.removeClass + ' disabled' : config.removeClass;
-            if (showDelete) {
-                // hsy 파일 삭제 커스텀
-                btnDelete = self._getLayoutTemplate('actionDelete')
-                    .replace(/\{removeClass}/g, removeClass)
-                    .replace(/\{removeIcon}/g, config.removeIcon)
-                    .replace(/\{downloadIcon}/g, config.downloadIcon)
-                    .replace(/\{removeTitle}/g, config.removeTitle)
-                    .replace(/\{taskId}/g, self.task == null ? '' : self.task.id)
-                    .replace(/\{projectId}/g, self.project == null ? '' : self.project.id)
-                    .replace(/\{attachedFileId}/g, url || url != '' ? pieces[pieces.length-1] : '')
-                    .replace(/\{dataUrl}/g, vUrl)
-                    .replace(/\{dataKey}/g, vKey);
-            }
-            if (showUpload) {
-                btnUpload = self._getLayoutTemplate('actionUpload')
-                    .replace(/\{uploadClass}/g, config.uploadClass)
-                    .replace(/\{uploadIcon}/g, config.uploadIcon)
-                    .replace(/\{uploadTitle}/g, config.uploadTitle);
+            if(self.type != 'task-add'){
+                if (showDelete) {
+                    // hsy 파일 삭제 커스텀
+                    btnDelete = self._getLayoutTemplate('actionDelete')
+                        .replace(/\{removeClass}/g, removeClass)
+                        .replace(/\{removeIcon}/g, config.removeIcon)
+                        .replace(/\{downloadIcon}/g, config.downloadIcon)
+                        .replace(/\{removeTitle}/g, config.removeTitle)
+                        .replace(/\{taskId}/g, self.task == null ? '' : self.task.id)
+                        .replace(/\{projectId}/g, self.project == null ? '' : self.project.id)
+                        .replace(/\{attachedFileId}/g, url || url != '' ? pieces[pieces.length-1] : '')
+                        .replace(/\{dataUrl}/g, vUrl)
+                        .replace(/\{dataKey}/g, vKey);
+                }
+                if (showUpload) {
+                    btnUpload = self._getLayoutTemplate('actionUpload')
+                        .replace(/\{uploadClass}/g, config.uploadClass)
+                        .replace(/\{uploadIcon}/g, config.uploadIcon)
+                        .replace(/\{uploadTitle}/g, config.uploadTitle);
+                }
             }
             if (showZoom) {
                 btnZoom = self._getLayoutTemplate('actionZoom')
