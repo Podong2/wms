@@ -90,6 +90,7 @@
                 previewFile.size = byteCalculation(value.size);
                 previewFile.url = window.location.origin + "/api/attachedFile/" + value.id;
                 previewFile.id = value.id;
+                previewFile.contentType = value.contentType;
                 var fileInfo = _.clone(previewFile);
                 vm.previewFiles.push(fileInfo);
                 vm.previewFileUrl.push(previewFile.url);

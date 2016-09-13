@@ -5,8 +5,8 @@
 
 angular.module('wmsApp')
     .controller("projectInfoCtrl", projectInfoCtrl);
-projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLinks', '$rootScope', '$state', 'ProjectInfo', '$stateParams', 'toastr'];
-        function projectInfoCtrl($scope, Code, $log, Task, AlertService, ParseLinks, $rootScope, $state, ProjectInfo, $stateParams, toastr) {
+projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLinks', '$rootScope', '$state', 'ProjectInfo', '$stateParams', 'toastr', 'projectForm'];
+        function projectInfoCtrl($scope, Code, $log, Task, AlertService, ParseLinks, $rootScope, $state, ProjectInfo, $stateParams, toastr, projectForm) {
             var vm = this;
             vm.baseUrl = window.location.origin;
             //vm.codes = Code.query();
@@ -73,7 +73,8 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             function getList(){
                 ProjectInfo.get({projectId : $stateParams.id, listType : vm.listType, statusId : vm.statusId, orderType : vm.orderType}, onSuccess, onError);
             }
-            getList();
+            //getList();
+            onSuccess(projectForm)
 
             vm.reloadYn = false;
             $scope.$on("projectReload", function(event, args){
@@ -101,7 +102,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     if(task.statusGroup == "CANCEL") vm.cancel.push(task); // 완료
                     vm.tasks.push(task);
                 });
-                if(!vm.reloadYn) $state.go("my-project.detail", {project : vm.project});
+                $state.go("my-project.detail", {project : vm.project});
 
                 //vm.page = pagingParams.page;
 
