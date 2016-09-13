@@ -205,7 +205,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             $scope.files = [];
             // 파일 목록 라이브러리에서 가져오기
             $scope.$on('setTaskAddFiles', function (event, args) {
-                $scope.files = [];
+                //$scope.files = [];
                 angular.forEach(args, function(value){
                     $scope.files.push(value)
                 });
