@@ -752,6 +752,10 @@ public class TaskService {
         origin = taskRepository.save(origin);
         TaskDTO result = taskMapper.taskToTaskDTO(origin);
 
+        if(!origin.getTaskAttachedFiles().isEmpty()) {
+            result.setAttachedFiles(origin.getPlainTaskAttachedFiles().stream().map(AttachedFileDTO::new).collect(Collectors.toList()));
+        }
+
         return result;
     }
 
@@ -765,6 +769,10 @@ public class TaskService {
 
         origin = taskRepository.save(origin);
         TaskDTO result = taskMapper.taskToTaskDTO(origin);
+
+        if(!origin.getTaskAttachedFiles().isEmpty()) {
+            result.setAttachedFiles(origin.getPlainTaskAttachedFiles().stream().map(AttachedFileDTO::new).collect(Collectors.toList()));
+        }
 
         return result;
     }

@@ -182,6 +182,10 @@ public class ProjectService {
         origin = projectRepository.save(origin);
         ProjectDTO result = projectMapper.projectToProjectDTO(origin);
 
+        if(!origin.getProjectAttachedFiles().isEmpty()) {
+            result.setAttachedFiles(origin.getPlainProjectAttachedFiles().stream().map(AttachedFileDTO::new).collect(Collectors.toList()));
+        }
+
         return result;
     }
 
@@ -195,6 +199,10 @@ public class ProjectService {
 
         origin = projectRepository.save(origin);
         ProjectDTO result = projectMapper.projectToProjectDTO(origin);
+
+        if(!origin.getProjectAttachedFiles().isEmpty()) {
+            result.setAttachedFiles(origin.getPlainProjectAttachedFiles().stream().map(AttachedFileDTO::new).collect(Collectors.toList()));
+        }
 
         return result;
     }
