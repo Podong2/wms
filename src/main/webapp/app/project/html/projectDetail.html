@@ -122,7 +122,7 @@
                                           <span class="input-group-btn">
                                               <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDateFrom')" style="border: 0px none; box-shadow: none;"><i class="fa fa-calendar"></i></button>
                                           </span>
-                                <i class="fa fa-close date-close-btn" ng-click="vm.dueDateFrom.date = ''"></i>
+                                <i class="fa fa-close date-close-btn" ng-click="vm.dueDateFrom.date = ''" ng-show="vm.project.endDate != ''"></i>
                             </p>
                         </div>
                     </td>
@@ -137,7 +137,7 @@
                                       <span class="input-group-btn">
                                           <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDateTo')" style="border: 0px none; box-shadow: none;"><i class="fa fa-calendar"></i></button>
                                       </span>
-                                <i class="fa fa-close date-close-btn" ng-click="vm.dueDateTo.date = ''"></i>
+                                <i class="fa fa-close date-close-btn" ng-click="vm.dueDateTo.date = ''" ng-show="vm.project.endDate != ''"></i>
                             </p>
                         </div>
                     </td>

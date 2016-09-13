@@ -209,11 +209,8 @@
 
         // date 포멧 변경
         $scope.$watch("vm.dueDateFrom.date", function(newValue, oldValue){
-            if(oldValue != newValue && newValue != ''){
-                var d = newValue;
-                var formatDate =
-                    DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' +  DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
-                //DateUtils.datePickerFormat(d.getHours(), 2) + ':' + DateUtils.datePickerFormat(d.getMinutes(), 2) + ':' + DateUtils.datePickerFormat(d.getSeconds(), 2);
+            if(oldValue != newValue && newValue != '' && newValue != undefined){
+                var formatDate = new Date(newValue).format("yyyy-MM-dd");
                 vm.project.startDate= formatDate;
             }else if(newValue == ''){
                 vm.project.startDate= '';
@@ -222,11 +219,8 @@
         });
         // date 포멧 변경
         $scope.$watch("vm.dueDateTo.date", function(newValue, oldValue){
-            if(oldValue != newValue && newValue != ''){
-                var d = newValue;
-                var formatDate =
-                    DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
-                //DateUtils.datePickerFormat(d.getHours(), 2) + ':' + DateUtils.datePickerFormat(d.getMinutes(), 2) + ':' + DateUtils.datePickerFormat(d.getSeconds(), 2);
+            if(oldValue != newValue && newValue != '' && newValue != undefined){
+                var formatDate = new Date(newValue).format("yyyy-MM-dd");
                 vm.project.endDate = formatDate;
             }else if(newValue == ''){
                 vm.project.endDate = '';
@@ -310,6 +304,9 @@
         function onSuccess(data){
             $log.debug("프로젝트 수정 결과 : ", data.project);
             vm.project = data.project;
+            vm.responseProjectData = _.clone(vm.project);
+            vm.dueDateFrom.date = DateUtils.toDate(vm.responseProjectData.startDate);
+            vm.dueDateTo.date = DateUtils.toDate(vm.responseProjectData.endDate);
             setProjectAttachedFiles();
         }
         function onError(){
