@@ -138,6 +138,14 @@
                 cat = data.previewAsData ? ifSet('type', config, data.previewFileType || 'generic') : 'generic';
                 cap = ifSet('caption', config);
                 ftr = previewCache.footer(id, i, isDisabled, (config && config.size || null));
+
+                // hsy 파일 타입 수정
+                var contentType = config.contentType.split('/');
+                if(contentType[0] == 'image'){
+                    cat = 'image';
+                }else{
+                    cat = 'generic';
+                }
                 ftype = ifSet('filetype', config, cat);
                 out = data.parseTemplate(cat, content, cap, ftype, previewId, ftr, ind, null);
             } else {
@@ -398,7 +406,7 @@
     tTagBef1 = tTagBef + '><div class="kv-file-content">\n';
     tTagBef2 = tTagBef + ' title="{caption}" ' + STYLE_SETTING + '><div class="kv-file-content">\n';
     tTagAft = '</div>{footer}\n</div>\n';
-    tGeneric = '{content}\n';
+    tGeneric = '<span class="{previewFileIconClass}">{previewFileIcon}</span>\n'; // hsy 파일 타입 수정
     tHtml = '<div class="kv-preview-data file-preview-html" title="{caption}" ' + STYLE_SETTING + '>{data}</div>\n';
     tImage = '<img src="{data}" class="kv-preview-data file-preview-image" title="{caption}" alt="{caption}" ' +
         STYLE_SETTING + '>\n';

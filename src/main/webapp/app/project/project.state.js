@@ -30,7 +30,10 @@
                     $translatePartialLoader.addPart('register'); // home.json의 다국어 파일을 주입
                     $translatePartialLoader.addPart('global');
                     return $translate.refresh();
-                }]
+                }],
+                projectForm : function($stateParams, ProjectInfo){
+                    return ProjectInfo.get({projectId : $stateParams.id}).$promise;
+                }
             }
         })
         .state('my-project.detail', { // ui router에서 호출받을 state name 설정
@@ -55,7 +58,10 @@
                     $translatePartialLoader.addPart('task');
                     $translatePartialLoader.addPart('global');
                     return $translate.refresh();
-                }]
+                }],
+                projectForm : function($stateParams, ProjectInfo){
+                    return ProjectInfo.get({projectId : $stateParams.id}).$promise;
+                }
             }
         })
         .state('my-project.taskDetail', { // ui router에서 호출받을 state name 설정

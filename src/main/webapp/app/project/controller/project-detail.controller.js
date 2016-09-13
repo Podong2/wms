@@ -5,12 +5,12 @@
         .module('wmsApp')
         .controller('projectDetailCtrl', projectDetailCtrl);
 
-    projectDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', '$log', 'ProjectEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectInfo', 'ProjectFindByName', 'tableService', '$cookies'];
+    projectDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', '$log', 'ProjectEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectInfo', 'ProjectFindByName', 'tableService', '$cookies', 'projectForm'];
 
-    function projectDetailCtrl($scope, $rootScope, $stateParams, Task, Code, $log, ProjectEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, TaskListSearch, dataService, Principal, ProjectFind, ProjectInfo, ProjectFindByName, tableService, $cookies ) {
+    function projectDetailCtrl($scope, $rootScope, $stateParams, Task, Code, $log, ProjectEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, TaskListSearch, dataService, Principal, ProjectFind, ProjectInfo, ProjectFindByName, tableService, $cookies, projectForm ) {
         var vm = this;
         vm.baseUrl = window.location.origin;
-
+        $log.debug("projectForm : ", projectForm)
         vm.openCalendar = openCalendar;
         vm.projectUpload = projectUpload;
         vm.renderHtml = renderHtml;
@@ -51,7 +51,7 @@
             attachedFileId : ''
         };
 
-        $log.debug("$stateParams.project :" ,$stateParams.project);
+        $log.debug("projectForm.project :" ,projectForm.project);
 
         function getProject(){
             var previewFile = {
@@ -61,14 +61,15 @@
                 key: ''
             };
             // 파일 목록 주입
-            vm.projectFiles = $stateParams.project.attachedFiles;
+            vm.projectFiles = projectForm.project.attachedFiles;
             angular.forEach(vm.projectFiles, function(value, index){
                 previewFile.caption = value.name;
                 previewFile.locationType = 'Project';
-                previewFile.locationId = $stateParams.project.id;
+                previewFile.locationId = projectForm.project.id;
                 previewFile.size = byteCalculation(value.size);
                 previewFile.url = window.location.origin + "/api/attachedFile/" + value.id;
                 previewFile.id = value.id;
+                previewFile.contentType = value.contentType;
                 var fileInfo = _.clone(previewFile);
                 vm.previewFiles.push(fileInfo);
                 vm.previewFileUrl.push(previewFile.url);
@@ -76,9 +77,9 @@
             $log.debug("vm.previewFiles : ", vm.previewFiles);
             vm.responseData = _.clone(vm.previewFiles);
 
-            fileViewConfig($stateParams.project);
+            fileViewConfig(projectForm.project);
 
-            return $stateParams.project;
+            return projectForm.project;
         }
 
         vm.fileAreaOpen = false;
@@ -208,11 +209,8 @@
 
         // date 포멧 변경
         $scope.$watch("vm.dueDateFrom.date", function(newValue, oldValue){
-            if(oldValue != newValue && newValue != ''){
-                var d = newValue;
-                var formatDate =
-                    DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' +  DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
-                //DateUtils.datePickerFormat(d.getHours(), 2) + ':' + DateUtils.datePickerFormat(d.getMinutes(), 2) + ':' + DateUtils.datePickerFormat(d.getSeconds(), 2);
+            if(oldValue != newValue && newValue != '' && newValue != undefined){
+                var formatDate = new Date(newValue).format("yyyy-MM-dd");
                 vm.project.startDate= formatDate;
             }else if(newValue == ''){
                 vm.project.startDate= '';
@@ -221,11 +219,8 @@
         });
         // date 포멧 변경
         $scope.$watch("vm.dueDateTo.date", function(newValue, oldValue){
-            if(oldValue != newValue && newValue != ''){
-                var d = newValue;
-                var formatDate =
-                    DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
-                //DateUtils.datePickerFormat(d.getHours(), 2) + ':' + DateUtils.datePickerFormat(d.getMinutes(), 2) + ':' + DateUtils.datePickerFormat(d.getSeconds(), 2);
+            if(oldValue != newValue && newValue != '' && newValue != undefined){
+                var formatDate = new Date(newValue).format("yyyy-MM-dd");
                 vm.project.endDate = formatDate;
             }else if(newValue == ''){
                 vm.project.endDate = '';
@@ -309,6 +304,9 @@
         function onSuccess(data){
             $log.debug("프로젝트 수정 결과 : ", data.project);
             vm.project = data.project;
+            vm.responseProjectData = _.clone(vm.project);
+            vm.dueDateFrom.date = DateUtils.toDate(vm.responseProjectData.startDate);
+            vm.dueDateTo.date = DateUtils.toDate(vm.responseProjectData.endDate);
             setProjectAttachedFiles();
         }
         function onError(){
