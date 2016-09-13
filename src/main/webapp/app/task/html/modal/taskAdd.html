@@ -163,7 +163,7 @@
                         </tr>
                         </thead>
                         <tbody id="userPickerSection">
-                        <tr ng-repeat="list in vm.subTaskList">
+                        <tr ng-repeat="list in vm.subTaskList track by $index">
                             <td>
 
                                 <!-- 우측 영역 -->
@@ -226,9 +226,10 @@
                                         </div>
                                     </div>
                                     <ul class="list-inline friends-list" style="margin-bottom: 0">
-                                        <li ng-repeat="user in list.assignees | limitTo:3">
+                                        <li ng-repeat="user in list.assignees | limitTo:3" style="position: relative">
                                             <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
                                             <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
+                                            <span class="profile-close-btn cursor" ng-click="vm.subTaskUserRemove(user.id)"><i class="fa fa-close"></i></span>
                                         </li>
                                         <li ng-if="list.assignees.length > 3">
                                             <a href-void>
