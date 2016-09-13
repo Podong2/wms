@@ -372,19 +372,29 @@
                             <!-- 시스템 영역 -->
                             <div ng-if="data.entityField != 'reply'" class="pad-l10 clear-both" >
 
-                                <span translate="audit.entity.project" ng-if="data.entityField == null || data.entityField == ''">엔티티</span>
-                                <span translate="audit.field.project.{{data.entityField}}" ng-if="(data.entityField != null && data.entityField != '') && data.entityField != 'projectUsers'">필드</span>
-                                <span translate="audit.field.project.{{data.etcValue}}"  ng-if="(data.entityField != null && data.entityField != '') && data.entityField == 'projectUsers'">필드</span>
+                                <span translate="audit.entity.task" ng-if="data.entityField == null || data.entityField == ''">엔티티</span>
+                                <span translate="audit.field.task.{{data.entityField}}" ng-if="(data.entityField != null && data.entityField != '') && data.entityField != 'taskUsers'">필드</span>
+                                <span translate="audit.field.task.{{data.etcValue}}"  ng-if="(data.entityField != null && data.entityField != '') && data.entityField == 'taskUsers'">필드</span>
                                 <span translate="audit.persist-type.{{data.persistType}}">유형</span>
-                                <span ng-if="data.entityField != 'projectAttachedFiles' && data.entityField != 'contents'">
+                                <span ng-if="data.entityField != 'taskAttachedFiles' && data.entityField != 'taskRepeatSchedule' && data.entityField != 'contents'">
                                     <span ng-if="data.persistType == 'INSERT' || data.persistType == 'UPDATE'">
-                                        {{data.newValue}}
+                                        <span ng-if="data.entityField == 'importantYn'">
+                                            <span ng-if="data.newValue == 'true'">
+                                                활성
+                                            </span>
+                                            <span ng-if="data.newValue == 'false'">
+                                                비활성
+                                            </span>
+                                        </span>
+                                        <span ng-if="data.entityField != 'importantYn'">
+                                            {{data.newValue}}
+                                        </span>
                                     </span>
                                     <span ng-if="data.persistType == 'DELETE'">
                                         {{data.oldValue}}
                                     </span>
                                 </span>
-                                <span ng-if="data.entityField == 'projectAttachedFiles' && data.entityField != 'contents'">
+                                <span ng-if="data.entityField == 'taskAttachedFiles' && data.entityField != 'taskRepeatSchedule' && data.entityField != 'contents'">
 
                                     <span ng-if="data.persistType == 'INSERT' || data.persistType == 'UPDATE'">
                                         <i class="fa fa-paperclip"></i>

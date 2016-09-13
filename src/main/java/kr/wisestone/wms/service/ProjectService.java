@@ -200,7 +200,7 @@ public class ProjectService {
     }
 
     @Transactional(readOnly = true)
-    public List<ProjectDTO> findByNameLike(String name) {
+    public List<ProjectDTO> findByNameLike(String name, List<Long> excludeIds) {
 
         String login = SecurityUtils.getCurrentUserLogin();
 
@@ -208,6 +208,10 @@ public class ProjectService {
 
             BooleanBuilder predicate = new BooleanBuilder();
             predicate.and(QProject.project.projectUsers.any().user.login.eq(login));
+
+            if(excludeIds != null && !excludeIds.isEmpty()) {
+                predicate.and(QProject.project.id.notIn(excludeIds));
+            }
 
             Pageable pageable = new PageRequest(0, 3, Sort.Direction.DESC, "createdDate");
 
@@ -230,6 +234,10 @@ public class ProjectService {
 
         predicate.and(QProject.project.name.containsIgnoreCase(name));
         predicate.and(QProject.project.projectUsers.any().user.login.eq(login));
+
+        if(excludeIds != null && !excludeIds.isEmpty()) {
+            predicate.and(QProject.project.id.notIn(excludeIds));
+        }
 
         List<Project> projects = Lists.newArrayList(this.projectRepository.findAll(predicate));
 
@@ -380,55 +388,6 @@ public class ProjectService {
         return projectManagedAttachedFileDTOs;
     }
 
-    @Transactional
-    public void removeProjectFile(String entityName, Long entityId, Long attachedFileId) {
-
-        if(entityName.equalsIgnoreCase(ProjectManagedAttachedFileDTO.LOCATION_TASK)) {
-
-            Task task = taskService.findOne(entityId);
-
-            TaskAttachedFile taskAttachedFile = task.findAttachedFile(attachedFileId);
-
-            if(taskAttachedFile != null) {
-                task.removeAttachedFile(attachedFileId);
-            }
-
-            taskService.save(task);
-
-        } else if(entityName.equalsIgnoreCase(ProjectManagedAttachedFileDTO.LOCATION_PROJECT)) {
-
-            Project project = projectRepository.findOne(entityId);
-
-            ProjectAttachedFile projectAttachedFile = project.findAttachedFile(attachedFileId);
-
-            if(projectAttachedFile != null) {
-                project.removeAttachedFile(attachedFileId);
-            }
-
-            projectRepository.save(project);
-
-        } else if(entityName.equalsIgnoreCase(ProjectManagedAttachedFileDTO.LOCATION_PROJECT_SHARED)) {
-
-            Project project = projectRepository.findOne(entityId);
-
-            ProjectSharedAttachedFile projectAttachedFile = project.findSharedAttachedFile(attachedFileId);
-
-            if(projectAttachedFile != null) {
-                project.removeSharedAttachedFile(attachedFileId);
-            }
-
-            projectRepository.save(project);
-
-        } else if(entityName.equalsIgnoreCase(ProjectManagedAttachedFileDTO.LOCATION_TASK_REPLY)) {
-
-            this.traceLogService.removeAttachedFileByEntityIdAndEntityNameAndAttachedFileId(entityId, "Task", attachedFileId);
-
-        } else if(entityName.equalsIgnoreCase(ProjectManagedAttachedFileDTO.LOCATION_PROJECT_REPLY)) {
-
-            this.traceLogService.removeAttachedFileByEntityIdAndEntityNameAndAttachedFileId(entityId, "Project", attachedFileId);
-        }
-    }
-
     private void getProjectChildManagedAttachedFiles(Set<ProjectRelation> projectChilds, List<ProjectManagedAttachedFileDTO> projectManagedAttachedFileDTOs) {
 
         for(ProjectRelation projectRelation : projectChilds) {
@@ -476,6 +435,55 @@ public class ProjectService {
                     ).collect(Collectors.toList())
                 );
             }
+        }
+    }
+
+    @Transactional
+    public void removeProjectFile(String entityName, Long entityId, Long attachedFileId) {
+
+        if(entityName.equalsIgnoreCase(ProjectManagedAttachedFileDTO.LOCATION_TASK)) {
+
+            Task task = taskService.findOne(entityId);
+
+            TaskAttachedFile taskAttachedFile = task.findAttachedFile(attachedFileId);
+
+            if(taskAttachedFile != null) {
+                task.removeAttachedFile(attachedFileId);
+            }
+
+            taskService.save(task);
+
+        } else if(entityName.equalsIgnoreCase(ProjectManagedAttachedFileDTO.LOCATION_PROJECT)) {
+
+            Project project = projectRepository.findOne(entityId);
+
+            ProjectAttachedFile projectAttachedFile = project.findAttachedFile(attachedFileId);
+
+            if(projectAttachedFile != null) {
+                project.removeAttachedFile(attachedFileId);
+            }
+
+            projectRepository.save(project);
+
+        } else if(entityName.equalsIgnoreCase(ProjectManagedAttachedFileDTO.LOCATION_PROJECT_SHARED)) {
+
+            Project project = projectRepository.findOne(entityId);
+
+            ProjectSharedAttachedFile projectAttachedFile = project.findSharedAttachedFile(attachedFileId);
+
+            if(projectAttachedFile != null) {
+                project.removeSharedAttachedFile(attachedFileId);
+            }
+
+            projectRepository.save(project);
+
+        } else if(entityName.equalsIgnoreCase(ProjectManagedAttachedFileDTO.LOCATION_TASK_REPLY)) {
+
+            this.traceLogService.removeAttachedFileByEntityIdAndEntityNameAndAttachedFileId(entityId, "Task", attachedFileId);
+
+        } else if(entityName.equalsIgnoreCase(ProjectManagedAttachedFileDTO.LOCATION_PROJECT_REPLY)) {
+
+            this.traceLogService.removeAttachedFileByEntityIdAndEntityNameAndAttachedFileId(entityId, "Project", attachedFileId);
         }
     }
 

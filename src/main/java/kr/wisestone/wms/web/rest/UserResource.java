@@ -302,7 +302,7 @@ public class UserResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<UserDTO>> findByNameAndEntityId(@RequestParam("name") String name
+    public ResponseEntity<List<UserDTO>> findByNameAndExcludeIds(@RequestParam("name") String name
                                                             , @RequestParam(value = "excludeIds", required = true) List<Long> excludeIds) {
         log.debug("REST request to get User name : {}", name);
 
