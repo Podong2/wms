@@ -107,15 +107,16 @@ angular.module('wms.widget.myMonthlyProjectTaskChart', ['adf.provider', 'nvd3', 
                 donut : true,
                 title: "총 "+(vm.taskCountInfo.assignedTaskTotalCount+vm.taskCountInfo.createdTaskTotalCount+vm.taskCountInfo.watchedTaskTotalCount)+"건",
                 labelThreshold: 0.01,
-                labelSunbeamLayout: false, // 그래프 내 텍스트 회전 옵션
-                legend: {
-                    margin: {
-                        top: 5,
-                        right: 35,
-                        bottom: 5,
-                        left: 0
-                    }
-                }
+                labelSunbeamLayout: false,  // 그래프 내 텍스트 회전 옵션
+                showLegend : false
+                // legend: {
+                //     margin: {
+                //         top: 5,
+                //         right: 35,
+                //         bottom: 5,
+                //         left: 0
+                //     }
+                // }
             },
             title: {
                 enable: false,
