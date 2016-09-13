@@ -46,7 +46,7 @@
                                         </div>
 
                                         <div ng-class="data.assignees.length > 0 ? 'task-list-title' : ''">
-                                            <input type="checkbox"/>
+
                                             <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a>
                                         </div>
                                         <ul class="list-inline friends-list" style="margin-bottom: 0">
@@ -90,7 +90,7 @@
                                         </div>
 
                                         <div ng-class="data.assignees.length > 0 ? 'task-list-title' : ''">
-                                            <input type="checkbox"/>
+
                                             <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a>
                                         </div>
                                         <ul class="list-inline friends-list" style="margin-bottom: 0">
@@ -138,8 +138,12 @@
                                         </div>
 
                                         <div ng-class="data.assignees.length > 0 ? 'task-list-title' : ''">
-                                            <input type="checkbox"/>
-                                            <a ui-sref="my-task.detail({id : data.id, listType : vm.listType,taskId : data.id})">{{data.name}}</a>
+
+                                            <a ui-sref="my-task.detail({id : data.id, listType : vm.listType,taskId : data.id})">
+                                                <i class="fa fa-exclamation-circle task-circle-list on" ng-if="data.importantYn"></i>
+                                                {{data.name}}
+                                            </a>
+                                            <i class="fa fa-paperclip" ng-if="data.attachedFileExistYn"></i>
                                         </div>
                                         <ul class="list-inline friends-list" style="margin-bottom: 0">
                                             <li ng-repeat="user in data.assignees | limitTo:3">
@@ -181,7 +185,7 @@
                                         </div>
 
                                         <div ng-class="data.assignees.length > 0 ? 'task-list-title' : ''">
-                                            <input type="checkbox"/>
+
                                             <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a>
                                         </div>
                                         <ul class="list-inline friends-list" style="margin-bottom: 0">
@@ -224,7 +228,7 @@
                                         </div>
 
                                         <div ng-class="data.assignees.length > 0 ? 'task-list-title' : ''">
-                                            <input type="checkbox"/>
+
                                             <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a>
                                         </div>
                                         <ul class="list-inline friends-list " style="margin-bottom: 0">
@@ -268,7 +272,7 @@
                                         </div>
 
                                         <div ng-class="data.assignees.length > 0 ? 'task-list-title' : ''">
-                                            <input type="checkbox"/>
+
                                             <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a>
                                         </div>
                                         <ul class="list-inline friends-list" style="margin-bottom: 0">
@@ -311,7 +315,7 @@
                                         </div>
 
                                         <div ng-class="data.assignees.length > 0 ? 'task-list-title' : ''">
-                                            <input type="checkbox"/>
+
                                             <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a>
                                         </div>
                                         <ul class="list-inline friends-list" style="margin-bottom: 0">
@@ -354,7 +358,7 @@
                                         </div>
 
                                         <div ng-class="data.assignees.length > 0 ? 'task-list-title' : ''">
-                                            <input type="checkbox"/>
+
                                             <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})">{{data.name}}</a>
                                         </div>
                                         <ul ng-if="data.assignees.length > 0" class="list-inline friends-list" style="margin-bottom: 0;">

@@ -168,13 +168,19 @@
             }
         };
 
-
-        function getProjectList(){
-            ProjectFind.query({name : ''}, onProjectSuccess, onProjectError);
+        var excludeIds = '';
+        function getProjectList(){ //  excludeIds : 속한 프로젝트는 안나오게 처리
+            var projectIds = [];
+            projectIds.push(vm.project.id);
+            angular.forEach(vm.project.projectChilds, function(value, index){
+                projectIds.push(value.id);
+            });
+            excludeIds = projectIds.join(",");
+            ProjectFind.query({name : '', excludeIds : excludeIds}, onProjectSuccess, onProjectError);
         }
         function FindProjectList(){
             $log.debug($scope.projectName);
-            ProjectFindByName.query({name : $scope.projectName},onProjectSuccess, onProjectError)
+            ProjectFindByName.query({name : $scope.projectName, excludeIds : excludeIds},onProjectSuccess, onProjectError)
         }
         function onProjectSuccess (result) {
             vm.projectList = result;

@@ -1801,7 +1801,15 @@ i:active, .i:active, i:focus, .i:focus{
     color: #ddd;
     cursor: pointer;
 }
-.task-circle.on, .task-circle:hover{
+.task-circle-list{
+    float: left;
+    font-size: 21px;
+    margin: 6px 4px 0 0;
+    color: #ddd;
+    position: relative;
+    bottom: 5px;
+}
+.task-circle.on, .task-circle:hover, .task-circle-list.on, .task-circle-list:hover{
     color: #fb3c4a;
 }
 .taskOptionBtnArea{

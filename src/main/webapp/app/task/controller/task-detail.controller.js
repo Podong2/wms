@@ -480,12 +480,18 @@
         });
 
         /* 프로젝트 목록 불러오기 */
-        function getProjectList(){
-            ProjectFind.query({name : ''}, onProjectSuccess, onProjectError);
+        var excludeIds = '';
+        function getProjectList(){ //  excludeIds : 속한 프로젝트는 안나오게 처리
+            var projectIds = [];
+            angular.forEach(vm.task.taskProjects, function(value, index){
+                projectIds.push(value.id);
+            });
+            excludeIds = projectIds.join(",");
+            ProjectFind.query({name : '' , excludeIds : excludeIds}, onProjectSuccess, onProjectError);
         }
         /* 프로젝트 목록 검색 */
         function FindProjectList(){
-            ProjectFindByName.query({name : $scope.projectName},onProjectSuccess, onProjectError)
+            ProjectFindByName.query({name : $scope.projectName, excludeIds : excludeIds},onProjectSuccess, onProjectError)
         }
         function onProjectSuccess (result) {
             vm.projectList = result;
