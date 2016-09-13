@@ -93,7 +93,7 @@ public class TaskService {
 
         for(Task task : result) {
 
-            TaskDTO taskDTO = taskMapper.taskToTaskDTO(task);
+            TaskDTO taskDTO = new TaskDTO(task);
 
             this.copyTaskRelationProperties(task, taskDTO);
             this.determineStatusGroup(taskDTO, taskCondition.getListType(), loginUser.getLogin());

@@ -68,6 +68,8 @@ public class TaskDTO implements Serializable {
 
     private TaskRepeatScheduleDTO taskRepeatSchedule;
 
+    private Boolean attachedFileExistYn = Boolean.FALSE;
+
     public TaskDTO(Task task) {
         this.setId(task.getId());
         this.setName(task.getName());
@@ -90,6 +92,10 @@ public class TaskDTO implements Serializable {
         this.setLastModifiedDate(task.getLastModifiedDate());
 
         this.setImportantYn(task.getImportantYn());
+
+        if(task.getTaskAttachedFiles() != null && !task.getTaskAttachedFiles().isEmpty()) {
+            this.setAttachedFileExistYn(Boolean.TRUE);
+        }
     }
 
     public TaskDTO() {}
@@ -284,6 +290,14 @@ public class TaskDTO implements Serializable {
 
     public void setCreatedByName(String createdByName) {
         this.createdByName = createdByName;
+    }
+
+    public Boolean getAttachedFileExistYn() {
+        return attachedFileExistYn;
+    }
+
+    public void setAttachedFileExistYn(Boolean attachedFileExistYn) {
+        this.attachedFileExistYn = attachedFileExistYn;
     }
 
     public Boolean getDelayYn() {
