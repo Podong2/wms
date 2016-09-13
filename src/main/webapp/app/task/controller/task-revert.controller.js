@@ -19,7 +19,8 @@
         TaskListSearch.TaskAudigLog({'entityId' : vm.task.id, 'entityName' : 'Task', entityField : 'contents'}).then(function(result){
             vm.TaskAuditLog = result;
             angular.forEach(vm.TaskAuditLog.data, function(val){
-                    vm.commentList.push(val);
+                val.createdDate = new Date (val.createdDate).format("yyyy-MM-dd");
+                vm.commentList.push(val);
             });
             vm.responseData = vm.commentList;
             $log.debug("vm.commentList : ", vm.commentList)
