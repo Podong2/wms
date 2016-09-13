@@ -10,9 +10,49 @@ function wmsAddFileElement($log, $compile) {
         return {
             restrict: 'E',
             replace: false,
-            controller : ['$scope', function ($scope) {
+            scope : {
+                commentFiles : '=commentFiles'
+            },
+            controller : ['$scope', '$cookies', '$log', function ($scope, $cookies, $log) {
+
+                $scope.getToken = function() {
+                    return $cookies.get("CSRF-TOKEN");
+                };
+                $scope.getToken()
+
                 $("#input-5").fileinput({
-                    showCaption: false, showUpload: false, uploadUrl:"1", uploadAsync: false
+                    uploadUrl : '/tasks/uploadFile',
+                    task : '',
+                    type : 'task-history',
+                    token : $scope.getToken(),
+                    showCaption: false,
+                    showUpload: true,
+                    showClose: true,
+                    showRemove: false,
+                    uploadAsync: false,
+                    overwriteInitial: false,
+                    initialPreviewAsData: true, // defaults markup
+                    initialPreviewFileType: 'image', // image is the default and can be overridden in config below
+                    uploadExtraData: function (previewId, index) {
+                        var obj = {};
+                        $('.file-form').find('input').each(function() {
+                            var id = $(this).attr('id'), val = $(this).val();
+                            obj[id] = val;
+                        });
+                        return obj;
+                    }
+                }).on('filesorted', function(e, params) {
+                    console.log('File sorted params', params);
+                }).on('fileuploaded', function(e, params) {
+                    console.log('File uploaded params', params);
+                }).on('getFileupload', function(e, params) {
+                    angular.forEach(params, function(value){
+                        $scope.commentFiles.push(value)
+                    });
+                    $scope.$apply();
+                    $log.debug("파일 목록 : ", $scope.commentFiles);
+                }).on('filedeleted', function(event, key) {
+                    console.log('Key = ' + key);
                 });
 
             }],

@@ -122,7 +122,7 @@
                                           <span class="input-group-btn">
                                               <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDateFrom')" style="border: 0px none; box-shadow: none;"><i class="fa fa-calendar"></i></button>
                                           </span>
-                                <i class="fa fa-close date-close-btn" ng-click="vm.dueDateFrom.date = ''" ng-show="vm.project.endDate != ''"></i>
+                                <i class="fa fa-close date-close-btn" ng-click="vm.dueDateFrom.date = ''" ng-show="vm.project.startDate != ''"></i>
                             </p>
                         </div>
                     </td>
@@ -344,6 +344,14 @@
             </div>
         </div>
         <div class="task-file-area" ng-class="vm.commentFileAreaOpen ? 'on' : ''">
+            <div class="file-header-area">
+                <ul>
+                    <li>파일 ({{commentFiles.length}})</li>
+                    <li><label for="input-5" class="cursor"><i class='fa fa-paperclip'></i></label></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
             <input id="input-5" name="input5[]" type="file" multiple class="file-loading" get-files file-type="comment">
         </div>
 

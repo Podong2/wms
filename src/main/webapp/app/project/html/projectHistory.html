@@ -143,7 +143,7 @@
 
             <!-- 댓글 파일첨부 영역 (수정중 ng-repeat 시 오류 현상)-->
             <div class="task-file-area" ng-class="vm.commentFileAreaOpen ? 'on' : ''">
-                <wms-add-file-element></wms-add-file-element>
+                <wms-add-file-element comment-files="commentFiles"></wms-add-file-element>
             </div><!-- 댓글 파일첨부 영역 끝-->
 
         </div><!-- 히스토리 영역 끝-->
@@ -152,8 +152,11 @@
 
     </div>
 </div>
-<script>
-    $("#input-5").fileinput({
-        showCaption: false, showUpload: false, uploadUrl:"1", uploadAsync: false
-    });
-</script>
+<style>
+    .fileinput-upload {
+        display: none !important;
+    }
+    .btn-file{
+        display: none !important;
+    }
+</style>

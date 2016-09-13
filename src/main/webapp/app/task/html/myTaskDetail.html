@@ -481,6 +481,14 @@
             </div>
         </div>
         <div class="task-file-area" ng-class="vm.commentFileAreaOpen ? 'on' : ''">
+            <div class="file-header-area">
+                <ul>
+                    <li>파일 ({{commentFiles.length}})</li>
+                    <li><label for="input-5" class="cursor"><i class='fa fa-paperclip'></i></label></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
             <input id="input-5" name="input5[]" type="file" multiple class="file-loading" get-files file-type="comment">
         </div>
 

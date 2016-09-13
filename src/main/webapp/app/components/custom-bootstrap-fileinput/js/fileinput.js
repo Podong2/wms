@@ -1021,6 +1021,7 @@
             self._change(e, 'dragdrop');
             self.$dropZone.removeClass('file-highlighted');
             // hsy 업로드 버튼 이벤트
+            if(self.type != 'task-history' && self.type != 'task-add') self._raise('getFileupload', [self.fileList]);
             var uploadBtnClickEvent = $.Event('click');
             $('.fileinput-upload-button').trigger(uploadBtnClickEvent);
         },
@@ -1482,7 +1483,7 @@
             /* hsy 파일 삭제 커스텀 */
             self.$preview.find('.kv-file-remove').each(function () {
                 var $el = $(this), vUrl = $el.data('url') || self.deleteUrl, vKey = $el.data('key');
-                if(self.type != 'task-add'){
+                if(self.type != 'task-add' && self.type != 'task-history'){
                     var taskId = $el.data('taskId');
                     var projectId = $el.data('projectId');
                     var attachedFileId = $el.data('attachedFileId');
@@ -1755,7 +1756,7 @@
         },
         _ajaxSubmit: function (fnBefore, fnSuccess, fnComplete, fnError, previewId, index) {
             var self = this, settings;
-            if(self.type != 'task-add'){
+            if(self.type != 'task-add' && self.type != 'task-history'){ // hsy 파일 첨부 업로드 조건 수정
                 self._raise('filepreajax', [previewId, index]);
                 self._uploadExtra(previewId, index);
                 var url = '';
@@ -1803,7 +1804,6 @@
                 //hsy 수정
                 var event = $.Event('click');
                 $('.fileinput-cancel-button').trigger(event)
-
             }
 
         },
@@ -2014,7 +2014,17 @@
             };
             formdata.append(self.uploadFileAttr, files[i], self.filenames[i]);
             formdata.append('file_id', i);
-            self._ajaxSubmit(fnBefore, fnSuccess, fnComplete, fnError, previewId, i);
+
+            /* 파일첨부 작업등록 댓글 등록 시 예외처리 */
+            if(self.type != 'task-history' && self.type != 'task-add') {
+                self._ajaxSubmit(fnBefore, fnSuccess, fnComplete, fnError);
+            } else{
+                self._raise('getFileupload', [self.fileList]);
+                self._setProgress(100);
+                self.unlock();
+                self._clearFileInput();
+                self._raise('filebatchuploadcomplete', [self.filestack, self._getExtraData()]);
+            }
         },
         _uploadBatch: function () {
             var self = this, files = self.filestack, total = files.length, params = {}, fnBefore, fnSuccess, fnError,
@@ -2126,7 +2136,17 @@
                     self.formdata.append(self.uploadFileAttr, data, self.filenames[key]);
                 }
             });
-            self._ajaxSubmit(fnBefore, fnSuccess, fnComplete, fnError);
+
+            /* 파일첨부 작업등록 댓글 등록 시 예외처리 */
+            if(self.type != 'task-history' && self.type != 'task-add') {
+                self._ajaxSubmit(fnBefore, fnSuccess, fnComplete, fnError);
+            } else{
+                self._raise('getFileupload', [self.fileList]);
+                self._setProgress(100);
+                self.unlock();
+                self._clearFileInput();
+                self._raise('filebatchuploadcomplete', [self.filestack, self._getExtraData()]);
+            }
         },
         _uploadExtraOnly: function () {
             var self = this, params = {}, fnBefore, fnSuccess, fnComplete, fnError;
@@ -2167,7 +2187,17 @@
                 params.data = outData;
                 self._showUploadError(errMsg, outData, 'filebatchuploaderror');
             };
-            self._ajaxSubmit(fnBefore, fnSuccess, fnComplete, fnError);
+
+            /* 파일첨부 작업등록 댓글 등록 시 예외처리 */
+            if(self.type != 'task-history' && self.type != 'task-add') {
+                self._ajaxSubmit(fnBefore, fnSuccess, fnComplete, fnError);
+            } else{
+                self._raise('getFileupload', [self.fileList]);
+                self._setProgress(100);
+                self.unlock();
+                self._clearFileInput();
+                self._raise('filebatchuploadcomplete', [self.filestack, self._getExtraData()]);
+            }
         },
         _initFileActions: function () {
             var self = this;
@@ -2857,7 +2887,9 @@
                 template = self._getLayoutTemplate('actions'), config = self.fileActionSettings,
                 otherButtons = self.otherActionButtons.replace(/\{dataKey}/g, vKey),
                 removeClass = disabled ? config.removeClass + ' disabled' : config.removeClass;
-            if(self.type != 'task-add'){
+
+            /* 파일첨부 작업등록 댓글 등록 시 예외처리 */
+            if(self.type != 'task-add' && self.type != 'task-history'){
                 if (showDelete) {
                     // hsy 파일 삭제 커스텀
                     btnDelete = self._getLayoutTemplate('actionDelete')

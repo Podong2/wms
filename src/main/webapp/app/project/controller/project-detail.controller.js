@@ -27,6 +27,43 @@
         };
         $scope.getToken()
 
+        // bootstrap file uploader plugin load
+        /* 코멘트 배열 및 파일 업로더 설정 정보 */
+        $scope.commentFiles = [];
+        $("#input-5").fileinput({
+            uploadUrl : '/tasks/uploadFile',
+            task : '',
+            type : 'task-add',
+            token : $scope.getToken(),
+            showCaption: false,
+            showUpload: true,
+            showRemove: false,
+            uploadAsync: false,
+            overwriteInitial: false,
+            initialPreviewAsData: true, // defaults markup
+            initialPreviewFileType: 'image', // image is the default and can be overridden in config below
+            uploadExtraData: function (previewId, index) {
+                var obj = {};
+                $('.file-form').find('input').each(function() {
+                    var id = $(this).attr('id'), val = $(this).val();
+                    obj[id] = val;
+                });
+                return obj;
+            }
+        }).on('filesorted', function(e, params) {
+            console.log('File sorted params', params);
+        }).on('fileuploaded', function(e, params) {
+            console.log('File uploaded params', params);
+        }).on('getFileupload', function(e, params) {
+            angular.forEach(params, function(value){
+                $scope.commentFiles.push(value)
+            });
+            $scope.$apply();
+            $log.debug("파일 목록 : ", $scope.commentFiles);
+        }).on('filedeleted', function(event, key) {
+            console.log('Key = ' + key);
+        });
+
         vm.date = '';
         vm.assigneeUsers = [];
         vm.logArrayData = [];
@@ -185,10 +222,10 @@
         });
         // 파일 목록 라이브러리에서 가져오기
         $scope.$on('setCommentFiles', function (event, args) {
-            $scope.commentFiles = [];
             angular.forEach(args, function(value){
                 $scope.commentFiles.push(value)
             });
+            $scope.$apply();
             $log.debug("코멘트 파일 목록 : ", $scope.commentFiles);
         });
 
@@ -361,11 +398,6 @@
         }
 
         //setAttachedFiles(vm.project.attachedFiles); // 첨부파일목록 겔러리 세팅
-
-        // bootstrap file uploader plugin load
-        $("#input-5").fileinput({
-            showCaption: false, showUpload: false, uploadUrl:"1", uploadAsync: false
-        });
 
         vm.mentionIds = []; // mention ids
         function createComment(){
