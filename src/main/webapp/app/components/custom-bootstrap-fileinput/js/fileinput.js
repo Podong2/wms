@@ -893,6 +893,7 @@
                 case 'filebatchuploadsuccess':
                 case 'fileuploaded':
                 case 'getFileupload':
+                case 'detailReload':
                 case 'fileclear':
                 case 'filecleared':
                 case 'filereset':
@@ -1790,6 +1791,7 @@
                         }else if(self.type == 'project'){
                             $('.project-reload-btn').trigger(evt);
                         }
+                        self._raise('detailReload');
                         return fnSuccess;
                     },
                     complete: fnComplete,
@@ -1797,6 +1799,7 @@
                 });
             }else{
                 self._raise('getFileupload', [self.fileList]);
+                self._raise('detailReload');
                 //hsy 수정
                 var event = $.Event('click');
                 $('.fileinput-cancel-button').trigger(event)

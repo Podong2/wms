@@ -125,6 +125,7 @@
                 task : vm.task,
                 type : 'task',
                 token : $scope.getToken(),
+                autoReplace: true,
                 showCaption: false,
                 showUpload: true,
                 showRemove: false,
@@ -146,7 +147,9 @@
                 console.log('File sorted params', params);
             }).on('fileuploaded', function(e, params) {
                 console.log('File uploaded params', params);
-            });
+            }).on('detailReload', function(e, params) {
+                $state.go("my-task.detail", {}, {reload : 'my-task.detail'});
+            })
         });
 
         vm.responseDataCheck = _.clone(vm.task);
@@ -586,7 +589,8 @@
                 vm.task.removeProjectIds = "";
                 vm.repeatClose(); // 반복설정 팝업 닫기
                 $scope.files = [];
-                getTaskInfo();
+                //getTaskInfo();
+                $state.go("my-task.detail", {}, {reload : 'my-task.detail'});
             });
         }
 
@@ -619,13 +623,13 @@
                 vm.previewFileUrl.push(previewFile.url);
             });
             vm.responseData = _.clone(vm.previewFiles);
-
             $("#input-4").fileinput({
                 uploadUrl : '/tasks/uploadFile',
                 task : vm.task,
                 type : 'task',
                 token : $scope.getToken(),
-                showCaption: true,
+                autoReplace: true,
+                showCaption: false,
                 showUpload: true,
                 showRemove: false,
                 uploadAsync: false,
@@ -634,15 +638,20 @@
                 initialPreviewAsData: true, // defaults markup
                 initialPreviewFileType: 'image', // image is the default and can be overridden in config below
                 initialPreviewConfig: vm.previewFiles,
-                uploadExtraData: {
-                    img_key: "1000",
-                    img_keywords: "happy, nature",
+                uploadExtraData: function (previewId, index) {
+                    var obj = {};
+                    $('.file-form').find('input').each(function() {
+                        var id = $(this).attr('id'), val = $(this).val();
+                        obj[id] = val;
+                    });
+                    return obj;
                 }
             }).on('filesorted', function(e, params) {
                 console.log('File sorted params', params);
             }).on('fileuploaded', function(e, params) {
                 console.log('File uploaded params', params);
             });
+
 
             getTaskAudigLog();
 
