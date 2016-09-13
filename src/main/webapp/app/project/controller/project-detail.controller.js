@@ -295,9 +295,9 @@
                 vm.responseData = [];
                 vm.previewFiles=[];
                 vm.previewFileUrl=[];
-                projectDetailReload();
+                //projectDetailReload();
                 $scope.getTraceLog(vm.project.id);
-                //$state.go("my-project.detail", {}, {reload : true});
+                $state.go("my-project.detail", {}, {reload : 'my-project.detail'});
             });
         }
 
@@ -512,7 +512,9 @@
                 console.log('File sorted params', params);
             }).on('fileuploaded', function(e, params) {
                 console.log('File uploaded params', params);
-            });
+            }).on('detailReload', function(e, params) {
+                $state.go("my-project.detail", {}, {reload : 'my-project.detail'});
+            })
         }
 
         //byte를 용량 계산해서 반환
