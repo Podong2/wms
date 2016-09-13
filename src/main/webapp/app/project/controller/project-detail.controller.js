@@ -406,6 +406,7 @@
         }
 
         $scope.getTraceLog = function(projectId) {
+            vm.commentList=[];
             TaskListSearch.TaskAudigLog({'entityId' : projectId, 'entityName' : 'Project'}).then(function(result){
                 vm.TaskAuditLog = result;
                 vm.commentList=[];

@@ -112,14 +112,19 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             this.dueDateFrom = {
                 date: "",
                 datepickerOptions: {
-                    maxDate: null
+                    customClass: '',
+                    minDate: new Date(),
+                    showWeeks: true
                 }
             };
+
             // max date picker
             this.dueDateTo = {
                 date: "",
                 datepickerOptions: {
-                    minDate: null
+                    customClass: '',
+                    minDate: new Date(),
+                    showWeeks: true
                 }
             };
             // 반복작업 시작시간
@@ -200,10 +205,11 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             $scope.files = [];
             // 파일 목록 라이브러리에서 가져오기
             $scope.$on('setTaskAddFiles', function (event, args) {
-                $scope.files = [];
+                //$scope.files = [];
                 angular.forEach(args, function(value){
                     $scope.files.push(value)
                 });
+                $scope.$apply();
                 $log.debug("파일 목록 : ", $scope.files);
             });
 
@@ -362,6 +368,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                     angular.forEach(params, function(value){
                         $scope.files.push(value)
                     });
+                    $scope.$apply();
                     $log.debug("파일 목록 : ", $scope.files);
                 })
             }

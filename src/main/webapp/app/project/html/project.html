@@ -90,7 +90,7 @@
                         <input type="text" class="taskAddInput" ng-model="vm.task.name" enter-submit="vm.projectTaskAdd()" style="width: 100%; border-top: 1px solid #ddd" placeholder="작업명을 입력하세요."/>
                     </div>
                     <div style="clear: both"></div>
-                    <div uib-accordion-group class="panel-default" heading="지연된 작업 {{status.isDelayedOpen ? '▼' : '▲'}} {{vm.delayed.length}}" is-open="status.isDelayedOpen" is-disabled="status.isFirstDisabled" >
+                    <div uib-accordion-group class="panel-default" heading="지연된 작업 {{status.isDelayedOpen ? '▼' : '▲'}} {{vm.delayed.length}}" ng-show="delayYn && chartFilterYn || !chartFilterYn" is-open="status.isDelayedOpen" is-disabled="status.isFirstDisabled" >
                         <div class="table table-bordered table-hover " style="margin-bottom: 0;">
                             <div>
                                 <div ng-repeat="data in vm.delayed" class="">
@@ -138,7 +138,7 @@
                             </div>
                         </div>
                     </div>
-                    <div uib-accordion-group class="panel-default" heading="오늘 완료 작업 {{status.isScheduledTodayOpen ? '▼' : '▲'}} {{vm.scheduledToday.length}}" is-open="status.isScheduledTodayOpen" >
+                    <div uib-accordion-group class="panel-default" heading="오늘 완료 작업 {{status.isScheduledTodayOpen ? '▼' : '▲'}} {{vm.scheduledToday.length}}" ng-show="!chartFilterYn" is-open="status.isScheduledTodayOpen" >
                         <div class="table table-bordered table-hover " style="margin-bottom: 0;">
                             <div>
                                 <div ng-repeat="data in vm.scheduledToday">
@@ -181,7 +181,7 @@
                             </div>
                         </div>
                     </div>
-                    <div uib-accordion-group class="panel-default" heading="새로 등록된 작업 {{status.isRegisteredTodayOpen ? '▼' : '▲'}} {{vm.registeredToday.length}}" is-open="status.isRegisteredTodayOpen" >
+                    <div uib-accordion-group class="panel-default" heading="새로 등록된 작업 {{status.isRegisteredTodayOpen ? '▼' : '▲'}} {{vm.registeredToday.length}}" ng-show="!chartFilterYn" is-open="status.isRegisteredTodayOpen" >
                         <div class="table table-bordered table-hover " style="margin-bottom: 0;">
                             <div>
                                 <div ng-repeat="data in vm.registeredToday">
@@ -227,7 +227,7 @@
                             </div>
                         </div>
                     </div>
-                    <div uib-accordion-group class="panel-default" heading="진행 중인 작업 {{status.inProgressOpen ? '▼' : '▲'}} {{vm.inProgress.length}}" is-open="status.inProgressOpen" >
+                    <div uib-accordion-group class="panel-default" heading="진행 중인 작업 {{status.inProgressOpen ? '▼' : '▲'}} {{vm.inProgress.length}}" ng-show="inProgressYn && chartFilterYn || !chartFilterYn" is-open="status.inProgressOpen" >
                         <div class="table table-bordered table-hover " style="margin-bottom: 0;">
                             <div>
                                 <div ng-repeat="data in vm.inProgress">
@@ -270,7 +270,7 @@
                             </div>
                         </div>
                     </div>
-                    <div uib-accordion-group class="panel-default" heading="일정 미정 작업 {{status.isNoneScheduledOpen ? '▼' : '▲'}} {{vm.noneScheduled.length}}" is-open="status.isNoneScheduledOpen" >
+                    <div uib-accordion-group class="panel-default" heading="일정 미정 작업 {{status.isNoneScheduledOpen ? '▼' : '▲'}} {{vm.noneScheduled.length}}" ng-show="!chartFilterYn" is-open="status.isNoneScheduledOpen" >
                         <div class="table table-bordered table-hover " style="margin-bottom: 0;">
                             <div>
                                 <div ng-repeat="data in vm.noneScheduled">
@@ -313,7 +313,7 @@
                             </div>
                         </div>
                     </div>
-                    <div uib-accordion-group class="panel-default" heading="예정 작업 {{status.isScheduledOpen ? '▼' : '▲'}} {{vm.scheduled.length}}" is-open="status.isScheduledOpen" >
+                    <div uib-accordion-group class="panel-default" heading="예정 작업 {{status.isScheduledOpen ? '▼' : '▲'}} {{vm.scheduled.length}}" ng-show="!chartFilterYn" is-open="status.isScheduledOpen" >
                         <div class="table table-bordered table-hover " style="margin-bottom: 0;">
                             <div>
                                 <div ng-repeat="data in vm.scheduled">
@@ -356,7 +356,7 @@
                             </div>
                         </div>
                     </div>
-                    <div uib-accordion-group class="panel-default" heading="완료된 작업 {{status.isCompleteOpen ? '▼' : '▲'}} {{vm.complete.length}}" is-open="status.isCompleteOpen" >
+                    <div uib-accordion-group class="panel-default" heading="완료된 작업 {{status.isCompleteOpen ? '▼' : '▲'}} {{vm.complete.length}}" ng-show="completeYn && chartFilterYn || !chartFilterYn" is-open="status.isCompleteOpen" >
                         <div class="table table-bordered table-hover " style="margin-bottom: 0;">
                             <div>
                                 <div ng-repeat="data in vm.complete">
@@ -399,7 +399,7 @@
                             </div>
                         </div>
                     </div>
-                    <div uib-accordion-group class="panel-default" heading="보류된 작업 {{status.isHoldOpen ? '▼' : '▲'}}  {{vm.hold.length}}" is-open="status.isHoldOpen" >
+                    <div uib-accordion-group class="panel-default" heading="보류된 작업 {{status.isHoldOpen ? '▼' : '▲'}}  {{vm.hold.length}}" ng-show="holdYn && chartFilterYn || !chartFilterYn" is-open="status.isHoldOpen" >
                         <div class="table table-bordered table-hover " style="margin-bottom: 0;">
                             <div>
                                 <div ng-repeat="data in vm.hold">
@@ -442,7 +442,7 @@
                             </div>
                         </div>
                     </div>
-                    <div uib-accordion-group class="panel-default" heading="취소된 작업 {{status.isCancelOpen ? '▼' : '▲'}}  {{vm.cancel.length}}" is-open="status.isCancelOpen" >
+                    <div uib-accordion-group class="panel-default" heading="취소된 작업 {{status.isCancelOpen ? '▼' : '▲'}}  {{vm.cancel.length}}" ng-show="!chartFilterYn" is-open="status.isCancelOpen" >
                         <div class="table table-bordered table-hover " style="margin-bottom: 0;">
                             <div>
                                 <div ng-repeat="data in vm.cancel">

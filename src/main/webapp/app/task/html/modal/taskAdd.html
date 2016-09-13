@@ -283,7 +283,7 @@
         <div class="task-file-area" ng-class="(vm.fileAreaOpen || vm.files.length > 0) ? 'on' : ''">
             <div class="file-header-area">
                 <ul>
-                    <li>파일 ({{vm.files.length == 0 ? 0 : vm.files.length}})</li>
+                    <li>파일 ({{files.length}})</li>
                     <li><label for="input-3" class="cursor"><i class='fa fa-paperclip'></i></label></li>
                     <li></li>
                     <li></li>
@@ -292,9 +292,6 @@
             <input id="input-3" name="input3[]" type="file" multiple class="file-loading" get-files file-type="task-add">
             <style>
                 .kv-upload-progress {
-                    display: none;
-                }
-                .fileinput-cancel {
                     display: none;
                 }
             </style>

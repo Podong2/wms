@@ -28,24 +28,28 @@
             </ul>
             <ul class="date-picker-calendar clear-both">
                 <li class="input-group date-picker-calendar-li">
-                    <input type="text" class="form-control startDate" edit-state="true" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.dueDateFrom.date" is-open="vm.dueDateFrom.open"
-                           enable-time="false" datepicker-options="vm.dueDateFrom.datepickerOptions"/>
-                    <span class="input-group-btn">
-                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDateFrom')"><i class="fa fa-calendar"></i></button>
-                    </span>
+                    <input type="text" class="form-control" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.dueDateFrom.date"/>
                 </li>
                 <li class="input-group date-picker-calendar-li date-picker-calendar-center">
                     ~
                 </li>
                 <li class="input-group date-picker-calendar-li">
-                    <input type="text" class="form-control" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.dueDateTo.date" is-open="vm.dueDateTo.open"
-                           enable-time="false" datepicker-options="vm.dueDateTo.datepickerOptions"/>
-                    <span class="input-group-btn">
-                        <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDateTo')"><i class="fa fa-calendar"></i></button>
-                    </span>
+                    <input type="text" class="form-control" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.dueDateTo.date"/>
                 </li>
                 <li class="input-group date-picker-calendar-li">
                     {{vm.dayRange}} 일
+                </li>
+            </ul>
+            <ul class="date-picker-calendar clear-both">
+                <li class="input-group date-picker-calendar-li">
+                    <div style="display:inline-block; min-height:290px;">
+                        <div uib-datepicker ng-model="vm.dueDateFrom.date" class="well well-sm" datepicker-options="vm.dueDateFrom.datepickerOptions"></div>
+                    </div>
+                </li>
+                <li class="input-group date-picker-calendar-li">
+                    <div style="display:inline-block; min-height:290px;">
+                        <div uib-datepicker ng-model="vm.dueDateTo.date" class="well well-sm" datepicker-options="vm.dueDateTo.datepickerOptions"></div>
+                    </div>
                 </li>
             </ul>
         </div>
@@ -201,8 +205,8 @@
 
     </div><!-- 일정 반복 설정 영역 끝-->
 
-    <div class="modal-footer" >
-        <button type="button" class="btn btn_icon btn_customs" ng-click="vm.taskUpload()" ng-show="vm.task.id != ''" owl-btn-save></button>
+    <div class="modal-footer text-center" >
+        <button type="button" class="btn btn_icon btn_customs" ng-click="vm.taskUpload()" ng-show="vm.task.id != ''" owl-btn-check></button>
         <button type="button" class="btn btn_icon btn_customs2 " ng-click="vm.repeatClose()" ng-show="vm.task.id != ''" owl-btn-cancel></button>
     </div>
 

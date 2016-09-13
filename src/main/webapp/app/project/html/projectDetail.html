@@ -229,15 +229,20 @@
                             || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
                             <a href-void><strong>{{data.createdByName}}</strong> </a><a editor-mention-write user-name="data.createdByName" user-id="data.createdById">댓글</a>
                         </p>
-                        <p class="pad-l15">
-                            <span ng-if="data.entityField == 'reply'">
+                        <div class="pad-l15">
+
+                            <!-- 댓글 영역 -->
+                            <div ng-if="data.entityField == 'reply'" class="pad-l10  clear-both">
+
                                 <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px"></span> {{data.createdDate | date : 'HH:mm'}} <span ng-if="data.createdBy == vm.userInfo.login"  class="fa fa-times" ng-click="vm.removeComment(data.id)"></span>
-                                <br/>
-                        <p ng-repeat="file in data.attachedFiles" class="pad-l20">
-                            <a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>
-                        </p>
-                        </span>
-                            <span ng-if="data.entityField != 'reply'" class="pad-l20">
+                                <br class="clear-both"/>
+                                <p ng-repeat="file in data.attachedFiles" class="pad-l20">
+                                    <a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>
+                                </p>
+                            </div>
+
+                            <!-- 시스템 영역 -->
+                            <div ng-if="data.entityField != 'reply'" class="pad-l10 clear-both" >
 
                                 <span translate="audit.entity.project" ng-if="data.entityField == null || data.entityField == ''">엔티티</span>
                                 <span translate="audit.field.project.{{data.entityField}}" ng-if="(data.entityField != null && data.entityField != '') && data.entityField != 'projectUsers'">필드</span>
@@ -261,15 +266,16 @@
                                         {{data.oldValue}}
                                     </span>
                                 </span>
-                                <br/>
+                                {{data.createdDate | date : 'HH:mm'}}
+                                <br class="clear-both"/>
 
                                 <!--{{data.createdBy}} 이 {{data.entityField}} {{data.newValue}}를 {{data.persistType}}하였습니다. {{data.createdDate | date : 'HH:mm'}}-->
                                 <!--<br/>-->
                                 <!--<p ng-repeat="file in data.attachedFiles" class="pad-l20">-->
                                     <!--<a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>-->
                                 <!--</p>-->
-                            </span>
-                        </p>
+                            </div>
+                        </div>
                     </div>
                 </li>
 
@@ -298,15 +304,16 @@
                             || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
                             <a href-void><strong>{{data.createdByName}}</strong> </a><a editor-mention-write user-name="data.createdByName" user-id="data.createdById">댓글</a>
                         </p>
-                        <p class="pad-l15">
-                            <span ng-if="data.entityField == 'reply'">
-                                <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px"></span> {{data.createdDate | date : 'HH:mm'}} <span ng-if="data.createdBy == vm.userInfo.login"  class="fa fa-times" ng-click="vm.removeComment(data.id)"></span>
-                                <br/>
-                        <p ng-repeat="file in data.attachedFiles" class="pad-l20">
-                            <a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>
-                        </p>
-                        </span>
-                        </p>
+                        <div class="pad-l15 clear-both">
+                            <div ng-if="data.entityField == 'reply'" class="pad-l10">
+                                <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px"></span>
+                                {{data.createdDate | date : 'HH:mm'}} <span ng-if="data.createdBy == vm.userInfo.login"  class="fa fa-times" ng-click="vm.removeComment(data.id)"></span>
+                                <br class="clear-both"/>
+                                <p ng-repeat="file in data.attachedFiles" class="pad-l20">
+                                    <a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </li>
 

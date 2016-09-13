@@ -342,7 +342,7 @@
         '    <div class="kv-fileinput-error"></div>\n' +
         '    </div>\n' +
         '</div>';
-    //tClose = '<div class="close fileinput-remove">&times;</div>\n';
+    //tClose = '<div class="close fileinput-remove">&times;</div>\n';  //hsy 수정
     tClose = '';
     tFileIcon = '<i class="glyphicon glyphicon-file kv-caption-icon"></i>';
     tCaption = '<div tabindex="500" class="form-control file-caption {class}">\n' +
@@ -386,11 +386,12 @@
         '    <div class="clearfix"></div>\n' +
         '</div>';
     tActionDelete = '<button type="button" class="kv-file-remove {removeClass}" title="{removeTitle}" data-task-id="{taskId}" data-project-id="{projectId}" data-attached-file-id="{attachedFileId}" {dataUrl}{dataKey}>{removeIcon}</button>\n' +
-        '<button type="button" class="kv-file-download {removeClass}" title="{removeTitle}" data-task-id="{taskId}" data-project-id="{projectId}" data-attached-file-id="{attachedFileId}" {dataUrl}{dataKey}>{downloadIcon}</button>'; // hsy 파일 삭제
+        '<button type="button" class="kv-file-download {removeClass}" title="{downloadTitle}" data-task-id="{taskId}" data-project-id="{projectId}" data-attached-file-id="{attachedFileId}" {dataUrl}{dataKey}>{downloadIcon}</button>'; // hsy 파일 삭제
     tActionUpload = '';
     //tActionUpload = '<button type="button" class="kv-file-upload {uploadClass}" title="{uploadTitle}">' +
-    //    '{uploadIcon}</button>';
-    tActionZoom = '<button type="button" class="kv-file-zoom {zoomClass}" title="{zoomTitle}">{zoomIcon}</button>';
+    //    '{uploadIcon}</button>'; //hsy 수정
+    tActionZoom = '';
+    //tActionZoom = '<button type="button" class="kv-file-zoom {zoomClass}" title="{zoomTitle}">{zoomIcon}</button>'; //hsy 수정
     tActionDrag = '<span class="file-drag-handle {dragClass}" title="{dragTitle}">{dragIcon}</span>';
     tTagBef = '<div class="file-preview-frame{frameClass}" id="{previewId}" data-fileindex="{fileindex}"' +
         ' data-template="{template}"';
@@ -1788,6 +1789,10 @@
                 });
             }else{
                 self._raise('getFileupload', [self.fileList]);
+                //hsy 수정
+                var event = $.Event('click');
+                $('.fileinput-cancel-button').trigger(event)
+
             }
 
         },
@@ -2849,6 +2854,7 @@
                         .replace(/\{removeIcon}/g, config.removeIcon)
                         .replace(/\{downloadIcon}/g, config.downloadIcon)
                         .replace(/\{removeTitle}/g, config.removeTitle)
+                        .replace(/\{downloadTitle}/g, config.downloadTitle)
                         .replace(/\{taskId}/g, self.task == null ? '' : self.task.id)
                         .replace(/\{projectId}/g, self.project == null ? '' : self.project.id)
                         .replace(/\{attachedFileId}/g, url || url != '' ? pieces[pieces.length-1] : '')

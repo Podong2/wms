@@ -196,14 +196,19 @@
         this.dueDateFrom = {
             date: DateUtils.toDate(vm.task.startDate == null ? '' : vm.task.startDate),
             datepickerOptions: {
-                maxDate: null
+                customClass: '',
+                minDate: new Date(),
+                showWeeks: true
             }
         };
+
         // max date picker
         this.dueDateTo = {
             date: DateUtils.toDate(vm.task.endDate == null ? '' : vm.task.endDate),
             datepickerOptions: {
-                minDate: null
+                customClass: '',
+                minDate: new Date(),
+                showWeeks: true
             }
         };
         // 반복작업 시작시간
@@ -563,6 +568,7 @@
             }).then(function (response) {
                 toastr.success('태스크 수정 완료', '태스크 수정 완료');
                 $rootScope.$broadcast('projectEditClose');
+                $rootScope.$broadcast('taskReload', $stateParams.listType);
                 vm.task.removeAssigneeIds = "";
                 vm.task.removeWatcherIds = "";
                 vm.task.removeRelatedTaskIds ="";
