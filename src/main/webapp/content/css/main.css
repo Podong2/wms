@@ -2671,7 +2671,15 @@ text-align: right;
 .user-picker-input.on{
     display: block;
 }
-
+.profile-close-btn{
+    position: absolute;
+    top: -7px;
+    color: #fff;
+    background: #a90329;
+    padding: 0px 4px;
+    border-radius: 50%;
+    left: 25px;
+}
 
 
 

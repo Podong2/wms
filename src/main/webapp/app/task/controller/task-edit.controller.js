@@ -28,6 +28,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             vm.updateSubTaskForm = updateSubTaskForm;
             vm.setDatePickerInput = setDatePickerInput;
             vm.subTaskClose = subTaskClose;
+            vm.subTaskUserRemove = subTaskUserRemove;
             vm.userInfo = Principal.getIdentity();
 
             vm.codes = Code.query();
@@ -494,6 +495,10 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             /* 하위 작업 저장 */
             function subTaskUserAdd(userId){
                 vm.subTaskUpdateForm.assigneeIds = userId;
+                subTaskUpdate();
+            }
+            function subTaskUserRemove(userId){
+                vm.subTaskUpdateForm.removeAssigneeIds = userId;
                 subTaskUpdate();
             }
             function subTaskUpdate(){

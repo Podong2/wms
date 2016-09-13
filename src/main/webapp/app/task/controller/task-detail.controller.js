@@ -33,6 +33,7 @@
         vm.subTaskUpdate = subTaskUpdate;
         vm.updateSubTaskForm = updateSubTaskForm;
         vm.setDatePickerInput = setDatePickerInput;
+        vm.subTaskUserRemove = subTaskUserRemove;
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
 
@@ -485,6 +486,11 @@
         /* 하위 작업 저장 */
         function subTaskUserAdd(userId){
             vm.subTaskUpdateForm.assigneeIds = userId;
+            subTaskUpdate();
+        }
+        function subTaskUserRemove(userId ,subTask){
+            vm.subTaskUpdateForm = subTask;
+            vm.subTaskUpdateForm.removeAssigneeIds = userId;
             subTaskUpdate();
         }
         function subTaskUpdate(){
