@@ -261,10 +261,11 @@ public class TaskResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<TaskDTO>> findByName(@RequestParam("name") String name) {
+    public ResponseEntity<List<TaskDTO>> findByName(@RequestParam("name") String name
+                                                    , @RequestParam(value = "excludeIds", required = false) List<Long> excludeIds) {
         log.debug("REST request to get Task name : {}", name);
 
-        List<TaskDTO> taskDTOs = taskService.findByNameLike(name);
+        List<TaskDTO> taskDTOs = taskService.findByNameLike(name, excludeIds);
 
         return new ResponseEntity<>(taskDTOs, HttpStatus.OK);
     }

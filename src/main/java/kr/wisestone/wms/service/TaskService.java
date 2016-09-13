@@ -470,10 +470,14 @@ public class TaskService {
     }
 
     @Transactional(readOnly = true)
-    public List<TaskDTO> findByNameLike(String name) {
+    public List<TaskDTO> findByNameLike(String name, List<Long> excludeIds) {
         BooleanBuilder predicate = new BooleanBuilder();
 
         predicate.and(QTask.task.name.containsIgnoreCase(name));
+
+        if(excludeIds != null && !excludeIds.isEmpty()) {
+            predicate.and(QTask.task.id.notIn(excludeIds));
+        }
 
         List<Task> tasks = Lists.newArrayList(this.taskRepository.findAll(predicate));
 
