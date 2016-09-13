@@ -5,8 +5,8 @@
 
 angular.module('wmsApp')
     .controller("projectHistoryCtrl", projectHistoryCtrl);
-projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$rootScope', '$state', 'ProjectHistoryTasksInfo', '$stateParams', 'toastr', 'TaskListSearch', '$sce', 'dataService', 'Principal', 'TaskEdit'];
-        function projectHistoryCtrl($scope, Code, $log, Task, AlertService, $rootScope, $state, ProjectHistoryTasksInfo, $stateParams, toastr, TaskListSearch, $sce, dataService, Principal, TaskEdit) {
+projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$rootScope', '$state', 'ProjectHistoryTasksInfo', '$stateParams', 'toastr', 'TaskListSearch', '$sce', 'dataService', 'Principal', 'TaskEdit', '$cookies'];
+        function projectHistoryCtrl($scope, Code, $log, Task, AlertService, $rootScope, $state, ProjectHistoryTasksInfo, $stateParams, toastr, TaskListSearch, $sce, dataService, Principal, TaskEdit, $cookies) {
             var vm = this;
             vm.baseUrl = window.location.origin;
 
@@ -35,12 +35,18 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
                 removeAttachedFileIds : ''
             };
 
+            $scope.getToken = function() {
+                return $cookies.get("CSRF-TOKEN");
+            };
+            $scope.getToken()
+
             // 파일 목록 라이브러리에서 가져오기
             $scope.$on('setCommentFiles', function (event, args) {
                 $scope.commentFiles = [];
                 angular.forEach(args, function(value){
                     $scope.commentFiles.push(value)
                 });
+                $scope.$apply();
                 $log.debug("코멘트 파일 목록 : ", $scope.commentFiles);
             });
 
@@ -125,6 +131,7 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
                     $scope.$emit('wmsApp:taskUpdate', response);
                     toastr.success('태스크 댓글 등록 완료', '태스크 댓글 등록 완료');
                     vm.comment.contents = [];
+                    $scope.commentFiles=[];
                     TaskListSearch.TaskAudigLog({'entityId' : taskId, 'entityName' : 'Task'}).then(function(result){
                         vm.tasks[index].TaskAuditLog = result;
                     });

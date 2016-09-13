@@ -9,14 +9,14 @@ customOnChange.$inject=['$log', '$rootScope'];
         return {
             restrict: 'A',
             scope : {
-                fileType : "@"
+                fileType : "=fileType"
             },
-            link: function(scope, element) {
+            link: function(scope, element, attr) {
                 element.bind("change", function (changeEvent) {
-                    if(scope.fileType == 'comment') {
+                    if(changeEvent.target.getAttribute('file-type') == 'comment') {
                         $rootScope.$broadcast('setCommentFiles', changeEvent.target.files);
                     }
-                    else if(scope.fileType == 'task-add'){
+                    else if(changeEvent.target.getAttribute('file-type') == 'task-add'){
                         $rootScope.$broadcast('setTaskAddFiles', changeEvent.target.files);
                     } else {
                         $rootScope.$broadcast('setFiles', changeEvent.target.files);
