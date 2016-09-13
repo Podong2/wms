@@ -19,7 +19,8 @@
             isAuthenticated: isAuthenticated,
             isIdentityResolved: isIdentityResolved,
             getIdentity : getIdentity,
-            logout : logout
+            logout : logout,
+            setIdentity : setIdentity
         };
 
         return service;
@@ -103,6 +104,13 @@
             return angular.isDefined(_identity);
         }
         function getIdentity () {
+            return _identity;
+        }
+
+        function setIdentity (identity) {
+            
+            _identity = identity;
+            
             return _identity;
         }
 

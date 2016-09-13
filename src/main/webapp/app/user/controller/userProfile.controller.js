@@ -22,7 +22,7 @@ userProfileCtrl.$inject=['$scope', '$log', '$rootScope', '$state', '$stateParams
                 login : vm.userInfo.login,
 
             }
-            if(vm.userInfo.profileImageId != null) $scope.userProfileImage = window.location.origin + '/api/attachedFile/' + vm.userInfo.profileImage.id
+            if(vm.userInfo.profileImageId != null) $scope.userProfileImage = window.location.origin + '/api/attachedFile/' + vm.userInfo.profileImageId
 
             function userUpload(){
                 $log.debug("vm.user ;::::::", vm.user);
@@ -34,21 +34,14 @@ userProfileCtrl.$inject=['$scope', '$log', '$rootScope', '$state', '$stateParams
                     fileFormDataName : "file"
                 }).then(function (response) {
                     toastr.success('유저 수정 완료', '유저 수정 완료');
-                    Account.get().$promise
-                        .then(getAccountThen)
-                        .catch(getAccountCatch);
+
+                    $log.debug("response : ", response.data);
+
+                    Principal.setIdentity(response.data);
+
+                    vm.userInfo = response.data;
+                    $scope.userProfileImage = window.location.origin + '/api/attachedFile/' + vm.userInfo.profileImageId;
                 });
             }
-
-            function getAccountThen(result){
-                $log.debug("result :::", result)
-                vm.userInfo = result.data;
-                $scope.userProfileImage = window.location.origin + '/api/attachedFile/' + vm.userInfo.profileImage.id;
-            }
-            function getAccountCatch(){
-
-            }
-
-
 
         }
