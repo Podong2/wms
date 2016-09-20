@@ -1,6 +1,8 @@
 package kr.wisestone.wms.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.google.common.base.Function;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import kr.wisestone.wms.common.util.ConvertUtil;
 import kr.wisestone.wms.domain.Code;
@@ -39,6 +41,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URI;
@@ -46,6 +49,7 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 
@@ -114,14 +118,32 @@ public class TaskResource {
 
         List<MultipartFile> files = request.getFiles("file");
 
-        List<Map<String, Object>> subTaskObjects = ConvertUtil.convertJsonToObject(taskForm.getSubTasks(), List.class);
-        List<TaskForm> subTasks = ConvertUtil.convertListToListClass(subTaskObjects, TaskForm.class);
+        List<TaskForm> subTasks = this.extractSubTask(taskForm.getSubTasks());
 
         TaskDTO result = taskService.saveTask(taskForm, subTasks, files);
 
         return ResponseEntity.created(new URI("/api/tasks/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("task", result.getId().toString()))
             .body(result);
+    }
+
+    private List<TaskForm> extractSubTask(String subTaskJson) {
+        List<TaskForm> subTasks = Lists.newArrayList();
+
+        List<Map<String, Object>> subTaskObjects = ConvertUtil.convertJsonToObject(subTaskJson, List.class);
+
+        for(Map<String, Object> taskObject : subTaskObjects) {
+
+            TaskForm subTask = ConvertUtil.convertMapToClass(taskObject, TaskForm.class);
+
+            List<Integer> assigneeIds = (List<Integer>) taskObject.get("assigneeIds");
+
+            subTask.setAssigneeIds(assigneeIds.stream().map(Long::new).collect(Collectors.toList()));
+
+            subTasks.add(subTask);
+        }
+
+        return subTasks;
     }
 
     @RequestMapping(value = "/tasks/createSubTask",
