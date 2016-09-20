@@ -32,6 +32,8 @@ public class TaskForm {
 
     private Boolean importantYn = Boolean.FALSE;
 
+    private Boolean privateYn = Boolean.FALSE;
+
     private List<Long> projectIds = new ArrayList<>();
 
     private List<Long> assigneeIds = new ArrayList<>();
@@ -82,6 +84,8 @@ public class TaskForm {
             task.setContents(this.contents);
 
         task.setImportantYn(importantYn);
+
+        task.setPrivateYn(privateYn);
 
         if(this.statusId != null) {
             Code status = new Code();

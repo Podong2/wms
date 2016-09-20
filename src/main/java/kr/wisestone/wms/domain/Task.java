@@ -75,6 +75,10 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
     @Type(type="yes_no")
     private Boolean templateYn = Boolean.FALSE;
 
+    @Column(name = "private_yn")
+    @Type(type="yes_no")
+    private Boolean privateYn = Boolean.FALSE;
+
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     @OrderBy(value = "id ASC")
     @JsonIgnore
@@ -343,6 +347,14 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
 
     public void setTaskRepeatSchedule(TaskRepeatSchedule taskRepeatSchedule) {
         this.taskRepeatSchedule = taskRepeatSchedule;
+    }
+
+    public Boolean getPrivateYn() {
+        return privateYn;
+    }
+
+    public void setPrivateYn(Boolean privateYn) {
+        this.privateYn = privateYn;
     }
 
     @Override

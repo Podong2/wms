@@ -23,6 +23,7 @@ CREATE TABLE owl_user
 	activation_key       varchar(20) NULL,
 	reset_key            varchar(20) NULL,
 	reset_date           timestamp NULL,
+	phone                varchar(50) null,
 	created_by           varchar(50)  NOT NULL ,
 	created_date         timestamp  NULL ,
 	last_modified_by     varchar(50)  NULL ,
@@ -224,7 +225,7 @@ CREATE TABLE owl_attached_file (
     id                   bigint,
 	name                 varchar(1000) NOT NULL,
 	content              bytea,
-	content_type         varchar(50) NULL,
+	content_type         varchar(255) NULL,
 	size                 bigint NULL,
 	created_by           varchar(50)  NOT NULL ,
 	created_date         timestamp  NULL ,
@@ -242,7 +243,9 @@ CREATE TABLE owl_trace_log (
 	old_value            text NULL,
 	new_value            text NULL,
 	etc_value            varchar(1000) NULL,
-	attached_file_id     bigint,
+	attached_file_id     bigint NULL,
+	task_id              bigint NULL,
+	project_id           bigint NULL,
 	created_by           varchar(50)  NULL ,
 	created_date         timestamp  NULL ,
 	last_modified_by     varchar(50)  NULL ,
@@ -272,6 +275,7 @@ CREATE TABLE owl_task
     end_date             varchar(20) NULL,
     important_yn         char(1) NULL,
     template_yn          char(1) NULL,
+    private_yn           char(1) NULL,
     created_by           varchar(50) NOT NULL,
     created_date         timestamp NULL,
     last_modified_by     varchar(50) NULL,
@@ -347,22 +351,54 @@ CREATE TABLE owl_task_attached_file
     last_modified_date   timestamp  NULL
 );
 
+CREATE TABLE owl_task_repeat_schedule
+(
+    id                      bigint,
+    task_id                 bigint  NULL ,
+    repeat_yn               char(1),
+    repeat_type             varchar(50),
+    weekdays                varchar(100),
+    advent_date_start_time  varchar(10),
+    start_date              varchar(20),
+    end_date                varchar(20),
+    permanent_yn            char(1),
+    monthly_criteria        varchar(255) null,
+    execute_date            varchar(255) null,
+    created_by              varchar(50)  NOT NULL,
+    created_date            timestamp  NULL,
+    last_modified_by        varchar(50)  NULL,
+    last_modified_date      timestamp  NULL
+);
+
+
 CREATE TABLE owl_project
 (
     id                   bigint,
     name                 varchar(1000)  NULL ,
     contents             text NULL ,
     folder_yn            char(1) NULL,
-    admin_id             bigint NULL,
     start_date           varchar(20) NULL,
     end_date             varchar(20) NULL,
     parent_id            bigint NULL,
     status_id            bigint NULL,
+    color                varchar(50) null,
     created_by           varchar(50) NOT NULL,
     created_date         timestamp NULL,
     last_modified_by     varchar(50) NULL,
     last_modified_date   timestamp NULL
 );
+
+CREATE TABLE owl_task_project
+(
+    id                   bigint,
+    task_id              bigint  NULL ,
+    project_id           bigint  NULL ,
+    created_by           varchar(50)  NOT NULL,
+    created_date         timestamp  NULL,
+    last_modified_by     varchar(50)  NULL,
+    last_modified_date   timestamp  NULL
+);
+
 
 CREATE TABLE owl_project_trace_log
 (
@@ -391,11 +427,35 @@ CREATE TABLE owl_project_user
     id                   bigint,
     project_id           bigint  NULL ,
     user_id              bigint  NULL ,
+    user_type            varchar(255) null,
     created_by           varchar(50)  NOT NULL,
     created_date         timestamp  NULL,
     last_modified_by     varchar(50)  NULL,
     last_modified_date   timestamp  NULL
 );
+
+CREATE TABLE owl_project_relation
+(
+    id                   bigint,
+    child_id             bigint  NULL ,
+    parent_id            bigint  NULL ,
+    created_by           varchar(50)  NOT NULL,
+    created_date         timestamp  NULL,
+    last_modified_by     varchar(50)  NULL,
+    last_modified_date   timestamp  NULL
+);
+
+CREATE TABLE owl_project_shared_attached_file
+(
+    id                   bigint,
+    project_id           bigint  NULL ,
+    attached_file_id     bigint  NULL ,
+    created_by           varchar(50)  NOT NULL,
+    created_date         timestamp  NULL,
+    last_modified_by     varchar(50)  NULL,
+    last_modified_date   timestamp  NULL
+);
+
 
 CREATE TABLE owl_code
 (
@@ -423,6 +483,13 @@ CREATE TABLE owl_notification
     notification_level_name         varchar(255) NULL,
     notification_level_display_time integer NULL,
     notification_level_color        varchar(255) NULL,
+    entity_id                       bigint null,
+    entity_name                     varchar(255) null,
+    entity_field                    varchar(255) null,
+    entity_value                    varchar(4000) null,
+    etc_value                       varchar(4000) null,
+    attached_file_id                bigint null,
+    persist_type                    varchar(50) null,
     created_by                      varchar(50)  NOT NULL,
     created_date                    timestamp  NULL,
     last_modified_by                varchar(50)  NULL,
@@ -436,10 +503,37 @@ CREATE TABLE owl_notification_recipient
     notification_id      bigint  NULL ,
     recipient_id         bigint  NULL ,
     read_yn              char(1) NULL ,
+    confirm_yn           char(1) null,
     created_by           varchar(50)  NOT NULL,
     created_date         timestamp  NULL,
     last_modified_by     varchar(50)  NULL,
     last_modified_date   timestamp  NULL
+);
+
+CREATE TABLE owl_dashboard
+(
+    id                   bigint,
+    name                 varchar(255) NULL,
+    description          varchar(4000) NULL,
+    dashboard_model      text NULL,
+    use_yn               char(1),
+    system_yn            char(1),
+    created_by           varchar(50) NOT NULL,
+    created_date         timestamp NULL,
+    last_modified_by     varchar(50) NULL,
+    last_modified_date   timestamp NULL
+);
+
+CREATE TABLE owl_user_dashboard
+(
+    id                   bigint,
+    user_id              bigint NULL,
+    dashboard_id         bigint NULL,
+    default_yn           char(1),
+    created_by           varchar(50) NOT NULL,
+    created_date         timestamp NULL,
+    last_modified_by     varchar(50) NULL,
+    last_modified_date   timestamp NULL
 );
 
 
@@ -464,7 +558,8 @@ VALUES
     ('owl_code_id',10000),
     ('owl_task_attached_file_id',10000),
     ('owl_notification_id',10000),
-    ('owl_notification_recipient_id',10000)
+    ('owl_notification_recipient_id',10000),
+    ('owl_project_relation_id',10000)
 ;
 
 INSERT INTO owl_authority (name)
@@ -489,3 +584,10 @@ VALUES
     (3,'admin','$2a$10$gSAhZrxMllrbgj/kkK9UceBPpChGWJA7SYIb1Mqo.n5aNLq1/oRrC','Administrator','admin@localhost',B'1'::bit(1),'ko','system'),
     (4,'user','$2a$10$VEjxo0jq2YG9Rbk2HmX9S.k1uZBGYUHdUcid3g/vfiEl7lwWgOH/K','User','user@localhost',B'1'::bit(1),'ko','system')
 ;
+
+INSERT INTO owl_code (id, name, default_yn, position, color, code_type, created_by, created_date, last_modified_by, last_modified_date) VALUES
+	(1, '활성', 'Y', 1, '#9b9b9b', 'TASK_STATUS', 'admin', '2016-08-01 00:00:00.000', NULL, '2016-08-01 00:00:00.000'),
+	(2, '완료', 'N', 2, '#9b9b9b', 'TASK_STATUS', 'admin', '2016-08-01 00:00:00.000', NULL, '2016-08-01 00:00:00.000'),
+	(3, '보류', 'N', 3, '#9b9b9b', 'TASK_STATUS', 'admin', '2016-08-01 00:00:00.000', NULL, '2016-08-01 00:00:00.000'),
+	(4, '취소', 'N', 4, '#9b9b9b', 'TASK_STATUS', 'admin', '2016-08-01 00:00:00.000', NULL, '2016-08-01 00:00:00.000')
+	;
