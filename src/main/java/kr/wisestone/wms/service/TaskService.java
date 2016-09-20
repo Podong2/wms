@@ -9,6 +9,7 @@ import kr.wisestone.wms.common.util.DateUtil;
 import kr.wisestone.wms.domain.*;
 import kr.wisestone.wms.repository.CodeRepository;
 import kr.wisestone.wms.repository.TaskRepository;
+import kr.wisestone.wms.repository.dao.TaskDAO;
 import kr.wisestone.wms.repository.search.TaskSearchRepository;
 import kr.wisestone.wms.security.SecurityUtils;
 import kr.wisestone.wms.web.rest.condition.ProjectTaskCondition;
@@ -66,6 +67,9 @@ public class TaskService {
 
     @Inject
     private CodeRepository codeRepository;
+
+    @Inject
+    private TaskDAO taskDAO;
 
     /**
      *  Get all the tasks.

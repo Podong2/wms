@@ -4,10 +4,61 @@
 
 <mapper namespace="kr.wisestone.wms.domain.Task">
 
-    <select id="getNameById" resultType="String">
-        select name from owl_task where id = 10905
+    <resultMap id="taskResultMap" type="kr.wisestone.wms.web.rest.dto.TaskDTO">
+        <id property="id" column="id" />
+        <result property="name" column="name"/>
+        <result property="statusId" column="statusId"/>
+        <result property="statusName" column="statusName"/>
+        <collection property="subTasks" javaType="java.util.ArrayList" resultMap="subTaskResultMap"/>
+        <collection property="relatedTasks" javaType="java.util.ArrayList" resultMap="relatedTaskResultMap"/>
+        <collection property="assignees" javaType="java.util.ArrayList" resultMap="assigneeUserResultMap"/>
+    </resultMap>
+
+    <resultMap id="subTaskResultMap" type="kr.wisestone.wms.web.rest.dto.TaskDTO">
+        <id property="id" column="subTaskId" />
+        <result property="name" column="subTaskName"/>
+        <result property="statusId" column="subTaskStatusId"/>
+        <result property="statusName" column="subTaskStatusName"/>
+    </resultMap>
+
+    <resultMap id="relatedTaskResultMap" type="kr.wisestone.wms.web.rest.dto.TaskDTO">
+        <id property="id" column="relatedTaskId" />
+        <result property="name" column="relatedTaskName"/>
+        <result property="statusId" column="relatedTaskStatusId"/>
+        <result property="statusName" column="relatedTaskStatusName"/>
+    </resultMap>
+
+    <resultMap id="assigneeUserResultMap" type="kr.wisestone.wms.web.rest.dto.UserDTO">
+        <id property="id" column="assigneeId" />
+        <result property="name" column="assigneeName"/>
+        <result property="profileImageId" column="assigneeProfileImageId"/>
+    </resultMap>
+
+
+    <select id="getTasks" resultType="java.util.ArrayList" resultMap="taskResultMap">
+        SELECT t.id as id, t.name as name, tc.id as statusId, tc.name as statusName
+            , tp.id as projectId, tp.name as projectName
+            , CASE
+                WHEN tp.folder_yn = 'Y' THEN true
+                WHEN tp.folder_yn = 'N' THEN false
+              END as projectYn
+            , pt.id as parentTaskId, pt.name as parentTaskName, ptc.name as parentTaskStatusName, ptc.id as parentTaskStatusId
+            , st.id as subTaskId, st.name as subTaskName, stc.name as subTaskStatusName, stc.id as subTaskStatusId
+            , rt.id as relatedTaskId, rt.name as relatedTaskName, rtc.name as relatedTaskStatusName, rtc.id as relatedTaskStatusId
+            , u.id as assigneeId, u.name as assigneeName, u.profile_image_id as assigneeProfileImageId
+        FROM (SELECT it.* FROM owl_task it ORDER BY it.id DESC OFFSET 0 LIMIT 10 ) t
+            LEFT JOIN owl_code tc ON t.status_id = tc.id
+            LEFT OUTER JOIN owl_task_project tpr ON tpr.task_id = t.id
+            LEFT JOIN owl_project tp ON tp.id = tpr.project_id
+            LEFT OUTER JOIN owl_task pt ON t.parent_id = pt.id
+            LEFT JOIN owl_code ptc ON pt.status_id = ptc.id
+            LEFT OUTER JOIN owl_task st ON t.id = st.parent_id
+            LEFT JOIN owl_code stc ON st.status_id = stc.id
+            LEFT OUTER JOIN owl_related_task rtr ON t.id = rtr.task_id
+            LEFT JOIN owl_task rt ON rt.id = rtr.related_task_id
+            LEFT JOIN owl_code rtc ON rt.status_id = rtc.id
+            LEFT OUTER JOIN owl_task_user tu ON tu.task_id = t.id AND tu.user_type = 'ASSIGNEE'
+            LEFT JOIN owl_user u ON tu.user_id = u.id
     </select>
-
-
 
 </mapper>
