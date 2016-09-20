@@ -52,6 +52,8 @@ public class TaskForm {
 
     private TaskRepeatScheduleDTO taskRepeatSchedule;
 
+    private List<TaskForm> subTasks = new ArrayList<>();
+
     public Task bind(Task task) {
 
         if(StringUtils.hasText(this.name))
@@ -171,7 +173,6 @@ public class TaskForm {
             task.removeRelatedTask(relatedTask);
         }
 
-
         if(this.taskRepeatSchedule != null) {
 
             TaskRepeatSchedule taskRepeatSchedule = task.getTaskRepeatSchedule();
@@ -194,7 +195,9 @@ public class TaskForm {
         return task;
     }
 
-    public Task bindSubTask(Task subTask) {
+    public Task bindSubTask(Task parent) {
+
+        Task subTask = new Task();
 
         if(StringUtils.hasText(this.getName()))
             subTask.setName(this.getName());
@@ -222,9 +225,8 @@ public class TaskForm {
         status.setId(Task.STATUS_ACTIVE);
         subTask.setStatus(status);
 
-        Task parent = new Task();
-        parent.setId(this.getParentId());
-        subTask.setParent(parent);
+        if(parent != null)
+            subTask.setParent(parent);
 
         if(this.projectId != null) {
             Project project = new Project();

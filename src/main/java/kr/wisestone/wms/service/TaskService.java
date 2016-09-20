@@ -1,7 +1,5 @@
 package kr.wisestone.wms.service;
 
-import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.mysema.query.BooleanBuilder;
 import com.mysema.query.jpa.JPASubQuery;
@@ -17,29 +15,24 @@ import kr.wisestone.wms.web.rest.condition.ProjectTaskCondition;
 import kr.wisestone.wms.web.rest.condition.TaskCondition;
 import kr.wisestone.wms.web.rest.dto.*;
 import kr.wisestone.wms.web.rest.form.TaskForm;
-import kr.wisestone.wms.web.rest.mapper.AttachedFileMapper;
-import kr.wisestone.wms.web.rest.mapper.ProjectMapper;
 import kr.wisestone.wms.web.rest.mapper.TaskMapper;
-import kr.wisestone.wms.web.rest.mapper.UserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 import java.util.stream.Collectors;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
 /**
  * Service Implementation for managing Task.
@@ -444,6 +437,13 @@ public class TaskService {
         }
 
         origin = taskRepository.save(origin);
+
+        for(TaskForm subTaskForm : taskForm.getSubTasks()) {
+            Task subTask = subTaskForm.bindSubTask(origin);
+
+            taskRepository.save(subTask);
+        }
+
 //        taskSearchRepository.save(origin);
         TaskDTO result = taskMapper.taskToTaskDTO(origin);
 
