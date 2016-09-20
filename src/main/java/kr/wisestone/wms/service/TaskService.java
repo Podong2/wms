@@ -470,13 +470,42 @@ public class TaskService {
     }
 
     @Transactional(readOnly = true)
-    public List<TaskDTO> findByNameLike(String name, List<Long> excludeIds) {
+    public List<TaskDTO> findByNameLike(TaskCondition taskCondition, List<Long> excludeIds) {
+
+        User loginUser = SecurityUtils.getCurrentUser();
+
+        QTask $task = QTask.task;
+
         BooleanBuilder predicate = new BooleanBuilder();
 
-        predicate.and(QTask.task.name.containsIgnoreCase(name));
+        predicate.and($task.name.containsIgnoreCase(taskCondition.getName()));
+
+        if(taskCondition.getProjectId() != null)
+            predicate.and($task.taskProjects.any().project.id.eq(taskCondition.getProjectId()));
+
+        if(StringUtils.hasText(taskCondition.getAssigneeName()) && !taskCondition.getAssigneeSelfYn()) {
+            predicate.and($task.id.in(new JPASubQuery()
+                .from(QTaskUser.taskUser)
+                .where(QTaskUser.taskUser.user.name.containsIgnoreCase(taskCondition.getAssigneeName())
+                    .and(QTaskUser.taskUser.userType.eq(UserType.ASSIGNEE)))
+                .list(QTaskUser.taskUser.task.id)));
+
+        } else if(taskCondition.getAssigneeSelfYn()) {
+            predicate.and($task.id.in(new JPASubQuery()
+                .from(QTaskUser.taskUser)
+                .where(QTaskUser.taskUser.user.name.containsIgnoreCase(loginUser.getName())
+                    .and(QTaskUser.taskUser.userType.eq(UserType.ASSIGNEE)))
+                .list(QTaskUser.taskUser.task.id)));
+        }
+
+        if(taskCondition.getCreatedBySelfYn()) {
+            predicate.and($task.createdBy.eq(loginUser.getLogin()));
+        }
+
+        predicate.and($task.privateYn.isFalse());
 
         if(excludeIds != null && !excludeIds.isEmpty()) {
-            predicate.and(QTask.task.id.notIn(excludeIds));
+            predicate.and($task.id.notIn(excludeIds));
         }
 
         List<Task> tasks = Lists.newArrayList(this.taskRepository.findAll(predicate));

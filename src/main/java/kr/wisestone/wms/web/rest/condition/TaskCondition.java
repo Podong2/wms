@@ -21,4 +21,14 @@ public class TaskCondition {
     private String listType = LIST_TYPE_TODAY;
 
     private String filterType = FILTER_TYPE_ALL;
+
+    private String name;
+
+    private String assigneeName;
+
+    private Boolean assigneeSelfYn = Boolean.FALSE;
+
+    private Boolean createdBySelfYn = Boolean.FALSE;
+
+    private Long projectId;
 }
