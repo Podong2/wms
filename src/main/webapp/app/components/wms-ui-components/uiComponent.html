@@ -1008,12 +1008,12 @@ $scope.columnDatas = [
                     <!--<auto-complete source="loadData($query)" multiple="false" max-results-to-show="20"></auto-complete>-->
                 <!--</tags-input>-->
 
-                <autocomplete source="loadData" tags="tags" display-property="name" multiple="{{vm.autoType}}" max-results-to-show="20"></autocomplete>
+                <autocomplete template-url="ngTagsInput/tag-item-user.html" source="loadData" tags="tags" display-property="name" multiple="{{vm.autoType}}" max-results-to-show="20"></autocomplete>
                 <label for="auto-single"><input type="checkbox" id="auto-single" data-ng-model="vm.autoType" data-ng-click="vm.autoValueInit()"/>다중 사용자 모드</label><br/>
                 <h5>데이터</h5>
                 {{tags}}
 <xmp>
-    <autocomplete source="loadData" tags="tags" display-property="name" multiple="{{vm.autoType}}" max-results-to-show="20"></autocomplete>
+    <autocomplete template-url="ngTagsInput/tag-item-user.html" source="loadData" tags="tags" display-property="name" multiple="{{vm.autoType}}" max-results-to-show="20"></autocomplete>
 </xmp>
             </div>
             <div ng-if="vm.tabArea[16].status">
