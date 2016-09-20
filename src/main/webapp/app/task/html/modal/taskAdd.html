@@ -139,8 +139,9 @@
                             <div wms-Include="app/task/html/repeatAddDatePicker.html" ></div>
                         </div>
                     </div>
-                    <div class="col-md-2">
-                        <label for="subTaskAdd" class="cursor" ng-click="vm.subTaskOpen = !vm.subTaskOpen" ><i class="fa fa-outdent" id="subTaskAdd" > 하위 작업 추가</i></label>
+                    <div class="col-md-2" ng-class="vm.task.privateYn ? 'task-date-picker-area' : ''">
+                        <label ng-if="!vm.task.privateYn" for="subTaskAdd" class="cursor" ng-click="vm.subTaskOpen = !vm.subTaskOpen" ><i class="fa fa-outdent" id="subTaskAdd" > <span>하위 작업 {{vm.subTasks.length == 0 ? '추가' : vm.subTasks.length}}</span></i></label>
+                        <label ng-if="vm.task.privateYn" for="subTaskDisabled" disabled="disabled"><i class="fa fa-outdent" id="subTaskDisabled" > <span>하위 작업 {{vm.subTasks.length == 0 ? '추가' : vm.subTasks.length}}</span></i></label>
                     </div>
                     <div class="col-md-2">
                         <label for="subTaskAdd" class="cursor" ng-click="vm.fileAreaOpen = !vm.fileAreaOpen"><i class="fa fa-paperclip"></i> 파일 첨부</label>
