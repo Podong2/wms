@@ -20,7 +20,8 @@ function autocomplete($document, $log, $compile, findUser, $q) {
             multiple : '@',
             maxResultsToShow : '@',
             placeholder : '@',
-            tagType: '@'
+            tagType: '@',
+            templateUrl: '@'
         },
         replace: false,
         templateUrl : 'app/components/ng-tags-input/tagsInput.html',

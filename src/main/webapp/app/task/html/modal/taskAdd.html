@@ -91,13 +91,13 @@
                         담당자
                     </td>
                     <td>
-                        <autocomplete source="findUsers" tags="assigneeUser" display-property="name" multiple="true" max-results-to-show="20" tag-type="assignees"></autocomplete>
+                        <autocomplete template-url="ngTagsInput/tag-item-user.html" source="findUsers" tags="assigneeUser" display-property="name" multiple="true" max-results-to-show="20" tag-type="assignees"></autocomplete>
                     </td>
                     <td>
                         참조
                     </td>
                     <td>
-                        <autocomplete source="findUsers" tags="watchers" display-property="name" multiple="true" max-results-to-show="20" tag-type="watchers"></autocomplete>
+                        <autocomplete template-url="ngTagsInput/tag-item-user.html" source="findUsers" tags="watchers" display-property="name" multiple="true" max-results-to-show="20" tag-type="watchers"></autocomplete>
                     </td>
                 </tr>
                 </tbody>
@@ -269,7 +269,7 @@
                         <tr>
                             <th style="vertical-align: middle;">참조 작업</th>
                             <td>
-                                <autocomplete source="findTasks" tags="relatedTaskList" display-property="name" multiple="true" max-results-to-show="20"></autocomplete>
+                                <autocomplete template-url="ngTagsInput/tag-item.html" source="findTasks" tags="relatedTaskList" display-property="name" multiple="true" max-results-to-show="20"></autocomplete>
                             </td>
                         </tr>
                         </tbody>

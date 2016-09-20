@@ -95,13 +95,13 @@
                         관리자
                     </td>
                     <td>
-                        <autocomplete source="findUsers" tags="vm.project.projectAdmins" display-property="name" multiple="true" max-results-to-show="20" tag-type="projectAdminIds"></autocomplete>
+                        <autocomplete template-url="ngTagsInput/tag-item-user.html" source="findUsers" tags="vm.project.projectAdmins" display-property="name" multiple="true" max-results-to-show="20" tag-type="projectAdminIds"></autocomplete>
                     </td>
                     <td>
                         공유
                     </td>
                     <td colspan="3">
-                        <autocomplete source="findUsers" tags="vm.project.projectUsers" display-property="name" multiple="true" max-results-to-show="20" tag-type="projectUserIds"></autocomplete>
+                        <autocomplete template-url="ngTagsInput/tag-item-user.html" source="findUsers" tags="vm.project.projectUsers" display-property="name" multiple="true" max-results-to-show="20" tag-type="projectUserIds"></autocomplete>
                     </td>
                     <td rowspan="2" ng-if="vm.project.folderYn == false">
                         <i class="fa fa-paperclip" ng-click="vm.fileAreaOpen = !vm.fileAreaOpen" style="font-size: 25px"></i>
