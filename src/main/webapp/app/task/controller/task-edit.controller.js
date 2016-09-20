@@ -335,6 +335,12 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                     vm.subTaskUpdateForm.endDate = formatDate;
                 }
             });
+            // 하위 작업 종료 시간 포멧 변경(기간)
+            $scope.$watchCollection("vm.task.privateYn", function(newValue, oldValue){
+                if(oldValue != newValue && newValue != ''){
+                    if(newValue) vm.subTasks = [];
+                }
+            });
 
 
             // 달력 오픈
@@ -424,15 +430,19 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                     toastr.warning('작업명을 입력하세요', '작업 생성');
                     return false;
                 }
-                if($scope.assigneeUser != [])userIdPush($scope.assigneeUser, "assigneeIds");
-                if($scope.watchers != [])userIdPush($scope.watchers, "watcherIds");
-                if($scope.relatedTaskList != [])userIdPush($scope.relatedTaskList, "relatedTaskIds");
-                if(vm.taskProject != [])userIdPush(vm.taskProject, "projectIds");
+                if($scope.assigneeUser != [])userIdPush($scope.assigneeUser, "assigneeIds"); // 담당자
+                if($scope.watchers != [])userIdPush($scope.watchers, "watcherIds"); //참조자
+                if($scope.relatedTaskList != [])userIdPush($scope.relatedTaskList, "relatedTaskIds"); //참조 작업
+                if(vm.taskProject != [])userIdPush(vm.taskProject, "projectIds"); // 프로젝트
+                vm.task.taskRepeatSchedule = vm.taskRepeatSchedule; // 반복작업 주입
+                if(vm.task.privateYn) vm.subTasks = []; // 비공개일 시 하위 작업 삭제
+
+                // 하위작업 주입 및 담당자 아이디 주입
                 vm.task.subTasks  = vm.subTasks;
                 angular.forEach(vm.task.subTasks, function(val, index){
-                    val.assigneeIds = subTaskUserIdAdd(val.assignees)
+                    val.assigneeIds = [];
+                    val.assigneeIds = subTaskUserIdAdd(val.assignees);
                 });
-                vm.task.taskRepeatSchedule = vm.taskRepeatSchedule;
 
                 $log.debug("vm.task ;::::::", vm.task);
                 $log.debug("파일 목록 ;::::::", $scope.files);
@@ -472,7 +482,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                     typeIds.push(val.id);
                 });
 
-                return typeIds.join(",");
+                return typeIds;
             }
 
             //function projectListAdd(project){

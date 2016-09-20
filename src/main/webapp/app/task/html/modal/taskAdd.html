@@ -3,11 +3,11 @@
     <!--<div class="ext-el-mask" id="ext-gen898" ng-show="vm.task.id == ''"></div>-->
     <div class="row">
         <div class="col-md-12">
-            <div class="col-md-9">
+            <div class="col-md-9 padding-0">
                 <i class="fa fa-exclamation-circle task-circle" ng-class="vm.task.importantYn ? 'on' : ''" ng-click="vm.task.importantYn = !vm.task.importantYn"></i>
                 <input type="text" class="taskAddInput" ng-model="vm.task.name" maxlength="35" placeholder="생성할 작업명을 입력하세요."/><!-- enter-submit="vm.save()" -->
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 padding-0">
                 <span class="pull-right taskOptionBtnArea">
                     <span class="taskModalBtn" ng-click="taskAddModalOpen()" class="pull-right">
                         <i class="fa fa-arrows-alt"></i>
@@ -154,7 +154,7 @@
                 </div>
 
                 <!-- 하위 작업 목록 영역 -->
-                <div class="sub-task-area" style="border-top: 1px solid #ddd; padding: 5px"  >
+                <div class="sub-task-area">
                     <!--<div class="sub-task-area-title">하위 작업 목록</div>-->
                     <!--<div ng-repeat="list in vm.subTasks" ng-show="vm.subTasks != []" class="sub-task-area-list">-->
 

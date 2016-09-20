@@ -2,11 +2,11 @@
     <div class="row">
         <div class="col-md-12">
             <div><a ui-sref="my-task.detail({id : vm.task.parent.id, listType : vm.listType})" class="cursor">{{vm.task.parent.name}}</a></div>
-            <div class="col-md-9">
+            <div class="col-md-9 padding-0">
                 <i class="fa fa-exclamation-circle task-circle" ng-class="vm.task.importantYn ? 'on' : ''" ng-click="vm.task.importantYn = !vm.task.importantYn"></i>
                 <input type="text" class="taskAddInput" ng-model="vm.task.name" enter-submit="vm.taskUpload()" placeholder="Task"/>
             </div>
-            <div class="col-md-3">
+            <div class="col-md-3 padding-0">
                 <span class="pull-right taskOptionBtnArea">
                     <span class="taskModalBtn" class="pull-right">
                         <i class="fa fa-arrows-alt"></i>
@@ -172,7 +172,7 @@
                         </label>
                     </div>
                 </div>
-                <div class="sub-task-area" style="border-top: 1px solid #ddd; padding: 5px" >
+                <div class="sub-task-area" >
                     <table class="table table-bordered" ng-show="vm.task.subTasks.length != 0">
                         <thead>
                         <tr>

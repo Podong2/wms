@@ -1911,7 +1911,7 @@ i:active, .i:active, i:focus, .i:focus{
     position: relative;
 }
 .task-options .task-date-picker-area{
-    background: #fff;
+    background: #fff !important;
 }
 
 .task-options-area{
@@ -1933,6 +1933,9 @@ i:active, .i:active, i:focus, .i:focus{
 }
 .sub-task-area.on{
     display: block;
+}
+.sub-task-area{
+    border-top: 1px solid #ddd; padding: 5px 0;
 }
 .add-sub-task{
     display: none;

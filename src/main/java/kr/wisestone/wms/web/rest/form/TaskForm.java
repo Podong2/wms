@@ -1,7 +1,6 @@
 package kr.wisestone.wms.web.rest.form;
 
 import kr.wisestone.wms.domain.*;
-import kr.wisestone.wms.web.rest.dto.SubTaskDTO;
 import kr.wisestone.wms.web.rest.dto.TaskRepeatScheduleDTO;
 import lombok.Data;
 import org.flywaydb.core.internal.util.StringUtils;
