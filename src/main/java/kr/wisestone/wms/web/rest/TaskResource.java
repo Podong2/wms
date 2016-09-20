@@ -2,6 +2,7 @@ package kr.wisestone.wms.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.collect.Lists;
+import kr.wisestone.wms.common.util.ConvertUtil;
 import kr.wisestone.wms.domain.Code;
 import kr.wisestone.wms.domain.Task;
 import kr.wisestone.wms.domain.User;
@@ -11,11 +12,14 @@ import kr.wisestone.wms.service.TaskService;
 import kr.wisestone.wms.service.UserService;
 import kr.wisestone.wms.web.rest.condition.TaskCondition;
 import kr.wisestone.wms.web.rest.conversion.TaskRepeatScheduleDTOPropertyEditor;
-import kr.wisestone.wms.web.rest.dto.*;
+import kr.wisestone.wms.web.rest.dto.TaskDTO;
+import kr.wisestone.wms.web.rest.dto.TaskProgressStatusDTO;
+import kr.wisestone.wms.web.rest.dto.TaskRepeatScheduleDTO;
+import kr.wisestone.wms.web.rest.dto.TaskStatisticsDTO;
 import kr.wisestone.wms.web.rest.form.TaskForm;
+import kr.wisestone.wms.web.rest.mapper.TaskMapper;
 import kr.wisestone.wms.web.rest.util.HeaderUtil;
 import kr.wisestone.wms.web.rest.util.PaginationUtil;
-import kr.wisestone.wms.web.rest.mapper.TaskMapper;
 import org.elasticsearch.common.unit.Fuzziness;
 import org.elasticsearch.index.query.MatchQueryBuilder;
 import org.slf4j.Logger;
@@ -43,7 +47,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-import static org.elasticsearch.index.query.QueryBuilders.*;
+import static org.elasticsearch.index.query.QueryBuilders.matchQuery;
 
 /**
  * REST controller for managing Task.
@@ -110,7 +114,10 @@ public class TaskResource {
 
         List<MultipartFile> files = request.getFiles("file");
 
-        TaskDTO result = taskService.saveTask(taskForm, files);
+        List<Map<String, Object>> subTaskObjects = ConvertUtil.convertJsonToObject(taskForm.getSubTasks(), List.class);
+        List<TaskForm> subTasks = ConvertUtil.convertListToListClass(subTaskObjects, TaskForm.class);
+
+        TaskDTO result = taskService.saveTask(taskForm, subTasks, files);
 
         return ResponseEntity.created(new URI("/api/tasks/" + result.getId()))
             .headers(HeaderUtil.createEntityCreationAlert("task", result.getId().toString()))

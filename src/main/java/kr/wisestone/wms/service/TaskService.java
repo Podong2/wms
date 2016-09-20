@@ -366,6 +366,16 @@ public class TaskService {
 
         Task origin = taskRepository.findOne(taskForm.getId());
 
+        if(origin.getPrivateYn() != null && !origin.getPrivateYn().equals(taskForm.getPrivateYn())) {
+
+            for(Task subTask : origin.getSubTasks()) {
+
+                subTask.setPrivateYn(taskForm.getPrivateYn());
+
+                taskRepository.save(subTask);
+            }
+        }
+
         origin = taskForm.bind(origin);
 
         if(taskForm.getStatusId() != null) {
@@ -405,25 +415,9 @@ public class TaskService {
     }
 
     @Transactional
-    public TaskDTO create(TaskForm taskForm) {
+    public TaskDTO saveTask(TaskForm taskForm, List<TaskForm> subTasks, List<MultipartFile> files) {
 
-//        Task task = this.taskRepository.findByName(taskForm.getName());
-
-//        if(task != null) {
-//            throw new CommonRuntimeException("error.task.taskNameDuplicate");
-//        }
-
-        Task task = this.taskRepository.save(taskForm.bind(new Task()));
-
-        return taskMapper.taskToTaskDTO(task);
-    }
-
-    @Transactional
-    public TaskDTO saveTask(TaskForm taskForm, List<MultipartFile> files) {
-
-        Task origin = taskRepository.findOne(taskForm.getId());
-
-        origin = taskForm.bind(origin);
+        Task origin = taskForm.bind(new Task());
 
         if(taskForm.getStatusId() != null) {
             origin.setStatus(this.codeRepository.findOne(taskForm.getStatusId()));
@@ -438,18 +432,20 @@ public class TaskService {
 
         origin = taskRepository.save(origin);
 
-        for(TaskForm subTaskForm : taskForm.getSubTasks()) {
-            Task subTask = subTaskForm.bindSubTask(origin);
+        if(subTasks != null && !subTasks.isEmpty()) {
 
-            taskRepository.save(subTask);
+            for(TaskForm subTaskForm : subTasks) {
+                Task subTask = subTaskForm.bindSubTask(origin);
+
+                taskRepository.save(subTask);
+            }
         }
 
-//        taskSearchRepository.save(origin);
         TaskDTO result = taskMapper.taskToTaskDTO(origin);
 
         List<User> notificationTargets = origin.getTaskUsers().stream().map(TaskUser::getUser).collect(Collectors.toList());
 
-        notificationService.sendIssueCreatedNotification(this.findOneDTO(taskForm.getId()), notificationTargets, "04");
+        notificationService.sendIssueCreatedNotification(this.findOneDTO(origin.getId()), notificationTargets, "04");
 
         return result;
     }

@@ -1,6 +1,7 @@
 package kr.wisestone.wms.web.rest.form;
 
 import kr.wisestone.wms.domain.*;
+import kr.wisestone.wms.web.rest.dto.SubTaskDTO;
 import kr.wisestone.wms.web.rest.dto.TaskRepeatScheduleDTO;
 import lombok.Data;
 import org.flywaydb.core.internal.util.StringUtils;
@@ -8,6 +9,7 @@ import org.flywaydb.core.internal.util.StringUtils;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class TaskForm {
@@ -25,6 +27,8 @@ public class TaskForm {
     private Long parentId;
 
     private Long projectId;
+
+    private Long removeProjectId;
 
     private Long statusId;
 
@@ -54,7 +58,7 @@ public class TaskForm {
 
     private TaskRepeatScheduleDTO taskRepeatSchedule;
 
-    private List<TaskForm> subTasks = new ArrayList<>();
+    private String subTasks;
 
     public Task bind(Task task) {
 
@@ -101,26 +105,35 @@ public class TaskForm {
             Project project = new Project();
             project.setId(this.projectId);
 
-            task.addTaskProject(project);
+            if(!task.findTaskProject(project).isPresent()) {
+                task.addTaskProject(project);
+            }
         }
 
-        for(Long id : getProjectIds()) {
-            if(id == null) continue;
-
+        if(this.removeProjectId != null) {
             Project project = new Project();
-            project.setId(id);
-
-            task.addTaskProject(project);
-        }
-
-        for(Long id : getRemoveProjectIds()) {
-            if(id == null) continue;
-
-            Project project = new Project();
-            project.setId(id);
+            project.setId(this.removeProjectId);
 
             task.removeTaskProject(project);
         }
+
+//        for(Long id : getProjectIds()) {
+//            if(id == null) continue;
+//
+//            Project project = new Project();
+//            project.setId(id);
+//
+//            task.addTaskProject(project);
+//        }
+//
+//        for(Long id : getRemoveProjectIds()) {
+//            if(id == null) continue;
+//
+//            Project project = new Project();
+//            project.setId(id);
+//
+//            task.removeTaskProject(project);
+//        }
 
         for(Long id : getAssigneeIds()) {
             if(id == null) continue;
