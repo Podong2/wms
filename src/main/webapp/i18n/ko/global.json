@@ -189,7 +189,8 @@
             "refresh" : "새로고침",
             "content" : "내용",
             "fileDownload" : "첨부파일",
-            "change" : "변경"
+            "change" : "변경",
+            "close" : "닫기"
         },
         "detail": {
             "field": "필드",

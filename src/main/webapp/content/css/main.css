@@ -1109,7 +1109,7 @@ tr.angular-ui-tree-empty {
     width: 100%;
     z-index: 10;
     right: -10px;
-    top: 8px;
+    top: 5px;
     cursor: pointer;
 }
 
@@ -1908,9 +1908,12 @@ i:active, .i:active, i:focus, .i:focus{
 }
 .task-options > div:first-child{
     background: #fff;
+    position: relative;
 }
-.task-options > div:first-child{
+.task-options .task-date-picker-area{
+    background: #fff;
 }
+
 .task-options-area{
     clear: both;
     border-top: 1px solid #e0e0e0;
@@ -2091,6 +2094,28 @@ i:active, .i:active, i:focus, .i:focus{
 }
 .subTask-edit-section.on{
     display: block;
+}
+.task-openYn-select{
+    width: 138px !important;
+    position: relative;
+    bottom: 14px;
+    right: 3px;
+}
+.task-openYn-select button{
+    height:58px !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+.task-options .privateYn-icon{
+    z-index: 100;
+    position: absolute;
+    top: 20px;
+    left: 21px;
+    font-size: 17px;
+}
+.task-options .filter-option{
+    margin-left: 25px;
+
 }
 
     /*<< comment css >>*/

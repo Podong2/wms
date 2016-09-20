@@ -31,7 +31,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             vm.subTaskUserRemove = subTaskUserRemove;
             vm.userInfo = Principal.getIdentity();
 
-            vm.codes = Code.query();
+            vm.privateYns = [{"id":false, "name":"공개", icon: 'fa-unlock-alt'},{"id":true,"name":"비공개", icon: 'fa-lock'}];
 
             vm.stateInfo = $state.current.name;
             vm.state = $state.get(vm.stateInfo).name.split('.')[0];
@@ -60,8 +60,47 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 assigneeIds : [],
                 watcherIds : [],
                 relatedTaskIds : [],
-                projectIds : []
+                projectIds : [],
+                privateYn : false
             };
+
+            vm.codes = Code.query('', onSuccess, erorr);
+            function onSuccess(){
+                $("#input-3").fileinput({
+                    uploadUrl : '/tasks/uploadFile',
+                    task : vm.task,
+                    type : 'task-add',
+                    token : $scope.getToken(),
+                    showCaption: false,
+                    showUpload: true,
+                    showRemove: false,
+                    uploadAsync: false,
+                    overwriteInitial: false,
+                    initialPreviewAsData: true, // defaults markup
+                    initialPreviewFileType: 'image', // image is the default and can be overridden in config below
+                    uploadExtraData: function (previewId, index) {
+                        var obj = {};
+                        $('.file-form').find('input').each(function() {
+                            var id = $(this).attr('id'), val = $(this).val();
+                            obj[id] = val;
+                        });
+                        return obj;
+                    }
+                }).on('filesorted', function(e, params) {
+                    console.log('File sorted params', params);
+                }).on('fileuploaded', function(e, params) {
+                    console.log('File uploaded params', params);
+                }).on('getFileupload', function(e, params) {
+                    angular.forEach(params, function(value){
+                        $scope.files.push(value)
+                    });
+                    $scope.$apply();
+                    $log.debug("파일 목록 : ", $scope.files);
+                })
+            }
+            function erorr(){
+
+            }
             vm.taskProject=[];
 
             vm.subTaskOpen = false;
@@ -327,7 +366,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
 
             /* 타스크의 서브타스크 등록 */
             function subTaskSave(){
-                if(vm.subTask.name != '') SubTask.save(vm.subTask, onSubTaskSaveSuccess, onSaveError);
+                //if(vm.subTask.name != '') SubTask.save(vm.subTask, onSubTaskSaveSuccess, onSaveError);
             }
 
             function onSaveSuccess (result) {
@@ -341,40 +380,9 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                     $rootScope.$broadcast('taskReload', {listType : 'TODAY'})
                 }
 
-                $("#input-3").fileinput({
-                    uploadUrl : '/tasks/uploadFile',
-                    task : vm.task,
-                    type : 'task-add',
-                    token : $scope.getToken(),
-                    showCaption: false,
-                    showUpload: true,
-                    showRemove: false,
-                    uploadAsync: false,
-                    overwriteInitial: false,
-                    initialPreviewAsData: true, // defaults markup
-                    initialPreviewFileType: 'image', // image is the default and can be overridden in config below
-                    uploadExtraData: function (previewId, index) {
-                        var obj = {};
-                        $('.file-form').find('input').each(function() {
-                            var id = $(this).attr('id'), val = $(this).val();
-                            obj[id] = val;
-                        });
-                        return obj;
-                    }
-                }).on('filesorted', function(e, params) {
-                    console.log('File sorted params', params);
-                }).on('fileuploaded', function(e, params) {
-                    console.log('File uploaded params', params);
-                }).on('getFileupload', function(e, params) {
-                    angular.forEach(params, function(value){
-                        $scope.files.push(value)
-                    });
-                    $scope.$apply();
-                    $log.debug("파일 목록 : ", $scope.files);
-                })
             }
 
-            vm.subTaskList = [];
+            vm.subTasks = [];
             function onSubTaskSaveSuccess (result) {
                 toastr.success('하위 작업 생성 완료', '하위 작업 생성 완료');
                 getTaskInfo();
@@ -420,6 +428,10 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 if($scope.watchers != [])userIdPush($scope.watchers, "watcherIds");
                 if($scope.relatedTaskList != [])userIdPush($scope.relatedTaskList, "relatedTaskIds");
                 if(vm.taskProject != [])userIdPush(vm.taskProject, "projectIds");
+                vm.task.subTasks  = vm.subTasks;
+                angular.forEach(vm.task.subTasks, function(val, index){
+                    val.assigneeIds = subTaskUserIdAdd(val.assignees)
+                });
                 vm.task.taskRepeatSchedule = vm.taskRepeatSchedule;
 
                 $log.debug("vm.task ;::::::", vm.task);
@@ -453,6 +465,14 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 });
 
                 vm.task[type] = typeIds.join(",");
+            }
+            function subTaskUserIdAdd(userInfo, type){
+                var typeIds = new Array();
+                angular.forEach(userInfo, function(val){
+                    typeIds.push(val.id);
+                });
+
+                return typeIds.join(",");
             }
 
             //function projectListAdd(project){
@@ -513,7 +533,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 Task.get({id : vm.task.id}, successTask, erorrTask);
             }
             function successTask(result){
-                vm.subTaskList = result.subTasks;
+                vm.subTasks = result.subTasks;
             }
             function erorrTask(){
 

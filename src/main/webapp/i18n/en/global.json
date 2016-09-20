@@ -188,7 +188,8 @@
             "refresh" : "refresh",
             "content" : "content",
             "fileDownload" : "Attachment File",
-            "change" : "Change"
+            "change" : "Change",
+            "close" : "Close"
         },
         "detail": {
             "field": "Field",
