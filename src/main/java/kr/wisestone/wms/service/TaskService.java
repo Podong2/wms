@@ -291,11 +291,12 @@ public class TaskService {
         Task task = taskRepository.findOne(id);
         TaskDTO taskDTO = new TaskDTO(task);
 
-        User loginUser = SecurityUtils.getCurrentUser();
-
+//        User loginUser = SecurityUtils.getCurrentUser();
+//
 //        Map<String, Object> condition = Maps.newHashMap();
 //        condition.put("userId", loginUser.getLogin());
 //        condition.put("listType", "TODAY");
+//        condition.put("filterType", "REQUESTED");
 //
 //        List<TaskDTO> taskDTOs = taskDAO.getTasks(condition);
 //        TaskStatisticsDTO taskStatisticsDTO = taskDAO.getTaskCount(condition);

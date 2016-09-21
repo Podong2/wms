@@ -55,6 +55,38 @@
         <result property="folderYn" column="projectFolderYn"/>
     </resultMap>
 
+    <sql id="taskListFilterTypeQuery">
+        <choose>
+            <when test="filterType == 'ASSIGNED'">
+                AND it.id IN (SELECT itu.task_id
+                FROM owl_task_user itu
+                LEFT JOIN owl_user iu ON itu.user_id = iu.id
+                WHERE itu.user_type = 'ASSIGNEE'
+                AND iu.login = #{userId})
+            </when>
+            <when test="filterType == 'REQUESTED'">
+                AND NOT it.id IN (SELECT itu.task_id
+                FROM owl_task_user itu
+                LEFT JOIN owl_user iu ON itu.user_id = iu.id
+                WHERE itu.user_type = 'ASSIGNEE'
+                AND iu.login = #{userId})
+                AND it.created_by = #{userId}
+            </when>
+            <when test="filterType == 'WATCHED'">
+                AND NOT it.id IN (SELECT itu.task_id
+                FROM owl_task_user itu
+                LEFT JOIN owl_user iu ON itu.user_id = iu.id
+                WHERE itu.user_type = 'ASSIGNEE'
+                AND iu.login = #{userId})
+                AND it.created_by != #{userId}
+                AND it.id IN (SELECT itu.task_id
+                FROM owl_task_user itu
+                LEFT JOIN owl_user iu ON itu.user_id = iu.id
+                WHERE itu.user_type = 'WATCHER'
+                AND iu.login = #{userId})
+            </when>
+        </choose>
+    </sql>
 
     <select id="getTasks" resultType="java.util.ArrayList" resultMap="taskResultMap" parameterType="java.util.HashMap">
         SELECT t.id as id, t.name as name, t.start_date as startDate, t.end_date as endDate, tc.id as statusId, tc.name as statusName
@@ -106,6 +138,7 @@
                                         AND tiu.login = #{userId}
                                 )
                         )
+                        <include refid="taskListFilterTypeQuery" />
                         ORDER BY orderTarget DESC, it.end_date ASC, it.start_date ASC
                     </when>
                     <when test="listType == 'SCHEDULED'">
@@ -126,6 +159,7 @@
                                         AND tiu.login = #{userId}
                                 )
                         )
+                        <include refid="taskListFilterTypeQuery" />
                         ORDER BY orderTarget DESC, it.start_date ASC, it.created_date ASC
                     </when>
                     <when test="listType == 'HOLD'">
@@ -142,6 +176,7 @@
                                     AND tiu.login = #{userId}
                                 )
                         )
+                        <include refid="taskListFilterTypeQuery" />
                         ORDER BY orderTarget DESC, it.end_date ASC, it.start_date ASC
                     </when>
                     <when test="listType == 'COMPLETE'">
@@ -158,6 +193,7 @@
                                     AND tiu.login = #{userId}
                                 )
                         )
+                        <include refid="taskListFilterTypeQuery" />
                         ORDER BY orderTarget DESC, it.end_date DESC
                     </when>
                 </choose>
