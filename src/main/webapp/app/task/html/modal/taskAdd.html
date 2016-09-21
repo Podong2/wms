@@ -93,7 +93,23 @@
                         <autocomplete template-url="ngTagsInput/tag-item-user.html" source="findUsers" tags="assigneeUser" display-property="name" multiple="true" max-results-to-show="20" tag-type="assignees"></autocomplete>
                     </td>
                     <td style="position: relative;">
+                        <!-- 참조자 정보 팝업 -->
+                        <div class='row watcher-picker-info'>
+                            <div class='col-md-4 padding-10' style='border-right:1px solid #ddd; height: 100%;'>
+                                <img ng-src='/api/attachedFile/{{watcherInfo.profileImageId}}' ng-if='watcherInfo.profileImageId !=null' /><img ng-src='/content/images/demo/male.png' ng-if='watcherInfo.profileImageId ==null' />
+                                </div>
+                            <div class='col-md-8 padding-10' style='height: 100%;'>
+                                <ul>
+                                    <li>{{watcherInfo.name}}</li>
+                                    <li>{{watcherInfo.phone}}</li>
+                                    <li>{{watcherInfo.email}}</li>
+                                </ul>
+                            </div>
+                        </div>
+
                         <label for="watcher" class="cursor" style="margin-bottom: 0px;" ng-click="pickerFindWatcher('')" watcher-picker-btn-toggle><span id="watcher"><i class="fa fa-user"></i> 참조자 {{watchers.length == 0 ? '' : watchers.length}}</span></label>
+
+                        <!-- 참조자 검색 및 등록 팝업 -->
                         <div class="watcher-popup-area text-left">
                             <div class="padding-5 watcher-popup-header">
                                 <span class="pull-right fa fa-close cursor" ng-click="vm.watcherPopupClose()"></span>
@@ -101,7 +117,7 @@
                             </div>
                             <div class="watcher-list-area padding-5" ng-show="watchers.length > 0">
                                 <ul class="list-inline friends-list" style="margin-bottom: 0">
-                                    <li ng-repeat="user in watchers" style="position: relative; margin: 0 3px 3px;">
+                                    <li class="watcher-item" ng-repeat="user in watchers" style="position: relative; margin: 0 3px 3px;" ng-click="vm.watcherInfoAdd(user)" watcher-info-btn-toggle>
                                         <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
                                         <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
                                         <span class="profile-close-btn cursor" ng-click="vm.removeWatcher(user)"><i class="fa fa-close"></i></span>
@@ -125,52 +141,16 @@
                                             </div>
                                         </div>
                                     </div>
-
+                                </div>
+                                <div ng-if="vm.watcherList.length == 0">
+                                    일치하는 사용자가 없습니다.
                                 </div>
                             </div>
                         </div>
+
                     </td>
                     <style>
-                        .watcher-popup-area{
-                            position: absolute;
-                            width: 280px;
-                            min-height: 210px;
-                            top:30px;
-                            background-color: #fff;
-                            border-radius: 3px;
-                            border:1px solid #d3d3d3;
-                            box-shadow: 3px 3px 5px #ddd;
-                            right:0;
-                            z-index: 100;
-                            display: none;
-                        }
-                        .watcher-popup-area.on{
-                            display: block;
-                        }
-                        .watcher-search-list-area{
-                            overflow: hidden;
-                            overflow-y: auto;
-                            height:140px;
-                        }
-                        .watcher-search-list-area .watcher-search-element{
-                            border-top: 1px solid #ddd;
-                            height:47px;
-                            padding: 7px 3px;
-                        }
-                        .watcher-search-list-area .watcher-search-element:active{
-                            background: #FFEEDC !important;
-                        }
-                        .watcher-search-list-area .watcher-search-element:first-child{
-                            border-top: 0;
-                        }
-                        .watcher-search-list-area .watcher-search-element img{
-                            width: 30px;
-                            height: 30px;
-                            margin-top: 3px;
-                        }
-                        .watcher-popup-header, .watcher-list-area {
-                            background: #f4f4f4;
-                        }
+
                     </style>
                     <!--<td>-->
                         <!--<autocomplete template-url="ngTagsInput/tag-item-user.html" source="findUsers" tags="watchers" display-property="name" multiple="true" max-results-to-show="20" tag-type="watchers"></autocomplete>-->
@@ -185,7 +165,7 @@
         <div class="task-options-area task-status-user-aera">
             <table class="table table-bordered" style="border-top: 0; border-bottom: 0;">
                 <colgroup>
-                    <col width="120px">
+                    <col width="119px">
                     <col width="150px">
                     <col width="150px">
                     <col width="150px">
@@ -207,7 +187,7 @@
                     </td>
                     <td>
                         <div id="repeatAddSection">
-                            <i class="icon-append fa fa-calendar" style="float: left; padding: 8px;" repeat-picker-toggle></i>
+                            <i class="icon-append fa fa-calendar" style="float: left; padding: 12px;" repeat-picker-toggle></i>
                             <i class="icon-append glyphicon glyphicon-retweet" ng-if="vm.taskRepeatSchedule.repeatType != '' && vm.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i>
                             <div class="form-group" style="margin-bottom: 0; position: relative;">
 
@@ -306,10 +286,10 @@
                             <td>
 
                                 <!-- 우측 영역 날짜 선택 -->
-                                    <span class="pull-right">
+                                    <span class="pull-right" style="width: 80px;">
                                         <!--{{list.createdDate | date : 'yyyy-MM-dd'}}-->
                                         <div id="subTaskEditSection">
-                                            <i class="icon-append fa fa-calendar cursor" style="float: left; padding: 8px;" sub-task-picker-toggle ng-click="vm.setDatePickerInput(list)"></i>
+                                            <i class="icon-append fa fa-calendar cursor" style="float: left; padding: 12px;" sub-task-picker-toggle ng-click="vm.setDatePickerInput(list)"></i>
                                             <div class="form-group" style="margin-bottom: 0">
 
                                                 <span class="input-group wms-form">
@@ -317,7 +297,7 @@
                                                         <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="subTaskEndDate" style="height: 30px; width: 100%; border : 0">
                                                     </label>
 
-                                                    <span class="dueDateValues" sub-task-picker-toggle ng-click="vm.setDatePickerInput(list)">{{list.endDate}}</span>
+                                                    <span class="dueDateValues" sub-task-picker-toggle ng-click="vm.setDatePickerInput(list)">{{list.endDate | date : 'MM-dd'}}</span>
                                                 </span>
                                             </div>
                                             <div wms-Include="app/task/html/subTaskAddDatePicker.html"></div>
@@ -326,7 +306,7 @@
 
                                 <!-- 제목 영역 -->
                                 <div class="task-list-title">
-                                    <input type="checkbox"/>
+                                    <!--<input type="checkbox"/>-->
                                     <span class="cursor" ui-sref="my-task.detail({id : list.id, listType : vm.listType})">{{list.name}}</span>
 
                                 </div>
@@ -364,7 +344,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <ul class="list-inline friends-list" style="margin-bottom: 0">
+                                    <ul class="list-inline friends-list" style="margin-bottom: 0; text-align: left;">
                                         <li ng-repeat="user in list.assignees | limitTo:3" style="position: relative">
                                             <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
                                             <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">

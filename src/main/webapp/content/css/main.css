@@ -1109,7 +1109,7 @@ tr.angular-ui-tree-empty {
     width: 100%;
     z-index: 10;
     right: 0px;
-    top: 5px;
+    top: 10px;
     cursor: pointer;
     text-align: left;
 }
@@ -2046,7 +2046,7 @@ i:active, .i:active, i:focus, .i:focus{
 }
 
 .task-list-title{
-    float:left; padding-top: 10px; margin-right: 10px
+    float:left; padding: 9px; margin-right: 10px
 }
 
 .sub-task-area-popup{
@@ -2748,8 +2748,75 @@ text-align: right;
     width: 50px;
     height: 50px;
 }
+.watcher-picker-info{
+    position: absolute;
+    width: 300px;
+    height: 75px;
+    background-color: #fff;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+    bottom: 22px;
+    right: 14px;
+    z-index: 100;
+    box-shadow: 3px 3px 5px #ccc;
+    display: none;
+}
+.watcher-picker-info.on{
+    display: block;
+}
+.watcher-picker-info ul {
+    list-style: none;
+    text-align: left !important;
+    padding-left: 10px;
+}
+.watcher-picker-info ul li{
+    margin-left: 0;
+}
+.watcher-picker-info img{
+    width: 50px;
+    height: 50px;
+}
 
-
+.watcher-popup-area{
+    position: absolute;
+    width: 280px;
+    min-height: 210px;
+    top:30px;
+    background-color: #fff;
+    border-radius: 3px;
+    border:1px solid #d3d3d3;
+    box-shadow: 3px 3px 5px #ddd;
+    right:0;
+    z-index: 100;
+    display: none;
+}
+.watcher-popup-area.on{
+    display: block;
+}
+.watcher-search-list-area{
+    overflow: hidden;
+    overflow-y: auto;
+    height:140px;
+}
+.watcher-search-list-area .watcher-search-element{
+    border-top: 1px solid #ddd;
+    height:47px;
+    padding: 7px 3px;
+}
+.watcher-search-list-area .watcher-search-element:active{
+    background: #FFEEDC !important;
+}
+.watcher-search-list-area .watcher-search-element:first-child{
+    border-top: 0;
+}
+.watcher-search-list-area .watcher-search-element img{
+    width: 30px;
+    height: 30px;
+    margin-top: 3px;
+}
+.watcher-popup-header, .watcher-list-area {
+    background: #f4f4f4;
+}
 
 
 

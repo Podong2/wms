@@ -59,6 +59,8 @@ function wmsAddSubTaskElement($log, $compile, $rootScope) {
                     if (e.which == 13) {/* 13 == enter key@ascii */
                         if(scope.taskName != ''){
                             scope.addSubTask(scope.taskName);
+                            scope.taskName ='';
+                            scope.$apply();
                         }
                     }
 

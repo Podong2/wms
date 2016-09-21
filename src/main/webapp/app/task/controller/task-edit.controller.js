@@ -32,28 +32,10 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             vm.watcherAdd = watcherAdd;
             vm.removeWatcher = removeWatcher;
             vm.watcherPopupClose = watcherPopupClose;
+            vm.watcherInfoAdd = watcherInfoAdd;
             vm.userInfo = Principal.getIdentity();
 
             vm.DuplicationWatcherIds = [];
-            function watcherAdd(watcher){
-                var index = vm.DuplicationWatcherIds.indexOf(watcher.id);
-                if(index > -1){
-                    $log.debug("중복")
-                }else{
-                    vm.DuplicationWatcherIds.push(watcher.id);
-                    $scope.watchers.push(watcher);
-                }
-            }
-            function removeWatcher(watcher){
-                var index = vm.DuplicationWatcherIds.indexOf(watcher.id);
-                if(index > -1){
-                    vm.DuplicationWatcherIds.splice(index, 1);
-                    $scope.watchers.splice(index, 1);
-                }
-            }
-            function watcherPopupClose(){
-                $rootScope.$broadcast('watcherPopupClose');
-            }
 
             vm.privateYns = [{"id":false, "name":"공개", icon: 'fa-unlock-alt'},{"id":true,"name":"비공개", icon: 'fa-lock'}];
 
@@ -66,6 +48,8 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             $scope.assigneeUser = [];
             $scope.watchers = [];
             $scope.relatedTaskList = [];
+
+            $scope.watcherInfo='';
 
             $scope.getToken = function() {
                 return $cookies.get("CSRF-TOKEN");
@@ -730,6 +714,35 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 vm.subTaskUpdateForm = subTask;
                 vm.subTaskDueDateFrom.date = DateUtils.toDate(subTask.startDate)
                 vm.subTaskDueDateTo.date = DateUtils.toDate(subTask.endDate)
+            }
+
+            // 참조자 데이터 주입
+            function watcherAdd(watcher){
+                var index = vm.DuplicationWatcherIds.indexOf(watcher.id);
+                if(index > -1){
+                    $log.debug("중복")
+                }else{
+                    vm.DuplicationWatcherIds.push(watcher.id);
+                    $scope.watchers.push(watcher);
+                }
+            }
+
+            // 참조자 데이터 제거
+            function removeWatcher(watcher){
+                var index = vm.DuplicationWatcherIds.indexOf(watcher.id);
+                if(index > -1){
+                    vm.DuplicationWatcherIds.splice(index, 1);
+                    $scope.watchers.splice(index, 1);
+                }
+            }
+
+            //참조자 팝업 닫기
+            function watcherPopupClose(){
+                $rootScope.$broadcast('watcherPopupClose');
+            }
+
+            function watcherInfoAdd(watcher){
+                $scope.watcherInfo = watcher;
             }
 
         }

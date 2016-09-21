@@ -8,6 +8,7 @@ angular.module('wmsApp')
     .directive('projectAddToggle', projectAddToggle)
     .directive('userPickerBtnToggle', userPickerBtnToggle)
     .directive('watcherPickerBtnToggle', watcherPickerBtnToggle)
+    .directive('watcherInfoBtnToggle', watcherInfoBtnToggle)
     .directive('gnbTaskHistoryToggle', gnbTaskHistoryToggle);
 toggleEvent.$inject=['$compile', '$filter', '$log', '$sce', '$timeout'];
 sectionToggle.$inject=['$timeout', '$rootScope'];
@@ -18,6 +19,7 @@ projectPickerAddToggle.$inject=['$timeout', '$rootScope'];
 projectAddToggle.$inject=['$timeout', '$rootScope'];
 userPickerBtnToggle.$inject=['$timeout'];
 watcherPickerBtnToggle.$inject=['$rootScope'];
+watcherInfoBtnToggle.$inject=['$rootScope', '$timeout'];
 gnbTaskHistoryToggle.$inject=['$timeout'];
 function toggleEvent($compile, $filter, $log, $sce, $timeout) {
 
@@ -276,6 +278,40 @@ function watcherPickerBtnToggle($rootScope) {
                 if (!$($elements.parent()).has(e.target).length || closeYn) {
                     $($elements).removeClass("on");
                     closeYn = false;
+                }
+            });
+            $rootScope.$on('watcherPopupClose', function(){
+                closeYn = true;
+            })
+        }
+    }
+}
+/**
+ * 참조자 팝업 토글
+ * @param $timeout
+ * @returns {{restrict: string, link: link}}
+ */
+function watcherInfoBtnToggle($rootScope, $timeout) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attr) {
+            var $elements = element.parents('td').children('.watcher-picker-info');
+            var closeYn = false;
+            element.on('click', function(_this) {
+                //$($elements).addClass("on");
+            });
+            $('body').click(function (e) {
+                if ($($elements).has(e.target).length) {
+                    $elements.addClass("on");
+                }else{
+                    $timeout(function () {
+                        if (!$('.watcher-item').has(e.target).length) {
+                            $($elements).removeClass("on");
+                        }else{
+                            $elements.addClass("on");
+                        }
+                    }, 200);
+
                 }
             });
             $rootScope.$on('watcherPopupClose', function(){
