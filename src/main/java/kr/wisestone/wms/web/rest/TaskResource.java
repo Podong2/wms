@@ -299,6 +299,17 @@ public class TaskResource {
         return new ResponseEntity<>(taskDTOs, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/tasks/findRelatedTask",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<TaskDTO>> findByName(@RequestParam(value = "taskId") Long taskId, @RequestParam(value = "relatedType", defaultValue = "SUB_TASK") String relatedType) {
+
+        List<TaskDTO> taskDTOs = taskService.findRelatedTask(taskId, relatedType);
+
+        return new ResponseEntity<>(taskDTOs, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/tasks/todayTaskCount",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)

@@ -50,7 +50,11 @@ public class TaskDTO implements Serializable {
 
     private List<TaskDTO> subTasks = new ArrayList<>();
 
+    private Long subTaskCount;
+
     private List<TaskDTO> relatedTasks = new ArrayList<>();
+
+    private Long relatedTaskCount;
 
     private List<ProjectDTO> taskProjects = new ArrayList<>();
 
@@ -69,6 +73,8 @@ public class TaskDTO implements Serializable {
     private TaskRepeatScheduleDTO taskRepeatSchedule;
 
     private Boolean attachedFileExistYn = Boolean.FALSE;
+
+    private Boolean privateYn = Boolean.FALSE;
 
     public TaskDTO(Task task) {
         this.setId(task.getId());
@@ -92,6 +98,7 @@ public class TaskDTO implements Serializable {
         this.setLastModifiedDate(task.getLastModifiedDate());
 
         this.setImportantYn(task.getImportantYn());
+        this.setPrivateYn(task.getPrivateYn());
 
         if(task.getTaskAttachedFiles() != null && !task.getTaskAttachedFiles().isEmpty()) {
             this.setAttachedFileExistYn(Boolean.TRUE);
@@ -300,6 +307,22 @@ public class TaskDTO implements Serializable {
         this.attachedFileExistYn = attachedFileExistYn;
     }
 
+    public Long getSubTaskCount() {
+        return subTaskCount;
+    }
+
+    public void setSubTaskCount(Long subTaskCount) {
+        this.subTaskCount = subTaskCount;
+    }
+
+    public Long getRelatedTaskCount() {
+        return relatedTaskCount;
+    }
+
+    public void setRelatedTaskCount(Long relatedTaskCount) {
+        this.relatedTaskCount = relatedTaskCount;
+    }
+
     public Boolean getDelayYn() {
 
         if(StringUtils.hasText(this.endDate)) {
@@ -311,6 +334,14 @@ public class TaskDTO implements Serializable {
         }
 
         return Boolean.FALSE;
+    }
+
+    public Boolean getPrivateYn() {
+        return privateYn;
+    }
+
+    public void setPrivateYn(Boolean privateYn) {
+        this.privateYn = privateYn;
     }
 
     @Override

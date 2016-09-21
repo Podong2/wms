@@ -1,6 +1,7 @@
 package kr.wisestone.wms.service;
 
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.mysema.query.BooleanBuilder;
 import com.mysema.query.jpa.JPASubQuery;
 import com.mysema.query.types.OrderSpecifier;
@@ -30,6 +31,7 @@ import javax.inject.Inject;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -232,8 +234,6 @@ public class TaskService {
 
         BooleanBuilder predicate = new BooleanBuilder();
 
-
-
         if(taskCondition.getFilterType().equalsIgnoreCase(TaskCondition.FILTER_TYPE_ALL)) {
             predicate.and($task.taskUsers.any().user.login.eq(loginUser.getLogin()).or($task.createdBy.eq(loginUser.getLogin())));
         } else if(taskCondition.getFilterType().equalsIgnoreCase(TaskCondition.FILTER_TYPE_ASSIGNED)) {
@@ -290,6 +290,15 @@ public class TaskService {
         log.debug("Request to get Task : {}", id);
         Task task = taskRepository.findOne(id);
         TaskDTO taskDTO = new TaskDTO(task);
+
+        User loginUser = SecurityUtils.getCurrentUser();
+
+//        Map<String, Object> condition = Maps.newHashMap();
+//        condition.put("userId", loginUser.getLogin());
+//        condition.put("listType", "TODAY");
+//
+//        List<TaskDTO> taskDTOs = taskDAO.getTasks(condition);
+//        TaskStatisticsDTO taskStatisticsDTO = taskDAO.getTaskCount(condition);
 
         User user = userService.findByLogin(task.getCreatedBy());
         taskDTO.setCreatedByName(user.getName());
@@ -804,5 +813,21 @@ public class TaskService {
         }
 
         return result;
+    }
+
+    @Transactional(readOnly = true)
+    public List<TaskDTO> findRelatedTask(Long taskId, String relatedType) {
+
+        Task task = taskRepository.findOne(taskId);
+
+        List<TaskDTO> relatedTasks = Lists.newArrayList();
+
+        if(relatedType.equalsIgnoreCase("SUB_TASK") && (task.getSubTasks() != null && !task.getSubTasks().isEmpty())) {
+            relatedTasks = task.getSubTasks().stream().map(TaskDTO::new).collect(Collectors.toList());
+        } else if(relatedType.equalsIgnoreCase("RELATED_TASK") && (task.getRelatedTasks() != null && !task.getRelatedTasks().isEmpty())) {
+            relatedTasks = task.getSubTasks().stream().map(TaskDTO::new).collect(Collectors.toList());
+        }
+
+        return relatedTasks;
     }
 }

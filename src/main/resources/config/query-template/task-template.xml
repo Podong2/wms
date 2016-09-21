@@ -4,13 +4,28 @@
 
 <mapper namespace="kr.wisestone.wms.domain.Task">
 
+    <resultMap id="taskCountResultMap" type="kr.wisestone.wms.web.rest.dto.TaskStatisticsDTO">
+        <result property="totalCount" column="totalCount"/>
+        <result property="assignedCount" column="assignedCount"/>
+        <result property="createdCount" column="createdCount"/>
+        <result property="watchedCount" column="watchedCount"/>
+    </resultMap>
+
     <resultMap id="taskResultMap" type="kr.wisestone.wms.web.rest.dto.TaskDTO">
         <id property="id" column="id" />
         <result property="name" column="name"/>
         <result property="statusId" column="statusId"/>
         <result property="statusName" column="statusName"/>
-        <collection property="subTasks" javaType="java.util.ArrayList" resultMap="subTaskResultMap"/>
-        <collection property="relatedTasks" javaType="java.util.ArrayList" resultMap="relatedTaskResultMap"/>
+        <result property="startDate" column="startDate"/>
+        <result property="endDate" column="endDate"/>
+        <result property="attachedFileExistYn" column="attachedFileExistYn"/>
+        <result property="templateYn" column="templateYn"/>
+        <result property="importantYn" column="importantYn"/>
+        <result property="subTaskCount" column="subTaskCount"/>
+        <result property="relatedTaskCount" column="relatedTaskCount"/>
+        <association property="taskRepeatSchedule" javaType="kr.wisestone.wms.web.rest.dto.TaskRepeatScheduleDTO">
+            <result property="repeatType" column="repeatType"/>
+        </association>
         <collection property="assignees" javaType="java.util.ArrayList" resultMap="assigneeUserResultMap"/>
     </resultMap>
 
@@ -34,31 +49,187 @@
         <result property="profileImageId" column="assigneeProfileImageId"/>
     </resultMap>
 
+    <resultMap id="projectResultMap" type="kr.wisestone.wms.web.rest.dto.ProjectDTO">
+        <id property="id" column="projectId" />
+        <result property="name" column="projectName"/>
+        <result property="folderYn" column="projectFolderYn"/>
+    </resultMap>
 
-    <select id="getTasks" resultType="java.util.ArrayList" resultMap="taskResultMap">
-        SELECT t.id as id, t.name as name, tc.id as statusId, tc.name as statusName
+
+    <select id="getTasks" resultType="java.util.ArrayList" resultMap="taskResultMap" parameterType="java.util.HashMap">
+        SELECT t.id as id, t.name as name, t.start_date as startDate, t.end_date as endDate, tc.id as statusId, tc.name as statusName
+            , CASE
+                WHEN (SELECT count(taf.task_id) FROM owl_task_attached_file taf WHERE taf.task_id = t.id) > 0 THEN true
+                ELSE false
+              END as attachedFileExistYn
+            , CASE
+                WHEN t.private_yn = 'Y' THEN true
+                WHEN t.private_yn = 'N' THEN false
+              END as privateYn
+            , CASE
+                WHEN t.template_yn = 'Y' THEN true
+                WHEN t.template_yn = 'N' THEN false
+              END as templateYn
+            , CASE
+                WHEN t.important_yn = 'Y' THEN true
+                WHEN t.important_yn = 'N' THEN false
+              END as importantYn
             , tp.id as projectId, tp.name as projectName
             , CASE
                 WHEN tp.folder_yn = 'Y' THEN true
                 WHEN tp.folder_yn = 'N' THEN false
-              END as projectYn
+              END as projectFolderYn
             , pt.id as parentTaskId, pt.name as parentTaskName, ptc.name as parentTaskStatusName, ptc.id as parentTaskStatusId
-            , st.id as subTaskId, st.name as subTaskName, stc.name as subTaskStatusName, stc.id as subTaskStatusId
-            , rt.id as relatedTaskId, rt.name as relatedTaskName, rtc.name as relatedTaskStatusName, rtc.id as relatedTaskStatusId
+            , (SELECT count(st.id) FROM owl_task st WHERE st.parent_id = t.id) as subTaskCount
+            , (SELECT count(rt.related_task_id) FROM owl_related_task rt WHERE rt.task_id = t.id) as relatedTaskCount
             , u.id as assigneeId, u.name as assigneeName, u.profile_image_id as assigneeProfileImageId
-        FROM (SELECT it.* FROM owl_task it ORDER BY it.id DESC OFFSET 0 LIMIT 10 ) t
+            , trs.repeat_type as repeatType
+        FROM (
+                <choose>
+                    <when test="listType == 'TODAY'">
+                        SELECT
+                            CASE
+                                WHEN to_char(now(), 'YYYY-MM-DD') > it.end_date THEN 9
+                                WHEN to_char(now(), 'YYYY-MM-DD') = it.end_date THEN 8
+                                ELSE 1
+                            END as orderTarget
+                            ,it.*
+                        FROM owl_task it
+                        WHERE it.end_date != ''
+                        AND to_char(now(), 'YYYY-MM-DD') >= it.start_date
+                        AND it.status_id = 1
+                        AND (created_by = #{userId}
+                             OR EXISTS (SELECT tu.id
+                                        FROM owl_task_user tu
+                                        LEFT JOIN owl_user tiu ON tu.user_id = tiu.id
+                                        WHERE tu.task_id = it.id
+                                        AND tiu.login = #{userId}
+                                )
+                        )
+                        ORDER BY orderTarget DESC, it.end_date ASC, it.start_date ASC
+                    </when>
+                    <when test="listType == 'SCHEDULED'">
+                        SELECT
+                            CASE
+                                WHEN it.start_date != '' THEN 9
+                                ELSE 1
+                            END as orderTarget
+                            ,it.*
+                        FROM owl_task it
+                        WHERE (to_char(now(), 'YYYY-MM-DD') &lt; it.start_date OR (it.start_date = '' AND it.end_date = ''))
+                        AND it.status_id = 1
+                        AND (created_by = #{userId}
+                            OR EXISTS (SELECT tu.id
+                                        FROM owl_task_user tu
+                                        LEFT JOIN owl_user tiu ON tu.user_id = tiu.id
+                                        WHERE tu.task_id = it.id
+                                        AND tiu.login = #{userId}
+                                )
+                        )
+                        ORDER BY orderTarget DESC, it.start_date ASC, it.created_date ASC
+                    </when>
+                    <when test="listType == 'HOLD'">
+                        SELECT
+                            1 as orderTarget
+                            ,it.*
+                        FROM owl_task it
+                        WHERE it.status_id = 3
+                        AND (created_by = #{userId}
+                        OR EXISTS (SELECT tu.id
+                                    FROM owl_task_user tu
+                                    LEFT JOIN owl_user tiu ON tu.user_id = tiu.id
+                                    WHERE tu.task_id = it.id
+                                    AND tiu.login = #{userId}
+                                )
+                        )
+                        ORDER BY orderTarget DESC, it.end_date ASC, it.start_date ASC
+                    </when>
+                    <when test="listType == 'COMPLETE'">
+                        SELECT
+                            1 as orderTarget
+                            ,it.*
+                        FROM owl_task it
+                        WHERE it.status_id = 2
+                        AND (created_by = #{userId}
+                        OR EXISTS (SELECT tu.id
+                                    FROM owl_task_user tu
+                                    LEFT JOIN owl_user tiu ON tu.user_id = tiu.id
+                                    WHERE tu.task_id = it.id
+                                    AND tiu.login = #{userId}
+                                )
+                        )
+                        ORDER BY orderTarget DESC, it.end_date DESC
+                    </when>
+                </choose>
+                OFFSET 0 LIMIT 10
+            ) t
             LEFT JOIN owl_code tc ON t.status_id = tc.id
             LEFT OUTER JOIN owl_task_project tpr ON tpr.task_id = t.id
             LEFT JOIN owl_project tp ON tp.id = tpr.project_id
             LEFT OUTER JOIN owl_task pt ON t.parent_id = pt.id
             LEFT JOIN owl_code ptc ON pt.status_id = ptc.id
-            LEFT OUTER JOIN owl_task st ON t.id = st.parent_id
-            LEFT JOIN owl_code stc ON st.status_id = stc.id
-            LEFT OUTER JOIN owl_related_task rtr ON t.id = rtr.task_id
-            LEFT JOIN owl_task rt ON rt.id = rtr.related_task_id
-            LEFT JOIN owl_code rtc ON rt.status_id = rtc.id
             LEFT OUTER JOIN owl_task_user tu ON tu.task_id = t.id AND tu.user_type = 'ASSIGNEE'
             LEFT JOIN owl_user u ON tu.user_id = u.id
+            LEFT OUTER JOIN owl_task_repeat_schedule trs ON trs.task_id = t.id
+            ORDER BY t.orderTarget DESC, t.end_date ASC, t.start_date ASC
+    </select>
+
+    <sql id="taskCountInnerQuery">
+        SELECT it.*
+        FROM owl_task it
+        <choose>
+            <when test="listType == 'TODAY'">
+                WHERE it.end_date != ''
+                AND to_char(now(), 'YYYY-MM-DD') >= it.start_date
+                AND it.status_id = 1
+            </when>
+            <when test="listType == 'SCHEDULED'">
+                WHERE (to_char(now(), 'YYYY-MM-DD') &lt; it.start_date OR (it.start_date = '' AND it.end_date = ''))
+                AND it.status_id = 1
+            </when>
+            <when test="listType == 'HOLD'">
+                WHERE it.status_id = 3
+            </when>
+            <when test="listType == 'COMPLETE'">
+                WHERE it.status_id = 2
+                AND (created_by = #{userId}
+            </when>
+        </choose>
+    </sql>
+
+    <select id="getTaskCount" resultMap="taskCountResultMap" parameterType="java.util.HashMap">
+        SELECT (c.assignedCount + c.createdCount + c.watchedCount) as totalCount, c.assignedCount, c.createdCount, c.watchedCount
+        FROM (SELECT (SELECT COUNT(t.id)
+                FROM (<include refid="taskCountInnerQuery"/>) t
+                WHERE t.id IN (SELECT tu.task_id
+                        FROM owl_task_user tu
+                        LEFT JOIN owl_user u ON tu.user_id = u.id
+                        WHERE tu.user_type = 'ASSIGNEE'
+                        AND u.login = #{userId})
+            ) as assignedCount
+            , (SELECT COUNT(t.id)
+                FROM (<include refid="taskCountInnerQuery"/>) t
+                WHERE NOT t.id IN (SELECT tu.task_id
+                        FROM owl_task_user tu
+                        LEFT JOIN owl_user u ON tu.user_id = u.id
+                        WHERE tu.user_type = 'ASSIGNEE'
+                        AND u.login = #{userId})
+                AND t.created_by = #{userId}
+            ) as createdCount
+            ,(SELECT COUNT(t.id)
+                FROM (<include refid="taskCountInnerQuery"/>) t
+                WHERE NOT t.id IN (SELECT tu.task_id
+                        FROM owl_task_user tu
+                        LEFT JOIN owl_user u ON tu.user_id = u.id
+                        WHERE tu.user_type = 'ASSIGNEE'
+                        AND u.login = #{userId})
+                AND t.id IN (SELECT tu.task_id
+                        FROM owl_task_user tu
+                        LEFT JOIN owl_user u ON tu.user_id = u.id
+                        WHERE tu.user_type = 'WATCHER'
+                        AND u.login = #{userId})
+                AND t.created_by != #{userId}
+            ) as watchedCount) c
     </select>
 
 </mapper>
