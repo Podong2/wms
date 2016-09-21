@@ -1108,9 +1108,10 @@ tr.angular-ui-tree-empty {
     position: absolute;
     width: 100%;
     z-index: 10;
-    right: -10px;
-    top: 5px;
+    right: 0px;
+    top: 10px;
     cursor: pointer;
+    text-align: left;
 }
 
 /* :::::::::::::::::::::: select box style ::::::::::::::::::::::: */
@@ -1855,6 +1856,7 @@ i:active, .i:active, i:focus, .i:focus{
     padding-bottom: 24px;
     max-height: 280px;
     position: relative;
+    padding-top: 5px;
 }
 .project-picker .project-picker-list-area .project-picker-list .project-picker-list-item{
     border-left: 4px solid transparent;
@@ -1871,7 +1873,7 @@ i:active, .i:active, i:focus, .i:focus{
     background-color: #D6EFFF;
 }
 .project-picker .project-picker-list-area .project-picker-list .project-picker-list-item .project-picker-list-item-title{
-    overflow: hidden;
+    /*overflow: hidden;*/
     text-overflow: ellipsis;
     white-space: nowrap;
     line-height: 18px;
@@ -1898,10 +1900,12 @@ i:active, .i:active, i:focus, .i:focus{
 }
 .task-options > div{
     padding: 13px 3px;
-    height:56px;
+    height:46px;
+    text-align: center;
+    border-right: 1px solid #ddd;
 }
 .task-options > div > label {
-    margin-top: 6px;
+    margin-top: 2px;
 }
 .task-options > div:hover{
     background: #ddd;
@@ -1909,14 +1913,16 @@ i:active, .i:active, i:focus, .i:focus{
 .task-options > div:first-child{
     background: #fff;
     position: relative;
+    border-right : 0;
 }
 .task-options .task-date-picker-area{
     background: #fff !important;
+    text-align: left;
 }
 
 .task-options-area{
     clear: both;
-    border-top: 1px solid #e0e0e0;
+    /*border-top: 1px solid #e0e0e0;*/
     position: relative;
 }
 /*tags-input .tags {*/
@@ -1971,8 +1977,8 @@ i:active, .i:active, i:focus, .i:focus{
 }
 .task-list.green{border-left: 5px solid green;}
 .task-list.blue{border-left: 5px solid blue;}
-.task-list.black{border-left: 5px solid black;}
-.task-list.red{border-left: 5px solid red;}
+.task-list.black{border-left: 5px solid #B119E9;}
+.task-list.red{border-left: 5px solid #777;}
 .sub-task-area-title{
     text-align: center;
     background: #ccc;
@@ -2040,7 +2046,7 @@ i:active, .i:active, i:focus, .i:focus{
 }
 
 .task-list-title{
-    float:left; padding-top: 10px; margin-right: 10px
+    float:left; padding: 9px; margin-right: 10px
 }
 
 .sub-task-area-popup{
@@ -2099,20 +2105,18 @@ i:active, .i:active, i:focus, .i:focus{
     display: block;
 }
 .task-openYn-select{
-    width: 138px !important;
+    width: 114px !important;
     position: relative;
-    bottom: 14px;
-    right: 3px;
 }
 .task-openYn-select button{
-    height:58px !important;
+    height:43px !important;
     border-radius: 0 !important;
     box-shadow: none !important;
 }
-.task-options .privateYn-icon{
+.privateYn-icon{
     z-index: 100;
     position: absolute;
-    top: 20px;
+    top: 15px;
     left: 21px;
     font-size: 17px;
 }
@@ -2716,9 +2720,103 @@ text-align: right;
     border-radius: 50%;
     left: 25px;
 }
+.user-picker-info{
+    position: absolute;
+    width: 300px;
+    height: 75px;
+    background-color: #fff;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+    display: none;
+    bottom: 45px;
+    left: 16px;
+    z-index: 100;
+    box-shadow: 3px 3px 5px #ccc;
+}
+.user-picker-info.on{
+    display: block;
+}
+.user-picker-info ul {
+    list-style: none;
+    text-align: left !important;
+    padding-left: 10px;
+}
+.user-picker-info ul li{
+    margin-left: 0;
+}
+.user-picker-info img{
+    width: 50px;
+    height: 50px;
+}
+.watcher-picker-info{
+    position: absolute;
+    width: 300px;
+    height: 75px;
+    background-color: #fff;
+    border-radius: 3px;
+    border: 1px solid #ddd;
+    bottom: 22px;
+    right: 14px;
+    z-index: 100;
+    box-shadow: 3px 3px 5px #ccc;
+    display: none;
+}
+.watcher-picker-info.on{
+    display: block;
+}
+.watcher-picker-info ul {
+    list-style: none;
+    text-align: left !important;
+    padding-left: 10px;
+}
+.watcher-picker-info ul li{
+    margin-left: 0;
+}
+.watcher-picker-info img{
+    width: 50px;
+    height: 50px;
+}
 
-
-
+.watcher-popup-area{
+    position: absolute;
+    width: 280px;
+    min-height: 210px;
+    top:30px;
+    background-color: #fff;
+    border-radius: 3px;
+    border:1px solid #d3d3d3;
+    box-shadow: 3px 3px 5px #ddd;
+    right:0;
+    z-index: 100;
+    display: none;
+}
+.watcher-popup-area.on{
+    display: block;
+}
+.watcher-search-list-area{
+    overflow: hidden;
+    overflow-y: auto;
+    height:140px;
+}
+.watcher-search-list-area .watcher-search-element{
+    border-top: 1px solid #ddd;
+    height:47px;
+    padding: 7px 3px;
+}
+.watcher-search-list-area .watcher-search-element:active{
+    background: #FFEEDC !important;
+}
+.watcher-search-list-area .watcher-search-element:first-child{
+    border-top: 0;
+}
+.watcher-search-list-area .watcher-search-element img{
+    width: 30px;
+    height: 30px;
+    margin-top: 3px;
+}
+.watcher-popup-header, .watcher-list-area {
+    background: #f4f4f4;
+}
 
 
 

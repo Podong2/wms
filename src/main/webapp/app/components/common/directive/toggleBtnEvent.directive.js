@@ -7,6 +7,8 @@ angular.module('wmsApp')
     .directive('projectPickerAddToggle', projectPickerAddToggle)
     .directive('projectAddToggle', projectAddToggle)
     .directive('userPickerBtnToggle', userPickerBtnToggle)
+    .directive('watcherPickerBtnToggle', watcherPickerBtnToggle)
+    .directive('watcherInfoBtnToggle', watcherInfoBtnToggle)
     .directive('gnbTaskHistoryToggle', gnbTaskHistoryToggle);
 toggleEvent.$inject=['$compile', '$filter', '$log', '$sce', '$timeout'];
 sectionToggle.$inject=['$timeout', '$rootScope'];
@@ -16,6 +18,8 @@ projectPickerEditToggle.$inject=['$timeout', '$rootScope'];
 projectPickerAddToggle.$inject=['$timeout', '$rootScope'];
 projectAddToggle.$inject=['$timeout', '$rootScope'];
 userPickerBtnToggle.$inject=['$timeout'];
+watcherPickerBtnToggle.$inject=['$rootScope', '$timeout'];
+watcherInfoBtnToggle.$inject=['$rootScope', '$timeout'];
 gnbTaskHistoryToggle.$inject=['$timeout'];
 function toggleEvent($compile, $filter, $log, $sce, $timeout) {
 
@@ -253,6 +257,75 @@ function userPickerBtnToggle($timeout) {
                 $($elements).find('.user-picker-plus-btn').addClass("on");
                 $($elements).find('.user-picker-input').addClass("on");
             });
+        }
+    }
+}
+/**
+ * 참조자 팝업 토글
+ * @param $timeout
+ * @returns {{restrict: string, link: link}}
+ */
+function watcherPickerBtnToggle($rootScope, $timeout) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attr) {
+            var $elements = element.next();
+            var closeYn = false;
+            element.on('click', function(_this) {
+                $($elements).addClass("on");
+            });
+            $('body').click(function (e) {
+                if (!$($elements.parent()).has(e.target).length || closeYn) {
+                    $timeout(function () {
+                        $($elements).removeClass("on");
+                        closeYn = false;
+                    }, 100);
+                }
+            });
+            $rootScope.$on('watcherPopupClose', function(){
+                closeYn = true;
+            })
+        }
+    }
+}
+/**
+ * 참조자 정보 팝업 토글
+ * @param $timeout
+ * @returns {{restrict: string, link: link}}
+ */
+function watcherInfoBtnToggle($rootScope, $timeout) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attr) {
+            var $elements = element.parents('td').children('.watcher-picker-info');
+            var closeYn = false;
+            element.on('click', function(_this) {
+                //$($elements).addClass("on");
+            });
+            $('body').click(function (e) {
+                if(closeYn){
+                    $($elements).removeClass("on");
+                    closeYn = false;
+                }else{
+                    if ($($elements).has(e.target).length) {
+                        $elements.addClass("on");
+                    }else{
+                        $timeout(function () {
+                            if (!$('.watcher-item').has(e.target).length) {
+                                $($elements).removeClass("on");
+                                closeYn = false;
+                            }else{
+                                $elements.addClass("on");
+                            }
+                        }, 100);
+
+                    }
+                }
+
+            });
+            $rootScope.$on('watcherPopupClose', function(){
+                closeYn = true;
+            })
         }
     }
 }

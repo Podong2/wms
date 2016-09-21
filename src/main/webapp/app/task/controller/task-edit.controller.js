@@ -29,7 +29,13 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             vm.setDatePickerInput = setDatePickerInput;
             vm.subTaskClose = subTaskClose;
             vm.subTaskUserRemove = subTaskUserRemove;
+            vm.watcherAdd = watcherAdd;
+            vm.removeWatcher = removeWatcher;
+            vm.watcherPopupClose = watcherPopupClose;
+            vm.watcherInfoAdd = watcherInfoAdd;
             vm.userInfo = Principal.getIdentity();
+
+            vm.DuplicationWatcherIds = [];
 
             vm.privateYns = [{"id":false, "name":"공개", icon: 'fa-unlock-alt'},{"id":true,"name":"비공개", icon: 'fa-lock'}];
 
@@ -42,6 +48,8 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             $scope.assigneeUser = [];
             $scope.watchers = [];
             $scope.relatedTaskList = [];
+
+            $scope.watcherInfo=''; // 참조자 정보 팝업
 
             $scope.getToken = function() {
                 return $cookies.get("CSRF-TOKEN");
@@ -114,6 +122,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             vm.userList = [];
             vm.userName = '';
             $scope.userName = '';
+            $scope.watcherName = '';
             // 하위 작업 업데이트 파라미터
             vm.subTaskUpdateForm = {
                 id : '',
@@ -266,6 +275,20 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 findUser.findByNameAndExcludeIds(name, excludeUserIds).then(function(result){
                     $log.debug("userList : ", result);
                     vm.userList = result;
+                }); //user search
+            };
+            $scope.pickerFindWatcher = function(name) {
+
+                var userIds = [];
+                angular.forEach($scope.watchers, function(val){
+                    userIds.push(val.id);
+                });
+
+                var excludeUserIds = userIds.join(",");
+
+                findUser.findByNameAndExcludeIds(name, excludeUserIds).then(function(result){
+                    $log.debug("watcherList : ", result);
+                    vm.watcherList = result;
                 }); //user search
             };
 
@@ -517,9 +540,19 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
 
             // 사용자 명 실시간 검색
             $scope.$watchCollection('vm.userName', function(newValue){
-                $log.debug("vm.userName : ", newValue);
-                $scope.userName = newValue;
-                $scope.pickerFindUsers(newValue);
+                if(newValue != '' && newValue != undefined){
+                    $log.debug("vm.userName : ", newValue);
+                    $scope.userName = newValue;
+                    $scope.pickerFindUsers(newValue);
+                }
+            });
+            // 참조자 명 실시간 검색
+            $scope.$watchCollection('vm.watcherName', function(newValue){
+                if(newValue != '' && newValue != undefined){
+                    $log.debug("vm.watcherName : ", newValue);
+                    $scope.watcherName = newValue;
+                    $scope.pickerFindWatcher(newValue);
+                }
             });
 
             /* 하위 작업 저장 */
@@ -681,6 +714,35 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 vm.subTaskUpdateForm = subTask;
                 vm.subTaskDueDateFrom.date = DateUtils.toDate(subTask.startDate)
                 vm.subTaskDueDateTo.date = DateUtils.toDate(subTask.endDate)
+            }
+
+            // 참조자 데이터 주입
+            function watcherAdd(watcher){
+                var index = vm.DuplicationWatcherIds.indexOf(watcher.id);
+                if(index > -1){
+                    $log.debug("중복")
+                }else{
+                    vm.DuplicationWatcherIds.push(watcher.id);
+                    $scope.watchers.push(watcher);
+                }
+            }
+
+            // 참조자 데이터 제거
+            function removeWatcher(watcher){
+                var index = vm.DuplicationWatcherIds.indexOf(watcher.id);
+                if(index > -1){
+                    vm.DuplicationWatcherIds.splice(index, 1);
+                    $scope.watchers.splice(index, 1);
+                }
+            }
+
+            //참조자 팝업 닫기
+            function watcherPopupClose(){
+                $rootScope.$broadcast('watcherPopupClose');
+            }
+
+            function watcherInfoAdd(watcher){
+                $scope.watcherInfo = watcher;
             }
 
         }

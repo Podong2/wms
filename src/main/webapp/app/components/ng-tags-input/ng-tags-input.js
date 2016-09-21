@@ -83,7 +83,7 @@ var tagsInput = angular.module('ngTagsInput', []);
  * @param {expression=} [onTagRemoved=NA] Expression to evaluate upon removing an existing tag. The removed tag is available as $tag.
  * @param {expression=} [onTagClicked=NA] Expression to evaluate upon clicking an existing tag. The clicked tag is available as $tag.
  */
-tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tagsInputConfig", "tiUtil", function($timeout, $document, $window, $q, tagsInputConfig, tiUtil) {
+tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tagsInputConfig", "tiUtil", "$log", function($timeout, $document, $window, $q, tagsInputConfig, tiUtil, $log) {
     function TagList(options, events, onTagAdding, onTagRemoving) {
         var self = {}, getTagText, setTagText, canAddTag, canRemoveTag;
 
@@ -294,6 +294,7 @@ tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tag
                 validationOptions = ['minTags', 'maxTags', 'allowLeftoverText'],
                 setElementValidity,
                 focusInput;
+            var $element = element.find('.user-picker-info');
 
             setElementValidity = function() {
                 ngModelCtrl.$setValidity('maxTags', tagList.items.length <= options.maxTags);
@@ -398,11 +399,32 @@ tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tag
                     }
                 },
                 tag: {
-                    click: function(tag) {
+                    click: function(tag, event) {
+                        var position = '';
                         events.trigger('tag-clicked', { $tag: tag });
+                        scope.tagInfo = tag;
+                        //$log.debug(tag)
+                        //var top = event.target.offsetTop - event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.scrollTop;
+                        //position.css('top', top+ 'px');
+                        //$('.sub-task-area-popup').removeClass('on');
+                        //$(event.target.children).addClass('on');
+                        $element.addClass("on");
                     }
                 }
             };
+
+            $('body').click(function (e) {
+                //if ($element.addClass("on")) {
+
+                    if ($('.user-picker-info').has(e.target).length) {
+                        //$element.addClass("on");
+                    }else{
+                        if (!$('.tag-item').has(e.target).length) {
+                            $('.user-picker-info').removeClass("on");
+                        }
+                    }
+                //}
+            });
 
             events
                 .on('tag-added', scope.onTagAdded)
@@ -1201,10 +1223,22 @@ tagsInput.factory('tiUtil', ["$timeout", "$q", function($timeout, $q) {
 /* HTML templates */
 tagsInput.run(["$templateCache", function($templateCache) {
     $templateCache.put('ngTagsInput/tags-input.html',
-    "<div class=\"host\" tabindex=\"-1\" ng-click=\"eventHandlers.host.click()\" ti-transclude-append>" +
+    "<div class=\"host\" id='userPickerInfoSection' tabindex=\"-1\" ng-click=\"eventHandlers.host.click()\" ti-transclude-append>" +
+    "<div class='row user-picker-info'>" +
+        "<div class='col-md-4 padding-10' style='border-right:1px solid #ddd; height: 100%;'>" +
+            "<img ng-src='/api/attachedFile/{{tagInfo.profileImageId}}' ng-if='tagInfo.profileImageId !=null' /><img ng-src='/content/images/demo/male.png' ng-if='tagInfo.profileImageId ==null' />" +
+        "</div>" +
+        "<div class='col-md-8 padding-10' style='height: 100%;'>" +
+            "<ul>" +
+                "<li>{{tagInfo.name}}</li>" +
+                "<li>{{tagInfo.phone}}</li>" +
+                "<li>{{tagInfo.email}}</li>" +
+            "</ul>" +
+        "</div>" +
+    "</div>" +
     "<div class=\"tags\" ng-class=\"{focused: hasFocus}\">" +
     "<ul class=\"tag-list\">" +
-    "<li class=\"tag-item\" ng-repeat=\"tag in tagList.items track by track(tag)\" ng-class=\"getTagClass(tag, $index)\" ng-click=\"eventHandlers.tag.click(tag)\">" +
+    "<li class=\"tag-item\" ng-repeat=\"tag in tagList.items track by track(tag)\" ng-class=\"getTagClass(tag, $index)\" ng-click=\"eventHandlers.tag.click(tag, $event)\" style='position: relative;'>" +
     "<ti-tag-item scope=\"templateScope\" data=\"::tag\"></ti-tag-item>" +
     "</li>" +
     "</ul><span class='user-picker-plus-area' user-picker-btn-toggle><button class='btn user-picker-plus-btn' style='width: 30xp; height: 30px; float: left; margin: 0 5px;'>+</button>" +
