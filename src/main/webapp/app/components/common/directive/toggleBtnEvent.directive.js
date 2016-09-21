@@ -7,6 +7,7 @@ angular.module('wmsApp')
     .directive('projectPickerAddToggle', projectPickerAddToggle)
     .directive('projectAddToggle', projectAddToggle)
     .directive('userPickerBtnToggle', userPickerBtnToggle)
+    .directive('watcherPickerBtnToggle', watcherPickerBtnToggle)
     .directive('gnbTaskHistoryToggle', gnbTaskHistoryToggle);
 toggleEvent.$inject=['$compile', '$filter', '$log', '$sce', '$timeout'];
 sectionToggle.$inject=['$timeout', '$rootScope'];
@@ -16,6 +17,7 @@ projectPickerEditToggle.$inject=['$timeout', '$rootScope'];
 projectPickerAddToggle.$inject=['$timeout', '$rootScope'];
 projectAddToggle.$inject=['$timeout', '$rootScope'];
 userPickerBtnToggle.$inject=['$timeout'];
+watcherPickerBtnToggle.$inject=['$rootScope'];
 gnbTaskHistoryToggle.$inject=['$timeout'];
 function toggleEvent($compile, $filter, $log, $sce, $timeout) {
 
@@ -253,6 +255,32 @@ function userPickerBtnToggle($timeout) {
                 $($elements).find('.user-picker-plus-btn').addClass("on");
                 $($elements).find('.user-picker-input').addClass("on");
             });
+        }
+    }
+}
+/**
+ * 참조자 팝업 토글
+ * @param $timeout
+ * @returns {{restrict: string, link: link}}
+ */
+function watcherPickerBtnToggle($rootScope) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attr) {
+            var $elements = element.next();
+            var closeYn = false;
+            element.on('click', function(_this) {
+                $($elements).addClass("on");
+            });
+            $('body').click(function (e) {
+                if (!$($elements.parent()).has(e.target).length || closeYn) {
+                    $($elements).removeClass("on");
+                    closeYn = false;
+                }
+            });
+            $rootScope.$on('watcherPopupClose', function(){
+                closeYn = true;
+            })
         }
     }
 }

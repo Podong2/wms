@@ -6692,6 +6692,7 @@ tr.highlight td, tr.unread.highlight td {
     border: 1px solid #fff;
     outline: 1px solid #bfbfbf;
     height: 35px;
+    margin-right: 7px;
 }
 .friends-list .plus-btn {
     width: 35px;

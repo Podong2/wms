@@ -29,7 +29,31 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             vm.setDatePickerInput = setDatePickerInput;
             vm.subTaskClose = subTaskClose;
             vm.subTaskUserRemove = subTaskUserRemove;
+            vm.watcherAdd = watcherAdd;
+            vm.removeWatcher = removeWatcher;
+            vm.watcherPopupClose = watcherPopupClose;
             vm.userInfo = Principal.getIdentity();
+
+            vm.DuplicationWatcherIds = [];
+            function watcherAdd(watcher){
+                var index = vm.DuplicationWatcherIds.indexOf(watcher.id);
+                if(index > -1){
+                    $log.debug("중복")
+                }else{
+                    vm.DuplicationWatcherIds.push(watcher.id);
+                    $scope.watchers.push(watcher);
+                }
+            }
+            function removeWatcher(watcher){
+                var index = vm.DuplicationWatcherIds.indexOf(watcher.id);
+                if(index > -1){
+                    vm.DuplicationWatcherIds.splice(index, 1);
+                    $scope.watchers.splice(index, 1);
+                }
+            }
+            function watcherPopupClose(){
+                $rootScope.$broadcast('watcherPopupClose');
+            }
 
             vm.privateYns = [{"id":false, "name":"공개", icon: 'fa-unlock-alt'},{"id":true,"name":"비공개", icon: 'fa-lock'}];
 
@@ -114,6 +138,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             vm.userList = [];
             vm.userName = '';
             $scope.userName = '';
+            $scope.watcherName = '';
             // 하위 작업 업데이트 파라미터
             vm.subTaskUpdateForm = {
                 id : '',
@@ -266,6 +291,20 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 findUser.findByNameAndExcludeIds(name, excludeUserIds).then(function(result){
                     $log.debug("userList : ", result);
                     vm.userList = result;
+                }); //user search
+            };
+            $scope.pickerFindWatcher = function(name) {
+
+                var userIds = [];
+                angular.forEach($scope.watchers, function(val){
+                    userIds.push(val.id);
+                });
+
+                var excludeUserIds = userIds.join(",");
+
+                findUser.findByNameAndExcludeIds(name, excludeUserIds).then(function(result){
+                    $log.debug("watcherList : ", result);
+                    vm.watcherList = result;
                 }); //user search
             };
 
@@ -517,9 +556,19 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
 
             // 사용자 명 실시간 검색
             $scope.$watchCollection('vm.userName', function(newValue){
-                $log.debug("vm.userName : ", newValue);
-                $scope.userName = newValue;
-                $scope.pickerFindUsers(newValue);
+                if(newValue != '' && newValue != undefined){
+                    $log.debug("vm.userName : ", newValue);
+                    $scope.userName = newValue;
+                    $scope.pickerFindUsers(newValue);
+                }
+            });
+            // 참조자 명 실시간 검색
+            $scope.$watchCollection('vm.watcherName', function(newValue){
+                if(newValue != '' && newValue != undefined){
+                    $log.debug("vm.watcherName : ", newValue);
+                    $scope.watcherName = newValue;
+                    $scope.pickerFindWatcher(newValue);
+                }
             });
 
             /* 하위 작업 저장 */

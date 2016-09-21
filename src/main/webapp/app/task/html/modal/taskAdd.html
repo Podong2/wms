@@ -62,13 +62,12 @@
 
         <!-- task 상태, 담당자, 참조자 선택 영역 -->
         <div class="task-options-area task-status-user-aera">
-            <table class="table table-bordered">
+            <table class="table table-bordered" style="border-top: 0; border-bottom: 0;">
                 <colgroup>
+                    <col width="113px">
                     <col width="60px">
-                    <col width="60px">
-                    <col width="35%">
-                    <col width="60px">
-                    <col width="35%">
+                    <col width="*">
+                    <col width="150px">
                 </colgroup>
                 <tbody>
                 <tr>
@@ -77,8 +76,8 @@
                                 <!--<input type="checkbox" ng-click="vm.task.statusId = 2" class="custom-control-input">-->
                             <!--</span>-->
                     <!--</td>-->
-                    <td  class="task-list" ng-class="vm.task.statusId == 1 ? 'green' : (vm.task.statusId == 2 ? 'blue' : (vm.task.statusId == 3 ? 'black' : 'red'))">
-                        <ol class="nya-bs-select " ng-model="vm.task.statusId" style="width: 90px;">
+                    <td  class="task-list" ng-class="vm.task.statusId == 1 ? 'blue' : (vm.task.statusId == 2 ? 'green' : (vm.task.statusId == 3 ? 'black' : 'red'))">
+                        <ol class="nya-bs-select task-openYn-select" ng-model="vm.task.statusId" style="width: 90px;">
                             <li nya-bs-option="option in vm.codes" title="{{option.name}}" data-value="option.id">
                                 <a>
                                     {{ option.name }}
@@ -93,12 +92,89 @@
                     <td>
                         <autocomplete template-url="ngTagsInput/tag-item-user.html" source="findUsers" tags="assigneeUser" display-property="name" multiple="true" max-results-to-show="20" tag-type="assignees"></autocomplete>
                     </td>
-                    <td>
-                        참조
+                    <td style="position: relative;">
+                        <label for="watcher" class="cursor" style="margin-bottom: 0px;" ng-click="pickerFindWatcher('')" watcher-picker-btn-toggle><span id="watcher"><i class="fa fa-user"></i> 참조자 {{watchers.length == 0 ? '' : watchers.length}}</span></label>
+                        <div class="watcher-popup-area text-left">
+                            <div class="padding-5 watcher-popup-header">
+                                <span class="pull-right fa fa-close cursor" ng-click="vm.watcherPopupClose()"></span>
+                                참조자
+                            </div>
+                            <div class="watcher-list-area padding-5" ng-show="watchers.length > 0">
+                                <ul class="list-inline friends-list" style="margin-bottom: 0">
+                                    <li ng-repeat="user in watchers" style="position: relative; margin: 0 3px 3px;">
+                                        <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
+                                        <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
+                                        <span class="profile-close-btn cursor" ng-click="vm.removeWatcher(user)"><i class="fa fa-close"></i></span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="watcher-input-area">
+                                <input type="text" class="form-control" ng-model="vm.watcherName" style="border-right: 0; border-left:0;"  placeholder="이름을 입력하세요."/>
+                            </div>
+                            <div class="watcher-search-list-area padding-5">
+                                <div ng-repeat="data in vm.watcherList track by $index">
+                                    <div class="watcher-search-element cursor" ng-click="vm.watcherAdd(data)">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <img ng-src="/content/images/demo/male.png" ng-if="data.profileImageId == null || data.profileImageId == '' " uib-tooltip="{{data.createdByName}}">
+                                                <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.profileImageId}}" ng-if="data.profileImageId != null" uib-tooltip="{{data.createdByName}}">
+                                            </div>
+                                            <div class="col-md-10">
+                                                <div>{{data.name}}</div>
+                                                <div>{{data.email}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
                     </td>
-                    <td>
-                        <autocomplete template-url="ngTagsInput/tag-item-user.html" source="findUsers" tags="watchers" display-property="name" multiple="true" max-results-to-show="20" tag-type="watchers"></autocomplete>
-                    </td>
+                    <style>
+                        .watcher-popup-area{
+                            position: absolute;
+                            width: 280px;
+                            min-height: 210px;
+                            top:30px;
+                            background-color: #fff;
+                            border-radius: 3px;
+                            border:1px solid #d3d3d3;
+                            box-shadow: 3px 3px 5px #ddd;
+                            right:0;
+                            z-index: 100;
+                            display: none;
+                        }
+                        .watcher-popup-area.on{
+                            display: block;
+                        }
+                        .watcher-search-list-area{
+                            overflow: hidden;
+                            overflow-y: auto;
+                            height:140px;
+                        }
+                        .watcher-search-list-area .watcher-search-element{
+                            border-top: 1px solid #ddd;
+                            height:47px;
+                            padding: 7px 3px;
+                        }
+                        .watcher-search-list-area .watcher-search-element:active{
+                            background: #FFEEDC !important;
+                        }
+                        .watcher-search-list-area .watcher-search-element:first-child{
+                            border-top: 0;
+                        }
+                        .watcher-search-list-area .watcher-search-element img{
+                            width: 30px;
+                            height: 30px;
+                            margin-top: 3px;
+                        }
+                        .watcher-popup-header, .watcher-list-area {
+                            background: #f4f4f4;
+                        }
+                    </style>
+                    <!--<td>-->
+                        <!--<autocomplete template-url="ngTagsInput/tag-item-user.html" source="findUsers" tags="watchers" display-property="name" multiple="true" max-results-to-show="20" tag-type="watchers"></autocomplete>-->
+                    <!--</td>-->
                 </tr>
                 </tbody>
             </table>
@@ -106,10 +182,19 @@
         </div>
 
         <!-- task option 선택 영역 -->
-        <div class="task-options-area">
-            <div>
-                <div class="row task-options">
-                    <div class="col-md-2">
+        <div class="task-options-area task-status-user-aera">
+            <table class="table table-bordered" style="border-top: 0; border-bottom: 0;">
+                <colgroup>
+                    <col width="120px">
+                    <col width="150px">
+                    <col width="150px">
+                    <col width="150px">
+                    <col width="150px">
+                    <col width="150px">
+                </colgroup>
+                <tbody>
+                <tr>
+                    <td class="task-options">
                         <span class="fa privateYn-icon" ng-class="vm.task.privateYn ? 'fa-lock' : 'fa-unlock-alt'"></span>
                         <ol class="nya-bs-select task-openYn-select" ng-model="vm.task.privateYn">
                             <li nya-bs-option="option in vm.privateYns" title="{{option.name}}" data-value="option.id">
@@ -119,15 +204,15 @@
                                 </a>
                             </li>
                         </ol>
-                    </div>
-                    <div class="col-md-2 task-date-picker-area">
+                    </td>
+                    <td>
                         <div id="repeatAddSection">
                             <i class="icon-append fa fa-calendar" style="float: left; padding: 8px;" repeat-picker-toggle></i>
                             <i class="icon-append glyphicon glyphicon-retweet" ng-if="vm.taskRepeatSchedule.repeatType != '' && vm.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i>
-                            <div class="form-group" style="margin-bottom: 0">
+                            <div class="form-group" style="margin-bottom: 0; position: relative;">
 
                                 <span class="input-group wms-form">
-                                    <label class="input">
+                                    <label style="margin-bottom: 0px;" class="input">
                                         <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="endDate" repeat-picker-add-toggle style="height: 30px; width: 100%; border : 0">
                                     </label>
 
@@ -138,21 +223,69 @@
                             <!-- 달력 팝업 -->
                             <div wms-Include="app/task/html/repeatAddDatePicker.html" ></div>
                         </div>
-                    </div>
-                    <div class="col-md-2" ng-class="vm.task.privateYn ? 'task-date-picker-area' : ''">
-                        <label ng-if="!vm.task.privateYn" for="subTaskAdd" class="cursor" ng-click="vm.subTaskOpen = !vm.subTaskOpen" ><i class="fa fa-outdent" id="subTaskAdd" > <span>하위 작업 {{vm.subTasks.length == 0 ? '추가' : vm.subTasks.length}}</span></i></label>
-                        <label ng-if="vm.task.privateYn" for="subTaskDisabled" disabled="disabled"><i class="fa fa-outdent" id="subTaskDisabled" > <span>하위 작업 {{vm.subTasks.length == 0 ? '추가' : vm.subTasks.length}}</span></i></label>
-                    </div>
-                    <div class="col-md-2">
-                        <label for="subTaskAdd" class="cursor" ng-click="vm.fileAreaOpen = !vm.fileAreaOpen"><i class="fa fa-paperclip"></i> 파일 첨부</label>
-                    </div>
-                    <div class="col-md-2">
-                        <label for="subTaskAdd" class="cursor" ng-click="vm.relatedTaskOpen = !vm.relatedTaskOpen"><i class="fa fa-share-alt"></i> 참조 작업</label>
-                    </div>
-                    <div class="col-md-2">
-                        <label for="subTaskAdd" class="cursor" ><i class="fa fa-share-alt"></i> 작업 현황</label>
-                    </div>
-                </div>
+                    </td>
+                    <td>
+                        <label style="margin-bottom: 0px;" ng-if="!vm.task.privateYn" for="subTaskAdd" class="cursor" ng-click="vm.subTaskOpen = !vm.subTaskOpen" ><i class="fa fa-outdent" id="subTaskAdd" > <span>하위 작업 {{vm.subTasks.length == 0 ? '추가' : vm.subTasks.length}}</span></i></label>
+                        <label style="margin-bottom: 0px;" ng-if="vm.task.privateYn" for="subTaskDisabled" disabled="disabled"><i class="fa fa-outdent" id="subTaskDisabled" > <span>하위 작업 {{vm.subTasks.length == 0 ? '추가' : vm.subTasks.length}}</span></i></label>
+                    </td>
+                    <td>
+                        <label style="margin-bottom: 0px;" for="subTaskAdd" class="cursor" ng-click="vm.fileAreaOpen = !vm.fileAreaOpen"><i class="fa fa-paperclip"></i> 파일 첨부</label>
+                    </td>
+                    <td>
+                        <label style="margin-bottom: 0px;" for="subTaskAdd" class="cursor" ng-click="vm.relatedTaskOpen = !vm.relatedTaskOpen"><i class="fa fa-share-alt"></i> 참조 작업</label>
+                    </td>
+                    <td>
+                        <label style="margin-bottom: 0px;" for="subTaskAdd" class="cursor" ><i class="fa fa-share-alt"></i> 작업 현황</label>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div>
+                <!--<div class="row task-options">-->
+                    <!--<div class="col-md-2">-->
+                        <!--<span class="fa privateYn-icon" ng-class="vm.task.privateYn ? 'fa-lock' : 'fa-unlock-alt'"></span>-->
+                        <!--<ol class="nya-bs-select task-openYn-select" ng-model="vm.task.privateYn">-->
+                            <!--<li nya-bs-option="option in vm.privateYns" title="{{option.name}}" data-value="option.id">-->
+                                <!--<a>-->
+                                    <!--<span class="fa" ng-class="option.icon"></span> {{ option.name }}-->
+                                    <!--<span class="glyphicon glyphicon-ok check-mark"></span>-->
+                                <!--</a>-->
+                            <!--</li>-->
+                        <!--</ol>-->
+                    <!--</div>-->
+                    <!--<div class="col-md-2 task-date-picker-area">-->
+                        <!--<div id="repeatAddSection">-->
+                            <!--<i class="icon-append fa fa-calendar" style="float: left; padding: 3px 8px;" repeat-picker-toggle></i>-->
+                            <!--<i class="icon-append glyphicon glyphicon-retweet" ng-if="vm.taskRepeatSchedule.repeatType != '' && vm.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i>-->
+                            <!--<div class="form-group" style="margin-bottom: 0">-->
+
+                                <!--<span class="input-group wms-form">-->
+                                    <!--<label class="input">-->
+                                        <!--<input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="endDate" repeat-picker-add-toggle style="height: 30px; width: 100%; border : 0">-->
+                                    <!--</label>-->
+
+                                    <!--<span class="dueDateValues" repeat-picker-add-toggle>{{vm.task.startDate | date : 'MM-dd'}} {{vm.task.startDate =='' && vm.task.endDate == '' ? '일정' : '~'}} {{vm.task.endDate | date : 'MM-dd'}}</span>-->
+                                <!--</span>-->
+                            <!--</div>-->
+
+                            <!--&lt;!&ndash; 달력 팝업 &ndash;&gt;-->
+                            <!--<div wms-Include="app/task/html/repeatAddDatePicker.html" ></div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <!--<div class="col-md-2" ng-class="vm.task.privateYn ? 'task-date-picker-area' : ''">-->
+                        <!--<label ng-if="!vm.task.privateYn" for="subTaskAdd" class="cursor" ng-click="vm.subTaskOpen = !vm.subTaskOpen" ><i class="fa fa-outdent" id="subTaskAdd" > <span>하위 작업 {{vm.subTasks.length == 0 ? '추가' : vm.subTasks.length}}</span></i></label>-->
+                        <!--<label ng-if="vm.task.privateYn" for="subTaskDisabled" disabled="disabled"><i class="fa fa-outdent" id="subTaskDisabled" > <span>하위 작업 {{vm.subTasks.length == 0 ? '추가' : vm.subTasks.length}}</span></i></label>-->
+                    <!--</div>-->
+                    <!--<div class="col-md-2">-->
+                        <!--<label for="subTaskAdd" class="cursor" ng-click="vm.fileAreaOpen = !vm.fileAreaOpen"><i class="fa fa-paperclip"></i> 파일 첨부</label>-->
+                    <!--</div>-->
+                    <!--<div class="col-md-2">-->
+                        <!--<label for="subTaskAdd" class="cursor" ng-click="vm.relatedTaskOpen = !vm.relatedTaskOpen"><i class="fa fa-share-alt"></i> 참조 작업</label>-->
+                    <!--</div>-->
+                    <!--<div class="col-md-2">-->
+                        <!--<label for="subTaskAdd" class="cursor" ><i class="fa fa-share-alt"></i> 작업 현황</label>-->
+                    <!--</div>-->
+                <!--</div>-->
 
                 <!-- 하위 작업 목록 영역 -->
                 <div class="sub-task-area">
