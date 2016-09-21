@@ -49,7 +49,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             $scope.watchers = [];
             $scope.relatedTaskList = [];
 
-            $scope.watcherInfo='';
+            $scope.watcherInfo=''; // 참조자 정보 팝업
 
             $scope.getToken = function() {
                 return $cookies.get("CSRF-TOKEN");

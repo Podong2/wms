@@ -287,7 +287,7 @@ function watcherPickerBtnToggle($rootScope) {
     }
 }
 /**
- * 참조자 팝업 토글
+ * 참조자 정보 팝업 토글
  * @param $timeout
  * @returns {{restrict: string, link: link}}
  */
