@@ -18,7 +18,7 @@ projectPickerEditToggle.$inject=['$timeout', '$rootScope'];
 projectPickerAddToggle.$inject=['$timeout', '$rootScope'];
 projectAddToggle.$inject=['$timeout', '$rootScope'];
 userPickerBtnToggle.$inject=['$timeout'];
-watcherPickerBtnToggle.$inject=['$rootScope'];
+watcherPickerBtnToggle.$inject=['$rootScope', '$timeout'];
 watcherInfoBtnToggle.$inject=['$rootScope', '$timeout'];
 gnbTaskHistoryToggle.$inject=['$timeout'];
 function toggleEvent($compile, $filter, $log, $sce, $timeout) {
@@ -265,7 +265,7 @@ function userPickerBtnToggle($timeout) {
  * @param $timeout
  * @returns {{restrict: string, link: link}}
  */
-function watcherPickerBtnToggle($rootScope) {
+function watcherPickerBtnToggle($rootScope, $timeout) {
     return {
         restrict: 'A',
         link: function(scope, element, attr) {
@@ -276,8 +276,10 @@ function watcherPickerBtnToggle($rootScope) {
             });
             $('body').click(function (e) {
                 if (!$($elements.parent()).has(e.target).length || closeYn) {
-                    $($elements).removeClass("on");
-                    closeYn = false;
+                    $timeout(function () {
+                        $($elements).removeClass("on");
+                        closeYn = false;
+                    }, 100);
                 }
             });
             $rootScope.$on('watcherPopupClose', function(){
@@ -301,18 +303,25 @@ function watcherInfoBtnToggle($rootScope, $timeout) {
                 //$($elements).addClass("on");
             });
             $('body').click(function (e) {
-                if ($($elements).has(e.target).length) {
-                    $elements.addClass("on");
+                if(closeYn){
+                    $($elements).removeClass("on");
+                    closeYn = false;
                 }else{
-                    $timeout(function () {
-                        if (!$('.watcher-item').has(e.target).length) {
-                            $($elements).removeClass("on");
-                        }else{
-                            $elements.addClass("on");
-                        }
-                    }, 200);
+                    if ($($elements).has(e.target).length) {
+                        $elements.addClass("on");
+                    }else{
+                        $timeout(function () {
+                            if (!$('.watcher-item').has(e.target).length) {
+                                $($elements).removeClass("on");
+                                closeYn = false;
+                            }else{
+                                $elements.addClass("on");
+                            }
+                        }, 100);
 
+                    }
                 }
+
             });
             $rootScope.$on('watcherPopupClose', function(){
                 closeYn = true;

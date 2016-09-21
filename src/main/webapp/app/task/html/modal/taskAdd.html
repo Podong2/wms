@@ -209,7 +209,7 @@
                         <label style="margin-bottom: 0px;" for="subTaskAdd" class="cursor" ng-click="vm.fileAreaOpen = !vm.fileAreaOpen"><i class="fa fa-paperclip"></i> 파일 첨부</label>
                     </td>
                     <td>
-                        <label style="margin-bottom: 0px;" for="subTaskAdd" class="cursor" ng-click="vm.relatedTaskOpen = !vm.relatedTaskOpen"><i class="fa fa-share-alt"></i> 참조 작업</label>
+                        <label style="margin-bottom: 0px;" for="subTaskAdd" class="cursor" ng-click="vm.relatedTaskOpen = !vm.relatedTaskOpen"><i class="fa fa-share-alt"></i> 참조 작업 {{relatedTaskList.length == 0 ? '' : relatedTaskList.length}}</label>
                     </td>
                     <td>
                         <label style="margin-bottom: 0px;" for="subTaskAdd" class="cursor" ><i class="fa fa-share-alt"></i> 작업 현황</label>

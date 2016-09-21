@@ -34,8 +34,14 @@
         vm.updateSubTaskForm = updateSubTaskForm;
         vm.setDatePickerInput = setDatePickerInput;
         vm.subTaskUserRemove = subTaskUserRemove;
+        vm.watcherAdd = watcherAdd;
+        vm.removeWatcher = removeWatcher;
+        vm.watcherPopupClose = watcherPopupClose;
+        vm.watcherInfoAdd = watcherInfoAdd;
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
+
+        vm.privateYns = [{"id":false, "name":"공개", icon: 'fa-unlock-alt'},{"id":true,"name":"비공개", icon: 'fa-lock'}];
 
         $scope.getToken = function() {
             return $cookies.get("CSRF-TOKEN");
@@ -97,6 +103,7 @@
         vm.previewFiles=[]; // 파일 테이블 목록
         vm.previewFileUrl=[]; // 파일 url 목록
         vm.task = getTask();
+
         vm.date = '';
         vm.assigneeUsers = [];
         vm.logArrayData = [];
@@ -115,6 +122,7 @@
             startDate : '',
             endDate : '',
         }
+        vm.DuplicationWatcherIds = [];
 
 
 
@@ -183,6 +191,7 @@
             }).on('detailReload', function(e, params) {
                 $state.go("my-task.detail", {}, {reload : 'my-task.detail'});
             })
+            vm.task = entity;
         });
 
         vm.responseDataCheck = _.clone(vm.task);
@@ -517,6 +526,14 @@
             $scope.userName = newValue;
             $scope.pickerFindUsers(newValue);
         });
+        // 참조자 명 실시간 검색
+        $scope.$watchCollection('vm.watcherName', function(newValue){
+            if(newValue != '' && newValue != undefined){
+                $log.debug("vm.watcherName : ", newValue);
+                $scope.watcherName = newValue;
+                $scope.pickerFindWatcher(newValue);
+            }
+        });
 
         function updateSubTaskForm(subTask) {
 
@@ -584,6 +601,22 @@
             findUser.findByNameAndExcludeIds(name, excludeUserIds).then(function(result){
                 $log.debug("userList : ", result);
                 vm.userList = result;
+            }); //user search
+        };
+        /* watcher picker */
+        $scope.pickerFindWatcher = function(name) {
+
+            var userIds = [];
+            angular.forEach(vm.task.watchers, function(val){
+                userIds.push(val.id);
+            });
+
+            var excludeUserIds = userIds.join(",");
+            vm.DuplicationWatcherIds = excludeUserIds;
+
+            findUser.findByNameAndExcludeIds(name, excludeUserIds).then(function(result){
+                $log.debug("watcherList : ", result);
+                vm.watcherList = result;
             }); //user search
         };
 
@@ -962,6 +995,34 @@
             if(vm.task.relatedTasks.length != 0 || vm.task.subTasks.length != 0)ModalService.openModal(editModalConfig);
         }
 
+        // 참조자 데이터 주입
+        function watcherAdd(watcher){
+            var index = vm.DuplicationWatcherIds.indexOf(watcher.id);
+            if(index > -1){
+                $log.debug("중복")
+            }else{
+                //vm.DuplicationWatcherIds.push(watcher.id);
+                vm.task.watchers.push(watcher);
+                $rootScope.$broadcast('watcherPopupClose');
+            }
+        }
+
+        // 참조자 데이터 제거
+        function removeWatcher(watcher){
+            $rootScope.$broadcast('watcherPopupClose');
+            vm.task.removeWatcherIds = watcher.id;
+            taskUpload();
+        }
+
+        //참조자 팝업 닫기
+        function watcherPopupClose(){
+            $rootScope.$broadcast('watcherPopupClose');
+        }
+        function watcherInfoAdd(watcher){
+            $scope.watcherInfo = watcher;
+        }
+
+
         vm.tableConfigs = [];
         vm.tableConfigs.push(tableService.getConfig("", "checked")
             .setHWidth("width-30-p")
@@ -995,7 +1056,6 @@
         //        });
         //    });
         //};
-
     }
 
 })();
