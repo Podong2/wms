@@ -1,8 +1,6 @@
 package kr.wisestone.wms.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
-import com.google.common.base.Function;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import kr.wisestone.wms.common.util.ConvertUtil;
 import kr.wisestone.wms.domain.Code;
@@ -41,7 +39,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.io.IOException;
 import java.net.URI;
@@ -294,7 +291,7 @@ public class TaskResource {
                                                     , @RequestParam(value = "excludeIds", required = false) List<Long> excludeIds) {
         log.debug("REST request to get Task name : {}", taskCondition.getName());
 
-        List<TaskDTO> taskDTOs = taskService.findByNameLike(taskCondition, excludeIds);
+        List<TaskDTO> taskDTOs = taskService.findByCondition(taskCondition, excludeIds);
 
         return new ResponseEntity<>(taskDTOs, HttpStatus.OK);
     }

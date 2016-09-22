@@ -84,26 +84,12 @@ public class TaskService {
 
         User loginUser = SecurityUtils.getCurrentUser();
 
-        BooleanBuilder predicate = taskListPredicate(taskCondition);
-
-//        List<Task> result = Lists.newArrayList(taskRepository.findAll(predicate, QTask.task.period.endDate.asc()));
-
         Map<String, Object> condition = Maps.newHashMap();
         condition.put("userId", loginUser.getLogin());
         condition.put("listType", taskCondition.getListType());
         condition.put("filterType", taskCondition.getFilterType());
 
         List<TaskDTO> taskDTOs = taskDAO.getTasks(condition);
-//
-//        for(Task task : result) {
-//
-//            TaskDTO taskDTO = new TaskDTO(task);
-//
-//            this.copyTaskRelationProperties(task, taskDTO);
-//            this.determineStatusGroup(taskDTO, taskCondition.getListType(), loginUser.getLogin());
-//
-//            taskDTOs.add(taskDTO);
-//        }
 
         return taskDTOs;
     }
@@ -116,9 +102,16 @@ public class TaskService {
     @Transactional(readOnly = true)
     public Long getTodayTaskCount(TaskCondition taskCondition) {
 
-        BooleanBuilder predicate = taskListPredicate(taskCondition);
+        User loginUser = SecurityUtils.getCurrentUser();
 
-        return taskRepository.count(predicate);
+        Map<String, Object> condition = Maps.newHashMap();
+        condition.put("userId", loginUser.getLogin());
+        condition.put("listType", taskCondition.getListType());
+        condition.put("filterType", taskCondition.getFilterType());
+
+        TaskStatisticsDTO taskStatisticsDTO = taskDAO.getTaskCount(condition);
+
+        return taskStatisticsDTO.getTotalCount();
     }
 
     /**
@@ -142,63 +135,6 @@ public class TaskService {
     }
 
 
-    private void determineStatusGroup(TaskDTO taskDTO, String listType, String login) {
-
-        String statusGroup = "";
-
-        if(listType.equalsIgnoreCase(TaskCondition.LIST_TYPE_TODAY)) {
-
-            statusGroup = "IN_PROGRESS";
-
-            if(StringUtils.isEmpty(taskDTO.getEndDate())) {
-                statusGroup = "NONE_SCHEDULED";
-            } else {
-                String today = DateUtil.getTodayWithYYYYMMDD();
-                String createdDate = DateUtil.convertDateToYYYYMMDD(Date.from(taskDTO.getCreatedDate().toInstant()));
-
-                if(taskDTO.getEndDate().equals(today)) {
-                    statusGroup = "SCHEDULED_TODAY";
-                } else if(DateUtil.convertStrToDate(taskDTO.getEndDate(), "yyyy-MM-dd").getTime() < DateUtil.convertStrToDate(today, "yyyy-MM-dd").getTime()) {
-                    statusGroup = "DELAYED";
-                }
-
-                if(createdDate.equals(today)) {
-                    statusGroup = "REGISTERED_TODAY";
-                }
-            }
-
-        } else if(listType.equalsIgnoreCase(TaskCondition.LIST_TYPE_SCHEDULED) || listType.equalsIgnoreCase(TaskCondition.LIST_TYPE_HOLD) || listType.equalsIgnoreCase(TaskCondition.LIST_TYPE_COMPLETE)) {
-
-            statusGroup = "MY_TASK";
-
-            if(taskDTO.getWatchers() != null && !taskDTO.getWatchers().isEmpty()) {
-
-                Optional<UserDTO> watcher = taskDTO.getWatchers().stream().filter(userDTO -> userDTO.getLogin().equals(login)).findFirst();
-
-                if(watcher.isPresent()) {
-                    statusGroup = "WATCHED_TASK";
-                }
-            }
-
-            if(taskDTO.getCreatedBy().equals(login)) {
-
-                statusGroup = "REQUEST_TASK";
-
-            }
-
-            if(taskDTO.getAssignees() != null && !taskDTO.getAssignees().isEmpty()) {
-                Optional<UserDTO> assignee = taskDTO.getAssignees().stream().filter(userDTO -> userDTO.getLogin().equals(login)).findFirst();
-
-                if(assignee.isPresent()) {
-                    statusGroup = "MY_TASK";
-                }
-
-            }
-        }
-
-        taskDTO.setStatusGroup(statusGroup);
-    }
-
     public void copyTaskRelationProperties(Task task, TaskDTO taskDTO) {
         if(task.getTaskUsers() != null && !task.getTaskUsers().isEmpty()) {
             taskDTO.setAssignees(task.findTaskUsersByType(UserType.ASSIGNEE).stream().map(UserDTO::new).collect(Collectors.toList()));
@@ -220,59 +156,6 @@ public class TaskService {
 
         if(task.getTaskRepeatSchedule() != null)
             taskDTO.setTaskRepeatSchedule(new TaskRepeatScheduleDTO(task.getTaskRepeatSchedule()));
-    }
-
-    private BooleanBuilder taskListPredicate(TaskCondition taskCondition) {
-
-        User loginUser = SecurityUtils.getCurrentUser();
-
-        QTask $task = QTask.task;
-
-        BooleanBuilder predicate = new BooleanBuilder();
-
-        if(taskCondition.getFilterType().equalsIgnoreCase(TaskCondition.FILTER_TYPE_ALL)) {
-            predicate.and($task.taskUsers.any().user.login.eq(loginUser.getLogin()).or($task.createdBy.eq(loginUser.getLogin())));
-        } else if(taskCondition.getFilterType().equalsIgnoreCase(TaskCondition.FILTER_TYPE_ASSIGNED)) {
-            predicate.and($task.id.in(new JPASubQuery()
-                .from(QTaskUser.taskUser)
-                .where(QTaskUser.taskUser.user.login.eq(loginUser.getLogin()).and(QTaskUser.taskUser.userType.eq(UserType.ASSIGNEE)))
-                .list(QTaskUser.taskUser.task.id)));
-        } else if(taskCondition.getFilterType().equalsIgnoreCase(TaskCondition.FILTER_TYPE_WATCHED)) {
-            predicate.and($task.id.in(new JPASubQuery()
-                .from(QTaskUser.taskUser)
-                .where(QTaskUser.taskUser.user.login.eq(loginUser.getLogin()).and(QTaskUser.taskUser.userType.eq(UserType.WATCHER)))
-                .list(QTaskUser.taskUser.task.id)));
-        } else if(taskCondition.getFilterType().equalsIgnoreCase(TaskCondition.FILTER_TYPE_REQUESTED)) {
-            predicate.and($task.createdBy.eq(loginUser.getLogin()));
-        }
-
-        String today = DateUtil.getTodayWithYYYYMMDD();
-
-        switch (taskCondition.getListType()) {
-            case TaskCondition.LIST_TYPE_TODAY:
-
-                predicate.and($task.period.startDate.loe(today).or($task.period.endDate.isNull()));
-                predicate.and($task.status.isNull().or($task.status.id.eq(Task.STATUS_ACTIVE)));
-
-                break;
-            case TaskCondition.LIST_TYPE_SCHEDULED:
-
-                predicate.and($task.period.startDate.gt(today));
-                predicate.and($task.status.id.eq(Task.STATUS_ACTIVE));
-
-                break;
-            case TaskCondition.LIST_TYPE_HOLD:
-
-                predicate.and($task.status.id.eq(Task.STATUS_HOLD));
-
-                break;
-            case TaskCondition.LIST_TYPE_COMPLETE:
-
-                predicate.and($task.status.id.eq(Task.STATUS_COMPLETE));
-                break;
-        }
-
-        return predicate;
     }
 
     /**
@@ -466,7 +349,7 @@ public class TaskService {
     }
 
     @Transactional(readOnly = true)
-    public List<TaskDTO> findByNameLike(TaskCondition taskCondition, List<Long> excludeIds) {
+    public List<TaskDTO> findByCondition(TaskCondition taskCondition, List<Long> excludeIds) {
 
         User loginUser = SecurityUtils.getCurrentUser();
 
