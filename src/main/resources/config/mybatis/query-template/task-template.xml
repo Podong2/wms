@@ -48,6 +48,7 @@
         <result property="importantYn" column="importantYn"/>
         <result property="parentId" column="parentId"/>
         <result property="createdBy" column="createdBy"/>
+        <result property="createdByName" column="createdByName"/>
         <result property="createdDate" column="createdDate"/>
         <result property="lastModifiedBy" column="lastModifiedBy"/>
         <result property="lastModifiedDate" column="lastModifiedDate"/>
@@ -335,7 +336,8 @@
     <select id="getTask" resultType="kr.wisestone.wms.web.rest.dto.TaskDTO" resultMap="taskDetailResultMap" parameterType="java.lang.Long">
         SELECT t.id as id, t.name as name, t.start_date as startDate, t.end_date as endDate, tc.id as statusId, tc.name as statusName
             , t.contents as contents
-            , t.created_by as createdBy, t.created_date as createdDate, t.last_modified_by as lastModifiedBy, t.last_modified_date as lastModifiedDate
+            , t.created_by as createdBy, (SELECT name FROM owl_user cu WHERE cu.login = t.created_by) as createdByName, t.created_date as createdDate
+            , t.last_modified_by as lastModifiedBy, t.last_modified_date as lastModifiedDate
             , CASE
                 WHEN t.private_yn = 'Y' THEN true
                 WHEN t.private_yn = 'N' THEN false
