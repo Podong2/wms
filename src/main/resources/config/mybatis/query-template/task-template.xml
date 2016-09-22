@@ -22,8 +22,10 @@
         <result property="templateYn" column="templateYn"/>
         <result property="importantYn" column="importantYn"/>
         <result property="parentId" column="parentId"/>
-        <!--<result property="subTaskCount" column="subTaskCount"/>-->
-        <!--<result property="relatedTaskCount" column="relatedTaskCount"/>-->
+        <result property="createdBy" column="createdBy"/>
+        <result property="createdDate" column="createdDate"/>
+        <result property="lastModifiedBy" column="lastModifiedBy"/>
+        <result property="lastModifiedDate" column="lastModifiedDate"/>
         <association property="parent" select="getParentTask" column="parentId" javaType="kr.wisestone.wms.web.rest.dto.TaskDTO" />
         <association property="taskRepeatSchedule" javaType="kr.wisestone.wms.web.rest.dto.TaskRepeatScheduleDTO">
             <result property="repeatType" column="repeatType"/>
@@ -38,6 +40,10 @@
         <result property="name" column="name"/>
         <result property="statusId" column="statusId"/>
         <result property="statusName" column="statusName"/>
+        <result property="createdBy" column="createdBy"/>
+        <result property="createdDate" column="createdDate"/>
+        <result property="lastModifiedBy" column="lastModifiedBy"/>
+        <result property="lastModifiedDate" column="lastModifiedDate"/>
         <collection property="assignees" javaType="java.util.ArrayList" resultMap="assigneeUserResultMap"/>
     </resultMap>
 
@@ -90,6 +96,8 @@
         SELECT t.id as id, t.name as name
             , tc.id as statusId, tc.name as statusName
             , u.id as assigneeId, u.name as assigneeName
+            , t.created_by as createdBy, t.created_date as createdDate
+            , t.last_modified_by as lastModifiedBy, t.last_modified_date as lastModifiedDate
         FROM owl_task t
         LEFT JOIN owl_code tc ON t.status_id = tc.id
         LEFT OUTER JOIN owl_task_user tu ON tu.task_id = t.id AND tu.user_type = 'ASSIGNEE'
@@ -101,6 +109,8 @@
         SELECT t.id as id, t.name as name
             , tc.id as statusId, tc.name as statusName
             , u.id as assigneeId, u.name as assigneeName
+            , t.created_by as createdBy, t.created_date as createdDate
+            , t.last_modified_by as lastModifiedBy, t.last_modified_date as lastModifiedDate
         FROM owl_task t
         LEFT JOIN owl_code tc ON t.status_id = tc.id
         LEFT OUTER JOIN owl_task_user tu ON tu.task_id = t.id AND tu.user_type = 'ASSIGNEE'
@@ -112,6 +122,8 @@
         SELECT t.id as id, t.name as name
             , tc.id as statusId, tc.name as statusName
             , u.id as assigneeId, u.name as assigneeName
+            , t.created_by as createdBy, t.created_date as createdDate
+            , t.last_modified_by as lastModifiedBy, t.last_modified_date as lastModifiedDate
         FROM owl_task t
         LEFT JOIN owl_code tc ON t.status_id = tc.id
         LEFT OUTER JOIN owl_task_user tu ON tu.task_id = t.id AND tu.user_type = 'ASSIGNEE'
@@ -122,6 +134,7 @@
 
     <select id="getTasks" resultType="java.util.ArrayList" resultMap="taskResultMap" parameterType="java.util.HashMap">
         SELECT t.id as id, t.name as name, t.start_date as startDate, t.end_date as endDate, tc.id as statusId, tc.name as statusName
+            , t.created_by as createdBy, t.created_date as createdDate, t.last_modified_by as lastModifiedBy, t.last_modified_date as lastModifiedDate
             , CASE
                 WHEN (SELECT count(taf.task_id) FROM owl_task_attached_file taf WHERE taf.task_id = t.id) > 0 THEN true
                 ELSE false
