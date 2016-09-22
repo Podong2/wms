@@ -167,17 +167,8 @@ public class TaskService {
     @Transactional(readOnly = true)
     public TaskDTO findOneDTO(Long id) {
         log.debug("Request to get Task : {}", id);
-        Task task = taskRepository.findOne(id);
-        TaskDTO taskDTO = new TaskDTO(task);
 
-        User user = userService.findByLogin(task.getCreatedBy());
-        taskDTO.setCreatedByName(user.getName());
-
-        this.copyTaskRelationProperties(task, taskDTO);
-
-        if(!task.getTaskAttachedFiles().isEmpty()) {
-            taskDTO.setAttachedFiles(task.getPlainTaskAttachedFiles().stream().map(AttachedFileDTO::new).collect(Collectors.toList()));
-        }
+        TaskDTO taskDTO = taskDAO.getTask(id);
 
         return taskDTO;
     }

@@ -11,7 +11,7 @@
         <result property="watchedCount" column="watchedCount"/>
     </resultMap>
 
-    <resultMap id="taskResultMap" type="kr.wisestone.wms.web.rest.dto.TaskDTO">
+    <resultMap id="taskListResultMap" type="kr.wisestone.wms.web.rest.dto.TaskDTO">
         <id property="id" column="id" />
         <result property="name" column="name"/>
         <result property="statusId" column="statusId"/>
@@ -33,6 +33,49 @@
         <collection property="assignees" javaType="java.util.ArrayList" resultMap="assigneeUserResultMap"/>
         <collection property="subTasks" select="getSubTasks" column="id" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.TaskDTO"/>
         <collection property="relatedTasks" select="getRelatedTasks" column="id" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.TaskDTO"/>
+        <collection property="taskProjects" select="getTaskProjects" column="id" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.ProjectDTO"/>
+    </resultMap>
+
+    <resultMap id="taskDetailResultMap" type="kr.wisestone.wms.web.rest.dto.TaskDTO">
+        <id property="id" column="id" />
+        <result property="name" column="name"/>
+        <result property="contents" column="contents"/>
+        <result property="statusId" column="statusId"/>
+        <result property="statusName" column="statusName"/>
+        <result property="startDate" column="startDate"/>
+        <result property="endDate" column="endDate"/>
+        <result property="templateYn" column="templateYn"/>
+        <result property="importantYn" column="importantYn"/>
+        <result property="parentId" column="parentId"/>
+        <result property="createdBy" column="createdBy"/>
+        <result property="createdDate" column="createdDate"/>
+        <result property="lastModifiedBy" column="lastModifiedBy"/>
+        <result property="lastModifiedDate" column="lastModifiedDate"/>
+        <association property="parent" select="getParentTask" column="parentId" javaType="kr.wisestone.wms.web.rest.dto.TaskDTO" />
+        <association property="taskRepeatSchedule" javaType="kr.wisestone.wms.web.rest.dto.TaskRepeatScheduleDTO">
+            <id property="id" column="repeatTypeId"/>
+            <result property="repeatType" column="repeatType"/>
+            <result property="weekdays" column="repeatTypeWeekdays"/>
+            <result property="adventDateStartTime" column="repeatTypeAdventDateStartTime"/>
+            <result property="startDate" column="repeatTypeStartDate"/>
+            <result property="endDate" column="repeatTypeEndDate"/>
+            <result property="monthlyCriteria" column="repeatTypeMonthlyCriteria"/>
+            <result property="executeDate" column="repeatTypeExecuteDate"/>
+            <result property="permanentYn" column="repeatTypePermanentYn"/>
+            <result property="repeatYn" column="repeatYn"/>
+        </association>
+        <collection property="assignees" javaType="java.util.ArrayList" resultMap="assigneeUserResultMap"/>
+        <collection property="attachedFiles" javaType="java.util.ArrayList" resultMap="attachedFileResultMap"/>
+        <collection property="subTasks" select="getSubTasks" column="id" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.TaskDTO"/>
+        <collection property="relatedTasks" select="getRelatedTasks" column="id" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.TaskDTO"/>
+        <collection property="taskProjects" select="getTaskProjects" column="id" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.ProjectDTO"/>
+    </resultMap>
+
+    <resultMap id="attachedFileResultMap" type="kr.wisestone.wms.web.rest.dto.AttachedFileDTO">
+        <id property="id" column="attachedFileId" />
+        <result property="name" column="attachedFileName"/>
+        <result property="size" column="attachedFileSize"/>
+        <result property="contentType" column="attachedFileContentType"/>
     </resultMap>
 
     <resultMap id="linkedTaskResultMap" type="kr.wisestone.wms.web.rest.dto.TaskDTO">
@@ -45,6 +88,15 @@
         <result property="lastModifiedBy" column="lastModifiedBy"/>
         <result property="lastModifiedDate" column="lastModifiedDate"/>
         <collection property="assignees" javaType="java.util.ArrayList" resultMap="assigneeUserResultMap"/>
+    </resultMap>
+
+    <resultMap id="taskProjectResultMap" type="kr.wisestone.wms.web.rest.dto.ProjectDTO">
+        <id property="id" column="id" />
+        <result property="name" column="name"/>
+        <result property="createdBy" column="createdBy"/>
+        <result property="createdDate" column="createdDate"/>
+        <result property="lastModifiedBy" column="lastModifiedBy"/>
+        <result property="lastModifiedDate" column="lastModifiedDate"/>
     </resultMap>
 
     <resultMap id="assigneeUserResultMap" type="kr.wisestone.wms.web.rest.dto.UserDTO">
@@ -132,7 +184,14 @@
         WHERE rt.task_id = #{id}
     </select>
 
-    <select id="getTasks" resultType="java.util.ArrayList" resultMap="taskResultMap" parameterType="java.util.HashMap">
+    <select id="getTaskProjects" resultMap="projectResultMap">
+        SELECT p.id as id, p.name as name, p.created_by as createdBy, p.created_date as createdDate
+            , p.last_modified_by as lastModifiedBy, p.last_modified_date as lastModifiedDate
+        FROM owl_project p
+        WHERE p.id IN (SELECT tp.project_id FROM owl_task_project tp WHERE tp.task_id = #{id})
+    </select>
+
+    <select id="getTasks" resultType="java.util.ArrayList" resultMap="taskListResultMap" parameterType="java.util.HashMap">
         SELECT t.id as id, t.name as name, t.start_date as startDate, t.end_date as endDate, tc.id as statusId, tc.name as statusName
             , t.created_by as createdBy, t.created_date as createdDate, t.last_modified_by as lastModifiedBy, t.last_modified_date as lastModifiedDate
             , CASE
@@ -249,6 +308,56 @@
             LEFT JOIN owl_user u ON tu.user_id = u.id
             LEFT OUTER JOIN owl_task_repeat_schedule trs ON trs.task_id = t.id
             ORDER BY t.orderTarget DESC, t.end_date ASC, t.start_date ASC
+    </select>
+
+    <select id="getTask" resultType="kr.wisestone.wms.web.rest.dto.TaskDTO" resultMap="taskDetailResultMap" parameterType="java.lang.Long">
+        SELECT t.id as id, t.name as name, t.start_date as startDate, t.end_date as endDate, tc.id as statusId, tc.name as statusName
+            , t.contents as contents
+            , t.created_by as createdBy, t.created_date as createdDate, t.last_modified_by as lastModifiedBy, t.last_modified_date as lastModifiedDate
+            , CASE
+                WHEN t.private_yn = 'Y' THEN true
+                WHEN t.private_yn = 'N' THEN false
+              END as privateYn
+            , CASE
+                WHEN t.template_yn = 'Y' THEN true
+                WHEN t.template_yn = 'N' THEN false
+              END as templateYn
+            , CASE
+                WHEN t.important_yn = 'Y' THEN true
+                WHEN t.important_yn = 'N' THEN false
+              END as importantYn
+            , tp.id as projectId, tp.name as projectName
+            , CASE
+                WHEN tp.folder_yn = 'Y' THEN true
+                WHEN tp.folder_yn = 'N' THEN false
+              END as projectFolderYn
+            , t.parent_id as parentId
+            , u.id as assigneeId, u.name as assigneeName, u.profile_image_id as assigneeProfileImageId
+            , trs.id as repeatTypeId, trs.repeat_type as repeatType
+            , trs.weekdays as repeatTypeWeekdays, trs.advent_date_start_time as repeatTypeAdventDateStartTime
+            , trs.start_date as repeatTypeStartDate, trs.end_date as repeatTypeEndDate
+            , trs.end_date as repeatTypeEndDate, trs.monthly_criteria as repeatTypeMonthlyCriteria
+            , trs.execute_date as repeatTypeExecuteDate
+            , CASE
+                WHEN trs.permanent_yn = 'Y' THEN true
+                WHEN trs.permanent_yn = 'N' THEN false
+              END as repeatTypePermanentYn
+            , CASE
+                WHEN trs.repeat_yn = 'Y' THEN true
+                WHEN trs.repeat_yn = 'N' THEN false
+              END as repeatYn
+            , af.id as attachedFileId, af.name as attachedFileName
+            , af.size as attachedFileSize, af.content_type as attachedFileContentType
+        FROM owl_task t
+            LEFT JOIN owl_code tc ON t.status_id = tc.id
+            LEFT OUTER JOIN owl_task_project tpr ON tpr.task_id = t.id
+            LEFT JOIN owl_project tp ON tp.id = tpr.project_id
+            LEFT OUTER JOIN owl_task_user tu ON tu.task_id = t.id AND tu.user_type = 'ASSIGNEE'
+            LEFT JOIN owl_user u ON tu.user_id = u.id
+            LEFT OUTER JOIN owl_task_repeat_schedule trs ON trs.task_id = t.id
+            LEFT OUTER JOIN owl_task_attached_file taf ON taf.task_id = t.id
+            LEFT JOIN owl_attached_file af ON taf.attached_file_id = af.id
+        WHERE t.id = #{id}
     </select>
 
     <sql id="taskCountInnerQuery">
