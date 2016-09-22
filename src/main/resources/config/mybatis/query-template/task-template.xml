@@ -30,7 +30,7 @@
         <association property="taskRepeatSchedule" javaType="kr.wisestone.wms.web.rest.dto.TaskRepeatScheduleDTO">
             <result property="repeatType" column="repeatType"/>
         </association>
-        <collection property="assignees" javaType="java.util.ArrayList" resultMap="assigneeUserResultMap"/>
+        <collection property="assignees" select="getTaskAssignees" column="id" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.UserDTO"/>
         <collection property="subTasks" select="getSubTasks" column="id" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.TaskDTO"/>
         <collection property="relatedTasks" select="getRelatedTasks" column="id" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.TaskDTO"/>
         <collection property="taskProjects" select="getTaskProjects" column="id" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.ProjectDTO"/>
@@ -64,8 +64,9 @@
             <result property="permanentYn" column="repeatTypePermanentYn"/>
             <result property="repeatYn" column="repeatYn"/>
         </association>
-        <collection property="assignees" javaType="java.util.ArrayList" resultMap="assigneeUserResultMap"/>
         <collection property="attachedFiles" javaType="java.util.ArrayList" resultMap="attachedFileResultMap"/>
+        <collection property="assignees" select="getTaskAssignees" column="id" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.UserDTO"/>
+        <collection property="watchers" select="getTaskWatchers" column="id" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.UserDTO"/>
         <collection property="subTasks" select="getSubTasks" column="id" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.TaskDTO"/>
         <collection property="relatedTasks" select="getRelatedTasks" column="id" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.TaskDTO"/>
         <collection property="taskProjects" select="getTaskProjects" column="id" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.ProjectDTO"/>
@@ -103,6 +104,12 @@
         <id property="id" column="assigneeId" />
         <result property="name" column="assigneeName"/>
         <result property="profileImageId" column="assigneeProfileImageId"/>
+    </resultMap>
+
+    <resultMap id="userResultMap" type="kr.wisestone.wms.web.rest.dto.UserDTO">
+        <id property="id" column="id" />
+        <result property="name" column="name"/>
+        <result property="profileImageId" column="profileImageId"/>
     </resultMap>
 
     <resultMap id="projectResultMap" type="kr.wisestone.wms.web.rest.dto.ProjectDTO">
@@ -191,6 +198,22 @@
         WHERE p.id IN (SELECT tp.project_id FROM owl_task_project tp WHERE tp.task_id = #{id})
     </select>
 
+    <select id="getTaskAssignees" resultMap="userResultMap">
+        SELECT u.id as id, u.name as name, u.profile_image_id as profileImageId
+            , u.created_by as createdBy, u.created_date as createdDate
+            , u.last_modified_by as lastModifiedBy, u.last_modified_date as lastModifiedDate
+        FROM owl_user u
+        WHERE u.id IN (SELECT tu.user_id FROM owl_task_user tu WHERE tu.task_id = #{id} AND tu.user_type = 'ASSIGNEE')
+    </select>
+
+    <select id="getTaskWatchers" resultMap="userResultMap">
+        SELECT u.id as id, u.name as name, u.profile_image_id as profileImageId
+            , u.created_by as createdBy, u.created_date as createdDate
+            , u.last_modified_by as lastModifiedBy, u.last_modified_date as lastModifiedDate
+        FROM owl_user u
+        WHERE u.id IN (SELECT tu.user_id FROM owl_task_user tu WHERE tu.task_id = #{id} AND tu.user_type = 'WATCHER')
+    </select>
+
     <select id="getTasks" resultType="java.util.ArrayList" resultMap="taskListResultMap" parameterType="java.util.HashMap">
         SELECT t.id as id, t.name as name, t.start_date as startDate, t.end_date as endDate, tc.id as statusId, tc.name as statusName
             , t.created_by as createdBy, t.created_date as createdDate, t.last_modified_by as lastModifiedBy, t.last_modified_date as lastModifiedDate
@@ -216,7 +239,6 @@
                 WHEN tp.folder_yn = 'N' THEN false
               END as projectFolderYn
             , t.parent_id as parentId
-            , u.id as assigneeId, u.name as assigneeName, u.profile_image_id as assigneeProfileImageId
             , trs.repeat_type as repeatType
         FROM (
                 <choose>
@@ -332,7 +354,6 @@
                 WHEN tp.folder_yn = 'N' THEN false
               END as projectFolderYn
             , t.parent_id as parentId
-            , u.id as assigneeId, u.name as assigneeName, u.profile_image_id as assigneeProfileImageId
             , trs.id as repeatTypeId, trs.repeat_type as repeatType
             , trs.weekdays as repeatTypeWeekdays, trs.advent_date_start_time as repeatTypeAdventDateStartTime
             , trs.start_date as repeatTypeStartDate, trs.end_date as repeatTypeEndDate
