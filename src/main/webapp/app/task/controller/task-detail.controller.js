@@ -639,6 +639,12 @@
             vm.task.taskRepeatSchedule = vm.taskRepeatSchedule;
             vm.task.importantYn = vm.task.importantYn == null ? '': vm.task.importantYn;
 
+            if(vm.task.projectId == null)
+                vm.task.projectId = "";
+            
+            if(vm.task.parentId == null)
+                vm.task.parentId = "";
+
             $log.debug("업로드 작업 정보 : ", vm.task);
             $log.debug("업로드 파일 정보 : ", $scope.files);
             TaskEdit.uploadTask({
