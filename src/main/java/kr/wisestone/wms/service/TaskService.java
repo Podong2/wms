@@ -86,19 +86,24 @@ public class TaskService {
 
         BooleanBuilder predicate = taskListPredicate(taskCondition);
 
-        List<Task> result = Lists.newArrayList(taskRepository.findAll(predicate, QTask.task.period.endDate.asc()));
+//        List<Task> result = Lists.newArrayList(taskRepository.findAll(predicate, QTask.task.period.endDate.asc()));
 
-        List<TaskDTO> taskDTOs = Lists.newArrayList();
+        Map<String, Object> condition = Maps.newHashMap();
+        condition.put("userId", loginUser.getLogin());
+        condition.put("listType", taskCondition.getListType());
+        condition.put("filterType", taskCondition.getFilterType());
 
-        for(Task task : result) {
-
-            TaskDTO taskDTO = new TaskDTO(task);
-
-            this.copyTaskRelationProperties(task, taskDTO);
-            this.determineStatusGroup(taskDTO, taskCondition.getListType(), loginUser.getLogin());
-
-            taskDTOs.add(taskDTO);
-        }
+        List<TaskDTO> taskDTOs = taskDAO.getTasks(condition);
+//
+//        for(Task task : result) {
+//
+//            TaskDTO taskDTO = new TaskDTO(task);
+//
+//            this.copyTaskRelationProperties(task, taskDTO);
+//            this.determineStatusGroup(taskDTO, taskCondition.getListType(), loginUser.getLogin());
+//
+//            taskDTOs.add(taskDTO);
+//        }
 
         return taskDTOs;
     }
@@ -124,23 +129,14 @@ public class TaskService {
     @Transactional(readOnly = true)
     public TaskStatisticsDTO getMyTaskStatistics(TaskCondition taskCondition) {
 
-        TaskStatisticsDTO taskStatisticsDTO = new TaskStatisticsDTO();
+        User loginUser = SecurityUtils.getCurrentUser();
 
-        Long totalCount = taskRepository.count(taskListPredicate(taskCondition));
+        Map<String, Object> condition = Maps.newHashMap();
+        condition.put("userId", loginUser.getLogin());
+        condition.put("listType", taskCondition.getListType());
+        condition.put("filterType", taskCondition.getFilterType());
 
-        taskCondition.setFilterType(TaskCondition.FILTER_TYPE_ASSIGNED);
-        Long assignedCount = taskRepository.count(taskListPredicate(taskCondition));
-
-        taskCondition.setFilterType(TaskCondition.FILTER_TYPE_WATCHED);
-        Long watchedCount = taskRepository.count(taskListPredicate(taskCondition));
-
-        taskCondition.setFilterType(TaskCondition.FILTER_TYPE_REQUESTED);
-        Long createdCount = taskRepository.count(taskListPredicate(taskCondition));
-
-        taskStatisticsDTO.setTotalCount(totalCount);
-        taskStatisticsDTO.setAssignedCount(assignedCount);
-        taskStatisticsDTO.setWatchedCount(watchedCount);
-        taskStatisticsDTO.setCreatedCount(createdCount);
+        TaskStatisticsDTO taskStatisticsDTO = taskDAO.getTaskCount(condition);
 
         return taskStatisticsDTO;
     }
@@ -290,16 +286,6 @@ public class TaskService {
         log.debug("Request to get Task : {}", id);
         Task task = taskRepository.findOne(id);
         TaskDTO taskDTO = new TaskDTO(task);
-
-//        User loginUser = SecurityUtils.getCurrentUser();
-//
-//        Map<String, Object> condition = Maps.newHashMap();
-//        condition.put("userId", loginUser.getLogin());
-//        condition.put("listType", "TODAY");
-//        condition.put("filterType", "REQUESTED");
-//
-//        List<TaskDTO> taskDTOs = taskDAO.getTasks(condition);
-//        TaskStatisticsDTO taskStatisticsDTO = taskDAO.getTaskCount(condition);
 
         User user = userService.findByLogin(task.getCreatedBy());
         taskDTO.setCreatedByName(user.getName());

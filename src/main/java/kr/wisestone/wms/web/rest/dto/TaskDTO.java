@@ -48,6 +48,8 @@ public class TaskDTO implements Serializable {
 
     private TaskDTO parent;
 
+    private Long parentId;
+
     private List<TaskDTO> subTasks = new ArrayList<>();
 
     private Long subTaskCount;
@@ -342,6 +344,14 @@ public class TaskDTO implements Serializable {
 
     public void setPrivateYn(Boolean privateYn) {
         this.privateYn = privateYn;
+    }
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 
     @Override
