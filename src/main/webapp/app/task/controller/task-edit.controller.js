@@ -132,6 +132,15 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                     });
                     $scope.$apply();
                     $log.debug("파일 목록 : ", $scope.files);
+                }).on('reloadFileList', function(e, params) { // 파일 삭제 시 파일 목록 reload
+                    $scope.files = [];
+                    angular.forEach(params, function(value){
+                        if(value != undefined){
+                            $scope.files.push(value)
+                        }
+                    });
+                    $scope.$apply();
+                    $log.debug("삭제 후 파일 목록 : ", $scope.files);
                 })
             }
             function erorr(){

@@ -1119,6 +1119,7 @@ tr.angular-ui-tree-empty {
     top: 10px;
     cursor: pointer;
     text-align: left;
+    font-size: 12px;
 }
 
 /* :::::::::::::::::::::: select box style ::::::::::::::::::::::: */
@@ -2296,7 +2297,7 @@ i:active, .i:active, i:focus, .i:focus{
     position: absolute;
     border: 1px solid #fdfdfd;
     z-index: 1060;
-    width: 592px;
+    width: 596px;
     font-size: 14px;
     background-color: #fff;
     background-clip: padding-box;

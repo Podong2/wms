@@ -37,7 +37,7 @@
         tGeneric, tHtml, tImage, tText, tVideo, tAudio, tFlash, tObject, tPdf, tOther, defaultFileActionSettings,
         defaultLayoutTemplates, defaultPreviewTemplates, defaultPreviewZoomSettings, defaultPreviewTypes, getElement,
         defaultPreviewSettings, defaultFileTypeSettings, isEmpty, isArray, ifSet, uniqId, htmlEncode, replaceTags,
-        cleanMemory, findFileName, checkFullScreen, toggleFullScreen, moveArray, FileInput;
+        cleanMemory, findFileName, checkFullScreen, toggleFullScreen, moveArray, FileInput, tFileDelete;
 
     NAMESPACE = '.fileinput';
     MODAL_ID = 'kvFileinputModal';
@@ -374,12 +374,13 @@
         '    </div>\n' +
         '  </div>\n' +
         '</div>\n';
-    tProgress = '<div class="progress">\n' +
-        '    <div class="{class}" role="progressbar"' +
-        ' aria-valuenow="{percent}" aria-valuemin="0" aria-valuemax="100" style="width:{percent}%;">\n' +
-        '        {percent}%\n' +
-        '     </div>\n' +
-        '</div>';
+    //tProgress = '<div class="progress">\n' +
+    //    '    <div class="{class}" role="progressbar"' +
+    //    ' aria-valuenow="{percent}" aria-valuemin="0" aria-valuemax="100" style="width:{percent}%;">\n' +
+    //    '        {percent}%\n' +
+    //    '     </div>\n' +
+    //    '</div>'; 프로그래스바 주석 hsy
+    tProgress = '';
     tSize = ' <br><samp>({sizeText})</samp>';
     tFooter = '<div class="file-thumbnail-footer">\n' +
         '    <div class="file-footer-caption" title="{caption}">{caption}{size}</div>\n' +
@@ -395,6 +396,7 @@
         '</div>';
     tActionDelete = '<button type="button" class="kv-file-remove {removeClass}" title="{removeTitle}" data-task-id="{taskId}" data-project-id="{projectId}" data-attached-file-id="{attachedFileId}" {dataUrl}{dataKey}>{removeIcon}</button>\n' +
         '<button type="button" class="kv-file-download {removeClass}" title="{downloadTitle}" data-task-id="{taskId}" data-project-id="{projectId}" data-attached-file-id="{attachedFileId}" {dataUrl}{dataKey}>{downloadIcon}</button>'; // hsy 파일 삭제
+    tFileDelete = '<button type="button" class="kv-file-remove {removeClass}" title="{removeTitle}" data-task-id="{taskId}" data-project-id="{projectId}" data-attached-file-id="{attachedFileId}" {dataUrl}{dataKey}>{removeIcon}</button>\n'; // hsy 작업 생성 화면용 파일 삭제 버튼 노출
     tActionUpload = '';
     //tActionUpload = '<button type="button" class="kv-file-upload {uploadClass}" title="{uploadTitle}">' +
     //    '{uploadIcon}</button>'; //hsy 수정
@@ -436,6 +438,7 @@
         footer: tFooter,
         actions: tActions,
         actionDelete: tActionDelete,
+        fileDelete: tFileDelete, // 작업생성용 파일삭제버튼
         actionUpload: tActionUpload,
         actionZoom: tActionZoom,
         actionDrag: tActionDrag,
@@ -894,6 +897,7 @@
                 case 'fileuploaded':
                 case 'getFileupload':
                 case 'detailReload':
+                case 'reloadFileList':
                 case 'fileclear':
                 case 'filecleared':
                 case 'filereset':
@@ -1513,6 +1517,7 @@
                         extraData = extraData();
                     }
                     params = {id: $el.attr('id'), key: vKey, extra: extraData};
+                    console.log(123123123123)
                     settings = $.extend(true, {}, {
                         headers: {
                             Accept: "application/json; text/plain; */*"
@@ -2210,6 +2215,11 @@
                 var $el = $(this), $frame = $el.closest('.file-preview-frame'), hasError,
                     id = $frame.attr('id'), ind = $frame.attr('data-fileindex'), n, cap, status;
                 handler($el, 'click', function () {
+                    var taskId = $el.data('taskId');
+                    var projectId = $el.data('projectId');
+                    var attachedFileId = $el.data('attachedFileId');
+                    console.log(attachedFileId)
+
                     status = self._raise('filepreremove', [id, ind]);
                     if (status === false || !self._validateMinCount()) {
                         return false;
@@ -2239,6 +2249,7 @@
                             cap = n > 1 ? self._getMsgSelected(n) : (filestack[0] ? self._getFileNames()[0] : '');
                             self._setCaption(cap);
                         }
+                        self._raise('reloadFileList', [self.filestack]);
                         self._raise('fileremoved', [id, ind]);
                     });
                 });
@@ -2909,6 +2920,19 @@
                         .replace(/\{uploadClass}/g, config.uploadClass)
                         .replace(/\{uploadIcon}/g, config.uploadIcon)
                         .replace(/\{uploadTitle}/g, config.uploadTitle);
+                }
+            }else if(self.type == 'task-add'){ // 작업 생성용 파일삭제 버튼 노출
+                if (showDelete) {
+                    // hsy 파일 삭제 커스텀
+                    btnDelete = self._getLayoutTemplate('fileDelete')
+                        .replace(/\{removeClass}/g, removeClass)
+                        .replace(/\{removeIcon}/g, config.removeIcon)
+                        .replace(/\{removeTitle}/g, config.removeTitle)
+                        .replace(/\{taskId}/g, self.task == null ? '' : self.task.id)
+                        .replace(/\{projectId}/g, self.project == null ? '' : self.project.id)
+                        .replace(/\{attachedFileId}/g, url || url != '' ? pieces[pieces.length-1] : '')
+                        .replace(/\{dataUrl}/g, vUrl)
+                        .replace(/\{dataKey}/g, vKey);
                 }
             }
             if (showZoom) {
