@@ -1,5 +1,5 @@
 <div class="repeat-add-section" >
-    <div class="title">
+    <div class="title text-left">
         일정 설정
     </div>
     <!-- 일정 날짜 설정 영역 -->
@@ -42,12 +42,12 @@
             </ul>
             <ul class="date-picker-calendar clear-both">
                 <li class="input-group date-picker-calendar-li">
-                    <div style="display:inline-block; min-height:290px;">
+                    <div style="display:inline-block; min-height:237px;">
                         <div uib-datepicker ng-model="vm.dueDateFrom.date" class="well well-sm" datepicker-options="vm.dueDateFrom.datepickerOptions"></div>
                     </div>
                 </li>
                 <li class="input-group date-picker-calendar-li">
-                    <div style="display:inline-block; min-height:290px;">
+                    <div style="display:inline-block; min-height:237px;">
                         <div uib-datepicker ng-model="vm.dueDateTo.date" class="well well-sm" datepicker-options="vm.dueDateTo.datepickerOptions"></div>
                     </div>
                 </li>
@@ -56,7 +56,7 @@
     </div>
     <br/><br/>
     <!-- 일정 반복 설정 영역 -->
-    <div class="repeat-settings-area clear-both">
+    <div class="repeat-settings-area clear-both text-left">
         <div class="pull-right" ng-click="vm.repeatOpenYn = !vm.repeatOpenYn">
             {{vm.repeatOpenYn ? '접기▲' : '펴기▼'}}
         </div>

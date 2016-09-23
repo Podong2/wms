@@ -5,8 +5,8 @@
 
 angular.module('wmsApp')
     .controller("taskEditCtrl", taskEditCtrl);
-taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'toastr', '$state', '$timeout', 'DateUtils', 'SubTask', 'Principal', 'findUser', '$q', 'TaskEdit', 'FindTasks', 'ProjectFind', 'ProjectFindByName', '$cookies'];
-        function taskEditCtrl($rootScope, $scope, $uibModalInstance, Code, $log, Task, toastr, $state, $timeout, DateUtils, SubTask, Principal, findUser, $q, TaskEdit, FindTasks, ProjectFind, ProjectFindByName, $cookies) {
+taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'toastr', '$state', '$timeout', 'DateUtils', 'SubTask', 'Principal', 'findUser', '$q', 'TaskEdit', 'FindTasks', 'ProjectFind', 'ProjectFindByName', '$cookies', 'FindByCondition'];
+        function taskEditCtrl($rootScope, $scope, $uibModalInstance, Code, $log, Task, toastr, $state, $timeout, DateUtils, SubTask, Principal, findUser, $q, TaskEdit, FindTasks, ProjectFind, ProjectFindByName, $cookies, FindByCondition) {
             var vm = this;
             vm.baseUrl = window.location.origin;
 
@@ -33,9 +33,15 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             vm.removeWatcher = removeWatcher;
             vm.watcherPopupClose = watcherPopupClose;
             vm.watcherInfoAdd = watcherInfoAdd;
+            vm.findRelatedTask = findRelatedTask;
+            vm.addRelatedTask = addRelatedTask;
+            vm.relatedTaskFormOpen = relatedTaskFormOpen;
+            vm.relatedTaskPopupClose = relatedTaskPopupClose;
+            vm.removeRelatedTask = removeRelatedTask;
             vm.userInfo = Principal.getIdentity();
 
             vm.DuplicationWatcherIds = [];
+            vm.DuplicationRelatedTaskIds = [];
 
             vm.privateYns = [{"id":false, "name":"공개", icon: 'fa-unlock-alt'},{"id":true,"name":"비공개", icon: 'fa-lock'}];
 
@@ -44,10 +50,32 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
 
             vm.date = new Date();
 
+            $scope.checkedTask = [];
+            $scope.checkedTaskIds = [];
+
+            // toggle selection for a given fruit by name
+            $scope.toggleSelection = function toggleSelection(fruitName) {
+
+                var idx = $scope.checkedTask.indexOf(fruitName);
+
+                // is currently selected
+                if (idx > -1) {
+                    $scope.checkedTask.splice(idx, 1);
+                    $scope.checkedTaskIds.splice(idx, 1);
+                }
+
+                // is newly selected
+                else {
+                    $scope.checkedTask.push(fruitName);
+                    $scope.checkedTaskIds.push(fruitName.id);
+                }
+            };
+
             /* user picker info */
             $scope.assigneeUser = [];
             $scope.watchers = [];
             $scope.relatedTaskList = [];
+            $scope.projectPickerList=[];
 
             $scope.watcherInfo=''; // 참조자 정보 팝업
 
@@ -115,6 +143,18 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             vm.fileAreaOpen = false;
             vm.relatedTaskOpen = false;
 
+            vm.relatedSearchYn = true; // 참조작업 검색 오픈 유무
+            vm.relatedSearchAgainYn = false;
+            vm.relatedSearchSelectedYn = false; // 추가 검색 버튼 오픈 유무
+            vm.relatedTaskEmptyYn = false;
+            vm.relatedSearchForm = {
+                name : '',
+                assigneeName : '',
+                assigneeSelfYn : '',
+                createdBySelfYn : '',
+                projectId : ''
+            }
+
             /* 프로젝트 목록 */
             vm.projectList = [];
             $scope.projectName = '';
@@ -122,7 +162,8 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             vm.userList = [];
             vm.userName = '';
             $scope.userName = '';
-            $scope.watcherName = '';
+            vm.watcherName = '';
+            vm.relatedTaskName = '';
             // 하위 작업 업데이트 파라미터
             vm.subTaskUpdateForm = {
                 id : '',
@@ -364,6 +405,12 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                     if(newValue) vm.subTasks = [];
                 }
             });
+            // 하위 작업 종료 시간 포멧 변경(기간)
+            $scope.$watchCollection("vm.assigneeYn", function(newValue, oldValue){
+                if(oldValue != newValue && newValue != ''){
+                    if(newValue) vm.assigneeName = vm.userInfo.name;
+                }
+            });
 
 
             // 달력 오픈
@@ -436,17 +483,28 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 }); //user search
                 return deferred.promise;
             };
-
-            /* task picker */
-            $scope.findTasks = function(name) {
+            /* user picker */
+            $scope.findProjects = function(name) {
                 $log.debug("name - : ", name);
                 var deferred = $q.defer();
-                FindTasks.findByName(name).then(function(result){
+                ProjectFindByName.query({name : name},onProjectPickerSuccess, onProjectPickerError)
+                function onProjectPickerSuccess(result){
                     deferred.resolve(result);
-                    $log.debug("taskList : ", result);
-                }); //user search
+                    $log.debug("projectList : ", result);
+                }
+                function onProjectPickerError(){
+
+                }
                 return deferred.promise;
             };
+
+            /* task picker */
+            //$scope.findTasks = function(name) {
+            //    $log.debug("name - : ", name);
+            //    var deferred = $q.defer();
+            //
+            //    return deferred.promise;
+            //};
 
             function taskUpdate(){
                 if(vm.task.name == null || vm.task.name == '') {
@@ -455,7 +513,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 }
                 if($scope.assigneeUser != [])userIdPush($scope.assigneeUser, "assigneeIds"); // 담당자
                 if($scope.watchers != [])userIdPush($scope.watchers, "watcherIds"); //참조자
-                if($scope.relatedTaskList != [])userIdPush($scope.relatedTaskList, "relatedTaskIds"); //참조 작업
+                if(vm.task.relatedTaskList != [])userIdPush(vm.task.relatedTaskList, "relatedTaskIds"); //참조 작업
                 if(vm.taskProject != [])userIdPush(vm.taskProject, "projectIds"); // 프로젝트
                 vm.task.taskRepeatSchedule = vm.taskRepeatSchedule; // 반복작업 주입
                 if(vm.task.privateYn) vm.subTasks = []; // 비공개일 시 하위 작업 삭제
@@ -476,7 +534,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                     fields : vm.task,
                     fileFormDataName : "file"
                 }).then(function (response) {
-                    toastr.success('태스크 수정 완료', '태스크 수정 완료');
+                    toastr.success('작업 생성 완료', '작업 생성 완료');
                     $timeout(function(){ // state reload 명령과 충돌하는 문제 때문에 설정
                         $uibModalInstance.close();
                     }, 100);
@@ -554,6 +612,37 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                     $scope.pickerFindWatcher(newValue);
                 }
             });
+            // 참조자 명 실시간 검색
+            $scope.$watchCollection('vm.relatedTaskName', function(newValue){
+                if(newValue != '' && newValue != undefined){
+                    $log.debug("vm.watcherName : ", newValue);
+                    $scope.watcherName = newValue;
+                    $scope.pickerFindWatcher(newValue);
+                }
+            });
+
+            // 참조작업 검색
+            function findRelatedTask(){
+                if($scope.projectPickerList.length > 0) vm.relatedSearchForm.projectId = $scope.projectPickerList[0].id;
+                vm.relatedSearchForm.excludeIds = vm.DuplicationRelatedTaskIds;
+                FindByCondition.query(vm.relatedSearchForm, getRelatedTaskSuccess, getRelatedTaskErorr); //, excludeIds : []
+            }
+            function getRelatedTaskSuccess(result){
+                $log.debug("참조작업 검색 목록 : ", result);
+                vm.relatedTaskList = result;
+                if(vm.relatedTaskList.length == 0) {
+                    vm.relatedTaskEmptyYn = true;
+                    vm.relatedSearchYn = false;
+                } else {
+                    vm.relatedTaskEmptyYn = false;
+                    vm.relatedSearchAgainYn = true;
+                    vm.relatedSearchSelectedYn = false;
+                    vm.relatedSearchYn = false;
+                }
+            }
+            function getRelatedTaskErorr(){
+
+            }
 
             /* 하위 작업 저장 */
             function subTaskUserAdd(userId){
@@ -736,13 +825,55 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 }
             }
 
+            // 참조작업 데이터 제거
+            function removeRelatedTask(task){
+                var index = vm.DuplicationRelatedTaskIds.indexOf(task.id);
+                if(index > -1){
+                    vm.DuplicationRelatedTaskIds.splice(index, 1);
+                    vm.task.relatedTaskList.splice(index, 1);
+                }
+                var checked = $scope.checkedTaskIds.indexOf(task.id);
+                if(index > -1){
+                    $scope.checkedTaskIds.splice(checked, 1);
+                    $scope.checkedTask.splice(checked, 1);
+                }
+            }
+
             //참조자 팝업 닫기
             function watcherPopupClose(){
                 $rootScope.$broadcast('watcherPopupClose');
             }
 
+            //참조작업 팝업 닫기
+            function relatedTaskPopupClose(){
+                $rootScope.$broadcast('relatedTaskPopupClose');
+            }
+
             function watcherInfoAdd(watcher){
                 $scope.watcherInfo = watcher;
+            }
+
+            function addRelatedTask(){
+                var checkList = _.clone($scope.checkedTask);
+                vm.task.relatedTaskList = checkList;
+                vm.DuplicationRelatedTaskIds = [];
+                angular.forEach(vm.task.relatedTaskList, function(value){
+                    vm.DuplicationRelatedTaskIds.push(value.id)
+                })
+                vm.relatedTaskList=[];
+                vm.relatedSearchSelectedYn = true;
+                vm.relatedSearchYn = false;
+                vm.relatedSearchAgainYn = false;
+                vm.relatedTaskEmptyYn = false;
+            }
+
+            // 참조검색 검색 폼 오픈(추가검색, 재검색, 확인 버튼)
+            function relatedTaskFormOpen(){
+                vm.relatedTaskList=[];
+                vm.relatedSearchSelectedYn = false;
+                vm.relatedSearchYn = true;
+                vm.relatedSearchAgainYn = false;
+                vm.relatedTaskEmptyYn = false;
             }
 
         }

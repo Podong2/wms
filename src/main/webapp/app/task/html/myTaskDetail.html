@@ -169,7 +169,7 @@
                                         일치하는 사용자가 없습니다.
                                     </div>
                                 </div>
-                            </div>
+                            </div><!-- 참조자 검색 및 등록 팝업 end -->
 
                         </td>
                     </tr>
@@ -222,8 +222,8 @@
                         <!--</div>-->
                         <div id="repeatEditSection" >
                             <div repeat-picker-toggle>
-                                <i class="icon-append fa fa-calendar cursor" style="float: left; padding: 12px;"></i>
-                                <i class="icon-append glyphicon glyphicon-retweet" ng-if="vm.task.taskRepeatSchedule.repeatType != '' && vm.task.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i>
+                                <i class="icon-append glyphicon glyphicon-retweet" ng-if="vm.task.taskRepeatSchedule.repeatType != '' && vm.task.taskRepeatSchedule != null " style="float: left; padding: 12px 5px;"></i>
+                                <i class="icon-append fa fa-calendar cursor" style="float: left; padding: 12px 5px;"></i>
                                 <div class="form-group" style="margin-bottom: 0; position: relative;">
 
                                     <span class="input-group wms-form">
@@ -241,14 +241,55 @@
                         </div>
                     </td>
                     <td>
-                        <label style="margin-bottom: 0px;" ng-if="!vm.task.privateYn" for="subTaskAdd" class="cursor" ng-click="vm.subTaskOpen = !vm.subTaskOpen" ><i class="fa fa-outdent" id="subTaskAdd" > <span>하위 작업 {{vm.subTasks.length == 0 ? '추가' : vm.subTasks.length}}</span></i></label>
-                        <label style="margin-bottom: 0px;" ng-if="vm.task.privateYn" for="subTaskDisabled" disabled="disabled"><i class="fa fa-outdent" id="subTaskDisabled" > <span>하위 작업 {{vm.subTasks.length == 0 ? '추가' : vm.subTasks.length}}</span></i></label>
+                        <label style="margin-bottom: 0px;" ng-if="!vm.task.privateYn" for="subTaskAdd" class="cursor" ng-click="vm.subTaskOpen = !vm.subTaskOpen" ><i class="fa fa-outdent" id="subTaskAdd" > <span>하위 작업 {{vm.task.subTasks.length == 0 ? '추가' : vm.task.subTasks.length}}</span></i></label>
+                        <label style="margin-bottom: 0px;" ng-if="vm.task.privateYn" for="subTaskDisabled" disabled="disabled"><i class="fa fa-outdent" id="subTaskDisabled" > <span>하위 작업 {{vm.task.subTasks.length == 0 ? '추가' : vm.task.subTasks.length}}</span></i></label>
                     </td>
                     <td>
                         <label style="margin-bottom: 0px;" for="subTaskAdd" class="cursor" ng-click="vm.fileAreaOpen = !vm.fileAreaOpen"><i class="fa fa-paperclip"></i> 파일 첨부</label>
                     </td>
-                    <td>
-                        <label style="margin-bottom: 0px;" for="subTaskAdd" class="cursor" ng-click="vm.relatedTaskOpen = !vm.relatedTaskOpen"><i class="fa fa-share-alt"></i> 참조 작업</label>
+                    <td style="position: relative;">
+                        <label style="margin-bottom: 0px;" for="subTaskAdd" class="cursor" ng-click="vm.relatedTaskOpen = !vm.relatedTaskOpen" related-task-picker-btn-toggle><i class="fa fa-share-alt"></i> 참조 작업</label>
+
+                        <!-- 참조자 검색 및 등록 팝업 -->
+                        <div class="relatedTask-popup-area text-left">
+                            <div class="padding-5 relatedTask-popup-header">
+                                <span class="pull-right fa fa-close cursor" ng-click="vm.relatedTaskPopupClose()"></span>
+                                참조자
+                            </div>
+                            <div class="relatedTask-list-area padding-5" ng-show="vm.task.watchers.length > 0">
+                                <ul class="list-inline friends-list" style="margin-bottom: 0">
+                                    <li class="relatedTask-item" ng-repeat="user in vm.task.watchers" style="position: relative; margin: 0 3px 3px;" ng-click="vm.watcherInfoAdd(user)" watcher-info-btn-toggle>
+                                        <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
+                                        <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
+                                        <span class="profile-close-btn cursor" ng-click="vm.removeWatcher(user)"><i class="fa fa-close"></i></span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="relatedTask-input-area">
+                                <input type="text" class="form-control" ng-model="vm.watcherName" style="border-right: 0; border-left:0;"  placeholder="이름을 입력하세요."/>
+                            </div>
+                            <div class="relatedTask-search-list-area padding-5">
+                                <div ng-repeat="data in vm.watcherList track by $index">
+                                    <div class="relatedTask-search-element cursor" ng-click="vm.watcherAdd(data)">
+                                        <div class="row">
+                                            <div class="col-md-2">
+                                                <img ng-src="/content/images/demo/male.png" ng-if="data.profileImageId == null || data.profileImageId == '' " uib-tooltip="{{data.createdByName}}">
+                                                <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.profileImageId}}" ng-if="data.profileImageId != null" uib-tooltip="{{data.createdByName}}">
+                                            </div>
+                                            <div class="col-md-10">
+                                                <div>{{data.name}}</div>
+                                                <div>{{data.email}}</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-if="vm.watcherList.length == 0">
+                                    일치하는 사용자가 없습니다.
+                                </div>
+                            </div>
+                        </div><!-- 참조자 검색 및 등록 팝업 end -->
+
+
                     </td>
                     <td>
                         <label style="margin-bottom: 0px;" for="subTaskAdd" class="cursor" ng-class="vm.task.relatedTasks.length == 0 && vm.task.subTasks.length == 0 ? 'btn-none' : ''" ng-click="vm.getTaskProgressStatus()">
@@ -269,12 +310,11 @@
                         <tbody id="userPickerSection">
                             <tr ng-repeat="list in vm.task.subTasks">
                                 <td>
-
                                     <!-- 우측 영역 -->
-                                    <span class="pull-right">
+                                    <span class="pull-right" style="width: 80px;">
                                         <!--{{list.createdDate | date : 'yyyy-MM-dd'}}-->
                                         <div id="subTaskEditSection">
-                                            <i class="icon-append fa fa-calendar cursor" style="float: left; padding: 8px;" sub-task-picker-toggle ng-click="vm.setDatePickerInput(list)"></i>
+                                            <i class="icon-append fa fa-calendar cursor" style="float: left; padding: 12px;" sub-task-picker-toggle ng-click="vm.setDatePickerInput(list)"></i>
                                             <div class="form-group" style="margin-bottom: 0">
 
                                                 <span class="input-group wms-form">
@@ -282,7 +322,7 @@
                                                         <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="subTaskEndDate" style="height: 30px; width: 100%; border : 0">
                                                     </label>
 
-                                                    <span class="dueDateValues" sub-task-picker-toggle ng-click="vm.setDatePickerInput(list)">{{list.endDate}}</span>
+                                                    <span class="dueDateValues" sub-task-picker-toggle ng-click="vm.setDatePickerInput(list)">{{list.endDate | date : 'MM-dd'}}</span>
                                                 </span>
                                             </div>
                                             <div wms-Include="app/task/html/subTaskDatePicker.html"></div>
@@ -329,7 +369,7 @@
                                             </div>
                                         </div>
 
-                                        <ul class="list-inline friends-list" style="margin-bottom: 0">
+                                        <ul class="list-inline friends-list" style="margin-bottom: 0; text-align: left;">
                                             <li ng-repeat="user in list.assignees" style="position: relative">
                                                 <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
                                                 <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
@@ -545,27 +585,30 @@
         </div>
         <!-- END Timeline Content -->
 
-        <div class="row comment-area">
-            <div class="col-md-11">
-                <div class="row">
-                    <div class="col-md-1">
-                        <a ng-click="vm.commentFileAreaOpen = !vm.commentFileAreaOpen">
-                            <i class="fa fa-paperclip pull-right" style="font-size: 30px; margin-top: 6px"></i>
-                        </a>
+        <div class="comment-area">
+            <div class="row">
+                <div class="col-md-11">
+                    <div class="row">
+                        <div class="col-md-1">
+                            <a ng-click="vm.commentFileAreaOpen = !vm.commentFileAreaOpen">
+                                <i class="fa fa-paperclip pull-right" style="font-size: 30px; margin-top: 6px"></i>
+                            </a>
 
-                    </div>
-                    <div class="col-md-11">
-                        <summernote ng-model="vm.comment.contents" on-init="init()" on-enter="enter()" on-focus="focus(evt)" config="dataService.getSummerNoteOptions(false)"
-                                    on-blur="blur(evt)" on-paste="paste()" on-keyup="keyup(evt)" contenteditable="true"
-                                    on-keydown="keydown(evt)" on-change="change(contents)"
-                                    editable="editable" editor="editor" lang="ko-KR">
-                        </summernote>
+                        </div>
+                        <div class="col-md-11">
+                            <summernote ng-model="vm.comment.contents" on-init="init()" on-enter="enter()" on-focus="focus(evt)" config="dataService.getSummerNoteOptions(false)"
+                                        on-blur="blur(evt)" on-paste="paste()" on-keyup="keyup(evt)" contenteditable="true"
+                                        on-keydown="keydown(evt)" on-change="change(contents)"
+                                        editable="editable" editor="editor" lang="ko-KR">
+                            </summernote>
+                        </div>
                     </div>
                 </div>
+                <div class="col-md-1">
+                    <button type="button" class="btn btn_icon btn_customs" ng-click="vm.createComment()" owl-btn-save></button>
+                </div>
             </div>
-            <div class="col-md-1">
-                <button type="button" class="btn btn_icon btn_customs" ng-click="vm.createComment()" owl-btn-save></button>
-            </div>
+
         </div>
         <div class="task-file-area" ng-class="vm.commentFileAreaOpen ? 'on' : ''">
             <div class="file-header-area">
@@ -582,3 +625,8 @@
 
     </div>
 </div>
+<style>
+    .btn-sm {
+        padding: 4px 8px 5px;
+    }
+</style>

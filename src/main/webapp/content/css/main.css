@@ -169,6 +169,9 @@ only screen and (                min-resolution: 2dppx) {
 /* ==========================================================================
 Generic styles
 ========================================================================== */
+.position-relative{
+    position: relative;
+}
 .error {
     color: red;
     background-color: white;
@@ -1654,6 +1657,9 @@ i:active, .i:active, i:focus, .i:focus{
 .border-none {
     border: 0 !important;
 }
+.border-top {
+    border-top: 1px solid #ccc !important;
+}
 .panel-heading{
     box-shadow: inset 0 -2px 0 rgba(0,0,0,.05);
     -moz-box-shadow: inset 0 -2px 0 rgba(0,0,0,.05);
@@ -1826,6 +1832,7 @@ i:active, .i:active, i:focus, .i:focus{
     box-shadow: 0 0 6px #6f6f6f;
     background-color: #fff;
     display: none;
+    top: 39px;
 }
 .project-picker .project-picker-search{
     position: relative;
@@ -2236,7 +2243,7 @@ i:active, .i:active, i:focus, .i:focus{
     position: absolute;
     border: 1px solid #fdfdfd;
     z-index: 1060;
-    width: 665px;
+    width: 590px;
     font-size: 14px;
     background-color: #fff;
     background-clip: padding-box;
@@ -2245,6 +2252,7 @@ i:active, .i:active, i:focus, .i:focus{
     box-shadow: 0 5px 10px rgba(0,0,0,.2);
     display: none;
     padding: 10px;
+    right: 0;
 }
 .repeat-edit-section.on{
     display: block;
@@ -2253,7 +2261,7 @@ i:active, .i:active, i:focus, .i:focus{
     position: absolute;
     border: 1px solid #fdfdfd;
     z-index: 1060;
-    width: 665px;
+    width: 590px;
     font-size: 14px;
     background-color: #fff;
     background-clip: padding-box;
@@ -2262,6 +2270,7 @@ i:active, .i:active, i:focus, .i:focus{
     box-shadow: 0 5px 10px rgba(0,0,0,.2);
     display: none;
     padding: 10px;
+    right: 0;
 }
 .repeat-add-section.on{
     display: block;
@@ -2621,7 +2630,7 @@ text-align: right;
 }
 
 .right-panel span:first-child {
-    font-size: 16px;
+    font-size: 13px;
 }
 
 .right-panel span:nth-child(2) {
@@ -2687,11 +2696,15 @@ text-align: right;
     height: 25px;
     background: #fdfdfd;
     list-style: none;
+    padding: 0;
 }
 .file-header-area ul li {
     padding: 7px;
     float: left;
     font-size: 16px;
+}
+.file-header-area ul li:first-child{
+    padding-left: 0;
 }
 .file-input{
     display: block;
@@ -2705,10 +2718,10 @@ text-align: right;
 .user-picker-plus-btn.on{
     display: none;
 }
-.user-picker-input{
+.user-picker-input-area{
     display: none;
 }
-.user-picker-input.on{
+.user-picker-input-area.on{
     display: block;
 }
 .profile-close-btn{
@@ -2781,7 +2794,7 @@ text-align: right;
     position: absolute;
     width: 280px;
     min-height: 210px;
-    top:30px;
+    top: 100%;
     background-color: #fff;
     border-radius: 3px;
     border:1px solid #d3d3d3;
@@ -2817,6 +2830,121 @@ text-align: right;
 .watcher-popup-header, .watcher-list-area {
     background: #f4f4f4;
 }
+
+
+.relatedTask-popup-area{
+    position: absolute;
+    width: 280px;
+    /*min-height: 210px;*/
+    top: 100%;
+    background-color: #fff;
+    border-radius: 3px;
+    border:1px solid #d3d3d3;
+    box-shadow: 3px 3px 5px #ddd;
+    right:0;
+    z-index: 100;
+    display: none;
+}
+.relatedTask-popup-area.on{
+    display: block;
+}
+.relatedTask-search-list-area{
+    overflow: hidden;
+    overflow-y: auto;
+    max-height: 167px;
+}
+.relatedTask-search-list-area .relatedTask-search-element{
+    border-top: 1px solid #ddd;
+    height:47px;
+    padding: 7px 3px;
+}
+.relatedTask-search-list-area .relatedTask-search-element{
+    background: #FFEEDC !important;
+}
+.relatedTask-search-list-area .relatedTask-search-element:first-child{
+    border-top: 0;
+}
+.relatedTask-search-list-area .relatedTask-search-element img{
+    width: 30px;
+    height: 30px;
+    margin-top: 3px;
+}
+.relatedTask-popup-header, .relatedTask-list-area {
+    background: #f4f4f4;
+}
+.relatedTask-search-btn-area .relatedTask-search-btn{
+    background: #ddd;
+    height:25px;
+    vertical-align: middle;
+    line-height: 25px;
+}
+.relatedTask-search-btn-area .relatedTask-search-btn:active{
+    background: #d1d1d1;
+}
+.relatedTask-close-btn{
+    position: absolute;
+    top: -4px;
+    color: #000;
+    padding: 0px 4px;
+    border-radius: 50%;
+    right: -5px;
+}
+.relatedTask-list-item{
+
+}
+.relatedTask-list-item-area{
+    display: inline-table;
+    list-style: outside none none;
+}
+.picker-popup-close-btn{
+    font-size: 16px;
+}
+.related-task-item-list{
+    line-height: 33px;
+}
+.relatedTask-list-item-title:hover{
+    border-bottom: 1px solid #000;
+}
+.related-task-search-div{
+    line-height: 41px;
+}
+.panel {
+    -webkit-border-radius:0;
+    -moz-border-radius:0;
+    border-radius:0;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

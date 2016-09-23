@@ -11,7 +11,8 @@
         .factory('MyTaskStatistics', MyTaskStatistics)
         .factory('TaskProgressStatus', TaskProgressStatus)
         .factory('ModifySubTask', ModifySubTask)
-        .factory('TaskEdit', TaskEdit);
+        .factory('TaskEdit', TaskEdit)
+        .factory('FindByCondition', FindByCondition);
 
     Task.$inject = ['$resource'];
     SubTask.$inject = ['$resource'];
@@ -23,6 +24,7 @@
     MyTaskStatistics.$inject = ['$resource'];
     TaskProgressStatus.$inject = ['$resource'];
     ModifySubTask.$inject = ['$resource'];
+    FindByCondition.$inject = ['$resource'];
 
     function Task ($resource) {
         var resourceUrl =  'api/tasks/:id';
@@ -167,6 +169,24 @@
 
     function ModifySubTask ($resource) {
         var resourceUrl =  'api/tasks/modifySubTask';
+
+        return $resource(resourceUrl, {}, {
+            'query': { method: 'GET', isArray: true},
+            'get': {
+                method: 'GET',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    return data;
+                }
+            },
+            'update': { method:'PUT' }
+        });
+    }
+
+    function FindByCondition ($resource) {
+        var resourceUrl =  'api/tasks/findByCondition';
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},

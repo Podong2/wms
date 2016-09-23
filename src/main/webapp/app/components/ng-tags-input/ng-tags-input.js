@@ -203,7 +203,8 @@ tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tag
             onTagRemoved: '&',
             onTagClicked: '&',
             tagType: '@',
-            templateUrl : '@'
+            templateUrl : '@',
+            projectYn : '@'
         },
         replace: false,
         transclude: true,
@@ -1241,9 +1242,12 @@ tagsInput.run(["$templateCache", function($templateCache) {
     "<li class=\"tag-item\" ng-repeat=\"tag in tagList.items track by track(tag)\" ng-class=\"getTagClass(tag, $index)\" ng-click=\"eventHandlers.tag.click(tag, $event)\" style='position: relative;'>" +
     "<ti-tag-item scope=\"templateScope\" data=\"::tag\"></ti-tag-item>" +
     "</li>" +
-    "</ul><span class='user-picker-plus-area' user-picker-btn-toggle><button class='btn user-picker-plus-btn' style='width: 30xp; height: 30px; float: left; margin: 0 5px;'>+</button>" +
-    "<input class=\"input user-picker-input\" wms-kr-update autocomplete=\"off\" ng-model=\"newTag.text\" ng-model-options=\"{getterSetter: true}\" ng-keydown=\"eventHandlers.input.keydown($event)\" ng-focus=\"eventHandlers.input.focus($event)\" ng-blur=\"eventHandlers.input.blur($event)\" ng-paste=\"eventHandlers.input.paste($event)\" ng-trim=\"false\" ng-class=\"{'invalid-tag': newTag.invalid}\" ng-disabled=\"disabled\" ti-bind-attrs=\"{type: options.type, placeholder: options.placeholder, tabindex: options.tabindex, spellcheck: options.spellcheck}\" ti-autosize>" +
-    "</span></div></div>"
+    "</ul>" +
+    "<span class='user-picker-plus-area' ng-show='!projectYn' user-picker-btn-toggle><button class='btn user-picker-plus-btn' style='width: 30xp; height: 30px; float: left; margin: 0 5px;'>+</button>" +
+    "<input class=\"input user-picker-input user-picker-input-area\" ng-show='!projectYn' wms-kr-update autocomplete=\"off\" ng-model=\"newTag.text\" ng-model-options=\"{getterSetter: true}\" ng-keydown=\"eventHandlers.input.keydown($event)\" ng-focus=\"eventHandlers.input.focus($event)\" ng-blur=\"eventHandlers.input.blur($event)\" ng-paste=\"eventHandlers.input.paste($event)\" ng-trim=\"false\" ng-class=\"{'invalid-tag': newTag.invalid}\" ng-disabled=\"disabled\" ti-bind-attrs=\"{type: options.type, placeholder: options.placeholder, tabindex: options.tabindex, spellcheck: options.spellcheck}\" ti-autosize>" +
+    "</span>" +
+    "<input class=\"input user-picker-input\" style='border-bottom: 1px solid #ddd' ng-show='projectYn && tagList.items.length == 0' wms-kr-update autocomplete=\"off\" ng-model=\"newTag.text\" ng-model-options=\"{getterSetter: true}\" ng-keydown=\"eventHandlers.input.keydown($event)\" ng-focus=\"eventHandlers.input.focus($event)\" ng-blur=\"eventHandlers.input.blur($event)\" ng-paste=\"eventHandlers.input.paste($event)\" ng-trim=\"false\" ng-class=\"{'invalid-tag': newTag.invalid}\" ng-disabled=\"disabled\" ti-bind-attrs=\"{type: options.type, placeholder: options.placeholder, tabindex: options.tabindex, spellcheck: options.spellcheck}\">" +
+    "</div></div>"
   );
 
     // hsy 태그 아이템 템플릿 영역 커스텀
@@ -1278,7 +1282,7 @@ tagsInput.run(["$templateCache", function($templateCache) {
 
     // hsy 옵션 템플릿 영역 커스텀
   $templateCache.put('ngTagsInput/auto-complete-match.html',
-    "<div class='left-panel'>" +
+    "<div class='left-panel' ng-if='data.email != null'>" +
     "<img ng-src='/api/attachedFile/{{data.profileImageId}}' ng-if='data.profileImageId !=null' /><img ng-src='/content/images/demo/male.png' ng-if='data.profileImageId ==null' />" +
     "</div>" +
     "<div class='right-panel'>" +

@@ -1028,6 +1028,11 @@
             $scope.watcherInfo = watcher;
         }
 
+        //참조작업 팝업 닫기
+        function relatedTaskPopupClose(){
+            $rootScope.$broadcast('relatedTaskPopupClose');
+        }
+
 
         vm.tableConfigs = [];
         vm.tableConfigs.push(tableService.getConfig("", "checked")

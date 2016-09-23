@@ -9,6 +9,7 @@ angular.module('wmsApp')
     .directive('userPickerBtnToggle', userPickerBtnToggle)
     .directive('watcherPickerBtnToggle', watcherPickerBtnToggle)
     .directive('watcherInfoBtnToggle', watcherInfoBtnToggle)
+    .directive('relatedTaskPickerBtnToggle', relatedTaskPickerBtnToggle)
     .directive('gnbTaskHistoryToggle', gnbTaskHistoryToggle);
 toggleEvent.$inject=['$compile', '$filter', '$log', '$sce', '$timeout'];
 sectionToggle.$inject=['$timeout', '$rootScope'];
@@ -20,6 +21,7 @@ projectAddToggle.$inject=['$timeout', '$rootScope'];
 userPickerBtnToggle.$inject=['$timeout'];
 watcherPickerBtnToggle.$inject=['$rootScope', '$timeout'];
 watcherInfoBtnToggle.$inject=['$rootScope', '$timeout'];
+relatedTaskPickerBtnToggle.$inject=['$rootScope', '$timeout'];
 gnbTaskHistoryToggle.$inject=['$timeout'];
 function toggleEvent($compile, $filter, $log, $sce, $timeout) {
 
@@ -250,12 +252,12 @@ function userPickerBtnToggle($timeout) {
             $('body').click(function (e) {
                 if (!$($elements).has(e.target).length) {
                     $($elements).find('.user-picker-plus-btn').removeClass("on");
-                    $($elements).find('.user-picker-input').removeClass("on");
+                    $($elements).find('.user-picker-input-area').removeClass("on");
                 }
             });
             element.on('click', function(_this) {
                 $($elements).find('.user-picker-plus-btn').addClass("on");
-                $($elements).find('.user-picker-input').addClass("on");
+                $($elements).find('.user-picker-input-area').addClass("on");
             });
         }
     }
@@ -274,6 +276,9 @@ function watcherPickerBtnToggle($rootScope, $timeout) {
             element.on('click', function(_this) {
                 $($elements).addClass("on");
             });
+            $rootScope.$on('watcherPopupClose', function(){
+                closeYn = true;
+            })
             $('body').click(function (e) {
                 if (!$($elements.parent()).has(e.target).length || closeYn) {
                     $timeout(function () {
@@ -282,9 +287,7 @@ function watcherPickerBtnToggle($rootScope, $timeout) {
                     }, 100);
                 }
             });
-            $rootScope.$on('watcherPopupClose', function(){
-                closeYn = true;
-            })
+
         }
     }
 }
@@ -302,6 +305,10 @@ function watcherInfoBtnToggle($rootScope, $timeout) {
             element.on('click', function(_this) {
                 //$($elements).addClass("on");
             });
+            //$rootScope.$on('watcherPopupClose', function(){
+            //    closeYn = true;
+            //    $($elements).removeClass("on");
+            //})
             $('body').click(function (e) {
                 if(closeYn){
                     $($elements).removeClass("on");
@@ -323,10 +330,38 @@ function watcherInfoBtnToggle($rootScope, $timeout) {
                 }
 
             });
-            $rootScope.$on('watcherPopupClose', function(){
-                closeYn = true;
-            })
+
         }
     }
 }
 
+/**
+ * 참조자 팝업 토글
+ * @param $timeout
+ * @returns {{restrict: string, link: link}}
+ */
+function relatedTaskPickerBtnToggle($rootScope, $timeout) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attr) {
+            var $elements = element.next();
+            var closeYn = false;
+            element.on('click', function(_this) {
+                $($elements).addClass("on");
+            });
+            $rootScope.$on('relatedTaskPopupClose', function(){
+                closeYn = true;
+                $($elements).removeClass("on");
+            })
+            $('body').click(function (e) {
+                if (!$($elements.parent()).has(e.target).length || closeYn) {
+                    $timeout(function () {
+                        //$($elements).removeClass("on");
+                        closeYn = false;
+                    }, 100);
+                }
+            });
+
+        }
+    }
+}
