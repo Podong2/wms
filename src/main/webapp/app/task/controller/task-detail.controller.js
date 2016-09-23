@@ -6,10 +6,10 @@
         .controller('TaskDetailCtrl', TaskDetailCtrl);
 
     TaskDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', 'TaskAttachedFile', '$log', 'TaskEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask',
-        'FindTasks', 'entity', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectFindByName', 'ModalService', 'TaskProgressStatus', 'tableService', 'ModifySubTask', '$http', '$cookies'];
+        'FindTasks', 'entity', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectFindByName', 'ModalService', 'TaskProgressStatus', 'tableService', 'ModifySubTask', '$http', '$cookies', 'FindByCondition'];
 
     function TaskDetailCtrl($scope, $rootScope, $stateParams, Task, Code, TaskAttachedFile, $log, TaskEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask,
-                            FindTasks, entity, TaskListSearch, dataService, Principal, ProjectFind, ProjectFindByName, ModalService, TaskProgressStatus, tableService, ModifySubTask, $http, $cookies) {
+                            FindTasks, entity, TaskListSearch, dataService, Principal, ProjectFind, ProjectFindByName, ModalService, TaskProgressStatus, tableService, ModifySubTask, $http, $cookies, FindByCondition) {
         var vm = this;
         vm.baseUrl = window.location.origin;
 
@@ -38,6 +38,11 @@
         vm.removeWatcher = removeWatcher;
         vm.watcherPopupClose = watcherPopupClose;
         vm.watcherInfoAdd = watcherInfoAdd;
+        vm.findRelatedTask = findRelatedTask;
+        vm.addRelatedTask = addRelatedTask;
+        vm.relatedTaskFormOpen = relatedTaskFormOpen;
+        vm.relatedTaskPopupClose = relatedTaskPopupClose;
+        vm.removeRelatedTask = removeRelatedTask;
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
 
@@ -114,6 +119,8 @@
         vm.userList = [];
         vm.userName = '';
         $scope.userName = '';
+        vm.watcherName = '';
+        vm.relatedTaskName = '';
         vm.fileListYn = false;
         // 하위 작업 업데이트 파라미터
         vm.subTaskUpdateForm = {
@@ -122,9 +129,43 @@
             startDate : '',
             endDate : '',
         }
+
         vm.DuplicationWatcherIds = [];
+        vm.DuplicationRelatedTaskIds = [];
+        $scope.projectPickerList=[];
 
+        $scope.checkedTask = [];
+        $scope.checkedTaskIds = [];
 
+        vm.relatedSearchYn = true; // 참조작업 검색 오픈 유무
+        vm.relatedSearchAgainYn = false;
+        vm.relatedSearchSelectedYn = false; // 추가 검색 버튼 오픈 유무
+        vm.relatedTaskEmptyYn = false;
+        vm.relatedSearchForm = {
+            name : '',
+            assigneeName : '',
+            assigneeSelfYn : '',
+            createdBySelfYn : '',
+            projectId : ''
+        }
+
+        // toggle selection for a given fruit by name
+        $scope.toggleSelection = function toggleSelection(fruitName) {
+
+            var idx = $scope.checkedTask.indexOf(fruitName);
+
+            // is currently selected
+            if (idx > -1) {
+                $scope.checkedTask.splice(idx, 1);
+                $scope.checkedTaskIds.splice(idx, 1);
+            }
+
+            // is newly selected
+            else {
+                $scope.checkedTask.push(fruitName);
+                $scope.checkedTaskIds.push(fruitName.id);
+            }
+        };
 
         function getTask(){
             // 파일 목록 주입
@@ -192,6 +233,15 @@
                 $state.go("my-task.detail", {}, {reload : 'my-task.detail'});
             })
             vm.task = entity;
+
+            vm.DuplicationRelatedTaskIds = [];
+            $scope.checkedTask = [];
+            $scope.checkedTaskIds = [];
+            angular.forEach(entity.relatedTasks, function(value){
+                vm.DuplicationRelatedTaskIds.push(value.id)
+                $scope.checkedTask.push(value);
+                $scope.checkedTaskIds.push(value.id);
+            })
         });
 
         vm.responseDataCheck = _.clone(vm.task);
@@ -448,6 +498,12 @@
                 vm.subTaskUpdateForm.endDate = formatDate;
             }
         });
+        // 본인체크시 본인이름 담당자명에 주입
+        $scope.$watchCollection("vm.assigneeYn", function(newValue, oldValue){
+            if(oldValue != newValue && newValue != ''){
+                if(newValue) vm.assigneeName = vm.userInfo.name;
+            }
+        });
 
 
         $scope.$watchGroup(['vm.task.statusId', 'vm.task.importantYn'], function(newValue, oldValue){
@@ -534,6 +590,38 @@
                 $scope.pickerFindWatcher(newValue);
             }
         });
+        // 참조작업 실시간 검색
+        //$scope.$watchCollection('vm.relatedTaskName', function(newValue){
+        //    if(newValue != '' && newValue != undefined){
+        //        $log.debug("vm.watcherName : ", newValue);
+        //        $scope.watcherName = newValue;
+        //        $scope.pickerFindWatcher(newValue);
+        //    }
+        //});
+
+        // 참조작업 검색
+        function findRelatedTask(){
+            if($scope.projectPickerList.length > 0) vm.relatedSearchForm.projectId = $scope.projectPickerList[0].id;
+            vm.relatedSearchForm.excludeIds = vm.DuplicationRelatedTaskIds;
+            $log.debug("이미 등록된 참조작업 : ", vm.DuplicationRelatedTaskIds)
+            FindByCondition.query(vm.relatedSearchForm, getRelatedTaskSuccess, getRelatedTaskErorr); //, excludeIds : []
+        }
+        function getRelatedTaskSuccess(result){
+            $log.debug("참조작업 검색 목록 : ", result);
+            vm.relatedTaskList = result;
+            if(vm.relatedTaskList.length == 0) {
+                vm.relatedTaskEmptyYn = true;
+                vm.relatedSearchYn = false;
+            } else {
+                vm.relatedTaskEmptyYn = false;
+                vm.relatedSearchAgainYn = true;
+                vm.relatedSearchSelectedYn = false;
+                vm.relatedSearchYn = false;
+            }
+        }
+        function getRelatedTaskErorr(){
+
+        }
 
         function updateSubTaskForm(subTask) {
 
@@ -588,7 +676,7 @@
             return deferred.promise;
         };
 
-        /* user picker */
+        /* user picker subTask */
         $scope.pickerFindUsers = function(name) {
 
             var userIds = [];
@@ -620,7 +708,6 @@
             }); //user search
         };
 
-
         /* task picker */
         $scope.findTasks = function(name) {
             var deferred = $q.defer();
@@ -628,6 +715,21 @@
                 deferred.resolve(result);
                 $log.debug("taskList : ", result);
             }); //user search
+            return deferred.promise;
+        };
+
+        /* project picker */
+        $scope.findProjects = function(name) {
+            $log.debug("name - : ", name);
+            var deferred = $q.defer();
+            ProjectFindByName.query({name : name},onProjectPickerSuccess, onProjectPickerError)
+            function onProjectPickerSuccess(result){
+                deferred.resolve(result);
+                $log.debug("projectList : ", result);
+            }
+            function onProjectPickerError(){
+
+            }
             return deferred.promise;
         };
 
@@ -641,7 +743,7 @@
 
             if(vm.task.projectId == null)
                 vm.task.projectId = "";
-            
+
             if(vm.task.parentId == null)
                 vm.task.parentId = "";
 
@@ -656,6 +758,7 @@
             }).then(function (response) {
                 toastr.success('태스크 수정 완료', '태스크 수정 완료');
                 $rootScope.$broadcast('projectEditClose');
+                $rootScope.$broadcast('relatedTaskPopupClose');
                 $rootScope.$broadcast('taskReload', $stateParams.listType);
                 vm.task.removeAssigneeIds = "";
                 vm.task.removeWatcherIds = "";
@@ -1020,6 +1123,12 @@
             taskUpload();
         }
 
+        // 참조작업 데이터 제거
+        function removeRelatedTask(task){
+            vm.task.removeRelatedTaskIds = task.id;
+            taskUpload();
+        }
+
         //참조자 팝업 닫기
         function watcherPopupClose(){
             $rootScope.$broadcast('watcherPopupClose');
@@ -1032,6 +1141,30 @@
         function relatedTaskPopupClose(){
             $rootScope.$broadcast('relatedTaskPopupClose');
         }
+
+        function addRelatedTask(){
+            var checkList = _.clone($scope.checkedTask);
+            vm.task.relatedTasks = checkList;
+            vm.DuplicationRelatedTaskIds = [];
+            angular.forEach(vm.task.relatedTasks, function(value){
+                vm.DuplicationRelatedTaskIds.push(value.id)
+            })
+            vm.relatedTaskList=[];
+            vm.relatedSearchSelectedYn = true;
+            vm.relatedSearchYn = false;
+            vm.relatedSearchAgainYn = false;
+            vm.relatedTaskEmptyYn = false;
+        }
+
+        // 참조검색 검색 폼 오픈(추가검색, 재검색, 확인 버튼)
+        function relatedTaskFormOpen(){
+            vm.relatedTaskList=[];
+            vm.relatedSearchSelectedYn = false;
+            vm.relatedSearchYn = true;
+            vm.relatedSearchAgainYn = false;
+            vm.relatedTaskEmptyYn = false;
+        }
+
 
 
         vm.tableConfigs = [];

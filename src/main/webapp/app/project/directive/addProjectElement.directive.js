@@ -15,6 +15,7 @@ function wmsAddProjectElement($log, $compile, $rootScope) {
             },
             controller : ['$scope', function ($scope) {
                 $scope.addProjectId = function(id){
+                    $scope.taskProject = [];
                     $scope.taskProject.push(id);
                 }
                 $scope.projectDelete = function(id, event){
@@ -33,6 +34,7 @@ function wmsAddProjectElement($log, $compile, $rootScope) {
                         scope.addProjectId(scope.project.id);
                         var linkFn = $compile(template);
                         var content = linkFn(scope);
+                        $('.taskAddProject .task-project').remove();
                         $('.taskAddProject').append(content);
                         $rootScope.$broadcast('projectPickerAddClose', false);
                     }

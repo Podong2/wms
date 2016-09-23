@@ -54,7 +54,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             $scope.checkedTaskIds = [];
 
             // toggle selection for a given fruit by name
-            $scope.toggleSelection = function toggleSelection(fruitName) {
+            $scope.toggleSelection = function toggleSelection(fruitName, event) {
 
                 var idx = $scope.checkedTask.indexOf(fruitName);
 
@@ -402,10 +402,14 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             // 하위 작업 종료 시간 포멧 변경(기간)
             $scope.$watchCollection("vm.task.privateYn", function(newValue, oldValue){
                 if(oldValue != newValue && newValue != ''){
-                    if(newValue) vm.subTasks = [];
+                    if(newValue) {
+                        vm.subTasks = [];
+                        vm.subTaskOpen = false;
+                        vm.subTask.name = '';
+                    }
                 }
             });
-            // 하위 작업 종료 시간 포멧 변경(기간)
+            // 본인체크시 본인이름 담당자명에 주입
             $scope.$watchCollection("vm.assigneeYn", function(newValue, oldValue){
                 if(oldValue != newValue && newValue != ''){
                     if(newValue) vm.assigneeName = vm.userInfo.name;

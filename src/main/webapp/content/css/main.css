@@ -931,7 +931,11 @@ li.active > a{
 
 .nav-tabs > li {
     float: left;
-    padding-rigth: 2px
+    padding-rigth: 2px;
+    border-right: 1px solid #ddd;
+}
+.nav-tabs > li:last-child{
+    border-right: 0;
 }
 
 .nav-tabs > li > span {
@@ -942,7 +946,7 @@ li.active > a{
     line-height: 1.8;
     /*border-radius: 4px 4px 0 0;*/
     background-color: #F5F5F5;
-    margin-right: 2px;
+    /*margin-right: 2px;*/
 }
 
 .nav-tabs > li.active > span,
@@ -1112,7 +1116,7 @@ tr.angular-ui-tree-empty {
     width: 100%;
     z-index: 10;
     right: 0px;
-    top: 10px;
+    top: 13px;
     cursor: pointer;
     text-align: left;
 }
@@ -1436,7 +1440,7 @@ table th {
     border-bottom: dashed 1px #428bca;
 }
 .taskUserValueSection{
-    margin: 10px;
+    margin: 13px;
 }
 .tooltip-inner {
     padding: 3px 4px !important;
@@ -2053,7 +2057,7 @@ i:active, .i:active, i:focus, .i:focus{
 }
 
 .task-list-title{
-    float:left; padding: 9px; margin-right: 10px
+    float:left; padding: 13px; margin-right: 10px
 }
 
 .sub-task-area-popup{
@@ -2112,7 +2116,7 @@ i:active, .i:active, i:focus, .i:focus{
     display: block;
 }
 .task-openYn-select{
-    width: 114px !important;
+    width: 84px !important;
     position: relative;
 }
 .task-openYn-select button{
@@ -2124,12 +2128,16 @@ i:active, .i:active, i:focus, .i:focus{
     z-index: 100;
     position: absolute;
     top: 15px;
-    left: 21px;
+    left: 9px;
     font-size: 17px;
 }
 .task-options .filter-option{
-    margin-left: 25px;
+    margin-left: 10px;
 
+}
+.sub-task-user-list .friends-list li{
+    margin-bottom: 0 !important;
+    margin-top: 5px;
 }
 
     /*<< comment css >>*/
@@ -2858,7 +2866,7 @@ text-align: right;
     height:47px;
     padding: 7px 3px;
 }
-.relatedTask-search-list-area .relatedTask-search-element{
+.related-task-highlight{
     background: #FFEEDC !important;
 }
 .relatedTask-search-list-area .relatedTask-search-element:first-child{

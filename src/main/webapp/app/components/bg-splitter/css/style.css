@@ -35,13 +35,14 @@
 .split-panes.horizontal > .split-pane1
 {
   width: 40%;
+    border-right: 1px solid #ddd;
 }
 
 .split-panes.horizontal > .split-pane2
 {
   left: 40%;
   right: 0px;
-  border-left: 1px solid #aaa;
+  /*border-left: 1px solid #aaa;*/
 }
 
 

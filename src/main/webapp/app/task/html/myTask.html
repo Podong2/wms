@@ -6,8 +6,7 @@
   ~ Vestibulum commodo. Ut rhoncus gravida arcu.
   -->
 <div id="content" ng-cloak>
-    <div class="layout-scroll" style="position: relative; background: #fff;
-    border: 1px solid #aaa; height: 1030px;">
+    <div class="layout-scroll" style="position: relative; background: #fff; height: 1030px;">
         <bg-splitter orientation="horizontal">
 
             <bg-pane min-size="400">
@@ -29,7 +28,7 @@
                         </div>
                     </div>
 
-                    <div class="table table-bordered table-hover " style="margin-bottom: 0;">
+                    <div class="table table-hover " style="margin-bottom: 0; border-bottom: 1px solid #ddd;">
                         <div>
                             <div ng-repeat="data in vm.tasks" class="">
                                 <div  class="wms-tree-node-list task-list clear-both" ng-class="data.statusId == 1 ? 'blue' : (data.statusId == 2 ? 'green' : (data.statusId == 3 ? 'black' : 'red'))"
@@ -390,7 +389,7 @@
                             <!--</div>-->
                         <!--</div>-->
                     <!--</div>-->
-                <!--</uib-accordion>-->
+                </uib-accordion>
 
             </bg-pane>
 
