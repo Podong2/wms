@@ -147,6 +147,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             vm.relatedSearchAgainYn = false;
             vm.relatedSearchSelectedYn = false; // 추가 검색 버튼 오픈 유무
             vm.relatedTaskEmptyYn = false;
+            vm.relatedTaskValidateYn = false; // 참조작업 검색 벨리데이션
             vm.relatedSearchForm = {
                 name : '',
                 assigneeName : '',
@@ -629,7 +630,11 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             function findRelatedTask(){
                 if($scope.projectPickerList.length > 0) vm.relatedSearchForm.projectId = $scope.projectPickerList[0].id;
                 vm.relatedSearchForm.excludeIds = vm.DuplicationRelatedTaskIds;
-                FindByCondition.query(vm.relatedSearchForm, getRelatedTaskSuccess, getRelatedTaskErorr); //, excludeIds : []
+                if(vm.relatedSearchForm.name == ''){
+                    vm.relatedTaskValidateYn = true;
+                }else{
+                    FindByCondition.query(vm.relatedSearchForm, getRelatedTaskSuccess, getRelatedTaskErorr);
+                }
             }
             function getRelatedTaskSuccess(result){
                 $log.debug("참조작업 검색 목록 : ", result);

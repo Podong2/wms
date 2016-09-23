@@ -2074,6 +2074,13 @@ i:active, .i:active, i:focus, .i:focus{
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+.relatedTask-title{
+    float:left;
+    max-width: 50%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 
 .sub-task-area-popup{
     position: absolute;
@@ -2289,7 +2296,7 @@ i:active, .i:active, i:focus, .i:focus{
     position: absolute;
     border: 1px solid #fdfdfd;
     z-index: 1060;
-    width: 590px;
+    width: 592px;
     font-size: 14px;
     background-color: #fff;
     background-clip: padding-box;
@@ -2941,6 +2948,9 @@ text-align: right;
     -webkit-border-radius:0;
     -moz-border-radius:0;
     border-radius:0;
+}
+.task-name-validate{
+    border-bottom-color: #FF7F7F;
 }
 
 

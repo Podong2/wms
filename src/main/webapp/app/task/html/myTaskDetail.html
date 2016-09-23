@@ -281,7 +281,7 @@
                             </div>
                             <div class="relatedTask-input-area padding-5 border-top" ng-show="vm.relatedSearchYn">
                                 <div class="related-task-search-div">
-                                    작업명 : <input type="text" class="" ng-model="vm.relatedSearchForm.name" style="border-right: 0; border-left:0; border-top: 0"  placeholder="작업명을 입력하세요."/>
+                                    작업명 : <input type="text" class="" ng-model="vm.relatedSearchForm.name" ng-keydown="vm.relatedTaskValidateYn = false" ng-class="vm.relatedSearchForm.name == '' && vm.relatedTaskValidateYn ? 'task-name-validate' : ''" style="border-right: 0; border-left:0; border-top: 0"  placeholder="작업명을 입력하세요."/>
                                 </div>
                                 <div class="related-task-search-div">
                                     담당자 : <input type="text" class="" ng-model="vm.relatedSearchForm.assigneeName" style="border-right: 0; border-left:0; border-top: 0"  placeholder="이름을 입력하세요."/>
@@ -305,7 +305,7 @@
                                             <input type="checkbox" name="selectedFruits[]" value="{{data}}" ng-checked="checkedTask.indexOf(data) > -1" ng-click="toggleSelection(data)" wms-related-task-checked>
                                         </div>
                                         <div>
-                                            {{data.name}}
+                                            <span class="relatedTask-title" uib-tooltip="{{data.name}}" tooltip-placement="top-left">{{data.name}}</span>
                                             <ul class="list-inline friends-list" style="margin-bottom: 0; text-align: left;">
                                                 <li ng-repeat="user in data.assignees | limitTo:3" style="position: relative">
                                                     <img ng-src="/content/images/demo/male.png" ng-if="data.profileImageId == null || data.profileImageId == '' " uib-tooltip="{{data.name}}">
