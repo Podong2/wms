@@ -240,14 +240,19 @@
                             <div wms-Include="app/task/html/repeatDatePicker.html"></div>
                         </div>
                     </td>
+
+                    <!-- 하위작업 영역 -->
                     <td>
-                        <label style="margin-bottom: 0px;" ng-if="!vm.task.privateYn" for="subTaskAdd" class="cursor" ng-click="vm.subTaskOpen = !vm.subTaskOpen" ><i class="fa fa-outdent" id="subTaskAdd" > <span>하위 작업 {{vm.task.subTasks.length == 0 ? '추가' : vm.task.subTasks.length}}</span></i></label>
+                        <label style="margin-bottom: 0px;" ng-if="!vm.task.privateYn" for="subTaskAdd" class="cursor" ng-click="vm.subTaskOpen = !vm.subTaskOpen" wms-sub-task-input-focus><i class="fa fa-outdent" id="subTaskAdd" > <span>하위 작업 {{vm.task.subTasks.length == 0 ? '추가' : vm.task.subTasks.length}}</span></i></label>
                         <label style="margin-bottom: 0px;" ng-if="vm.task.privateYn" for="subTaskDisabled" disabled="disabled"><i class="fa fa-outdent" id="subTaskDisabled" > <span>하위 작업 {{vm.task.subTasks.length == 0 ? '추가' : vm.task.subTasks.length}}</span></i></label>
                     </td>
+
+                    <!-- 파일첨부 영역 -->
                     <td>
                         <label style="margin-bottom: 0px;" for="subTaskAdd" class="cursor" ng-click="vm.fileAreaOpen = !vm.fileAreaOpen"><i class="fa fa-paperclip"></i> 파일 첨부</label>
                     </td>
 
+                    <!-- 참조작업 영역 -->
                     <td style="position: relative;">
                         <label style="margin-bottom: 0px;" for="subTaskAdd" class="cursor" ng-click="vm.relatedTaskOpen = !vm.relatedTaskOpen" related-task-picker-btn-toggle><i class="fa fa-share-alt"></i> 참조 작업 {{vm.task.relatedTasks.length == 0 ? '' : vm.task.relatedTasks.length}}</label>
 
@@ -369,12 +374,12 @@
                         </thead>
                         <tbody id="userPickerSection">
                             <tr ng-repeat="list in vm.task.subTasks">
-                                <td>
+                                <td class="position-relative">
                                     <!-- 우측 영역 -->
                                     <span class="pull-right" style="width: 80px;">
                                         <!--{{list.createdDate | date : 'yyyy-MM-dd'}}-->
                                         <div id="subTaskEditSection">
-                                            <i class="icon-append fa fa-calendar cursor" style="float: left; padding: 12px;" sub-task-picker-toggle ng-click="vm.setDatePickerInput(list)"></i>
+                                            <i class="icon-append fa fa-calendar cursor" style="float: left; padding: 16px 10px;" sub-task-picker-toggle ng-click="vm.setDatePickerInput(list)"></i>
                                             <div class="form-group" style="margin-bottom: 0">
 
                                                 <span class="input-group wms-form">
@@ -397,9 +402,9 @@
                                     </div>
 
                                     <!-- 사용자 아이콘 -->
-                                    <div>
+                                    <div class="sub-task-user-list">
                                         <!-- 사용자 검색 -->
-                                        <span class="taskUserValueSection pull-left" ng-click="vm.updateSubTaskForm(list)" user-picker-edit-toggle> <i class="fa fa-lg fa-plus" id="assigneeAddBtn"></i></span>
+                                        <button class="btn taskUserValueSection pull-left sub-task-user-plus-btn" id="assigneeAddBtn" ng-click="vm.updateSubTaskForm(list)"  user-picker-edit-toggle>+</button>
                                         <div class="project-picker userPickerSection">
                                             <div style="width: 300px;">
                                                 <div style="width: 300px;">
@@ -450,7 +455,7 @@
                     </table>
 
                     <div class="add-sub-task"  ng-class="vm.subTaskOpen ? 'on' : ''">
-                        <input type="text" class="form-control" ng-model="vm.subTask.name" enter-submit="vm.subTaskSave()" placeholder=" 추가할 작업명을 입력하세요."/>
+                        <input type="text" class="form-control subTask-input" ng-model="vm.subTask.name" enter-submit="vm.subTaskSave()" placeholder=" 추가할 작업명을 입력하세요."/>
                     </div>
                 </div>
                 <!--<div class="related-task-area" ng-class="vm.relatedTaskOpen ? 'on' : ''"  style="border-top: 1px solid #ddd">-->

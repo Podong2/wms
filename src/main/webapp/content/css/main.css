@@ -1116,7 +1116,7 @@ tr.angular-ui-tree-empty {
     width: 100%;
     z-index: 10;
     right: 0px;
-    top: 13px;
+    top: 10px;
     cursor: pointer;
     text-align: left;
 }
@@ -2139,7 +2139,12 @@ i:active, .i:active, i:focus, .i:focus{
     margin-bottom: 0 !important;
     margin-top: 5px;
 }
-
+.sub-task-due-date {
+    top : 13px !important;
+}
+.sub-task-user-plus-btn{
+    height: 32px; float: left; margin: 7px 5px 4px;
+}
     /*<< comment css >>*/
     .comment-user-title{
         margin-top: 13px;

@@ -167,7 +167,7 @@
                     <col width="150px">
                     <col width="150px">
                     <col width="150px">
-                    <col width="145px">
+                    <col width="147px">
                 </colgroup>
                 <tbody>
                 <tr>
@@ -399,7 +399,7 @@
                                                         <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="subTaskEndDate" style="height: 30px; width: 100%; border : 0">
                                                     </label>
 
-                                                    <span class="dueDateValues" sub-task-picker-toggle ng-click="vm.setDatePickerInput(list)">{{list.endDate | date : 'MM-dd'}}</span>
+                                                    <span class="dueDateValues sub-task-due-date" sub-task-picker-toggle ng-click="vm.setDatePickerInput(list)">{{list.endDate | date : 'MM-dd'}}</span>
                                                 </span>
                                             </div>
                                             <div wms-Include="app/task/html/subTaskAddDatePicker.html"></div>
@@ -416,8 +416,7 @@
                                 <!-- 사용자 아이콘 -->
                                 <div class="sub-task-user-list">
                                     <!-- 사용자 검색 -->
-                                    <!--<span class="taskUserValueSection pull-left" ng-click="vm.updateSubTaskForm(list)" > <i class="fa fa-lg fa-plus" id="assigneeAddBtn"></i></span>-->
-                                    <button class="btn taskUserValueSection pull-left" id="assigneeAddBtn" style="height: 32px; float: left; margin: 7px 5px 4px;" ng-click="vm.updateSubTaskForm(list)"  user-picker-edit-toggle>+</button>
+                                    <button class="btn taskUserValueSection pull-left sub-task-user-plus-btn" id="assigneeAddBtn" ng-click="vm.updateSubTaskForm(list)"  user-picker-edit-toggle>+</button>
                                     <div class="project-picker userPickerSection">
                                         <div style="width: 300px;">
                                             <div style="width: 300px;">
