@@ -21,26 +21,24 @@
         <result property="attachedFileExistYn" column="attachedFileExistYn"/>
         <result property="templateYn" column="templateYn"/>
         <result property="importantYn" column="importantYn"/>
-        <result property="subTaskCount" column="subTaskCount"/>
-        <result property="relatedTaskCount" column="relatedTaskCount"/>
+        <result property="parentId" column="parentId"/>
+        <!--<result property="subTaskCount" column="subTaskCount"/>-->
+        <!--<result property="relatedTaskCount" column="relatedTaskCount"/>-->
+        <association property="parent" select="getParentTask" column="parentId" javaType="kr.wisestone.wms.web.rest.dto.TaskDTO" />
         <association property="taskRepeatSchedule" javaType="kr.wisestone.wms.web.rest.dto.TaskRepeatScheduleDTO">
             <result property="repeatType" column="repeatType"/>
         </association>
         <collection property="assignees" javaType="java.util.ArrayList" resultMap="assigneeUserResultMap"/>
+        <collection property="subTasks" select="getSubTasks" column="id" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.TaskDTO"/>
+        <collection property="relatedTasks" select="getRelatedTasks" column="id" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.TaskDTO"/>
     </resultMap>
 
-    <resultMap id="subTaskResultMap" type="kr.wisestone.wms.web.rest.dto.TaskDTO">
-        <id property="id" column="subTaskId" />
-        <result property="name" column="subTaskName"/>
-        <result property="statusId" column="subTaskStatusId"/>
-        <result property="statusName" column="subTaskStatusName"/>
-    </resultMap>
-
-    <resultMap id="relatedTaskResultMap" type="kr.wisestone.wms.web.rest.dto.TaskDTO">
-        <id property="id" column="relatedTaskId" />
-        <result property="name" column="relatedTaskName"/>
-        <result property="statusId" column="relatedTaskStatusId"/>
-        <result property="statusName" column="relatedTaskStatusName"/>
+    <resultMap id="linkedTaskResultMap" type="kr.wisestone.wms.web.rest.dto.TaskDTO">
+        <id property="id" column="id" />
+        <result property="name" column="name"/>
+        <result property="statusId" column="statusId"/>
+        <result property="statusName" column="statusName"/>
+        <collection property="assignees" javaType="java.util.ArrayList" resultMap="assigneeUserResultMap"/>
     </resultMap>
 
     <resultMap id="assigneeUserResultMap" type="kr.wisestone.wms.web.rest.dto.UserDTO">
@@ -88,6 +86,40 @@
         </choose>
     </sql>
 
+    <select id="getSubTasks" resultMap="linkedTaskResultMap">
+        SELECT t.id as id, t.name as name
+            , tc.id as statusId, tc.name as statusName
+            , u.id as assigneeId, u.name as assigneeName
+        FROM owl_task t
+        LEFT JOIN owl_code tc ON t.status_id = tc.id
+        LEFT OUTER JOIN owl_task_user tu ON tu.task_id = t.id AND tu.user_type = 'ASSIGNEE'
+        LEFT JOIN owl_user u ON tu.user_id = u.id
+        WHERE t.parent_id = #{id}
+    </select>
+
+    <select id="getParentTask" resultMap="linkedTaskResultMap">
+        SELECT t.id as id, t.name as name
+            , tc.id as statusId, tc.name as statusName
+            , u.id as assigneeId, u.name as assigneeName
+        FROM owl_task t
+        LEFT JOIN owl_code tc ON t.status_id = tc.id
+        LEFT OUTER JOIN owl_task_user tu ON tu.task_id = t.id AND tu.user_type = 'ASSIGNEE'
+        LEFT JOIN owl_user u ON tu.user_id = u.id
+        WHERE t.id = #{parent_id}
+    </select>
+
+    <select id="getRelatedTasks" resultMap="linkedTaskResultMap">
+        SELECT t.id as id, t.name as name
+            , tc.id as statusId, tc.name as statusName
+            , u.id as assigneeId, u.name as assigneeName
+        FROM owl_task t
+        LEFT JOIN owl_code tc ON t.status_id = tc.id
+        LEFT OUTER JOIN owl_task_user tu ON tu.task_id = t.id AND tu.user_type = 'ASSIGNEE'
+        LEFT JOIN owl_user u ON tu.user_id = u.id
+        LEFT JOIN owl_related_task rt ON rt.related_task_id = t.id
+        WHERE rt.task_id = #{id}
+    </select>
+
     <select id="getTasks" resultType="java.util.ArrayList" resultMap="taskResultMap" parameterType="java.util.HashMap">
         SELECT t.id as id, t.name as name, t.start_date as startDate, t.end_date as endDate, tc.id as statusId, tc.name as statusName
             , CASE
@@ -111,9 +143,7 @@
                 WHEN tp.folder_yn = 'Y' THEN true
                 WHEN tp.folder_yn = 'N' THEN false
               END as projectFolderYn
-            , pt.id as parentTaskId, pt.name as parentTaskName, ptc.name as parentTaskStatusName, ptc.id as parentTaskStatusId
-            , (SELECT count(st.id) FROM owl_task st WHERE st.parent_id = t.id) as subTaskCount
-            , (SELECT count(rt.related_task_id) FROM owl_related_task rt WHERE rt.task_id = t.id) as relatedTaskCount
+            , t.parent_id as parentId
             , u.id as assigneeId, u.name as assigneeName, u.profile_image_id as assigneeProfileImageId
             , trs.repeat_type as repeatType
         FROM (
@@ -202,8 +232,6 @@
             LEFT JOIN owl_code tc ON t.status_id = tc.id
             LEFT OUTER JOIN owl_task_project tpr ON tpr.task_id = t.id
             LEFT JOIN owl_project tp ON tp.id = tpr.project_id
-            LEFT OUTER JOIN owl_task pt ON t.parent_id = pt.id
-            LEFT JOIN owl_code ptc ON pt.status_id = ptc.id
             LEFT OUTER JOIN owl_task_user tu ON tu.task_id = t.id AND tu.user_type = 'ASSIGNEE'
             LEFT JOIN owl_user u ON tu.user_id = u.id
             LEFT OUTER JOIN owl_task_repeat_schedule trs ON trs.task_id = t.id
@@ -228,7 +256,6 @@
             </when>
             <when test="listType == 'COMPLETE'">
                 WHERE it.status_id = 2
-                AND (created_by = #{userId}
             </when>
         </choose>
     </sql>

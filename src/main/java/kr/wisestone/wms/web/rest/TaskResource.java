@@ -286,7 +286,7 @@ public class TaskResource {
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/tasks/findByName",
+    @RequestMapping(value = "/tasks/findByCondition",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed

@@ -106,17 +106,17 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
             //}
 
             function onSuccess(data, headers) {
-                vm.tasks=[]; vm.delayed=[]; vm.scheduledToday=[]; vm.registeredToday=[]; vm.inProgress=[]; vm.noneScheduled=[]; vm.myTask=[]; vm.requestTask=[]; vm.watchedTask=[];
+                vm.tasks=[];
 
                 angular.forEach(data, function(task){
-                    if(task.statusGroup == "DELAYED") vm.delayed.push(task);
-                    if(task.statusGroup == "SCHEDULED_TODAY") vm.scheduledToday.push(task);
-                    if(task.statusGroup == "REGISTERED_TODAY") vm.registeredToday.push(task);
-                    if(task.statusGroup == "IN_PROGRESS") vm.inProgress.push(task);
-                    if(task.statusGroup == "NONE_SCHEDULED") vm.noneScheduled.push(task);
-                    if(task.statusGroup == "MY_TASK") vm.myTask.push(task);
-                    if(task.statusGroup == "REQUEST_TASK") vm.requestTask.push(task);
-                    if(task.statusGroup == "WATCHED_TASK") vm.watchedTask.push(task);
+                    // if(task.statusGroup == "DELAYED") vm.delayed.push(task);
+                    // if(task.statusGroup == "SCHEDULED_TODAY") vm.scheduledToday.push(task);
+                    // if(task.statusGroup == "REGISTERED_TODAY") vm.registeredToday.push(task);
+                    // if(task.statusGroup == "IN_PROGRESS") vm.inProgress.push(task);
+                    // if(task.statusGroup == "NONE_SCHEDULED") vm.noneScheduled.push(task);
+                    // if(task.statusGroup == "MY_TASK") vm.myTask.push(task);
+                    // if(task.statusGroup == "REQUEST_TASK") vm.requestTask.push(task);
+                    // if(task.statusGroup == "WATCHED_TASK") vm.watchedTask.push(task);
                     vm.tasks.push(task);
                 });
                 $log.debug('작업 목록 : ', vm.tasks);
