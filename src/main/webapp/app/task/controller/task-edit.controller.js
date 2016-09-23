@@ -817,7 +817,9 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 }else{
                     vm.DuplicationWatcherIds.push(watcher.id);
                     $scope.watchers.push(watcher);
+                    $scope.pickerFindWatcher('');
                 }
+
             }
 
             // 참조자 데이터 제거

@@ -3474,7 +3474,7 @@
         msgImageHeightLarge: 'Height of image file "{name}" cannot exceed {size} px.',
         msgImageResizeError: 'Could not get the image dimensions to resize.',
         msgImageResizeException: 'Error while resizing the image.<pre>{errors}</pre>',
-        dropZoneTitle: 'Drag & drop files here &hellip;',
+        dropZoneTitle: '마우스로 원하는 파일을 넣어주세요 &hellip;',
         dropZoneClickTitle: '<br>(or click to select {files})',
         previewZoomButtonTitles: {
             prev: 'View previous file',

@@ -2057,7 +2057,22 @@ i:active, .i:active, i:focus, .i:focus{
 }
 
 .task-list-title{
-    float:left; padding: 13px; margin-right: 10px
+    float:left;
+    padding: 13px;
+    margin-right: 10px;
+    max-width: 520px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.task-detail-list-title{
+    float:left;
+    padding: 13px;
+    margin-right: 10px;
+    max-width: 50%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 
 .sub-task-area-popup{
@@ -2640,21 +2655,22 @@ text-align: right;
     float: left;
     margin-left: 5px;
     margin-top: 0px;
+    text-align: left;
 }
 
 .right-panel span:first-child {
-    font-size: 13px;
+    font-size: 14px;
 }
 
 .right-panel span:nth-child(2) {
     font-size: 14px;
-    color: gray;
+    /*color: gray;*/
 }
 
 .right-panel span:last-child {
     display: block;
     font-size: 14px;
-    font-style: italic;
+    /*font-style: italic;*/
 }
 .tag-template .left-panel {
     float: left;

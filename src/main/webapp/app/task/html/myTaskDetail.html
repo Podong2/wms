@@ -395,9 +395,9 @@
                                     </span>
 
                                     <!-- 제목 영역 -->
-                                    <div class="task-list-title">
+                                    <div class="task-detail-list-title">
                                         <input type="checkbox"/>
-                                        <span class="cursor" ui-sref="my-task.detail({id : list.id, listType : vm.listType})">{{list.name}}</span>
+                                        <span class="cursor" ui-sref="my-task.detail({id : list.id, listType : vm.listType})" uib-tooltip="{{list.name}}" tooltip-placement="top-left">{{list.name}}</span>
 
                                     </div>
 
@@ -435,18 +435,18 @@
                                         </div>
 
                                         <ul class="list-inline friends-list" style="margin-bottom: 0; text-align: left;">
-                                            <li ng-repeat="user in list.assignees" style="position: relative">
+                                            <li ng-repeat="user in list.assignees | limitTo:3" style="position: relative">
                                                 <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
                                                 <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
                                                 <span class="profile-close-btn cursor" ng-click="vm.subTaskUserRemove(user.id, list)"><i class="fa fa-close"></i></span>
                                             </li>
-                                            <!--<li ng-if="list.assignees.length > 3">-->
-                                            <!--<a href-void>-->
-                                            <!--<span class="activity">-->
-                                            <!--<a><i class="fa fa-plus" style="font-size: 22px; position: relative; top: 5px;"></i><b class="badge bg-color-red" style="position: absolute;">{{list.assignees.length - 3}}</b></a>-->
-                                            <!--</span>-->
-                                            <!--</a>-->
-                                            <!--</li>-->
+                                            <li ng-if="list.assignees.length > 3">
+                                                <a href-void>
+                                                    <span class="activity">
+                                                        <a><i class="fa fa-plus" style="font-size: 22px; position: relative; top: 5px;"></i><b class="badge bg-color-red" style="position: absolute;">{{list.assignees.length - 3}}</b></a>
+                                                    </span>
+                                                </a>
+                                            </li>
                                         </ul>
                                     </div>
                                 </td>

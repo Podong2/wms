@@ -409,9 +409,10 @@
                                 <!-- 제목 영역 -->
                                 <div class="task-list-title">
                                     <!--<input type="checkbox"/>-->
-                                    <span class="cursor" ui-sref="my-task.detail({id : list.id, listType : vm.listType})">{{list.name}}</span>
+                                    <span class="cursor" ui-sref="my-task.detail({id : list.id, listType : vm.listType})" uib-tooltip="{{list.name}}" tooltip-placement="top-left">{{list.name}}</span>
 
                                 </div>
+
 
                                 <!-- 사용자 아이콘 -->
                                 <div class="sub-task-user-list">
