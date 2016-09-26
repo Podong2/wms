@@ -353,14 +353,14 @@ public class TaskService {
         if(taskCondition.getProjectId() != null)
             predicate.and($task.taskProjects.any().project.id.eq(taskCondition.getProjectId()));
 
-        if(StringUtils.hasText(taskCondition.getAssigneeName()) && !taskCondition.getAssigneeSelfYn()) {
+        if(StringUtils.hasText(taskCondition.getAssigneeName()) && (taskCondition.getAssigneeSelfYn() != null && !taskCondition.getAssigneeSelfYn())) {
             predicate.and($task.id.in(new JPASubQuery()
                 .from(QTaskUser.taskUser)
                 .where(QTaskUser.taskUser.user.name.containsIgnoreCase(taskCondition.getAssigneeName())
                     .and(QTaskUser.taskUser.userType.eq(UserType.ASSIGNEE)))
                 .list(QTaskUser.taskUser.task.id)));
 
-        } else if(taskCondition.getAssigneeSelfYn()) {
+        } else if(taskCondition.getAssigneeSelfYn() != null && taskCondition.getAssigneeSelfYn()) {
             predicate.and($task.id.in(new JPASubQuery()
                 .from(QTaskUser.taskUser)
                 .where(QTaskUser.taskUser.user.name.containsIgnoreCase(loginUser.getName())
@@ -368,7 +368,7 @@ public class TaskService {
                 .list(QTaskUser.taskUser.task.id)));
         }
 
-        if(taskCondition.getCreatedBySelfYn()) {
+        if(taskCondition.getCreatedBySelfYn() != null && taskCondition.getCreatedBySelfYn()) {
             predicate.and($task.createdBy.eq(loginUser.getLogin()));
         }
 
