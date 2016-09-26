@@ -247,8 +247,8 @@
 
                     <!-- 하위작업 영역 -->
                     <td>
-                        <label style="margin-bottom: 0px;" ng-if="!vm.task.privateYn" for="subTaskAdd" class="cursor" ng-click="vm.subTaskOpen = !vm.subTaskOpen" wms-sub-task-input-focus><i class="fa fa-outdent" id="subTaskAdd" > <span>하위 작업 {{vm.task.subTasks.length == 0 ? '추가' : vm.task.subTasks.length}}</span></i></label>
-                        <label style="margin-bottom: 0px;" ng-if="vm.task.privateYn" for="subTaskDisabled" disabled="disabled"><i class="fa fa-outdent" id="subTaskDisabled" > <span>하위 작업 {{vm.task.subTasks.length == 0 ? '추가' : vm.task.subTasks.length}}</span></i></label>
+                        <label style="margin-bottom: 0px;" ng-if="!vm.task.privateYn" for="subTaskAdd" class="cursor" ng-click="vm.subTaskOpen = !vm.subTaskOpen" wms-sub-task-input-focus><i class="fa fa-outdent" id="subTaskAdd" > <span>하위 작업 {{vm.task.subTasks.length == 0 ? '' : vm.task.subTasks.length}}</span></i></label>
+                        <label style="margin-bottom: 0px;" ng-if="vm.task.privateYn" for="subTaskDisabled" disabled="disabled"><i class="fa fa-outdent" id="subTaskDisabled" > <span>하위 작업 {{vm.task.subTasks.length == 0 ? '' : vm.task.subTasks.length}}</span></i></label>
                     </td>
 
                     <!-- 파일첨부 영역 -->
@@ -447,7 +447,7 @@
                                             <li ng-if="list.assignees.length > 3">
                                                 <a href-void>
                                                     <span class="activity">
-                                                        <a><i class="fa fa-plus" style="font-size: 22px; position: relative; top: 5px;"></i><b class="badge bg-color-red" style="position: absolute;">{{list.assignees.length - 3}}</b></a>
+                                                        <a class="position-relative"><i class="fa fa-plus user-profile-plus-btn"></i> <b class="badge bg-color-red user-count-icon">{{list.assignees.length - 3}}</b></a>
                                                     </span>
                                                 </a>
                                             </li>

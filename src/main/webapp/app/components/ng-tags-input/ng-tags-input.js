@@ -544,7 +544,8 @@ tagsInput.directive('tiTagItem', ["tiUtil", function(tiUtil) {
         template: '<ng-include src="$$template"></ng-include>',
         scope: {
             $scope: '=scope',
-            data: '='
+            data: '=',
+            tagList : "="
         },
         link: function(scope, element, attrs, tagsInputCtrl) {
             var tagsInput = tagsInputCtrl.registerTagItem(),
@@ -1240,10 +1241,10 @@ tagsInput.run(["$templateCache", function($templateCache) {
     "<div class=\"tags\" ng-class=\"{focused: hasFocus}\">" +
     "<ul class=\"tag-list\">" +
     "<li class=\"tag-item\" ng-repeat=\"tag in tagList.items track by track(tag)\" ng-class=\"getTagClass(tag, $index)\" ng-click=\"eventHandlers.tag.click(tag, $event)\" style='position: relative;'>" +
-    "<ti-tag-item scope=\"templateScope\" data=\"::tag\"></ti-tag-item>" +
+    "<ti-tag-item scope=\"templateScope\" data=\"::tag\" tag-list=\"::tagList.items\"></ti-tag-item>" +
     "</li>" +
     "</ul>" +
-    "<span class='user-picker-plus-area' ng-show='!projectYn' user-picker-btn-toggle><button class='btn user-picker-plus-btn' style='width: 30xp; height: 30px; float: left; margin: 0 5px;'>+</button>" +
+    "<span class='user-picker-plus-area' ng-show='!projectYn' user-picker-btn-toggle><button class='btn user-picker-plus-btn sub-task-user-plus-btn' style='margin: 2px 2px 0px;'>+</button>" +
     "<input class=\"input user-picker-input user-picker-input-area\" ng-show='!projectYn' wms-kr-update autocomplete=\"off\" ng-model=\"newTag.text\" ng-model-options=\"{getterSetter: true}\" ng-keydown=\"eventHandlers.input.keydown($event)\" ng-focus=\"eventHandlers.input.focus($event)\" ng-blur=\"eventHandlers.input.blur($event)\" ng-paste=\"eventHandlers.input.paste($event)\" ng-trim=\"false\" ng-class=\"{'invalid-tag': newTag.invalid}\" ng-disabled=\"disabled\" ti-bind-attrs=\"{type: options.type, placeholder: options.placeholder, tabindex: options.tabindex, spellcheck: options.spellcheck}\" ti-autosize>" +
     "</span>" +
     "<input class=\"input user-picker-input\" style='border-bottom: 1px solid #ddd' ng-show='projectYn && tagList.items.length == 0' wms-kr-update autocomplete=\"off\" ng-model=\"newTag.text\" ng-model-options=\"{getterSetter: true}\" ng-keydown=\"eventHandlers.input.keydown($event)\" ng-focus=\"eventHandlers.input.focus($event)\" ng-blur=\"eventHandlers.input.blur($event)\" ng-paste=\"eventHandlers.input.paste($event)\" ng-trim=\"false\" ng-class=\"{'invalid-tag': newTag.invalid}\" ng-disabled=\"disabled\" ti-bind-attrs=\"{type: options.type, placeholder: options.placeholder, tabindex: options.tabindex, spellcheck: options.spellcheck}\">" +
@@ -1257,7 +1258,7 @@ tagsInput.run(["$templateCache", function($templateCache) {
     "<img ng-src='/api/attachedFile/{{data.profileImageId}}' ng-if='data.profileImageId !=null' /><img ng-src='/content/images/demo/male.png' ng-if='data.profileImageId ==null' />" +
     "</div>" +
     "<div class='right-panel'>" +
-    "<span>{{$getDisplayText()}}</span>" +
+    "<span>{{$getDisplayText()}}</span><!-- ng-show='tagList.length < 4'-->" +
     "<a class='remove-button' ng-click='$removeTag()'>&#10006;</a>" +
     "</div>" +
     "</div>"
@@ -1277,7 +1278,10 @@ tagsInput.run(["$templateCache", function($templateCache) {
   );
 
   $templateCache.put('ngTagsInput/auto-complete.html',
-    "<div class=\"autocomplete\" ng-if=\"suggestionList.visible\"><ul class=\"suggestion-list\"><li class=\"suggestion-item\" ng-repeat=\"item in suggestionList.items track by track(item)\" ng-class=\"getSuggestionClass(item, $index)\" ng-click=\"addSuggestionByIndex($index)\" ng-mouseenter=\"suggestionList.select($index)\"><ti-autocomplete-match scope=\"templateScope\" data=\"::item\"></ti-autocomplete-match></li></ul></div>"
+    "<div class=\"autocomplete\" ng-if=\"suggestionList.visible\">" +
+    "<ul class=\"suggestion-list\">" +
+    "<li class=\"suggestion-item\" ng-repeat=\"item in suggestionList.items track by track(item)\" ng-class=\"getSuggestionClass(item, $index)\" ng-click=\"addSuggestionByIndex($index)\" ng-mouseenter=\"suggestionList.select($index)\"><ti-autocomplete-match scope=\"templateScope\" data=\"::item\"></ti-autocomplete-match></li>" +
+    "</ul></div>"
   );
 
     // hsy 옵션 템플릿 영역 커스텀
