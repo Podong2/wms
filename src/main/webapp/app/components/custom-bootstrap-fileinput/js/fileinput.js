@@ -141,8 +141,8 @@
 
                 // hsy 파일 타입 수정
                 var contentType = config.contentType.split('/');
-                if(contentType[0] == 'image'){
-                    cat = 'image';
+                if(contentType[0] == 'image' || contentType[0] == 'pdf'){
+                    cat = contentType[0];
                 }else{
                     cat = 'generic';
                 }
@@ -319,11 +319,13 @@
         dragClass: 'text-info',
         dragTitle: 'Move / Rearrange',
         dragSettings: {},
-        indicatorNew: '<i class="glyphicon glyphicon-hand-down text-warning"></i>',
+        indicatorNew: '', // hsy 수정
+        //indicatorNew: '<i class="glyphicon glyphicon-hand-down text-warning"></i>',
         indicatorSuccess: '<i class="glyphicon glyphicon-ok-sign text-success"></i>',
         indicatorError: '<i class="glyphicon glyphicon-exclamation-sign text-danger"></i>',
         indicatorLoading: '<i class="glyphicon glyphicon-hand-up text-muted"></i>',
-        indicatorNewTitle: 'Not uploaded yet',
+        indicatorNewTitle: '', // hsy 수정
+        //indicatorNewTitle: 'Not uploaded yet',
         indicatorSuccessTitle: 'Uploaded',
         indicatorErrorTitle: 'Upload Error',
         indicatorLoadingTitle: 'Uploading ...'
@@ -1456,7 +1458,7 @@
                 });
             });
         },
-        _initDownLoadButton: function () {
+        _initDownLoadButton: function () { //hsy 다운로드
             var self = this;
             self.$preview.find('.kv-file-download').each(function () {
                 var $el = $(this);
@@ -1703,7 +1705,9 @@
             }
             return replaceTags(template, self.customLayoutTags);
         },
-        _getPreviewTemplate: function (t) {
+        _getPreviewTemplate: function (t) { // hsy 프리뷰 타입 수정
+            if(t == 'image' || t =='pdf') t=t;
+            else t= 'generic';
             var self = this,
                 template = ifSet(t, self.previewTemplates, defaultPreviewTemplates[t]);
             if (isEmpty(self.customPreviewTags)) {
@@ -2215,11 +2219,6 @@
                 var $el = $(this), $frame = $el.closest('.file-preview-frame'), hasError,
                     id = $frame.attr('id'), ind = $frame.attr('data-fileindex'), n, cap, status;
                 handler($el, 'click', function () {
-                    var taskId = $el.data('taskId');
-                    var projectId = $el.data('projectId');
-                    var attachedFileId = $el.data('attachedFileId');
-                    console.log(attachedFileId)
-
                     status = self._raise('filepreremove', [id, ind]);
                     if (status === false || !self._validateMinCount()) {
                         return false;

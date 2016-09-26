@@ -43,6 +43,7 @@
         vm.relatedTaskFormOpen = relatedTaskFormOpen;
         vm.relatedTaskPopupClose = relatedTaskPopupClose;
         vm.removeRelatedTask = removeRelatedTask;
+        vm.projectClose = projectClose;
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
 
@@ -122,6 +123,7 @@
         vm.watcherName = '';
         vm.relatedTaskName = '';
         vm.fileListYn = false;
+        vm.uploadType = ''; // 상세 업로드 타입 (참조자, 참조작업 시 리로드 안함)
         // 하위 작업 업데이트 파라미터
         vm.subTaskUpdateForm = {
             id : '',
@@ -763,7 +765,7 @@
             }).then(function (response) {
                 toastr.success('태스크 수정 완료', '태스크 수정 완료');
                 $rootScope.$broadcast('projectEditClose');
-                $rootScope.$broadcast('relatedTaskPopupClose');
+                //$rootScope.$broadcast('relatedTaskPopupClose');
                 $rootScope.$broadcast('taskReload', $stateParams.listType);
                 vm.task.removeAssigneeIds = "";
                 vm.task.removeWatcherIds = "";
@@ -775,8 +777,14 @@
                 vm.task.removeProjectIds = "";
                 vm.repeatClose(); // 반복설정 팝업 닫기
                 $scope.files = [];
-                //getTaskInfo();
-                $state.go("my-task.detail", {}, {reload : 'my-task.detail'});
+                if(vm.uploadType == '') {
+                    $state.go("my-task.detail", {}, {reload : 'my-task.detail'});
+                }
+                else {
+                    getTaskInfo();
+                    vm.uploadType = '';
+                }
+
             });
         }
 
@@ -809,34 +817,34 @@
                 vm.previewFileUrl.push(previewFile.url);
             });
             vm.responseData = _.clone(vm.previewFiles);
-            $("#input-4").fileinput({
-                uploadUrl : '/tasks/uploadFile',
-                task : vm.task,
-                type : 'task',
-                token : $scope.getToken(),
-                autoReplace: true,
-                showCaption: false,
-                showUpload: true,
-                showRemove: false,
-                uploadAsync: false,
-                overwriteInitial: false,
-                initialPreview: vm.previewFileUrl,
-                initialPreviewAsData: true, // defaults markup
-                initialPreviewFileType: 'image', // image is the default and can be overridden in config below
-                initialPreviewConfig: vm.previewFiles,
-                uploadExtraData: function (previewId, index) {
-                    var obj = {};
-                    $('.file-form').find('input').each(function() {
-                        var id = $(this).attr('id'), val = $(this).val();
-                        obj[id] = val;
-                    });
-                    return obj;
-                }
-            }).on('filesorted', function(e, params) {
-                console.log('File sorted params', params);
-            }).on('fileuploaded', function(e, params) {
-                console.log('File uploaded params', params);
-            });
+            //$("#input-4").fileinput({
+            //    uploadUrl : '/tasks/uploadFile',
+            //    task : vm.task,
+            //    type : 'task',
+            //    token : $scope.getToken(),
+            //    autoReplace: true,
+            //    showCaption: false,
+            //    showUpload: true,
+            //    showRemove: false,
+            //    uploadAsync: false,
+            //    overwriteInitial: false,
+            //    initialPreview: vm.previewFileUrl,
+            //    initialPreviewAsData: true, // defaults markup
+            //    initialPreviewFileType: 'image', // image is the default and can be overridden in config below
+            //    initialPreviewConfig: vm.previewFiles,
+            //    uploadExtraData: function (previewId, index) {
+            //        var obj = {};
+            //        $('.file-form').find('input').each(function() {
+            //            var id = $(this).attr('id'), val = $(this).val();
+            //            obj[id] = val;
+            //        });
+            //        return obj;
+            //    }
+            //}).on('filesorted', function(e, params) {
+            //    console.log('File sorted params', params);
+            //}).on('fileuploaded', function(e, params) {
+            //    console.log('File uploaded params', params);
+            //});
 
 
             getTaskAudigLog();
@@ -1050,9 +1058,13 @@
         function repeatClose(){
             $rootScope.$broadcast('repeatClose');
         }
-        // 반복설정 팝업 닫기
+        // 하위 작업 팝업 닫기
         function subTaskClose(){
             $rootScope.$broadcast('subTaskClose');
+        }
+        // 프로젝트 팝업 닫기
+        function projectClose(){
+            $rootScope.$broadcast('projectEditClose');
         }
 
         // 작업 본문 복원 팝업 오픈
@@ -1116,21 +1128,36 @@
                 $log.debug("중복")
             }else{
                 //vm.DuplicationWatcherIds.push(watcher.id);
+                vm.uploadType = 'watcher';
                 vm.task.watchers.push(watcher);
-                $rootScope.$broadcast('watcherPopupClose');
+                $scope.pickerFindWatcher('');
+                //$rootScope.$broadcast('watcherPopupClose');
             }
         }
 
         // 참조자 데이터 제거
         function removeWatcher(watcher){
-            $rootScope.$broadcast('watcherPopupClose');
+            //$rootScope.$broadcast('watcherPopupClose');
+            vm.uploadType = 'watcher';
             vm.task.removeWatcherIds = watcher.id;
+            $scope.pickerFindWatcher('');
             taskUpload();
         }
 
         // 참조작업 데이터 제거
         function removeRelatedTask(task){
             vm.task.removeRelatedTaskIds = task.id;
+            var index = vm.DuplicationRelatedTaskIds.indexOf(task.id);
+            if(index > -1){
+                vm.DuplicationRelatedTaskIds.splice(index, 1);
+                vm.task.relatedTasks.splice(index, 1);
+            }
+            var checked = $scope.checkedTaskIds.indexOf(task.id);
+            if(index > -1){
+                $scope.checkedTaskIds.splice(checked, 1);
+                $scope.checkedTask.splice(checked, 1);
+            }
+            vm.uploadType = 'relatedTask';
             taskUpload();
         }
 
@@ -1149,6 +1176,7 @@
 
         function addRelatedTask(){
             var checkList = _.clone($scope.checkedTask);
+            vm.uploadType = 'relatedTask';
             vm.task.relatedTasks = checkList;
             vm.DuplicationRelatedTaskIds = [];
             angular.forEach(vm.task.relatedTasks, function(value){
