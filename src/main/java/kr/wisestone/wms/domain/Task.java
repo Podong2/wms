@@ -273,7 +273,7 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
         return this;
     }
 
-    public Task addTaskProject(Project project) {
+    public Task updateTaskProject(Project project) {
 
         this.clearTaskProject();
 
