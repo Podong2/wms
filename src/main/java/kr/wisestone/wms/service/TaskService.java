@@ -319,7 +319,7 @@ public class TaskService {
 
         List<User> notificationTargets = origin.getTaskUsers().stream().map(TaskUser::getUser).collect(Collectors.toList());
 
-        notificationService.sendIssueCreatedNotification(this.findOneDTO(origin.getId()), notificationTargets, "04");
+        notificationService.sendIssueCreatedNotification(result, notificationTargets, "04");
 
         return result;
     }
