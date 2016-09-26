@@ -173,8 +173,10 @@ function projectPickerEditToggle($timeout, $rootScope) {
                 }
             });
             $rootScope.$on('projectEditClose', function(){
-                $('.projectPickerSection').removeClass("on");
-                $('.projectValueSection').removeClass("on");
+                $timeout(function () {
+                    $('.projectPickerSection').removeClass("on");
+                    $('.projectValueSection').removeClass("on");
+                }, 100);
             });
             element.on('click', function(_this) {
                 $timeout(function () {
@@ -317,10 +319,13 @@ function watcherInfoBtnToggle($rootScope, $timeout) {
                     if ($($elements).has(e.target).length) {
                         $elements.addClass("on");
                     }else{
+                        var closeYnElement = e.target.getAttribute("class");
                         $timeout(function () {
                             if (!$('.watcher-item').has(e.target).length) {
                                 $($elements).removeClass("on");
                                 closeYn = false;
+                            }else if(closeYnElement != null && closeYnElement.indexOf("close") > -1){
+                                $($elements).removeClass("on");
                             }else{
                                 $elements.addClass("on");
                             }
@@ -336,7 +341,7 @@ function watcherInfoBtnToggle($rootScope, $timeout) {
 }
 
 /**
- * 참조자 팝업 토글
+ * 참조작업 팝업 토글
  * @param $timeout
  * @returns {{restrict: string, link: link}}
  */

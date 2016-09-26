@@ -1841,8 +1841,12 @@ i:active, .i:active, i:focus, .i:focus{
 }
 .project-picker .project-picker-search{
     position: relative;
-    padding: 16px 16px 8px 16px;
+    /*padding: 16px 16px 8px 16px;*/
     z-index: 2;
+}
+.project-picker .project-picker-search input {
+    border-right: 0 !important;
+    border-left: 0 !important;
 }
 .project-picker .project-picker-search .project-picker-search-input{
     outline: none;
@@ -1865,15 +1869,15 @@ i:active, .i:active, i:focus, .i:focus{
     display: block;
     overflow: auto;
     box-sizing: border-box;
-    padding-bottom: 24px;
+    /*padding-bottom: 24px;*/
     max-height: 280px;
     position: relative;
-    padding-top: 5px;
+    /*padding-top: 5px;*/
 }
 .project-picker .project-picker-list-area .project-picker-list .project-picker-list-item{
     border-left: 4px solid transparent;
     display: block;
-    padding: 6px 16px;
+    padding: 6px 6px;
     height: 48px;
     box-sizing: border-box;
     cursor: pointer;
