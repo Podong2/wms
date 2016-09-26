@@ -105,12 +105,16 @@
         <id property="id" column="assigneeId" />
         <result property="name" column="assigneeName"/>
         <result property="profileImageId" column="assigneeProfileImageId"/>
+        <result property="phone" column="assigneePhone"/>
+        <result property="email" column="assigneeEmail"/>
     </resultMap>
 
     <resultMap id="userResultMap" type="kr.wisestone.wms.web.rest.dto.UserDTO">
         <id property="id" column="id" />
         <result property="name" column="name"/>
         <result property="profileImageId" column="profileImageId"/>
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
     </resultMap>
 
     <resultMap id="projectResultMap" type="kr.wisestone.wms.web.rest.dto.ProjectDTO">
@@ -155,7 +159,8 @@
     <select id="getSubTasks" resultMap="linkedTaskResultMap">
         SELECT t.id as id, t.name as name
             , tc.id as statusId, tc.name as statusName
-            , u.id as assigneeId, u.name as assigneeName
+            , u.id as assigneeId, u.name as assigneeName, u.profile_image_id as assigneeProfileImageId
+            , u.phone as assigneePhone, u.email as assigneeEmail
             , t.created_by as createdBy, t.created_date as createdDate
             , t.last_modified_by as lastModifiedBy, t.last_modified_date as lastModifiedDate
         FROM owl_task t
@@ -168,7 +173,8 @@
     <select id="getParentTask" resultMap="linkedTaskResultMap">
         SELECT t.id as id, t.name as name
             , tc.id as statusId, tc.name as statusName
-            , u.id as assigneeId, u.name as assigneeName
+            , u.id as assigneeId, u.name as assigneeName, u.profile_image_id as assigneeProfileImageId
+            , u.phone as assigneePhone, u.email as assigneeEmail
             , t.created_by as createdBy, t.created_date as createdDate
             , t.last_modified_by as lastModifiedBy, t.last_modified_date as lastModifiedDate
         FROM owl_task t
@@ -181,7 +187,8 @@
     <select id="getRelatedTasks" resultMap="linkedTaskResultMap">
         SELECT t.id as id, t.name as name
             , tc.id as statusId, tc.name as statusName
-            , u.id as assigneeId, u.name as assigneeName
+            , u.id as assigneeId, u.name as assigneeName, u.profile_image_id as assigneeProfileImageId
+            , u.phone as assigneePhone, u.email as assigneeEmail
             , t.created_by as createdBy, t.created_date as createdDate
             , t.last_modified_by as lastModifiedBy, t.last_modified_date as lastModifiedDate
         FROM owl_task t
@@ -200,7 +207,7 @@
     </select>
 
     <select id="getTaskAssignees" resultMap="userResultMap">
-        SELECT u.id as id, u.name as name, u.profile_image_id as profileImageId
+        SELECT u.id as id, u.name as name, u.profile_image_id as profileImageId, u.phone as phone, u.email as email
             , u.created_by as createdBy, u.created_date as createdDate
             , u.last_modified_by as lastModifiedBy, u.last_modified_date as lastModifiedDate
         FROM owl_user u
@@ -208,7 +215,7 @@
     </select>
 
     <select id="getTaskWatchers" resultMap="userResultMap">
-        SELECT u.id as id, u.name as name, u.profile_image_id as profileImageId
+        SELECT u.id as id, u.name as name, u.profile_image_id as profileImageId, u.phone as phone, u.email as email
             , u.created_by as createdBy, u.created_date as createdDate
             , u.last_modified_by as lastModifiedBy, u.last_modified_date as lastModifiedDate
         FROM owl_user u
