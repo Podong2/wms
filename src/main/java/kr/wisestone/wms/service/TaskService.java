@@ -79,7 +79,7 @@ public class TaskService {
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<TaskDTO> findAll(TaskCondition taskCondition) {
+    public List<TaskDTO> findAll(TaskCondition taskCondition, Pageable pageable) {
         log.debug("Request to get all Tasks by condition");
 
         User loginUser = SecurityUtils.getCurrentUser();
@@ -88,6 +88,8 @@ public class TaskService {
         condition.put("userId", loginUser.getLogin());
         condition.put("listType", taskCondition.getListType());
         condition.put("filterType", taskCondition.getFilterType());
+        condition.put("offset", pageable.getOffset());
+        condition.put("limit", pageable.getPageSize());
 
         List<TaskDTO> taskDTOs = taskDAO.getTasks(condition);
 
@@ -342,6 +344,8 @@ public class TaskService {
 
         TaskDTO result = taskMapper.taskToTaskDTO(origin);
 
+        this.copyTaskRelationProperties(origin, result);
+
         List<User> notificationTargets = origin.getTaskUsers().stream().map(TaskUser::getUser).collect(Collectors.toList());
 
         notificationService.sendIssueCreatedNotification(result, notificationTargets, "04");
@@ -352,11 +356,13 @@ public class TaskService {
     @Transactional
     public TaskDTO createSubTask(TaskForm taskForm) {
 
-        Task subTask = taskForm.bindSubTask(new Task());
         Task parentTask = taskRepository.findOne(taskForm.getParentId());
-        parentTask.setLastModifiedDate(ZonedDateTime.now());
+
+        Task subTask = taskForm.bindSubTask(parentTask);
 
         subTask = taskRepository.save(subTask);
+
+        parentTask.setLastModifiedDate(ZonedDateTime.now());
         taskRepository.save(parentTask);
 
         TaskDTO result = taskMapper.taskToTaskDTO(subTask);
