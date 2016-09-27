@@ -2063,7 +2063,7 @@ i:active, .i:active, i:focus, .i:focus{
 
 .task-list-title{
     float:left;
-    padding: 13px;
+    padding: 3px;
     margin-right: 10px;
     max-width: 520px;
     overflow: hidden;
@@ -2164,13 +2164,18 @@ i:active, .i:active, i:focus, .i:focus{
 }
 .sub-task-user-list .friends-list li{
     margin-bottom: 0 !important;
-    margin-top: 5px;
+    margin-top: 8px;
 }
 .sub-task-due-date {
     top : 13px !important;
 }
 .sub-task-user-plus-btn{
-    height: 32px; float: left; margin: 7px 5px 4px;
+    height: 27px;
+    float: left;
+    margin: 7px 5px 4px;
+    width: 27px;
+    padding: 4px;
+    box-shadow: none !important;
 }
     /*<< comment css >>*/
     .comment-user-title{
@@ -2178,7 +2183,7 @@ i:active, .i:active, i:focus, .i:focus{
     }
     .comment-user-profile{
         position: relative;
-        bottom: 10px;
+        bottom: 5px;
         margin: 0 2px;
     }
     .comment-user-recent{
@@ -2671,7 +2676,7 @@ text-align: right;
 }
 
 .right-panel span:first-child {
-    font-size: 14px;
+    font-size: 13px;
 }
 
 .right-panel span:nth-child(2) {
@@ -2772,7 +2777,7 @@ text-align: right;
     background: #a90329;
     padding: 0px 4px;
     border-radius: 50%;
-    left: 25px;
+    left: 14px;
 }
 .user-picker-info{
     position: absolute;
@@ -2956,6 +2961,23 @@ text-align: right;
 }
 .task-name-validate{
     border-bottom-color: #FF7F7F;
+}
+.modal-close-btn{
+    margin-top: -13px;
+    font-size: 49px;
+    font-weight: 100;
+    height: 40px;
+    margin-left: 3px;
+}
+.user-profile-plus-btn{
+    font-size: 18px;
+    position: relative;
+    top: 5px;
+}
+.user-count-icon{
+    position: absolute;
+    left: 10px;
+    bottom: 5px;
 }
 
 

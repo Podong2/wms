@@ -35,7 +35,7 @@
                                       ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
                                     <div class="pull-right">
                                         <div>
-                                            <i class="fa fa-hourglass-end" style="float: left; padding: 8px; color:red;" ng-if="data.delayYn"></i>
+                                            <i class="fa fa-hourglass-end" style="float: left; padding: 6px; color:red;" ng-if="data.delayYn"></i>
                                             <i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i>
                                             {{data.endDate}}
                                         </div>
@@ -50,13 +50,13 @@
                                     </div>
                                     <ul class="list-inline friends-list" style="margin-bottom: 0">
                                         <li ng-repeat="user in data.assignees | limitTo:3">
-                                            <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
-                                            <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
+                                            <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}" style="margin-right: 0">
+                                            <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}" style="margin-right: 0">
                                         </li>
                                         <li ng-if="data.assignees.length > 3">
                                             <a href-void>
                                                     <span class="activity">
-                                                        <a><i class="fa fa-plus" style="font-size: 22px; position: relative; top: 5px;"></i> <b class="badge bg-color-red">{{data.assignees.length - 3}}</b></a>
+                                                        <a class="position-relative"><i class="fa fa-plus user-profile-plus-btn"></i> <b class="badge bg-color-red user-count-icon">{{data.assignees.length - 3}}</b></a>
                                                     </span>
                                             </a>
                                         </li>
