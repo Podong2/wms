@@ -1519,7 +1519,6 @@
                         extraData = extraData();
                     }
                     params = {id: $el.attr('id'), key: vKey, extra: extraData};
-                    console.log(123123123123)
                     settings = $.extend(true, {}, {
                         headers: {
                             Accept: "application/json; text/plain; */*"

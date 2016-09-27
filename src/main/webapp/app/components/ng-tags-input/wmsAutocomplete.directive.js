@@ -22,7 +22,8 @@ function autocomplete($document, $log, $compile, findUser, $q) {
             placeholder : '@',
             tagType: '@',
             templateUrl: '@',
-            projectYn : '@'
+            projectYn : '@',
+            modifyYn : '@'
         },
         replace: false,
         templateUrl : 'app/components/ng-tags-input/tagsInput.html',

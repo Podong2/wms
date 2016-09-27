@@ -1418,6 +1418,9 @@ table th {
 .detail-content {
     padding: 10px;
 }
+.detail-content-disabled {
+    padding: 10px;
+}
 .editingSection, .elementSection.on{
     display: none;
 }
@@ -2096,7 +2099,8 @@ i:active, .i:active, i:focus, .i:focus{
     right: 0;
     box-shadow: 0 3px 10px rgba(0, 0, 0, .3);
     border-radius: 3px;
-    padding: 10px;
+    z-index: 100;
+    text-align: left;
 }
 .sub-task-area-popup .task-popup-body{
     overflow: hidden;
@@ -2115,8 +2119,9 @@ i:active, .i:active, i:focus, .i:focus{
 .sub-task-area-popup ul {
     list-style: none;
     padding: 0;
+
 }
-.sub-task-area-popup ul li {
+.sub-task-area-popup ul .task-list {
     border-top: 1px solid #ddd;
     padding: 5px;
 
@@ -2164,7 +2169,7 @@ i:active, .i:active, i:focus, .i:focus{
 }
 .sub-task-user-list .friends-list li{
     margin-bottom: 0 !important;
-    margin-top: 8px;
+    margin-top: 12px;
 }
 .sub-task-due-date {
     top : 13px !important;
@@ -2172,7 +2177,7 @@ i:active, .i:active, i:focus, .i:focus{
 .sub-task-user-plus-btn{
     height: 27px;
     float: left;
-    margin: 7px 5px 4px;
+    margin: 11px 5px 4px;
     width: 27px;
     padding: 4px;
     box-shadow: none !important;
@@ -2778,6 +2783,7 @@ text-align: right;
     padding: 0px 4px;
     border-radius: 50%;
     left: 14px;
+    display: none;
 }
 .user-picker-info{
     position: absolute;
@@ -2839,7 +2845,7 @@ text-align: right;
 .watcher-popup-area{
     position: absolute;
     width: 280px;
-    min-height: 210px;
+    max-height: 240px;
     top: 100%;
     background-color: #fff;
     border-radius: 3px;
@@ -2934,6 +2940,7 @@ text-align: right;
     padding: 0px 4px;
     border-radius: 50%;
     right: -5px;
+    display: none;
 }
 .relatedTask-list-item{
 
@@ -2979,12 +2986,25 @@ text-align: right;
     left: 10px;
     bottom: 5px;
 }
-
-
-
-
-
-
+.sub-task-popup-title{
+    width: 154px;
+    padding: 0 5px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.disabled-color{
+   color : #999;
+}
+.disabled-calender{
+    cursor: inherit !important;
+    width: 85px !important;
+    left: 0;
+}
+.disabled-task-title{
+    font-size: 17px;
+    margin-top: 3px;
+}
 
 
 

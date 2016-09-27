@@ -1,14 +1,24 @@
 <div>
-    <div class="task-popup-body parentBody">
-        <ul>
-            <li>
-                <a ui-sref="my-task.detail({id : data.parent.id, listType : vm.listType,taskId : data.parent.id})">{{data.parent.name}}</a>
+    <div class="task-popup-body">
+        <ul class="margin-bottom-0">
+            <li class="task-list" ng-class="data.parent.statusId == 1 ? 'blue' : (data.parent.statusId == 2 ? 'green' : (data.parent.statusId == 3 ? 'black' : 'red'))">
+                <div class="sub-task-popup-title" ng-class="data.parent.assignees.length > 0 ? 'task-list-title' : ''" style="line-height: 25px;">
+                    <a ui-sref="my-task.detail({id : data.parent.id, listType : vm.listType,taskId : data.parent.id})" >{{data.parent.name}}</a><!-- uib-tooltip="{{data.parent.name}}" tooltip-placement="top-left" -->
+                </div>
+                <ul class="list-inline friends-list text-right margin-right-10" style="margin-bottom: 0">
+                    <li ng-repeat="user in data.parent.assignees | limitTo:3">
+                        <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}" style="margin-right: 0">
+                        <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}" style="margin-right: 0">
+                    </li>
+                    <li ng-if="data.parent.assignees.length > 3">
+                        <a href-void>
+                            <span class="activity">
+                                <a class="position-relative"><i class="fa fa-plus user-profile-plus-btn"></i> <b class="badge bg-color-red user-count-icon">{{data.parent.assignees.length - 3}}</b></a>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
             </li>
         </ul>
-    </div>
-    <div class="task-popup-bottom">
-        <div style="text-align: right">
-            <button type="button" class="btn btn_icon btn_customs2" ng-click="vm.taskPopup = false">닫기</button>
-        </div>
     </div>
 </div>

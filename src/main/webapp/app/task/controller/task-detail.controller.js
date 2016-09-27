@@ -211,11 +211,12 @@
                 type : 'task',
                 token : $scope.getToken(),
                 autoReplace: true,
-                showCaption: false,
-                showUpload: true,
-                showRemove: false,
+                showCaption: false, // 캡션 노출
+                showUpload: true,  // 업로드 버튼 노출
+                showRemove: false, // 삭제 버튼 노출
                 uploadAsync: false,
-                overwriteInitial: false,
+                overwriteInitial: true,
+                dropZoneEnabled: vm.task.modifyYn, // 드래그 드랍 유무
                 initialPreview: vm.previewFileUrl,
                 initialPreviewAsData: true, // defaults markup
                 initialPreviewFileType: 'image', // image is the default and can be overridden in config below
@@ -509,7 +510,7 @@
         });
 
 
-        $scope.$watchGroup(['vm.task.statusId', 'vm.task.importantYn'], function(newValue, oldValue){
+        $scope.$watchGroup(['vm.task.statusId', 'vm.task.importantYn', 'vm.task.privateYn'], function(newValue, oldValue){
             if(oldValue[0] != undefined && newValue[0] != undefined && newValue[1] != null&& oldValue != newValue) {
                 taskUpload();
             }

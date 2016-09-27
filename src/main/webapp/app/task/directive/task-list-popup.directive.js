@@ -20,12 +20,19 @@ function taskListPopup($timeout) {
                     }, 1000);
 
                 });
-
+                $('body').click(function (e) {
+                    if (!$(".sub-task-area-popup").has(e.target).length) {
+                        $('.sub-task-area-popup').removeClass('on');
+                    }
+                });
                 element.on('click', function (event) {
-                    var top = event.target.offsetTop - event.target.parentElement.parentElement.parentElement.parentElement.parentElement.parentElement.scrollTop;
-                    position.css('top', top+ 'px');
-                    $('.sub-task-area-popup').removeClass('on');
-                    $(event.target.children).addClass('on');
+
+                    $timeout(function () {
+                        var top = event.target.offsetTop - $(this).parents(".task-area").scrollTop() + 20;
+                        position.css('top', top+ 'px');
+                        $('.sub-task-area-popup').removeClass('on');
+                        $(event.target.children).addClass('on');
+                    }, 100);
                 });
             }
         }
