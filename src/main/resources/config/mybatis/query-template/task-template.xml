@@ -46,6 +46,7 @@
         <result property="endDate" column="endDate"/>
         <result property="templateYn" column="templateYn"/>
         <result property="importantYn" column="importantYn"/>
+        <result property="privateYn" column="privateYn"/>
         <result property="parentId" column="parentId"/>
         <result property="createdBy" column="createdBy"/>
         <result property="createdByName" column="createdByName"/>
