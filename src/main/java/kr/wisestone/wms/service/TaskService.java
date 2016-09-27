@@ -214,43 +214,6 @@ public class TaskService {
     }
 
     /**
-     *  Delete the task by ids.
-     *
-     *  @param ids the id list of the entity
-     */
-    @Transactional
-    public void delete(List<Long> ids) {
-
-        if(ids == null || ids.isEmpty())
-            throw new CommonRuntimeException("error.task.targetIdIsNull");
-
-        ids.stream().forEach(this::delete);
-    }
-
-    /**
-     *  Delete the  task by id.
-     *
-     *  @param id the id of the entity
-     */
-    @Transactional
-    public void delete(Long id) {
-
-        if(id == null)
-            throw new CommonRuntimeException("error.task.targetIdIsNull");
-
-        log.debug("Request to delete Task : {}", id);
-
-        Task targetTask = taskRepository.findOne(id);
-
-//        User user = userService.getUserWithAuthorities(targetTask.getAssignee().getId());
-//
-//        notificationService.sendIssueRemovedNotification(taskMapper.taskToTaskDTO(targetTask), Lists.newArrayList(user), "04");
-
-        taskRepository.delete(id);
-        taskSearchRepository.delete(id);
-    }
-
-    /**
      * Search for the task corresponding to the query.
      *
      *  @param query the query of the search
@@ -260,6 +223,44 @@ public class TaskService {
     public Page<Task> search(String query, Pageable pageable) {
         log.debug("Request to search for a page of Tasks for query {}", query);
         return taskSearchRepository.search(queryStringQuery(query), pageable);
+    }
+
+    @Transactional
+    public TaskDTO saveTask(TaskForm taskForm, List<TaskForm> subTasks, List<MultipartFile> files) {
+
+        Task origin = taskForm.bind(new Task());
+
+        if(taskForm.getStatusId() != null) {
+            origin.setStatus(this.codeRepository.findOne(taskForm.getStatusId()));
+        }
+
+        for(MultipartFile multipartFile : files) {
+
+            AttachedFile attachedFile = this.attachedFileService.saveFile(multipartFile);
+
+            origin.addAttachedFile(attachedFile);
+        }
+
+        origin = taskRepository.save(origin);
+
+        if(subTasks != null && !subTasks.isEmpty()) {
+
+            for(TaskForm subTaskForm : subTasks) {
+                Task subTask = subTaskForm.bindSubTask(origin);
+
+                taskRepository.save(subTask);
+            }
+        }
+
+        TaskDTO result = taskMapper.taskToTaskDTO(origin);
+
+        this.copyTaskRelationProperties(origin, result);
+
+        List<User> notificationTargets = origin.getTaskUsers().stream().map(TaskUser::getUser).collect(Collectors.toList());
+
+        notificationService.sendIssueCreatedNotification(result, notificationTargets, "04");
+
+        return result;
     }
 
     @Transactional
@@ -305,6 +306,43 @@ public class TaskService {
         return result;
     }
 
+    /**
+     *  Delete the task by ids.
+     *
+     *  @param ids the id list of the entity
+     */
+    @Transactional
+    public void delete(List<Long> ids) {
+
+        if(ids == null || ids.isEmpty())
+            throw new CommonRuntimeException("error.task.targetIdIsNull");
+
+        ids.stream().forEach(this::delete);
+    }
+
+    /**
+     *  Delete the  task by id.
+     *
+     *  @param id the id of the entity
+     */
+    @Transactional
+    public void delete(Long id) {
+
+        if(id == null)
+            throw new CommonRuntimeException("error.task.targetIdIsNull");
+
+        log.debug("Request to delete Task : {}", id);
+
+        Task targetTask = taskRepository.findOne(id);
+
+//        User user = userService.getUserWithAuthorities(targetTask.getAssignee().getId());
+//
+//        notificationService.sendIssueRemovedNotification(taskMapper.taskToTaskDTO(targetTask), Lists.newArrayList(user), "04");
+
+        taskRepository.delete(id);
+        taskSearchRepository.delete(id);
+    }
+
     @Transactional
     public Task updateLastModifiedDate(Long taskId) {
 
@@ -313,44 +351,6 @@ public class TaskService {
         origin.setLastModifiedDate(ZonedDateTime.now());
 
         return taskRepository.save(origin);
-    }
-
-    @Transactional
-    public TaskDTO saveTask(TaskForm taskForm, List<TaskForm> subTasks, List<MultipartFile> files) {
-
-        Task origin = taskForm.bind(new Task());
-
-        if(taskForm.getStatusId() != null) {
-            origin.setStatus(this.codeRepository.findOne(taskForm.getStatusId()));
-        }
-
-        for(MultipartFile multipartFile : files) {
-
-            AttachedFile attachedFile = this.attachedFileService.saveFile(multipartFile);
-
-            origin.addAttachedFile(attachedFile);
-        }
-
-        origin = taskRepository.save(origin);
-
-        if(subTasks != null && !subTasks.isEmpty()) {
-
-            for(TaskForm subTaskForm : subTasks) {
-                Task subTask = subTaskForm.bindSubTask(origin);
-
-                taskRepository.save(subTask);
-            }
-        }
-
-        TaskDTO result = taskMapper.taskToTaskDTO(origin);
-
-        this.copyTaskRelationProperties(origin, result);
-
-        List<User> notificationTargets = origin.getTaskUsers().stream().map(TaskUser::getUser).collect(Collectors.toList());
-
-        notificationService.sendIssueCreatedNotification(result, notificationTargets, "04");
-
-        return result;
     }
 
     @Transactional

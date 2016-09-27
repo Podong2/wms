@@ -1735,7 +1735,6 @@ i:active, .i:active, i:focus, .i:focus{
     border-radius: 2px;
     cursor: default !important;
     display: inline-block;
-    font-weight: 700;
     height: 30px;
     width: 100px;
     padding: 2px;
@@ -2068,6 +2067,8 @@ i:active, .i:active, i:focus, .i:focus{
     float:left;
     padding: 3px;
     margin-right: 10px;
+    margin-left: 7px;
+    margin-top: 10px;
     max-width: 520px;
     overflow: hidden;
     text-overflow: ellipsis;
