@@ -598,7 +598,15 @@
                                                 비활성
                                             </span>
                                         </span>
-                                        <span ng-if="data.entityField != 'importantYn'">
+                                        <span ng-if="data.entityField == 'privateYn'">
+                                            <span ng-if="data.newValue == 'true'">
+                                                공개
+                                            </span>
+                                            <span ng-if="data.newValue == 'false'">
+                                                비공개
+                                            </span>
+                                        </span>
+                                        <span ng-if="data.entityField != 'importantYn' && data.entityField != 'privateYn'">
                                             {{data.newValue}}
                                         </span>
                                     </span>

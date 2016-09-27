@@ -121,7 +121,8 @@
                 "taskRepeatSchedule": "Repeat Schedule",
                 "taskAttachedFiles": "AttachedFile",
                 "importantYn": "Important Check",
-                "reply" : "Reply"
+                "reply" : "Reply",
+                "privateYn" : "Private Check"
             },
             "project": {
                 "name": "Subject",

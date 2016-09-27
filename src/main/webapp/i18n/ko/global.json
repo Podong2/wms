@@ -120,7 +120,8 @@
                 "taskRepeatSchedule": "반복일정",
                 "taskAttachedFiles": "첨부파일",
                 "importantYn": "중요여부",
-                "reply" : "댓글"
+                "reply" : "댓글",
+                "privateYn" : "공개여부"
             },
             "project": {
                 "name": "제목",
