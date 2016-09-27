@@ -79,7 +79,7 @@ public class TaskService {
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public List<TaskDTO> findAll(TaskCondition taskCondition) {
+    public List<TaskDTO> findAll(TaskCondition taskCondition, Pageable pageable) {
         log.debug("Request to get all Tasks by condition");
 
         User loginUser = SecurityUtils.getCurrentUser();
@@ -88,6 +88,8 @@ public class TaskService {
         condition.put("userId", loginUser.getLogin());
         condition.put("listType", taskCondition.getListType());
         condition.put("filterType", taskCondition.getFilterType());
+        condition.put("offset", pageable.getOffset());
+        condition.put("limit", pageable.getPageSize());
 
         List<TaskDTO> taskDTOs = taskDAO.getTasks(condition);
 
