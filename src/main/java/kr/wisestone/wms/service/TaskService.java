@@ -344,6 +344,8 @@ public class TaskService {
 
         TaskDTO result = taskMapper.taskToTaskDTO(origin);
 
+        this.copyTaskRelationProperties(origin, result);
+
         List<User> notificationTargets = origin.getTaskUsers().stream().map(TaskUser::getUser).collect(Collectors.toList());
 
         notificationService.sendIssueCreatedNotification(result, notificationTargets, "04");
@@ -354,11 +356,13 @@ public class TaskService {
     @Transactional
     public TaskDTO createSubTask(TaskForm taskForm) {
 
-        Task subTask = taskForm.bindSubTask(new Task());
         Task parentTask = taskRepository.findOne(taskForm.getParentId());
-        parentTask.setLastModifiedDate(ZonedDateTime.now());
+
+        Task subTask = taskForm.bindSubTask(parentTask);
 
         subTask = taskRepository.save(subTask);
+
+        parentTask.setLastModifiedDate(ZonedDateTime.now());
         taskRepository.save(parentTask);
 
         TaskDTO result = taskMapper.taskToTaskDTO(subTask);
