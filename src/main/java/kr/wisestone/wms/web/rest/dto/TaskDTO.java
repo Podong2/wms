@@ -78,6 +78,8 @@ public class TaskDTO implements Serializable {
 
     private Boolean privateYn = Boolean.FALSE;
 
+    private Boolean modifyYn = Boolean.FALSE;
+
     public TaskDTO(Task task) {
         this.setId(task.getId());
         this.setName(task.getName());
@@ -352,6 +354,14 @@ public class TaskDTO implements Serializable {
 
     public void setParentId(Long parentId) {
         this.parentId = parentId;
+    }
+
+    public Boolean getModifyYn() {
+        return modifyYn;
+    }
+
+    public void setModifyYn(Boolean modifyYn) {
+        this.modifyYn = modifyYn;
     }
 
     @Override

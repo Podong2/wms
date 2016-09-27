@@ -168,7 +168,32 @@ public class TaskService {
     public TaskDTO findOneDTO(Long id) {
         log.debug("Request to get Task : {}", id);
 
+        User loginUser = SecurityUtils.getCurrentUser();
+
         TaskDTO taskDTO = taskDAO.getTask(id);
+
+        if(taskDTO.getCreatedBy().equals(loginUser.getLogin())) {
+            taskDTO.setModifyYn(Boolean.TRUE);
+        }
+
+        for(UserDTO assignee : taskDTO.getAssignees()) {
+            if(assignee.getLogin().equals(loginUser.getLogin())) {
+                taskDTO.setModifyYn(Boolean.TRUE);
+            }
+        }
+
+        for(TaskDTO subTask : taskDTO.getSubTasks()) {
+
+            if(subTask.getCreatedBy().equals(loginUser.getLogin())) {
+                subTask.setModifyYn(Boolean.TRUE);
+            }
+
+            for(UserDTO assignee : subTask.getAssignees()) {
+                if(assignee.getLogin().equals(loginUser.getLogin())) {
+                    subTask.setModifyYn(Boolean.TRUE);
+                }
+            }
+        }
 
         return taskDTO;
     }
