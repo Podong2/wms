@@ -339,7 +339,7 @@
             LEFT OUTER JOIN owl_task_user tu ON tu.task_id = t.id AND tu.user_type = 'ASSIGNEE'
             LEFT JOIN owl_user u ON tu.user_id = u.id
             LEFT OUTER JOIN owl_task_repeat_schedule trs ON trs.task_id = t.id
-            ORDER BY t.orderTarget DESC, t.end_date ASC, t.start_date ASC, it.name ASC
+            ORDER BY t.orderTarget DESC, t.end_date ASC, t.start_date ASC, t.name ASC
     </select>
 
     <select id="getTask" resultType="kr.wisestone.wms.web.rest.dto.TaskDTO" resultMap="taskDetailResultMap" parameterType="java.lang.Long">
