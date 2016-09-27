@@ -273,7 +273,7 @@
                                 )
                         )
                         <include refid="taskListFilterTypeQuery" />
-                        ORDER BY orderTarget DESC, it.end_date ASC, it.start_date ASC
+                        ORDER BY orderTarget DESC, it.end_date ASC, it.start_date ASC, it.name ASC
                     </when>
                     <when test="listType == 'SCHEDULED'">
                         SELECT
@@ -294,7 +294,7 @@
                                 )
                         )
                         <include refid="taskListFilterTypeQuery" />
-                        ORDER BY orderTarget DESC, it.start_date ASC, it.created_date ASC
+                        ORDER BY orderTarget DESC, it.start_date ASC, it.created_date ASC, it.name ASC
                     </when>
                     <when test="listType == 'HOLD'">
                         SELECT
@@ -311,7 +311,7 @@
                                 )
                         )
                         <include refid="taskListFilterTypeQuery" />
-                        ORDER BY orderTarget DESC, it.end_date ASC, it.start_date ASC
+                        ORDER BY orderTarget DESC, it.end_date ASC, it.start_date ASC, it.name ASC
                     </when>
                     <when test="listType == 'COMPLETE'">
                         SELECT
@@ -328,10 +328,10 @@
                                 )
                         )
                         <include refid="taskListFilterTypeQuery" />
-                        ORDER BY orderTarget DESC, it.end_date DESC
+                        ORDER BY orderTarget DESC, it.end_date DESC, it.name ASC
                     </when>
                 </choose>
-                OFFSET 0 LIMIT 10
+                <!--OFFSET 0 LIMIT 10-->
             ) t
             LEFT JOIN owl_code tc ON t.status_id = tc.id
             LEFT OUTER JOIN owl_task_project tpr ON tpr.task_id = t.id
@@ -339,7 +339,7 @@
             LEFT OUTER JOIN owl_task_user tu ON tu.task_id = t.id AND tu.user_type = 'ASSIGNEE'
             LEFT JOIN owl_user u ON tu.user_id = u.id
             LEFT OUTER JOIN owl_task_repeat_schedule trs ON trs.task_id = t.id
-            ORDER BY t.orderTarget DESC, t.end_date ASC, t.start_date ASC
+            ORDER BY t.orderTarget DESC, t.end_date ASC, t.start_date ASC, it.name ASC
     </select>
 
     <select id="getTask" resultType="kr.wisestone.wms.web.rest.dto.TaskDTO" resultMap="taskDetailResultMap" parameterType="java.lang.Long">
