@@ -2908,8 +2908,8 @@ text-align: right;
 }
 .relatedTask-search-list-area .relatedTask-search-element{
     border-top: 1px solid #ddd;
-    height:47px;
-    padding: 7px 3px;
+    height:27px;
+    padding-left: 5px;
 }
 .related-task-highlight{
     background: #FFEEDC !important;
@@ -2954,7 +2954,7 @@ text-align: right;
     font-size: 16px;
 }
 .related-task-item-list{
-    line-height: 33px;
+    line-height: 27px;
 }
 .relatedTask-list-item-title:hover{
     border-bottom: 1px solid #000;
