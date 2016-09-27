@@ -83,6 +83,8 @@
     <resultMap id="linkedTaskResultMap" type="kr.wisestone.wms.web.rest.dto.TaskDTO">
         <id property="id" column="id" />
         <result property="name" column="name"/>
+        <result property="startDate" column="startDate"/>
+        <result property="endDate" column="endDate"/>
         <result property="statusId" column="statusId"/>
         <result property="statusName" column="statusName"/>
         <result property="createdBy" column="createdBy"/>
@@ -126,7 +128,7 @@
     </resultMap>
 
     <select id="getSubTasks" resultMap="linkedTaskResultMap">
-        SELECT t.id as id, t.name as name
+        SELECT t.id as id, t.name as name, t.start_Date as startDate, t.end_date as endDate
             , tc.id as statusId, tc.name as statusName
             , u.id as assigneeId, u.name as assigneeName, u.profile_image_id as assigneeProfileImageId
             , u.phone as assigneePhone, u.email as assigneeEmail, u.login as assigneeLogin
@@ -140,7 +142,7 @@
     </select>
 
     <select id="getParentTask" resultMap="linkedTaskResultMap">
-        SELECT t.id as id, t.name as name
+        SELECT t.id as id, t.name as name, t.start_Date as startDate, t.end_date as endDate
             , tc.id as statusId, tc.name as statusName
             , u.id as assigneeId, u.name as assigneeName, u.profile_image_id as assigneeProfileImageId
             , u.phone as assigneePhone, u.email as assigneeEmail, u.login as assigneeLogin
@@ -154,7 +156,7 @@
     </select>
 
     <select id="getRelatedTasks" resultMap="linkedTaskResultMap">
-        SELECT t.id as id, t.name as name
+        SELECT t.id as id, t.name as name, t.start_Date as startDate, t.end_date as endDate
             , tc.id as statusId, tc.name as statusName
             , u.id as assigneeId, u.name as assigneeName, u.profile_image_id as assigneeProfileImageId
             , u.phone as assigneePhone, u.email as assigneeEmail, u.login as assigneeLogin
