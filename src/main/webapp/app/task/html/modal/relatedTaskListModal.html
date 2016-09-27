@@ -1,14 +1,24 @@
 <div>
     <div class="task-popup-body">
-        <ul>
-            <li ng-repeat="task in data.relatedTasks">
-                <a ui-sref="my-task.detail({id : task.id, listType : vm.listType,taskId : task.id})">{{task.name}}</a>
+        <ul class="margin-bottom-0">
+            <li ng-repeat="task in data.relatedTasks" class="task-list" ng-class="task.statusId == 1 ? 'blue' : (task.statusId == 2 ? 'green' : (task.statusId == 3 ? 'black' : 'red'))">
+                <div class="sub-task-popup-title" ng-class="data.assignees.length > 0 ? 'task-list-title' : ''" style="line-height: 25px;">
+                    <a ui-sref="my-task.detail({id : task.id, listType : vm.listType,taskId : task.id})" >{{task.name}}</a><!-- uib-tooltip="{{task.name}}" tooltip-placement="top-left" -->
+                </div>
+                <ul class="list-inline friends-list text-right margin-right-10" style="margin-bottom: 0">
+                    <li ng-repeat="user in task.assignees | limitTo:3">
+                        <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}" style="margin-right: 0">
+                        <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}" style="margin-right: 0">
+                    </li>
+                    <li ng-if="task.assignees.length > 3">
+                        <a href-void>
+                            <span class="activity">
+                                <a class="position-relative"><i class="fa fa-plus user-profile-plus-btn"></i> <b class="badge bg-color-red user-count-icon">{{task.assignees.length - 3}}</b></a>
+                            </span>
+                        </a>
+                    </li>
+                </ul>
             </li>
         </ul>
-    </div>
-    <div class="task-popup-bottom">
-        <div style="text-align: right">
-            <button type="button" class="btn btn_icon btn_customs2" ng-click="vm.taskPopup = false">닫기</button>
-        </div>
     </div>
 </div>

@@ -29,7 +29,7 @@
                     </div>
 
                     <div class="table table-hover " style="margin-bottom: 0; border-bottom: 1px solid #ddd;">
-                        <div>
+                        <div class="task-area">
                             <div ng-repeat="data in vm.tasks" class="">
                                 <div  class="wms-tree-node-list task-list clear-both" ng-class="data.statusId == 1 ? 'blue' : (data.statusId == 2 ? 'green' : (data.statusId == 3 ? 'black' : 'red'))"
                                       ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
@@ -37,7 +37,7 @@
                                         <div>
                                             <i class="fa fa-hourglass-end" style="float: left; padding: 6px; color:red;" ng-if="data.delayYn"></i>
                                             <i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i>
-                                            {{data.endDate}}
+                                            {{data.endDate | date : 'MM-dd'}}
                                         </div>
                                         <div>
                                             <ng-include src="'app/task/html/taskListRightArea.html'"></ng-include>

@@ -4,7 +4,8 @@
             <div><a ui-sref="my-task.detail({id : vm.task.parent.id, listType : vm.listType})" class="cursor">{{vm.task.parent.name}}</a></div>
             <div class="col-md-9 padding-0">
                 <i class="fa fa-exclamation-circle task-circle" ng-class="vm.task.importantYn ? 'on' : ''" ng-click="vm.task.importantYn = !vm.task.importantYn"></i>
-                <input type="text" class="taskAddInput" ng-model="vm.task.name" enter-submit="vm.taskUpload()" placeholder="Task"/>
+                <input type="text" class="taskAddInput" ng-model="vm.task.name" enter-submit="vm.taskUpload()" placeholder="Task" ng-show="vm.task.modifyYn"/>
+                <div class="disabled-task-title" ng-show="!vm.task.modifyYn">{{vm.task.name}}</div>
             </div>
             <div class="col-md-3 padding-0">
                 <span class="pull-right taskOptionBtnArea">
@@ -30,61 +31,62 @@
     <div class="viewTypeClass task-detail" style="margin-top: 10px; min-height: 500px">
 
         <!-- 상태 변경/등록일 -->
-        <div class="row" style="padding: 4px;">
-            <div class="col-md-8">
-                <div class="pull-left">
-                    <!-- 프로젝트/폴더 선택 -->
-                    <div id="projectPickerSection" style="float:left;">
-                        <label for="addProject" class="cursor projectValueSection"><i class="fa fa-plus" id="addProject"></i> <span project-picker-edit-toggle>프로젝트/폴더 선택</span></label>
-                        &nbsp;
-                        <div class="project-picker projectPickerSection">
-                            <div style="width: 300px;">
+        <div>
+            <div class="row margin-0">
+                <div class="col-md-8 padding-0">
+                    <div class="pull-left">
+                        <!-- 프로젝트/폴더 선택 -->
+                        <div id="projectPickerSection" style="float:left;" ng-show="vm.task.modifyYn">
+                            <label for="addProject" class="cursor projectValueSection margin-top-5" ><i class="fa fa-plus" id="addProject"></i> <span project-picker-edit-toggle>프로젝트/폴더 선택</span></label>
+                            &nbsp;
+                            <div class="project-picker projectPickerSection">
                                 <div style="width: 300px;">
-                                    <div class="padding-10 relatedTask-popup-header">
-                                        <span class="pull-right fa fa-close cursor picker-popup-close-btn" ng-click="vm.projectClose()"></span>
-                                        프로젝트/폴더
-                                    </div>
-                                    <div class="project-picker-search">
-                                        <input class="project-picker-search-input" type="text" ng-model="projectName" enter-submit="vm.FindProjectList()"
-                                               placeholder="프로젝트 또는 폴더를 선택하세요."  wms-kr-update>
-                                    </div>
-                                    <div class="project-picker-list-area">
-                                        <div class="project-picker-list">
-                                            <div data-ng-repeat="project in vm.projectList">
-                                                <div class="project-picker-list-item" ng-click="vm.task.projectIds = project.id">
-                                                    <div>
-                                                        <div class="project-picker-list-item-title">{{project.name}}</div>
-                                                        <div class="project-picker-list-item-path" >
-                                                            <div>
-                                                                <span ng-repeat="projectParent in project.projectParents track by $index">
-                                                                    <span ng-if="$index != 0">, </span>
-                                                                    [{{projectParent.name}}]
-                                                                </span>
+                                    <div style="width: 300px;">
+                                        <div class="padding-10 relatedTask-popup-header">
+                                            <span class="pull-right fa fa-close cursor picker-popup-close-btn" ng-click="vm.projectClose()"></span>
+                                            프로젝트/폴더
+                                        </div>
+                                        <div class="project-picker-search">
+                                            <input class="project-picker-search-input" type="text" ng-model="projectName" enter-submit="vm.FindProjectList()"
+                                                   placeholder="프로젝트 또는 폴더를 선택하세요."  wms-kr-update>
+                                        </div>
+                                        <div class="project-picker-list-area">
+                                            <div class="project-picker-list">
+                                                <div data-ng-repeat="project in vm.projectList">
+                                                    <div class="project-picker-list-item" ng-click="vm.task.projectIds = project.id">
+                                                        <div>
+                                                            <div class="project-picker-list-item-title">{{project.name}}</div>
+                                                            <div class="project-picker-list-item-path" >
+                                                                <div>
+                                                                    <span ng-repeat="projectParent in project.projectParents track by $index">
+                                                                        <span ng-if="$index != 0">, </span>
+                                                                        [{{projectParent.name}}]
+                                                                    </span>
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
 
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="task-project" ng-repeat="project in vm.task.taskProjects">
-                        {{project.name}}
-                        <i class="fa fa-close cursor" ng-click="vm.projectRemoveInTask(project.id)"></i>
+                        <div class="task-project" ng-repeat="project in vm.task.taskProjects">
+                            {{project.name}}
+                            <i class="fa fa-close cursor" ng-click="vm.projectRemoveInTask(project.id)"></i>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="col-md-4">
-                <div class="pull-right" style="margin-top: 14px;">
-                    <span class="task-create-date"><span class="task-create-date-text">{{vm.task.createdByName}} </span> {{ (vm.task.createdDate | date:"yyyy-MM-dd HH:mm") || 'empty' }}</span>
+                <div class="col-md-4 padding-0">
+                    <div class="pull-right" style="margin-top: 14px;">
+                        <span class="task-create-date"><span class="task-create-date-text">{{vm.task.createdByName}} </span> {{ (vm.task.createdDate | date:"yyyy-MM-dd HH:mm") || 'empty' }}</span>
+                    </div>
                 </div>
             </div>
         </div>
-
 
 
         <!-- task 상태, 담당자, 참조자 선택 영역 -->
@@ -104,7 +106,7 @@
                             <!--</span>-->
                         <!--</td>-->
                         <td class="task-list" ng-class="vm.task.statusId == 1 ? 'blue' : (vm.task.statusId == 2 ? 'green' : (vm.task.statusId == 3 ? 'black' : 'red'))">
-                            <ol class="nya-bs-select task-openYn-select" ng-model="vm.task.statusId" style="width: 90px;">
+                            <ol class="nya-bs-select task-openYn-select" ng-model="vm.task.statusId" style="width: 90px;" disabled="!vm.task.modifyYn">
                                 <li nya-bs-option="option in vm.codes" title="{{option.name}}" data-value="option.id">
                                     <a>
                                         {{ option.name }}
@@ -117,7 +119,7 @@
                             담당자
                         </td>
                         <td>
-                            <autocomplete template-url="ngTagsInput/tag-item-user.html" source="findUsers" tags="vm.task.assignees" display-property="name" multiple="true" max-results-to-show="20" tag-type="assignees"></autocomplete>
+                            <autocomplete template-url="ngTagsInput/tag-item-user.html" source="findUsers" tags="vm.task.assignees" display-property="name" multiple="true" max-results-to-show="20" tag-type="assignees" modify-yn="{{vm.task.modifyYn}}" project-yn="false"></autocomplete>
                         </td>
                         <td style="position: relative;">
                             <!-- 참조자 정보 팝업 -->
@@ -144,17 +146,17 @@
                                 </div>
                                 <div class="watcher-list-area padding-5" ng-show="vm.task.watchers.length > 0">
                                     <ul class="list-inline friends-list" style="margin-bottom: 0">
-                                        <li class="watcher-item" ng-repeat="user in vm.task.watchers" style="position: relative; margin: 0 3px 3px;" ng-click="vm.watcherInfoAdd(user)">
+                                        <li class="watcher-item" ng-repeat="user in vm.task.watchers" style="position: relative; margin: 0 3px 3px;" ng-click="vm.watcherInfoAdd(user)" wms-close-btn-display>
                                             <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}" watcher-info-btn-toggle>
                                             <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}" watcher-info-btn-toggle>
-                                            <span class="profile-close-btn cursor" ng-click="vm.removeWatcher(user)"><i class="fa fa-close"></i></span>
+                                            <span class="profile-close-btn close-btn cursor" ng-click="vm.removeWatcher(user)" ng-if="vm.task.modifyYn"><i class="fa fa-close"></i></span>
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="watcher-input-area">
+                                <div class="watcher-input-area" ng-if="vm.task.modifyYn">
                                     <input type="text" class="form-control" ng-model="vm.watcherName" style="border-right: 0; border-left:0;"  placeholder="이름을 입력하세요."/>
                                 </div>
-                                <div class="watcher-search-list-area padding-5">
+                                <div class="watcher-search-list-area padding-5" ng-if="vm.task.modifyYn">
                                     <div ng-repeat="data in vm.watcherList track by $index">
                                         <div class="watcher-search-element cursor" ng-click="vm.watcherAdd(data)">
                                             <div class="row">
@@ -196,8 +198,8 @@
                 <tbody>
                 <tr>
                     <td class="task-options">
-                        <span class="fa privateYn-icon" ng-class="vm.task.privateYn ? 'fa-lock' : 'fa-unlock-alt'"></span>
-                        <ol class="nya-bs-select task-openYn-select" ng-model="vm.task.privateYn">
+                        <span class="fa privateYn-icon" ng-class="{'fa-lock' : vm.task.privateYn, 'fa-unlock-alt' : !vm.task.privateYn, 'disabled-color' : !vm.task.modifyYn}" ></span>
+                        <ol class="nya-bs-select task-openYn-select" ng-model="vm.task.privateYn" disabled="!vm.task.modifyYn">
                             <li nya-bs-option="option in vm.privateYns" title="{{option.name}}" data-value="option.id">
                                 <a>
                                     <span class="fa" ng-class="option.icon"></span> {{ option.name }}
@@ -225,7 +227,7 @@
                             <!--<div wms-Include="app/task/html/repeatAddDatePicker.html" ></div>-->
                         <!--</div>-->
                         <div id="repeatEditSection" >
-                            <div repeat-picker-toggle>
+                            <div repeat-picker-toggle ng-if="vm.task.modifyYn">
                                 <i class="icon-append glyphicon glyphicon-retweet" ng-if="vm.task.taskRepeatSchedule.repeatType != '' && vm.task.taskRepeatSchedule != null " style="float: left; padding: 12px 5px;"></i>
                                 <i class="icon-append fa fa-calendar cursor" style="float: left; padding: 12px 5px;"></i>
                                 <div class="form-group" style="margin-bottom: 0; position: relative;">
@@ -240,6 +242,15 @@
                                 </div>
 
                             </div>
+                            <div ng-if="!vm.task.modifyYn">
+                                <i class="icon-append glyphicon glyphicon-retweet" ng-if="vm.task.taskRepeatSchedule.repeatType != '' && vm.task.taskRepeatSchedule != null " style="float: left; padding: 12px 5px;"></i>
+                                <i class="icon-append fa fa-calendar" style="float: left; padding: 12px 5px;"></i>
+                                <div class="form-group" style="margin-bottom: 0; position: relative;">
+                                    <span class="input-group wms-form">
+                                        <span class="dueDateValues disabled-calender" >{{vm.task.startDate | date : 'MM-dd'}} {{vm.task.startDate =='' && vm.task.endDate == '' ? '일정' : '~'}} {{vm.task.endDate | date : 'MM-dd'}}</span>
+                                    </span>
+                                </div>
+                            </div>
                             <!-- 달력 팝업 -->
                             <div wms-Include="app/task/html/repeatDatePicker.html"></div>
                         </div>
@@ -247,13 +258,14 @@
 
                     <!-- 하위작업 영역 -->
                     <td>
-                        <label style="margin-bottom: 0px;" ng-if="!vm.task.privateYn" for="subTaskAdd" class="cursor" ng-click="vm.subTaskOpen = !vm.subTaskOpen" wms-sub-task-input-focus><i class="fa fa-outdent" id="subTaskAdd" > <span>하위 작업 {{vm.task.subTasks.length == 0 ? '' : vm.task.subTasks.length}}</span></i></label>
-                        <label style="margin-bottom: 0px;" ng-if="vm.task.privateYn" for="subTaskDisabled" disabled="disabled"><i class="fa fa-outdent" id="subTaskDisabled" > <span>하위 작업 {{vm.task.subTasks.length == 0 ? '' : vm.task.subTasks.length}}</span></i></label>
+                        <label style="margin-bottom: 0px;" ng-if="!vm.task.privateYn && vm.task.modifyYn" for="subTaskAdd" class="cursor" ng-click="vm.subTaskOpen = !vm.subTaskOpen" wms-sub-task-input-focus><i class="fa fa-outdent" id="subTaskAdd" > <span>하위 작업 {{vm.task.subTasks.length == 0 ? '' : vm.task.subTasks.length}}</span></i></label>
+                        <label style="margin-bottom: 0px;" ng-if="vm.task.privateYn || !vm.task.modifyYn" for="subTaskDisabled" disabled="disabled"><i class="fa fa-outdent" id="subTaskDisabled" > <span>하위 작업 {{vm.task.subTasks.length == 0 ? '' : vm.task.subTasks.length}}</span></i></label>
                     </td>
 
                     <!-- 파일첨부 영역 -->
                     <td>
-                        <label style="margin-bottom: 0px;" for="subTaskAdd" class="cursor" ng-click="vm.fileAreaOpen = !vm.fileAreaOpen"><i class="fa fa-paperclip"></i> 파일 첨부</label>
+                        <label style="margin-bottom: 0px;" for="subTaskAdd" ng-if="!vm.task.privateYn && vm.task.modifyYn" class="cursor" ng-click="vm.fileAreaOpen = !vm.fileAreaOpen"><i class="fa fa-paperclip"></i> 파일 첨부</label>
+                        <label style="margin-bottom: 0px;" for="subTaskAdd" ng-if="vm.task.privateYn || !vm.task.modifyYn" class="cursor" ng-click="vm.fileAreaOpen = !vm.fileAreaOpen"><i class="fa fa-paperclip"></i> 파일 첨부</label>
                     </td>
 
                     <!-- 참조작업 영역 -->
@@ -273,17 +285,17 @@
                                 <!--<span class="relatedTask-close-btn cursor" ng-click="vm.removeWatcher(task)"><i class="fa fa-close"></i></span>-->
                                 <!--</span>-->
                                 <ul class="relatedTask-list-item-area">
-                                    <li class="position-relative relatedTask-list-item padding-5 float-left" ng-repeat="task in vm.task.relatedTasks">
+                                    <li class="position-relative relatedTask-list-item padding-5 float-left" ng-repeat="task in vm.task.relatedTasks" wms-close-btn-display>
                                         <span class="relatedTask-list-item-title cursor">{{task.name}}</span>
-                                        <span class="relatedTask-close-btn cursor" ng-click="vm.removeRelatedTask(task)"><i class="fa fa-close"></i></span>
+                                        <span class="relatedTask-close-btn close-btn cursor" ng-click="vm.removeRelatedTask(task)" ng-if="vm.task.modifyYn"><i class="fa fa-close"></i></span>
                                     </li>
                                 </ul>
                             </div>
 
-                            <div class="relatedTask-input-area border-top padding-10 " ng-show="vm.relatedSearchAgainYn">
+                            <div class="relatedTask-input-area border-top padding-10 " ng-show="vm.relatedSearchAgainYn && vm.task.modifyYn">
                                 {{vm.relatedSearchForm.name}}
                             </div>
-                            <div class="relatedTask-input-area padding-5 border-top" ng-show="vm.relatedSearchYn">
+                            <div class="relatedTask-input-area padding-5 border-top" ng-show="vm.relatedSearchYn && vm.task.modifyYn">
                                 <div class="related-task-search-div">
                                     작업명 : <input type="text" class="" ng-model="vm.relatedSearchForm.name" ng-keydown="vm.relatedTaskValidateYn = false" ng-class="vm.relatedSearchForm.name == '' && vm.relatedTaskValidateYn ? 'task-name-validate' : ''" style="border-right: 0; border-left:0; border-top: 0"  placeholder="작업명을 입력하세요."/>
                                 </div>
@@ -302,7 +314,7 @@
                                 </div>
                             </div>
 
-                            <div class="relatedTask-search-list-area border-top clear-both" ng-show="vm.relatedSearchAgainYn">
+                            <div class="relatedTask-search-list-area border-top clear-both" ng-show="vm.relatedSearchAgainYn && vm.task.modifyYn">
                                 <div class="padding-5 related-task-item-list" ng-repeat="data in vm.relatedTaskList track by $index">
                                     <div class="relatedTask-search-element">
                                         <div class="pull-right">
@@ -328,14 +340,14 @@
                                 </div>
                             </div>
 
-                            <div class="relatedTask-search-list-area border-top" ng-if="vm.relatedTaskEmptyYn">
+                            <div class="relatedTask-search-list-area border-top" ng-if="vm.relatedTaskEmptyYn && vm.task.modifyYn">
                                 <div class="padding-5">
                                     <div>검색 결과가 없습니다.</div>
                                     <div>검색 조건을 다시 확인하여 주세요.</div>
                                 </div>
                             </div>
 
-                            <div class="relatedTask-search-btn-area border-top" style="text-align: center;">
+                            <div class="relatedTask-search-btn-area border-top" style="text-align: center;" ng-if="vm.task.modifyYn">
                                 <div class="relatedTask-search-btn cursor" ng-show="vm.relatedSearchYn" ng-click="vm.findRelatedTask()">
                                     검색
                                 </div>
@@ -482,9 +494,12 @@
         </div>
         <div>
 
-            <div class="panel panel-default min-height-100-p detail-content" id="editingSection">
+            <div class="panel panel-default min-height-100-p" ng-class="{'detail-content':vm.task.modifyYn, 'detail-content-disabled':!vm.task.modifyYn}" id="editingSection">
                 <div class="ibox">
-                    <div class="ibox_content elementSection"  section-toggle style="min-height: 50px">
+                    <div class="ibox_content elementSection" ng-if="vm.task.modifyYn" section-toggle style="min-height: 50px">
+                        <span ng-bind-html="vm.renderHtml(vm.task.contents)" ></span>
+                    </div>
+                    <div class="ibox_content elementSection" ng-if="!vm.task.modifyYn" style="min-height: 50px">
                         <span ng-bind-html="vm.renderHtml(vm.task.contents)" ></span>
                     </div>
                     <div class="content-edit editingSection" >
@@ -497,7 +512,7 @@
                 </div>
             </div>
             <div style="text-align: right;">
-                <button type="button" class="btn" ng-click="vm.taskRevertModalOpen()">복원</button>
+                <button type="button" class="btn" ng-click="vm.taskRevertModalOpen()" ng-if="vm.task.modifyYn" >복원</button>
             </div>
         </div>
 
@@ -506,9 +521,9 @@
                 <ul>
                     <li>파일 ({{vm.previewFiles.length}})</li>
                     <li><label class="cursor"><i class="fa fa-download"></i></label></li>
-                    <li><label for="input-4" class="cursor"><i class='fa fa-paperclip'></i></label></li>
+                    <li ng-if="vm.task.modifyYn"><label for="input-4" class="cursor"><i class='fa fa-paperclip'></i></label></li>
                     <li><label class="cursor"><i class="fa fa-list" ng-click="vm.fileListYn = !vm.fileListYn" file-list-yn></i></label></li>
-                    <li><label class="cursor"><i class="fa fa-trash"></i></label></li>
+                    <li ng-if="vm.task.modifyYn"><label class="cursor"><i class="fa fa-trash"></i></label></li>
                     <li></li>
                     <li></li>
                 </ul>
@@ -696,6 +711,6 @@
 </div>
 <style>
     .btn-sm {
-        padding: 4px 8px 5px;
+        padding: 4px 7px 5px;
     }
 </style>

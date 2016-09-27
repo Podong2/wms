@@ -204,7 +204,8 @@ tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tag
             onTagClicked: '&',
             tagType: '@',
             templateUrl : '@',
-            projectYn : '@'
+            projectYn : '@', // hsy 추가
+            modifyYn : '@' // hsy 추가
         },
         replace: false,
         transclude: true,
@@ -545,7 +546,8 @@ tagsInput.directive('tiTagItem', ["tiUtil", function(tiUtil) {
         scope: {
             $scope: '=scope',
             data: '=',
-            tagList : "="
+            tagList : '=', // hsy 추가
+            modifyYn : '=' // hsy 추가
         },
         link: function(scope, element, attrs, tagsInputCtrl) {
             var tagsInput = tagsInputCtrl.registerTagItem(),
@@ -1224,6 +1226,7 @@ tagsInput.factory('tiUtil', ["$timeout", "$q", function($timeout, $q) {
 
 /* HTML templates */
 tagsInput.run(["$templateCache", function($templateCache) {
+    // hsy 변경
     $templateCache.put('ngTagsInput/tags-input.html',
     "<div class=\"host\" id='userPickerInfoSection' tabindex=\"-1\" ng-click=\"eventHandlers.host.click()\" ti-transclude-append>" +
     "<div class='row user-picker-info'>" +
@@ -1241,11 +1244,11 @@ tagsInput.run(["$templateCache", function($templateCache) {
     "<div class=\"tags\" ng-class=\"{focused: hasFocus}\">" +
     "<ul class=\"tag-list\">" +
     "<li class=\"tag-item\" ng-repeat=\"tag in tagList.items track by track(tag)\" ng-class=\"getTagClass(tag, $index)\" ng-click=\"eventHandlers.tag.click(tag, $event)\" style='position: relative;'>" +
-    "<ti-tag-item scope=\"templateScope\" data=\"::tag\" tag-list=\"::tagList.items\"></ti-tag-item>" +
+    "<ti-tag-item scope=\"templateScope\" data=\"::tag\" tag-list=\"::tagList.items\" modify-yn='::modifyYn'></ti-tag-item>" +
     "</li>" +
     "</ul>" +
-    "<span class='user-picker-plus-area' ng-show='!projectYn' user-picker-btn-toggle><button class='btn user-picker-plus-btn sub-task-user-plus-btn' style='margin: 2px 2px 0px;'>+</button>" +
-    "<input class=\"input user-picker-input user-picker-input-area\" ng-show='!projectYn' wms-kr-update autocomplete=\"off\" ng-model=\"newTag.text\" ng-model-options=\"{getterSetter: true}\" ng-keydown=\"eventHandlers.input.keydown($event)\" ng-focus=\"eventHandlers.input.focus($event)\" ng-blur=\"eventHandlers.input.blur($event)\" ng-paste=\"eventHandlers.input.paste($event)\" ng-trim=\"false\" ng-class=\"{'invalid-tag': newTag.invalid}\" ng-disabled=\"disabled\" ti-bind-attrs=\"{type: options.type, placeholder: options.placeholder, tabindex: options.tabindex, spellcheck: options.spellcheck}\" ti-autosize>" +
+    "<span class='user-picker-plus-area' ng-show='projectYn == \"false\" && modifyYn == \"true\"' user-picker-btn-toggle><button class='btn user-picker-plus-btn sub-task-user-plus-btn' style='margin: 2px 2px 0px;'>+</button>" +
+    "<input class=\"input user-picker-input user-picker-input-area\" ng-show='projectYn == \"false\" && modifyYn == \"true\"' wms-kr-update autocomplete=\"off\" ng-model=\"newTag.text\" ng-model-options=\"{getterSetter: true}\" ng-keydown=\"eventHandlers.input.keydown($event)\" ng-focus=\"eventHandlers.input.focus($event)\" ng-blur=\"eventHandlers.input.blur($event)\" ng-paste=\"eventHandlers.input.paste($event)\" ng-trim=\"false\" ng-class=\"{'invalid-tag': newTag.invalid}\" ng-disabled=\"disabled\" ti-bind-attrs=\"{type: options.type, placeholder: options.placeholder, tabindex: options.tabindex, spellcheck: options.spellcheck}\" ti-autosize>" +
     "</span>" +
     "<input class=\"input user-picker-input\" style='border-bottom: 1px solid #ddd' ng-show='projectYn && tagList.items.length == 0' wms-kr-update autocomplete=\"off\" ng-model=\"newTag.text\" ng-model-options=\"{getterSetter: true}\" ng-keydown=\"eventHandlers.input.keydown($event)\" ng-focus=\"eventHandlers.input.focus($event)\" ng-blur=\"eventHandlers.input.blur($event)\" ng-paste=\"eventHandlers.input.paste($event)\" ng-trim=\"false\" ng-class=\"{'invalid-tag': newTag.invalid}\" ng-disabled=\"disabled\" ti-bind-attrs=\"{type: options.type, placeholder: options.placeholder, tabindex: options.tabindex, spellcheck: options.spellcheck}\">" +
     "</div></div>"
@@ -1259,7 +1262,7 @@ tagsInput.run(["$templateCache", function($templateCache) {
     "</div>" +
     "<div class='right-panel'>" +
     "<span>{{$getDisplayText()}}</span><!-- ng-show='tagList.length < 4'-->" +
-    "<a class='remove-button' ng-click='$removeTag()'>&#10006;</a>" +
+    "<a ng-show='modifyYn == \"true\"' class='remove-button' ng-click='$removeTag()'>&#10006;</a>" +
     "</div>" +
     "</div>"
   );

@@ -1,5 +1,5 @@
 <span class="cursor" ng-if="data.parent.name != null" task-list-popup type='parent'>
-    상위 1
+    상위
     <ng-include src="'app/task/html/modal/parentTaskListModal.html'" class="sub-task-area-popup" ng-class="vm.taskPopup ? 'on' : ''"></ng-include>
 </span>
 <span class="cursor" ng-if="data.subTasks.length > 0" task-list-popup type='sub'>

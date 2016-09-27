@@ -12093,6 +12093,9 @@ html.hidden-menu-mobile-lock {
 .no-margin {
     margin: 0 !important
 }
+.margin-0 {
+    margin: 0 !important
+}
 
 .margin-top-5 {
     margin-top: 5px !important
@@ -12112,6 +12115,9 @@ html.hidden-menu-mobile-lock {
 
 .margin-right-5 {
     margin-right: 5px !important
+}
+.margin-right-10 {
+    margin-right: 10px !important
 }
 
 .margin-top-0 {
