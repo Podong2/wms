@@ -6964,7 +6964,7 @@ time.icon span {
     width: 45px;
     height: 32px;
     line-height: 28px;
-    font-size: 14px;
+    /*font-size: 14px;*/
     text-align: center;
     left: 75px;
     top: 10px;
