@@ -1,7 +1,7 @@
 <div>
     <div class="task-popup-body">
         <ul class="margin-bottom-0">
-            <li ng-repeat="task in data.subTasks" class="task-list" ng-class="task.statusId == 1 ? 'blue' : (task.statusId == 2 ? 'green' : (task.statusId == 3 ? 'black' : 'red'))">
+            <li ng-repeat="task in data.subTasks" class="task-list sub-task-popup-list" ng-class="task.statusId == 1 ? 'blue' : (task.statusId == 2 ? 'green' : (task.statusId == 3 ? 'black' : 'red'))">
                 <div class="sub-task-popup-title" ng-class="data.assignees.length > 0 ? 'task-list-title' : ''" style="line-height: 25px;">
                     <a ui-sref="my-task.detail({id : task.id, listType : vm.listType,taskId : task.id})" >{{task.name}}</a><!-- uib-tooltip="{{task.name}}" tooltip-placement="top-left" -->
                 </div>
