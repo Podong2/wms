@@ -302,6 +302,8 @@ public class TaskService {
 //        taskSearchRepository.save(origin);
         TaskDTO result = taskMapper.taskToTaskDTO(origin);
 
+        this.copyTaskRelationProperties(origin, result);
+
         return result;
     }
 
