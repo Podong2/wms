@@ -109,6 +109,7 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
                     }
                 });
                 vm.tasks=[]; // 초기화
+                vm.page = 0;
                 getList(type);
                 vm.listType = type;
             }
