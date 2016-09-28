@@ -120,13 +120,15 @@
                                 담당자
                             </td>
                             <td>
-                                <autocomplete template-url="ngTagsInput/tag-item-user.html" source="findUsers" tags="vm.task.assignees" display-property="name" multiple="true" max-results-to-show="20" tag-type="assignees" modify-yn="{{vm.task.modifyYn}}" project-yn="false"></autocomplete>
+                                <autocomplete template-url="ngTagsInput/tag-item-user.html" source="findUsers" tags="vm.task.assignees" display-property="name"
+                                              multiple="true" max-results-to-show="20" tag-type="assignees" modify-yn="{{vm.task.modifyYn}}" project-yn="false"></autocomplete>
                             </td>
                             <td style="position: relative;">
                                 <!-- 참조자 정보 팝업 -->
                                 <div class='row watcher-picker-info'>
                                     <div class='col-md-4 padding-10' style='border-right:1px solid #ddd; height: 100%;'>
-                                        <img ng-src='/api/attachedFile/{{watcherInfo.profileImageId}}' ng-if='watcherInfo.profileImageId !=null' /><img ng-src='/content/images/demo/male.png' ng-if='watcherInfo.profileImageId ==null' />
+                                        <img ng-src='/api/attachedFile/{{watcherInfo.profileImageId}}' ng-if='watcherInfo.profileImageId !=null' />
+                                        <img ng-src='/content/images/demo/male.png' ng-if='watcherInfo.profileImageId ==null' />
                                     </div>
                                     <div class='col-md-8 padding-10' style='height: 100%;'>
                                         <ul>
@@ -265,8 +267,8 @@
 
                         <!-- 파일첨부 영역 -->
                         <td>
-                            <label for="subTaskAdd" ng-if="!vm.task.privateYn && vm.task.modifyYn" class="cursor margin-bottom-0" ng-click="vm.fileAreaOpen = !vm.fileAreaOpen"><i class="fa fa-paperclip"></i> 파일 첨부 {{vm.previewFiles.length == 0 ? '' : vm.previewFiles.length}}</label>
-                            <label for="subTaskAdd" ng-if="vm.task.privateYn || !vm.task.modifyYn" class="btn-none margin-bottom-0"><i class="fa fa-paperclip"></i> 파일 첨부 {{vm.previewFiles.length == 0 ? '' : vm.previewFiles.length}}</label>
+                            <label for="subTaskAdd" ng-if="vm.task.modifyYn" class="cursor margin-bottom-0" ng-click="vm.fileAreaOpen = !vm.fileAreaOpen"><i class="fa fa-paperclip"></i> 파일 첨부 {{vm.previewFiles.length == 0 ? '' : vm.previewFiles.length}}</label>
+                            <label for="subTaskAdd" ng-if="!vm.task.modifyYn" class="btn-none margin-bottom-0"><i class="fa fa-paperclip"></i> 파일 첨부 {{vm.previewFiles.length == 0 ? '' : vm.previewFiles.length}}</label>
                         </td>
 
                         <!-- 참조작업 영역 -->

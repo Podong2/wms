@@ -2199,6 +2199,9 @@ td.red{border-left: 5px solid #777 !important;}
     padding: 4px;
     box-shadow: none !important;
 }
+.sub-task-popup-list{
+    height:40px !important;
+}
     /*<< comment css >>*/
     .comment-user-title{
         margin-top: 13px;
@@ -3041,6 +3044,9 @@ text-align: right;
 .disabled-task-title{
     font-size: 17px;
     margin-top: 3px;
+}
+.delay-color{
+    color : red;
 }
 
 
