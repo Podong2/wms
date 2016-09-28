@@ -16,8 +16,12 @@ public class TaskDAO {
     @Autowired
     private SqlSession sqlSession;
 
-    public List<TaskDTO> getTasks(Map<String, Object> condition) {
-        return sqlSession.selectList("kr.wisestone.wms.domain.Task.getTasks", condition);
+    public List<TaskDTO> getMyTasks(Map<String, Object> condition) {
+        return sqlSession.selectList("kr.wisestone.wms.domain.Task.getMyTasks", condition);
+    }
+
+    public List<TaskDTO> getTasksByCondition(Map<String, Object> condition) {
+        return sqlSession.selectList("kr.wisestone.wms.domain.Task.getTasksByCondition", condition);
     }
 
     public TaskDTO getTask(Long id) {

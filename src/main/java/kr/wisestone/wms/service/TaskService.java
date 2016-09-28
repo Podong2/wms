@@ -32,7 +32,6 @@ import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
@@ -91,7 +90,7 @@ public class TaskService {
         condition.put("offset", pageable.getOffset());
         condition.put("limit", pageable.getPageSize());
 
-        List<TaskDTO> taskDTOs = taskDAO.getTasks(condition);
+        List<TaskDTO> taskDTOs = taskDAO.getMyTasks(condition);
 
         return taskDTOs;
     }
@@ -375,43 +374,31 @@ public class TaskService {
 
         User loginUser = SecurityUtils.getCurrentUser();
 
-        QTask $task = QTask.task;
+        Map<String, Object> condition = Maps.newHashMap();
 
-        BooleanBuilder predicate = new BooleanBuilder();
-
-        predicate.and($task.name.containsIgnoreCase(taskCondition.getName()));
+        condition.put("name", taskCondition.getName());
 
         if(taskCondition.getProjectId() != null)
-            predicate.and($task.taskProjects.any().project.id.eq(taskCondition.getProjectId()));
+            condition.put("name", taskCondition.getProjectId());
 
         if(StringUtils.hasText(taskCondition.getAssigneeName()) && (taskCondition.getAssigneeSelfYn() != null && !taskCondition.getAssigneeSelfYn())) {
-            predicate.and($task.id.in(new JPASubQuery()
-                .from(QTaskUser.taskUser)
-                .where(QTaskUser.taskUser.user.name.containsIgnoreCase(taskCondition.getAssigneeName())
-                    .and(QTaskUser.taskUser.userType.eq(UserType.ASSIGNEE)))
-                .list(QTaskUser.taskUser.task.id)));
+
+            condition.put("assigneeSelfYn", Boolean.FALSE);
+            condition.put("assignee", taskCondition.getAssigneeName());
 
         } else if(taskCondition.getAssigneeSelfYn() != null && taskCondition.getAssigneeSelfYn()) {
-            predicate.and($task.id.in(new JPASubQuery()
-                .from(QTaskUser.taskUser)
-                .where(QTaskUser.taskUser.user.name.containsIgnoreCase(loginUser.getName())
-                    .and(QTaskUser.taskUser.userType.eq(UserType.ASSIGNEE)))
-                .list(QTaskUser.taskUser.task.id)));
+
+            condition.put("assigneeSelfYn", Boolean.TRUE);
+            condition.put("assignee", loginUser.getLogin());
         }
 
         if(taskCondition.getCreatedBySelfYn() != null && taskCondition.getCreatedBySelfYn()) {
-            predicate.and($task.createdBy.eq(loginUser.getLogin()));
+            condition.put("createdBy", loginUser.getLogin());
         }
 
-        predicate.and($task.privateYn.isFalse());
+        condition.put("excludeIds", excludeIds);
 
-        if(excludeIds != null && !excludeIds.isEmpty()) {
-            predicate.and($task.id.notIn(excludeIds));
-        }
-
-        List<Task> tasks = Lists.newArrayList(this.taskRepository.findAll(predicate));
-
-        return taskMapper.tasksToTaskDTOs(tasks);
+        return taskDAO.getTasksByCondition(condition);
     }
 
     @Transactional(readOnly = true)

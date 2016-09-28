@@ -227,7 +227,7 @@
         </choose>
     </sql>
 
-    <select id="getTasks" resultType="java.util.ArrayList" resultMap="taskListResultMap" parameterType="java.util.HashMap">
+    <select id="getMyTasks" resultType="java.util.ArrayList" resultMap="taskListResultMap" parameterType="java.util.HashMap">
         SELECT t.id as id, t.name as name, t.start_date as startDate, t.end_date as endDate, tc.id as statusId, tc.name as statusName
             , t.created_by as createdBy, t.created_date as createdDate, t.last_modified_by as lastModifiedBy, t.last_modified_date as lastModifiedDate
             , CASE
@@ -281,7 +281,7 @@
                     <when test="listType == 'SCHEDULED'">
                         SELECT
                             CASE
-                                WHEN it.start_date != '' THEN 9
+                                WHEN it.end_date != '' THEN 9
                                 ELSE 1
                             END as orderTarget
                             ,it.*
@@ -343,6 +343,80 @@
             LEFT JOIN owl_user u ON tu.user_id = u.id
             LEFT OUTER JOIN owl_task_repeat_schedule trs ON trs.task_id = t.id
             ORDER BY t.orderTarget DESC, t.end_date ASC, t.start_date ASC, t.name ASC
+    </select>
+
+    <select id="getTasksByCondition" resultType="java.util.ArrayList" resultMap="taskListResultMap" parameterType="java.util.HashMap">
+        SELECT t.id as id, t.name as name, t.start_date as startDate, t.end_date as endDate, tc.id as statusId, tc.name as statusName
+            , t.created_by as createdBy, t.created_date as createdDate, t.last_modified_by as lastModifiedBy, t.last_modified_date as lastModifiedDate
+            , CASE
+                WHEN (SELECT count(taf.task_id) FROM owl_task_attached_file taf WHERE taf.task_id = t.id) > 0 THEN true
+                ELSE false
+              END as attachedFileExistYn
+            , CASE
+                WHEN t.private_yn = 'Y' THEN true
+                WHEN t.private_yn = 'N' THEN false
+              END as privateYn
+            , CASE
+                WHEN t.template_yn = 'Y' THEN true
+                WHEN t.template_yn = 'N' THEN false
+              END as templateYn
+            , CASE
+                WHEN t.important_yn = 'Y' THEN true
+                WHEN t.important_yn = 'N' THEN false
+              END as importantYn
+            , tp.id as projectId, tp.name as projectName
+            , CASE
+                WHEN tp.folder_yn = 'Y' THEN true
+                WHEN tp.folder_yn = 'N' THEN false
+              END as projectFolderYn
+            , t.parent_id as parentId
+            , trs.repeat_type as repeatType
+        FROM (
+                SELECT it.*
+                FROM owl_task it
+                    LEFT OUTER JOIN owl_task_project itp ON it.id = itp.task_id
+                WHERE LOWER(it.name) LIKE LOWER('%'||#{name}||'%')
+                <if test="projectId != null">
+                    AND itp.project_id = #{projectId}
+                </if>
+                <if test="assignee != null and assigneeSelfYn != null and assigneeSelfYn == false">
+                AND it.id IN (
+                    SELECT itu.task_id
+                    FROM owl_task_user itu
+                    LEFT JOIN owl_user iu ON itu.user_id = iu.id
+                    WHERE itu.user_type = 'ASSIGNEE'
+                    AND LOWER(iu.name) like LOWER('%'||#{assignee}||'%')
+                )
+                </if>
+                <if test="assigneeSelfYn != null and assigneeSelfYn == true">
+                AND it.id IN (
+                    SELECT itu.task_id
+                    FROM owl_task_user itu
+                    LEFT JOIN owl_user iu ON itu.user_id = iu.id
+                    WHERE itu.user_type = 'ASSIGNEE'
+                    AND LOWER(iu.login) = LOWER(#{assignee})
+                )
+                </if>
+                <if test="createdBy != null">
+                    AND LOWER(it.created_by) = LOWER(#{createdBy})
+                </if>
+                AND it.private_yn = 'N'
+                <if test="excludeIds != null">
+                    AND it.id NOT IN
+                    <foreach item="item" index="index" collection="excludeIds"
+                             open="(" separator="," close=")">
+                        #{item}
+                    </foreach>
+                </if>
+                ORDER BY it.name ASC
+            ) t
+            LEFT JOIN owl_code tc ON t.status_id = tc.id
+            LEFT OUTER JOIN owl_task_project tpr ON tpr.task_id = t.id
+            LEFT JOIN owl_project tp ON tp.id = tpr.project_id
+            LEFT OUTER JOIN owl_task_user tu ON tu.task_id = t.id AND tu.user_type = 'ASSIGNEE'
+            LEFT JOIN owl_user u ON tu.user_id = u.id
+            LEFT OUTER JOIN owl_task_repeat_schedule trs ON trs.task_id = t.id
+            ORDER BY t.name ASC
     </select>
 
     <select id="getTask" resultType="kr.wisestone.wms.web.rest.dto.TaskDTO" resultMap="taskDetailResultMap" parameterType="java.lang.Long">
