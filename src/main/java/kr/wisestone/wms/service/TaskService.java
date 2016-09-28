@@ -298,11 +298,10 @@ public class TaskService {
             }
         }
 
-        origin = taskRepository.save(origin);
+        Task savedTask = taskRepository.save(origin);
 //        taskSearchRepository.save(origin);
-        TaskDTO result = taskMapper.taskToTaskDTO(origin);
-
-        this.copyTaskRelationProperties(origin, result);
+        TaskDTO result = new TaskDTO(savedTask);
+        this.copyTaskRelationProperties(savedTask, result);
 
         return result;
     }
