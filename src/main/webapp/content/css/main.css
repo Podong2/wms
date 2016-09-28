@@ -2752,7 +2752,7 @@ text-align: right;
 .file-header-area ul li {
     padding: 7px;
     float: left;
-    font-size: 16px;
+    /*font-size: 16px;*/
 }
 .file-header-area ul li:first-child{
     padding-left: 0;
