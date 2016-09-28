@@ -1354,6 +1354,10 @@ wms-select-box .dropdown-menu > .active > a{
     cursor: pointer;
 }
 
+.cursor-inherit {
+    cursor: inherit;
+}
+
 table th {
     font-weight: bold;
     taxt-align: center !important;
@@ -1716,15 +1720,22 @@ i:active, .i:active, i:focus, .i:focus{
     cursor: auto;
 }
 .wms-tree-node-list{
-    padding: 15px;
+    padding: 7px;
 }
 .task-list-repeat.read{
     background-color: #f0f0f0;
 }
-.split-panes.horizontal > .split-pane1, .split-panes.horizontal > .split-pane2{
-    overflow: hidden;
-    overflow-y: auto;
+.task-repeat:first-child .task-list {
+    border-top: 0;
 }
+.task-detail-area{
+    background-color: #fff !important; overflow: hidden; overflow-y: auto; position: relative; margin-bottom: 0;
+}
+/*.split-panes.horizontal > .split-pane2{!* .split-panes.horizontal > .split-pane1, *!*/
+    /*overflow: hidden;*/
+    /*overflow-y: auto;*/
+/*}*/
+
 /*---------------------------- wms task table css end ----------------------------*/
 
 
@@ -1991,11 +2002,17 @@ i:active, .i:active, i:focus, .i:focus{
 }
 .task-list{
     border-top: 1px solid #ddd;
+    height: 65px;
 }
 .task-list.green{border-left: 5px solid green;}
 .task-list.blue{border-left: 5px solid blue;}
 .task-list.black{border-left: 5px solid #B119E9;}
 .task-list.red{border-left: 5px solid #777;}
+td.green{border-left: 5px solid green !important;}
+td.blue{border-left: 5px solid blue !important;}
+td.black{border-left: 5px solid #B119E9 !important;}
+td.red{border-left: 5px solid #777 !important;}
+
 .sub-task-area-title{
     text-align: center;
     background: #ccc;
@@ -2075,7 +2092,7 @@ i:active, .i:active, i:focus, .i:focus{
 }
 .task-detail-list-title{
     float:left;
-    padding: 13px;
+    padding: 15px 13px 11px;
     margin-right: 10px;
     max-width: 50%;
     overflow: hidden;
@@ -2205,6 +2222,25 @@ i:active, .i:active, i:focus, .i:focus{
         position: relative;
         top: 10px;
         right: 24px;
+    }
+    .comment-table tbody tr td{
+        padding-top: 0;
+        padding-bottom: 0;
+        margin: 0;
+        border-top:0 !important;
+        height: 67px;
+    }
+    .comment-areas{
+        position: absolute;
+        bottom: 0px;
+        width: 100%;
+        background: #fff;
+        z-index: 999;
+        padding: 0 20px;
+        border-top: 1px solid #ddd;
+        max-height: 400px;
+        overflow: hidden;
+        overflow-y: auto;
     }
     /*<< comment css end >>*/
 /*---------------------------- task css end ------------------------------*/

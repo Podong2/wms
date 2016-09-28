@@ -202,7 +202,7 @@
 
         <!-- Timeline Content -->
         <div class="smart-timeline">
-            <a ng-click="vm.commentViewType = !vm.commentViewType">댓글만 보기({{vm.commentList.length}})</a>
+            <div style="display: inline-table; width: 100%;"><a class="pull-right" ng-click="vm.commentViewType = !vm.commentViewType" ng-show="vm.commentList.length > 0">{{vm.commentViewType ? '히스토리&댓글 보기' : '댓글만 보기'}} ({{vm.commentViewType ? vm.TaskAuditLog.data.length : vm.commentList.length }})</a></div>
             <ul class="smart-timeline-list">
 
                 <!-- 로그&댓글 보기 -->

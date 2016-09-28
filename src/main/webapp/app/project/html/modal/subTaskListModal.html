@@ -1,14 +1,9 @@
 <div>
     <div class="task-popup-body">
         <ul>
-            <li ng-repeat="task in data.subTasks">
+            <li ng-repeat="task in data.subTasks" class="wms-tree-node-list" ng-class="task.statusId == 1 ? 'blue' : (task.statusId == 2 ? 'green' : (task.statusId == 3 ? 'black' : 'red'))">
                 <a ui-sref="my-project.taskDetail({taskId : task.id, listType : vm.listType, projectId : vm.project.id})">{{task.name}}</a>
             </li>
         </ul>
-    </div>
-    <div class="task-popup-bottom">
-        <div style="text-align: right">
-            <button type="button" class="btn btn_icon btn_customs2" ng-click="vm.taskPopup = false">닫기</button>
-        </div>
     </div>
 </div>

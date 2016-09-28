@@ -5,10 +5,10 @@
         .module('wmsApp')
         .controller('TaskDetailCtrl', TaskDetailCtrl);
 
-    TaskDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', 'TaskAttachedFile', '$log', 'TaskEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask',
+    TaskDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', 'TaskAttachedFile', '$log', 'TaskEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', '$window',
         'FindTasks', 'entity', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectFindByName', 'ModalService', 'TaskProgressStatus', 'tableService', 'ModifySubTask', '$http', '$cookies', 'FindByCondition'];
 
-    function TaskDetailCtrl($scope, $rootScope, $stateParams, Task, Code, TaskAttachedFile, $log, TaskEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask,
+    function TaskDetailCtrl($scope, $rootScope, $stateParams, Task, Code, TaskAttachedFile, $log, TaskEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, $window,
                             FindTasks, entity, TaskListSearch, dataService, Principal, ProjectFind, ProjectFindByName, ModalService, TaskProgressStatus, tableService, ModifySubTask, $http, $cookies, FindByCondition) {
         var vm = this;
         vm.baseUrl = window.location.origin;
@@ -44,6 +44,7 @@
         vm.relatedTaskPopupClose = relatedTaskPopupClose;
         vm.removeRelatedTask = removeRelatedTask;
         vm.projectClose = projectClose;
+        vm.windowOpen = windowOpen;
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
 
@@ -208,6 +209,7 @@
             $("#input-4").fileinput({
                 uploadUrl : '/tasks/uploadFile',
                 task : vm.task,
+                modifyYn : vm.task.modifyYn, // 수정권한
                 type : 'task',
                 token : $scope.getToken(),
                 autoReplace: true,
@@ -1199,6 +1201,12 @@
             vm.relatedTaskEmptyYn = false;
         }
 
+        // 새창 열기
+        function windowOpen(task){
+            var url = "#/myTask/detail/"+ vm.listType + '/' + task.id;
+            $window.open(url, "_blank");
+        }
+
 
 
         vm.tableConfigs = [];
@@ -1219,11 +1227,13 @@
             .setDAlign("text-center")
             .setDType("renderer")
             .setDRenderer("file_download"));
-        vm.tableConfigs.push(tableService.getConfig("삭제", "")
-            .setHWidth("width-80-p")
-            .setDAlign("text-center")
-            .setDType("renderer")
-            .setDRenderer("file_remove"));
+        if(vm.task.modifyYn){ // 수정권한 체크
+            vm.tableConfigs.push(tableService.getConfig("삭제", "")
+                .setHWidth("width-80-p")
+                .setDAlign("text-center")
+                .setDType("renderer")
+                .setDRenderer("file_remove"));
+        }
 
         //$scope.tags = [];
         //$scope.loadCountries = function($query) {

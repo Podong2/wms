@@ -1,445 +1,452 @@
-<div class="well" style="overflow-y: auto; background-color: #fff; height: 98%;">
-    <div class="row">
-        <div class="col-md-12">
-            <div><a ui-sref="my-task.detail({id : vm.task.parent.id, listType : vm.listType})" class="cursor">{{vm.task.parent.name}}</a></div>
-            <div class="col-md-9 padding-0">
-                <i class="fa fa-exclamation-circle task-circle" ng-class="vm.task.importantYn ? 'on' : ''" ng-click="vm.task.importantYn = !vm.task.importantYn"></i>
-                <input type="text" class="taskAddInput" ng-model="vm.task.name" enter-submit="vm.taskUpload()" placeholder="Task" ng-show="vm.task.modifyYn"/>
-                <div class="disabled-task-title" ng-show="!vm.task.modifyYn">{{vm.task.name}}</div>
-            </div>
-            <div class="col-md-3 padding-0">
-                <span class="pull-right taskOptionBtnArea">
-                    <span class="taskModalBtn" class="pull-right">
-                        <i class="fa fa-arrows-alt"></i>
+<div class="well task-detail-area" dynamic-content-scroll area-type="detail"> <!-- dynamic-content-scroll 을 이용하여 상세 영역 높이 제어 -->
+    <div>
+        <div class="row">
+            <div class="col-md-12">
+                <div><a ui-sref="my-task.detail({id : vm.task.parent.id, listType : vm.listType})" class="cursor">{{vm.task.parent.name}}</a></div>
+                <div class="col-md-9 padding-0">
+                    <i class="fa fa-exclamation-circle task-circle" ng-class="vm.task.importantYn ? 'on' : ''" ng-click="vm.task.importantYn = !vm.task.importantYn"></i>
+                    <input type="text" class="taskAddInput" ng-model="vm.task.name" enter-submit="vm.taskUpload()" placeholder="Task" ng-show="vm.task.modifyYn"/>
+                    <div class="disabled-task-title" ng-show="!vm.task.modifyYn">{{vm.task.name}}</div>
+                </div>
+                <div class="col-md-3 padding-0">
+                    <span class="pull-right taskOptionBtnArea">
+                        <span class="taskModalBtn" class="pull-right">
+                            <i class="fa fa-arrows-alt"></i>
+                        </span>
+                        <!--<span class="taskModalBtn" ng-click="taskAddModalOpen()" class="pull-right">-->
+                            <!--<i class="fa fa-flag"></i>-->
+                        <!--</span>-->
+                        <span class="taskModalBtn" class="pull-right">
+                            <i class="fa fa-link"></i>
+                        </span>
+                        <span class="taskModalBtn" class="pull-right">
+                            <i class="fa fa-print"></i>
+                        </span>
+                        <span class="taskModalBtn"  class="pull-right">
+                            <i class="fa fa-ellipsis-v"></i>
+                        </span>
                     </span>
-                    <!--<span class="taskModalBtn" ng-click="taskAddModalOpen()" class="pull-right">-->
-                        <!--<i class="fa fa-flag"></i>-->
-                    <!--</span>-->
-                    <span class="taskModalBtn" class="pull-right">
-                        <i class="fa fa-link"></i>
-                    </span>
-                    <span class="taskModalBtn" class="pull-right">
-                        <i class="fa fa-print"></i>
-                    </span>
-                    <span class="taskModalBtn"  class="pull-right">
-                        <i class="fa fa-ellipsis-v"></i>
-                    </span>
-                </span>
+                </div>
             </div>
         </div>
-    </div>
-    <div class="viewTypeClass task-detail" style="margin-top: 10px; min-height: 500px">
+        <div class="viewTypeClass task-detail" style="margin-top: 10px; min-height: 500px">
 
-        <!-- 상태 변경/등록일 -->
-        <div>
-            <div class="row margin-0">
-                <div class="col-md-8 padding-0">
-                    <div class="pull-left">
-                        <!-- 프로젝트/폴더 선택 -->
-                        <div id="projectPickerSection" style="float:left;" ng-show="vm.task.modifyYn">
-                            <label for="addProject" class="cursor projectValueSection margin-top-5" ><i class="fa fa-plus" id="addProject"></i> <span project-picker-edit-toggle>프로젝트/폴더 선택</span></label>
-                            &nbsp;
-                            <div class="project-picker projectPickerSection">
-                                <div style="width: 300px;">
+            <!-- 상태 변경/등록일 -->
+            <div>
+                <div class="row margin-0">
+                    <div class="col-md-8 padding-0">
+                        <div class="pull-left">
+                            <!-- 프로젝트/폴더 선택 -->
+                            <div id="projectPickerSection" style="float:left;" ng-show="vm.task.modifyYn">
+                                <label for="addProject" class="cursor projectValueSection margin-top-5" ><i class="fa fa-plus" id="addProject"></i> <span project-picker-edit-toggle>프로젝트/폴더 선택</span></label>
+                                &nbsp;
+                                <div class="project-picker projectPickerSection">
                                     <div style="width: 300px;">
-                                        <div class="padding-10 relatedTask-popup-header">
-                                            <span class="pull-right fa fa-close cursor picker-popup-close-btn" ng-click="vm.projectClose()"></span>
-                                            프로젝트/폴더
-                                        </div>
-                                        <div class="project-picker-search">
-                                            <input class="project-picker-search-input" type="text" ng-model="projectName" enter-submit="vm.FindProjectList()"
-                                                   placeholder="프로젝트 또는 폴더를 선택하세요."  wms-kr-update>
-                                        </div>
-                                        <div class="project-picker-list-area">
-                                            <div class="project-picker-list">
-                                                <div data-ng-repeat="project in vm.projectList">
-                                                    <div class="project-picker-list-item" ng-click="vm.task.projectIds = project.id">
-                                                        <div>
-                                                            <div class="project-picker-list-item-title">{{project.name}}</div>
-                                                            <div class="project-picker-list-item-path" >
-                                                                <div>
-                                                                    <span ng-repeat="projectParent in project.projectParents track by $index">
-                                                                        <span ng-if="$index != 0">, </span>
-                                                                        [{{projectParent.name}}]
-                                                                    </span>
+                                        <div style="width: 300px;">
+                                            <div class="padding-10 relatedTask-popup-header">
+                                                <span class="pull-right fa fa-close cursor picker-popup-close-btn" ng-click="vm.projectClose()"></span>
+                                                프로젝트/폴더
+                                            </div>
+                                            <div class="project-picker-search">
+                                                <input class="project-picker-search-input" type="text" ng-model="projectName" enter-submit="vm.FindProjectList()"
+                                                       placeholder="프로젝트 또는 폴더를 선택하세요."  wms-kr-update>
+                                            </div>
+                                            <div class="project-picker-list-area">
+                                                <div class="project-picker-list">
+                                                    <div data-ng-repeat="project in vm.projectList">
+                                                        <div class="project-picker-list-item" ng-click="vm.task.projectIds = project.id">
+                                                            <div>
+                                                                <div class="project-picker-list-item-title">{{project.name}}</div>
+                                                                <div class="project-picker-list-item-path" >
+                                                                    <div>
+                                                                        <span ng-repeat="projectParent in project.projectParents track by $index">
+                                                                            <span ng-if="$index != 0">, </span>
+                                                                            [{{projectParent.name}}]
+                                                                        </span>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
 
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="task-project" ng-repeat="project in vm.task.taskProjects">
-                            {{project.name}}
-                            <i class="fa fa-close cursor" ng-click="vm.projectRemoveInTask(project.id)"></i>
+                            <div class="task-project" ng-repeat="project in vm.task.taskProjects">
+                                {{project.name}}
+                                <i class="fa fa-close cursor" ng-click="vm.projectRemoveInTask(project.id)"></i>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-4 padding-0">
-                    <div class="pull-right" style="margin-top: 14px;">
-                        <span class="task-create-date"><span class="task-create-date-text">{{vm.task.createdByName}} </span> {{ (vm.task.createdDate | date:"yyyy-MM-dd HH:mm") || 'empty' }}</span>
+                    <div class="col-md-4 padding-0">
+                        <div class="pull-right" style="margin-top: 14px;">
+                            <span class="task-create-date"><span class="task-create-date-text">{{vm.task.createdByName}} </span> {{ (vm.task.createdDate | date:"yyyy-MM-dd HH:mm") || 'empty' }}</span>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
 
-        <!-- task 상태, 담당자, 참조자 선택 영역 -->
-        <div class="task-options-area task-status-user-aera">
-            <table class="table table-bordered" style="border-top: 0; border-bottom: 0;">
-                <colgroup>
-                    <col width="87px">
-                    <col width="60px">
-                    <col width="540px">
-                    <col width="119px">
-                </colgroup>
-                <tbody>
+            <!-- task 상태, 담당자, 참조자 선택 영역 -->
+            <div class="task-options-area task-status-user-aera">
+                <table class="table table-bordered" style="border-top: 0; border-bottom: 0;">
+                    <colgroup>
+                        <col width="87px">
+                        <col width="60px">
+                        <col width="700px">
+                        <col width="149px">
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <!--<td class="task-list" ng-class="vm.task.statusId == 1 ? 'blue' : (vm.task.statusId == 2 ? 'green' : (vm.task.statusId == 3 ? 'black' : 'red'))">-->
+                                <!--<span class="custom-control custom-checkbox" style="margin-bottom: 0;">-->
+                                    <!--<input type="checkbox" ng-click="vm.task.statusId = 2" class="custom-control-input">-->
+                                <!--</span>-->
+                            <!--</td>-->
+                            <td ng-class="vm.task.statusId == 1 ? 'blue' : (vm.task.statusId == 2 ? 'green' : (vm.task.statusId == 3 ? 'black' : 'red'))">
+                                <ol class="nya-bs-select task-openYn-select" ng-model="vm.task.statusId" style="width: 90px;" disabled="!vm.task.modifyYn">
+                                    <li nya-bs-option="option in vm.codes track by $index" title="{{option.name}}" data-value="option.id">
+                                        <a>
+                                            {{ option.name }}
+                                            <span class="glyphicon glyphicon-ok check-mark"></span>
+                                        </a>
+                                    </li>
+                                </ol>
+                            </td>
+                            <td>
+                                담당자
+                            </td>
+                            <td>
+                                <autocomplete template-url="ngTagsInput/tag-item-user.html" source="findUsers" tags="vm.task.assignees" display-property="name" multiple="true" max-results-to-show="20" tag-type="assignees" modify-yn="{{vm.task.modifyYn}}" project-yn="false"></autocomplete>
+                            </td>
+                            <td style="position: relative;">
+                                <!-- 참조자 정보 팝업 -->
+                                <div class='row watcher-picker-info'>
+                                    <div class='col-md-4 padding-10' style='border-right:1px solid #ddd; height: 100%;'>
+                                        <img ng-src='/api/attachedFile/{{watcherInfo.profileImageId}}' ng-if='watcherInfo.profileImageId !=null' /><img ng-src='/content/images/demo/male.png' ng-if='watcherInfo.profileImageId ==null' />
+                                    </div>
+                                    <div class='col-md-8 padding-10' style='height: 100%;'>
+                                        <ul>
+                                            <li>{{watcherInfo.name}}</li>
+                                            <li>{{watcherInfo.phone}}</li>
+                                            <li>{{watcherInfo.email}}</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <label for="watcher" class="cursor" style="margin-bottom: 0px;" ng-click="pickerFindWatcher('')" watcher-picker-btn-toggle><span id="watcher"><i class="fa fa-user"></i> 참조자 {{vm.task.watchers.length == 0 ? '' : vm.task.watchers.length}}</span></label>
+
+                                <!-- 참조자 검색 및 등록 팝업 -->
+                                <div class="watcher-popup-area text-left">
+                                    <div class="padding-5 watcher-popup-header">
+                                        <span class="pull-right fa fa-close cursor" ng-click="vm.watcherPopupClose()"></span>
+                                        참조자
+                                    </div>
+                                    <div class="watcher-list-area padding-5" ng-show="vm.task.watchers.length > 0">
+                                        <ul class="list-inline friends-list" style="margin-bottom: 0">
+                                            <li class="watcher-item" ng-repeat="user in vm.task.watchers" style="position: relative; margin: 0 3px 3px;" ng-click="vm.watcherInfoAdd(user)" wms-close-btn-display>
+                                                <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}" watcher-info-btn-toggle>
+                                                <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}" watcher-info-btn-toggle>
+                                                <span class="profile-close-btn close-btn cursor" ng-click="vm.removeWatcher(user)" ng-if="vm.task.modifyYn"><i class="fa fa-close"></i></span>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                    <div class="watcher-input-area" ng-if="vm.task.modifyYn">
+                                        <input type="text" class="form-control" ng-model="vm.watcherName" style="border-right: 0; border-left:0;"  placeholder="이름을 입력하세요."/>
+                                    </div>
+                                    <div class="watcher-search-list-area padding-5" ng-if="vm.task.modifyYn">
+                                        <div ng-repeat="data in vm.watcherList track by $index">
+                                            <div class="watcher-search-element cursor" ng-click="vm.watcherAdd(data)">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <img ng-src="/content/images/demo/male.png" ng-if="data.profileImageId == null || data.profileImageId == '' " uib-tooltip="{{data.createdByName}}">
+                                                        <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.profileImageId}}" ng-if="data.profileImageId != null" uib-tooltip="{{data.createdByName}}">
+                                                    </div>
+                                                    <div class="col-md-10">
+                                                        <div>{{data.name}}</div>
+                                                        <div>{{data.email}}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div ng-if="vm.watcherList.length == 0">
+                                            일치하는 사용자가 없습니다.
+                                        </div>
+                                    </div>
+                                </div><!-- 참조자 검색 및 등록 팝업 end -->
+
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <!-- task option 선택 영역 -->
+            <div class="task-options-area task-status-user-aera">
+                <table class="table table-bordered" style="border-top: 0; border-bottom: 0;">
+                    <colgroup>
+                        <col width="87px">
+                        <col width="180px">
+                        <col width="180px">
+                        <col width="180px">
+                        <col width="180px">
+                        <col width="145px">
+                    </colgroup>
+                    <tbody>
                     <tr>
-                        <!--<td class="task-list" ng-class="vm.task.statusId == 1 ? 'blue' : (vm.task.statusId == 2 ? 'green' : (vm.task.statusId == 3 ? 'black' : 'red'))">-->
-                            <!--<span class="custom-control custom-checkbox" style="margin-bottom: 0;">-->
-                                <!--<input type="checkbox" ng-click="vm.task.statusId = 2" class="custom-control-input">-->
-                            <!--</span>-->
-                        <!--</td>-->
-                        <td class="task-list" ng-class="vm.task.statusId == 1 ? 'blue' : (vm.task.statusId == 2 ? 'green' : (vm.task.statusId == 3 ? 'black' : 'red'))">
-                            <ol class="nya-bs-select task-openYn-select" ng-model="vm.task.statusId" style="width: 90px;" disabled="!vm.task.modifyYn">
-                                <li nya-bs-option="option in vm.codes" title="{{option.name}}" data-value="option.id">
+                        <td class="task-options">
+                            <span class="fa privateYn-icon" ng-class="{'fa-lock' : vm.task.privateYn, 'fa-unlock-alt' : !vm.task.privateYn, 'disabled-color' : !vm.task.modifyYn}" ></span>
+                            <ol class="nya-bs-select task-openYn-select" ng-model="vm.task.privateYn" disabled="!vm.task.modifyYn">
+                                <li nya-bs-option="option in vm.privateYns" title="{{option.name}}" data-value="option.id">
                                     <a>
-                                        {{ option.name }}
+                                        <span class="fa" ng-class="option.icon"></span> {{ option.name }}
                                         <span class="glyphicon glyphicon-ok check-mark"></span>
                                     </a>
                                 </li>
                             </ol>
                         </td>
                         <td>
-                            담당자
-                        </td>
-                        <td>
-                            <autocomplete template-url="ngTagsInput/tag-item-user.html" source="findUsers" tags="vm.task.assignees" display-property="name" multiple="true" max-results-to-show="20" tag-type="assignees" modify-yn="{{vm.task.modifyYn}}" project-yn="false"></autocomplete>
-                        </td>
-                        <td style="position: relative;">
-                            <!-- 참조자 정보 팝업 -->
-                            <div class='row watcher-picker-info'>
-                                <div class='col-md-4 padding-10' style='border-right:1px solid #ddd; height: 100%;'>
-                                    <img ng-src='/api/attachedFile/{{watcherInfo.profileImageId}}' ng-if='watcherInfo.profileImageId !=null' /><img ng-src='/content/images/demo/male.png' ng-if='watcherInfo.profileImageId ==null' />
+                            <!--<div id="repeatAddSection">-->
+                                <!--<i class="icon-append fa fa-calendar" style="float: left; padding: 12px;" repeat-picker-toggle></i>-->
+                                <!--<i class="icon-append glyphicon glyphicon-retweet" ng-if="vm.taskRepeatSchedule.repeatType != '' && vm.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i>-->
+                                <!--<div class="form-group" style="margin-bottom: 0; position: relative;">-->
+
+                                    <!--<span class="input-group wms-form">-->
+                                        <!--<label style="margin-bottom: 0px;" class="input">-->
+                                            <!--<input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="endDate" repeat-picker-add-toggle style="height: 30px; width: 100%; border : 0">-->
+                                        <!--</label>-->
+
+                                        <!--<span class="dueDateValues" repeat-picker-add-toggle>{{vm.task.startDate | date : 'MM-dd'}} {{vm.task.startDate =='' && vm.task.endDate == '' ? '일정' : '~'}} {{vm.task.endDate | date : 'MM-dd'}}</span>-->
+                                    <!--</span>-->
+                                <!--</div>-->
+
+                                <!--&lt;!&ndash; 달력 팝업 &ndash;&gt;-->
+                                <!--<div wms-Include="app/task/html/repeatAddDatePicker.html" ></div>-->
+                            <!--</div>-->
+                            <div id="repeatEditSection" >
+                                <div repeat-picker-toggle ng-if="vm.task.modifyYn">
+                                    <i class="icon-append glyphicon glyphicon-retweet" ng-if="vm.task.taskRepeatSchedule.repeatType != '' && vm.task.taskRepeatSchedule != null " style="float: left; padding: 12px 5px;"></i>
+                                    <i class="icon-append fa fa-calendar cursor" style="float: left; padding: 12px 5px;"></i>
+                                    <div class="form-group" style="margin-bottom: 0; position: relative;">
+
+                                        <span class="input-group wms-form">
+                                            <label style="margin-bottom: 0px;" class="input">
+                                                <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="endDate" style="height: 30px; width: 100%; border : 0">
+                                            </label>
+
+                                            <span class="dueDateValues" >{{vm.task.startDate | date : 'MM-dd'}} {{vm.task.startDate =='' && vm.task.endDate == '' ? '일정' : '~'}} {{vm.task.endDate | date : 'MM-dd'}}</span>
+                                        </span>
+                                    </div>
+
                                 </div>
-                                <div class='col-md-8 padding-10' style='height: 100%;'>
-                                    <ul>
-                                        <li>{{watcherInfo.name}}</li>
-                                        <li>{{watcherInfo.phone}}</li>
-                                        <li>{{watcherInfo.email}}</li>
-                                    </ul>
+                                <div ng-if="!vm.task.modifyYn">
+                                    <i class="icon-append glyphicon glyphicon-retweet" ng-if="vm.task.taskRepeatSchedule.repeatType != '' && vm.task.taskRepeatSchedule != null " style="float: left; padding: 12px 5px;"></i>
+                                    <i class="icon-append fa fa-calendar" style="float: left; padding: 12px 5px;"></i>
+                                    <div class="form-group" style="margin-bottom: 0; position: relative;">
+                                        <span class="input-group wms-form">
+                                            <span class="dueDateValues disabled-calender" >{{vm.task.startDate | date : 'MM-dd'}} {{vm.task.startDate =='' && vm.task.endDate == '' ? '일정' : '~'}} {{vm.task.endDate | date : 'MM-dd'}}</span>
+                                        </span>
+                                    </div>
                                 </div>
+                                <!-- 달력 팝업 -->
+                                <div wms-Include="app/task/html/repeatDatePicker.html"></div>
                             </div>
+                        </td>
 
-                            <label for="watcher" class="cursor" style="margin-bottom: 0px;" ng-click="pickerFindWatcher('')" watcher-picker-btn-toggle><span id="watcher"><i class="fa fa-user"></i> 참조자 {{vm.task.watchers.length == 0 ? '' : vm.task.watchers.length}}</span></label>
+                        <!-- 하위작업 영역 -->
+                        <td>
+                            <label ng-if="!vm.task.privateYn && vm.task.modifyYn" for="subTaskAdd" class="cursor margin-bottom-0" ng-click="vm.subTaskOpen = !vm.subTaskOpen" wms-sub-task-input-focus><i class="fa fa-outdent" id="subTaskAdd" > <span>하위 작업 {{vm.task.subTasks.length == 0 ? '' : vm.task.subTasks.length}}</span></i></label>
+                            <label ng-if="vm.task.privateYn || !vm.task.modifyYn" for="subTaskDisabled" class="btn-none margin-bottom-0" disabled="disabled"><i class="fa fa-outdent" id="subTaskDisabled" > <span>하위 작업 {{vm.task.subTasks.length == 0 ? '' : vm.task.subTasks.length}}</span></i></label>
+                        </td>
 
-                            <!-- 참조자 검색 및 등록 팝업 -->
-                            <div class="watcher-popup-area text-left">
-                                <div class="padding-5 watcher-popup-header">
-                                    <span class="pull-right fa fa-close cursor" ng-click="vm.watcherPopupClose()"></span>
-                                    참조자
+                        <!-- 파일첨부 영역 -->
+                        <td>
+                            <label for="subTaskAdd" ng-if="!vm.task.privateYn && vm.task.modifyYn" class="cursor margin-bottom-0" ng-click="vm.fileAreaOpen = !vm.fileAreaOpen"><i class="fa fa-paperclip"></i> 파일 첨부 {{vm.previewFiles.length == 0 ? '' : vm.previewFiles.length}}</label>
+                            <label for="subTaskAdd" ng-if="vm.task.privateYn || !vm.task.modifyYn" class="btn-none margin-bottom-0"><i class="fa fa-paperclip"></i> 파일 첨부 {{vm.previewFiles.length == 0 ? '' : vm.previewFiles.length}}</label>
+                        </td>
+
+                        <!-- 참조작업 영역 -->
+                        <td style="position: relative;">
+                            <label style="margin-bottom: 0px;" for="subTaskAdd" class="cursor" ng-click="vm.relatedTaskOpen = !vm.relatedTaskOpen" related-task-picker-btn-toggle><i class="fa fa-share-alt"></i> 참조 작업 {{vm.task.relatedTasks.length == 0 ? '' : vm.task.relatedTasks.length}}</label>
+
+                            <!-- 참조작업 검색 및 등록 팝업 -->
+                            <div class="relatedTask-popup-area text-left">
+                                <div class="padding-10 relatedTask-popup-header">
+                                    <span class="pull-right fa fa-close cursor picker-popup-close-btn" ng-click="vm.relatedTaskPopupClose()"></span>
+                                    참조작업 <span ng-show="vm.task.relatedTasks.length > 0">{{vm.task.relatedTasks.length}} 개</span>
                                 </div>
-                                <div class="watcher-list-area padding-5" ng-show="vm.task.watchers.length > 0">
-                                    <ul class="list-inline friends-list" style="margin-bottom: 0">
-                                        <li class="watcher-item" ng-repeat="user in vm.task.watchers" style="position: relative; margin: 0 3px 3px;" ng-click="vm.watcherInfoAdd(user)" wms-close-btn-display>
-                                            <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}" watcher-info-btn-toggle>
-                                            <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}" watcher-info-btn-toggle>
-                                            <span class="profile-close-btn close-btn cursor" ng-click="vm.removeWatcher(user)" ng-if="vm.task.modifyYn"><i class="fa fa-close"></i></span>
+
+                                <div class="relatedTask-list-area padding-5" ng-show="vm.task.relatedTasks.length > 0">
+                                    <!--<span class="position-relative relatedTask-list-item padding-5 float-left" ng-repeat="task in vm.task.relatedTasks">-->
+                                    <!--<span>{{task.name}}</span>-->
+                                    <!--<span class="relatedTask-close-btn cursor" ng-click="vm.removeWatcher(task)"><i class="fa fa-close"></i></span>-->
+                                    <!--</span>-->
+                                    <ul class="relatedTask-list-item-area">
+                                        <li class="position-relative relatedTask-list-item padding-5 float-left" ng-repeat="task in vm.task.relatedTasks" wms-close-btn-display>
+                                            <span class="relatedTask-list-item-title cursor" ng-click="vm.windowOpen(task)">{{task.name}}</span>
+                                            <span class="relatedTask-close-btn close-btn cursor" ng-click="vm.removeRelatedTask(task)" ng-if="vm.task.modifyYn"><i class="fa fa-close"></i></span>
                                         </li>
                                     </ul>
                                 </div>
-                                <div class="watcher-input-area" ng-if="vm.task.modifyYn">
-                                    <input type="text" class="form-control" ng-model="vm.watcherName" style="border-right: 0; border-left:0;"  placeholder="이름을 입력하세요."/>
+
+                                <div class="relatedTask-input-area border-top padding-10 " ng-show="vm.relatedSearchAgainYn && vm.task.modifyYn">
+                                    {{vm.relatedSearchForm.name}}
                                 </div>
-                                <div class="watcher-search-list-area padding-5" ng-if="vm.task.modifyYn">
-                                    <div ng-repeat="data in vm.watcherList track by $index">
-                                        <div class="watcher-search-element cursor" ng-click="vm.watcherAdd(data)">
-                                            <div class="row">
-                                                <div class="col-md-2">
-                                                    <img ng-src="/content/images/demo/male.png" ng-if="data.profileImageId == null || data.profileImageId == '' " uib-tooltip="{{data.createdByName}}">
-                                                    <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.profileImageId}}" ng-if="data.profileImageId != null" uib-tooltip="{{data.createdByName}}">
-                                                </div>
-                                                <div class="col-md-10">
-                                                    <div>{{data.name}}</div>
-                                                    <div>{{data.email}}</div>
-                                                </div>
+                                <div class="relatedTask-input-area padding-5 border-top" ng-show="vm.relatedSearchYn && vm.task.modifyYn">
+                                    <div class="related-task-search-div">
+                                        작업명 : <input type="text" class="" ng-model="vm.relatedSearchForm.name" ng-keydown="vm.relatedTaskValidateYn = false" ng-class="vm.relatedSearchForm.name == '' && vm.relatedTaskValidateYn ? 'task-name-validate' : ''" style="border-right: 0; border-left:0; border-top: 0"  placeholder="작업명을 입력하세요."/>
+                                    </div>
+                                    <div class="related-task-search-div">
+                                        담당자 : <input type="text" class="" ng-model="vm.relatedSearchForm.assigneeName" style="border-right: 0; border-left:0; border-top: 0"  placeholder="이름을 입력하세요."/>
+                                        <label for="assigneeYn"><input type="checkbox" id="assigneeYn" ng-model="vm.relatedSearchForm.assigneeSelfYn"/> 본인</label>
+                                    </div>
+                                    <div class="related-task-search-div">
+                                        작업 등록자 : <label for="createYn"><input type="checkbox" id="createYn" ng-model="vm.relatedSearchForm.createdBySelfYn"/> 본인</label>
+                                    </div>
+                                    <div class="related-task-search-div" style="display: inline-table;">
+                                        <div class="float-left">프로젝트/폴더 : </div>
+                                        <div class="padding-0 float-left">
+                                            <autocomplete template-url="ngTagsInput/tag-item.html" source="findProjects" tags="projectPickerList" display-property="name" multiple="false" max-results-to-show="20" project-yn="true"></autocomplete>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="relatedTask-search-list-area border-top clear-both" ng-show="vm.relatedSearchAgainYn && vm.task.modifyYn">
+                                    <div class="padding-5 related-task-item-list" ng-repeat="data in vm.relatedTaskList track by $index">
+                                        <div class="relatedTask-search-element">
+                                            <div class="pull-right">
+                                                <input type="checkbox" name="selectedFruits[]" value="{{data}}" ng-checked="checkedTask.indexOf(data) > -1" ng-click="toggleSelection(data)" wms-related-task-checked>
+                                            </div>
+                                            <div>
+                                                <span class="relatedTask-title" uib-tooltip="{{data.name}}" tooltip-placement="top-left">{{data.name}}</span>
+                                                <ul class="list-inline friends-list" style="margin-bottom: 0; text-align: left;">
+                                                    <li ng-repeat="user in data.assignees | limitTo:3" style="position: relative">
+                                                        <img ng-src="/content/images/demo/male.png" ng-if="data.profileImageId == null || data.profileImageId == '' " uib-tooltip="{{data.name}}">
+                                                        <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.profileImageId}}" ng-if="data.profileImageId != null" uib-tooltip="{{data.name}}">
+                                                    </li>
+                                                    <li ng-if="data.assignees.length > 3">
+                                                        <a href-void>
+                                                        <span class="activity">
+                                                            <a><i class="fa fa-plus" style="font-size: 22px; position: relative; top: 5px;"></i><b class="badge bg-color-red" style="position: absolute;">{{list.assignees.length - 3}}</b></a>
+                                                        </span>
+                                                        </a>
+                                                    </li>
+                                                </ul>
                                             </div>
                                         </div>
                                     </div>
-                                    <div ng-if="vm.watcherList.length == 0">
-                                        일치하는 사용자가 없습니다.
+                                </div>
+
+                                <div class="relatedTask-search-list-area border-top" ng-if="vm.relatedTaskEmptyYn && vm.task.modifyYn">
+                                    <div class="padding-5">
+                                        <div>검색 결과가 없습니다.</div>
+                                        <div>검색 조건을 다시 확인하여 주세요.</div>
                                     </div>
                                 </div>
-                            </div><!-- 참조자 검색 및 등록 팝업 end -->
 
+                                <div class="relatedTask-search-btn-area border-top" style="text-align: center;" ng-if="vm.task.modifyYn">
+                                    <div class="relatedTask-search-btn cursor" ng-show="vm.relatedSearchYn" ng-click="vm.findRelatedTask()">
+                                        검색
+                                    </div>
+                                    <div class="relatedTask-search-btn cursor" ng-show="vm.relatedSearchAgainYn">
+                                        <div class="row">
+                                            <div class="col-md-6" ng-click="vm.addRelatedTask()">
+                                                선택
+                                            </div>
+                                            <div class="col-md-6" ng-click="vm.relatedTaskFormOpen()">
+                                                재검색
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="relatedTask-search-btn cursor" ng-show="vm.relatedSearchSelectedYn" ng-click="vm.relatedTaskFormOpen()">
+                                        추가 검색
+                                    </div>
+                                    <div class="relatedTask-search-btn cursor" ng-show="vm.relatedTaskEmptyYn" ng-click="vm.relatedTaskFormOpen()">
+                                        확인
+                                    </div>
+                                </div>
+
+                            </div><!-- 참조작업 검색 및 등록 팝업 end -->
+                        </td>
+
+                        <td>
+                            <label style="margin-bottom: 0px;" for="subTaskAdd" class="cursor" ng-if="!vm.task.privateYn" ng-class="vm.task.relatedTasks.length == 0 && vm.task.subTasks.length == 0 ? 'btn-none' : ''" ng-click="vm.getTaskProgressStatus()">
+                                <i class="fa fa-share-alt"></i> 작업 현황
+                            </label>
+                            <label style="margin-bottom: 0px;" for="subTaskAdd" class="btn-none" ng-if="vm.task.privateYn">
+                                <i class="fa fa-share-alt"></i> 작업 현황
+                            </label>
                         </td>
                     </tr>
-                </tbody>
-            </table>
+                    </tbody>
+                </table>
+                <div>
+                    <div class="sub-task-area" >
+                        <table class="table table-bordered" ng-show="vm.task.subTasks.length != 0">
+                            <thead>
+                            <tr>
+                                <td>하위 작업 목록</td>
+                            </tr>
+                            </thead>
+                            <tbody id="userPickerSection">
+                                <tr ng-repeat="list in vm.task.subTasks">
+                                    <td class="position-relative">
+                                        <!-- 우측 영역 -->
+                                        <span class="pull-right" style="width: 80px;">
+                                            <!--{{list.createdDate | date : 'yyyy-MM-dd'}}-->
+                                            <div id="subTaskEditSection">
+                                                <i class="icon-append fa fa-calendar cursor" ng-if="list.modifyYn" style="float: left; padding: 16px 10px;" sub-task-picker-toggle ng-click="vm.setDatePickerInput(list)"></i>
+                                                <i class="icon-append fa fa-calendar" ng-if="!list.modifyYn" style="float: left; padding: 16px 10px;"></i>
+                                                <div class="form-group" style="margin-bottom: 0">
 
-        </div>
+                                                    <span class="input-group wms-form">
+                                                        <label class="input" ng-show="list.startDate != '' || list.startDate != ''">
+                                                            <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="subTaskEndDate" style="height: 30px; width: 100%; border : 0">
+                                                        </label>
 
-        <!-- task option 선택 영역 -->
-        <div class="task-options-area task-status-user-aera">
-            <table class="table table-bordered" style="border-top: 0; border-bottom: 0;">
-                <colgroup>
-                    <col width="91px">
-                    <col width="150px">
-                    <col width="150px">
-                    <col width="150px">
-                    <col width="150px">
-                    <col width="115px">
-                </colgroup>
-                <tbody>
-                <tr>
-                    <td class="task-options">
-                        <span class="fa privateYn-icon" ng-class="{'fa-lock' : vm.task.privateYn, 'fa-unlock-alt' : !vm.task.privateYn, 'disabled-color' : !vm.task.modifyYn}" ></span>
-                        <ol class="nya-bs-select task-openYn-select" ng-model="vm.task.privateYn" disabled="!vm.task.modifyYn">
-                            <li nya-bs-option="option in vm.privateYns" title="{{option.name}}" data-value="option.id">
-                                <a>
-                                    <span class="fa" ng-class="option.icon"></span> {{ option.name }}
-                                    <span class="glyphicon glyphicon-ok check-mark"></span>
-                                </a>
-                            </li>
-                        </ol>
-                    </td>
-                    <td>
-                        <!--<div id="repeatAddSection">-->
-                            <!--<i class="icon-append fa fa-calendar" style="float: left; padding: 12px;" repeat-picker-toggle></i>-->
-                            <!--<i class="icon-append glyphicon glyphicon-retweet" ng-if="vm.taskRepeatSchedule.repeatType != '' && vm.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i>-->
-                            <!--<div class="form-group" style="margin-bottom: 0; position: relative;">-->
-
-                                <!--<span class="input-group wms-form">-->
-                                    <!--<label style="margin-bottom: 0px;" class="input">-->
-                                        <!--<input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="endDate" repeat-picker-add-toggle style="height: 30px; width: 100%; border : 0">-->
-                                    <!--</label>-->
-
-                                    <!--<span class="dueDateValues" repeat-picker-add-toggle>{{vm.task.startDate | date : 'MM-dd'}} {{vm.task.startDate =='' && vm.task.endDate == '' ? '일정' : '~'}} {{vm.task.endDate | date : 'MM-dd'}}</span>-->
-                                <!--</span>-->
-                            <!--</div>-->
-
-                            <!--&lt;!&ndash; 달력 팝업 &ndash;&gt;-->
-                            <!--<div wms-Include="app/task/html/repeatAddDatePicker.html" ></div>-->
-                        <!--</div>-->
-                        <div id="repeatEditSection" >
-                            <div repeat-picker-toggle ng-if="vm.task.modifyYn">
-                                <i class="icon-append glyphicon glyphicon-retweet" ng-if="vm.task.taskRepeatSchedule.repeatType != '' && vm.task.taskRepeatSchedule != null " style="float: left; padding: 12px 5px;"></i>
-                                <i class="icon-append fa fa-calendar cursor" style="float: left; padding: 12px 5px;"></i>
-                                <div class="form-group" style="margin-bottom: 0; position: relative;">
-
-                                    <span class="input-group wms-form">
-                                        <label style="margin-bottom: 0px;" class="input">
-                                            <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="endDate" style="height: 30px; width: 100%; border : 0">
-                                        </label>
-
-                                        <span class="dueDateValues" >{{vm.task.startDate | date : 'MM-dd'}} {{vm.task.startDate =='' && vm.task.endDate == '' ? '일정' : '~'}} {{vm.task.endDate | date : 'MM-dd'}}</span>
-                                    </span>
-                                </div>
-
-                            </div>
-                            <div ng-if="!vm.task.modifyYn">
-                                <i class="icon-append glyphicon glyphicon-retweet" ng-if="vm.task.taskRepeatSchedule.repeatType != '' && vm.task.taskRepeatSchedule != null " style="float: left; padding: 12px 5px;"></i>
-                                <i class="icon-append fa fa-calendar" style="float: left; padding: 12px 5px;"></i>
-                                <div class="form-group" style="margin-bottom: 0; position: relative;">
-                                    <span class="input-group wms-form">
-                                        <span class="dueDateValues disabled-calender" >{{vm.task.startDate | date : 'MM-dd'}} {{vm.task.startDate =='' && vm.task.endDate == '' ? '일정' : '~'}} {{vm.task.endDate | date : 'MM-dd'}}</span>
-                                    </span>
-                                </div>
-                            </div>
-                            <!-- 달력 팝업 -->
-                            <div wms-Include="app/task/html/repeatDatePicker.html"></div>
-                        </div>
-                    </td>
-
-                    <!-- 하위작업 영역 -->
-                    <td>
-                        <label style="margin-bottom: 0px;" ng-if="!vm.task.privateYn && vm.task.modifyYn" for="subTaskAdd" class="cursor" ng-click="vm.subTaskOpen = !vm.subTaskOpen" wms-sub-task-input-focus><i class="fa fa-outdent" id="subTaskAdd" > <span>하위 작업 {{vm.task.subTasks.length == 0 ? '' : vm.task.subTasks.length}}</span></i></label>
-                        <label style="margin-bottom: 0px;" ng-if="vm.task.privateYn || !vm.task.modifyYn" for="subTaskDisabled" disabled="disabled"><i class="fa fa-outdent" id="subTaskDisabled" > <span>하위 작업 {{vm.task.subTasks.length == 0 ? '' : vm.task.subTasks.length}}</span></i></label>
-                    </td>
-
-                    <!-- 파일첨부 영역 -->
-                    <td>
-                        <label style="margin-bottom: 0px;" for="subTaskAdd" ng-if="!vm.task.privateYn && vm.task.modifyYn" class="cursor" ng-click="vm.fileAreaOpen = !vm.fileAreaOpen"><i class="fa fa-paperclip"></i> 파일 첨부</label>
-                        <label style="margin-bottom: 0px;" for="subTaskAdd" ng-if="vm.task.privateYn || !vm.task.modifyYn" class="cursor" ng-click="vm.fileAreaOpen = !vm.fileAreaOpen"><i class="fa fa-paperclip"></i> 파일 첨부</label>
-                    </td>
-
-                    <!-- 참조작업 영역 -->
-                    <td style="position: relative;">
-                        <label style="margin-bottom: 0px;" for="subTaskAdd" class="cursor" ng-click="vm.relatedTaskOpen = !vm.relatedTaskOpen" related-task-picker-btn-toggle><i class="fa fa-share-alt"></i> 참조 작업 {{vm.task.relatedTasks.length == 0 ? '' : vm.task.relatedTasks.length}}</label>
-
-                        <!-- 참조작업 검색 및 등록 팝업 -->
-                        <div class="relatedTask-popup-area text-left">
-                            <div class="padding-10 relatedTask-popup-header">
-                                <span class="pull-right fa fa-close cursor picker-popup-close-btn" ng-click="vm.relatedTaskPopupClose()"></span>
-                                참조작업 <span ng-show="vm.task.relatedTasks.length > 0">{{vm.task.relatedTasks.length}} 개</span>
-                            </div>
-
-                            <div class="relatedTask-list-area padding-5" ng-show="vm.task.relatedTasks.length > 0">
-                                <!--<span class="position-relative relatedTask-list-item padding-5 float-left" ng-repeat="task in vm.task.relatedTasks">-->
-                                <!--<span>{{task.name}}</span>-->
-                                <!--<span class="relatedTask-close-btn cursor" ng-click="vm.removeWatcher(task)"><i class="fa fa-close"></i></span>-->
-                                <!--</span>-->
-                                <ul class="relatedTask-list-item-area">
-                                    <li class="position-relative relatedTask-list-item padding-5 float-left" ng-repeat="task in vm.task.relatedTasks" wms-close-btn-display>
-                                        <span class="relatedTask-list-item-title cursor">{{task.name}}</span>
-                                        <span class="relatedTask-close-btn close-btn cursor" ng-click="vm.removeRelatedTask(task)" ng-if="vm.task.modifyYn"><i class="fa fa-close"></i></span>
-                                    </li>
-                                </ul>
-                            </div>
-
-                            <div class="relatedTask-input-area border-top padding-10 " ng-show="vm.relatedSearchAgainYn && vm.task.modifyYn">
-                                {{vm.relatedSearchForm.name}}
-                            </div>
-                            <div class="relatedTask-input-area padding-5 border-top" ng-show="vm.relatedSearchYn && vm.task.modifyYn">
-                                <div class="related-task-search-div">
-                                    작업명 : <input type="text" class="" ng-model="vm.relatedSearchForm.name" ng-keydown="vm.relatedTaskValidateYn = false" ng-class="vm.relatedSearchForm.name == '' && vm.relatedTaskValidateYn ? 'task-name-validate' : ''" style="border-right: 0; border-left:0; border-top: 0"  placeholder="작업명을 입력하세요."/>
-                                </div>
-                                <div class="related-task-search-div">
-                                    담당자 : <input type="text" class="" ng-model="vm.relatedSearchForm.assigneeName" style="border-right: 0; border-left:0; border-top: 0"  placeholder="이름을 입력하세요."/>
-                                    <label for="assigneeYn"><input type="checkbox" id="assigneeYn" ng-model="vm.relatedSearchForm.assigneeSelfYn"/> 본인</label>
-                                </div>
-                                <div class="related-task-search-div">
-                                    작업 등록자 : <label for="createYn"><input type="checkbox" id="createYn" ng-model="vm.relatedSearchForm.createdBySelfYn"/> 본인</label>
-                                </div>
-                                <div class="related-task-search-div" style="display: inline-table;">
-                                    <div class="float-left">프로젝트/폴더 : </div>
-                                    <div class="padding-0 float-left">
-                                        <autocomplete template-url="ngTagsInput/tag-item.html" source="findProjects" tags="projectPickerList" display-property="name" multiple="false" max-results-to-show="20" project-yn="true"></autocomplete>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="relatedTask-search-list-area border-top clear-both" ng-show="vm.relatedSearchAgainYn && vm.task.modifyYn">
-                                <div class="padding-5 related-task-item-list" ng-repeat="data in vm.relatedTaskList track by $index">
-                                    <div class="relatedTask-search-element">
-                                        <div class="pull-right">
-                                            <input type="checkbox" name="selectedFruits[]" value="{{data}}" ng-checked="checkedTask.indexOf(data) > -1" ng-click="toggleSelection(data)" wms-related-task-checked>
-                                        </div>
-                                        <div>
-                                            <span class="relatedTask-title" uib-tooltip="{{data.name}}" tooltip-placement="top-left">{{data.name}}</span>
-                                            <ul class="list-inline friends-list" style="margin-bottom: 0; text-align: left;">
-                                                <li ng-repeat="user in data.assignees | limitTo:3" style="position: relative">
-                                                    <img ng-src="/content/images/demo/male.png" ng-if="data.profileImageId == null || data.profileImageId == '' " uib-tooltip="{{data.name}}">
-                                                    <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.profileImageId}}" ng-if="data.profileImageId != null" uib-tooltip="{{data.name}}">
-                                                </li>
-                                                <li ng-if="data.assignees.length > 3">
-                                                    <a href-void>
-                                                    <span class="activity">
-                                                        <a><i class="fa fa-plus" style="font-size: 22px; position: relative; top: 5px;"></i><b class="badge bg-color-red" style="position: absolute;">{{list.assignees.length - 3}}</b></a>
+                                                        <span class="dueDateValues" style="top:15px;" sub-task-picker-toggle ng-click="vm.setDatePickerInput(list)">{{list.endDate | date : 'MM-dd'}}</span>
+                                                        <span class="dueDateValues" style="top:15px;" ng-if="!list.modifyYn">{{list.endDate | date : 'MM-dd'}}</span>
                                                     </span>
-                                                    </a>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="relatedTask-search-list-area border-top" ng-if="vm.relatedTaskEmptyYn && vm.task.modifyYn">
-                                <div class="padding-5">
-                                    <div>검색 결과가 없습니다.</div>
-                                    <div>검색 조건을 다시 확인하여 주세요.</div>
-                                </div>
-                            </div>
-
-                            <div class="relatedTask-search-btn-area border-top" style="text-align: center;" ng-if="vm.task.modifyYn">
-                                <div class="relatedTask-search-btn cursor" ng-show="vm.relatedSearchYn" ng-click="vm.findRelatedTask()">
-                                    검색
-                                </div>
-                                <div class="relatedTask-search-btn cursor" ng-show="vm.relatedSearchAgainYn">
-                                    <div class="row">
-                                        <div class="col-md-6" ng-click="vm.addRelatedTask()">
-                                            선택
-                                        </div>
-                                        <div class="col-md-6" ng-click="vm.relatedTaskFormOpen()">
-                                            재검색
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="relatedTask-search-btn cursor" ng-show="vm.relatedSearchSelectedYn" ng-click="vm.relatedTaskFormOpen()">
-                                    추가 검색
-                                </div>
-                                <div class="relatedTask-search-btn cursor" ng-show="vm.relatedTaskEmptyYn" ng-click="vm.relatedTaskFormOpen()">
-                                    확인
-                                </div>
-                            </div>
-
-                        </div><!-- 참조작업 검색 및 등록 팝업 end -->
-                    </td>
-
-                    <td>
-                        <label style="margin-bottom: 0px;" for="subTaskAdd" class="cursor" ng-class="vm.task.relatedTasks.length == 0 && vm.task.subTasks.length == 0 ? 'btn-none' : ''" ng-click="vm.getTaskProgressStatus()">
-                            <i class="fa fa-share-alt"></i> 작업 현황
-                        </label>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <div>
-                <div class="sub-task-area" >
-                    <table class="table table-bordered" ng-show="vm.task.subTasks.length != 0">
-                        <thead>
-                        <tr>
-                            <td>하위 작업 목록</td>
-                        </tr>
-                        </thead>
-                        <tbody id="userPickerSection">
-                            <tr ng-repeat="list in vm.task.subTasks">
-                                <td class="position-relative">
-                                    <!-- 우측 영역 -->
-                                    <span class="pull-right" style="width: 80px;">
-                                        <!--{{list.createdDate | date : 'yyyy-MM-dd'}}-->
-                                        <div id="subTaskEditSection">
-                                            <i class="icon-append fa fa-calendar cursor" style="float: left; padding: 16px 10px;" sub-task-picker-toggle ng-click="vm.setDatePickerInput(list)"></i>
-                                            <div class="form-group" style="margin-bottom: 0">
-
-                                                <span class="input-group wms-form">
-                                                    <label class="input" ng-show="list.startDate != '' || list.startDate != ''">
-                                                        <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="subTaskEndDate" style="height: 30px; width: 100%; border : 0">
-                                                    </label>
-
-                                                    <span class="dueDateValues" sub-task-picker-toggle ng-click="vm.setDatePickerInput(list)">{{list.endDate | date : 'MM-dd'}}</span>
-                                                </span>
+                                                </div>
+                                                <div wms-Include="app/task/html/subTaskDatePicker.html"></div>
                                             </div>
-                                            <div wms-Include="app/task/html/subTaskDatePicker.html"></div>
+                                        </span>
+
+                                        <!-- 제목 영역 -->
+                                        <div class="task-detail-list-title">
+                                            <!--<input type="checkbox"/>-->
+                                            <span class="cursor" ui-sref="my-task.detail({id : list.id, listType : vm.listType})" uib-tooltip="{{list.name}}" tooltip-placement="top-left">{{list.name}}</span>
+
                                         </div>
-                                    </span>
 
-                                    <!-- 제목 영역 -->
-                                    <div class="task-detail-list-title">
-                                        <input type="checkbox"/>
-                                        <span class="cursor" ui-sref="my-task.detail({id : list.id, listType : vm.listType})" uib-tooltip="{{list.name}}" tooltip-placement="top-left">{{list.name}}</span>
-
-                                    </div>
-
-                                    <!-- 사용자 아이콘 -->
-                                    <div class="sub-task-user-list">
-                                        <!-- 사용자 검색 -->
-                                        <button class="btn taskUserValueSection pull-left sub-task-user-plus-btn" id="assigneeAddBtn" ng-click="vm.updateSubTaskForm(list)"  user-picker-edit-toggle>+</button>
-                                        <div class="project-picker userPickerSection">
-                                            <div style="width: 300px;">
+                                        <!-- 사용자 아이콘 -->
+                                        <div class="sub-task-user-list">
+                                            <!-- 사용자 검색 -->
+                                            <button class="btn taskUserValueSection pull-left sub-task-user-plus-btn" id="assigneeAddBtn" ng-click="vm.updateSubTaskForm(list)" ng-if="list.modifyYn" user-picker-edit-toggle>+</button>
+                                            <div class="project-picker userPickerSection">
                                                 <div style="width: 300px;">
-                                                    <div class="project-picker-search">
-                                                        <input class="project-picker-search-input" type="text" ng-model="vm.userName" enter-submit="pickerFindUsers(userName)" placeholder="사용자 명을 입력하세요."  wms-kr-update>
-                                                    </div>
-                                                    <div class="project-picker-list-area">
-                                                        <div class="project-picker-list">
-                                                            <div data-ng-repeat="user in vm.userList">
-                                                                <div class="project-picker-list-item" ng-click="vm.subTaskUserAdd(user.id)">
-                                                                    <div>
-                                                                        <div class="project-picker-list-item-title">
-                                                                            <ul class="list-inline friends-list float-left comment-user-profile">
-                                                                                <li>
-                                                                                    <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.createdByName}}">
-                                                                                    <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.createdByName}}">
-                                                                                </li>
-                                                                            </ul>
-                                                                            {{user.name}}
+                                                    <div style="width: 300px;">
+                                                        <div class="project-picker-search">
+                                                            <input class="project-picker-search-input" type="text" ng-model="vm.userName" enter-submit="pickerFindUsers(userName)" placeholder="사용자 명을 입력하세요."  wms-kr-update>
+                                                        </div>
+                                                        <div class="project-picker-list-area">
+                                                            <div class="project-picker-list">
+                                                                <div data-ng-repeat="user in vm.userList">
+                                                                    <div class="project-picker-list-item" ng-click="vm.subTaskUserAdd(user.id)">
+                                                                        <div>
+                                                                            <div class="project-picker-list-item-title">
+                                                                                <ul class="list-inline friends-list float-left comment-user-profile">
+                                                                                    <li>
+                                                                                        <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.createdByName}}">
+                                                                                        <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.createdByName}}">
+                                                                                    </li>
+                                                                                </ul>
+                                                                                {{user.name}}
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -448,141 +455,140 @@
                                                     </div>
                                                 </div>
                                             </div>
+
+                                            <ul class="list-inline friends-list" style="margin-bottom: 0; text-align: left;">
+                                                <li ng-repeat="user in list.assignees | limitTo:3" class="position-relative" wms-close-btn-display>
+                                                    <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
+                                                    <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
+                                                    <span class="profile-close-btn close-btn cursor" ng-click="vm.subTaskUserRemove(user.id, list)" ng-if="list.modifyYn"><i class="fa fa-close"></i></span>
+                                                </li>
+                                                <li ng-if="list.assignees.length > 3">
+                                                    <a href-void>
+                                                        <span class="activity">
+                                                            <a class="position-relative"><i class="fa fa-plus user-profile-plus-btn"></i> <b class="badge bg-color-red user-count-icon">{{list.assignees.length - 3}}</b></a>
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            </ul>
                                         </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
 
-                                        <ul class="list-inline friends-list" style="margin-bottom: 0; text-align: left;">
-                                            <li ng-repeat="user in list.assignees | limitTo:3" style="position: relative">
-                                                <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
-                                                <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
-                                                <span class="profile-close-btn cursor" ng-click="vm.subTaskUserRemove(user.id, list)"><i class="fa fa-close"></i></span>
-                                            </li>
-                                            <li ng-if="list.assignees.length > 3">
-                                                <a href-void>
-                                                    <span class="activity">
-                                                        <a class="position-relative"><i class="fa fa-plus user-profile-plus-btn"></i> <b class="badge bg-color-red user-count-icon">{{list.assignees.length - 3}}</b></a>
-                                                    </span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-
-                    <div class="add-sub-task"  ng-class="vm.subTaskOpen ? 'on' : ''">
-                        <input type="text" class="form-control subTask-input" ng-model="vm.subTask.name" enter-submit="vm.subTaskSave()" placeholder=" 추가할 작업명을 입력하세요."/>
+                        <div class="add-sub-task"  ng-class="vm.subTaskOpen ? 'on' : ''">
+                            <input type="text" class="form-control subTask-input" ng-model="vm.subTask.name" enter-submit="vm.subTaskSave()" placeholder=" 추가할 작업명을 입력하세요."/>
+                        </div>
                     </div>
-                </div>
-                <!--<div class="related-task-area" ng-class="vm.relatedTaskOpen ? 'on' : ''"  style="border-top: 1px solid #ddd">-->
-                    <!--<table class="table table-bordered">-->
-                        <!--<colgroup>-->
-                            <!--<col width="15%">-->
-                            <!--<col width="85%">-->
-                        <!--</colgroup>-->
-                        <!--<tbody>-->
-                            <!--<tr>-->
-                                <!--<th style="vertical-align: middle;">참조 작업</th>-->
-                                <!--<td>-->
-                                    <!--<autocomplete template-url="ngTagsInput/tag-item.html" source="findTasks" tags="vm.task.relatedTasks" display-property="name" multiple="true" max-results-to-show="20" tag-type="relatedTasks"></autocomplete>-->
-                                <!--</td>-->
-                            <!--</tr>-->
-                        <!--</tbody>-->
-                    <!--</table>-->
-                <!--</div>-->
-            </div>
-        </div>
-        <div>
-
-            <div class="panel panel-default min-height-100-p" ng-class="{'detail-content':vm.task.modifyYn, 'detail-content-disabled':!vm.task.modifyYn}" id="editingSection">
-                <div class="ibox">
-                    <div class="ibox_content elementSection" ng-if="vm.task.modifyYn" section-toggle style="min-height: 50px">
-                        <span ng-bind-html="vm.renderHtml(vm.task.contents)" ></span>
-                    </div>
-                    <div class="ibox_content elementSection" ng-if="!vm.task.modifyYn" style="min-height: 50px">
-                        <span ng-bind-html="vm.renderHtml(vm.task.contents)" ></span>
-                    </div>
-                    <div class="content-edit editingSection" >
-                        <summernote config="dataService.getSummerNoteOptions(true)"
-                                    lang="ko-KR" ng-model="vm.task.contents"
-                                    data-editor="editor"
-                                    data-editable="editable"
-                                    data-on-image-upload="imageUpload(files)"></summernote>
-                    </div>
+                    <!--<div class="related-task-area" ng-class="vm.relatedTaskOpen ? 'on' : ''"  style="border-top: 1px solid #ddd">-->
+                        <!--<table class="table table-bordered">-->
+                            <!--<colgroup>-->
+                                <!--<col width="15%">-->
+                                <!--<col width="85%">-->
+                            <!--</colgroup>-->
+                            <!--<tbody>-->
+                                <!--<tr>-->
+                                    <!--<th style="vertical-align: middle;">참조 작업</th>-->
+                                    <!--<td>-->
+                                        <!--<autocomplete template-url="ngTagsInput/tag-item.html" source="findTasks" tags="vm.task.relatedTasks" display-property="name" multiple="true" max-results-to-show="20" tag-type="relatedTasks"></autocomplete>-->
+                                    <!--</td>-->
+                                <!--</tr>-->
+                            <!--</tbody>-->
+                        <!--</table>-->
+                    <!--</div>-->
                 </div>
             </div>
-            <div style="text-align: right;">
-                <button type="button" class="btn" ng-click="vm.taskRevertModalOpen()" ng-if="vm.task.modifyYn" >복원</button>
-            </div>
-        </div>
+            <div>
 
-        <div class="task-file-area"  ng-class="(vm.fileAreaOpen || vm.previewFiles.length > 0) ? 'on' : ''">
-            <div class="file-header-area">
-                <ul>
-                    <li>파일 ({{vm.previewFiles.length}})</li>
-                    <li><label class="cursor"><i class="fa fa-download"></i></label></li>
-                    <li ng-if="vm.task.modifyYn"><label for="input-4" class="cursor"><i class='fa fa-paperclip'></i></label></li>
-                    <li><label class="cursor"><i class="fa fa-list" ng-click="vm.fileListYn = !vm.fileListYn" file-list-yn></i></label></li>
-                    <li ng-if="vm.task.modifyYn"><label class="cursor"><i class="fa fa-trash"></i></label></li>
-                    <li></li>
-                    <li></li>
-                </ul>
-            </div>
-            <input id="input-4" name="input4[]" type="file" multiple class="file-loading" get-files> <!--  get-files -->
-            <!--<input id="input-pa" name="input-pa[]" type="file" multiple class="file-loading" get-files>--><br/>
-            <wms-table ng-model="vm.previewFiles" table-configs="vm.tableConfigs" update-callback="updateCallback" ng-if="vm.fileListYn"></wms-table>
-            <style>
-                .fileinput-upload {
-                    display: none !important;
-                }
-                .btn-file{
-                    display: none !important;
-                }
-            </style>
-        </div>
-        <!-- Timeline Content -->
-        <div class="smart-timeline">
-            <a ng-click="vm.commentViewType = !vm.commentViewType">댓글만 보기({{vm.commentList.length}})</a>
-            <ul class="smart-timeline-list">
-
-                <!-- 로그&댓글 보기 -->
-                <li ng-repeat="data in vm.TaskAuditLog.data" ng-if="!vm.commentViewType">
-                    <div class="smart-timeline-icon" ng-if="(vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')">
-                        {{vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd'}}
+                <div class="panel panel-default min-height-100-p" ng-class="{'detail-content':vm.task.modifyYn, 'detail-content-disabled':!vm.task.modifyYn}" id="editingSection">
+                    <div class="ibox">
+                        <div class="ibox_content elementSection" ng-if="vm.task.modifyYn" section-toggle style="min-height: 50px">
+                            <span ng-bind-html="vm.renderHtml(vm.task.contents)" ></span>
+                        </div>
+                        <div class="ibox_content elementSection" ng-if="!vm.task.modifyYn" style="min-height: 50px">
+                            <span ng-bind-html="vm.renderHtml(vm.task.contents)" ></span>
+                        </div>
+                        <div class="content-edit editingSection" >
+                            <summernote config="dataService.getSummerNoteOptions(true)"
+                                        lang="ko-KR" ng-model="vm.task.contents"
+                                        data-editor="editor"
+                                        data-editable="editable"
+                                        data-on-image-upload="imageUpload(files)"></summernote>
+                        </div>
                     </div>
-                    <div class="smart-timeline-content">
+                </div>
+                <div style="text-align: right;">
+                    <button type="button" class="btn" ng-click="vm.taskRevertModalOpen()" ng-if="vm.task.modifyYn" >복원</button>
+                </div>
+            </div>
 
-                        <ul class="list-inline friends-list float-left comment-user-profile"
-                            ng-if="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
-                            || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')"
-                            ng-class="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
-                            || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
-                            <li>
-                                <img ng-src="/content/images/demo/male.png" ng-if="data.profileImageId == null || data.profileImageId == '' " uib-tooltip="{{data.createdByName}}">
-                                <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.profileImageId}}" ng-if="data.profileImageId != null" uib-tooltip="{{data.createdByName}}">
-                            </li>
-                        </ul>
+            <div class="task-file-area"  ng-class="(vm.fileAreaOpen || vm.previewFiles.length > 0) ? 'on' : ''">
+                <div class="file-header-area">
+                    <ul>
+                        <li>파일 ({{vm.previewFiles.length}})</li>
+                        <li><label class="cursor"><i class="fa fa-download"></i></label></li>
+                        <li ng-if="vm.task.modifyYn"><label for="input-4" class="cursor"><i class='fa fa-paperclip'></i></label></li>
+                        <li><label class="cursor"><i class="fa fa-list" ng-click="vm.fileListYn = !vm.fileListYn" file-list-yn></i></label></li>
+                        <li ng-if="vm.task.modifyYn"><label class="cursor"><i class="fa fa-trash"></i></label></li>
+                        <li></li>
+                        <li></li>
+                    </ul>
+                </div>
+                <input id="input-4" name="input4[]" type="file" multiple class="file-loading" get-files> <!--  get-files -->
+                <!--<input id="input-pa" name="input-pa[]" type="file" multiple class="file-loading" get-files>--><br/>
+                <wms-table ng-model="vm.previewFiles" table-configs="vm.tableConfigs" update-callback="updateCallback" ng-if="vm.fileListYn"></wms-table>
+                <style>
+                    .fileinput-upload {
+                        display: none !important;
+                    }
+                    .btn-file{
+                        display: none !important;
+                    }
+                </style>
+            </div>
+            <!-- Timeline Content -->
+            <div class="smart-timeline">
+                <div style="display: inline-table; width: 100%;"><a class="pull-right" ng-click="vm.commentViewType = !vm.commentViewType" ng-show="vm.commentList.length > 0">{{vm.commentViewType ? '히스토리&댓글 보기' : '댓글만 보기'}} ({{vm.commentViewType ? vm.TaskAuditLog.data.length : vm.commentList.length }})</a></div>
+                <ul class="smart-timeline-list">
 
-                        <p ng-if="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
-                            || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')"
-                           ng-class="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
-                            || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
-                            <a href-void><strong>{{data.createdByName}}</strong> </a><a editor-mention-write user-name="data.createdByName" user-id="data.createdById">댓글</a>
-                        </p>
-                        <div class="pad-l15">
+                    <!-- 로그&댓글 보기 -->
+                    <li ng-repeat="data in vm.TaskAuditLog.data" ng-if="!vm.commentViewType">
+                        <div class="smart-timeline-icon" ng-if="(vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')">
+                            {{vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd'}}
+                        </div>
+                        <div class="smart-timeline-content">
 
-                            <!-- 댓글 영역 -->
-                            <div ng-if="data.entityField == 'reply'" class="pad-l10  clear-both">
+                            <ul class="list-inline friends-list float-left comment-user-profile"
+                                ng-if="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
+                                || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')"
+                                ng-class="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
+                                || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
+                                <li>
+                                    <img ng-src="/content/images/demo/male.png" ng-if="data.profileImageId == null || data.profileImageId == '' " uib-tooltip="{{data.createdByName}}">
+                                    <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.profileImageId}}" ng-if="data.profileImageId != null" uib-tooltip="{{data.createdByName}}">
+                                </li>
+                            </ul>
 
-                                <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px"></span> {{data.createdDate | date : 'HH:mm'}} <span ng-if="data.createdBy == vm.userInfo.login"  class="fa fa-times" ng-click="vm.removeComment(data.id)"></span>
-                                <br class="clear-both"/>
-                                <p ng-repeat="file in data.attachedFiles" class="pad-l20">
-                                    <a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>
-                                </p>
-                            </div>
+                            <p ng-if="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
+                                || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')"
+                               ng-class="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
+                                || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
+                                <a href-void><strong>{{data.createdByName}}</strong> </a><a editor-mention-write user-name="data.createdByName" user-id="data.createdById">댓글</a>
+                            </p>
+                            <div class="pad-l15">
 
-                            <!-- 시스템 영역 -->
-                            <div ng-if="data.entityField != 'reply'" class="pad-l10 clear-both" >
+                                <!-- 댓글 영역 -->
+                                <div ng-if="data.entityField == 'reply'" class="pad-l10  clear-both">
+
+                                    <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px"></span> {{data.createdDate | date : 'HH:mm'}} <span ng-if="data.createdBy == vm.userInfo.login"  class="fa fa-times" ng-click="vm.removeComment(data.id)"></span>
+                                    <br class="clear-both"/>
+                                    <p ng-repeat="file in data.attachedFiles" class="pad-l20">
+                                        <a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>
+                                    </p>
+                                </div>
+
+                                <!-- 시스템 영역 -->
+                                <div ng-if="data.entityField != 'reply'" class="pad-l10 clear-both" >
 
                                 <span translate="audit.entity.task" ng-if="data.entityField == null || data.entityField == ''">엔티티</span>
                                 <span translate="audit.field.task.{{data.entityField}}" ng-if="(data.entityField != null && data.entityField != '') && data.entityField != 'taskUsers'">필드</span>
@@ -616,107 +622,115 @@
                                 </span>
                                 <span ng-if="data.entityField == 'taskAttachedFiles' && data.entityField != 'taskRepeatSchedule' && data.entityField != 'contents'">
 
-                                    <span ng-if="data.persistType == 'INSERT' || data.persistType == 'UPDATE'">
-                                        <i class="fa fa-paperclip"></i>
-                                        <a ng-click="vm.fileDownLoad(data.attachedFileId)">{{data.newValue}}</a>
+                                        <span ng-if="data.persistType == 'INSERT' || data.persistType == 'UPDATE'">
+                                            <i class="fa fa-paperclip"></i>
+                                            <a ng-click="vm.fileDownLoad(data.attachedFileId)">{{data.newValue}}</a>
+                                        </span>
+                                        <span ng-if="data.persistType == 'DELETE'">
+                                            {{data.oldValue}}
+                                        </span>
                                     </span>
-                                    <span ng-if="data.persistType == 'DELETE'">
-                                        {{data.oldValue}}
-                                    </span>
-                                </span>
-                                {{data.createdDate | date : 'HH:mm'}}
-                                <br class="clear-both"/>
+                                    {{data.createdDate | date : 'HH:mm'}}
+                                    <br class="clear-both"/>
 
-                                <!--{{data.createdBy}} 이 {{data.entityField}} {{data.newValue}}를 {{data.persistType}}하였습니다. {{data.createdDate | date : 'HH:mm'}}-->
-                                <!--<br/>-->
-                                <!--<p ng-repeat="file in data.attachedFiles" class="pad-l20">-->
-                                <!--<a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>-->
-                                <!--</p>-->
+                                    <!--{{data.createdBy}} 이 {{data.entityField}} {{data.newValue}}를 {{data.persistType}}하였습니다. {{data.createdDate | date : 'HH:mm'}}-->
+                                    <!--<br/>-->
+                                    <!--<p ng-repeat="file in data.attachedFiles" class="pad-l20">-->
+                                    <!--<a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>-->
+                                    <!--</p>-->
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
 
-                <!-- 댓글만 보기 -->
-                <li ng-repeat="data in vm.commentList track by $index" ng-if="vm.commentViewType">
-                    <div class="smart-timeline-icon" ng-if="(data.createdDate | date : 'MM/dd') != (vm.commentList[$index-1].createdDate | date : 'MM/dd')
-                    ">
-                        {{data.createdDate | date : 'MM/dd'}}
-                    </div>
-                    <div class="smart-timeline-content">
-                        <ul class="list-inline friends-list float-left comment-user-profile"
-                            ng-if="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
-                            || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')"
-                            ng-class="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
-                            || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
-                            <li>
-                                <img ng-src="/content/images/demo/male.png" ng-if="data.profileImageId == null || data.profileImageId == '' " uib-tooltip="{{data.createdByName}}">
-                                <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.profileImageId}}" ng-if="data.profileImageId != null" uib-tooltip="{{data.createdByName}}">
-                            </li>
-                        </ul>
-                        <p ng-if="vm.commentList[$index].createdBy != vm.commentList[$index-1].createdBy
-                            || (vm.commentList[$index].createdDate | date : 'MM/dd') != (vm.commentList[$index-1].createdDate | date : 'MM/dd')"
-                            ng-class="vm.commentList[$index].createdBy != vm.commentList[$index-1].createdBy
-                            || (vm.commentList[$index].createdDate | date : 'MM/dd') != (vm.commentList[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
-                            <a ><strong>{{data.createdByName}}</strong> </a><span editor-mention-write user-name="data.createdByName" user-id="data.createdById">댓글</span>
-                        </p>
-                        <div class="pad-l15 clear-both">
-                            <div ng-if="data.entityField == 'reply'" class="pad-l10">
-                                <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px"></span>
-                                {{data.createdDate | date : 'HH:mm'}} <span ng-if="data.createdBy == vm.userInfo.login"  class="fa fa-times" ng-click="vm.removeComment(data.id)"></span>
-                                <br class="clear-both"/>
-                                <p ng-repeat="file in data.attachedFiles" class="pad-l20">
-                                    <a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>
-                                </p>
+                    <!-- 댓글만 보기 -->
+                    <li ng-repeat="data in vm.commentList track by $index" ng-if="vm.commentViewType">
+                        <div class="smart-timeline-icon" ng-if="(data.createdDate | date : 'MM/dd') != (vm.commentList[$index-1].createdDate | date : 'MM/dd')
+                        ">
+                            {{data.createdDate | date : 'MM/dd'}}
+                        </div>
+                        <div class="smart-timeline-content">
+                            <ul class="list-inline friends-list float-left comment-user-profile"
+                                ng-if="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
+                                || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')"
+                                ng-class="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
+                                || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
+                                <li>
+                                    <img ng-src="/content/images/demo/male.png" ng-if="data.profileImageId == null || data.profileImageId == '' " uib-tooltip="{{data.createdByName}}">
+                                    <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.profileImageId}}" ng-if="data.profileImageId != null" uib-tooltip="{{data.createdByName}}">
+                                </li>
+                            </ul>
+                            <p ng-if="vm.commentList[$index].createdBy != vm.commentList[$index-1].createdBy
+                                || (vm.commentList[$index].createdDate | date : 'MM/dd') != (vm.commentList[$index-1].createdDate | date : 'MM/dd')"
+                                ng-class="vm.commentList[$index].createdBy != vm.commentList[$index-1].createdBy
+                                || (vm.commentList[$index].createdDate | date : 'MM/dd') != (vm.commentList[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
+                                <a ><strong>{{data.createdByName}}</strong> </a><span editor-mention-write user-name="data.createdByName" user-id="data.createdById">댓글</span>
+                            </p>
+                            <div class="pad-l15 clear-both">
+                                <div ng-if="data.entityField == 'reply'" class="pad-l10">
+                                    <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px"></span>
+                                    {{data.createdDate | date : 'HH:mm'}} <span ng-if="data.createdBy == vm.userInfo.login"  class="fa fa-times" ng-click="vm.removeComment(data.id)"></span>
+                                    <br class="clear-both"/>
+                                    <p ng-repeat="file in data.attachedFiles" class="pad-l20">
+                                        <a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                </li>
+                    </li>
 
-            </ul>
-        </div>
-        <!-- END Timeline Content -->
-
-        <div class="comment-area">
-            <div class="row">
-                <div class="col-md-11">
-                    <div class="row">
-                        <div class="col-md-1">
-                            <a ng-click="vm.commentFileAreaOpen = !vm.commentFileAreaOpen">
-                                <i class="fa fa-paperclip pull-right" style="font-size: 30px; margin-top: 6px"></i>
-                            </a>
-
-                        </div>
-                        <div class="col-md-11">
-                            <summernote ng-model="vm.comment.contents" on-init="init()" on-enter="enter()" on-focus="focus(evt)" config="dataService.getSummerNoteOptions(false)"
-                                        on-blur="blur(evt)" on-paste="paste()" on-keyup="keyup(evt)" contenteditable="true"
-                                        on-keydown="keydown(evt)" on-change="change(contents)"
-                                        editable="editable" editor="editor" lang="ko-KR">
-                            </summernote>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-1">
-                    <button type="button" class="btn btn_icon btn_customs" ng-click="vm.createComment()" owl-btn-save></button>
-                </div>
-            </div>
-
-        </div>
-        <div class="task-file-area" ng-class="vm.commentFileAreaOpen ? 'on' : ''">
-            <div class="file-header-area">
-                <ul>
-                    <li>파일 ({{commentFiles.length}})</li>
-                    <li><label for="input-5" class="cursor"><i class='fa fa-paperclip'></i></label></li>
-                    <li></li>
-                    <li></li>
                 </ul>
             </div>
-            <input id="input-5" name="input5[]" type="file" multiple class="file-loading" get-files file-type="comment">
-        </div>
+            <!-- END Timeline Content -->
 
+        </div>
 
     </div>
 </div>
+
+<!-- 댓글 입력 영역 -->
+<div class="comment-areas">
+    <div class="comment-area">
+        <table class="table comment-table margin-bottom-0">
+            <colgroup>
+                <col width="20px">
+                <col width="*">
+                <col width="60px">
+            </colgroup>
+            <tbody>
+                <tr>
+                    <td>
+                        <a ng-click="vm.commentFileAreaOpen = !vm.commentFileAreaOpen">
+                            <i class="fa fa-paperclip"></i>
+                        </a>
+                    </td>
+                    <td>
+                        <summernote ng-model="vm.comment.contents" on-init="init()" on-enter="enter()" on-focus="focus(evt)" config="dataService.getSummerNoteOptions(false)"
+                                    on-blur="blur(evt)" on-paste="paste()" on-keyup="keyup(evt)" contenteditable="true"
+                                    on-keydown="keydown(evt)" on-change="change(contents)"
+                                    editable="editable" editor="editor" lang="ko-KR">
+                        </summernote>
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn_icon btn_customs" ng-click="vm.createComment()" owl-btn-save></button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="task-file-area" ng-class="vm.commentFileAreaOpen ? 'on' : ''">
+        <div class="file-header-area">
+            <ul>
+                <li>파일 ({{commentFiles.length}})</li>
+                <li><label for="input-5" class="cursor"><i class='fa fa-paperclip'></i></label></li>
+                <li></li>
+                <li></li>
+            </ul>
+        </div>
+        <input id="input-5" name="input5[]" type="file" multiple class="file-loading" get-files file-type="comment">
+    </div>
+</div>
+
 <style>
     .btn-sm {
         padding: 4px 7px 5px;

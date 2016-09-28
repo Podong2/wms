@@ -13,6 +13,7 @@
 
 angular.module('wmsApp')
 .directive('dynamicScroll', dynamicScroll)
+.directive('dynamicContentScroll', dynamicContentScroll)
 .directive('dynamicViewScroll', dynamicViewScroll);
 
     function dynamicScroll() {
@@ -32,6 +33,34 @@ angular.module('wmsApp')
             link: function (scope, tElement, tAttrs) {
                 $(window).resize(function () {
                     $(".modal-body").css("max-height", (window.innerHeight - 250) + "px");
+                }).resize();
+            }
+        }
+    }
+
+    function dynamicContentScroll() {
+        return {
+            restrict: 'A',
+            scope : {
+                areaType : '@'
+            },
+            template: '',
+            link: function (scope, tElement, tAttrs) {
+                var minusHeight = 0;
+                $(window).resize(function () {
+
+                    if(scope.areaType == 'content') {
+                        minusHeight = 110;
+                        $(tElement).css("height", (window.innerHeight - minusHeight) + "px");
+                    }
+                    else if(scope.areaType == 'list'){
+                        minusHeight = 186;
+                        $(tElement).parent().css("height", (window.innerHeight - minusHeight) + "px");
+                    }else if(scope.areaType == 'detail'){
+                        minusHeight = 187;
+                        $(tElement).css("height", (window.innerHeight - minusHeight) + "px");
+                    }
+
                 }).resize();
             }
         }

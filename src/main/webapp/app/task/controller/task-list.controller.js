@@ -5,14 +5,38 @@
 
 angular.module('wmsApp')
     .controller("taskListCtrl", taskListCtrl);
-taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLinks', '$rootScope', '$state', 'MyTaskStatistics', '$stateParams'];
-        function taskListCtrl($scope, Code, $log, Task, AlertService, ParseLinks, $rootScope, $state, MyTaskStatistics, $stateParams) {
+taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLinks', '$rootScope', '$state', 'MyTaskStatistics', '$stateParams', 'PaginationUtil'];
+        function taskListCtrl($scope, Code, $log, Task, AlertService, ParseLinks, $rootScope, $state, MyTaskStatistics, $stateParams, PaginationUtil) {
             var vm = this;
             vm.baseUrl = window.location.origin;
             vm.tabDisplay = tabDisplay;
             vm.getList = getList;
             vm.taskListPopup = taskListPopup;
             //vm.showDetail = showDetail;
+
+            // page 파라미터
+            vm.params = {
+                page: {
+                    value: '1',
+                    squash: true
+                },
+                sort: {
+                    value: 'id,asc',
+                    squash: true
+                },
+                search: null
+            };
+
+            // 작업 목록 스크롤 로딩
+            $scope.taskScroll= {
+                loading : false
+            }
+
+            vm.page =  PaginationUtil.parsePage(vm.params.page.value);
+            vm.sort =  vm.params.sort.value;
+            vm.predicate =  PaginationUtil.parsePredicate(vm.params.sort.value);
+            vm.ascending =  PaginationUtil.parseAscending(vm.params.sort.value);
+            vm.search =  vm.params.search;
 
             vm.tasks=[]; // 총 목록
             vm.delayed=[]; // 지연된 작업
@@ -84,6 +108,7 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
                         tab.status = false;
                     }
                 });
+                vm.tasks=[]; // 초기화
                 getList(type);
                 vm.listType = type;
             }
@@ -91,9 +116,15 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
 
             /* 타스크 목록 불러오기 */
             function getList(type, filterType){
-                Task.query({listType : type, filterType : filterType}, onSuccess, onError);
+                Task.query({
+                    listType : type,
+                    filterType : filterType,
+                    page: vm.page - 1,
+                    size: 12,
+                    sort: 'desc'
+                }, onSuccess, onError);
             }
-            getList();
+
 
             vm.reloadYn = false;
             $rootScope.$on("taskReload", function(event, args){
@@ -106,7 +137,7 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
             //}
 
             function onSuccess(data, headers) {
-                vm.tasks=[];
+                //vm.tasks=[];
 
                 angular.forEach(data, function(task){
                     // if(task.statusGroup == "DELAYED") vm.delayed.push(task);
@@ -122,7 +153,8 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
                 $log.debug('작업 목록 : ', vm.tasks);
 
                 MyTaskStatistics.get({listType : vm.listType}, countSuccess, onError); // 타스크 목록 카운트 정보 조회
-
+                $scope.taskScroll.loading = false;
+                vm.page++; //다음페이지 준비
                 if($stateParams.type != '') $state.go("my-task.detail", {id : vm.tasks[0].id, listType : 'TODAY'});
             }
             function countSuccess(result){
@@ -133,6 +165,7 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
                 AlertService.error(error.data.message);
             }
 
+            getList();
 
 
 

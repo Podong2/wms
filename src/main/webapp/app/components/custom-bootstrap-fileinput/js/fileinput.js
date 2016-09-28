@@ -37,7 +37,7 @@
         tGeneric, tHtml, tImage, tText, tVideo, tAudio, tFlash, tObject, tPdf, tOther, defaultFileActionSettings,
         defaultLayoutTemplates, defaultPreviewTemplates, defaultPreviewZoomSettings, defaultPreviewTypes, getElement,
         defaultPreviewSettings, defaultFileTypeSettings, isEmpty, isArray, ifSet, uniqId, htmlEncode, replaceTags,
-        cleanMemory, findFileName, checkFullScreen, toggleFullScreen, moveArray, FileInput, tFileDelete;
+        cleanMemory, findFileName, checkFullScreen, toggleFullScreen, moveArray, FileInput, tFileDelete, tFileDownload;
 
     NAMESPACE = '.fileinput';
     MODAL_ID = 'kvFileinputModal';
@@ -398,6 +398,7 @@
         '</div>';
     tActionDelete = '<button type="button" class="kv-file-remove {removeClass}" title="{removeTitle}" data-task-id="{taskId}" data-project-id="{projectId}" data-attached-file-id="{attachedFileId}" {dataUrl}{dataKey}>{removeIcon}</button>\n' +
         '<button type="button" class="kv-file-download {removeClass}" title="{downloadTitle}" data-task-id="{taskId}" data-project-id="{projectId}" data-attached-file-id="{attachedFileId}" {dataUrl}{dataKey}>{downloadIcon}</button>'; // hsy 파일 삭제
+    tFileDownload = '<button type="button" class="kv-file-download {removeClass}" title="{downloadTitle}" data-task-id="{taskId}" data-project-id="{projectId}" data-attached-file-id="{attachedFileId}" {dataUrl}{dataKey}>{downloadIcon}</button>'; // hsy 파일 삭제
     tFileDelete = '<button type="button" class="kv-file-remove {removeClass}" title="{removeTitle}" data-task-id="{taskId}" data-project-id="{projectId}" data-attached-file-id="{attachedFileId}" {dataUrl}{dataKey}>{removeIcon}</button>\n'; // hsy 작업 생성 화면용 파일 삭제 버튼 노출
     tActionUpload = '';
     //tActionUpload = '<button type="button" class="kv-file-upload {uploadClass}" title="{uploadTitle}">' +
@@ -441,6 +442,7 @@
         actions: tActions,
         actionDelete: tActionDelete,
         fileDelete: tFileDelete, // 작업생성용 파일삭제버튼
+        fileDownload: tFileDownload, // 작업생성용 파일삭제버튼
         actionUpload: tActionUpload,
         actionZoom: tActionZoom,
         actionDrag: tActionDrag,
@@ -2899,13 +2901,24 @@
 
             /* 파일첨부 작업등록 댓글 등록 시 예외처리 */
             if(self.type != 'task-add' && self.type != 'task-history'){
-                if (showDelete) {
+                if (showDelete && self.modifyYn) {
                     // hsy 파일 삭제 커스텀
                     btnDelete = self._getLayoutTemplate('actionDelete')
                         .replace(/\{removeClass}/g, removeClass)
                         .replace(/\{removeIcon}/g, config.removeIcon)
                         .replace(/\{downloadIcon}/g, config.downloadIcon)
                         .replace(/\{removeTitle}/g, config.removeTitle)
+                        .replace(/\{downloadTitle}/g, config.downloadTitle)
+                        .replace(/\{taskId}/g, self.task == null ? '' : self.task.id)
+                        .replace(/\{projectId}/g, self.project == null ? '' : self.project.id)
+                        .replace(/\{attachedFileId}/g, url || url != '' ? pieces[pieces.length-1] : '')
+                        .replace(/\{dataUrl}/g, vUrl)
+                        .replace(/\{dataKey}/g, vKey);
+                }else if(showDelete && !self.modifyYn){
+                    // hsy 파일 다운로드 커스텀
+                    btnDelete = self._getLayoutTemplate('fileDownload')
+                        .replace(/\{removeClass}/g, removeClass)
+                        .replace(/\{downloadIcon}/g, config.downloadIcon)
                         .replace(/\{downloadTitle}/g, config.downloadTitle)
                         .replace(/\{taskId}/g, self.task == null ? '' : self.task.id)
                         .replace(/\{projectId}/g, self.project == null ? '' : self.project.id)
@@ -3418,6 +3431,7 @@
         token: null, // hsy 토큰 정보
         fileList : [], // hsy 파일 리스트 정보
         type : '', // hsy 파일 업로드 타입
+        modifyYn : true, // hsy 파일 수정 권한
         uploadAsync: true,
         uploadExtraData: {},
         zoomModalHeight: 480,

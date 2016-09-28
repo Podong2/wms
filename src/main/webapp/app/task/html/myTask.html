@@ -6,7 +6,7 @@
   ~ Vestibulum commodo. Ut rhoncus gravida arcu.
   -->
 <div id="content" ng-cloak>
-    <div class="layout-scroll" style="position: relative; background: #fff; height: 1030px;">
+    <div class="layout-scroll" style="position: relative; background: #fff;" dynamic-content-scroll area-type="content"> <!-- dynamic-content-scroll 을 이용하여 내용영역 정하기 -->
         <bg-splitter orientation="horizontal">
 
             <bg-pane min-size="400">
@@ -28,9 +28,14 @@
                         </div>
                     </div>
 
-                    <div class="table table-hover " style="margin-bottom: 0; border-bottom: 1px solid #ddd;">
-                        <div class="task-area">
-                            <div ng-repeat="data in vm.tasks" class="">
+                    <!--
+                        when-scrolled 를 이용한 스크롤 로딩
+                        loading : 무한로딩 막기
+                     -->
+                    <div class="table table-hover "when-scrolled="vm.getList()" style="margin-bottom: 0; border-bottom: 1px solid #ddd; overflow: hidden; overflow-y: auto; border-top:1px solid #ddd;" loading="taskScroll.loading">
+                        <!--<i ng-show="taskScroll.loading" class="fa fa-spinner fa-spin" style="position: absolute; top: 60px; left: 49%;"></i>-->
+                        <div class="task-area" dynamic-content-scroll area-type="list"><!-- dynamic-content-scroll을 이용하여 리스트 영역 높이 제어 -->
+                            <div ng-repeat="data in vm.tasks" class="task-repeat">
                                 <div  class="wms-tree-node-list task-list clear-both" ng-class="data.statusId == 1 ? 'blue' : (data.statusId == 2 ? 'green' : (data.statusId == 3 ? 'black' : 'red'))"
                                       ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
                                     <div class="pull-right">

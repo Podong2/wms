@@ -14093,7 +14093,8 @@ body.menu-on-top.fixed-header.fixed-navigation.fixed-ribbon #ribbon {
 }
 
 body:not(.menu-on-top).desktop-detected {
-    min-height: 1190px !important
+    /*min-height: 1190px !important*/
+    overflow: hidden;
 }
 
 #extr-page body.desktop-detected {
