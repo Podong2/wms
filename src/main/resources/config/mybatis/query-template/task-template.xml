@@ -394,11 +394,11 @@
                     FROM owl_task_user itu
                     LEFT JOIN owl_user iu ON itu.user_id = iu.id
                     WHERE itu.user_type = 'ASSIGNEE'
-                    AND LOWER(iu.login) = LOWER(#{assignee})
+                    AND iu.login = #{assignee}
                 )
                 </if>
                 <if test="createdBy != null">
-                    AND LOWER(it.created_by) = LOWER(#{createdBy})
+                    AND it.created_by = #{createdBy}
                 </if>
                 AND it.private_yn = 'N'
                 <if test="excludeIds != null">
