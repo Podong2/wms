@@ -1,0 +1,113 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.wisestone.wms.domain.TraceLog">
+
+    <resultMap id="traceLogListResultMap" type="kr.wisestone.wms.web.rest.dto.TraceLogDTO">
+        <id property="id" column="id" />
+        <result property="entityId" column="entityId"/>
+        <result property="entityName" column="entityName"/>
+        <result property="persistType" column="persistType"/>
+        <result property="replyYn" column="replyYn"/>
+        <result property="oldValue" column="oldValue"/>
+        <result property="newValue" column="newValue"/>
+        <result property="etcValue" column="etcValue"/>
+        <result property="attachedFileId" column="attachedFileId"/>
+        <result property="taskId" column="taskId"/>
+        <result property="taskName" column="taskName"/>
+        <result property="projectId" column="projectId"/>
+        <result property="createdBy" column="createdBy"/>
+        <result property="createdByName" column="createdByName"/>
+        <result property="createdById" column="createdById"/>
+        <result property="createdDate" column="createdDate"/>
+        <result property="profileImageId" column="profileImageId"/>
+        <result property="lastModifiedBy" column="lastModifiedBy"/>
+        <result property="lastModifiedDate" column="lastModifiedDate"/>
+        <collection property="attachedFiles" javaType="java.util.ArrayList" resultMap="attachedFileResultMap"/>
+    </resultMap>
+
+    <resultMap id="attachedFileResultMap" type="kr.wisestone.wms.web.rest.dto.AttachedFileDTO">
+        <id property="id" column="attachedFileId" />
+        <result property="name" column="attachedFileName"/>
+        <result property="size" column="attachedFileSize"/>
+        <result property="contentType" column="attachedFileContentType"/>
+    </resultMap>
+
+    <select id="getTraceLogs" resultType="java.util.ArrayList" resultMap="traceLogListResultMap" parameterType="java.util.HashMap">
+        SELECT tl.id as id, tl.entity_id as entityId, tl.entity_name as entityName
+        , CASE
+            WHEN tl.reply_yn = 'Y' THEN true
+            WHEN tl.reply_yn = 'N' THEN false
+          END as replyYn
+        , tl.persist_type as persistType, tl.old_value as oldValue, tl.new_value as newValue
+        , tl.etc_value as etcValue, tl.attached_file_id as attachedFileId, tl.task_id as taskId, t.name as taskName, tl.project_id as projectId
+        , tl.created_by as createdBy, tl.created_date as createdDate, tl.last_modified_by as lastModifiedBy, tl.last_modified_date as lastModifiedDate
+        , u.profile_image_id as profileImageId, u.name as createdByName, u.id as createdById
+        , af.id as attachedFileId, af.name as attachedFileName
+        , af.size as attachedFileSize, af.content_type as attachedFileContentType
+        FROM owl_trace_log tl
+        LEFT OUTER JOIN owl_task t ON tl.task_id = t.id
+        LEFT OUTER JOIN owl_trace_log_attached_file tlaf ON tlaf.trace_log_id = tl.id
+        LEFT JOIN owl_attached_file af ON tlaf.attached_file_id = af.id
+        LEFT JOIN owl_user u ON tl.created_by = u.login
+        WHERE 1=1
+        <choose>
+            <when test="entityName == 'Task'">
+                AND tl.task_id = #{entityId}
+            </when>
+            <when test="entityName == 'Project'">
+                AND tl.project_id = #{entityId}
+            </when>
+            <otherwise>
+                AND tl.entity_id = #{entityId}
+            </otherwise>
+        </choose>
+        <if test="entityField != null and entityField != ''">
+            AND tl.entity_field = #{entityField}
+        </if>
+        <if test="attachedFileEmptyYn != null and attachedFileEmptyYn == true">
+            AND NOT EXISTS (
+            SELECT itlaf.id FROM owl_trace_log_attached_file itlaf WHERE itlaf.trace_log_id = tl.id
+            )
+        </if>
+        ORDER BY tl.id ASC
+    </select>
+
+    <select id="getRecentTraceLogs" resultType="java.util.ArrayList" resultMap="traceLogListResultMap" parameterType="java.util.HashMap">
+        SELECT tl.id as id, tl.entity_id as entityId, tl.entity_name as entityName
+        , CASE
+        WHEN tl.reply_yn = 'Y' THEN true
+        WHEN tl.reply_yn = 'N' THEN false
+        END as replyYn
+        , tl.persist_type as persistType, tl.old_value as oldValue, tl.new_value as newValue
+        , tl.etc_value as etcValue, tl.attached_file_id as attachedFileId, tl.task_id as taskId, t.name as taskName, tl.project_id as projectId
+        , tl.created_by as createdBy, tl.created_date as createdDate, tl.last_modified_by as lastModifiedBy, tl.last_modified_date as lastModifiedDate
+        , u.profile_image_id as profileImageId, u.name as createdByName, u.id as createdById
+        , af.id as attachedFileId, af.name as attachedFileName
+        , af.size as attachedFileSize, af.content_type as attachedFileContentType
+        FROM owl_trace_log tl
+        LEFT OUTER JOIN owl_task t ON tl.task_id = t.id
+        LEFT OUTER JOIN owl_trace_log_attached_file tlaf ON tlaf.trace_log_id = tl.id
+        LEFT JOIN owl_attached_file af ON tlaf.attached_file_id = af.id
+        LEFT JOIN owl_user u ON tl.created_by = u.login
+        WHERE tl.entity_name = 'Task'
+        AND tl.reply_yn = 'N'
+        AND tl.task_id IN (
+            SELECT it.id
+            FROM owl_task it
+            WHERE (created_by = #{loginUser}
+                OR EXISTS (SELECT tu.id
+                            FROM owl_task_user tu
+                            LEFT JOIN owl_user tiu ON tu.user_id = tiu.id
+                            WHERE tu.task_id = it.id
+                            AND tiu.login = #{loginUser}
+                )
+            )
+        )
+        AND tl.created_date >= #{yesterday}
+        ORDER BY tl.id DESC
+        OFFSET #{offset} LIMIT #{limit}
+    </select>
+
+</mapper>

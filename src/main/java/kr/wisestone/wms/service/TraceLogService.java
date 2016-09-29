@@ -1,12 +1,15 @@
 package kr.wisestone.wms.service;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.mysema.query.BooleanBuilder;
 import com.mysema.query.jpa.JPASubQuery;
 import kr.wisestone.wms.common.exception.CommonRuntimeException;
 import kr.wisestone.wms.common.util.DateUtil;
 import kr.wisestone.wms.domain.*;
 import kr.wisestone.wms.repository.TraceLogRepository;
+import kr.wisestone.wms.repository.dao.TraceLogDAO;
 import kr.wisestone.wms.security.SecurityUtils;
 import kr.wisestone.wms.web.rest.dto.AttachedFileDTO;
 import kr.wisestone.wms.web.rest.dto.TraceLogDTO;
@@ -22,15 +25,15 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -61,50 +64,32 @@ public class TraceLogService {
     @Inject
     private UserService userService;
 
+    @Inject
+    private TraceLogDAO traceLogDAO;
+
     @Transactional(readOnly = true)
     public List<TraceLogDTO> findByEntityIdAndEntityName(Long entityId, String entityName, String entityField) {
-        QTraceLog $traceLog = QTraceLog.traceLog;
 
-        BooleanBuilder predicate = new BooleanBuilder();
-        predicate.and($traceLog.entityName.eq(entityName));
+        Map<String, Object> condition = Maps.newHashMap(ImmutableMap.<String, Object>builder().
+            put("entityId", entityId).
+            put("entityName", entityName).
+            build());
 
-        if("Task".equalsIgnoreCase(entityName)) {
-            predicate.and($traceLog.taskId.eq(entityId));
-        } else if("Project".equalsIgnoreCase(entityName)) {
-            predicate.and($traceLog.projectId.eq(entityId));
-        } else {
-            predicate.and($traceLog.entityId.eq(entityId));
-        }
+        if(StringUtils.hasText(entityField))
+            condition.put("entityField", entityField);
 
-        if(StringUtils.hasText(entityField)) {
-            predicate.and($traceLog.entityField.eq(entityField));
-        }
-
-        List<TraceLogDTO> traceLogDTOs = this.findByPredicate($traceLog, predicate);
-
-        return traceLogDTOs;
+        return traceLogDAO.getTraceLogs(condition);
     }
 
     public List<TraceLogDTO> findByEntityIdAndEntityNameAndAttachedFileIsNotNull(Long entityId, String entityName) {
 
-        QTraceLog $traceLog = QTraceLog.traceLog;
+        Map<String, Object> condition = Maps.newHashMap(ImmutableMap.<String, Object>builder().
+            put("entityId", entityId).
+            put("entityName", entityName).
+            put("attachedFileEmptyYn", Boolean.TRUE).
+            build());
 
-        BooleanBuilder predicate = new BooleanBuilder();
-        predicate.and($traceLog.entityName.eq(entityName));
-
-        if("Task".equalsIgnoreCase(entityName)) {
-            predicate.and($traceLog.taskId.eq(entityId));
-        } else if("Project".equalsIgnoreCase(entityName)) {
-            predicate.and($traceLog.projectId.eq(entityId));
-        } else {
-            predicate.and($traceLog.entityId.eq(entityId));
-        }
-
-        predicate.and($traceLog.traceLogAttachedFiles.isNotEmpty());
-
-        List<TraceLogDTO> traceLogDTOs = this.findByPredicate($traceLog, predicate);
-
-        return traceLogDTOs;
+        return traceLogDAO.getTraceLogs(condition);
     }
 
     public TraceLog removeAttachedFileByEntityIdAndEntityNameAndAttachedFileId(Long entityId, String entityName, Long attachedFileId) {
@@ -129,12 +114,6 @@ public class TraceLogService {
         traceLog.removeAttachedFile(attachedFileId);
 
         return this.traceLogRepository.save(traceLog);
-    }
-
-    private List<TraceLogDTO> findByPredicate(QTraceLog $traceLog, BooleanBuilder predicate) {
-        List<TraceLog> traceLogs = Lists.newArrayList(traceLogRepository.findAll(predicate, $traceLog.createdDate.asc()));
-
-        return this.convertTraceLogToDTO(traceLogs);
     }
 
     @Transactional
@@ -204,31 +183,26 @@ public class TraceLogService {
     }
 
     @Transactional(readOnly = true)
-    public Page<TraceLogDTO> findRecentTraceLog(Pageable pageable) {
+    public List<TraceLogDTO> findRecentTraceLog(Pageable pageable) {
 
         User loginUser = SecurityUtils.getCurrentUser();
 
-        QTraceLog $traceLog = QTraceLog.traceLog;
-        QTask $task = QTask.task;
+        Calendar yesterday = Calendar.getInstance();
+        yesterday.add(Calendar.DAY_OF_MONTH, -1);
+        yesterday.set(Calendar.HOUR_OF_DAY, 0);
+        yesterday.set(Calendar.MINUTE, 0);
+        yesterday.set(Calendar.SECOND, 0);
 
-        Date yesterday = DateUtil.addDays(new Date(), -1);
+        Map<String, Object> condition = Maps.newHashMap(ImmutableMap.<String, Object>builder().
+            put("loginUser", loginUser.getLogin()).
+            put("yesterday", DateUtil.convertToZonedDateTime(yesterday.getTime())).
+            put("offset", pageable.getOffset()).
+            put("limit", pageable.getPageSize()).
+            build());
 
-        BooleanBuilder predicate = new BooleanBuilder();
+        List<TraceLogDTO> traceLogDTOs = traceLogDAO.getRecentTraceLogs(condition);
 
-        predicate.and($traceLog.entityName.eq("Task"));
-        predicate.and($traceLog.replyYn.eq(Boolean.FALSE));
-        predicate.and($traceLog.taskId.in(new JPASubQuery()
-                    .from($task)
-                    .where($task.taskUsers.any().user.login.eq(loginUser.getLogin()).or($task.createdBy.eq(loginUser.getLogin())))
-                    .list($task.id)));
-
-        predicate.and($traceLog.createdDate.goe(DateUtil.convertToZonedDateTime(yesterday)));
-
-        Page<TraceLog> result = traceLogRepository.findAll(predicate, PaginationUtil.applySort(pageable, Sort.Direction.DESC, "createdDate"));
-
-        List<TraceLogDTO> traceLogDTOs = convertTraceLogToDTO(result.getContent());
-
-        return new PageImpl<>(traceLogDTOs, pageable, result.getTotalElements());
+        return traceLogDTOs;
     }
 
     private List<TraceLogDTO> convertTraceLogToDTO(List<TraceLog> traceLogs) {
