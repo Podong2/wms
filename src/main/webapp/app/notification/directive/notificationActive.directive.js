@@ -21,7 +21,6 @@ angular.module('wmsApp')
             template: '',
             link: function (scope, tElement, tAttrs) {
                 tElement.on('click', function(e){
-                    console.log(123123)
                     $(".notification-list").removeClass("active");
                     //$(".notification-list").addClass("active");
                     tElement.parents('.notification-list').addClass("active");

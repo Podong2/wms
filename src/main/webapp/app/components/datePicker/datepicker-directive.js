@@ -53,6 +53,7 @@ function repeatPickerToggle($timeout, $rootScope) {
         return {
             restrict: 'A',
             link: function (scope, element) {
+                var $element = element;
                 var displayYn = true;
                 element.on('click', function (_this) {
                     displayYn = true;
@@ -61,11 +62,11 @@ function repeatPickerToggle($timeout, $rootScope) {
                     }, 400);
                 });
                 $('body').click(function (e) {
-                    if ($('.repeat-edit-section').addClass("on")) {
-                        if (!$('#repeatEditSection').has(e.target).length) {
+                    if ($($element.parent().find('.repeat-edit-section')).addClass("on")) {
+                        if (!$($element.parent()).has(e.target).length) {
                             $('.repeat-edit-section').removeClass("on");
                         }else if(displayYn){
-                            $('.repeat-edit-section').addClass("on");
+                            $($element.parent().find('.repeat-edit-section')).addClass("on");
                         }else if(!displayYn){
                             $('.repeat-edit-section').removeClass("on");
                         }

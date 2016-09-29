@@ -2008,10 +2008,22 @@ i:active, .i:active, i:focus, .i:focus{
 .task-list.blue{border-left: 5px solid blue;}
 .task-list.black{border-left: 5px solid #B119E9;}
 .task-list.red{border-left: 5px solid #777;}
+.sub-task-popup-list{
+    border-top: 1px solid #ddd;
+    height: 65px;
+}
+.sub-task-popup-list.green{border-left: 5px solid green;}
+.sub-task-popup-list.blue{border-left: 5px solid blue;}
+.sub-task-popup-list.black{border-left: 5px solid #B119E9;}
+.sub-task-popup-list.red{border-left: 5px solid #777;}
 td.green{border-left: 5px solid green !important;}
 td.blue{border-left: 5px solid blue !important;}
 td.black{border-left: 5px solid #B119E9 !important;}
 td.red{border-left: 5px solid #777 !important;}
+
+.sub-task-popup-list:first-child{
+    border-top: 0;
+}
 
 .sub-task-area-title{
     text-align: center;
@@ -2090,6 +2102,12 @@ td.red{border-left: 5px solid #777 !important;}
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+.task-list-title-length{
+    max-width: 39%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 .task-detail-list-title{
     float:left;
     padding: 15px 13px 11px;
@@ -2101,10 +2119,13 @@ td.red{border-left: 5px solid #777 !important;}
 }
 .relatedTask-title{
     float:left;
-    max-width: 50%;
+    max-width: 72%;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
+}
+.relatedTask-title.length{
+    max-width : 39% !important;
 }
 
 .sub-task-area-popup{
@@ -2141,6 +2162,11 @@ td.red{border-left: 5px solid #777 !important;}
 .sub-task-area-popup ul .task-list {
     border-top: 1px solid #ddd;
     padding: 5px;
+
+}
+.sub-task-area-popup ul .sub-task-popup-list {
+    border-top: 1px solid #ddd;
+    padding: 7px 5px;
 
 }
 .sub-task-area-popup ul li:first-child {
@@ -2201,6 +2227,12 @@ td.red{border-left: 5px solid #777 !important;}
 }
 .sub-task-popup-list{
     height:40px !important;
+}
+.task-repeat.active{
+    background-color: #FFE6E6 !important;
+}
+.task-list-item-header, .task-list-item-footer{
+    height:25px;
 }
     /*<< comment css >>*/
     .comment-user-title{
@@ -2691,7 +2723,7 @@ text-align: right;
     box-shadow: none;
 }
 .wms-tree-node-list .pull-right>div:last-child{
-    width: 145px;
+    width: 110px;
 }
 .wms-tree-node-list .pull-right {
     text-align: right;
@@ -2957,9 +2989,7 @@ text-align: right;
     border-top: 0;
 }
 .relatedTask-search-list-area .relatedTask-search-element img{
-    width: 30px;
-    height: 30px;
-    margin-top: 3px;
+    margin: 0;
 }
 .relatedTask-popup-header, .relatedTask-list-area {
     background: #f4f4f4;

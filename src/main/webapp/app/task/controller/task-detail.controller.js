@@ -92,6 +92,7 @@
             });
             $scope.$apply();
             $log.debug("파일 목록 : ", $scope.commentFiles);
+            createComment();
         }).on('filedeleted', function(event, key) {
             console.log('Key = ' + key);
         });
@@ -426,6 +427,7 @@
             });
             $scope.$apply();
             $log.debug("코멘트 파일 목록 : ", $scope.commentFiles);
+            createComment();
         });
 
         // content 데이터 변경 체크
@@ -769,7 +771,7 @@
                 toastr.success('태스크 수정 완료', '태스크 수정 완료');
                 $rootScope.$broadcast('projectEditClose');
                 //$rootScope.$broadcast('relatedTaskPopupClose');
-                $rootScope.$broadcast('taskReload', $stateParams.listType);
+                $rootScope.$broadcast('taskReload', response.data);
                 vm.task.removeAssigneeIds = "";
                 vm.task.removeWatcherIds = "";
                 vm.task.removeRelatedTaskIds ="";
@@ -888,7 +890,7 @@
 
         vm.mentionIds = []; // mention ids
         function createComment(){
-            if(vm.comment.contents == ''){
+            if(vm.comment.contents == '' && $scope.commentFiles.length == 0){
                 toastr.warning('코멘트를 입력해주세요.', '코멘트 내용');
                 return false;
             }
@@ -1244,6 +1246,12 @@
         //        });
         //    });
         //};
+
+        //  작업 상세 팝업 일 시 닫기
+        vm.cancel = cancel;
+        function cancel () {
+            $scope.$close(true);
+        }
     }
 
 })();
