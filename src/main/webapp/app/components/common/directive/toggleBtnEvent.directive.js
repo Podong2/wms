@@ -10,6 +10,7 @@ angular.module('wmsApp')
     .directive('watcherPickerBtnToggle', watcherPickerBtnToggle)
     .directive('watcherInfoBtnToggle', watcherInfoBtnToggle)
     .directive('relatedTaskPickerBtnToggle', relatedTaskPickerBtnToggle)
+    .directive('commonPopupToggle', commonPopupToggle)
     .directive('gnbTaskHistoryToggle', gnbTaskHistoryToggle);
 toggleEvent.$inject=['$compile', '$filter', '$log', '$sce', '$timeout'];
 sectionToggle.$inject=['$timeout', '$rootScope'];
@@ -22,6 +23,7 @@ userPickerBtnToggle.$inject=['$timeout'];
 watcherPickerBtnToggle.$inject=['$rootScope', '$timeout'];
 watcherInfoBtnToggle.$inject=['$rootScope', '$timeout'];
 relatedTaskPickerBtnToggle.$inject=['$rootScope', '$timeout'];
+commonPopupToggle.$inject=['$rootScope', '$timeout'];
 gnbTaskHistoryToggle.$inject=['$timeout'];
 function toggleEvent($compile, $filter, $log, $sce, $timeout) {
 
@@ -50,10 +52,11 @@ function sectionToggle($timeout, $rootScope) {
     return {
         restrict: 'A',
         link: function(scope, element, attr) {
+            var $element = element;
             element.on('click', function(_this) {
                 $("body").bind("click", function(e){
-                    if ($('.editingSection').addClass("on"), $('.elementSection').addClass("on")) {
-                        if (!$('#editingSection').has(e.target).length) {
+                    if ($($element).addClass("on"), $($element.parents('#editingSection').find('.editingSection')).addClass("on")) {
+                        if (!$($element.parents('#editingSection')).has(e.target).length) {
                             $('.editingSection').removeClass("on");
                             $('.elementSection').removeClass("on");
                             $rootScope.$broadcast("editingUpload")
@@ -164,9 +167,10 @@ function projectPickerEditToggle($timeout, $rootScope) {
     return {
         restrict: 'A',
         link: function(scope, element, attr) {
+            var $element = element.parents('label').next();
             $('body').click(function (e) {
-                if ($('.projectPickerSection').addClass("on"), $('.projectValueSection').addClass("on")) {
-                    if (!$('#projectPickerSection').has(e.target).length) {
+                if ($($element).addClass("on"), $($element).find('.projectValueSection').addClass("on")) {
+                    if (!$($element).parents('#projectPickerSection').has(e.target).length) {
                         $('.projectPickerSection').removeClass("on");
                         $('.projectValueSection').removeClass("on");
                     }
@@ -364,6 +368,35 @@ function relatedTaskPickerBtnToggle($rootScope, $timeout) {
                         //$($elements).removeClass("on");
                         closeYn = false;
                     }, 100);
+                }
+            });
+
+        }
+    }
+}
+
+/**
+ * 공통 팝업 토글
+ * @param $timeout
+ * @returns {{restrict: string, link: link}}
+ */
+function commonPopupToggle($rootScope, $timeout) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attr) {
+            var $element = element;
+            element.on('click', function() {
+                $($element.next()).addClass("on");
+            });
+            $rootScope.$on('commonPopupClose', function(){
+                $($element.next()).removeClass("on");
+            })
+            $('body').click(function (e) {
+
+                if (!$($element.parent()).has(e.target).length) {
+                    $($element.next()).removeClass("on");
+                }else{
+                    $($element.next()).addClass("on");
                 }
             });
 

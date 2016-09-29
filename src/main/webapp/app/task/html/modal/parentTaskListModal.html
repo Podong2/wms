@@ -1,9 +1,9 @@
 <div>
     <div class="task-popup-body">
         <ul class="margin-bottom-0">
-            <li class="task-list sub-task-popup-list" ng-class="data.parent.statusId == 1 ? 'blue' : (data.parent.statusId == 2 ? 'green' : (data.parent.statusId == 3 ? 'black' : 'red'))">
+            <li class="sub-task-popup-list" ng-class="data.parent.statusId == 1 ? 'blue' : (data.parent.statusId == 2 ? 'green' : (data.parent.statusId == 3 ? 'black' : 'red'))">
                 <div class="sub-task-popup-title" ng-class="data.parent.assignees.length > 0 ? 'task-list-title' : ''" style="line-height: 25px;">
-                    <a ui-sref="my-task.detail({id : data.parent.id, listType : vm.listType,taskId : data.parent.id})" >{{data.parent.name}}</a><!-- uib-tooltip="{{data.parent.name}}" tooltip-placement="top-left" -->
+                    <a ui-sref="my-task.detailPopup({popupId : data.parent.id, popupListType : vm.listType,taskId : data.parent.id})" >{{data.parent.name}}</a><!-- uib-tooltip="{{data.parent.name}}" tooltip-placement="top-left" -->
                 </div>
                 <ul class="list-inline friends-list text-right margin-right-10" style="margin-bottom: 0">
                     <li ng-repeat="user in data.parent.assignees | limitTo:3">

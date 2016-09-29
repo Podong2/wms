@@ -5,13 +5,14 @@
 
 angular.module('wmsApp')
     .controller("taskListCtrl", taskListCtrl);
-taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLinks', '$rootScope', '$state', 'MyTaskStatistics', '$stateParams', 'PaginationUtil'];
-        function taskListCtrl($scope, Code, $log, Task, AlertService, ParseLinks, $rootScope, $state, MyTaskStatistics, $stateParams, PaginationUtil) {
+taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLinks', '$rootScope', '$state', 'MyTaskStatistics', '$stateParams', 'PaginationUtil', 'ModalService'];
+        function taskListCtrl($scope, Code, $log, Task, AlertService, ParseLinks, $rootScope, $state, MyTaskStatistics, $stateParams, PaginationUtil, ModalService) {
             var vm = this;
             vm.baseUrl = window.location.origin;
             vm.tabDisplay = tabDisplay;
             vm.getList = getList;
             vm.taskListPopup = taskListPopup;
+            vm.taskDetailModalOpen = taskDetailModalOpen;
             //vm.showDetail = showDetail;
 
             // page 파라미터
@@ -130,7 +131,23 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
             vm.reloadYn = false;
             $rootScope.$on("taskReload", function(event, args){
                 vm.reloadYn = true;
-                getList(args.listType);
+                angular.forEach(vm.tasks ,function(value, index){
+                    if(value.id == args.id) {
+                        value.name = args.name;
+                        value.delayYn = args.delayYn;
+                        value.statusId = args.statusId;
+                        value.privateYn = args.privateYn;
+                        value.importantYn = args.importantYn;
+                        value.taskProjects = args.taskProjects;
+                        value.parent = args.parent;
+                        value.subTasks = args.subTasks;
+                        value.relatedTasks = args.relatedTasks;
+                        value.attachedFileExistYn = args.attachedFileExistYn;
+                        value.assignees = args.assignees;
+                        value.taskRepeatSchedule = args.taskRepeatSchedule;
+                    }
+                });
+                //getList(args);
             });
 
             //function showDetail(id){
@@ -165,6 +182,19 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
             function onError(error) {
                 AlertService.error(error.data.message);
             }
+
+            // 작업 상세 팝업 오픈 테스트
+            function taskDetailModalOpen(){
+                var editModalConfig = {
+                    size : "lg",
+                    url : "app/task/html/modal/taskDetailPopup.html",
+                    ctrl : "TaskDetailCtrl"
+                };
+
+                ModalService.openModal(editModalConfig);
+            }
+
+
 
             getList();
 

@@ -28,8 +28,6 @@ function taskListPopup($timeout) {
                 element.on('click', function (event) {
 
                     $timeout(function () {
-                        var top = event.target.offsetTop - $(this).parents(".task-area").scrollTop() + 20;
-                        position.css('top', top+ 'px');
                         $('.sub-task-area-popup').removeClass('on');
                         $(event.target.children).addClass('on');
                     }, 100);
