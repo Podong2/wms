@@ -13,6 +13,7 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
             vm.getList = getList;
             vm.taskListPopup = taskListPopup;
             vm.taskDetailModalOpen = taskDetailModalOpen;
+            vm.filterSearch = filterSearch;
             //vm.showDetail = showDetail;
 
             // page 파라미터
@@ -49,6 +50,7 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
             vm.requestTask=[]; // 요청받은작업
             vm.watchedTask=[]; // 참조작업
             vm.listType = "TODAY";
+            vm.filterType = '';
 
             vm.taskPopup = false;
             vm.subTaskPopup = false;
@@ -111,16 +113,25 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
                 });
                 vm.tasks=[]; // 초기화
                 vm.page = 0;
-                getList(type);
                 vm.listType = type;
+                vm.filterType = '';
+                getList();
+            }
+
+            function filterSearch(type, filterType){
+                vm.tasks=[]; // 초기화
+                vm.page = 0;
+                vm.listType = type;
+                vm.filterType = filterType;
+                getList();
             }
 
 
             /* 타스크 목록 불러오기 */
-            function getList(type, filterType){
+            function getList(){
                 Task.query({
-                    listType : type,
-                    filterType : filterType,
+                    listType : vm.listType,
+                    filterType : vm.filterType,
                     page: vm.page - 1,
                     size: 12,
                     sort: 'desc'

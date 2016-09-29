@@ -5,7 +5,7 @@
         <div class="col-md-12">
             <div class="col-md-9 padding-0">
                 <i class="fa fa-exclamation-circle task-circle" ng-class="vm.task.importantYn ? 'on' : ''" ng-click="vm.task.importantYn = !vm.task.importantYn"></i>
-                <input type="text" class="taskAddInput" ng-model="vm.task.name" maxlength="35" placeholder="생성할 작업명을 입력하세요."/><!-- enter-submit="vm.save()" -->
+                <input type="text" class="taskAddInput" ng-model="vm.task.name" maxlength="35" placeholder="생성할 작업명을 입력하세요." auto-focus/><!-- enter-submit="vm.save()" -->
             </div>
             <div class="col-md-3 padding-0">
                 <span class="pull-right taskOptionBtnArea">
@@ -25,7 +25,7 @@
                 <span class="task-create-date"><span class="task-create-date-text">{{vm.userInfo.name}} </span> {{ ( vm.date | date:"yyyy-MM-dd HH:mm") || 'empty' }}</span>
             </div>
         <!-- 프로젝트/폴더 선택 -->
-        <div id="projectPickerAddSection" class="taskAddProject">
+        <div id="projectPickerAddSection" class="taskAddProject position-relative">
             <label for="addProject" class="cursor projectValueAddSection" ><i class="fa fa-plus" id="addProject"></i> <span project-picker-add-toggle>프로젝트/폴더 선택</span></label>
                         <span class="task-project" ng-repeat="project in vm.task.taskProjects">
                             {{project.name}}
@@ -34,6 +34,10 @@
             <div class="project-picker projectPickerAddSection">
                 <div style="width: 300px;">
                     <div style="width: 300px;">
+                        <div class="padding-10 relatedTask-popup-header">
+                            <span class="pull-right fa fa-close cursor picker-popup-close-btn" ng-click="vm.projectClose()"></span>
+                            프로젝트/폴더
+                        </div>
                         <div class="project-picker-search">
                             <input class="project-picker-search-input" type="text" ng-model="projectName" enter-submit="vm.FindProjectList()" placeholder="프로젝트 또는 폴더를 선택하세요." wms-kr-update>
                         </div>
@@ -77,7 +81,7 @@
                                 <!--<input type="checkbox" ng-click="vm.task.statusId = 2" class="custom-control-input">-->
                             <!--</span>-->
                     <!--</td>-->
-                    <td  class="task-list" ng-class="vm.task.statusId == 1 ? 'blue' : (vm.task.statusId == 2 ? 'green' : (vm.task.statusId == 3 ? 'black' : 'red'))">
+                    <td ng-class="vm.task.statusId == 1 ? 'blue' : (vm.task.statusId == 2 ? 'green' : (vm.task.statusId == 3 ? 'black' : 'red'))">
                         <ol class="nya-bs-select task-openYn-select" ng-model="vm.task.statusId" style="width: 90px;">
                             <li nya-bs-option="option in vm.codes" title="{{option.name}}" data-value="option.id">
                                 <a>
@@ -91,7 +95,7 @@
                         담당자
                     </td>
                     <td>
-                        <autocomplete template-url="ngTagsInput/tag-item-user.html" source="findUsers" tags="assigneeUser" display-property="name" multiple="true" max-results-to-show="20" tag-type="assignees"></autocomplete>
+                        <autocomplete template-url="ngTagsInput/tag-item-user.html" source="findUsers" tags="assigneeUser" display-property="name" multiple="true" max-results-to-show="20" tag-type="assignees" modify-yn="{{vm.modifyYn}}" project-yn="false"></autocomplete>
                     </td>
                     <td style="position: relative;">
                         <!-- 참조자 정보 팝업 -->
@@ -116,7 +120,7 @@
                                 <span class="pull-right fa fa-close cursor picker-popup-close-btn" ng-click="vm.watcherPopupClose()"></span>
                                 참조자
                             </div>
-                            <div class="watcher-list-area padding-5" ng-show="watchers.length > 0">
+                            <div class="watcher-list-area padding-10" ng-show="watchers.length > 0">
                                 <ul class="list-inline friends-list" style="margin-bottom: 0">
                                     <li class="watcher-item" ng-repeat="user in watchers" style="position: relative; margin: 0 3px 3px;" ng-click="vm.watcherInfoAdd(user)" watcher-info-btn-toggle>
                                         <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
@@ -126,7 +130,7 @@
                                 </ul>
                             </div>
                             <div class="watcher-input-area">
-                                <input type="text" class="form-control" ng-model="vm.watcherName" style="border-right: 0; border-left:0;"  placeholder="이름을 입력하세요."/>
+                                <input type="text" class="form-control watcher-input" ng-model="vm.watcherName" style="border-right: 0; border-left:0;"  placeholder="이름을 입력하세요."/>
                             </div>
                             <div class="watcher-search-list-area padding-5">
                                 <div ng-repeat="data in vm.watcherList track by $index">
@@ -243,7 +247,7 @@
                             </div>
                             <div class="relatedTask-input-area padding-5 border-top" ng-show="vm.relatedSearchYn">
                                 <div class="related-task-search-div">
-                                    작업명 : <input type="text" class="" ng-model="vm.relatedSearchForm.name" ng-keydown="vm.relatedTaskValidateYn = false" ng-class="vm.relatedSearchForm.name == '' && vm.relatedTaskValidateYn ? 'task-name-validate' : ''" style="border-right: 0; border-left:0; border-top: 0"  placeholder="작업명을 입력하세요."/>
+                                    작업명 : <input type="text" class="related-task-input" ng-model="vm.relatedSearchForm.name" enter-submit="vm.findRelatedTask()" ng-keydown="vm.relatedTaskValidateYn = false" ng-class="vm.relatedSearchForm.name == '' && vm.relatedTaskValidateYn ? 'task-name-validate' : ''" style="border-right: 0; border-left:0; border-top: 0"  placeholder="작업명을 입력하세요."/>
                                 </div>
                                 <div class="related-task-search-div">
                                     담당자 : <input type="text" class="" ng-model="vm.relatedSearchForm.assigneeName" style="border-right: 0; border-left:0; border-top: 0"  placeholder="이름을 입력하세요."/>

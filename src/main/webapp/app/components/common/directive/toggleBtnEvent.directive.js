@@ -200,17 +200,20 @@ function projectAddToggle($timeout, $rootScope) {
     return {
         restrict: 'A',
         link: function(scope, element, attr) {
+            var $element = element.parents('label').next();
             $('body').click(function (e) {
-                if ($('.projectAddSection').addClass("on"), $('.projectAddValueSection').addClass("on")) {
-                    if (!$('#projectAddSection').has(e.target).length) {
-                        $('.projectAddSection').removeClass("on");
-                        $('.projectAddValueSection').removeClass("on");
+                if ($($element).addClass("on"), $($element).find('.projectValueAddSection').addClass("on")) {
+                    if (!$($element).parents('#projectAddSection').has(e.target).length) {
+                        $('.projectPickerAddSection').removeClass("on");
+                        $('.projectValueAddSection').removeClass("on");
                     }
                 }
             });
             $rootScope.$on('projectAddClose', function(){
-                $('.projectAddSection').removeClass("on");
-                $('.projectAddValueSection').removeClass("on");
+                $timeout(function () {
+                    $('.projectPickerAddSection').removeClass("on");
+                    $('.projectValueAddSection').removeClass("on");
+                }, 100);
             });
             element.on('click', function(_this) {
                 $timeout(function () {
@@ -281,6 +284,9 @@ function watcherPickerBtnToggle($rootScope, $timeout) {
             var closeYn = false;
             element.on('click', function(_this) {
                 $($elements).addClass("on");
+                $timeout(function () {
+                    $(".watcher-input").focus();
+                }, 400);
             });
             $rootScope.$on('watcherPopupClose', function(){
                 closeYn = true;
@@ -357,6 +363,10 @@ function relatedTaskPickerBtnToggle($rootScope, $timeout) {
             var closeYn = false;
             element.on('click', function(_this) {
                 $($elements).addClass("on");
+
+                $timeout(function () {
+                    $(".related-task-input").focus();
+                }, 400);
             });
             $rootScope.$on('relatedTaskPopupClose', function(){
                 closeYn = true;
@@ -392,7 +402,6 @@ function commonPopupToggle($rootScope, $timeout) {
                 $($element.next()).removeClass("on");
             })
             $('body').click(function (e) {
-
                 if (!$($element.parent()).has(e.target).length) {
                     $($element.next()).removeClass("on");
                 }else{

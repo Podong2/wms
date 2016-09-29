@@ -38,6 +38,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             vm.relatedTaskFormOpen = relatedTaskFormOpen;
             vm.relatedTaskPopupClose = relatedTaskPopupClose;
             vm.removeRelatedTask = removeRelatedTask;
+            vm.projectClose = projectClose;
             vm.userInfo = Principal.getIdentity();
 
             vm.DuplicationWatcherIds = [];
@@ -46,6 +47,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             vm.privateYns = [{"id":false, "name":"공개", icon: 'fa-unlock-alt'},{"id":true,"name":"비공개", icon: 'fa-lock'}];
 
             vm.stateInfo = $state.current.name;
+            vm.modifyYn = true;
             vm.state = $state.get(vm.stateInfo).name.split('.')[0];
 
             vm.date = new Date();
@@ -867,6 +869,11 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             //참조작업 팝업 닫기
             function relatedTaskPopupClose(){
                 $rootScope.$broadcast('relatedTaskPopupClose');
+            }
+
+            // 프로젝트 팝업 닫기
+            function projectClose(){
+                $rootScope.$broadcast('projectAddClose');
             }
 
             function watcherInfoAdd(watcher){

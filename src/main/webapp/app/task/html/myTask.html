@@ -22,9 +22,9 @@
                         <span>{{vm.taskCounts.totalCount}}건</span>
                         <div class="pull-right">
                             <!--<span class="cursor" ng-click="vm.getList( vm.listType, '')"><i class="fa fa-file-text"></i>{{vm.taskCounts.templateCount == null ? 0 : vm.taskCounts.templateCount}}</span>-->
-                            <span class="cursor" ng-click="vm.getList( vm.listType, 'ASSIGNED')"><i class="fa fa-list"></i>{{vm.taskCounts.assignedCount}}</span>
-                            <span class="cursor" ng-click="vm.getList( vm.listType, 'REQUESTED')"><i class="fa fa-check-square-o"></i>{{vm.taskCounts.createdCount}}</span>
-                            <span class="cursor" ng-click="vm.getList( vm.listType, 'WATCHED')"><i class="fa fa-eye"></i>{{vm.taskCounts.watchedCount}}</span>
+                            <span class="cursor" ng-click="vm.filterSearch( vm.listType, 'ASSIGNED')"><i class="fa fa-list"></i>{{vm.taskCounts.assignedCount}}</span>
+                            <span class="cursor" ng-click="vm.filterSearch( vm.listType, 'REQUESTED')"><i class="fa fa-check-square-o"></i>{{vm.taskCounts.createdCount}}</span>
+                            <span class="cursor" ng-click="vm.filterSearch( vm.listType, 'WATCHED')"><i class="fa fa-eye"></i>{{vm.taskCounts.watchedCount}}</span>
                         </div>
                     </div>
 

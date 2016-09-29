@@ -29,7 +29,7 @@
                 </div>
             </div>
         </div>
-        <div class="viewTypeClass task-detail" style="margin-top: 10px; min-height: 500px">
+        <div class="viewTypeClass task-detail" style="margin-top: 10px;">
 
             <!-- 상태 변경/등록일 -->
             <div>
@@ -147,7 +147,7 @@
                                         <span class="pull-right fa fa-close cursor" ng-click="vm.watcherPopupClose()"></span>
                                         참조자
                                     </div>
-                                    <div class="watcher-list-area padding-5" ng-show="vm.task.watchers.length > 0">
+                                    <div class="watcher-list-area padding-10" ng-show="vm.task.watchers.length > 0">
                                         <ul class="list-inline friends-list" style="margin-bottom: 0">
                                             <li class="watcher-item" ng-repeat="user in vm.task.watchers" style="position: relative; margin: 0 3px 3px;" ng-click="vm.watcherInfoAdd(user)" wms-close-btn-display>
                                                 <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}" watcher-info-btn-toggle>
@@ -157,7 +157,7 @@
                                         </ul>
                                     </div>
                                     <div class="watcher-input-area" ng-if="vm.task.modifyYn">
-                                        <input type="text" class="form-control" ng-model="vm.watcherName" style="border-right: 0; border-left:0;"  placeholder="이름을 입력하세요."/>
+                                        <input type="text" class="form-control watcher-input" ng-model="vm.watcherName" style="border-right: 0; border-left:0;"  placeholder="이름을 입력하세요."/>
                                     </div>
                                     <div class="watcher-search-list-area padding-5" ng-if="vm.task.modifyYn">
                                         <div ng-repeat="data in vm.watcherList track by $index">
@@ -300,7 +300,7 @@
                                 </div>
                                 <div class="relatedTask-input-area padding-5 border-top" ng-show="vm.relatedSearchYn && vm.task.modifyYn">
                                     <div class="related-task-search-div">
-                                        작업명 : <input type="text" class="" ng-model="vm.relatedSearchForm.name" ng-keydown="vm.relatedTaskValidateYn = false" ng-class="vm.relatedSearchForm.name == '' && vm.relatedTaskValidateYn ? 'task-name-validate' : ''" style="border-right: 0; border-left:0; border-top: 0"  placeholder="작업명을 입력하세요."/>
+                                        작업명 : <input type="text" class="related-task-input" ng-model="vm.relatedSearchForm.name" enter-submit="vm.findRelatedTask()" ng-keydown="vm.relatedTaskValidateYn = false" ng-class="vm.relatedSearchForm.name == '' && vm.relatedTaskValidateYn ? 'task-name-validate' : ''" style="border-right: 0; border-left:0; border-top: 0"  placeholder="작업명을 입력하세요."/>
                                     </div>
                                     <div class="related-task-search-div">
                                         담당자 : <input type="text" class="" ng-model="vm.relatedSearchForm.assigneeName" style="border-right: 0; border-left:0; border-top: 0"  placeholder="이름을 입력하세요."/>
@@ -555,42 +555,52 @@
 
                     <!-- 로그&댓글 보기 -->
                     <li ng-repeat="data in vm.TaskAuditLog.data" ng-if="!vm.commentViewType">
-                        <div class="smart-timeline-icon" ng-if="(vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')">
-                            {{vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd'}}
+
+                        <!-- 날짜&프로필사진&이름&댓글 영역 -->
+                        <div class="comment-header-area">
+                            <!-- 날짜 출력 영역 -->
+                            <div class="smart-timeline-icon" ng-if="(vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')">
+                                {{vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd'}}
+                            </div>
+
+                            <!-- 프로필 정보 및 댓글 버튼 -->
+                            <div class="smart-timeline-content">
+
+                                <ul class="list-inline friends-list float-left comment-user-profile"
+                                    ng-if="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
+                                || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')"
+                                    ng-class="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
+                                || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
+                                    <li>
+                                        <img ng-src="/content/images/demo/male.png" ng-if="data.profileImageId == null || data.profileImageId == '' " uib-tooltip="{{data.createdByName}}">
+                                        <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.profileImageId}}" ng-if="data.profileImageId != null" uib-tooltip="{{data.createdByName}}">
+                                    </li>
+                                </ul>
+
+                                <p ng-if="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
+                                || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')"
+                                   ng-class="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
+                                || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
+                                    <a href-void><strong>{{data.createdByName}}</strong> </a><a editor-mention-write user-name="data.createdByName" user-id="data.createdById">댓글</a>
+                                </p>
+                            </div>
                         </div>
-                        <div class="smart-timeline-content">
 
-                            <ul class="list-inline friends-list float-left comment-user-profile"
-                                ng-if="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
-                                || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')"
-                                ng-class="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
-                                || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
-                                <li>
-                                    <img ng-src="/content/images/demo/male.png" ng-if="data.profileImageId == null || data.profileImageId == '' " uib-tooltip="{{data.createdByName}}">
-                                    <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.profileImageId}}" ng-if="data.profileImageId != null" uib-tooltip="{{data.createdByName}}">
-                                </li>
-                            </ul>
+                        <!-- 히스토리 내역 정보 영역 -->
+                        <div class="pad-l123 comment-content-area">
 
-                            <p ng-if="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
-                                || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')"
-                               ng-class="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
-                                || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
-                                <a href-void><strong>{{data.createdByName}}</strong> </a><a editor-mention-write user-name="data.createdByName" user-id="data.createdById">댓글</a>
-                            </p>
-                            <div class="pad-l15">
+                            <!-- 댓글 영역 -->
+                            <div ng-if="data.entityField == 'reply'" class="pad-l10  clear-both">
 
-                                <!-- 댓글 영역 -->
-                                <div ng-if="data.entityField == 'reply'" class="pad-l10  clear-both">
+                                <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px"></span> {{data.createdDate | date : 'HH:mm'}} <span ng-if="data.createdBy == vm.userInfo.login"  class="fa fa-times" ng-click="vm.removeComment(data.id)"></span>
+                                <br class="clear-both"/>
+                                <p ng-repeat="file in data.attachedFiles" class="pad-l20">
+                                    <a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>
+                                </p>
+                            </div>
 
-                                    <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px"></span> {{data.createdDate | date : 'HH:mm'}} <span ng-if="data.createdBy == vm.userInfo.login"  class="fa fa-times" ng-click="vm.removeComment(data.id)"></span>
-                                    <br class="clear-both"/>
-                                    <p ng-repeat="file in data.attachedFiles" class="pad-l20">
-                                        <a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>
-                                    </p>
-                                </div>
-
-                                <!-- 시스템 영역 -->
-                                <div ng-if="data.entityField != 'reply'" class="pad-l10 clear-both" >
+                            <!-- 시스템 영역 -->
+                            <div ng-if="data.entityField != 'reply'" class="pad-l10 clear-both" >
 
                                 <span translate="audit.entity.task" ng-if="data.entityField == null || data.entityField == ''">엔티티</span>
                                 <span translate="audit.field.task.{{data.entityField}}" ng-if="(data.entityField != null && data.entityField != '') && data.entityField != 'taskUsers'">필드</span>
@@ -632,17 +642,17 @@
                                             {{data.oldValue}}
                                         </span>
                                     </span>
-                                    {{data.createdDate | date : 'HH:mm'}}
-                                    <br class="clear-both"/>
+                                <span class="comment-created-date">&nbsp;&nbsp;{{data.createdDate | date : 'HH:mm'}}</span>
+                                <br class="clear-both"/>
 
-                                    <!--{{data.createdBy}} 이 {{data.entityField}} {{data.newValue}}를 {{data.persistType}}하였습니다. {{data.createdDate | date : 'HH:mm'}}-->
-                                    <!--<br/>-->
-                                    <!--<p ng-repeat="file in data.attachedFiles" class="pad-l20">-->
-                                    <!--<a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>-->
-                                    <!--</p>-->
-                                </div>
-                            </div>
-                        </div>
+                                <!--{{data.createdBy}} 이 {{data.entityField}} {{data.newValue}}를 {{data.persistType}}하였습니다. {{data.createdDate | date : 'HH:mm'}}-->
+                                <!--<br/>-->
+                                <!--<p ng-repeat="file in data.attachedFiles" class="pad-l20">-->
+                                <!--<a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>-->
+                                <!--</p>-->
+                            </div><!-- 시스템 영역 끝-->
+                        </div><!-- 히스토리 내역 정보 영역 끝 -->
+
                     </li>
 
                     <!-- 댓글만 보기 -->

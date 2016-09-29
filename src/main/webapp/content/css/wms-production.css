@@ -6948,7 +6948,13 @@ time.icon span {
     padding: 3px 0
 }
 
-.smart-timeline-list > li:hover {
+/*.smart-timeline-list > li:hover {*/
+    /*background-color: #f4f4f4*/
+/*}*/
+.smart-timeline-list > li .comment-header-area:hover { /* hsy */
+    background-color: #f4f4f4
+}
+.smart-timeline-list > li .comment-content-area:hover { /* hsy */
     background-color: #f4f4f4
 }
 
