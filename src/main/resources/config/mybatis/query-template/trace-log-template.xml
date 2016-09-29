@@ -8,6 +8,7 @@
         <id property="id" column="id" />
         <result property="entityId" column="entityId"/>
         <result property="entityName" column="entityName"/>
+        <result property="entityField" column="entityField"/>
         <result property="persistType" column="persistType"/>
         <result property="replyYn" column="replyYn"/>
         <result property="oldValue" column="oldValue"/>
@@ -35,7 +36,7 @@
     </resultMap>
 
     <select id="getTraceLogs" resultType="java.util.ArrayList" resultMap="traceLogListResultMap" parameterType="java.util.HashMap">
-        SELECT tl.id as id, tl.entity_id as entityId, tl.entity_name as entityName
+        SELECT tl.id as id, tl.entity_id as entityId, tl.entity_name as entityName, tl.entity_field as entityField
         , CASE
             WHEN tl.reply_yn = 'Y' THEN true
             WHEN tl.reply_yn = 'N' THEN false
@@ -75,7 +76,7 @@
     </select>
 
     <select id="getRecentTraceLogs" resultType="java.util.ArrayList" resultMap="traceLogListResultMap" parameterType="java.util.HashMap">
-        SELECT tl.id as id, tl.entity_id as entityId, tl.entity_name as entityName
+        SELECT tl.id as id, tl.entity_id as entityId, tl.entity_name as entityName, tl.entity_field as entityField
         , CASE
         WHEN tl.reply_yn = 'Y' THEN true
         WHEN tl.reply_yn = 'N' THEN false

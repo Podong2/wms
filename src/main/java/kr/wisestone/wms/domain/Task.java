@@ -404,7 +404,14 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
         if(this.parent == null) {
             logRecord.setTaskId(this.getId());
         } else {
-            logRecord.setTaskId(this.getParent().getId());
+            if (Traceable.PERSIST_TYPE_INSERT.equals(persisType)) {
+                logRecord.setTaskId(this.getParent().getId());
+            } else if (Traceable.PERSIST_TYPE_UPDATE.equals(persisType)) {
+                logRecord.setTaskId(this.getId());
+            } else if (Traceable.PERSIST_TYPE_DELETE.equals(persisType)) {
+                logRecord.setTaskId(this.getParent().getId());
+            }
+
             logRecord.setEntityName(ClassUtils.getShortName(this.getParent().getClass()));
             logRecord.setEntityField("subTasks");
             logRecord.setEntityId(this.getId());

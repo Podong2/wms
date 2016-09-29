@@ -80,6 +80,7 @@ public class TraceLogInterceptor extends EmptyInterceptor {
                 if (propertyNewState != null) {
                     logRecord.setNewValue(propertyNewState);
                 }
+
                 if (propertyOldState != null) {
                     logRecord.setOldValue(propertyOldState);
                 }
