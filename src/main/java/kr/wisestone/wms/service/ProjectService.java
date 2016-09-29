@@ -426,7 +426,7 @@ public class ProjectService {
             );
         }
 
-        List<Task> tasks = taskService.findByProject(project, ProjectTaskCondition.LIST_TYPE_TOTAL);
+        List<Task> tasks = taskService.findByProject(project);
 
         for(Task task : tasks) {
             projectManagedAttachedFileDTOs.addAll(

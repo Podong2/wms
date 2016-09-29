@@ -24,6 +24,10 @@ public class TaskDAO {
         return sqlSession.selectList("kr.wisestone.wms.domain.Task.getTasksByCondition", condition);
     }
 
+    public List<TaskDTO> getProjectTasks(Map<String, Object> condition) {
+        return sqlSession.selectList("kr.wisestone.wms.domain.Task.getProjectTasks", condition);
+    }
+
     public TaskDTO getTask(Long id) {
         return sqlSession.selectOne("kr.wisestone.wms.domain.Task.getTask", id);
     }

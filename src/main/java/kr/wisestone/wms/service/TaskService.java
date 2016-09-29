@@ -501,28 +501,11 @@ public class TaskService {
     @Transactional(readOnly = true)
     public List<TaskDTO> findHistoryTasksByProjectIds(List<Long> projectIds) {
 
-        List<TaskDTO> taskDTOs = Lists.newArrayList();
+        Map<String, Object> condition = Maps.newHashMap();
+        condition.put("projectIds", projectIds);
+        condition.put("projectHistoryYn", Boolean.TRUE);
 
-        QTask $task = QTask.task;
-
-        BooleanBuilder predicate = new BooleanBuilder();
-
-        predicate.and($task.taskProjects.any().project.id.in(projectIds));
-
-        List<OrderSpecifier> orderSpecifiers = Lists.newArrayList();
-
-        orderSpecifiers.add(QTask.task.lastModifiedDate.desc());
-
-        List<Task> tasks = Lists.newArrayList(taskRepository.findAll(predicate, orderSpecifiers.toArray(new OrderSpecifier[orderSpecifiers.size()])));
-
-        for(Task task : tasks) {
-
-            TaskDTO taskDTO = taskMapper.taskToTaskDTO(task);
-
-            this.copyTaskRelationProperties(task, taskDTO);
-
-            taskDTOs.add(taskDTO);
-        }
+        List<TaskDTO> taskDTOs = taskDAO.getProjectTasks(condition);
 
         return taskDTOs;
     }
@@ -530,42 +513,22 @@ public class TaskService {
     @Transactional(readOnly = true)
     public List<TaskDTO> findTasksByProjectIds(List<Long> projectIds) {
 
-        QTask $task = QTask.task;
+        Map<String, Object> condition = Maps.newHashMap();
+        condition.put("projectIds", projectIds);
 
-        BooleanBuilder predicate = new BooleanBuilder();
-
-        predicate.and($task.taskProjects.any().project.id.in(projectIds));
-
-        List<Task> tasks = Lists.newArrayList(taskRepository.findAll(predicate));
-
-        List<TaskDTO> taskDTOs = taskMapper.tasksToTaskDTOs(tasks);
+        List<TaskDTO> taskDTOs = taskDAO.getProjectTasks(condition);
 
         return taskDTOs;
     }
 
     @Transactional(readOnly = true)
-    public List<Task> findByProject(Project project, String listType) {
+    public List<Task> findByProject(Project project) {
 
         QTask $task = QTask.task;
 
         BooleanBuilder predicate = new BooleanBuilder();
 
         predicate.and($task.taskProjects.any().project.id.eq(project.getId()));
-
-        if(listType.equalsIgnoreCase(ProjectTaskCondition.LIST_TYPE_WEEK)) {
-
-            Date weekStartDate = DateUtil.getWeekStartDate();
-            Date weekEndDate = DateUtil.getWeekEndDate();
-
-            predicate.and($task.period.endDate.goe(DateUtil.convertDateToYYYYMMDD(weekStartDate)));
-            predicate.and($task.period.endDate.loe(DateUtil.convertDateToYYYYMMDD(weekEndDate)));
-
-        } else if(listType.equalsIgnoreCase(ProjectTaskCondition.LIST_TYPE_WEEK)) {
-
-            String today = DateUtil.getTodayWithYYYYMMDD();
-
-            predicate.and($task.period.endDate.gt(today));
-        }
 
         List<Task> tasks = Lists.newArrayList(taskRepository.findAll(predicate));
 

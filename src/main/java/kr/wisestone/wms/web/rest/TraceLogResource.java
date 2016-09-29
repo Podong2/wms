@@ -82,10 +82,9 @@ public class TraceLogResource {
         throws URISyntaxException {
         log.debug("REST request to get a page of Tasks");
 
-        Page<TraceLogDTO> page = traceLogService.findRecentTraceLog(pageable);
+        List<TraceLogDTO> traceLogDTOs = traceLogService.findRecentTraceLog(pageable);
 
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/trace-log/recent");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        return new ResponseEntity<>(traceLogDTOs, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/trace-log",
