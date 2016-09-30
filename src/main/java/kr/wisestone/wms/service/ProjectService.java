@@ -1,11 +1,14 @@
 package kr.wisestone.wms.service;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.mysema.query.BooleanBuilder;
 import kr.wisestone.wms.common.exception.CommonRuntimeException;
 import kr.wisestone.wms.domain.*;
 import kr.wisestone.wms.repository.CodeRepository;
 import kr.wisestone.wms.repository.ProjectRepository;
+import kr.wisestone.wms.repository.dao.ProjectDAO;
 import kr.wisestone.wms.security.SecurityUtils;
 import kr.wisestone.wms.web.rest.condition.ProjectTaskCondition;
 import kr.wisestone.wms.web.rest.dto.*;
@@ -28,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.inject.Inject;
 import java.time.ZonedDateTime;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -63,6 +67,9 @@ public class ProjectService {
 
     @Inject
     private CodeRepository codeRepository;
+
+    @Inject
+    private ProjectDAO projectDAO;
 
     @Transactional
     public ProjectDTO save(ProjectForm projectForm) {
@@ -387,63 +394,15 @@ public class ProjectService {
         if(project == null)
             throw new CommonRuntimeException("error.project.notFound");
 
-        List<ProjectManagedAttachedFileDTO> projectManagedAttachedFileDTOs = Lists.newArrayList();
+        List<Long> projectIds = getChildProjectIds(project);
 
-        this.getProjectManagedAttachedFiles(project, projectManagedAttachedFileDTOs);
+        Map<String, Object> condition = Maps.newHashMap(ImmutableMap.<String, Object>builder().
+            put("projectIds", projectIds).
+            build());
 
-        this.getProjectChildManagedAttachedFiles(project.getProjectChilds(), projectManagedAttachedFileDTOs);
+        List<ProjectManagedAttachedFileDTO> projectManagedAttachedFileDTOs = this.projectDAO.getProjectManagedAttachedFile(condition);
 
         return projectManagedAttachedFileDTOs;
-    }
-
-    private void getProjectChildManagedAttachedFiles(Set<ProjectRelation> projectChilds, List<ProjectManagedAttachedFileDTO> projectManagedAttachedFileDTOs) {
-
-        for(ProjectRelation projectRelation : projectChilds) {
-
-            this.getProjectManagedAttachedFiles(projectRelation.getChild(), projectManagedAttachedFileDTOs);
-
-            this.getProjectChildManagedAttachedFiles(projectRelation.getChild().getProjectChilds(), projectManagedAttachedFileDTOs);
-        }
-    }
-
-    private void getProjectManagedAttachedFiles(Project project, List<ProjectManagedAttachedFileDTO> projectManagedAttachedFileDTOs) {
-        projectManagedAttachedFileDTOs.addAll(
-            project.getProjectAttachedFiles().stream().map(ProjectManagedAttachedFileDTO::new).collect(Collectors.toList())
-        );
-
-        projectManagedAttachedFileDTOs.addAll(
-            project.getProjectSharedAttachedFiles().stream().map(ProjectManagedAttachedFileDTO::new).collect(Collectors.toList())
-        );
-
-        List<TraceLogDTO> traceLogDTOs
-            = traceLogService.findByEntityIdAndEntityNameAndAttachedFileIsNotNull(project.getId(), ClassUtils.getShortName(project.getClass()));
-
-        for(TraceLogDTO traceLogDTO : traceLogDTOs) {
-            projectManagedAttachedFileDTOs.addAll(
-                traceLogDTO.getAttachedFiles().stream().map(
-                    attachedFileDTO -> new ProjectManagedAttachedFileDTO(project, attachedFileDTO)
-                ).collect(Collectors.toList())
-            );
-        }
-
-        List<Task> tasks = taskService.findByProject(project);
-
-        for(Task task : tasks) {
-            projectManagedAttachedFileDTOs.addAll(
-                task.getTaskAttachedFiles().stream().map(ProjectManagedAttachedFileDTO::new).collect(Collectors.toList())
-            );
-
-            List<TraceLogDTO> taskTraceLogDTOs
-                = traceLogService.findByEntityIdAndEntityNameAndAttachedFileIsNotNull(task.getId(), ClassUtils.getShortName(task.getClass()));
-
-            for(TraceLogDTO traceLogDTO : taskTraceLogDTOs) {
-                projectManagedAttachedFileDTOs.addAll(
-                    traceLogDTO.getAttachedFiles().stream().map(
-                        attachedFileDTO -> new ProjectManagedAttachedFileDTO(task, attachedFileDTO)
-                    ).collect(Collectors.toList())
-                );
-            }
-        }
     }
 
     @Transactional

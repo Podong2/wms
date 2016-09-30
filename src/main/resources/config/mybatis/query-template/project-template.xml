@@ -1,0 +1,118 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.wisestone.wms.domain.Project">
+
+    <resultMap id="projectManagedAttachedFileResultMap" type="kr.wisestone.wms.web.rest.dto.ProjectManagedAttachedFileDTO">
+        <result property="location" column="location"/>
+        <result property="locationType" column="locationType"/>
+        <result property="locationId" column="locationId"/>
+        <result property="attachedFile.id" column="attachedFileId"/>
+        <result property="attachedFile.name" column="attachedFileName"/>
+        <result property="attachedFile.size" column="attachedFileSize"/>
+        <result property="attachedFile.contentType" column="attachedFileContentType"/>
+        <result property="attachedFile.createdBy" column="attachedFileCreatedBy"/>
+        <result property="attachedFile.createdDate" column="attachedFileCreatedDate"/>
+        <result property="attachedFile.lastModifiedBy" column="attachedFileLastModifiedBy"/>
+        <result property="attachedFile.lastModifiedDate" column="attachedFileLastModifiedDate"/>
+    </resultMap>
+
+    <select id="getProjectManagedAttachedFile" resultType="java.util.ArrayList" resultMap="projectManagedAttachedFileResultMap" parameterType="java.util.HashMap">
+        SELECT p.name as location, 'PROJECT' as locationType, p.id as locationId
+            , af.id as attachedFileId, af.name as attachedFileName
+            , af.size as attachedFileSize, af.content_type as attachedFileContentType
+            , af.created_by as attachedFileCreatedBy, af.created_date as attachedFileCreatedDate
+            , af.last_modified_by as attachedFileLastModifiedBy, af.last_modified_date as attachedFileLastModifiedDate
+        FROM owl_project p
+            RIGHT JOIN owl_project_attached_file paf ON p.id = paf.project_id
+            LEFT JOIN owl_attached_file af ON paf.attached_file_id = af.id
+        WHERE 1=1
+        <if test="projectIds != null">
+            AND p.id IN
+            <foreach item="item" index="index" collection="projectIds"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        UNION ALL
+        SELECT p.name as location, 'PROJECT_SHARED' as locationType, p.id as locationId
+            , af.id as attachedFileId, af.name as attachedFileName
+            , af.size as attachedFileSize, af.content_type as attachedFileContentType
+            , af.created_by as attachedFileCreatedBy, af.created_date as attachedFileCreatedDate
+            , af.last_modified_by as attachedFileLastModifiedBy, af.last_modified_date as attachedFileLastModifiedDate
+        FROM owl_project p
+            RIGHT JOIN owl_project_shared_attached_file psaf ON p.id = psaf.project_id
+            LEFT JOIN owl_attached_file af ON psaf.attached_file_id = af.id
+        WHERE 1=1
+        <if test="projectIds != null">
+            AND p.id IN
+            <foreach item="item" index="index" collection="projectIds"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        UNION ALL
+        SELECT t.name as location, 'TASK' as locationType, t.id as locationId
+            , af.id as attachedFileId, af.name as attachedFileName
+            , af.size as attachedFileSize, af.content_type as attachedFileContentType
+            , af.created_by as attachedFileCreatedBy, af.created_date as attachedFileCreatedDate
+            , af.last_modified_by as attachedFileLastModifiedBy, af.last_modified_date as attachedFileLastModifiedDate
+        FROM owl_task t
+            RIGHT JOIN owl_task_project tp ON tp.task_id = t.id
+            RIGHT JOIN owl_task_attached_file taf ON t.id = taf.task_id
+            LEFT JOIN owl_attached_file af ON taf.attached_file_id = af.id
+        WHERE 1=1
+        <if test="projectIds != null">
+            AND tp.project_id IN
+            <foreach item="item" index="index" collection="projectIds"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        UNION ALL
+        SELECT t.name as location, 'TASK_REPLY' as locationType, t.id as locationId
+            , af.id as attachedFileId, af.name as attachedFileName
+            , af.size as attachedFileSize, af.content_type as attachedFileContentType
+            , af.created_by as attachedFileCreatedBy, af.created_date as attachedFileCreatedDate
+            , af.last_modified_by as attachedFileLastModifiedBy, af.last_modified_date as attachedFileLastModifiedDate
+        FROM owl_trace_log tl
+            LEFT OUTER JOIN owl_task t ON tl.task_id = t.id
+            RIGHT JOIN owl_trace_log_attached_file tlaf ON tl.id = tlaf.trace_log_id
+            LEFT JOIN owl_attached_file af ON tlaf.attached_file_id = af.id
+        WHERE tl.task_id IN (
+            SELECT it.id
+            FROM owl_task it
+            RIGHT JOIN owl_task_project itp ON itp.task_id = it.id
+            WHERE 1=1
+            <if test="projectIds != null">
+                AND itp.project_id IN
+                <foreach item="item" index="index" collection="projectIds"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+        )
+        AND tl.reply_yn = 'Y'
+        UNION ALL
+        SELECT p.name as location, 'PROJECT_REPLY' as locationType, p.id as locationId
+            , af.id as attachedFileId, af.name as attachedFileName
+            , af.size as attachedFileSize, af.content_type as attachedFileContentType
+            , af.created_by as attachedFileCreatedBy, af.created_date as attachedFileCreatedDate
+            , af.last_modified_by as attachedFileLastModifiedBy, af.last_modified_date as attachedFileLastModifiedDate
+        FROM owl_trace_log tl
+            LEFT OUTER JOIN owl_project p ON tl.project_id = p.id
+            RIGHT JOIN owl_trace_log_attached_file tlaf ON tl.id = tlaf.trace_log_id
+            LEFT JOIN owl_attached_file af ON tlaf.attached_file_id = af.id
+        WHERE 1=1
+        <if test="projectIds != null">
+            AND tl.project_id IN
+            <foreach item="item" index="index" collection="projectIds"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        AND tl.reply_yn = 'Y'
+    </select>
+
+</mapper>

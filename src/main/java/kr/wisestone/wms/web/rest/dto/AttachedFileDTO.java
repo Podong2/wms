@@ -15,6 +15,10 @@ public class AttachedFileDTO {
 
     private String contentType;
 
+    private String createdBy;
+
+    private ZonedDateTime createdDate;
+
     private String lastModifiedBy;
 
     private ZonedDateTime lastModifiedDate;
@@ -77,5 +81,21 @@ public class AttachedFileDTO {
 
     public void setLastModifiedDate(ZonedDateTime lastModifiedDate) {
         this.lastModifiedDate = lastModifiedDate;
+    }
+
+    public String getCreatedBy() {
+        return createdBy;
+    }
+
+    public void setCreatedBy(String createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public ZonedDateTime getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(ZonedDateTime createdDate) {
+        this.createdDate = createdDate;
     }
 }

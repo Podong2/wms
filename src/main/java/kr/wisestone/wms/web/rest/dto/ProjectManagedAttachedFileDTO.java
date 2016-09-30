@@ -29,6 +29,8 @@ public class ProjectManagedAttachedFileDTO {
 
     private ZonedDateTime lastModifiedDate;
 
+    public ProjectManagedAttachedFileDTO() {}
+
     public ProjectManagedAttachedFileDTO(TaskAttachedFile taskAttachedFile) {
 
         Task task = taskAttachedFile.getTask();
