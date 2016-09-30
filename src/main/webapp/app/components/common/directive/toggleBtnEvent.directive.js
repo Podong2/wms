@@ -133,22 +133,21 @@ function projectPickerAddToggle($timeout, $rootScope) {
         restrict: 'A',
         link: function(scope, element, attr) {
             var openYn = true;
+            var $element = element.parents('label').next();
             $('body').click(function (e) {
-                if(openYn){
-                    if ($('.projectPickerAddSection').addClass("on"), $('.projectValueAddSection').addClass("on")) {
-                        if (!$('#projectPickerAddSection').has(e.target).length) {
-                            $('.projectPickerAddSection').removeClass("on");
-                            $('.projectValueAddSection').removeClass("on");
-                            openYn = true;
-                        }
+                if ($($element).addClass("on"), $($element).find('.projectValueAddSection').addClass("on")) {
+                    if (!$($element).parents('#projectPickerAddSection').has(e.target).length) {
+                        $('.projectPickerAddSection').removeClass("on");
+                        $('.projectValueAddSection').removeClass("on");
                     }
-                }else openYn = true;
+                }
 
             });
             $rootScope.$on('projectPickerAddClose', function(event, args){
-                openYn = args;
-                $('.projectPickerAddSection').removeClass("on");
-                $('.projectValueAddSection').removeClass("on");
+                $timeout(function () {
+                    $('.projectPickerAddSection').removeClass("on");
+                    $('.projectValueAddSection').removeClass("on");
+                }, 100);
             });
             element.on('click', function(_this) {
                 $timeout(function () {
@@ -209,8 +208,10 @@ function projectAddToggle($timeout, $rootScope) {
                 }
             });
             $rootScope.$on('projectAddClose', function(){
-                $('.projectAddSection').removeClass("on");
-                $('.projectAddValueSection').removeClass("on");
+                $timeout(function () {
+                    $('.projectAddSection').removeClass("on");
+                    $('.projectAddValueSection').removeClass("on");
+                }, 200);
             });
             element.on('click', function(_this) {
                 $timeout(function () {
