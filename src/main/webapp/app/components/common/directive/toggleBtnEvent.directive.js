@@ -315,10 +315,11 @@ function watcherInfoBtnToggle($rootScope, $timeout) {
             element.on('click', function(_this) {
                 //$($elements).addClass("on");
             });
-            //$rootScope.$on('watcherPopupClose', function(){
-            //    closeYn = true;
-            //    $($elements).removeClass("on");
-            //})
+            $rootScope.$on('profileClose', function(){
+                $timeout(function(){
+                    $($elements).removeClass("on");
+                }, 100);
+            })
             $('body').click(function (e) {
                 if(closeYn){
                     $($elements).removeClass("on");
@@ -358,7 +359,6 @@ function relatedTaskPickerBtnToggle($rootScope, $timeout) {
         restrict: 'A',
         link: function(scope, element, attr) {
             var $elements = element.next();
-            var closeYn = false;
             element.on('click', function(_this) {
                 $($elements).addClass("on");
 
@@ -367,15 +367,20 @@ function relatedTaskPickerBtnToggle($rootScope, $timeout) {
                 }, 400);
             });
             $rootScope.$on('relatedTaskPopupClose', function(){
-                closeYn = true;
-                $($elements).removeClass("on");
+                $timeout(function () {
+                    $($elements).removeClass("on");
+                }, 100);
             })
             $('body').click(function (e) {
-                if (!$($elements.parent()).has(e.target).length || closeYn) {
-                    $timeout(function () {
-                        //$($elements).removeClass("on");
-                        closeYn = false;
-                    }, 100);
+                if (!$($elements.parent()).has(e.target).length) {
+                    if(e.target.getAttribute('class') == null){
+                        $($elements).removeClass("on");
+                    }else if(e.target.getAttribute('class') == 'remove-button' || e.target.getAttribute('class').indexOf('suggestion-item') > -1){
+                        $($elements).addClass("on");
+                    }else{
+                        $($elements).removeClass("on");
+                    }
+
                 }
             });
 

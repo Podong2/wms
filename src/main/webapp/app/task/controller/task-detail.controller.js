@@ -45,6 +45,8 @@
         vm.removeRelatedTask = removeRelatedTask;
         vm.projectClose = projectClose;
         vm.windowOpen = windowOpen;
+        vm.profileClose = profileClose;
+        vm.getCurrentWatchers = getCurrentWatchers;
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
 
@@ -912,6 +914,7 @@
                 $scope.$emit('wmsApp:taskUpdate', response);
                 toastr.success('태스크 댓글 생성 완료', '태스크 댓글 생성 완료');
                 $scope.commentFiles = [];
+                vm.comment.contents='';
                 getTaskAudigLog();
             });
         }
@@ -1135,8 +1138,9 @@
             }else{
                 //vm.DuplicationWatcherIds.push(watcher.id);
                 vm.uploadType = 'watcher';
+                setCurrentSearchWatcher(watcher)
                 vm.task.watchers.push(watcher);
-                $scope.pickerFindWatcher('');
+                $scope.pickerFindWatcher(vm.watcherName);
                 //$rootScope.$broadcast('watcherPopupClose');
             }
         }
@@ -1146,7 +1150,7 @@
             //$rootScope.$broadcast('watcherPopupClose');
             vm.uploadType = 'watcher';
             vm.task.removeWatcherIds = watcher.id;
-            $scope.pickerFindWatcher('');
+            $scope.pickerFindWatcher(vm.watcherName);
             taskUpload();
         }
 
@@ -1209,6 +1213,50 @@
             var url = "#/myTask/detail/"+ vm.listType + '/' + task.id;
             $window.open(url, "_blank");
         }
+
+        function profileClose(){
+            $rootScope.$broadcast("profileClose")
+        }
+
+        /* localStorage 에서 최근 검색한 사용자 가져오기 */
+        function getCurrentWatchers(){
+            vm.watcherName='';
+            var currentSearchWatcher = localStorage.getItem("currentSearchWatcher");
+            vm.watchers = [];
+            if (angular.isDefined(currentSearchWatcher) && currentSearchWatcher != null) {
+                currentSearchWatcher = JSON.parse(currentSearchWatcher);
+                vm.watcherList = currentSearchWatcher.watchers;
+            }
+        }
+
+        /* localStorage에 최근 검색한 사용자 주입 */
+        function setCurrentSearchWatcher(watcher){
+            var currentSearchWatcher = localStorage.getItem("currentSearchWatcher");
+            vm.watchers = [];
+            if (angular.isDefined(currentSearchWatcher) && currentSearchWatcher != null) {
+                currentSearchWatcher = JSON.parse(currentSearchWatcher);
+                if(currentSearchWatcher.watchers.length >= 3){
+                    currentSearchWatcher.watchers.splice(0, 1);
+                    vm.watchers = currentSearchWatcher.watchers;
+                    vm.watchers.push(watcher);
+                    localStorage.setItem("currentSearchWatcher", JSON.stringify({
+                        watchers : vm.watchers,
+                    }));
+                }else{
+                    vm.watchers = currentSearchWatcher.watchers;
+                    vm.watchers.push(watcher);
+                    localStorage.setItem("currentSearchWatcher", JSON.stringify({
+                        watchers : vm.watchers,
+                    }));
+                }
+            } else {
+                vm.watchers.push(watcher);
+                localStorage.setItem("currentSearchWatcher", JSON.stringify({
+                    watchers : vm.watchers,
+                }));
+            }
+        }
+
 
 
 

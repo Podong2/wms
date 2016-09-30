@@ -6,8 +6,7 @@
   ~ Vestibulum commodo. Ut rhoncus gravida arcu.
   -->
 <div id="content" ng-cloak>
-    <div class="layout-scroll" style="position: relative; background: #fff;
-    border: 1px solid #aaa; height: 1030px;">
+    <div class="layout-scroll" style="position: relative; background: #fff;" dynamic-content-scroll area-type="content">
         <bg-splitter orientation="horizontal">
 
             <bg-pane min-size="400">
@@ -30,50 +29,59 @@
                                 <!-- 타스크 영역 -->
                                 <div  class="wms-tree-node-list task-list notification-list"  ng-class="data.taskDTO.statusId == 1 ? 'green' : (data.taskDTO.statusId == 2 ? 'blue' : (data.taskDTO.statusId == 3 ? 'black' : 'red'))"
                                       ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate"
-                                       ng-if="data.taskDTO != null" >
-
-                                    <!-- 우측영역 -->
-                                    <div class="pull-right">
-                                        <div>{{data.createdDate | date : 'yyyy-MM-dd HH:mm'}}</div>
-                                        <div class="wms-form">
-                                            <label class="radio state-success"><input type="radio" ng-click="vm.notificationReadChange(data.id, 'confirm')"
-                                                                                    name="radio"><i></i></label>
+                                       ng-if="data.taskDTO != null" style="height: 85px;">
+                                    <div class="task-list-item-header">
+                                        <!-- 우측영역 -->
+                                        <div class="pull-right">
+                                            <div>{{data.createdDate | date : 'MM-dd HH:mm'}}</div>
                                         </div>
-                                    </div>
+                                        <!-- 좌측영역 -->
+                                        <div class="cursor" ui-sref="my-notification.taskDetail({taskId : data.taskDTO.id, listType : 'TODAY'})" ng-click="vm.notificationReadChange(data.id, 'read', $index)"  notification-active>
+                                            <div>
+                                                <div class="float-left notification-name task-list-title-length" style="line-height: 30px; margin-right: 10px;" tooltip-placement="top-left" uib-tooltip="{{data.title}}">{{data.title}} </div>
 
-                                    <!-- 좌측영역 -->
-                                    <div class="cursor" ui-sref="my-notification.taskDetail({taskId : data.taskDTO.id, listType : 'TODAY'})" ng-click="vm.notificationReadChange(data.id, 'read', $index)"  notification-active>
-                                        <div>
-                                            <div class="float-left notification-name" style="line-height: 30px; margin-right: 10px;">{{data.title}} </div>
-
-                                            <ul class="list-inline friends-list" style="margin-bottom: 0">
-                                                <li ng-repeat="user in data.taskDTO.assignees | limitTo:3">
-                                                    <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}"style="margin-right: 0">
-                                                    <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}"style="margin-right: 0">
-                                                </li>
-                                                <li ng-if="data.taskDTO.assignees.length > 3">
-                                                    <a href-void>
+                                                <ul class="list-inline friends-list" style="margin-bottom: 0">
+                                                    <li ng-repeat="user in data.taskDTO.assignees | limitTo:3">
+                                                        <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}"style="margin-right: 0">
+                                                        <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}"style="margin-right: 0">
+                                                    </li>
+                                                    <li ng-if="data.taskDTO.assignees.length > 3">
+                                                        <a href-void>
                                                     <span class="activity">
                                                         <a><i class="fa fa-plus" style="font-size: 22px; position: relative; top: 5px;"></i><b class="badge bg-color-red" style="position: absolute;">{{data.taskDTO.assignees.length - 3}}</b></a>
                                                     </span>
-                                                    </a>
-                                                </li>
-                                            </ul>
+                                                        </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
-                                        <div class="clear-both">
-                                            <ul class="list-inline friends-list float-left" style="margin-bottom: 0;">
-                                                <li>
-                                                    <img ng-src="/content/images/demo/male.png" ng-if="data.sender.profileImageId == null || data.sender.profileImageId == '' " uib-tooltip="{{data.sender.name}}">
-                                                    <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.sender.profileImageId}}" ng-if="data.sender.profileImageId != null" uib-tooltip="{{data.sender.name}}">
-                                                </li>
-                                            </ul>
-                                            <div>
-                                                <!--{{data.notificationConfig}}-->
 
-                                                <span translate="audit.entity.task" ng-if="data.entityField == null || data.entityField == ''">엔티티</span>
-                                                <span translate="audit.field.task.{{data.entityField}}" ng-if="(data.entityField != null && data.entityField != '') && data.entityField != 'taskUsers'">필드</span>
-                                                <span translate="audit.field.task.{{data.etcValue}}"  ng-if="(data.entityField != null && data.entityField != '') && data.entityField == 'taskUsers'">필드</span>
-                                                <span translate="audit.persist-type.{{data.persistType}}">유형</span>
+                                    </div>
+                                    <div class="task-list-item-footer">
+                                        <!-- 우측영역 -->
+                                        <div class="pull-right">
+                                            <div class="wms-form text-right">
+                                                <label class="radio state-success">
+                                                    <input type="radio" ng-click="vm.notificationReadChange(data.id, 'confirm')" name="radio"><i></i>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <!-- 좌측영역 -->
+                                        <div class="cursor" ui-sref="my-notification.taskDetail({taskId : data.taskDTO.id, listType : 'TODAY'})" ng-click="vm.notificationReadChange(data.id, 'read', $index)"  notification-active>
+                                            <div class="clear-both">
+                                                <ul class="list-inline friends-list float-left" style="margin-bottom: 0;">
+                                                    <li>
+                                                        <img ng-src="/content/images/demo/male.png" ng-if="data.sender.profileImageId == null || data.sender.profileImageId == '' " uib-tooltip="{{data.sender.name}}">
+                                                        <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.sender.profileImageId}}" ng-if="data.sender.profileImageId != null" uib-tooltip="{{data.sender.name}}">
+                                                    </li>
+                                                </ul>
+                                                <div>
+                                                    <!--{{data.notificationConfig}}-->
+
+                                                    <span translate="audit.entity.task" ng-if="data.entityField == null || data.entityField == ''">엔티티</span>
+                                                    <span translate="audit.field.task.{{data.entityField}}" ng-if="(data.entityField != null && data.entityField != '') && data.entityField != 'taskUsers'">필드</span>
+                                                    <span translate="audit.field.task.{{data.etcValue}}"  ng-if="(data.entityField != null && data.entityField != '') && data.entityField == 'taskUsers'">필드</span>
+                                                    <span translate="audit.persist-type.{{data.persistType}}">유형</span>
                                                 <span ng-if="data.entityField != 'taskAttachedFiles' && data.entityField != 'taskRepeatSchedule' && data.entityField != 'contents'">
                                                     <span ng-if="data.entityField == 'importantYn'">
                                                         <span ng-if="data.entityValue == 'true'">
@@ -97,17 +105,20 @@
                                                         {{data.entityValue}}
                                                     </span>
                                                 </span>
-                                                <br/>
+                                                    <br/>
 
+                                                </div>
+                                            </div>
+                                            <div>
+                                                일정
+
+                                                <span ng-if="data.taskDTO.startDate == '' && data.taskDTO.endDate == ''">미정</span>
+                                                <span ng-if="data.taskDTO.startDate != '' || data.taskDTO.endDate != ''">{{data.taskDTO.startDate | date : 'yyyy-MM-dd'}} ~ {{data.taskDTO.endDate | date : 'yyyy-MM-dd'}}</span>
                                             </div>
                                         </div>
-                                        <div>
-                                            일정
 
-                                            <span ng-if="data.taskDTO.startDate == '' && data.taskDTO.endDate == ''">미정</span>
-                                            <span ng-if="data.taskDTO.startDate != '' || data.taskDTO.endDate != ''">{{data.taskDTO.startDate | date : 'yyyy-MM-dd'}} ~ {{data.taskDTO.endDate | date : 'yyyy-MM-dd'}}</span>
-                                        </div>
                                     </div>
+
                                 </div>
 
                                 <!-- 프로젝트 영역 -->

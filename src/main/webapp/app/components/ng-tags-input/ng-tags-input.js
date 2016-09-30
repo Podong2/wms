@@ -83,7 +83,7 @@ var tagsInput = angular.module('ngTagsInput', []);
  * @param {expression=} [onTagRemoved=NA] Expression to evaluate upon removing an existing tag. The removed tag is available as $tag.
  * @param {expression=} [onTagClicked=NA] Expression to evaluate upon clicking an existing tag. The clicked tag is available as $tag.
  */
-tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tagsInputConfig", "tiUtil", "$log", function($timeout, $document, $window, $q, tagsInputConfig, tiUtil, $log) {
+tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tagsInputConfig", "tiUtil", "$log", '$rootScope', function($timeout, $document, $window, $q, tagsInputConfig, tiUtil, $log, $rootScope) {
     function TagList(options, events, onTagAdding, onTagRemoving) {
         var self = {}, getTagText, setTagText, canAddTag, canRemoveTag;
 
@@ -281,7 +281,7 @@ tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tag
                         if ($scope.disabled) {
                             return;
                         }
-                        $rootScope.$broadcast("tagRemoveId", {id : $scope.tagList.items[index].id, tagType : $scope.tagType});
+                        if($scope.modifyYn) $rootScope.$broadcast("tagRemoveId", {id : $scope.tagList.items[index].id, tagType : $scope.tagType}); // hsy 수정
                         $scope.tagList.remove(index);
                     }
                 };
@@ -411,6 +411,11 @@ tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tag
                         //$('.sub-task-area-popup').removeClass('on');
                         //$(event.target.children).addClass('on');
                         $element.addClass("on");
+                    }
+                },
+                info : {  // hsy 추가
+                    click : function(){
+                        $('.user-picker-info').removeClass("on");
                     }
                 }
             };
@@ -1254,6 +1259,7 @@ tagsInput.run(["$templateCache", function($templateCache) {
             "<img ng-src='/api/attachedFile/{{tagInfo.profileImageId}}' ng-if='tagInfo.profileImageId !=null' /><img ng-src='/content/images/demo/male.png' ng-if='tagInfo.profileImageId ==null' />" +
         "</div>" +
         "<div class='col-md-8 padding-10' style='height: 100%;'>" +
+        "<i class='fa fa-close cursor pull-right' ng-click=\"eventHandlers.info.click()\"></i>" +
             "<ul>" +
                 "<li>{{tagInfo.name}}</li>" +
                 "<li>{{tagInfo.phone}}</li>" +

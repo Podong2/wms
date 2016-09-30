@@ -405,7 +405,8 @@
     //    '{uploadIcon}</button>'; //hsy 수정
     tActionZoom = '';
     //tActionZoom = '<button type="button" class="kv-file-zoom {zoomClass}" title="{zoomTitle}">{zoomIcon}</button>'; //hsy 수정
-    tActionDrag = '<span class="file-drag-handle {dragClass}" title="{dragTitle}">{dragIcon}</span>';
+    tActionDrag = '';
+    //tActionDrag = '<span class="file-drag-handle {dragClass}" title="{dragTitle}">{dragIcon}</span>'; // hsy 수정
     tTagBef = '<div class="file-preview-frame{frameClass}" id="{previewId}" data-fileindex="{fileindex}"' +
         ' data-template="{template}"';
     tTagBef1 = tTagBef + '><div class="kv-file-content">\n';

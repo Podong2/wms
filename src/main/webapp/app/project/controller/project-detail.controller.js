@@ -428,6 +428,7 @@
                 $scope.$emit('wmsApp:taskUpdate', response);
                 toastr.success('프로젝트 댓글 등록 완료', '프로젝트 댓글 등록 완료');
                 $scope.commentFiles = [];
+                vm.comment.contents='';
                 // TaskListSearch.TaskAudigLog({'entityId' : vm.project.id, 'entityName' : 'Project'}).then(function(result){
                 //     vm.TaskAuditLog = result;
                 //     vm.commentList=[];

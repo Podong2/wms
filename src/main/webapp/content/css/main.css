@@ -172,6 +172,12 @@ Generic styles
 .position-relative{
     position: relative;
 }
+.position-absolute{
+    position: absolute;
+}
+.position-right-0{
+    right : 0;
+}
 .error {
     color: red;
     background-color: white;
@@ -2976,7 +2982,7 @@ text-align: right;
 .watcher-popup-area{
     position: absolute;
     width: 280px;
-    max-height: 240px;
+    max-height: 250px;
     top: 100%;
     background-color: #fff;
     border-radius: 3px;

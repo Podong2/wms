@@ -4,7 +4,8 @@
             <div class="col-md-12">
                 <div><a ui-sref="my-task.detail({id : vm.task.parent.id, listType : vm.listType})" class="cursor">{{vm.task.parent.name}}</a></div>
                 <div class="col-md-9 padding-0">
-                    <i class="fa fa-exclamation-circle task-circle" ng-class="vm.task.importantYn ? 'on' : ''" ng-click="vm.task.importantYn = !vm.task.importantYn"></i>
+                    <i class="fa fa-exclamation-circle task-circle" ng-class="vm.task.importantYn ? 'on' : ''" ng-click="vm.task.importantYn = !vm.task.importantYn" ng-show="vm.task.modifyYn"></i>
+                    <i class="fa fa-exclamation-circle task-circle on" ng-show="!vm.task.modifyYn && vm.task.importantYn"></i>
                     <input type="text" class="taskAddInput" ng-model="vm.task.name" enter-submit="vm.taskUpload()" placeholder="Task" ng-show="vm.task.modifyYn"/>
                     <div class="disabled-task-title" ng-show="!vm.task.modifyYn">{{vm.task.name}}</div>
                 </div>
@@ -131,6 +132,7 @@
                                         <img ng-src='/content/images/demo/male.png' ng-if='watcherInfo.profileImageId ==null' />
                                     </div>
                                     <div class='col-md-8 padding-10' style='height: 100%;'>
+                                        <i class="fa fa-close cursor pull-right" ng-click="vm.profileClose()"></i>
                                         <ul>
                                             <li>{{watcherInfo.name}}</li>
                                             <li>{{watcherInfo.phone}}</li>
@@ -139,7 +141,7 @@
                                     </div>
                                 </div>
 
-                                <label for="watcher" class="cursor" style="margin-bottom: 0px;" ng-click="pickerFindWatcher('')" watcher-picker-btn-toggle><span id="watcher"><i class="fa fa-user"></i> 참조자 {{vm.task.watchers.length == 0 ? '' : vm.task.watchers.length}}</span></label>
+                                <label for="watcher" class="cursor" style="margin-bottom: 0px;" ng-click="vm.getCurrentWatchers()" watcher-picker-btn-toggle><span id="watcher"><i class="fa fa-user"></i> 참조자 {{vm.task.watchers.length == 0 ? '' : vm.task.watchers.length}}</span></label>
 
                                 <!-- 참조자 검색 및 등록 팝업 -->
                                 <div class="watcher-popup-area text-left">

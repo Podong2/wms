@@ -112,7 +112,7 @@
                             </div>
                         </div>
 
-                        <label for="watcher" class="cursor" style="margin-bottom: 0px;" ng-click="pickerFindWatcher('')" watcher-picker-btn-toggle><span id="watcher"><i class="fa fa-user"></i> 참조자 {{watchers.length == 0 ? '' : watchers.length}}</span></label>
+                        <label for="watcher" class="cursor" style="margin-bottom: 0px;" ng-click="vm.getCurrentWatchers()" watcher-picker-btn-toggle><span id="watcher"><i class="fa fa-user"></i> 참조자 {{watchers.length == 0 ? '' : watchers.length}}</span></label>
 
                         <!-- 참조자 검색 및 등록 팝업 -->
                         <div class="watcher-popup-area text-left">
