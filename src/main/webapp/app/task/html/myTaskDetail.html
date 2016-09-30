@@ -75,9 +75,9 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="task-project" ng-repeat="project in vm.task.taskProjects">
+                            <div class="task-project" ng-repeat="project in vm.task.taskProjects" wms-close-btn-display type="project">
                                 {{project.name}}
-                                <i class="fa fa-close cursor" ng-click="vm.projectRemoveInTask(project.id)"></i>
+                                <i class="fa fa-close cursor project-close-btn close-btn" ng-if="vm.task.modifyYn"  ng-click="vm.projectRemoveInTask(project.id)"></i>
                             </div>
                         </div>
                     </div>
@@ -581,7 +581,7 @@
                                 || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')"
                                    ng-class="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
                                 || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
-                                    <a href-void><strong>{{data.createdByName}}</strong> </a><a editor-mention-write user-name="data.createdByName" user-id="data.createdById">댓글</a>
+                                    <a href-void><strong>{{data.createdByName}}</strong> </a><a class="comment-mention-btn" task-editor-mention-write user-name="data.createdByName" user-id="data.createdById">댓글</a>
                                 </p>
                             </div>
                         </div>
@@ -592,7 +592,7 @@
                             <!-- 댓글 영역 -->
                             <div ng-if="data.entityField == 'reply'" class="pad-l10  clear-both">
 
-                                <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px"></span> {{data.createdDate | date : 'HH:mm'}} <span ng-if="data.createdBy == vm.userInfo.login"  class="fa fa-times" ng-click="vm.removeComment(data.id)"></span>
+                                <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px"></span> <span class="comment-created-date">&nbsp;&nbsp;{{data.createdDate | date : 'HH:mm'}}</span> <span ng-if="data.createdBy == vm.userInfo.login"  class="fa fa-times" ng-click="vm.removeComment(data.id)"></span>
                                 <br class="clear-both"/>
                                 <p ng-repeat="file in data.attachedFiles" class="pad-l20">
                                     <a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>
@@ -657,38 +657,43 @@
 
                     <!-- 댓글만 보기 -->
                     <li ng-repeat="data in vm.commentList track by $index" ng-if="vm.commentViewType">
-                        <div class="smart-timeline-icon" ng-if="(data.createdDate | date : 'MM/dd') != (vm.commentList[$index-1].createdDate | date : 'MM/dd')
-                        ">
-                            {{data.createdDate | date : 'MM/dd'}}
-                        </div>
-                        <div class="smart-timeline-content">
-                            <ul class="list-inline friends-list float-left comment-user-profile"
-                                ng-if="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
+                        <div class="comment-header-area">
+                            <div class="smart-timeline-icon" ng-if="(data.createdDate | date : 'MM/dd') != (vm.commentList[$index-1].createdDate | date : 'MM/dd')">
+                                {{data.createdDate | date : 'MM/dd'}}
+                            </div>
+                            <div class="smart-timeline-content">
+                                <ul class="list-inline friends-list float-left comment-user-profile"
+                                    ng-if="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
                                 || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')"
-                                ng-class="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
+                                    ng-class="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
                                 || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
-                                <li>
-                                    <img ng-src="/content/images/demo/male.png" ng-if="data.profileImageId == null || data.profileImageId == '' " uib-tooltip="{{data.createdByName}}">
-                                    <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.profileImageId}}" ng-if="data.profileImageId != null" uib-tooltip="{{data.createdByName}}">
-                                </li>
-                            </ul>
-                            <p ng-if="vm.commentList[$index].createdBy != vm.commentList[$index-1].createdBy
+                                    <li>
+                                        <img ng-src="/content/images/demo/male.png" ng-if="data.profileImageId == null || data.profileImageId == '' " uib-tooltip="{{data.createdByName}}">
+                                        <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.profileImageId}}" ng-if="data.profileImageId != null" uib-tooltip="{{data.createdByName}}">
+                                    </li>
+                                </ul>
+                                <p ng-if="vm.commentList[$index].createdBy != vm.commentList[$index-1].createdBy
                                 || (vm.commentList[$index].createdDate | date : 'MM/dd') != (vm.commentList[$index-1].createdDate | date : 'MM/dd')"
-                                ng-class="vm.commentList[$index].createdBy != vm.commentList[$index-1].createdBy
+                                   ng-class="vm.commentList[$index].createdBy != vm.commentList[$index-1].createdBy
                                 || (vm.commentList[$index].createdDate | date : 'MM/dd') != (vm.commentList[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
-                                <a ><strong>{{data.createdByName}}</strong> </a><span editor-mention-write user-name="data.createdByName" user-id="data.createdById">댓글</span>
-                            </p>
-                            <div class="pad-l15 clear-both">
-                                <div ng-if="data.entityField == 'reply'" class="pad-l10">
-                                    <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px"></span>
-                                    {{data.createdDate | date : 'HH:mm'}} <span ng-if="data.createdBy == vm.userInfo.login"  class="fa fa-times" ng-click="vm.removeComment(data.id)"></span>
-                                    <br class="clear-both"/>
-                                    <p ng-repeat="file in data.attachedFiles" class="pad-l20">
-                                        <a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>
-                                    </p>
-                                </div>
+                                    <a href-void><strong>{{data.createdByName}}</strong> </a><a class="comment-mention-btn" task-editor-mention-write user-name="data.createdByName" user-id="data.createdById">댓글</a>
+                                </p>
                             </div>
                         </div>
+
+                        <div class="pad-l123 comment-content-area">
+                            <div ng-if="data.entityField == 'reply'" class="pad-l10 clear-both">
+                                <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px"></span>
+                                <span class="comment-created-date">&nbsp;&nbsp;{{data.createdDate | date : 'HH:mm'}}</span>
+                                <span ng-if="data.createdBy == vm.userInfo.login"  class="fa fa-times" ng-click="vm.removeComment(data.id)"></span>
+                                <br class="clear-both"/>
+                                <p ng-repeat="file in data.attachedFiles" class="pad-l20">
+                                    <a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>
+                                </p>
+                            </div>
+                        </div>
+
+
                     </li>
 
                 </ul>

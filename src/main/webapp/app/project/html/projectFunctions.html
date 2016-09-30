@@ -1,4 +1,4 @@
-<div class="well" style="overflow-y: auto; background-color: #fff;">
+<div class="well layout-scroll" style="background-color: #fff; height: 100%;">
     <ul class="nav nav-tabs nav-justified project-menu-area">
         <li class="text-center"><span>목록</span></li>
         <li class="text-center"><span>차트</span></li>
@@ -10,7 +10,7 @@
         <li class="text-center"><span><i class="fa fa-ellipsis-v"></i></span></li>
     </ul>
 
-    <div ui-view="functionView">
+    <div class="layout-scroll project-function-content" ui-view="functionView" dynamic-content-scroll area-type="project-function">
 
     </div>
 </div>

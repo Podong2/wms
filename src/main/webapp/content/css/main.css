@@ -2237,6 +2237,38 @@ td.red{border-left: 5px solid #777 !important;}
 .task-list-item-header, .task-list-item-footer{
     height:25px;
 }
+.other-users-popup{
+    position: absolute;
+    width : 120px;
+    min-height:30px;
+    border-radius: 3px;
+    border : 1px solid #ddd;
+    box-shadow: 3px 3px 5px #ccc;
+    top:22px;
+    padding: 3px;
+    z-index: 101;
+    background: #fff;
+    left: 0px;
+    display: none;
+}
+.other-users-popup.on{
+    display: block;
+}
+.other-users-popup ul{
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+.other-users-popup ul li {
+    border-top:1px solid #ddd;
+    padding: 3px;
+}
+.other-users-popup ul li img{
+    margin-right: 5px;
+}
+.other-users-popup ul li:first-child {
+    border-top:0;
+}
     /*<< comment css >>*/
     .comment-user-title{
         margin-top: 13px;
@@ -2289,10 +2321,16 @@ td.red{border-left: 5px solid #777 !important;}
         font-size: 11px;
         color : #aaa;
     }
+    .comment-mention-btn{
+        display: none;
+    }
+    .comment-header-area:hover .comment-mention-btn{
+        display: inline;
+    }
     /*<< comment css end >>*/
 /*---------------------------- task css end ------------------------------*/
 
-/* project */
+/* project css */
 .projectAddSection.on{
     display: block;
 }
@@ -2325,7 +2363,14 @@ td.red{border-left: 5px solid #777 !important;}
     height: 34px;
     margin: 3px 0px;
 }
-/* project end */
+.project-function-content{
+    height: 511px;
+    overflow: hidden;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    padding: 10px;
+}
+/* project css end */
 
 /* notification */
 .notification-menu{
@@ -3098,6 +3143,9 @@ text-align: right;
 }
 .ng-tag-input-remove-button.on{
     display: inline !important;
+}
+.project-close-btn{
+    display: none;
 }
 
 

@@ -14,6 +14,7 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
             vm.fileDownLoad = fileDownLoad;
             vm.renderHtml = renderHtml;
             vm.createComment = createComment;
+            vm.createCommentFile = createCommentFile;
             vm.removeComment = removeComment;
             vm.userInfo = Principal.getIdentity();
             vm.tasks=[];
@@ -22,6 +23,13 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
             vm.TaskAuditLog = [];
             $scope.commentFiles = [];
             vm.commentFileAreaOpen = false;
+
+            vm.taskId = '';
+            vm.index = 0;
+            function createCommentFile(id, index){
+                vm.taskId = id;
+                vm.index = index;
+            }
 
             $scope.dataService = dataService;
 
@@ -48,6 +56,7 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
                 });
                 $scope.$apply();
                 $log.debug("코멘트 파일 목록 : ", $scope.commentFiles);
+                //createComment();
             });
 
             // 타스크 목록 불러오기
@@ -109,11 +118,18 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
             /* 코멘트 저장 */
             vm.mentionIds = []; // mention ids
             function createComment(taskId, index){
-                if(vm.comment.contents == ''){
+                $log.debug("$scope.commentFiles : ", $scope.commentFiles);
+
+                if(vm.comment.contents == '' && $scope.commentFiles.length == 0){
                     toastr.warning('코멘트를 입력해주세요.', '코멘트 내용');
                     return false;
+                }else if($scope.commentFiles.length == 0){
+                    vm.comment.entityId = taskId;
+                    vm.index = index;
+                }else if($scope.commentFiles.length > 0){
+                    vm.comment.entityId = vm.taskId;
                 }
-                vm.comment.entityId = taskId;
+
                 var $mention = $(".comment-area .mentionUser");
                 vm.comment.mentionIds = [];
                 vm.mentionIds = [];
@@ -132,8 +148,8 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
                     toastr.success('태스크 댓글 등록 완료', '태스크 댓글 등록 완료');
                     vm.comment.contents = [];
                     $scope.commentFiles=[];
-                    TaskListSearch.TaskAudigLog({'entityId' : taskId, 'entityName' : 'Task'}).then(function(result){
-                        vm.tasks[index].TaskAuditLog = result;
+                    TaskListSearch.TaskAudigLog({'entityId' : vm.comment.entityId, 'entityName' : 'Task'}).then(function(result){
+                        vm.tasks[vm.index].TaskAuditLog = result;
                     });
 
                 });
@@ -156,6 +172,42 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
                 });
                 vm.comment.mentionIds = typeIds.join(",");
             }
+
+            $("#input-5").fileinput({
+                uploadUrl : '/tasks/uploadFile',
+                task : '',
+                type : 'task-history',
+                token : $scope.getToken(),
+                showCaption: false,
+                showUpload: true,
+                showClose: true,
+                showRemove: false,
+                uploadAsync: false,
+                overwriteInitial: false,
+                initialPreviewAsData: true, // defaults markup
+                initialPreviewFileType: 'image', // image is the default and can be overridden in config below
+                uploadExtraData: function (previewId, index) {
+                    var obj = {};
+                    $('.file-form').find('input').each(function() {
+                        var id = $(this).attr('id'), val = $(this).val();
+                        obj[id] = val;
+                    });
+                    return obj;
+                }
+            }).on('filesorted', function(e, params) {
+                console.log('File sorted params', params);
+            }).on('fileuploaded', function(e, params) {
+                console.log('File uploaded params', params);
+            }).on('getFileupload', function(e, params) {
+                angular.forEach(params, function(value){
+                    $scope.commentFiles.push(value)
+                });
+                $scope.$apply();
+                $log.debug("파일 목록 : ", $scope.commentFiles);
+                //createComment();
+            }).on('filedeleted', function(event, key) {
+                console.log('Key = ' + key);
+            });
 
 
         }

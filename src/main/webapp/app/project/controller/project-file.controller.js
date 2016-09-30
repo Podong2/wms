@@ -5,8 +5,8 @@
 
 angular.module('wmsApp')
     .controller("projectFileCtrl", projectFileCtrl);
-projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope', '$state', '$stateParams', 'toastr',  'Principal', 'ProjectAttachedList', 'tableService', 'ProjectEdit'];
-        function projectFileCtrl($scope, Code, $log, AlertService, $rootScope, $state, $stateParams, toastr,  Principal, ProjectAttachedList, tableService, ProjectEdit) {
+projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope', '$state', '$stateParams', 'toastr',  'Principal', 'ProjectAttachedList', 'tableService', 'ProjectEdit', '$cookies'];
+        function projectFileCtrl($scope, Code, $log, AlertService, $rootScope, $state, $stateParams, toastr,  Principal, ProjectAttachedList, tableService, ProjectEdit, $cookies) {
             var vm = this;
             vm.userInfo = Principal.getIdentity();
             vm.projectAttachedList = [];
@@ -22,8 +22,42 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
                 attachedFileId : ''
             };
 
-            $("#input-4").fileinput({
-                showCaption: false, showUpload: false, uploadUrl:"1", uploadAsync: false
+            $scope.getToken = function() {
+                return $cookies.get("CSRF-TOKEN");
+            };
+            $scope.getToken()
+
+            $("#input-3").fileinput({
+                uploadUrl : '/tasks/uploadFile',
+                task : vm.task,
+                type : 'task-add',
+                token : $scope.getToken(),
+                showCaption: false,
+                showUpload: true,
+                showRemove: false,
+                uploadAsync: false,
+                overwriteInitial: false,
+                initialPreviewAsData: true, // defaults markup
+                initialPreviewFileType: 'image', // image is the default and can be overridden in config below
+                uploadExtraData: function (previewId, index) {
+                    var obj = {};
+                    $('.file-form').find('input').each(function() {
+                        var id = $(this).attr('id'), val = $(this).val();
+                        obj[id] = val;
+                    });
+                    return obj;
+                }
+            }).on('filesorted', function(e, params) {
+                console.log('File sorted params', params);
+            }).on('fileuploaded', function(e, params) {
+                console.log('File uploaded params', params);
+            }).on('getFileupload', function(e, params) {
+                //angular.forEach(params, function(value){
+                //    $scope.files.push(value)
+                //});
+                //$scope.$apply();
+                //$log.debug("파일 목록 : ", $scope.files);
+                //projectFIleUpload();
             });
 
             vm.tabDisplay = tabDisplay;
@@ -33,27 +67,34 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
                 { status:  true },  // 파일
             ];
 
+            $scope.files = [];
             // 파일 목록 라이브러리에서 가져오기
-            $scope.$on('setFiles', function (event, args) {
-                if(vm.files.length == 0){
-                    vm.files = [];
-                    angular.forEach(args, function(value){
-                        vm.files.push(value)
-                    });
-                    $log.debug("파일 목록 : ", vm.files);
-                    projectFIleUpload();
-                }
+            $scope.$on('setTaskAddFiles', function (event, args) {
+                //$scope.files = [];
+                angular.forEach(args, function(value){
+                    $scope.files.push(value)
+                });
+                $scope.$apply();
+                $log.debug("업로드 파일 목록 : ", $scope.files);
+                projectFIleUpload();
+            });
+            $scope.$on('project-file-reload', function (event, args) {
+                vm.responseData=[];
+                vm.projectAttachedList = [];
+                vm.imageList =[];
+                vm.fileList =[];
+                getFileList();
             });
 
             function projectFIleUpload(){
-                $log.debug("파일 목록 : ", vm.files);
                 ProjectEdit.createProjectFiles({
                     method : "POST",
-                    file : vm.files,
+                    file : $scope.files,
                     //	data 속성으로 별도의 데이터 전송
                     fields : {projectId : $stateParams.id},
                     fileFormDataName : "file"
                 }).then(function (response) {
+                    $scope.files = [];
                     toastr.success('프로젝트 파일 생성 완료', '프로젝트 파일 생성 완료');
                     getFileList();
                 });
@@ -101,7 +142,7 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
                         vm.fileList.push(value)
                     }
                 });
-                vm.responseData = vm.fileList;
+                vm.responseData = _.clone(vm.fileList);
                 $log.debug("프로젝트 파일 목록 : ", vm.fileList);
                 $log.debug("프로젝트 이미지 목록 : ", vm.imageList);
 

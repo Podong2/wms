@@ -9,15 +9,17 @@ wmsCloseBtnDisplay.$inject=['$timeout']
 function wmsCloseBtnDisplay($timeout) {
         return {
             restrict: 'A',
+            scope:{
+              type : '@'
+            },
             link: function (scope, element, attr) {
 
                 element.on('mouseover', function (event) {
-                    $(this).find('.close-btn').css("display", 'block');
-                    $(this).find('.close-btn').addClass("on")
+                    if(scope.type == 'project') $(this).find('.close-btn').css("display", 'inline');
+                    else $(this).find('.close-btn').css("display", 'block');
                 });
                 element.on('mouseout', function (event) {
                     $(this).find('.close-btn').css("display", 'none');
-                    $(this).find('.close-btn').removeClass("on")
                 });
             }
         }

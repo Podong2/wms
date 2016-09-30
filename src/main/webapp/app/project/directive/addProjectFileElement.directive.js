@@ -57,7 +57,7 @@ function wmsAddFileElement($log, $compile) {
 
             }],
             compile: function (element, attrs) {
-                        var template = '<input id="input-5" name="input5[]" type="file" multiple class="file-loading" get-files file-type="comment">';
+                        var template = '<input id="input-5" name="input5[]" type="file" multiple class="file-loading" get-files file-type="comment" style="display:none;">';
                         element.append(template);
 
             }

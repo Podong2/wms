@@ -232,7 +232,7 @@
                         }]
                     }
                 }).result.then(function() {
-                    $state.go("my-task.detail", {}, {reload : 'my-task.detail'});
+                    //$state.go("my-task.detail", {}, {reload : 'my-task.detail'});
                 }).result.finally(function() {
                     $state.go('^');
                 });

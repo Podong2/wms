@@ -32,6 +32,7 @@ function customRenderer($compile, $filter, $log, $sce) {
                         function (result) {
                             $log.debug("프로젝트 파일 삭제 : ", result);
                             $rootScope.$broadcast('task-detail-reload')
+                            $rootScope.$broadcast('project-file-reload')
                         });
                 }
                 //설명 html 형식으로 표현
@@ -117,7 +118,7 @@ function customRenderer($compile, $filter, $log, $sce) {
                         customTag += " <span ng-click='fileDownLoad(3)'>"+ scope.data.name + "</span>";
                         break;
                     case "file_location" :
-                        if(scope.data.locationType == 'TASK'){
+                        if(scope.data.locationType == 'TASK' || scope.data.locationType == 'TASK_REPLY'){
                             customTag = "<a ui-sref='my-task.detail({id \: " + scope.data.locationId + ", listType : \"TODAY\"})' >"+ scope.data.location +"</a>";
                         }else{
                             customTag = "<a ui-sref='my-project({id \: " + scope.data.locationId + "})' >"+ scope.data.location +"</a>";

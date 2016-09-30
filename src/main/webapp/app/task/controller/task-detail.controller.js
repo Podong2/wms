@@ -92,7 +92,7 @@
             });
             $scope.$apply();
             $log.debug("파일 목록 : ", $scope.commentFiles);
-            createComment();
+            //createComment();
         }).on('filedeleted', function(event, key) {
             console.log('Key = ' + key);
         });
@@ -427,7 +427,7 @@
             });
             $scope.$apply();
             $log.debug("코멘트 파일 목록 : ", $scope.commentFiles);
-            createComment();
+            //createComment();
         });
 
         // content 데이터 변경 체크
@@ -911,6 +911,7 @@
             }).then(function (response) {
                 $scope.$emit('wmsApp:taskUpdate', response);
                 toastr.success('태스크 댓글 생성 완료', '태스크 댓글 생성 완료');
+                $scope.commentFiles = [];
                 getTaskAudigLog();
             });
         }
