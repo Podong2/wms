@@ -988,7 +988,27 @@ tagsInput.directive('tiBindAttrs', function() {
     };
 });
 
-/**
+tagsInput.directive('closeBtnDisplay',  closeBtnDisplay);
+    closeBtnDisplay.$inject=['$timeout'];
+function closeBtnDisplay($timeout) {
+    return {
+        restrict: 'A',
+        link: function (scope, element, attr) {
+
+            element.on('mouseover', function (event) {
+                //$(this).find('.close-btn').css("display", 'block');
+                $(this).find('.ng-tag-input-remove-button').addClass("on")
+            });
+            element.on('mouseout', function (event) {
+                //$(this).find('.close-btn').css("display", 'none');
+                $(this).find('.ng-tag-input-remove-button').removeClass("on")
+            });
+        }
+    }
+}
+
+
+    /**
  * @ngdoc service
  * @name tagsInputConfig
  * @module ngTagsInput
@@ -1260,9 +1280,9 @@ tagsInput.run(["$templateCache", function($templateCache) {
     "<div class='left-panel'>" +
     "<img ng-src='/api/attachedFile/{{data.profileImageId}}' ng-if='data.profileImageId !=null' /><img ng-src='/content/images/demo/male.png' ng-if='data.profileImageId ==null' />" +
     "</div>" +
-    "<div class='right-panel'>" +
+    "<div class='right-panel' close-btn-display>" +
     "<span>{{$getDisplayText()}}</span><!-- ng-show='tagList.length < 4'-->" +
-    "<a ng-show='modifyYn == \"true\"' class='remove-button' ng-click='$removeTag()'>&#10006;</a>" +
+    "<a ng-if='modifyYn == \"true\"' class='remove-button ng-tag-input-remove-button close-btn' ng-click='$removeTag()'>&#10006;</a>" +
     "</div>" +
     "</div>"
   );

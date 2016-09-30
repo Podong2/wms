@@ -3093,6 +3093,12 @@ text-align: right;
 .delay-color{
     color : red;
 }
+.ng-tag-input-remove-button{
+    display: none;
+}
+.ng-tag-input-remove-button.on{
+    display: inline !important;
+}
 
 
 

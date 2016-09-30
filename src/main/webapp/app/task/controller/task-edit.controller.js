@@ -873,7 +873,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
 
             // 프로젝트 팝업 닫기
             function projectClose(){
-                $rootScope.$broadcast('projectAddClose');
+                $rootScope.$broadcast('projectPickerAddClose');
             }
 
             function watcherInfoAdd(watcher){
