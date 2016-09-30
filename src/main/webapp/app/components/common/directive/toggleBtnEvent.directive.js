@@ -200,20 +200,17 @@ function projectAddToggle($timeout, $rootScope) {
     return {
         restrict: 'A',
         link: function(scope, element, attr) {
-            var $element = element.parents('label').next();
             $('body').click(function (e) {
-                if ($($element).addClass("on"), $($element).find('.projectValueAddSection').addClass("on")) {
-                    if (!$($element).parents('#projectAddSection').has(e.target).length) {
-                        $('.projectPickerAddSection').removeClass("on");
-                        $('.projectValueAddSection').removeClass("on");
+                if ($('.projectAddSection').addClass("on"), $('.projectAddValueSection').addClass("on")) {
+                    if (!$('#projectAddSection').has(e.target).length) {
+                        $('.projectAddSection').removeClass("on");
+                        $('.projectAddValueSection').removeClass("on");
                     }
                 }
             });
             $rootScope.$on('projectAddClose', function(){
-                $timeout(function () {
-                    $('.projectPickerAddSection').removeClass("on");
-                    $('.projectValueAddSection').removeClass("on");
-                }, 100);
+                $('.projectAddSection').removeClass("on");
+                $('.projectAddValueSection').removeClass("on");
             });
             element.on('click', function(_this) {
                 $timeout(function () {
