@@ -13,9 +13,11 @@ function wmsCloseBtnDisplay($timeout) {
 
                 element.on('mouseover', function (event) {
                     $(this).find('.close-btn').css("display", 'block');
+                    $(this).find('.close-btn').addClass("on")
                 });
                 element.on('mouseout', function (event) {
                     $(this).find('.close-btn').css("display", 'none');
+                    $(this).find('.close-btn').removeClass("on")
                 });
             }
         }
