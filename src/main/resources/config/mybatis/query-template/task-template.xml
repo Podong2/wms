@@ -123,9 +123,13 @@
     </resultMap>
 
     <resultMap id="projectResultMap" type="kr.wisestone.wms.web.rest.dto.ProjectDTO">
-        <id property="id" column="projectId" />
-        <result property="name" column="projectName"/>
-        <result property="folderYn" column="projectFolderYn"/>
+        <id property="id" column="id" />
+        <result property="name" column="name"/>
+        <result property="folderYn" column="folderYn"/>
+        <result property="createdBy" column="createdBy"/>
+        <result property="createdDate" column="createdDate"/>
+        <result property="lastModifiedBy" column="lastModifiedBy"/>
+        <result property="lastModifiedDate" column="lastModifiedDate"/>
     </resultMap>
 
     <select id="getSubTasks" resultMap="linkedTaskResultMap">
@@ -172,7 +176,12 @@
     </select>
 
     <select id="getTaskProjects" resultMap="projectResultMap">
-        SELECT p.id as id, p.name as name, p.created_by as createdBy, p.created_date as createdDate
+        SELECT p.id as id, p.name as name
+            , CASE
+                WHEN p.folder_yn = 'Y' THEN true
+                WHEN p.folder_yn = 'N' THEN false
+              END as folderYn
+            , p.created_by as createdBy, p.created_date as createdDate
             , p.last_modified_by as lastModifiedBy, p.last_modified_date as lastModifiedDate
         FROM owl_project p
         WHERE p.id IN (SELECT tp.project_id FROM owl_task_project tp WHERE tp.task_id = #{id})
