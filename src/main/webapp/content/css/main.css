@@ -2718,6 +2718,9 @@ text-align: right;
     border-radius:3px;
     color : #fff;
 }
+.task-project-list-area .task-project-icon.folder{
+    background-color: #e6b900 !important;
+}
 .task-project-list-area .task-project-icon:first-child{
     margin-left: 0;
 }
