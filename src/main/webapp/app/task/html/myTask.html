@@ -52,7 +52,7 @@
                                             <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})" task-active tooltip-placement="top-left" uib-tooltip="{{data.name}}">{{data.name}} </a>
                                         </div>
                                         <span class="fa fa-paperclip float-left" style="padding:5px 2px;" ng-if="data.attachedFileExistYn"></span>
-                                        <span class="fa fa-lock float-left" style="padding:5px 5px 5px 2px;"></span>
+                                        <span class="fa fa-lock float-left" style="padding:5px 5px 5px 2px;" ng-if="data.privateYn"></span>
                                         <ul class="list-inline friends-list" style="margin-bottom: 0">
                                             <li ng-repeat="user in data.assignees | limitTo:3">
                                                 <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}" style="margin-right: 0">
