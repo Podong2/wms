@@ -112,7 +112,93 @@
                     <!--<td rowspan="1" ng-if="vm.project.folderYn == true">-->
                         <!--<i class="fa fa-paperclip" ng-click="vm.fileAreaOpen = !vm.fileAreaOpen" style="font-size: 25px"></i>-->
                     <!--</td>-->
-                    <td>맴버</td>
+                    <td style="position: relative;">
+
+                        <div class='row watcher-picker-info'>
+                            <div class='col-md-4 padding-10' style='border-right:1px solid #ddd; height: 100%;'>
+                                <img ng-src='/api/attachedFile/{{watcherInfo.profileImageId}}' ng-if='watcherInfo.profileImageId !=null' />
+                                <img ng-src='/content/images/demo/male.png' ng-if='watcherInfo.profileImageId ==null' />
+                            </div>
+                            <div class='col-md-8 padding-10' style='height: 100%;'>
+                                <i class="fa fa-close cursor pull-right" ng-click="vm.profileClose()"></i>
+                                <ul>
+                                    <li>{{watcherInfo.name}}</li>
+                                    <li>{{watcherInfo.phone}}</li>
+                                    <li>{{watcherInfo.email}}</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <label for="watcher" class="cursor" style="margin-bottom: 0px;" member-picker-btn-toggle><span id="member"><i class="fa fa-users"></i> 맴버 {{vm.project.projectMembers.length == 0 ? '' : vm.project.projectMembers.length}}</span></label>
+
+                        <!-- 맴버 검색 및 등록 팝업 -->
+                        <div class="member-popup-area text-left">
+                            <div class="member-popup-header">
+                                <span class="pull-right fa fa-close cursor" ng-click="vm.watcherPopupClose()"></span>
+                                맴버 추가
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6 padding-right-0" style="border-right: 1px solid #ddd;">
+                                    <div class="member-input-area" ng-if="vm.project.modifyYn">
+                                        <input type="text" class="form-control member-input" ng-model="vm.watcherName" style="border-right: 0; border-left:0;"  placeholder="이름을 입력하세요." wms-kr-update/>
+                                    </div>
+                                    <div class="member-search-list-area" ng-if="vm.project.modifyYn">
+                                        <div ng-repeat="data in vm.watcherList track by $index">
+                                            <div class="member-search-element cursor" ng-click="vm.watcherAdd(data)">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <img ng-src="/content/images/demo/male.png" ng-if="data.profileImageId == null || data.profileImageId == '' " uib-tooltip="{{data.createdByName}}">
+                                                        <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.profileImageId}}" ng-if="data.profileImageId != null" uib-tooltip="{{data.createdByName}}">
+                                                    </div>
+                                                    <div class="col-md-10">
+                                                        <div>{{data.name}}</div>
+                                                        <div>{{data.email}}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div ng-if="vm.watcherList.length == 0">
+                                            일치하는 사용자가 없습니다.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 padding-left-0">
+
+                                    <div class="member-input-area member-input-area-border" ng-if="vm.project.modifyYn">
+                                        <div class="pull-right">
+                                            <i class="fa fa-search cursor"></i>
+                                        </div>
+                                        맴버 {{vm.project.projectMembers.length}}명
+                                    </div>
+
+                                    <div class="member-input-area" ng-if="vm.project.modifyYn">
+                                        <input type="text" class="form-control member-input" ng-model="vm.watcherName" style="border-right: 0; border-left:0; border-top:0;"  placeholder="이름을 입력하세요." wms-kr-update/>
+                                    </div>
+
+                                    <div class="member-list-area" ng-if="vm.project.modifyYn">
+                                        <div ng-repeat="data in vm.watcherList track by $index">
+                                            <div class="member-element cursor" ng-click="vm.watcherAdd(data)">
+                                                <div class="row">
+                                                    <div class="col-md-2">
+                                                        <img ng-src="/content/images/demo/male.png" ng-if="data.profileImageId == null || data.profileImageId == '' " uib-tooltip="{{data.createdByName}}">
+                                                        <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.profileImageId}}" ng-if="data.profileImageId != null" uib-tooltip="{{data.createdByName}}">
+                                                    </div>
+                                                    <div class="col-md-10">
+                                                        <div>{{data.name}}</div>
+                                                        <div>{{data.email}}</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div ng-if="vm.watcherList.length == 0">
+                                            일치하는 사용자가 없습니다.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div><!-- 맴버 검색 및 등록 팝업 end -->
+
+                    </td>
 
                     <td style="position: relative;">
                         <!-- 참조자 정보 팝업 -->

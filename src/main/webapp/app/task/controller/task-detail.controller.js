@@ -1132,7 +1132,7 @@
 
         // 참조자 데이터 주입
         function watcherAdd(watcher){
-            var index = vm.DuplicationWatcherIds.split(",").indexOf(watcher.id);
+            var index = vm.DuplicationWatcherIds.indexOf(watcher.id);
             if(index > -1){
                 $log.debug("중복")
             }else{
