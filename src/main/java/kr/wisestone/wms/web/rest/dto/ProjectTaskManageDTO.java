@@ -19,6 +19,8 @@ public class ProjectTaskManageDTO {
 
     private Long holdCount;
 
+    private Long cancelCount;
+
     public ProjectTaskManageDTO() {
     }
 
@@ -36,17 +38,23 @@ public class ProjectTaskManageDTO {
                 -> taskDTO.getStatusId().equals(Task.STATUS_HOLD)
         ).count();
 
+        Long cancelCount = tasks.stream().filter(
+            taskDTO
+                -> taskDTO.getStatusId().equals(Task.STATUS_CANCEL)
+        ).count();
+
         Long delayedCount = tasks.stream().filter(
             TaskDTO::getDelayYn
         ).count();
 
         Long totalCount = (long) tasks.size();
 
-        Long inProgressCount = totalCount - (completeCount + holdCount + delayedCount);
+        Long inProgressCount = totalCount - (completeCount + holdCount + delayedCount + cancelCount);
 
         this.completeCount = completeCount;
         this.holdCount = holdCount;
         this.delayedCount = delayedCount;
+        this.cancelCount = cancelCount;
         this.inProgressCount = inProgressCount;
     }
 
@@ -96,5 +104,13 @@ public class ProjectTaskManageDTO {
 
     public void setHoldCount(Long holdCount) {
         this.holdCount = holdCount;
+    }
+
+    public Long getCancelCount() {
+        return cancelCount;
+    }
+
+    public void setCancelCount(Long cancelCount) {
+        this.cancelCount = cancelCount;
     }
 }

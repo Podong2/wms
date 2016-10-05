@@ -531,8 +531,28 @@
             </when>
             <when test="listType == 'DELAYED'">
                 AND t.end_date != ''
-                AND t.end_date &lt; #{today}
+                AND t.end_date &lt; to_char(now(), 'YYYY-MM-DD')
                 AND t.status_id = 1
+            </when>
+        </choose>
+        <choose>
+            <when test="statusType == 'COMPLETE'">
+                AND t.status_id = 2
+            </when>
+            <when test="statusType == 'HOLD'">
+                AND t.status_id = 3
+            </when>
+            <when test="statusType == 'DELAYED'">
+                AND t.end_date != ''
+                AND t.end_date &lt; to_char(now(), 'YYYY-MM-DD')
+                AND t.status_id = 1
+            </when>
+            <when test="statusType == 'IN_PROGRESS'">
+                AND (t.end_date == '' OR t.end_date >= to_char(now(), 'YYYY-MM-DD'))
+                AND t.status_id = 1
+            </when>
+            <when test="statusType == 'CANCEL'">
+                AND t.status_id = 4
             </when>
         </choose>
         ORDER BY t.created_date ASC

@@ -9,6 +9,13 @@ public class ProjectTaskCondition {
     public static final String LIST_TYPE_DELAYED = "DELAYED";
     public static final String LIST_TYPE_TOTAL = "TOTAL";
 
+    public static final String STATUS_TYPE_ALL = "ALL";
+    public static final String STATUS_TYPE_COMPLETE = "COMPLETE";
+    public static final String STATUS_TYPE_DELAYED = "DELAYED";
+    public static final String STATUS_TYPE_IN_PROGRESS = "IN_PROGRESS";
+    public static final String STATUS_TYPE_HOLD = "HOLD";
+    public static final String STATUS_TYPE_CANCEL = "CANCEL";
+
     public static final String ORDER_TYPE_IMPORTANT = "IMPORTANT";
     public static final String ORDER_TYPE_TASK_NAME = "TASK_NAME";
 
@@ -25,4 +32,6 @@ public class ProjectTaskCondition {
     private Long statusId;
 
     private String orderType;
+
+    private String statusType;
 }

@@ -371,16 +371,11 @@ public class ProjectService {
             condition.put("statusId", projectTaskCondition.getStatusId());
 
         condition.put("listType", projectTaskCondition.getListType());
+        condition.put("statusType", projectTaskCondition.getStatusType());
 
         if(projectTaskCondition.getListType().equalsIgnoreCase(ProjectTaskCondition.LIST_TYPE_WEEK)) {
-
             condition.put("weekStartDate", DateUtil.getWeekStartDate());
             condition.put("weekEndDate", DateUtil.getWeekEndDate());
-
-        } else if(projectTaskCondition.getListType().equalsIgnoreCase(ProjectTaskCondition.LIST_TYPE_DELAYED)) {
-
-            String today = DateUtil.getTodayWithYYYYMMDD();
-            condition.put("today", today);
         }
 
         List<TaskDTO> taskDTOs = this.taskDAO.getProjectManagedTasks(condition);
