@@ -293,7 +293,7 @@
                                         <li class="position-relative relatedTask-list-item padding-5 float-left" ng-repeat="task in vm.task.relatedTasks" wms-close-btn-display>
                                             <!--<span class="relatedTask-list-item-title cursor" >{{task.name}}</span>-->
                                             <a class="relatedTask-list-item-title cursor" ui-sref="my-task.detailPopup({popupId : task.id, popupListType : vm.listType,taskId : task.id})" >{{task.name}}</a>
-                                            <span class="relatedTask-close-btn close-btn cursor" ng-click="vm.removeRelatedTask(task)" ng-if="vm.task.modifyYn"><i class="fa fa-close"></i></span>
+                                            <span class="relatedTask-close-btn close-btn cursor" ng-click="vm.removeRelatedTask(task)" ng-if="vm.task.modifyYn"><i class="fa fa-close remove-button"></i></span>
                                         </li>
                                     </ul>
                                 </div>

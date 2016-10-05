@@ -236,9 +236,9 @@
                                     <!--<span class="relatedTask-close-btn cursor" ng-click="vm.removeWatcher(task)"><i class="fa fa-close"></i></span>-->
                                 <!--</span>-->
                                 <ul class="relatedTask-list-item-area">
-                                    <li class="position-relative relatedTask-list-item padding-5 float-left" ng-repeat="task in vm.task.relatedTaskList">
+                                    <li class="position-relative relatedTask-list-item padding-5 float-left" ng-repeat="task in vm.task.relatedTaskList" wms-close-btn-display>
                                         <span class="relatedTask-list-item-title cursor">{{task.name}}</span>
-                                        <span class="relatedTask-close-btn cursor" ng-click="vm.removeRelatedTask(task)"><i class="fa fa-close"></i></span>
+                                        <span class="relatedTask-close-btn close-btn cursor" ng-click="vm.removeRelatedTask(task)"><i class="fa fa-close remove-button"></i></span>
                                     </li>
                                 </ul>
                             </div>

@@ -112,7 +112,7 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
                     }
                 });
                 vm.tasks=[]; // 초기화
-                vm.page = 0;
+                vm.page = 1;
                 vm.listType = type;
                 vm.filterType = '';
                 getList();
@@ -120,7 +120,7 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
 
             function filterSearch(type, filterType){
                 vm.tasks=[]; // 초기화
-                vm.page = 0;
+                vm.page = 1;
                 vm.listType = type;
                 vm.filterType = filterType;
                 getList();
@@ -129,6 +129,10 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
 
             /* 타스크 목록 불러오기 */
             function getList(){
+                $log.debug("검색 필터 vm.listType : ", vm.listType)
+                $log.debug("검색 필터 vm.statusId : ", vm.statusId)
+                $log.debug("검색 필터 vm.orderType : ", vm.orderType)
+                $log.debug("검색 필터 vm.page : ", vm.page)
                 Task.query({
                     listType : vm.listType,
                     filterType : vm.filterType,

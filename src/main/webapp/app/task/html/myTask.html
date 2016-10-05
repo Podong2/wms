@@ -48,7 +48,7 @@
                                             </div>
                                         </div>
                                         <i class="fa fa-exclamation-circle float-left" style="padding:5px 2px; color:red;" ng-if="data.importantYn"></i>
-                                        <div class="task-list-title-length" ng-class="data.assignees.length > 0 ? 'task-list-title' : ''">
+                                        <div class="task-list-title-length task-list-title">
                                             <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})" task-active tooltip-placement="top-left" uib-tooltip="{{data.name}}">{{data.name}} </a>
                                         </div>
                                         <span class="fa fa-paperclip float-left" style="padding:5px 2px;" ng-if="data.attachedFileExistYn"></span>
