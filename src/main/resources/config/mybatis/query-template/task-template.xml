@@ -461,18 +461,82 @@
             LEFT OUTER JOIN owl_task_user tu ON tu.task_id = t.id AND tu.user_type = 'ASSIGNEE'
             LEFT JOIN owl_user u ON tu.user_id = u.id
             LEFT OUTER JOIN owl_task_repeat_schedule trs ON trs.task_id = t.id
-            WHERE 1=1
-            <if test="projectIds != null">
-                AND tpr.project_id IN
-                <foreach item="item" index="index" collection="projectIds"
-                         open="(" separator="," close=")">
-                    #{item}
-                </foreach>
-            </if>
-            AND t.private_yn = 'N'
-            <if test="projectHistoryYn != null and projectHistoryYn == true">
-                ORDER BY t.last_modified_date DESC
-            </if>
+        WHERE 1=1
+        <if test="projectIds != null">
+            AND tpr.project_id IN
+            <foreach item="item" index="index" collection="projectIds"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        AND t.private_yn = 'N'
+        <if test="projectHistoryYn != null and projectHistoryYn == true">
+            ORDER BY t.last_modified_date DESC
+        </if>
+    </select>
+
+    <select id="getProjectManagedTasks" resultType="java.util.ArrayList" resultMap="taskListResultMap" parameterType="java.util.HashMap">
+        SELECT t.id as id, t.name as name, t.start_date as startDate, t.end_date as endDate, tc.id as statusId, tc.name as statusName
+            , t.created_by as createdBy, t.created_date as createdDate, t.last_modified_by as lastModifiedBy, t.last_modified_date as lastModifiedDate
+            , CASE
+                WHEN (SELECT count(taf.task_id) FROM owl_task_attached_file taf WHERE taf.task_id = t.id) > 0 THEN true
+                ELSE false
+              END as attachedFileExistYn
+            , CASE
+                WHEN t.private_yn = 'Y' THEN true
+                WHEN t.private_yn = 'N' THEN false
+              END as privateYn
+            , CASE
+                WHEN t.template_yn = 'Y' THEN true
+                WHEN t.template_yn = 'N' THEN false
+              END as templateYn
+            , CASE
+                WHEN t.important_yn = 'Y' THEN true
+                WHEN t.important_yn = 'N' THEN false
+              END as importantYn
+            , tp.id as projectId, tp.name as projectName
+            , CASE
+                WHEN tp.folder_yn = 'Y' THEN true
+                WHEN tp.folder_yn = 'N' THEN false
+              END as projectFolderYn
+            , t.parent_id as parentId
+            , trs.repeat_type as repeatType
+        FROM owl_task t
+            LEFT JOIN owl_code tc ON t.status_id = tc.id
+            LEFT OUTER JOIN owl_task_project tpr ON tpr.task_id = t.id
+            LEFT JOIN owl_project tp ON tp.id = tpr.project_id
+            LEFT OUTER JOIN owl_task_user tu ON tu.task_id = t.id AND tu.user_type = 'ASSIGNEE'
+            LEFT JOIN owl_user u ON tu.user_id = u.id
+            LEFT OUTER JOIN owl_task_repeat_schedule trs ON trs.task_id = t.id
+        WHERE 1=1
+        <if test="projectIds != null">
+            AND tpr.project_id IN
+            <foreach item="item" index="index" collection="projectIds"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        <choose>
+            <when test="listType == 'TOTAL'">
+                <if test="statusId != null">
+                    AND t.status_id = #{statusId}
+                </if>
+            </when>
+            <when test="listType == 'WEEK'">
+                AND t.end_date >= #{weekStartDate}
+                AND t.end_date &lt;= #{weekEndDate}
+                <if test="statusId != null">
+                    AND t.status_id = #{statusId}
+                </if>
+            </when>
+            <when test="listType == 'DELAYED'">
+                AND t.end_date != ''
+                AND t.end_date &lt; #{today}
+                AND t.status_id = 1
+            </when>
+        </choose>
+        ORDER BY t.created_date ASC
+        OFFSET #{offset} LIMIT #{limit}
     </select>
 
     <select id="getTask" resultType="kr.wisestone.wms.web.rest.dto.TaskDTO" resultMap="taskDetailResultMap" parameterType="java.lang.Long">
