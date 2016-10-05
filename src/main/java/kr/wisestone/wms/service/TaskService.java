@@ -1,5 +1,6 @@
 package kr.wisestone.wms.service;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mysema.query.BooleanBuilder;
@@ -405,95 +406,27 @@ public class TaskService {
     @Transactional(readOnly = true)
     public List<TaskDTO> findTasksByProjectIdsAndCondition(List<Long> projectIds, ProjectTaskCondition projectTaskCondition) {
 
-        List<TaskDTO> taskDTOs = Lists.newArrayList();
-
-        QTask $task = QTask.task;
-
-        BooleanBuilder predicate = new BooleanBuilder();
-
-        predicate.and($task.taskProjects.any().project.id.in(projectIds));
+        Map<String, Object> condition = Maps.newHashMap(ImmutableMap.<String, Object>builder().
+                put("projectIds", projectIds).
+            build());
 
         if(projectTaskCondition.getStatusId() != null)
-            predicate.and($task.status.id.eq(projectTaskCondition.getStatusId()));
+            condition.put("statusId", projectTaskCondition.getStatusId());
+
+        condition.put("listType", projectTaskCondition.getListType());
 
         if(projectTaskCondition.getListType().equalsIgnoreCase(ProjectTaskCondition.LIST_TYPE_WEEK)) {
 
-            Date weekStartDate = DateUtil.getWeekStartDate();
-            Date weekEndDate = DateUtil.getWeekEndDate();
-
-            predicate.and($task.period.endDate.goe(DateUtil.convertDateToYYYYMMDD(weekStartDate)));
-            predicate.and($task.period.endDate.loe(DateUtil.convertDateToYYYYMMDD(weekEndDate)));
+            condition.put("weekStartDate", DateUtil.getWeekStartDate());
+            condition.put("weekEndDate", DateUtil.getWeekEndDate());
 
         } else if(projectTaskCondition.getListType().equalsIgnoreCase(ProjectTaskCondition.LIST_TYPE_DELAYED)) {
 
             String today = DateUtil.getTodayWithYYYYMMDD();
-
-            predicate.and($task.period.endDate.isNotEmpty());
-            predicate.and($task.period.endDate.lt(today));
-            predicate.and($task.status.id.eq(Task.STATUS_ACTIVE));
+            condition.put("today", today);
         }
 
-        List<OrderSpecifier> orderSpecifiers = Lists.newArrayList();
-
-        if(StringUtils.isEmpty(projectTaskCondition.getOrderType())) {
-            orderSpecifiers.add(QTask.task.period.endDate.asc());
-        } else {
-            if(ProjectTaskCondition.ORDER_TYPE_IMPORTANT.equalsIgnoreCase(projectTaskCondition.getOrderType())) {
-                orderSpecifiers.add(QTask.task.importantYn.desc());
-            } else if(ProjectTaskCondition.ORDER_TYPE_TASK_NAME.equalsIgnoreCase(projectTaskCondition.getOrderType())) {
-                orderSpecifiers.add(QTask.task.name.asc());
-            }
-        }
-
-        List<Task> tasks = Lists.newArrayList(taskRepository.findAll(predicate, orderSpecifiers.toArray(new OrderSpecifier[orderSpecifiers.size()])));
-
-        for(Task task : tasks) {
-
-            TaskDTO taskDTO = taskMapper.taskToTaskDTO(task);
-
-            this.copyTaskRelationProperties(task, taskDTO);
-
-            String statusGroup = "IN_PROGRESS";
-
-            if(projectTaskCondition.getListType().equalsIgnoreCase(ProjectTaskCondition.LIST_TYPE_WEEK)
-                || projectTaskCondition.getListType().equalsIgnoreCase(ProjectTaskCondition.LIST_TYPE_TOTAL)) {
-
-                if(StringUtils.isEmpty(taskDTO.getEndDate())) {
-                    statusGroup = "NONE_SCHEDULED";
-                } else {
-                    String today = DateUtil.getTodayWithYYYYMMDD();
-                    String createdDate = DateUtil.convertDateToYYYYMMDD(Date.from(taskDTO.getCreatedDate().toInstant()));
-
-                    if(taskDTO.getEndDate().equals(today)) {
-                        statusGroup = "SCHEDULED_TODAY";
-                    } else if(DateUtil.convertStrToDate(taskDTO.getEndDate(), "yyyy-MM-dd").getTime() < DateUtil.convertStrToDate(today, "yyyy-MM-dd").getTime()) {
-                        statusGroup = "DELAYED";
-                    }
-
-                    if(createdDate.equals(today)) {
-                        statusGroup = "REGISTERED_TODAY";
-                    }
-                }
-            } else {
-                String today = DateUtil.getTodayWithYYYYMMDD();
-
-                if(DateUtil.convertStrToDate(taskDTO.getEndDate(), "yyyy-MM-dd").getTime() < DateUtil.convertStrToDate(today, "yyyy-MM-dd").getTime()) {
-                    statusGroup = "DELAYED";
-                }
-            }
-
-            if(taskDTO.getStatusId().equals(Task.STATUS_COMPLETE)) {
-                statusGroup = "COMPLETE";
-            } else if(taskDTO.getStatusId().equals(Task.STATUS_HOLD)) {
-                statusGroup = "HOLD";
-            } else if(taskDTO.getStatusId().equals(Task.STATUS_CANCEL)) {
-                statusGroup = "CANCEL";
-            }
-
-            taskDTO.setStatusGroup(statusGroup);
-
-            taskDTOs.add(taskDTO);
-        }
+        List<TaskDTO> taskDTOs = this.taskDAO.getProjectManagedTasks(condition);
 
         return taskDTOs;
     }

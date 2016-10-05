@@ -32,7 +32,9 @@ public class ProjectDTO implements Serializable {
 
     private List<UserDTO> projectAdmins = new ArrayList<>();
 
-    private List<UserDTO> projectUsers = new ArrayList<>();
+    private List<UserDTO> projectMembers = new ArrayList<>();
+
+    private List<UserDTO> projectWatchers = new ArrayList<>();
 
     private List<AttachedFileDTO> attachedFiles = new ArrayList<>();
 
@@ -46,9 +48,7 @@ public class ProjectDTO implements Serializable {
 
     private ZonedDateTime lastModifiedDate;
 
-    public ProjectDTO() {
-
-    }
+    public ProjectDTO() {}
 
     public ProjectDTO(Project project) {
         this.setId(project.getId());
@@ -157,12 +157,20 @@ public class ProjectDTO implements Serializable {
         this.projectChilds = projectChilds;
     }
 
-    public List<UserDTO> getProjectUsers() {
-        return projectUsers;
+    public List<UserDTO> getProjectMembers() {
+        return projectMembers;
     }
 
-    public void setProjectUsers(List<UserDTO> projectUsers) {
-        this.projectUsers = projectUsers;
+    public void setProjectMembers(List<UserDTO> projectMembers) {
+        this.projectMembers = projectMembers;
+    }
+
+    public List<UserDTO> getProjectWatchers() {
+        return projectWatchers;
+    }
+
+    public void setProjectWatchers(List<UserDTO> projectWatchers) {
+        this.projectWatchers = projectWatchers;
     }
 
     public List<AttachedFileDTO> getAttachedFiles() {

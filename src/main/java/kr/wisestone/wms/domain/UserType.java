@@ -6,6 +6,7 @@ public enum UserType {
     WATCHER("watcher", "참조자"),
     ADMIN("admin", "관리자"),
     SHARER("sharer", "공유자"),
+    MEMBER("member", "멤버"),
     ;
 
     private String code;

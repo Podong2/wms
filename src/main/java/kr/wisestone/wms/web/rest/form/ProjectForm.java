@@ -29,9 +29,13 @@ public class ProjectForm {
 
     private List<Long> removeProjectAdminIds = new ArrayList<>();
 
-    private List<Long> projectUserIds = new ArrayList<>();
+    private List<Long> projectMemberIds = new ArrayList<>();
 
-    private List<Long> removeProjectUserIds = new ArrayList<>();
+    private List<Long> removeProjectMemberIds = new ArrayList<>();
+
+    private List<Long> projectWatcherIds = new ArrayList<>();
+
+    private List<Long> removeProjectWatcherIds = new ArrayList<>();
 
     private List<Long> parentProjectIds = new ArrayList<>();
 
@@ -99,23 +103,42 @@ public class ProjectForm {
             project.removeProjectUser(user, UserType.ADMIN);
         }
 
-        for(Long id : getProjectUserIds()) {
+        for(Long id : getProjectMemberIds()) {
             if(id == null) continue;
 
             User user = new User();
             user.setId(id);
 
-            project.addProjectUser(user, UserType.SHARER);
+            project.addProjectUser(user, UserType.MEMBER);
         }
 
 
-        for(Long id : getRemoveProjectUserIds()) {
+        for(Long id : getRemoveProjectMemberIds()) {
             if(id == null) continue;
 
             User user = new User();
             user.setId(id);
 
-            project.removeProjectUser(user, UserType.SHARER);
+            project.removeProjectUser(user, UserType.MEMBER);
+        }
+
+        for(Long id : getProjectWatcherIds()) {
+            if(id == null) continue;
+
+            User user = new User();
+            user.setId(id);
+
+            project.addProjectUser(user, UserType.WATCHER);
+        }
+
+
+        for(Long id : getRemoveProjectWatcherIds()) {
+            if(id == null) continue;
+
+            User user = new User();
+            user.setId(id);
+
+            project.removeProjectUser(user, UserType.WATCHER);
         }
 
         for(Long id : getParentProjectIds()) {

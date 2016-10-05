@@ -26,33 +26,6 @@ public class ProjectTaskManageDTO {
         this.tasks = tasks;
         this.project = projectDTO;
 
-        /*
-
-        String statusGroup = "IN_PROGRESS";
-
-        if(projectTaskCondition.getListType().equalsIgnoreCase(ProjectTaskCondition.LIST_TYPE_WEEK)
-            || projectTaskCondition.getListType().equalsIgnoreCase(ProjectTaskCondition.LIST_TYPE_TOTAL)) {
-
-            if(StringUtils.isEmpty(taskDTO.getEndDate())) {
-                statusGroup = "NONE_SCHEDULED";
-            } else {
-                String today = DateUtil.getTodayWithYYYYMMDD();
-                String createdDate = DateUtil.convertDateToYYYYMMDD(Date.from(taskDTO.getCreatedDate().toInstant()));
-
-                if(taskDTO.getEndDate().equals(today)) {
-                    statusGroup = "SCHEDULED_TODAY";
-                } else if(DateUtil.convertStrToDate(taskDTO.getEndDate(), "yyyy-MM-dd").getTime() < DateUtil.convertStrToDate(today, "yyyy-MM-dd").getTime()) {
-                    statusGroup = "DELAYED";
-                }
-
-                if(createdDate.equals(today)) {
-                    statusGroup = "REGISTERED_TODAY";
-                }
-            }
-        }
-
-         */
-
         Long completeCount = tasks.stream().filter(
             taskDTO
                 -> taskDTO.getStatusId().equals(Task.STATUS_COMPLETE)
@@ -64,17 +37,12 @@ public class ProjectTaskManageDTO {
         ).count();
 
         Long delayedCount = tasks.stream().filter(
-            taskDTO
-                -> taskDTO.getStatusGroup().equals("DELAYED")
+            TaskDTO::getDelayYn
         ).count();
 
-        Long inProgressCount = tasks.stream().filter(
-            taskDTO
-                -> taskDTO.getStatusGroup().equals("REGISTERED_TODAY")
-                || taskDTO.getStatusGroup().equals("SCHEDULED_TODAY")
-                || taskDTO.getStatusGroup().equals("IN_PROGRESS")
-                || taskDTO.getStatusGroup().equals("NONE_SCHEDULED")
-        ).count();
+        Long totalCount = (long) tasks.size();
+
+        Long inProgressCount = totalCount - (completeCount + holdCount + delayedCount);
 
         this.completeCount = completeCount;
         this.holdCount = holdCount;
