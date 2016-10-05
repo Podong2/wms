@@ -123,15 +123,15 @@ public class TaskForm {
 
             task.updateTaskProject(project);
         }
-//
-//        for(Long id : getRemoveProjectIds()) {
-//            if(id == null) continue;
-//
-//            Project project = new Project();
-//            project.setId(id);
-//
-//            task.removeTaskProject(project);
-//        }
+
+        for(Long id : getRemoveProjectIds()) {
+            if(id == null) continue;
+
+            Project project = new Project();
+            project.setId(id);
+
+            task.removeTaskProject(project);
+        }
 
         for(Long id : getAssigneeIds()) {
             if(id == null) continue;
