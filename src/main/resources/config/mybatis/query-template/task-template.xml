@@ -144,6 +144,7 @@
         LEFT OUTER JOIN owl_task_user tu ON tu.task_id = t.id AND tu.user_type = 'ASSIGNEE'
         LEFT JOIN owl_user u ON tu.user_id = u.id
         WHERE t.parent_id = #{id}
+        ORDER BY t.id ASC
     </select>
 
     <select id="getParentTask" resultMap="linkedTaskResultMap">
@@ -173,6 +174,7 @@
         LEFT JOIN owl_user u ON tu.user_id = u.id
         LEFT JOIN owl_related_task rt ON rt.related_task_id = t.id
         WHERE rt.task_id = #{id}
+        ORDER BY rt.id ASC
     </select>
 
     <select id="getTaskProjects" resultMap="projectResultMap">
@@ -192,7 +194,8 @@
             , u.created_by as createdBy, u.created_date as createdDate
             , u.last_modified_by as lastModifiedBy, u.last_modified_date as lastModifiedDate
         FROM owl_user u
-        WHERE u.id IN (SELECT tu.user_id FROM owl_task_user tu WHERE tu.task_id = #{id} AND tu.user_type = 'ASSIGNEE')
+            INNER JOIN owl_task_user tu ON u.id = tu.user_id AND tu.task_id = #{id} and tu.user_type = 'ASSIGNEE'
+        ORDER BY tu.id ASC
     </select>
 
     <select id="getTaskWatchers" resultMap="userResultMap">
@@ -200,7 +203,8 @@
             , u.created_by as createdBy, u.created_date as createdDate
             , u.last_modified_by as lastModifiedBy, u.last_modified_date as lastModifiedDate
         FROM owl_user u
-        WHERE u.id IN (SELECT tu.user_id FROM owl_task_user tu WHERE tu.task_id = #{id} AND tu.user_type = 'WATCHER')
+            INNER JOIN owl_task_user tu ON u.id = tu.user_id AND tu.task_id = #{id} and tu.user_type = 'WATCHER'
+        ORDER BY tu.id ASC
     </select>
 
     <sql id="taskListFilterTypeQuery">
@@ -310,7 +314,10 @@
                     </when>
                     <when test="listType == 'HOLD'">
                         SELECT
-                            1 as orderTarget
+                            CASE
+                                WHEN it.end_date != '' THEN 9
+                                ELSE 1
+                            END as orderTarget
                             ,it.*
                         FROM owl_task it
                         WHERE it.status_id = 3
@@ -327,7 +334,10 @@
                     </when>
                     <when test="listType == 'COMPLETE'">
                         SELECT
-                            1 as orderTarget
+                            CASE
+                                WHEN it.end_date != '' THEN 9
+                                ELSE 1
+                            END as orderTarget
                             ,it.*
                         FROM owl_task it
                         WHERE it.status_id = 2
@@ -531,8 +541,28 @@
             </when>
             <when test="listType == 'DELAYED'">
                 AND t.end_date != ''
-                AND t.end_date &lt; #{today}
+                AND t.end_date &lt; to_char(now(), 'YYYY-MM-DD')
                 AND t.status_id = 1
+            </when>
+        </choose>
+        <choose>
+            <when test="statusType == 'COMPLETE'">
+                AND t.status_id = 2
+            </when>
+            <when test="statusType == 'HOLD'">
+                AND t.status_id = 3
+            </when>
+            <when test="statusType == 'DELAYED'">
+                AND t.end_date != ''
+                AND t.end_date &lt; to_char(now(), 'YYYY-MM-DD')
+                AND t.status_id = 1
+            </when>
+            <when test="statusType == 'IN_PROGRESS'">
+                AND (t.end_date == '' OR t.end_date >= to_char(now(), 'YYYY-MM-DD'))
+                AND t.status_id = 1
+            </when>
+            <when test="statusType == 'CANCEL'">
+                AND t.status_id = 4
             </when>
         </choose>
         ORDER BY t.created_date ASC

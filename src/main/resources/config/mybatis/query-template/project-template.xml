@@ -67,26 +67,29 @@
 
     <select id="getProjectAdmins" resultMap="userResultMap">
         SELECT u.id as id, u.name as name, u.profile_image_id as profileImageId, u.phone as phone, u.email as email, u.login as login
-        , u.created_by as createdBy, u.created_date as createdDate
-        , u.last_modified_by as lastModifiedBy, u.last_modified_date as lastModifiedDate
+            , u.created_by as createdBy, u.created_date as createdDate
+            , u.last_modified_by as lastModifiedBy, u.last_modified_date as lastModifiedDate
         FROM owl_user u
-        WHERE u.id IN (SELECT pu.user_id FROM owl_project_user pu WHERE pu.project_id = #{id} AND pu.user_type = 'ADMIN')
+            INNER JOIN owl_project_user tu ON u.id = pu.user_id AND pu.project_id = #{id} and tu.user_type = 'ADMIN'
+        ORDER BY tu.id ASC
     </select>
 
     <select id="getProjectWatchers" resultMap="userResultMap">
         SELECT u.id as id, u.name as name, u.profile_image_id as profileImageId, u.phone as phone, u.email as email, u.login as login
-        , u.created_by as createdBy, u.created_date as createdDate
-        , u.last_modified_by as lastModifiedBy, u.last_modified_date as lastModifiedDate
+            , u.created_by as createdBy, u.created_date as createdDate
+            , u.last_modified_by as lastModifiedBy, u.last_modified_date as lastModifiedDate
         FROM owl_user u
-        WHERE u.id IN (SELECT pu.user_id FROM owl_project_user pu WHERE pu.project_id = #{id} AND pu.user_type = 'WATCHER')
+            INNER JOIN owl_project_user tu ON u.id = pu.user_id AND pu.project_id = #{id} and tu.user_type = 'WATCHER'
+        ORDER BY tu.id ASC
     </select>
 
     <select id="getProjectMembers" resultMap="userResultMap">
         SELECT u.id as id, u.name as name, u.profile_image_id as profileImageId, u.phone as phone, u.email as email, u.login as login
-        , u.created_by as createdBy, u.created_date as createdDate
-        , u.last_modified_by as lastModifiedBy, u.last_modified_date as lastModifiedDate
+            , u.created_by as createdBy, u.created_date as createdDate
+            , u.last_modified_by as lastModifiedBy, u.last_modified_date as lastModifiedDate
         FROM owl_user u
-        WHERE u.id IN (SELECT pu.user_id FROM owl_project_user pu WHERE pu.project_id = #{id} AND pu.user_type = 'MEMBER')
+            INNER JOIN owl_project_user tu ON u.id = pu.user_id AND pu.project_id = #{id} and tu.user_type = 'MEMBER'
+        ORDER BY tu.id ASC
     </select>
 
     <select id="getParentProject" resultMap="projectResultMap">

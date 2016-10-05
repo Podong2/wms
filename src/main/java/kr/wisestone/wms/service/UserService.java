@@ -373,6 +373,25 @@ public class UserService {
         return userMapper.usersToUserDTOs(users);
     }
 
+    public List<UserDTO> findProjectMember(String name, Long projectId, List<Long> excludeIds) {
+
+        BooleanBuilder predicate = new BooleanBuilder();
+
+        predicate.and(QUser.user.name.containsIgnoreCase(name));
+
+        if(excludeIds != null && !excludeIds.isEmpty())
+            predicate.and(QUser.user.id.notIn(excludeIds));
+
+        predicate.and(QUser.user.id.notIn(new JPASubQuery()
+            .from(QProjectUser.projectUser)
+            .where(QProjectUser.projectUser.project.id.eq(projectId).and(QProjectUser.projectUser.userType.eq(UserType.MEMBER)))
+            .list(QProjectUser.projectUser.user.id)));
+
+        List<User> users = Lists.newArrayList(this.userRepository.findAll(predicate));
+
+        return userMapper.usersToUserDTOs(users);
+    }
+
     public User findOne(Long sender) {
 
         if(sender == null)
