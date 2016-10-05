@@ -413,8 +413,16 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 }
             });
             // 하위 작업 시작 시간 포멧 변경(기간)
+            $scope.subTaskDueDateFrom = '';
+            $scope.subTaskDueDateTo = '';
             $scope.$watch("vm.subTaskDueDateFrom.date", function(newValue, oldValue){
-                if(oldValue != newValue){
+                if(newValue !=undefined && oldValue != newValue){
+                    if(vm.subTaskDueDateTo.date != undefined && vm.subTaskDueDateTo.date != '' && newValue != '' && newValue > vm.subTaskDueDateTo.date) {
+                        toastr.warning('시작일이 종료일보다 큽니다.', '경고');
+                        vm.subTaskDueDateFrom.date = $scope.subTaskDueDateFrom;
+                        return;
+                    }
+                    $scope.subTaskDueDateFrom = newValue;
                     var d = newValue;
                     var formatDate =
                         DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
@@ -423,13 +431,19 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             });
             // 하위 작업 종료 시간 포멧 변경(기간)
             $scope.$watch("vm.subTaskDueDateTo.date", function(newValue, oldValue){
-                if(oldValue != newValue){
+                if(newValue !=undefined && oldValue != newValue){
+                    if(vm.subTaskDueDateFrom.date != undefined && vm.subTaskDueDateFrom.date != '' && newValue != '' && newValue < vm.subTaskDueDateFrom.date) {
+                        toastr.warning('종료일이 시작일보다 작습니다.', '경고');
+                        vm.subTaskDueDateTo.date = $scope.subTaskDueDateTo;
+                        return;
+                    }
+                    $scope.subTaskDueDateTo = newValue;
                     var d = newValue;
                     if(newValue != '') var formatDate = DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
                     vm.subTaskUpdateForm.endDate = formatDate;
                 }
             });
-            // 하위 작업 종료 시간 포멧 변경(기간)
+            // 비공개여부
             $scope.$watchCollection("vm.task.privateYn", function(newValue, oldValue){
                 if(oldValue != newValue && newValue != ''){
                     if(newValue) {

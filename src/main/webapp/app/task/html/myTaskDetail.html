@@ -413,8 +413,8 @@
                                                             <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="subTaskEndDate" style="height: 30px; width: 100%; border : 0">
                                                         </label>
 
-                                                        <span class="dueDateValues" style="top:15px;" sub-task-picker-toggle ng-click="vm.setDatePickerInput(list)">{{list.endDate | date : 'MM-dd'}}</span>
-                                                        <span class="dueDateValues" style="top:15px;" ng-if="!list.modifyYn">{{list.endDate | date : 'MM-dd'}}</span>
+                                                        <span class="dueDateValues" style="top:2px;" sub-task-picker-toggle ng-click="vm.setDatePickerInput(list)">{{list.endDate | date : 'MM-dd'}}</span>
+                                                        <span class="dueDateValues" style="top:2px;" ng-if="!list.modifyYn">{{list.endDate | date : 'MM-dd'}}</span>
                                                     </span>
                                                 </div>
                                                 <div wms-Include="app/task/html/subTaskDatePicker.html"></div>
