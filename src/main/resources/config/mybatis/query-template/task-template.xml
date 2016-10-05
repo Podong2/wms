@@ -314,7 +314,10 @@
                     </when>
                     <when test="listType == 'HOLD'">
                         SELECT
-                            1 as orderTarget
+                            CASE
+                                WHEN it.end_date != '' THEN 9
+                                ELSE 1
+                            END as orderTarget
                             ,it.*
                         FROM owl_task it
                         WHERE it.status_id = 3
@@ -331,7 +334,10 @@
                     </when>
                     <when test="listType == 'COMPLETE'">
                         SELECT
-                            1 as orderTarget
+                            CASE
+                                WHEN it.end_date != '' THEN 9
+                                ELSE 1
+                            END as orderTarget
                             ,it.*
                         FROM owl_task it
                         WHERE it.status_id = 2
