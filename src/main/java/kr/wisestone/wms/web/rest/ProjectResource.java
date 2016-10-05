@@ -3,16 +3,14 @@ package kr.wisestone.wms.web.rest;
 import com.codahale.metrics.annotation.Timed;
 import com.google.common.collect.Lists;
 import kr.wisestone.wms.service.ProjectService;
-import kr.wisestone.wms.service.TaskService;
 import kr.wisestone.wms.web.rest.condition.ProjectTaskCondition;
-import kr.wisestone.wms.web.rest.condition.TaskCondition;
 import kr.wisestone.wms.web.rest.dto.*;
 import kr.wisestone.wms.web.rest.form.ProjectForm;
-import kr.wisestone.wms.web.rest.form.TaskForm;
 import kr.wisestone.wms.web.rest.mapper.ProjectMapper;
 import kr.wisestone.wms.web.rest.util.HeaderUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -163,9 +161,9 @@ public class ProjectResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<TaskDTO>> findProjectTasks(@ModelAttribute ProjectTaskCondition projectTaskCondition) {
+    public ResponseEntity<List<TaskDTO>> findProjectTasks(@ModelAttribute ProjectTaskCondition projectTaskCondition, Pageable pageable) {
         log.debug("REST request to get Project : {}", projectTaskCondition.getProjectId());
-        List<TaskDTO> taskDTOs = projectService.findAllTasks(projectTaskCondition);
+        List<TaskDTO> taskDTOs = projectService.findAllTasks(projectTaskCondition, pageable);
 
         return Optional.ofNullable(taskDTOs)
             .map(result -> new ResponseEntity<>(
@@ -193,12 +191,12 @@ public class ProjectResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<ProjectTaskManageDTO> findManagedProjectTasks(@ModelAttribute ProjectTaskCondition projectTaskCondition) {
+    public ResponseEntity<ProjectTaskManageDTO> findManagedProjectTasks(@ModelAttribute ProjectTaskCondition projectTaskCondition, Pageable pageable) {
         log.debug("REST request to get Project : {}", projectTaskCondition.getProjectId());
 
         ProjectDTO projectDTO = projectService.findOne(projectTaskCondition.getProjectId());
 
-        List<TaskDTO> taskDTOs = projectService.findAllTasks(projectTaskCondition);
+        List<TaskDTO> taskDTOs = projectService.findAllTasks(projectTaskCondition, pageable);
 
         return new ResponseEntity<>(
                 new ProjectTaskManageDTO(projectDTO, taskDTOs),

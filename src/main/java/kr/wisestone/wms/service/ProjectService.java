@@ -5,10 +5,12 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mysema.query.BooleanBuilder;
 import kr.wisestone.wms.common.exception.CommonRuntimeException;
+import kr.wisestone.wms.common.util.DateUtil;
 import kr.wisestone.wms.domain.*;
 import kr.wisestone.wms.repository.CodeRepository;
 import kr.wisestone.wms.repository.ProjectRepository;
 import kr.wisestone.wms.repository.dao.ProjectDAO;
+import kr.wisestone.wms.repository.dao.TaskDAO;
 import kr.wisestone.wms.security.SecurityUtils;
 import kr.wisestone.wms.web.rest.condition.ProjectTaskCondition;
 import kr.wisestone.wms.web.rest.dto.*;
@@ -16,7 +18,6 @@ import kr.wisestone.wms.web.rest.form.ProjectForm;
 import kr.wisestone.wms.web.rest.mapper.AttachedFileMapper;
 import kr.wisestone.wms.web.rest.mapper.ProjectMapper;
 import kr.wisestone.wms.web.rest.mapper.UserMapper;
-import kr.wisestone.wms.web.rest.util.PaginationUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
@@ -24,7 +25,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -70,6 +70,9 @@ public class ProjectService {
 
     @Inject
     private ProjectDAO projectDAO;
+
+    @Inject
+    private TaskDAO taskDAO;
 
     @Transactional
     public ProjectDTO save(ProjectForm projectForm) {
@@ -345,7 +348,7 @@ public class ProjectService {
     }
 
     @Transactional(readOnly = true)
-    public List<TaskDTO> findAllTasks(ProjectTaskCondition projectTaskCondition) {
+    public List<TaskDTO> findAllTasks(ProjectTaskCondition projectTaskCondition, Pageable pageable) {
 
         Project project = projectRepository.findOne(projectTaskCondition.getProjectId());
 
@@ -354,7 +357,29 @@ public class ProjectService {
 
         List<Long> projectIds = getChildProjectIds(project);
 
-        List<TaskDTO> taskDTOs = taskService.findTasksByProjectIdsAndCondition(projectIds, projectTaskCondition);
+        Map<String, Object> condition = Maps.newHashMap(ImmutableMap.<String, Object>builder().
+            put("projectIds", projectIds).
+            put("offset", pageable.getOffset()).
+            put("limit", pageable.getPageSize()).
+            build());
+
+        if(projectTaskCondition.getStatusId() != null)
+            condition.put("statusId", projectTaskCondition.getStatusId());
+
+        condition.put("listType", projectTaskCondition.getListType());
+
+        if(projectTaskCondition.getListType().equalsIgnoreCase(ProjectTaskCondition.LIST_TYPE_WEEK)) {
+
+            condition.put("weekStartDate", DateUtil.getWeekStartDate());
+            condition.put("weekEndDate", DateUtil.getWeekEndDate());
+
+        } else if(projectTaskCondition.getListType().equalsIgnoreCase(ProjectTaskCondition.LIST_TYPE_DELAYED)) {
+
+            String today = DateUtil.getTodayWithYYYYMMDD();
+            condition.put("today", today);
+        }
+
+        List<TaskDTO> taskDTOs = this.taskDAO.getProjectManagedTasks(condition);
 
         return taskDTOs;
     }
@@ -369,7 +394,11 @@ public class ProjectService {
 
         List<Long> projectIds = getChildProjectIds(project);
 
-        List<TaskDTO> taskDTOs = taskService.findHistoryTasksByProjectIds(projectIds);
+        Map<String, Object> condition = Maps.newHashMap();
+        condition.put("projectIds", projectIds);
+        condition.put("projectHistoryYn", Boolean.TRUE);
+
+        List<TaskDTO> taskDTOs = taskDAO.getProjectTasks(condition);
 
         return taskDTOs;
     }
@@ -516,7 +545,7 @@ public class ProjectService {
             Long childProjectCount = childProjects.stream().filter(childProject -> childProject.getFolderYn() == Boolean.FALSE).count();
             Long childFolderCount = childProjects.stream().filter(childProject -> childProject.getFolderYn() == Boolean.TRUE).count();
 
-            List<TaskDTO> taskDTOs = taskService.findTasksByProjectIds(getChildProjectIds(project));
+            List<TaskDTO> taskDTOs = this.findTasksByProjectIds(getChildProjectIds(project));
 
             Long taskCompleteCount = taskDTOs.stream().filter(taskDTO -> taskDTO.getStatusId().equals(Task.STATUS_COMPLETE)).count();
             Long taskTotalCount = taskDTOs.stream().count();
@@ -527,6 +556,16 @@ public class ProjectService {
         }
 
         return projectStatisticsDTOs;
+    }
+
+    private List<TaskDTO> findTasksByProjectIds(List<Long> projectIds) {
+
+        Map<String, Object> condition = Maps.newHashMap();
+        condition.put("projectIds", projectIds);
+
+        List<TaskDTO> taskDTOs = taskDAO.getProjectTasks(condition);
+
+        return taskDTOs;
     }
 
     private void getChildProjectList(Set<ProjectRelation> projectChilds, List<Project> childProjects) {
