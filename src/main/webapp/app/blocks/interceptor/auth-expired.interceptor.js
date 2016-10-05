@@ -28,8 +28,13 @@
                 }
                 //var LoginService = $injector.get('LoginService');
                 //LoginService.open();
+                var $uibModalStack = $injector.get('$uibModalStack');
+                $uibModalStack.dismissAll();
+
                 var state = $injector.get('$state');
                 state.go("login")
+                var toastr = $injector.get('toastr');
+                toastr.error('사용자 세션이 종료 되었습니다.', '알림');
             } else if (response.status === 403 && response.config.method !== 'GET' && getCSRF() === '') {
                 // If the CSRF token expired, then try to get a new CSRF token and retry the old request
                 var $http = $injector.get('$http');

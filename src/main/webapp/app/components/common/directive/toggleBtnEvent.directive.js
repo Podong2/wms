@@ -289,14 +289,17 @@ function watcherPickerBtnToggle($rootScope, $timeout) {
                 }, 400);
             });
             $rootScope.$on('watcherPopupClose', function(){
-                closeYn = true;
+                $($elements).removeClass("on");
             })
             $('body').click(function (e) {
+                var closeYnElement = e.target.getAttribute("class");
                 if (!$($elements.parent()).has(e.target).length || closeYn) {
-                    $timeout(function () {
-                        $($elements).removeClass("on");
-                        closeYn = false;
-                    }, 100);
+                    if(closeYnElement != null && closeYnElement.indexOf("close") == -1){
+                        $timeout(function () {
+                            $($elements).removeClass("on");
+                            closeYn = false;
+                        }, 100);
+                    }
                 }
             });
 

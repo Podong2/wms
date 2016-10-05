@@ -34,7 +34,7 @@
                 templateUrl: url,
                 controller: controller,
                 controllerAs: 'vm',
-                size: "sm",
+                size: "lg",
                 resolve: {
                     viewTitle : function () {
                         return viewTitle;
