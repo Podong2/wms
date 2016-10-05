@@ -21,7 +21,8 @@ public interface ProjectMapper {
     @Mapping(source = "status.name", target = "statusName")
     @Mapping(source = "projectParents", target = "projectParents", ignore = true)
     @Mapping(source = "projectChilds", target = "projectChilds", ignore = true)
-    @Mapping(source = "projectUsers", target = "projectUsers", ignore = true)
+    @Mapping(source = "projectUsers", target = "projectWatchers", ignore = true)
+    @Mapping(source = "projectUsers", target = "projectMembers", ignore = true)
     @Mapping(source = "projectUsers", target = "projectAdmins", ignore = true)
     ProjectDTO projectToProjectDTO(Project project);
 

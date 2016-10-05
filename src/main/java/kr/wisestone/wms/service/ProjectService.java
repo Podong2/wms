@@ -118,10 +118,16 @@ public class ProjectService {
             projectDTO.setProjectAdmins(projectAdmins.stream().map(UserDTO::new).collect(Collectors.toList()));
         }
 
-        List<User> projectUsers = project.getPlainProjectUsers(UserType.SHARER);
+        List<User> projectWatchers = project.getPlainProjectUsers(UserType.WATCHER);
 
-        if(projectUsers != null && !projectUsers.isEmpty()) {
-            projectDTO.setProjectUsers(projectUsers.stream().map(UserDTO::new).collect(Collectors.toList()));
+        if(projectWatchers != null && !projectWatchers.isEmpty()) {
+            projectDTO.setProjectWatchers(projectWatchers.stream().map(UserDTO::new).collect(Collectors.toList()));
+        }
+
+        List<User> projectMembers = project.getPlainProjectUsers(UserType.MEMBER);
+
+        if(projectMembers != null && !projectMembers.isEmpty()) {
+            projectDTO.setProjectWatchers(projectMembers.stream().map(UserDTO::new).collect(Collectors.toList()));
         }
 
         if(project.getProjectParents() != null && !project.getProjectParents().isEmpty()) {
