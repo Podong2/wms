@@ -98,17 +98,21 @@ public class ProjectService {
     @Transactional(readOnly = true)
     public ProjectDTO findOne(Long id) {
         log.debug("Request to get Project : {}", id);
-        Project project = projectRepository.findOne(id);
-        ProjectDTO projectDTO = new ProjectDTO(project);
 
-        User user = userService.findByLogin(project.getCreatedBy());
-        projectDTO.setCreatedByName(user.getName());
+        Map<String, Object> condition = Maps.newHashMap(ImmutableMap.<String, Object>builder().
+            put("id", id).
+            build());
 
-        this.copyProjectRelationProperties(project, projectDTO);
-
-        if(!project.getProjectAttachedFiles().isEmpty()) {
-            projectDTO.setAttachedFiles(project.getPlainProjectAttachedFiles().stream().map(AttachedFileDTO::new).collect(Collectors.toList()));
-        }
+        ProjectDTO projectDTO = projectDAO.getProject(condition);
+//
+//        User user = userService.findByLogin(project.getCreatedBy());
+//        projectDTO.setCreatedByName(user.getName());
+//
+//        this.copyProjectRelationProperties(project, projectDTO);
+//
+//        if(!project.getProjectAttachedFiles().isEmpty()) {
+//            projectDTO.setAttachedFiles(project.getPlainProjectAttachedFiles().stream().map(AttachedFileDTO::new).collect(Collectors.toList()));
+//        }
 
         return projectDTO;
     }

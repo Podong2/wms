@@ -18,6 +18,107 @@
         <result property="attachedFile.lastModifiedDate" column="attachedFileLastModifiedDate"/>
     </resultMap>
 
+    <resultMap id="projectDetailResultMap" type="kr.wisestone.wms.web.rest.dto.ProjectDTO">
+        <id property="id" column="id" />
+        <result property="name" column="name"/>
+        <result property="contents" column="contents"/>
+        <result property="statusId" column="statusId"/>
+        <result property="statusName" column="statusName"/>
+        <result property="startDate" column="startDate"/>
+        <result property="endDate" column="endDate"/>
+        <result property="folderYn" column="templateYn"/>
+        <result property="createdBy" column="createdBy"/>
+        <result property="createdByName" column="createdByName"/>
+        <result property="createdDate" column="createdDate"/>
+        <result property="lastModifiedBy" column="lastModifiedBy"/>
+        <result property="lastModifiedDate" column="lastModifiedDate"/>
+        <collection property="projectParents" select="getParentProject" column="id" javaType="kr.wisestone.wms.web.rest.dto.ProjectDTO" />
+        <collection property="attachedFiles" javaType="java.util.ArrayList" resultMap="attachedFileResultMap"/>
+        <collection property="projectAdmins" select="getProjectAdmins" column="id" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.UserDTO"/>
+        <collection property="projectWatchers" select="getProjectWatchers" column="id" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.UserDTO"/>
+        <collection property="projectMembers" select="getProjectMembers" column="id" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.TaskDTO"/>
+    </resultMap>
+
+    <resultMap id="attachedFileResultMap" type="kr.wisestone.wms.web.rest.dto.AttachedFileDTO">
+        <id property="id" column="attachedFileId" />
+        <result property="name" column="attachedFileName"/>
+        <result property="size" column="attachedFileSize"/>
+        <result property="contentType" column="attachedFileContentType"/>
+    </resultMap>
+
+    <resultMap id="userResultMap" type="kr.wisestone.wms.web.rest.dto.UserDTO">
+        <id property="id" column="id" />
+        <result property="name" column="name"/>
+        <result property="login" column="login"/>
+        <result property="profileImageId" column="profileImageId"/>
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
+    </resultMap>
+
+    <resultMap id="projectResultMap" type="kr.wisestone.wms.web.rest.dto.ProjectDTO">
+        <id property="id" column="id" />
+        <result property="name" column="name"/>
+        <result property="folderYn" column="folderYn"/>
+        <result property="createdBy" column="createdBy"/>
+        <result property="createdDate" column="createdDate"/>
+        <result property="lastModifiedBy" column="lastModifiedBy"/>
+        <result property="lastModifiedDate" column="lastModifiedDate"/>
+    </resultMap>
+
+    <select id="getProjectAdmins" resultMap="userResultMap">
+        SELECT u.id as id, u.name as name, u.profile_image_id as profileImageId, u.phone as phone, u.email as email, u.login as login
+        , u.created_by as createdBy, u.created_date as createdDate
+        , u.last_modified_by as lastModifiedBy, u.last_modified_date as lastModifiedDate
+        FROM owl_user u
+        WHERE u.id IN (SELECT pu.user_id FROM owl_project_user pu WHERE pu.project_id = #{id} AND pu.user_type = 'ADMIN')
+    </select>
+
+    <select id="getProjectWatchers" resultMap="userResultMap">
+        SELECT u.id as id, u.name as name, u.profile_image_id as profileImageId, u.phone as phone, u.email as email, u.login as login
+        , u.created_by as createdBy, u.created_date as createdDate
+        , u.last_modified_by as lastModifiedBy, u.last_modified_date as lastModifiedDate
+        FROM owl_user u
+        WHERE u.id IN (SELECT pu.user_id FROM owl_project_user pu WHERE pu.project_id = #{id} AND pu.user_type = 'WATCHER')
+    </select>
+
+    <select id="getProjectMembers" resultMap="userResultMap">
+        SELECT u.id as id, u.name as name, u.profile_image_id as profileImageId, u.phone as phone, u.email as email, u.login as login
+        , u.created_by as createdBy, u.created_date as createdDate
+        , u.last_modified_by as lastModifiedBy, u.last_modified_date as lastModifiedDate
+        FROM owl_user u
+        WHERE u.id IN (SELECT pu.user_id FROM owl_project_user pu WHERE pu.project_id = #{id} AND pu.user_type = 'MEMBER')
+    </select>
+
+    <select id="getParentProject" resultMap="projectResultMap">
+        SELECT p.id as id, p.name as name
+            , CASE
+                WHEN p.folder_yn = 'Y' THEN true
+                WHEN p.folder_yn = 'N' THEN false
+              END as folderYn
+            , p.created_by as createdBy, p.created_date as createdDate
+            , p.last_modified_by as lastModifiedBy, p.last_modified_date as lastModifiedDate
+        FROM owl_project p
+        WHERE p.id IN (SELECT pr.parent_id FROM owl_project_relation pr WHERE pr.child_id = #{id})
+    </select>
+
+    <select id="getProject" resultType="kr.wisestone.wms.web.rest.dto.ProjectDTO" resultMap="projectDetailResultMap" parameterType="java.lang.Long">
+        SELECT p.id as id, p.name as name, p.start_date as startDate, p.end_date as endDate
+            , CASE
+                WHEN p.folder_yn = 'Y' THEN true
+                WHEN p.folder_yn = 'N' THEN false
+            END as folderYn
+            , pc.id as statusId, pc.name as statusName
+            , af.id as attachedFileId, af.name as attachedFileName
+            , af.size as attachedFileSize, af.content_type as attachedFileContentType
+            , p.created_by as createdBy, (SELECT name FROM owl_user cu WHERE cu.login = p.created_by) as createdByName, p.created_date as createdDate
+            , p.last_modified_by as lastModifiedBy, p.last_modified_date as lastModifiedDate
+        FROM owl_project p
+            LEFT JOIN owl_code pc ON p.status_id = pc.id
+            LEFT OUTER JOIN owl_project_attached_file paf ON paf.project_id = p.id
+            LEFT JOIN owl_attached_file af ON paf.attached_file_id = af.id
+        WHERE p.id = #{id}
+    </select>
+
     <select id="getProjectManagedAttachedFile" resultType="java.util.ArrayList" resultMap="projectManagedAttachedFileResultMap" parameterType="java.util.HashMap">
         SELECT p.name as location, 'PROJECT' as locationType, p.id as locationId
             , af.id as attachedFileId, af.name as attachedFileName
