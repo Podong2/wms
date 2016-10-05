@@ -109,7 +109,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             vm.listType = 'TOTAL'
 
             function getList(){
-                $log.debug("검색 필터 projectId : ", $stateParams.projectId)
+                $log.debug("검색 필터 projectId : ", $stateParams.id)
                 $log.debug("검색 필터 vm.listType : ", vm.listType)
                 $log.debug("검색 필터 vm.statusId : ", vm.statusId)
                 $log.debug("검색 필터 vm.orderType : ", vm.orderType)
@@ -162,7 +162,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 }
                 vm.firstLoding = true;
                 $scope.taskScroll.loading = false;
-                vm.page++; //다음페이지 준비
+                if(data.tasks.length != 0) vm.page++; //다음페이지 준비
 
                 //vm.page = pagingParams.page;
 
@@ -305,11 +305,15 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
 
             // 프로젝트 작업 목록 초기화
             function initProjectTaskList(){
-                vm.listType = '';
-                vm.statusId = '';
-                vm.orderType = '';
+                vm.tasks=[];
                 vm.page = 1;
-                getList();
+                if(vm.statusId != '' || vm.orderType != ''){
+                    vm.listType = 'TOTAL';
+                    vm.statusId = '';
+                    vm.orderType = '';
+                }else{
+                    getList();
+                }
             }
 
 
