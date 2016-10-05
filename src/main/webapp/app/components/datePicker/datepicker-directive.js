@@ -59,10 +59,11 @@ function repeatPickerToggle($timeout, $rootScope) {
                     displayYn = true;
                     $timeout(function () {
                         $(".startDate").focus();
-                    }, 400);
+                        $($element.parent().find('.repeat-edit-section')).addClass("on")
+                    }, 100);
+
                 });
                 $('body').click(function (e) {
-                    if ($($element.parent().find('.repeat-edit-section')).addClass("on")) {
                         if (!$($element.parent()).has(e.target).length) {
                             if(e.target.getAttribute('class') != null && e.target.getAttribute('class').split(" ").indexOf("btn-default") == -1){
                                 $('.repeat-edit-section').removeClass("on");
@@ -72,7 +73,6 @@ function repeatPickerToggle($timeout, $rootScope) {
                         }else if(!displayYn){
                             $('.repeat-edit-section').removeClass("on");
                         }
-                    }
                 });
                 $rootScope.$on('repeatClose', function () {
                     $('.repeat-edit-section').removeClass("on");
@@ -97,10 +97,10 @@ function repeatPickerAddToggle($timeout, $rootScope) {
                 displayYn = true;
                 $timeout(function () {
                     $(".startDate").focus();
-                }, 400);
+                    $('.repeat-add-section').addClass("on")
+                }, 100);
             });
             $('body').click(function (e) {
-                if ($('.repeat-add-section').addClass("on")) {
                     if (!$('#repeatAddSection').has(e.target).length) {
                         if(e.target.getAttribute('class') != null && e.target.getAttribute('class').split(" ").indexOf("btn-default") == -1){
                             $('.repeat-add-section').removeClass("on");
@@ -110,7 +110,6 @@ function repeatPickerAddToggle($timeout, $rootScope) {
                     }else if(!displayYn){
                         $('.repeat-add-section').removeClass("on");
                     }
-                }
             });
             $rootScope.$on('repeatClose', function () {
                 $('.repeat-add-section').removeClass("on");
