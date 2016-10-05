@@ -144,6 +144,7 @@
         LEFT OUTER JOIN owl_task_user tu ON tu.task_id = t.id AND tu.user_type = 'ASSIGNEE'
         LEFT JOIN owl_user u ON tu.user_id = u.id
         WHERE t.parent_id = #{id}
+        ORDER BY t.id ASC
     </select>
 
     <select id="getParentTask" resultMap="linkedTaskResultMap">
@@ -173,6 +174,7 @@
         LEFT JOIN owl_user u ON tu.user_id = u.id
         LEFT JOIN owl_related_task rt ON rt.related_task_id = t.id
         WHERE rt.task_id = #{id}
+        ORDER BY rt.id ASC
     </select>
 
     <select id="getTaskProjects" resultMap="projectResultMap">
