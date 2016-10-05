@@ -64,7 +64,9 @@ function repeatPickerToggle($timeout, $rootScope) {
                 $('body').click(function (e) {
                     if ($($element.parent().find('.repeat-edit-section')).addClass("on")) {
                         if (!$($element.parent()).has(e.target).length) {
-                            $('.repeat-edit-section').removeClass("on");
+                            if(e.target.getAttribute('class') != null && e.target.getAttribute('class').split(" ").indexOf("btn-default") == -1){
+                                $('.repeat-edit-section').removeClass("on");
+                            }
                         }else if(displayYn){
                             $($element.parent().find('.repeat-edit-section')).addClass("on");
                         }else if(!displayYn){
@@ -100,7 +102,9 @@ function repeatPickerAddToggle($timeout, $rootScope) {
             $('body').click(function (e) {
                 if ($('.repeat-add-section').addClass("on")) {
                     if (!$('#repeatAddSection').has(e.target).length) {
-                        $('.repeat-add-section').removeClass("on");
+                        if(e.target.getAttribute('class') != null && e.target.getAttribute('class').split(" ").indexOf("btn-default") == -1){
+                            $('.repeat-add-section').removeClass("on");
+                        }
                     }else if(displayYn){
                         $('.repeat-add-section').addClass("on");
                     }else if(!displayYn){

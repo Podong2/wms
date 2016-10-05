@@ -5,8 +5,10 @@
 
 angular.module('wmsApp')
     .controller("taskEditCtrl", taskEditCtrl);
-taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'toastr', '$state', '$timeout', 'DateUtils', 'SubTask', 'Principal', 'findUser', '$q', 'TaskEdit', 'FindTasks', 'ProjectFind', 'ProjectFindByName', '$cookies', 'FindByCondition'];
-        function taskEditCtrl($rootScope, $scope, $uibModalInstance, Code, $log, Task, toastr, $state, $timeout, DateUtils, SubTask, Principal, findUser, $q, TaskEdit, FindTasks, ProjectFind, ProjectFindByName, $cookies, FindByCondition) {
+taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'toastr', '$state', '$timeout', 'DateUtils', 'SubTask', 'Principal', 'findUser', '$q', 'TaskEdit', 'FindTasks'
+    , 'ProjectFind', 'ProjectFindByName', '$cookies', 'FindByCondition', 'ModalService'];
+        function taskEditCtrl($rootScope, $scope, $uibModalInstance, Code, $log, Task, toastr, $state, $timeout, DateUtils, SubTask, Principal, findUser, $q, TaskEdit, FindTasks
+            , ProjectFind, ProjectFindByName, $cookies, FindByCondition, ModalService) {
             var vm = this;
             vm.baseUrl = window.location.origin;
 
@@ -349,8 +351,16 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
 
 
             // date 포멧 변경
+            $scope.dueDateFrom = '';
+            $scope.dueDateTo = '';
             $scope.$watch("vm.dueDateFrom.date", function(newValue, oldValue){
-                if(oldValue != newValue){
+                if(newValue !=undefined && oldValue != newValue){
+                    if(vm.dueDateTo.date != undefined && vm.dueDateTo.date != '' && newValue > vm.dueDateTo.date) {
+                        toastr.warning('시작일이 종료일보다 큽니다.', '경고');
+                        vm.dueDateFrom.date = $scope.dueDateFrom;
+                        return;
+                    }
+                    $scope.dueDateFrom = newValue;
                     var d = newValue;
                     var formatDate =
                         DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' +  DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
@@ -361,7 +371,13 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             });
             // date 포멧 변경
             $scope.$watch("vm.dueDateTo.date", function(newValue, oldValue){
-                if(oldValue != newValue){
+                if(newValue !=undefined && oldValue != newValue){
+                    if(vm.dueDateFrom.date != undefined && vm.dueDateFrom.date != '' && newValue < vm.dueDateFrom.date) {
+                        toastr.warning('종료일이 시작일보다 작습니다.', '경고');
+                        vm.dueDateTo.date = $scope.dueDateTo;
+                        return;
+                    }
+                    $scope.dueDateTo = newValue;
                     var d = newValue;
                     var formatDate =
                         DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
@@ -836,7 +852,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                     vm.DuplicationWatcherIds.push(watcher.id);
                     setCurrentSearchWatcher(watcher)
                     $scope.watchers.push(watcher);
-                    $scope.pickerFindWatcher(vm.watcherName);
+                    if(vm.watcherName != '') $scope.pickerFindWatcher(vm.watcherName);
                 }
 
             }
@@ -847,7 +863,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 if(index > -1){
                     vm.DuplicationWatcherIds.splice(index, 1);
                     $scope.watchers.splice(index, 1);
-                    $scope.pickerFindWatcher(vm.watcherName);
+                    if(vm.watcherName != '') $scope.pickerFindWatcher(vm.watcherName);
                 }
             }
 
