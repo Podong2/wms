@@ -16,7 +16,7 @@ whenScrolled.$inject=[];
                 var raw = tElement[0];
                 tElement.bind('scroll', function () {
                     if(!scope.loading){
-                        if (raw.scrollTop + raw.offsetHeight >= raw.scrollHeight) {
+                        if (raw.scrollTop != 0 && raw.scrollTop + raw.offsetHeight >= raw.scrollHeight) {
                             scope.loading = true;
                             scope.$apply(scope.whenScrolled);
                             scope.$apply(scope.loading);

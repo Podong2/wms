@@ -6,7 +6,7 @@
                 <div class="col-md-9 padding-0">
                     <i class="fa fa-exclamation-circle task-circle" ng-class="vm.task.importantYn ? 'on' : ''" ng-click="vm.task.importantYn = !vm.task.importantYn" ng-show="vm.task.modifyYn"></i>
                     <i class="fa fa-exclamation-circle task-circle on" ng-show="!vm.task.modifyYn && vm.task.importantYn"></i>
-                    <input type="text" class="taskAddInput" ng-model="vm.task.name" enter-submit="vm.taskUpload()" placeholder="Task" ng-show="vm.task.modifyYn"/>
+                    <input type="text" class="taskAddInput" ng-model="vm.task.name" enter-submit="vm.taskUpload()" placeholder="Task" ng-show="vm.task.modifyYn" wms-kr-update/>
                     <div class="disabled-task-title" ng-show="!vm.task.modifyYn">{{vm.task.name}}</div>
                 </div>
                 <div class="col-md-3 padding-0">
@@ -159,7 +159,7 @@
                                         </ul>
                                     </div>
                                     <div class="watcher-input-area" ng-if="vm.task.modifyYn">
-                                        <input type="text" class="form-control watcher-input" ng-model="vm.watcherName" style="border-right: 0; border-left:0;"  placeholder="이름을 입력하세요."/>
+                                        <input type="text" class="form-control watcher-input" ng-model="vm.watcherName" style="border-right: 0; border-left:0;"  placeholder="이름을 입력하세요." wms-kr-update/>
                                     </div>
                                     <div class="watcher-search-list-area padding-5" ng-if="vm.task.modifyYn">
                                         <div ng-repeat="data in vm.watcherList track by $index">
@@ -302,7 +302,7 @@
                                 </div>
                                 <div class="relatedTask-input-area padding-5 border-top" ng-show="vm.relatedSearchYn && vm.task.modifyYn">
                                     <div class="related-task-search-div">
-                                        작업명 : <input type="text" class="related-task-input" ng-model="vm.relatedSearchForm.name" enter-submit="vm.findRelatedTask()" ng-keydown="vm.relatedTaskValidateYn = false" ng-class="vm.relatedSearchForm.name == '' && vm.relatedTaskValidateYn ? 'task-name-validate' : ''" style="border-right: 0; border-left:0; border-top: 0"  placeholder="작업명을 입력하세요."/>
+                                        작업명 : <input type="text" class="related-task-input" ng-model="vm.relatedSearchForm.name" enter-submit="vm.findRelatedTask()" ng-keydown="vm.relatedTaskValidateYn = false" ng-class="vm.relatedSearchForm.name == '' && vm.relatedTaskValidateYn ? 'task-name-validate' : ''" style="border-right: 0; border-left:0; border-top: 0"  placeholder="작업명을 입력하세요." wms-kr-update/>
                                     </div>
                                     <div class="related-task-search-div">
                                         담당자 : <input type="text" class="" ng-model="vm.relatedSearchForm.assigneeName" style="border-right: 0; border-left:0; border-top: 0"  placeholder="이름을 입력하세요."/>
@@ -499,7 +499,7 @@
                         </table>
 
                         <div class="add-sub-task"  ng-class="vm.subTaskOpen ? 'on' : ''">
-                            <input type="text" class="form-control subTask-input" ng-model="vm.subTask.name" enter-submit="vm.subTaskSave()" placeholder=" 추가할 작업명을 입력하세요."/>
+                            <input type="text" class="form-control subTask-input" ng-model="vm.subTask.name" enter-submit="vm.subTaskSave()" placeholder=" 추가할 작업명을 입력하세요." wms-kr-update/>
                         </div>
                     </div>
                     <!--<div class="related-task-area" ng-class="vm.relatedTaskOpen ? 'on' : ''"  style="border-top: 1px solid #ddd">-->

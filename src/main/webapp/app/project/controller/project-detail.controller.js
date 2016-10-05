@@ -10,7 +10,7 @@
     function projectDetailCtrl($scope, $rootScope, $stateParams, Task, Code, $log, ProjectEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, TaskListSearch, dataService, Principal, ProjectFind, ProjectInfo, ProjectFindByName, tableService, $cookies, projectForm ) {
         var vm = this;
         vm.baseUrl = window.location.origin;
-        $log.debug("projectForm : ", projectForm)
+        $log.debug("$stateParams.project : ", $stateParams.project)
         vm.openCalendar = openCalendar;
         vm.projectUpload = projectUpload;
         vm.renderHtml = renderHtml;
@@ -19,6 +19,14 @@
         vm.FindProjectList = FindProjectList;
         vm.projectRemove = projectRemove;
         vm.removeComment = removeComment;
+        vm.watcherInfoAdd = watcherInfoAdd;
+        vm.profileClose = profileClose;
+        vm.getCurrentWatchers = getCurrentWatchers;
+        vm.setCurrentSearchWatcher = setCurrentSearchWatcher;
+        vm.watcherPopupClose = watcherPopupClose;
+        vm.watcherAdd = watcherAdd;
+        vm.removeWatcher = removeWatcher;
+        vm.getTraceLog = getTraceLog;
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
 
@@ -75,6 +83,8 @@
         vm.previewFileUrl = []; // 파일 url 목록
         vm.project = getProject();
         vm.fileListYn = false;
+        vm.watcherName = '';
+        vm.DuplicationWatcherIds = [];
 
         var previewFile = {
             caption: '',
@@ -88,7 +98,7 @@
             attachedFileId : ''
         };
 
-        $log.debug("projectForm.project :" ,projectForm.project);
+        $log.debug("$stateParams.project :" ,projectForm.project);
 
         function getProject(){
             var previewFile = {
@@ -98,11 +108,11 @@
                 key: ''
             };
             // 파일 목록 주입
-            vm.projectFiles = projectForm.project.attachedFiles;
+            vm.projectFiles = $stateParams.project.attachedFiles;
             angular.forEach(vm.projectFiles, function(value, index){
                 previewFile.caption = value.name;
                 previewFile.locationType = 'Project';
-                previewFile.locationId = projectForm.project.id;
+                previewFile.locationId = $stateParams.project.id;
                 previewFile.size = byteCalculation(value.size);
                 previewFile.url = window.location.origin + "/api/attachedFile/" + value.id;
                 previewFile.id = value.id;
@@ -114,12 +124,17 @@
             $log.debug("vm.previewFiles : ", vm.previewFiles);
             vm.responseData = _.clone(vm.previewFiles);
 
-            fileViewConfig(projectForm.project);
+            fileViewConfig($stateParams.project);
 
-            return projectForm.project;
+            vm.getTraceLog($stateParams.project.id);
+
+            return $stateParams.project;
         }
 
         vm.fileAreaOpen = false;
+
+        vm.project.modifyYn = true;// 임시
+
 
 
         vm.responseProjectData = _.clone(vm.project);
@@ -193,24 +208,13 @@
             FindProjectList();
         });
 
-
-
-        TaskListSearch.TaskAudigLog({'entityId' : vm.project.id, 'entityName' : 'Project'}).then(function(result){
-            vm.TaskAuditLog = result;
-            angular.forEach(vm.TaskAuditLog.data, function(val){
-                if(val.entityField == 'reply'){
-                    vm.commentList.push(val);
-                }
-            });
-        });
-
         // -------------------  broadcast start ------------------- //
         vm.tagArray = [];
         $scope.$on("tagRemoveId", function(event, args){
             vm.tagArray=[];
             vm.tagArray.push({id : args.id});
             if(args.tagType == "projectUserIds") {
-                userIdPush(vm.tagArray, "removeProjectUserIds")
+                userIdPush(vm.tagArray, "removeProjectWatcherIds")
             }else if(args.tagType == "projectAdminIds") {
                 userIdPush(vm.tagArray, "removeProjectAdminIds")
             }
@@ -280,7 +284,7 @@
                 projectUpload();
             }
         });
-        $scope.$watchCollection('vm.project.projectUsers', function(newValue, oldValue){
+        $scope.$watchCollection('vm.project.projectWatchers', function(newValue, oldValue){
             if(newValue != undefined && oldValue !== newValue && oldValue.length < newValue.length) {
                 projectUpload();
             }
@@ -316,7 +320,7 @@
         /* 프로젝트 업로드 */
         function projectUpload(){
             if(vm.project.projectAdmins != [])userIdPush(vm.project.projectAdmins, "projectAdminIds");
-            if(vm.project.projectUsers != [])userIdPush(vm.project.projectUsers, "projectUserIds");
+            if(vm.project.projectWatchers != [])userIdPush(vm.project.projectWatchers, "projectWatcherIds");
 
             $log.debug("vm.project update ;::::::", vm.project);
             ProjectEdit.uploadProject({
@@ -330,7 +334,7 @@
                 if(vm.projectReload) $rootScope.$broadcast('projectReloading');
                 $rootScope.$broadcast('projectEditClose');
                 vm.project.removeAssigneeIds = "";
-                vm.project.removeWatcherIds = "";
+                vm.project.removeProjectWatcherIds = "";
                 vm.project.removeRelatedTaskIds ="";
                 vm.project.projectAdminIds = "";
                 vm.project.projectUserIds = "";
@@ -339,8 +343,9 @@
                 vm.previewFiles=[];
                 vm.previewFileUrl=[];
                 //projectDetailReload();
-                $scope.getTraceLog(vm.project.id);
-                $state.go("my-project.detail", {}, {reload : 'my-project.detail'});
+                vm.getTraceLog(vm.project.id);
+                //$state.go("my-project.detail", {}, {reload : 'my-project.detail'});
+                projectDetailReload();
             });
         }
 
@@ -351,6 +356,7 @@
             vm.dueDateFrom.date = DateUtils.toDate(vm.responseProjectData.startDate);
             vm.dueDateTo.date = DateUtils.toDate(vm.responseProjectData.endDate);
             setProjectAttachedFiles();
+            vm.project.modifyYn = true;// 임시
         }
         function onError(){
 
@@ -429,21 +435,12 @@
                 toastr.success('프로젝트 댓글 등록 완료', '프로젝트 댓글 등록 완료');
                 $scope.commentFiles = [];
                 vm.comment.contents='';
-                // TaskListSearch.TaskAudigLog({'entityId' : vm.project.id, 'entityName' : 'Project'}).then(function(result){
-                //     vm.TaskAuditLog = result;
-                //     vm.commentList=[];
-                //     angular.forEach(vm.TaskAuditLog.data, function(val){
-                //         if(val.entityField == 'reply'){
-                //             vm.commentList.push(val);
-                //         }
-                //     });
-                // });
 
-                $scope.getTraceLog(vm.project.id);
+                vm.getTraceLog(vm.project.id);
             });
         }
 
-        $scope.getTraceLog = function(projectId) {
+        function getTraceLog(projectId) {
             vm.commentList=[];
             TaskListSearch.TaskAudigLog({'entityId' : projectId, 'entityName' : 'Project'}).then(function(result){
                 vm.TaskAuditLog = result;
@@ -567,6 +564,112 @@
             else
                 return (bytes/Math.pow(1024, Math.floor(e))).toFixed(2)+" "+s[e];
         }
+
+        function profileClose(){
+            $rootScope.$broadcast("profileClose")
+        }
+
+        //참조자 팝업 닫기
+        function watcherPopupClose(){
+            $rootScope.$broadcast('watcherPopupClose');
+        }
+
+        function watcherInfoAdd(watcher){
+            $scope.watcherInfo = watcher;
+        }
+
+        // 참조자 데이터 제거
+        function removeWatcher(watcher){
+            //$rootScope.$broadcast('watcherPopupClose');
+            vm.uploadType = 'watcher';
+            vm.project.removeProjectWatcherIds = watcher.id;
+            if(vm.watcherName != '') $scope.pickerFindWatcher(vm.watcherName);
+            projectUpload();
+        }
+
+        // 참조자 명 실시간 검색
+        $scope.$watchCollection('vm.watcherName', function(newValue){
+            if(newValue != '' && newValue != undefined){
+                $log.debug("vm.watcherName : ", newValue);
+                vm.watcherName = newValue;
+                if(vm.watcherName != '') $scope.pickerFindWatcher(vm.watcherName);
+            }
+        });
+
+        /* watcher picker */
+        $scope.pickerFindWatcher = function(name) {
+
+            var userIds = [];
+            angular.forEach(vm.project.projectWatchers, function(val){
+                userIds.push(val.id);
+            });
+
+            var excludeUserIds = userIds.join(",");
+            vm.DuplicationWatcherIds = excludeUserIds;
+
+            findUser.findByNameAndExcludeIds(name, excludeUserIds).then(function(result){
+                $log.debug("watcherList : ", result);
+                vm.watcherList = result;
+            }); //user search
+        };
+
+        // 참조자 데이터 주입
+        function watcherAdd(watcher){
+            var index = vm.DuplicationWatcherIds.split(",").indexOf(watcher.id);
+            if(index > -1){
+                $log.debug("중복")
+            }else{
+                //vm.DuplicationWatcherIds.push(watcher.id);
+                vm.uploadType = 'watcher';
+                setCurrentSearchWatcher(watcher)
+                vm.project.projectWatchers.push(watcher);
+                if(vm.watcherName != '') $scope.pickerFindWatcher(vm.watcherName);
+                //$rootScope.$broadcast('watcherPopupClose');
+            }
+        }
+
+
+        /* localStorage 에서 최근 검색한 사용자 가져오기 */
+        function getCurrentWatchers(){
+            vm.watcherName='';
+            var currentSearchWatcher = localStorage.getItem("currentSearchWatcher");
+            vm.watchers = [];
+            if (angular.isDefined(currentSearchWatcher) && currentSearchWatcher != null) {
+                currentSearchWatcher = JSON.parse(currentSearchWatcher);
+                vm.watcherList = currentSearchWatcher.watchers;
+            }
+        }
+
+        /* localStorage에 최근 검색한 사용자 주입 */
+        function setCurrentSearchWatcher(watcher){
+            var currentSearchWatcher = localStorage.getItem("currentSearchWatcher");
+            vm.watchers = [];
+            if (angular.isDefined(currentSearchWatcher) && currentSearchWatcher != null) {
+                currentSearchWatcher = JSON.parse(currentSearchWatcher);
+                if(currentSearchWatcher.watchers.length >= 3){
+                    currentSearchWatcher.watchers.splice(0, 1);
+                    vm.watchers = currentSearchWatcher.watchers;
+                    vm.watchers.push(watcher);
+                    localStorage.setItem("currentSearchWatcher", JSON.stringify({
+                        watchers : vm.watchers,
+                    }));
+                }else{
+                    vm.watchers = currentSearchWatcher.watchers;
+                    vm.watchers.push(watcher);
+                    localStorage.setItem("currentSearchWatcher", JSON.stringify({
+                        watchers : vm.watchers,
+                    }));
+                }
+            } else {
+                vm.watchers.push(watcher);
+                localStorage.setItem("currentSearchWatcher", JSON.stringify({
+                    watchers : vm.watchers,
+                }));
+            }
+        }
+
+
+
 
         // 프로젝트 파일첨부 테이블 정보
         vm.tableConfigs = [];

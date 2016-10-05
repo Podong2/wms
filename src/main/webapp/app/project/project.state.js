@@ -32,7 +32,12 @@
                     return $translate.refresh();
                 }],
                 projectForm : function($stateParams, ProjectInfo){
-                    return ProjectInfo.get({projectId : $stateParams.id}).$promise;
+                    return ProjectInfo.get({
+                        projectId : $stateParams.id,
+                        page: 0,
+                        size: 12,
+                        sort: 'desc'
+                    }).$promise;
                 }
             }
         })
