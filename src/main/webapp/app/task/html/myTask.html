@@ -19,7 +19,7 @@
                         <li class="text-center" ng-class="vm.tabArea[3].status == true ? 'active' : ''" ng-click="vm.tabDisplay(3, 'COMPLETE')"><span>완료</span></li>
                     </ul>
                     <div style="font-weight: bold; font-size: 25px; background: #fff; padding: 0 10px;">
-                        <span>{{vm.taskCounts.totalCount}}건</span>
+                        <span class="cursor" ng-click="vm.filterSearch( vm.listType, '')">{{vm.taskCounts.totalCount}}건</span>
                         <div class="pull-right">
                             <!--<span class="cursor" ng-click="vm.getList( vm.listType, '')"><i class="fa fa-file-text"></i>{{vm.taskCounts.templateCount == null ? 0 : vm.taskCounts.templateCount}}</span>-->
                             <span class="cursor" ng-click="vm.filterSearch( vm.listType, 'ASSIGNED')"><i class="fa fa-list"></i>{{vm.taskCounts.assignedCount}}</span>
