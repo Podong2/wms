@@ -6,7 +6,7 @@
                 <div class="col-md-9 padding-0">
                     <i class="fa fa-exclamation-circle task-circle" ng-class="vm.task.importantYn ? 'on' : ''" ng-click="vm.task.importantYn = !vm.task.importantYn" ng-show="vm.task.modifyYn"></i>
                     <i class="fa fa-exclamation-circle task-circle on" ng-show="!vm.task.modifyYn && vm.task.importantYn"></i>
-                    <input type="text" class="taskAddInput" ng-model="vm.task.name" enter-submit="vm.taskUpload()" placeholder="Task" ng-show="vm.task.modifyYn" wms-kr-update/>
+                    <input type="text" class="taskAddInput" maxlength="500" ng-model="vm.task.name" enter-submit="vm.taskUpload()" placeholder="Task" ng-show="vm.task.modifyYn" wms-kr-update/>
                     <div class="disabled-task-title" ng-show="!vm.task.modifyYn">{{vm.task.name}}</div>
                 </div>
                 <div class="col-md-3 padding-0">
@@ -291,7 +291,8 @@
                                     <!--</span>-->
                                     <ul class="relatedTask-list-item-area">
                                         <li class="position-relative relatedTask-list-item padding-5 float-left" ng-repeat="task in vm.task.relatedTasks" wms-close-btn-display>
-                                            <span class="relatedTask-list-item-title cursor" ng-click="vm.windowOpen(task)">{{task.name}}</span>
+                                            <!--<span class="relatedTask-list-item-title cursor" >{{task.name}}</span>-->
+                                            <a class="relatedTask-list-item-title cursor" ui-sref="my-task.detailPopup({popupId : task.id, popupListType : vm.listType,taskId : task.id})" >{{task.name}}</a>
                                             <span class="relatedTask-close-btn close-btn cursor" ng-click="vm.removeRelatedTask(task)" ng-if="vm.task.modifyYn"><i class="fa fa-close"></i></span>
                                         </li>
                                     </ul>

@@ -5,7 +5,7 @@
         <div class="col-md-12">
             <div class="col-md-9 padding-0">
                 <i class="fa fa-exclamation-circle task-circle" ng-class="vm.task.importantYn ? 'on' : ''" ng-click="vm.task.importantYn = !vm.task.importantYn"></i>
-                <input type="text" class="taskAddInput" ng-model="vm.task.name" maxlength="35" placeholder="생성할 작업명을 입력하세요." auto-focus/><!-- enter-submit="vm.save()" -->
+                <input type="text" class="taskAddInput" ng-model="vm.task.name" maxlength="500" placeholder="생성할 작업명을 입력하세요." auto-focus/><!-- enter-submit="vm.save()" -->
             </div>
             <div class="col-md-3 padding-0">
                 <span class="pull-right taskOptionBtnArea">
@@ -427,7 +427,7 @@
                                         <div style="width: 300px;">
                                             <div style="width: 300px;">
                                                 <div class="project-picker-search">
-                                                    <input class="project-picker-search-input" type="text" ng-model="vm.userName" enter-submit="pickerFindUsers(userName)" placeholder="사용자 명을 입력하세요."  wms-kr-update>
+                                                    <input class="project-picker-search-input" type="text" maxlength="20" ng-model="vm.userName" enter-submit="pickerFindUsers(userName)" placeholder="사용자 명을 입력하세요."  wms-kr-update>
                                                 </div>
                                                 <div class="project-picker-list-area">
                                                     <div class="project-picker-list">
@@ -492,7 +492,7 @@
 
 
                     <div class="add-sub-task" ng-class="vm.subTaskOpen ? 'on' : ''">
-                        <input type="text" class="form-control subTask-input" ng-model="vm.subTask.name" wms-add-sub-task-element sub-tasks="vm.subTasks" placeholder=" 추가할 작업명을 입력하세요."/>
+                        <input type="text" class="form-control subTask-input" maxlength="500" ng-model="vm.subTask.name" wms-add-sub-task-element sub-tasks="vm.subTasks" placeholder=" 추가할 작업명을 입력하세요."/>
                     </div>
                 </div>
 
