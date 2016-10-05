@@ -192,7 +192,8 @@
             , u.created_by as createdBy, u.created_date as createdDate
             , u.last_modified_by as lastModifiedBy, u.last_modified_date as lastModifiedDate
         FROM owl_user u
-        WHERE u.id IN (SELECT tu.user_id FROM owl_task_user tu WHERE tu.task_id = #{id} AND tu.user_type = 'ASSIGNEE')
+            INNER JOIN owl_task_user tu ON u.id = tu.user_id AND tu.task_id = #{id} and tu.user_type = 'ASSIGNEE'
+        ORDER BY tu.id ASC
     </select>
 
     <select id="getTaskWatchers" resultMap="userResultMap">
@@ -200,7 +201,8 @@
             , u.created_by as createdBy, u.created_date as createdDate
             , u.last_modified_by as lastModifiedBy, u.last_modified_date as lastModifiedDate
         FROM owl_user u
-        WHERE u.id IN (SELECT tu.user_id FROM owl_task_user tu WHERE tu.task_id = #{id} AND tu.user_type = 'WATCHER')
+            INNER JOIN owl_task_user tu ON u.id = tu.user_id AND tu.task_id = #{id} and tu.user_type = 'WATCHER'
+        ORDER BY tu.id ASC
     </select>
 
     <sql id="taskListFilterTypeQuery">
