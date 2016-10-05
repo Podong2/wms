@@ -13,6 +13,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
 
             vm.projectTaskAdd = projectTaskAdd;
             vm.getTaskListInProject = getTaskListInProject;
+            vm.initProjectTaskList = initProjectTaskList;
             //vm.showDetail = showDetail;
             vm.codes = [{"id":'', "name":"선택"},{"id":1,"name":"활성"},{"id":2,"name":"완료"},{"id":3,"name":"보류"},{"id":4,"name":"취소"}]
             vm.orderTypes = [{"id":'', "name":"선택"},{"id":'IMPORTANT',"name":"중요도"},{"id":'TASK_NAME',"name":"텍스트 오름 차순"}];
@@ -106,6 +107,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
 
 
             vm.listType = 'TOTAL'
+
             function getList(){
                 $log.debug("검색 필터 projectId : ", $stateParams.projectId)
                 $log.debug("검색 필터 vm.listType : ", vm.listType)
@@ -278,6 +280,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 name : '',
                 projectId : $stateParams.id
             }
+
             function projectTaskAdd(){
                 projectIdPush()
                 if(vm.task.name != '') Task.save({name : vm.task.name, projectId : vm.task.projectId}, onSaveSuccess, onSaveError);
@@ -292,11 +295,21 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             }
             function onSaveError () {
             }
+
             // 타스크에 프로젝트 아이디 주입
             function projectIdPush(ids){
                 var typeIds = [];
                     typeIds.push(vm.project.id);
                 vm.task.projectIds = typeIds.join(",");
+            }
+
+            // 프로젝트 작업 목록 초기화
+            function initProjectTaskList(){
+                vm.listType = '';
+                vm.statusId = '';
+                vm.orderType = '';
+                vm.page = 1;
+                getList();
             }
 
 

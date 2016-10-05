@@ -56,13 +56,13 @@
                     </div>
                     <div style="font-weight: bold; font-size: 16px; background: #fff; padding: 0 0px; ">
                         <ul class="nav nav-tabs nav-justified project-menu-area">
-                            <li class="text-center"><span>목록</span></li>
+                            <li class="text-center cursor" ng-click="vm.initProjectTaskList()"><span>목록</span></li>
                             <!--<li class="text-center"><span>차트</span></li>-->
-                            <li class="text-center" ui-sref="my-project-functions.history({projectId : vm.project.id, id : vm.project.id})"><span>히스토리</span></li>
+                            <li class="text-center cursor" ui-sref="my-project-functions.history({projectId : vm.project.id, id : vm.project.id})"><span>히스토리</span></li>
                             <!--<li class="text-center"><span>리포트</span></li>-->
                             <!--<li class="text-center"><span>작업일정</span></li>-->
                             <!--<li class="text-center"><span>대화방</span></li>-->
-                            <li class="text-center" ui-sref="my-project-functions.file({projectId : vm.project.id, id : vm.project.id})"><span>파일</span></li>
+                            <li class="text-center cursor" ui-sref="my-project-functions.file({projectId : vm.project.id, id : vm.project.id})"><span>파일</span></li>
                             <!--<li class="text-center"><span><i class="fa fa-ellipsis-v"></i></span></li>-->
                         </ul>
                     </div>
