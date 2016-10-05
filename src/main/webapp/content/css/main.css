@@ -2947,8 +2947,11 @@ text-align: right;
     margin-left: 0;
 }
 .user-picker-info img{
-    width: 50px;
-    height: 50px;
+    width: 50px !important;
+    height: 50px !important;
+    margin: 0 !important;
+    outline: 1px solid #bfbfbf;
+    border: 1px solid #fff;
 }
 .watcher-picker-info{
     position: absolute;
@@ -2957,26 +2960,30 @@ text-align: right;
     background-color: #fff;
     border-radius: 3px;
     border: 1px solid #ddd;
-    bottom: 22px;
+    bottom: 35px;
     right: 14px;
     z-index: 100;
     box-shadow: 3px 3px 5px #ccc;
     display: none;
 }
 .watcher-picker-info.on{
-    display: block;
+    display: block !important;
 }
 .watcher-picker-info ul {
-    list-style: none;
+    list-style: none !important;
     text-align: left !important;
-    padding-left: 10px;
+    padding-left: 10px !important;
 }
 .watcher-picker-info ul li{
-    margin-left: 0;
+    margin-left: 0 !important;
+    margin-top: 0 !important;
 }
 .watcher-picker-info img{
-    width: 50px;
-    height: 50px;
+    width: 50px !important;
+    height: 50px !important;
+    margin: 0;
+    outline: 1px solid #bfbfbf;
+    border: 1px solid #fff;
 }
 
 .watcher-popup-area{

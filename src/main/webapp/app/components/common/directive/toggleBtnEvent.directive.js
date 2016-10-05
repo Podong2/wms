@@ -10,6 +10,7 @@ angular.module('wmsApp')
     .directive('watcherPickerBtnToggle', watcherPickerBtnToggle)
     .directive('watcherInfoBtnToggle', watcherInfoBtnToggle)
     .directive('relatedTaskPickerBtnToggle', relatedTaskPickerBtnToggle)
+    .directive('subTaskUserInfoBtnToggle', subTaskUserInfoBtnToggle)
     .directive('commonPopupToggle', commonPopupToggle)
     .directive('gnbTaskHistoryToggle', gnbTaskHistoryToggle);
 toggleEvent.$inject=['$compile', '$filter', '$log', '$sce', '$timeout'];
@@ -23,6 +24,7 @@ userPickerBtnToggle.$inject=['$timeout'];
 watcherPickerBtnToggle.$inject=['$rootScope', '$timeout'];
 watcherInfoBtnToggle.$inject=['$rootScope', '$timeout'];
 relatedTaskPickerBtnToggle.$inject=['$rootScope', '$timeout'];
+subTaskUserInfoBtnToggle.$inject=['$rootScope', '$timeout'];
 commonPopupToggle.$inject=['$rootScope', '$timeout'];
 gnbTaskHistoryToggle.$inject=['$timeout'];
 function toggleEvent($compile, $filter, $log, $sce, $timeout) {
@@ -380,6 +382,46 @@ function relatedTaskPickerBtnToggle($rootScope, $timeout) {
                     }else{
                         $($elements).removeClass("on");
                     }
+
+                }
+            });
+
+        }
+    }
+}
+
+/**
+ * 하위작업 담당자 정보 팝업 토글
+ * @param $timeout
+ * @returns {{restrict: string, link: link}}
+ */
+function subTaskUserInfoBtnToggle($rootScope, $timeout) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attr) {
+            var $elements = element;
+            element.on('click', function(_this) {
+                $($elements).parents('li').find('.watcher-picker-info').addClass("on");
+            });
+            $rootScope.$on('profileClose', function(){
+                $timeout(function(){
+                    $($elements).parents('li').find('.watcher-picker-info').removeClass("on");
+                }, 100);
+            });
+            $('body').click(function (e) {
+                if ($($elements).parents('li').find('.watcher-picker-info').has(e.target).length) {
+                    $elements.parents('li').find('.watcher-picker-info').addClass("on");
+                }else{
+                    var closeYnElement = e.target.getAttribute("class");
+                    $timeout(function () {
+                        if (!$elements.parents('li').has(e.target).length) {
+                            $($elements).parents('li').find('.watcher-picker-info').removeClass("on");
+                        }else if(closeYnElement != null && closeYnElement.indexOf("close") > -1){
+                            $($elements).parents('li').find('.watcher-picker-info').removeClass("on");
+                        }else{
+                            $elements.parents('li').find('.watcher-picker-info').addClass("on");
+                        }
+                    }, 100);
 
                 }
             });

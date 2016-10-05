@@ -210,7 +210,7 @@ tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tag
         replace: false,
         transclude: true,
         templateUrl: 'ngTagsInput/tags-input.html',
-        controller: ["$scope", "$attrs", "$element", "$rootScope", function($scope, $attrs, $element, $rootScope) {
+        controller: ["$scope", "$attrs", "$element", "$rootScope", "ModalService", function($scope, $attrs, $element, $rootScope, ModalService) {
             $scope.events = tiUtil.simplePubSub();
             $scope.baseUrl = window.location.origin;
             tagsInputConfig.load('tagsInput', $scope, $attrs, {
@@ -279,6 +279,11 @@ tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tag
                     },
                     removeTag: function(index) {
                         if ($scope.disabled) {
+                            return;
+                        }
+                        if($scope.tagType == 'projectAdminIds' && $scope.tagList.items.length <= 1){
+                            //alert("관리자는 1명 이상 설정되어야 합니다. 변경할 관리자를 먼저 추가하신 후 시도해 주세요.");
+                            ModalService.open("경고", "관리자는 1명 이상 설정되어야 합니다. 변경할 관리자를 먼저 추가하신 후 시도해 주세요.", "app/components/modal/templates/alertModal.html", "commonModalCtrl");
                             return;
                         }
                         if($scope.modifyYn) $rootScope.$broadcast("tagRemoveId", {id : $scope.tagList.items[index].id, tagType : $scope.tagType}); // hsy 수정
@@ -410,7 +415,9 @@ tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tag
                         //position.css('top', top+ 'px');
                         //$('.sub-task-area-popup').removeClass('on');
                         //$(event.target.children).addClass('on');
-                        $element.addClass("on");
+                        if(event.target.getAttribute("class") == null || event.target.getAttribute("class").indexOf("remove-button") == -1){
+                            $element.addClass("on");
+                        }
                     }
                 },
                 info : {  // hsy 추가

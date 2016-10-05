@@ -40,6 +40,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             vm.removeRelatedTask = removeRelatedTask;
             vm.projectClose = projectClose;
             vm.getCurrentWatchers = getCurrentWatchers;
+            vm.profileClose = profileClose;
             vm.userInfo = Principal.getIdentity();
 
             vm.DuplicationWatcherIds = [];
@@ -878,6 +879,12 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             function projectClose(){
                 $rootScope.$broadcast('projectPickerAddClose');
             }
+
+            // 프로필 팝업 닫기
+            function profileClose(){
+                $rootScope.$broadcast("profileClose")
+            }
+
 
             function watcherInfoAdd(watcher){
                 $scope.watcherInfo = watcher;

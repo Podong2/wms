@@ -58,10 +58,7 @@
                     $translatePartialLoader.addPart('task');
                     $translatePartialLoader.addPart('global');
                     return $translate.refresh();
-                }],
-                projectForm : function($stateParams, ProjectInfo){
-                    return ProjectInfo.get({projectId : $stateParams.id}).$promise;
-                }
+                }]
             }
         })
         .state('my-project.taskDetail', { // ui router에서 호출받을 state name 설정

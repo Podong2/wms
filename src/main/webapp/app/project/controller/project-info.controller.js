@@ -91,15 +91,15 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 vm.project = data.project;
                 vm.info = data;
                 angular.forEach(data.tasks, function(task){
-                    if(task.statusGroup == "DELAYED") vm.delayed.push(task);
-                    if(task.statusGroup == "SCHEDULED_TODAY") vm.scheduledToday.push(task);
-                    if(task.statusGroup == "REGISTERED_TODAY") vm.registeredToday.push(task);
-                    if(task.statusGroup == "IN_PROGRESS") vm.inProgress.push(task);
-                    if(task.statusGroup == "NONE_SCHEDULED") vm.noneScheduled.push(task);
-                    if(task.statusGroup == "SCHEDULED") vm.scheduled.push(task); // 예정
-                    if(task.statusGroup == "HOLD") vm.hold.push(task);  //보류
-                    if(task.statusGroup == "COMPLETE") vm.complete.push(task); // 완료
-                    if(task.statusGroup == "CANCEL") vm.cancel.push(task); // 완료
+                    //if(task.statusGroup == "DELAYED") vm.delayed.push(task);
+                    //if(task.statusGroup == "SCHEDULED_TODAY") vm.scheduledToday.push(task);
+                    //if(task.statusGroup == "REGISTERED_TODAY") vm.registeredToday.push(task);
+                    //if(task.statusGroup == "IN_PROGRESS") vm.inProgress.push(task);
+                    //if(task.statusGroup == "NONE_SCHEDULED") vm.noneScheduled.push(task);
+                    //if(task.statusGroup == "SCHEDULED") vm.scheduled.push(task); // 예정
+                    //if(task.statusGroup == "HOLD") vm.hold.push(task);  //보류
+                    //if(task.statusGroup == "COMPLETE") vm.complete.push(task); // 완료
+                    //if(task.statusGroup == "CANCEL") vm.cancel.push(task); // 완료
                     vm.tasks.push(task);
                 });
                 $state.go("my-project.detail", {project : vm.project});
@@ -158,7 +158,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 $scope.pieOptions = {
                     chart: {
                         type: 'pieChart',
-                        height: 250,
+                        height: 200,
                         x: function(d){return d.key;},
                         y: function(d){return d.y;},
                         showLabels: true, //그래프 내에 표시될 텍스트 노출 유무
