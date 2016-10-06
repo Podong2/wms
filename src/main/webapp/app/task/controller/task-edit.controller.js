@@ -6,9 +6,9 @@
 angular.module('wmsApp')
     .controller("taskEditCtrl", taskEditCtrl);
 taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'toastr', '$state', '$timeout', 'DateUtils', 'SubTask', 'Principal', 'findUser', '$q', 'TaskEdit', 'FindTasks'
-    , 'ProjectFind', 'ProjectFindByName', '$cookies', 'FindByCondition', 'ModalService'];
+    , 'ProjectFind', 'ProjectFindByName', '$cookies', 'FindByCondition', 'ModalService', '$window'];
         function taskEditCtrl($rootScope, $scope, $uibModalInstance, Code, $log, Task, toastr, $state, $timeout, DateUtils, SubTask, Principal, findUser, $q, TaskEdit, FindTasks
-            , ProjectFind, ProjectFindByName, $cookies, FindByCondition, ModalService) {
+            , ProjectFind, ProjectFindByName, $cookies, FindByCondition, ModalService, $window) {
             var vm = this;
             vm.baseUrl = window.location.origin;
 
@@ -43,6 +43,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             vm.projectClose = projectClose;
             vm.getCurrentWatchers = getCurrentWatchers;
             vm.profileClose = profileClose;
+            vm.windowOpen = windowOpen;
             vm.userInfo = Principal.getIdentity();
 
             vm.DuplicationWatcherIds = [];
@@ -915,6 +916,11 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 $rootScope.$broadcast("profileClose")
             }
 
+            // 새창 열기
+            function windowOpen(task){
+                var url = "#/myTask/detail/"+ vm.listType + '/' + task.id;
+                $window.open(url, "_blank");
+            }
 
             function watcherInfoAdd(watcher){
                 $scope.watcherInfo = watcher;
@@ -922,6 +928,9 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
 
             function addRelatedTask(){
                 var checkList = _.clone($scope.checkedTask);
+
+                $log.debug("checkList : ", checkList);
+
                 vm.task.relatedTaskList = checkList;
                 vm.DuplicationRelatedTaskIds = [];
                 angular.forEach(vm.task.relatedTaskList, function(value){
