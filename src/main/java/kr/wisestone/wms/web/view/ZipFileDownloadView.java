@@ -1,8 +1,10 @@
 package kr.wisestone.wms.web.view;
 
+import com.google.common.collect.Maps;
 import kr.wisestone.wms.common.constant.Constants;
 import kr.wisestone.wms.domain.AttachedFile;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -76,13 +78,28 @@ public class ZipFileDownloadView extends AbstractView {
 
     private ByteArrayOutputStream makeZipByteArrayOutputStream(List<AttachedFile> attachedFiles) throws IOException {
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+
+        Map<String, Integer> duplicateCountMap = Maps.newHashMap();
+
         try {
 
             ZipOutputStream zipOutputStream = new ZipOutputStream(byteArrayOutputStream);
             byte[] buffer = new byte[128];
             for (AttachedFile attachedFile : attachedFiles) {
 
-                ZipEntry entry = new ZipEntry(attachedFile.getName());
+                String fileName = FilenameUtils.removeExtension(attachedFile.getName());
+                String extension = FilenameUtils.getExtension(attachedFile.getName());
+
+                if(!duplicateCountMap.containsKey(attachedFile.getName())) {
+                    duplicateCountMap.put(attachedFile.getName(), 0);
+                } else {
+                    Integer count = duplicateCountMap.get(attachedFile.getName()) + 1;
+                    duplicateCountMap.put(attachedFile.getName(), count);
+
+                    fileName = fileName + " (" + count + ")";
+                }
+
+                ZipEntry entry = new ZipEntry(fileName + "." + extension);
                 ByteArrayInputStream inputStream = new ByteArrayInputStream(attachedFile.getContent());
                 zipOutputStream.putNextEntry(entry);
                 int read = 0;
