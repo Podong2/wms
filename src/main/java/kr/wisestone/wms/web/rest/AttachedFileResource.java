@@ -7,6 +7,7 @@ import kr.wisestone.wms.repository.AttachedFileRepository;
 import kr.wisestone.wms.service.AttachedFileService;
 import kr.wisestone.wms.web.rest.util.HeaderUtil;
 import kr.wisestone.wms.web.view.AttachedFileDownloadView;
+import kr.wisestone.wms.web.view.ZipFileDownloadView;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
@@ -14,10 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -45,6 +43,9 @@ public class AttachedFileResource {
 
     @Inject
     private AttachedFileDownloadView attachedFileDownloadView;
+
+    @Inject
+    private ZipFileDownloadView zipFileDownloadView;
 
     /**
      * POST  /attachedFile : Create a new attachedFile.
@@ -86,6 +87,20 @@ public class AttachedFileResource {
         model.addAttribute(Constants.FILE_DOWNLOAD_CONTENT, attachedFile.getContent());
 
         return new ModelAndView(attachedFileDownloadView);
+    }
+
+    @RequestMapping(value = "/attachedFile", method = RequestMethod.GET)
+    @Timed
+    public ModelAndView downloadFiles(@RequestParam(value = "targetIds") List<Long> targetIds
+                                    , @RequestParam(value = "name") String name
+                                    , Model model) {
+
+        List<AttachedFile> attachedFiles = attachedFileRepository.findAll(targetIds);
+
+        model.addAttribute(Constants.FILE_DOWNLOAD_TARGET, attachedFiles);
+        model.addAttribute(Constants.FILE_DOWNLOAD_NAME, name);
+
+        return new ModelAndView(zipFileDownloadView);
     }
 
     /**
