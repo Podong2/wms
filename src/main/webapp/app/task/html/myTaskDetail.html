@@ -147,7 +147,7 @@
                                 <div class="watcher-popup-area text-left">
                                     <div class="padding-5 watcher-popup-header">
                                         <span class="pull-right fa fa-close cursor" ng-click="vm.watcherPopupClose()"></span>
-                                        참조자
+                                        참조자 {{vm.task.watchers.length}}명
                                     </div>
                                     <div class="watcher-list-area padding-10" ng-show="vm.task.watchers.length > 0">
                                         <ul class="list-inline friends-list" style="margin-bottom: 0">
@@ -550,7 +550,7 @@
                     <ul>
                         <li>파일 ({{vm.previewFiles.length}})</li>
                         <li><label class="cursor"><i class="fa fa-download"></i></label></li>
-                        <li ng-if="vm.task.modifyYn"><label for="input-4" class="cursor"><i class='fa fa-paperclip'></i></label></li>
+                        <li ng-if="vm.task.modifyYn"><label for="input-4" class="cursor"><i class='fa fa-paperclip' uib-tooltip="파일 첨부"></i></label></li>
                         <li><label class="cursor"><i class="fa fa-list" ng-click="vm.fileListYn = !vm.fileListYn" file-list-yn></i></label></li>
                         <li ng-if="vm.task.modifyYn"><label class="cursor"><i class="fa fa-trash"></i></label></li>
                         <li></li>

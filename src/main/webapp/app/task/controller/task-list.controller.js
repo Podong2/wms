@@ -111,7 +111,6 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
                         tab.status = false;
                     }
                 });
-                vm.tasks=[]; // 초기화
                 vm.page = 1;
                 vm.listType = type;
                 vm.filterType = '';
@@ -119,7 +118,6 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
             }
 
             function filterSearch(type, filterType){
-                vm.tasks=[]; // 초기화
                 vm.page = 1;
                 vm.listType = type;
                 vm.filterType = filterType;
@@ -170,7 +168,7 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
             //}
 
             function onSuccess(data, headers) {
-                //vm.tasks=[];
+                if(vm.page == 1) vm.tasks=[];
 
                 angular.forEach(data, function(task){
                     // if(task.statusGroup == "DELAYED") vm.delayed.push(task);
