@@ -3124,9 +3124,6 @@ text-align: right;
         right: -5px;
         display: none;
     }
-    .relatedTask-list-item{
-
-    }
     .relatedTask-list-item-area{
         display: inline-table;
         list-style: outside none none;
@@ -3139,6 +3136,12 @@ text-align: right;
     }
     .relatedTask-list-item-title:hover{
         border-bottom: 1px solid #000;
+    }
+    .relatedTask-list-item{
+        max-width: 259px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
     }
     .related-task-search-div{
         line-height: 41px;

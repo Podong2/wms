@@ -7,10 +7,12 @@ angular.module('wmsApp')
     .directive('wmsAddSubTaskElement', wmsAddSubTaskElement)
     .directive('wmsSubTaskUserAdd', wmsSubTaskUserAdd)
     .directive('wmsSubTaskUserRemove', wmsSubTaskUserRemove)
+    .directive('wmsRelatedTaskUserRemove', wmsRelatedTaskUserRemove)
     .directive('wmsSubTaskDateAdd', wmsSubTaskDateAdd);
 wmsAddSubTaskElement.$inject=['$log', '$compile', '$rootScope'];
 wmsSubTaskUserAdd.$inject=['$log'];
 wmsSubTaskUserRemove.$inject=['$log'];
+wmsRelatedTaskUserRemove.$inject=['$log'];
 wmsSubTaskDateAdd.$inject=['$log'];
 /**
  * 하위작업 추가
@@ -120,6 +122,34 @@ function wmsSubTaskUserRemove($log) {
                         if(index > -1){
                             $log.debug(scope.user.name, " 삭제");
                             scope.subTask.assignees.splice(index, 1);
+                            scope.subTask.duplicateUserIds.splice(index, 1);
+                            scope.$apply();
+                        }
+                });
+
+            }
+        }
+    }
+/**
+ * 하위 작업 사용자 제거
+ * @param $log
+ * @returns {{restrict: string, scope: {user: string, subTask: string}, controller: *[], link: link}}
+ */
+function wmsRelatedTaskUserRemove($log) {
+        return {
+            restrict: 'A',
+            scope : {
+                user : '=user',
+                relatedTask : '=relatedTask'
+            },
+            controller : ['$scope', function ($scope) {
+            }],
+            link: function (scope, element, attrs) {
+                element.on('click', function(e){
+                        var index = scope.relatedTask.indexOf(scope.user);
+                        if(index > -1){
+                            $log.debug(scope.user.name, " 삭제");
+                            scope.relatedTask.splice(index, 1);
                             scope.subTask.duplicateUserIds.splice(index, 1);
                             scope.$apply();
                         }

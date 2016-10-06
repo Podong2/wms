@@ -147,7 +147,7 @@
                                 <div class="watcher-popup-area text-left">
                                     <div class="padding-5 watcher-popup-header">
                                         <span class="pull-right fa fa-close cursor" ng-click="vm.watcherPopupClose()"></span>
-                                        참조자
+                                        참조자 {{vm.task.watchers.length}}명
                                     </div>
                                     <div class="watcher-list-area padding-10" ng-show="vm.task.watchers.length > 0">
                                         <ul class="list-inline friends-list" style="margin-bottom: 0">
@@ -293,7 +293,7 @@
                                         <li class="position-relative relatedTask-list-item padding-5 float-left" ng-repeat="task in vm.task.relatedTasks" wms-close-btn-display>
                                             <!--<span class="relatedTask-list-item-title cursor" >{{task.name}}</span>-->
                                             <a class="relatedTask-list-item-title cursor" ui-sref="my-task.detailPopup({popupId : task.id, popupListType : vm.listType,taskId : task.id})" >{{task.name}}</a>
-                                            <span class="relatedTask-close-btn close-btn cursor" ng-click="vm.removeRelatedTask(task)" ng-if="vm.task.modifyYn"><i class="fa fa-close"></i></span>
+                                            <span class="relatedTask-close-btn close-btn cursor" ng-click="vm.removeRelatedTask(task)" ng-if="vm.task.modifyYn"><i class="fa fa-close remove-button"></i></span>
                                         </li>
                                     </ul>
                                 </div>
@@ -413,8 +413,8 @@
                                                             <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="subTaskEndDate" style="height: 30px; width: 100%; border : 0">
                                                         </label>
 
-                                                        <span class="dueDateValues" style="top:15px;" sub-task-picker-toggle ng-click="vm.setDatePickerInput(list)">{{list.endDate | date : 'MM-dd'}}</span>
-                                                        <span class="dueDateValues" style="top:15px;" ng-if="!list.modifyYn">{{list.endDate | date : 'MM-dd'}}</span>
+                                                        <span class="dueDateValues" style="top:2px;" sub-task-picker-toggle ng-click="vm.setDatePickerInput(list)">{{list.endDate | date : 'MM-dd'}}</span>
+                                                        <span class="dueDateValues" style="top:2px;" ng-if="!list.modifyYn">{{list.endDate | date : 'MM-dd'}}</span>
                                                     </span>
                                                 </div>
                                                 <div wms-Include="app/task/html/subTaskDatePicker.html"></div>
@@ -550,7 +550,7 @@
                     <ul>
                         <li>파일 ({{vm.previewFiles.length}})</li>
                         <li><label class="cursor"><i class="fa fa-download"></i></label></li>
-                        <li ng-if="vm.task.modifyYn"><label for="input-4" class="cursor"><i class='fa fa-paperclip'></i></label></li>
+                        <li ng-if="vm.task.modifyYn"><label for="input-4" class="cursor"><i class='fa fa-paperclip' uib-tooltip="파일 첨부"></i></label></li>
                         <li><label class="cursor"><i class="fa fa-list" ng-click="vm.fileListYn = !vm.fileListYn" file-list-yn></i></label></li>
                         <li ng-if="vm.task.modifyYn"><label class="cursor"><i class="fa fa-trash"></i></label></li>
                         <li></li>

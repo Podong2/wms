@@ -380,8 +380,8 @@ function relatedTaskPickerBtnToggle($rootScope, $timeout) {
                 if (!$($elements.parent()).has(e.target).length) {
                     if(e.target.getAttribute('class') == null){
                         $($elements).removeClass("on");
-                    }else if(e.target.getAttribute('class') == 'remove-button' || e.target.getAttribute('class').indexOf('suggestion-item') > -1){
-                        $($elements).addClass("on");
+                    }else if(e.target.getAttribute('class') == 'remove-button' || e.target.getAttribute('class').indexOf('suggestion-item') > -1 || e.target.getAttribute('class').split(' ').indexOf('remove-button') > -1){
+                        //$($elements).addClass("on");
                     }else{
                         $($elements).removeClass("on");
                     }

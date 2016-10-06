@@ -119,7 +119,7 @@
                         <div class="watcher-popup-area text-left">
                             <div class="padding-5 watcher-popup-header">
                                 <span class="pull-right fa fa-close cursor picker-popup-close-btn" ng-click="vm.watcherPopupClose()"></span>
-                                참조자
+                                참조자 {{watchers.length}}명
                             </div>
                             <div class="watcher-list-area padding-10" ng-show="watchers.length > 0">
                                 <ul class="list-inline friends-list" style="margin-bottom: 0">
@@ -236,9 +236,9 @@
                                     <!--<span class="relatedTask-close-btn cursor" ng-click="vm.removeWatcher(task)"><i class="fa fa-close"></i></span>-->
                                 <!--</span>-->
                                 <ul class="relatedTask-list-item-area">
-                                    <li class="position-relative relatedTask-list-item padding-5 float-left" ng-repeat="task in vm.task.relatedTaskList">
+                                    <li class="position-relative relatedTask-list-item padding-5 float-left" ng-repeat="task in vm.task.relatedTaskList" wms-close-btn-display>
                                         <span class="relatedTask-list-item-title cursor">{{task.name}}</span>
-                                        <span class="relatedTask-close-btn cursor" ng-click="vm.removeRelatedTask(task)"><i class="fa fa-close"></i></span>
+                                        <span class="relatedTask-close-btn close-btn cursor" ng-click="vm.removeRelatedTask(task)"><i class="fa fa-close remove-button"></i></span>
                                     </li>
                                 </ul>
                             </div>
@@ -405,7 +405,7 @@
                                                         <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="subTaskEndDate" style="height: 30px; width: 100%; border : 0">
                                                     </label>
 
-                                                    <span class="dueDateValues sub-task-due-date" sub-task-picker-toggle ng-click="vm.setDatePickerInput(list)">{{list.endDate | date : 'MM-dd'}}</span>
+                                                    <span class="dueDateValues" sub-task-picker-toggle ng-click="vm.setDatePickerInput(list)" style="top:0;">{{list.endDate | date : 'MM-dd'}}</span>
                                                 </span>
                                             </div>
                                             <div wms-Include="app/task/html/subTaskAddDatePicker.html"></div>
@@ -454,7 +454,7 @@
                                         </div>
                                     </div>
                                     <ul class="list-inline friends-list" style="margin-bottom: 0; text-align: left;">
-                                        <li class="sub-task-user-item" ng-repeat="user in list.assignees | limitTo:3" wms-close-btn-display>
+                                        <li class="sub-task-user-item position-relative" ng-repeat="user in list.assignees | limitTo:3" wms-close-btn-display>
 
                                             <!--  하위 담당자 정보 팝업 -->
                                             <div class='row watcher-picker-info'>
@@ -474,7 +474,7 @@
 
                                             <img class="cursor"  ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}" sub-task-user-info-btn-toggle>
                                             <img class="cursor"  ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}" sub-task-user-info-btn-toggle>
-                                            <span class="profile-close-btn close-btn cursor" ng-click="vm.subTaskUserRemove(user.id, list)" ng-if="list.modifyYn"><i class="fa fa-close"></i></span>
+                                            <span class="profile-close-btn close-btn cursor" user="user" sub-task="list" wms-sub-task-user-remove><i class="fa fa-close"></i></span>
                                         </li>
                                         <li ng-if="list.assignees.length > 3">
                                             <a href-void>

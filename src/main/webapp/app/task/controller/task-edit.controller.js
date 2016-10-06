@@ -5,8 +5,10 @@
 
 angular.module('wmsApp')
     .controller("taskEditCtrl", taskEditCtrl);
-taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'toastr', '$state', '$timeout', 'DateUtils', 'SubTask', 'Principal', 'findUser', '$q', 'TaskEdit', 'FindTasks', 'ProjectFind', 'ProjectFindByName', '$cookies', 'FindByCondition'];
-        function taskEditCtrl($rootScope, $scope, $uibModalInstance, Code, $log, Task, toastr, $state, $timeout, DateUtils, SubTask, Principal, findUser, $q, TaskEdit, FindTasks, ProjectFind, ProjectFindByName, $cookies, FindByCondition) {
+taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log', 'Task', 'toastr', '$state', '$timeout', 'DateUtils', 'SubTask', 'Principal', 'findUser', '$q', 'TaskEdit', 'FindTasks'
+    , 'ProjectFind', 'ProjectFindByName', '$cookies', 'FindByCondition', 'ModalService'];
+        function taskEditCtrl($rootScope, $scope, $uibModalInstance, Code, $log, Task, toastr, $state, $timeout, DateUtils, SubTask, Principal, findUser, $q, TaskEdit, FindTasks
+            , ProjectFind, ProjectFindByName, $cookies, FindByCondition, ModalService) {
             var vm = this;
             vm.baseUrl = window.location.origin;
 
@@ -349,8 +351,16 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
 
 
             // date 포멧 변경
+            $scope.dueDateFrom = '';
+            $scope.dueDateTo = '';
             $scope.$watch("vm.dueDateFrom.date", function(newValue, oldValue){
-                if(oldValue != newValue){
+                if(newValue !=undefined && oldValue != newValue){
+                    if(vm.dueDateTo.date != undefined && vm.dueDateTo.date != '' && newValue > vm.dueDateTo.date) {
+                        toastr.warning('시작일이 종료일보다 큽니다.', '경고');
+                        vm.dueDateFrom.date = $scope.dueDateFrom;
+                        return;
+                    }
+                    $scope.dueDateFrom = newValue;
                     var d = newValue;
                     var formatDate =
                         DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' +  DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
@@ -361,7 +371,13 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             });
             // date 포멧 변경
             $scope.$watch("vm.dueDateTo.date", function(newValue, oldValue){
-                if(oldValue != newValue){
+                if(newValue !=undefined && oldValue != newValue){
+                    if(vm.dueDateFrom.date != undefined && vm.dueDateFrom.date != '' && newValue < vm.dueDateFrom.date) {
+                        toastr.warning('종료일이 시작일보다 작습니다.', '경고');
+                        vm.dueDateTo.date = $scope.dueDateTo;
+                        return;
+                    }
+                    $scope.dueDateTo = newValue;
                     var d = newValue;
                     var formatDate =
                         DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
@@ -397,8 +413,16 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 }
             });
             // 하위 작업 시작 시간 포멧 변경(기간)
+            $scope.subTaskDueDateFrom = '';
+            $scope.subTaskDueDateTo = '';
             $scope.$watch("vm.subTaskDueDateFrom.date", function(newValue, oldValue){
-                if(oldValue != newValue){
+                if(newValue !=undefined && oldValue != newValue){
+                    if(vm.subTaskDueDateTo.date != undefined && vm.subTaskDueDateTo.date != '' && newValue != '' && newValue > vm.subTaskDueDateTo.date) {
+                        toastr.warning('시작일이 종료일보다 큽니다.', '경고');
+                        vm.subTaskDueDateFrom.date = $scope.subTaskDueDateFrom;
+                        return;
+                    }
+                    $scope.subTaskDueDateFrom = newValue;
                     var d = newValue;
                     var formatDate =
                         DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
@@ -407,13 +431,19 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             });
             // 하위 작업 종료 시간 포멧 변경(기간)
             $scope.$watch("vm.subTaskDueDateTo.date", function(newValue, oldValue){
-                if(oldValue != newValue){
+                if(newValue !=undefined && oldValue != newValue){
+                    if(vm.subTaskDueDateFrom.date != undefined && vm.subTaskDueDateFrom.date != '' && newValue != '' && newValue < vm.subTaskDueDateFrom.date) {
+                        toastr.warning('종료일이 시작일보다 작습니다.', '경고');
+                        vm.subTaskDueDateTo.date = $scope.subTaskDueDateTo;
+                        return;
+                    }
+                    $scope.subTaskDueDateTo = newValue;
                     var d = newValue;
                     if(newValue != '') var formatDate = DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
                     vm.subTaskUpdateForm.endDate = formatDate;
                 }
             });
-            // 하위 작업 종료 시간 포멧 변경(기간)
+            // 비공개여부
             $scope.$watchCollection("vm.task.privateYn", function(newValue, oldValue){
                 if(oldValue != newValue && newValue != ''){
                     if(newValue) {
@@ -836,7 +866,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                     vm.DuplicationWatcherIds.push(watcher.id);
                     setCurrentSearchWatcher(watcher)
                     $scope.watchers.push(watcher);
-                    $scope.pickerFindWatcher(vm.watcherName);
+                    if(vm.watcherName != '') $scope.pickerFindWatcher(vm.watcherName);
                 }
 
             }
@@ -847,7 +877,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 if(index > -1){
                     vm.DuplicationWatcherIds.splice(index, 1);
                     $scope.watchers.splice(index, 1);
-                    $scope.pickerFindWatcher(vm.watcherName);
+                    if(vm.watcherName != '') $scope.pickerFindWatcher(vm.watcherName);
                 }
             }
 
