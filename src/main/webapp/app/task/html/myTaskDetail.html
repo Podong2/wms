@@ -291,8 +291,8 @@
                                     <!--</span>-->
                                     <ul class="relatedTask-list-item-area">
                                         <li class="position-relative relatedTask-list-item padding-5 float-left" ng-repeat="task in vm.task.relatedTasks" wms-close-btn-display>
-                                            <!--<span class="relatedTask-list-item-title cursor" >{{task.name}}</span>-->
-                                            <a class="relatedTask-list-item-title cursor" ui-sref="my-task.detailPopup({popupId : task.id, popupListType : vm.listType,taskId : task.id})" >{{task.name}}</a>
+                                            <!--<a class="relatedTask-list-item-title cursor" ui-sref="my-task.detailPopup({popupId : task.id, popupListType : vm.listType,taskId : task.id})" >{{task.name}}</a>-->
+                                            <span class="relatedTask-list-item-title cursor" ng-click="vm.windowOpen(task)">{{task.name}}</span>
                                             <span class="relatedTask-close-btn close-btn cursor" ng-click="vm.removeRelatedTask(task)" ng-if="vm.task.modifyYn"><i class="fa fa-close remove-button"></i></span>
                                         </li>
                                     </ul>
@@ -436,7 +436,7 @@
                                                 <div style="width: 300px;">
                                                     <div style="width: 300px;">
                                                         <div class="project-picker-search">
-                                                            <input class="project-picker-search-input" type="text" ng-model="vm.userName" enter-submit="pickerFindUsers(userName)" placeholder="사용자 명을 입력하세요."  wms-kr-update>
+                                                            <input class="project-picker-search-input" type="text" maxlength="20" ng-model="vm.userName" enter-submit="pickerFindUsers(userName)" placeholder="사용자 명을 입력하세요."  wms-kr-update>
                                                         </div>
                                                         <div class="project-picker-list-area">
                                                             <div class="project-picker-list">
@@ -500,7 +500,7 @@
                         </table>
 
                         <div class="add-sub-task"  ng-class="vm.subTaskOpen ? 'on' : ''">
-                            <input type="text" class="form-control subTask-input" ng-model="vm.subTask.name" enter-submit="vm.subTaskSave()" placeholder=" 추가할 작업명을 입력하세요." wms-kr-update/>
+                            <input type="text" class="form-control subTask-input" maxlength="500" ng-model="vm.subTask.name" enter-submit="vm.subTaskSave()" placeholder=" 추가할 작업명을 입력하세요." wms-kr-update/>
                         </div>
                     </div>
                     <!--<div class="related-task-area" ng-class="vm.relatedTaskOpen ? 'on' : ''"  style="border-top: 1px solid #ddd">-->
@@ -549,7 +549,7 @@
                 <div class="file-header-area">
                     <ul>
                         <li>파일 ({{vm.previewFiles.length}})</li>
-                        <li><label class="cursor"><i class="fa fa-download"></i></label></li>
+                        <li><label class="cursor"><a href="api/attachedFile?targetIds=4,5,7,8&name={{vm.task.name}}"><i class="fa fa-download"></i></a></label></li>
                         <li ng-if="vm.task.modifyYn"><label for="input-4" class="cursor"><i class='fa fa-paperclip' uib-tooltip="파일 첨부"></i></label></li>
                         <li><label class="cursor"><i class="fa fa-list" ng-click="vm.fileListYn = !vm.fileListYn" file-list-yn></i></label></li>
                         <li ng-if="vm.task.modifyYn"><label class="cursor"><i class="fa fa-trash"></i></label></li>
@@ -613,7 +613,9 @@
                             <!-- 댓글 영역 -->
                             <div ng-if="data.entityField == 'reply'" class="pad-l10  clear-both">
 
-                                <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px; word-break: break-all;"></span> <span class="comment-created-date">&nbsp;&nbsp;{{data.createdDate | date : 'HH:mm'}}</span> <span ng-if="data.createdBy == vm.userInfo.login"  class="fa fa-times" ng-click="vm.removeComment(data.id)"></span>
+                                <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px; word-break: break-all;" ng-if="data.newValue != ''"></span>
+                                <span style="float: left; margin-right: 5px" ng-if="data.newValue == ''">파일첨부</span>
+                                <span class="comment-created-date">&nbsp;&nbsp;{{data.createdDate | date : 'HH:mm'}}</span> <span ng-if="data.createdBy == vm.userInfo.login"  class="fa fa-times" ng-click="vm.removeComment(data.id)"></span>
                                 <br class="clear-both"/>
                                 <p ng-repeat="file in data.attachedFiles" class="pad-l20">
                                     <a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>
@@ -704,7 +706,8 @@
 
                         <div class="pad-l123 comment-content-area">
                             <div ng-if="data.entityField == 'reply'" class="pad-l10 clear-both">
-                                <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px"></span>
+                                <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px" ng-if="data.newValue != ''"></span>
+                                <span style="float: left; margin-right: 5px" ng-if="data.newValue == ''">파일첨부</span>
                                 <span class="comment-created-date">&nbsp;&nbsp;{{data.createdDate | date : 'HH:mm'}}</span>
                                 <span ng-if="data.createdBy == vm.userInfo.login"  class="fa fa-times" ng-click="vm.removeComment(data.id)"></span>
                                 <br class="clear-both"/>

@@ -61,6 +61,7 @@ public class Constants {
     // 다운로드 타겟 파일
     public static final String FILE_DOWNLOAD_TARGET = "fileDownloadTarget";
     public static final String FILE_DOWNLOAD_CONTENT = "fileDownloadContent";
+    public static final String FILE_DOWNLOAD_NAME = "fileDownloadName";
     public static final String FILE_DOWNLOAD_ALL_NAME_PREFIX = "fileDownloadAllNamePrefix";
 
     // 모바일 푸시
