@@ -790,6 +790,7 @@
 
             $log.debug("업로드 작업 정보 : ", vm.task);
             $log.debug("업로드 파일 정보 : ", $scope.files);
+            $('.tooltip-inner').parent().remove();
             TaskEdit.uploadTask({
                 method : "POST",
                 file : $scope.files,
