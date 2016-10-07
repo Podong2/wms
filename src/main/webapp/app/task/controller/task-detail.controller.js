@@ -6,10 +6,10 @@
         .controller('TaskDetailCtrl', TaskDetailCtrl);
 
     TaskDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', 'TaskAttachedFile', '$log', 'TaskEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', '$window',
-        'FindTasks', 'entity', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectFindByName', 'ModalService', 'TaskProgressStatus', 'tableService', 'ModifySubTask', '$http', '$cookies', 'FindByCondition', 'TaskFileDownload'];
+        'FindTasks', 'entity', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectFindByName', 'ModalService', 'TaskProgressStatus', 'tableService', 'ModifySubTask', '$http', '$cookies', 'FindByCondition'];
 
     function TaskDetailCtrl($scope, $rootScope, $stateParams, Task, Code, TaskAttachedFile, $log, TaskEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, $window,
-                            FindTasks, entity, TaskListSearch, dataService, Principal, ProjectFind, ProjectFindByName, ModalService, TaskProgressStatus, tableService, ModifySubTask, $http, $cookies, FindByCondition, TaskFileDownload) {
+                            FindTasks, entity, TaskListSearch, dataService, Principal, ProjectFind, ProjectFindByName, ModalService, TaskProgressStatus, tableService, ModifySubTask, $http, $cookies, FindByCondition) {
         var vm = this;
         vm.baseUrl = window.location.origin;
 
@@ -1245,10 +1245,6 @@
 
         function profileClose(){
             $rootScope.$broadcast("profileClose")
-        }
-
-        function downloadZipFile(){
-            TaskFileDownload.get({targetIds : "5,7,8"});
         }
 
         /* localStorage 에서 최근 검색한 사용자 가져오기 */

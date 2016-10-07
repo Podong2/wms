@@ -1,6 +1,8 @@
 package kr.wisestone.wms.service;
 
+import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
+import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mysema.query.BooleanBuilder;
@@ -28,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -103,7 +106,16 @@ public class ProjectService {
             put("id", id).
             build());
 
+        User loginUser = SecurityUtils.getCurrentUser();
+
         ProjectDTO projectDTO = projectDAO.getProject(condition);
+
+        for(UserDTO admin : projectDTO.getProjectAdmins()) {
+            if(admin.getLogin().equals(loginUser.getLogin())) {
+                projectDTO.setAdminYn(Boolean.TRUE);
+            }
+        }
+
 //
 //        User user = userService.findByLogin(project.getCreatedBy());
 //        projectDTO.setCreatedByName(user.getName());

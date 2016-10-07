@@ -6,7 +6,6 @@
         .factory('SubTask', SubTask)
         .factory('FindTasks', FindTasks)
         .factory('TaskRemove', TaskRemove)
-        .factory('TaskFileDownload', TaskFileDownload)
         .factory('TodayTotalCount', TodayTotalCount)
         .factory('FindTaskRecentHistory', FindTaskRecentHistory)
         .factory('MyTaskStatistics', MyTaskStatistics)
@@ -19,7 +18,6 @@
     SubTask.$inject = ['$resource'];
     FindTasks.$inject = ['$http', '$log', '$q'];
     TaskRemove.$inject = ['$resource'];
-    TaskFileDownload.$inject = ['$resource'];
     TodayTotalCount.$inject = ['$resource'];
     TaskEdit.$inject = ['$log', '$upload', '$http', '$q'];
     FindTaskRecentHistory.$inject = ['$resource'];
@@ -66,24 +64,6 @@
 
     function TaskRemove ($resource) {
         var resourceUrl =  'api/tasks?targetIds=:targetIds';
-
-        return $resource(resourceUrl, {}, {
-            'query': { method: 'GET', isArray: true},
-            'get': {
-                method: 'GET',
-                transformResponse: function (data) {
-                    if (data) {
-                        data = angular.fromJson(data);
-                    }
-                    return data;
-                }
-            },
-            'update': { method:'PUT' }
-        });
-    }
-
-    function TaskFileDownload ($resource) {
-        var resourceUrl =  'api/attachedFile?targetIds=:targetIds';
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},

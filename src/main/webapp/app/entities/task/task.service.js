@@ -6,14 +6,12 @@
         .factory('SubTask', SubTask)
         .factory('FindTasks', FindTasks)
         .factory('TaskRemove', TaskRemove)
-        .factory('TaskFileDownload', TaskFileDownload)
         .factory('TaskEdit', TaskEdit);
 
     Task.$inject = ['$resource'];
     SubTask.$inject = ['$resource'];
     FindTasks.$inject = ['$http', '$log', '$q'];
     TaskRemove.$inject = ['$resource'];
-    TaskFileDownload.$inject = ['$resource'];
     TaskEdit.$inject = ['$log', '$upload', '$http', '$q'];
 
     function Task ($resource) {
@@ -54,24 +52,6 @@
 
     function TaskRemove ($resource) {
         var resourceUrl =  'api/tasks?targetIds=:targetIds';
-
-        return $resource(resourceUrl, {}, {
-            'query': { method: 'GET', isArray: true},
-            'get': {
-                method: 'GET',
-                transformResponse: function (data) {
-                    if (data) {
-                        data = angular.fromJson(data);
-                    }
-                    return data;
-                }
-            },
-            'update': { method:'PUT' }
-        });
-    }
-
-    function TaskFileDownload ($resource) {
-        var resourceUrl =  'api/attachedFile/zip?targetIds=:targetIds';
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
