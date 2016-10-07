@@ -14,19 +14,10 @@
             </ul>
         </div>
         <div class="clear-both">
-            <ul class="date-picker-calendar date-picker-calendar-title">
-                <li class="input-group date-picker-calendar-li">
+            <ul class="date-picker-calendar clear-both">
+                <li class="input-group date-picker-calendar-li" style="width:50px;">
                     날짜
                 </li>
-                <li class="input-group date-picker-calendar-li date-picker-calendar-center">
-                </li>
-                <li class="input-group date-picker-calendar-li">
-                </li>
-                <li class="input-group date-picker-calendar-li">
-                    기간
-                </li>
-            </ul>
-            <ul class="date-picker-calendar clear-both">
                 <li class="input-group date-picker-calendar-li">
                     <input type="text" class="form-control" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.dueDateFrom.date"/>
                 </li>
@@ -36,7 +27,7 @@
                 <li class="input-group date-picker-calendar-li">
                     <input type="text" class="form-control" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.dueDateTo.date"/>
                 </li>
-                <li class="input-group date-picker-calendar-li">
+                <li class="input-group date-picker-calendar-li" style="width:50px;">
                     {{vm.dayRange}} 일
                 </li>
             </ul>
@@ -58,7 +49,7 @@
     <!-- 일정 반복 설정 영역 -->
     <div class="repeat-settings-area clear-both text-left">
         <div class="pull-right" ng-click="vm.repeatOpenYn = !vm.repeatOpenYn">
-            {{vm.repeatOpenYn ? '접기▲' : '펴기▼'}}
+            {{vm.repeatOpenYn ? '접기▲' : '펼치기▼'}}
         </div>
         - 반복설정<br/><br/>
         <div ng-show="vm.repeatOpenYn">
@@ -154,9 +145,7 @@
                 <table class="repeat-table">
                     <colgroup>
                         <col width="55">
-                        <col width="150">
-                        <col width="55">
-                        <col width="170">
+                        <col width="225">
                         <col width="150">
                     </colgroup>
                     <tbody>
@@ -172,16 +161,19 @@
                               <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'repeatDueDateFrom')"><i class="fa fa-calendar"></i></button>
                             </span>
                         </td>
+                        <td></td>
+                    </tr>
+                    <tr class="repeat-table-tr">
                         <th class="repeat-table-th">
                             종료일
                         </th>
                         <td class="repeat-table-td">
                             <div class="wms-form">
                                 <div class="inline-group">
-                                    <label class="radio">
+                                    <label class="radio" style="width : 96px;">
                                         <input type="radio" name="radio-inline-2" ng-model="vm.taskRepeatSchedule.permanentYn" ng-click="vm.setRepeatType('END_DATE_REMOVE')" value="true" checked="checked">
                                         <i></i>계속 반복</label>
-                                    <label class="radio">
+                                    <label class="radio" style="width : 81px;">
                                         <input type="radio" name="radio-inline-2" ng-model="vm.taskRepeatSchedule.permanentYn" value="false">
                                         <i></i>종료일</label>
                                 </div>

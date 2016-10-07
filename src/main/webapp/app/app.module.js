@@ -121,7 +121,7 @@
         /* toast config */
         angular.extend(toastrConfig, {
             allowHtml: false,
-            closeButton: false,
+            closeButton: true,
             closeHtml: '<button>&times;</button>',
             extendedTimeOut: 1000,
             iconClasses: {
@@ -134,7 +134,7 @@
             onHidden: null,
             onShown: null,
             onTap: null,
-            progressBar: false,
+            progressBar: true,
             tapToDismiss: true,
             templates: {
                 toast: 'directives/toast/toast.html',

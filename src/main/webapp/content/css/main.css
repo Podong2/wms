@@ -2449,7 +2449,7 @@ td.red{border-left: 5px solid #777 !important;}
     position: absolute;
     border: 1px solid #fdfdfd;
     z-index: 1060;
-    width: 590px;
+    width: 455px;
     font-size: 14px;
     background-color: #fff;
     background-clip: padding-box;
@@ -2458,7 +2458,8 @@ td.red{border-left: 5px solid #777 !important;}
     box-shadow: 0 5px 10px rgba(0,0,0,.2);
     display: none;
     padding: 10px;
-    right: 0;
+    left: 86px;
+    top: 44px;
 }
 .repeat-edit-section.on{
     display: block;
@@ -2467,7 +2468,7 @@ td.red{border-left: 5px solid #777 !important;}
     position: absolute;
     border: 1px solid #fdfdfd;
     z-index: 1060;
-    width: 596px;
+    width: 455px;
     font-size: 14px;
     background-color: #fff;
     background-clip: padding-box;
@@ -2476,7 +2477,8 @@ td.red{border-left: 5px solid #777 !important;}
     box-shadow: 0 5px 10px rgba(0,0,0,.2);
     display: none;
     padding: 10px;
-    right: 0;
+    left: 86px;
+    top: 44px;
 }
 .repeat-add-section.on{
     display: block;
@@ -3174,7 +3176,7 @@ text-align: right;
     bottom: 5px;
 }
 .sub-task-popup-title{
-    width: 154px;
+    width: 280px;
     padding: 0 5px;
     overflow: hidden;
     text-overflow: ellipsis;

@@ -135,7 +135,7 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
                     listType : vm.listType,
                     filterType : vm.filterType,
                     page: vm.page - 1,
-                    size: 12,
+                    size: 15,
                     sort: 'desc'
                 }, onSuccess, onError);
             }

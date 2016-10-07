@@ -304,8 +304,7 @@
             date: DateUtils.toDate(vm.task.startDate == null ? '' : vm.task.startDate),
             datepickerOptions: {
                 customClass: '',
-                minDate: new Date(),
-                showWeeks: true
+                showWeeks: false
             }
         };
 
@@ -315,7 +314,7 @@
             datepickerOptions: {
                 customClass: '',
                 minDate: new Date(),
-                showWeeks: true
+                showWeeks: false
             }
         };
         // 반복작업 시작시간

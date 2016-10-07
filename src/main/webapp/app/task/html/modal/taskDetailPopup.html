@@ -1,9 +1,8 @@
 <owl-alert-close></owl-alert-close>
 <div class="modal-body" style="overflow-y: auto; padding: 15px; max-height: 530px;">
-        <div>
             <div class="row">
                 <div class="col-md-12">
-                    <div><a ui-sref="my-task.detail({id : vm.task.parent.id, listType : vm.listType})" class="cursor">{{vm.task.parent.name}}</a></div>
+                    <div><a ui-sref="my-task.detail({id : vm.task.parent.id, listType : vm.listType})" ng-click="vm.cancel()" class="cursor">{{vm.task.parent.name}}</a></div>
                     <div class="col-md-9 padding-0">
                         <i class="fa fa-exclamation-circle task-circle" ng-class="vm.task.importantYn ? 'on' : ''" ng-click="vm.task.importantYn = !vm.task.importantYn"></i>
                         <input type="text" class="taskAddInput" ng-model="vm.task.name" enter-submit="vm.taskUpload()" placeholder="Task" ng-show="vm.task.modifyYn"/>
@@ -31,7 +30,7 @@
                     </div>
                 </div>
             </div>
-            <div class="viewTypeClass task-detail" style="margin-top: 10px; min-height: 500px">
+            <div class="viewTypeClass task-detail" style="margin-top: 10px; min-height: 430px">
 
                 <!-- 상태 변경/등록일 -->
                 <div>
@@ -541,14 +540,6 @@
                     <input id="input-4" name="input4[]" type="file" multiple class="file-loading" get-files> <!--  get-files -->
                     <!--<input id="input-pa" name="input-pa[]" type="file" multiple class="file-loading" get-files>--><br/>
                     <wms-table ng-model="vm.previewFiles" table-configs="vm.tableConfigs" update-callback="updateCallback" ng-if="vm.fileListYn"></wms-table>
-                    <style>
-                        .fileinput-upload {
-                            display: none !important;
-                        }
-                        .btn-file{
-                            display: none !important;
-                        }
-                    </style>
                 </div>
                 <!-- Timeline Content -->
                 <div class="smart-timeline">
@@ -689,7 +680,6 @@
 
             </div>
 
-        </div>
 
 </div>
 
@@ -721,13 +711,19 @@
                 </tr>
                 </tbody>
             </table>
-            <input id="input-5" name="input5[]" type="file" multiple class="file-loading" get-files file-type="comment" style="display:none;">
+            <input id="input-5" name="input5[]" type="file" multiple class="file-loading" get-files file-type="comment" style="display:none;" data-show-preview="false">
         </div>
     </div>
 </div>
 
 <style>
     .btn-sm {
-        padding: 3px 8px 4px;
+        padding: 3px 5px 3px;
+    }
+    .fileinput-upload {
+        display: none !important;
+    }
+    .btn-file{
+        display: none !important;
     }
 </style>

@@ -525,10 +525,10 @@
 
                 <div class="panel panel-default min-height-100-p" ng-class="{'detail-content':vm.task.modifyYn, 'detail-content-disabled':!vm.task.modifyYn}" id="editingSection">
                     <div class="ibox">
-                        <div class="ibox_content elementSection" ng-if="vm.task.modifyYn" section-toggle style="min-height: 50px">
+                        <div class="ibox_content elementSection" ng-if="vm.task.modifyYn" section-toggle style="min-height: 50px; word-break: break-all;">
                             <span ng-bind-html="vm.renderHtml(vm.task.contents)" ></span>
                         </div>
-                        <div class="ibox_content elementSection" ng-if="!vm.task.modifyYn" style="min-height: 50px">
+                        <div class="ibox_content elementSection" ng-if="!vm.task.modifyYn" style="min-height: 50px; word-break: break-all;">
                             <span ng-bind-html="vm.renderHtml(vm.task.contents)" ></span>
                         </div>
                         <div class="content-edit editingSection" >
@@ -613,7 +613,7 @@
                             <!-- 댓글 영역 -->
                             <div ng-if="data.entityField == 'reply'" class="pad-l10  clear-both">
 
-                                <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px" ng-if="data.newValue != ''"></span>
+                                <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px; word-break: break-all;" ng-if="data.newValue != ''"></span>
                                 <span style="float: left; margin-right: 5px" ng-if="data.newValue == ''">파일첨부</span>
                                 <span class="comment-created-date">&nbsp;&nbsp;{{data.createdDate | date : 'HH:mm'}}</span> <span ng-if="data.createdBy == vm.userInfo.login"  class="fa fa-times" ng-click="vm.removeComment(data.id)"></span>
                                 <br class="clear-both"/>
@@ -741,15 +741,13 @@
             <tbody>
                 <tr>
                     <td>
-                        <a ng-click="vm.commentFileAreaOpen = !vm.commentFileAreaOpen">
-                            <i class="fa fa-paperclip"></i>
-                        </a>
+                        <label for="input-5" class="cursor"><i class='fa fa-paperclip'></i></label>
                     </td>
                     <td>
                         <summernote ng-model="vm.comment.contents" on-init="init()" on-enter="enter()" on-focus="focus(evt)" config="dataService.getSummerNoteOptions(false)"
                                     on-blur="blur(evt)" on-paste="paste()" on-keyup="keyup(evt)" contenteditable="true"
                                     on-keydown="keydown(evt)" on-change="change(contents)"
-                                    editable="editable" editor="editor" lang="ko-KR">
+                                    on-image-upload="imageUpload(files)" editable="editable" editor="editor" lang="ko-KR">
                         </summernote>
                     </td>
                     <td>
@@ -760,20 +758,12 @@
         </table>
     </div>
     <div class="task-file-area" ng-class="vm.commentFileAreaOpen ? 'on' : ''">
-        <div class="file-header-area">
-            <ul>
-                <li>파일 ({{commentFiles.length}})</li>
-                <li><label for="input-5" class="cursor"><i class='fa fa-paperclip'></i></label></li>
-                <li></li>
-                <li></li>
-            </ul>
-        </div>
-        <input id="input-5" name="input5[]" type="file" multiple class="file-loading" get-files file-type="comment">
+        <input id="input-5" name="input5[]" type="file" multiple class="file-loading" get-files file-type="comment" data-show-preview="false">
     </div>
 </div>
 
 <style>
     .btn-sm {
-        padding: 4px 7px 5px;
+        padding: 3px 5px 3px;
     }
 </style>
