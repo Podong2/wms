@@ -54,11 +54,10 @@ public class ZipFileDownloadView extends AbstractView {
             response.setHeader("Content-Disposition", String.format("attachment; filename=\"%s\";", new String((name+".zip").getBytes("UTF-8"), "latin1")));
         }
 
-        OutputStream outputStream = null;
-        InputStream inputStream = null;
+        ByteArrayOutputStream byteArrayOutputStream = this.makeZipByteArrayOutputStream(attachedFiles);
 
         try {
-            response.getOutputStream().write(this.makeZipByteArrayOutputStream(attachedFiles).toByteArray());
+            response.getOutputStream().write(byteArrayOutputStream.toByteArray());
             response.flushBuffer();
 
         } catch(IOException ioe) {
@@ -66,12 +65,9 @@ public class ZipFileDownloadView extends AbstractView {
 
             throw ioe;
         } finally {
-            if(inputStream != null)
-                inputStream.close();
-
-            if(outputStream != null) {
-                outputStream.flush();
-                outputStream.close();
+            if(byteArrayOutputStream != null) {
+                try {byteArrayOutputStream.flush();} catch(IOException ioe) {ioe.printStackTrace();}
+                try {byteArrayOutputStream.close();} catch(IOException ioe) {ioe.printStackTrace();}
             }
         }
     }
