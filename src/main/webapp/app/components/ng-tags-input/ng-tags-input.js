@@ -378,13 +378,14 @@ tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tag
                         events.trigger('input-focus');
                     },
                     blur: function() {
-                        $timeout(function() {
+                        $timeout(function($event) {
                             var activeElement = $document.prop('activeElement'),
                                 lostFocusToBrowserWindow = activeElement === input[0],
                                 lostFocusToChildElement = element[0].contains(activeElement);
 
                             if (lostFocusToBrowserWindow || !lostFocusToChildElement) {
                                 scope.hasFocus = false;
+                                scope.text = '';
                                 events.trigger('input-blur');
                             }
                         });
@@ -498,7 +499,7 @@ tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tag
                     shouldSelect = (key === KEYS.backspace || key === KEYS.left || key === KEYS.right) && scope.newTag.text().length === 0 && !options.enableEditingLastTag;
 
                     if (shouldAdd) {
-                        tagList.addText(scope.newTag.text());
+                        //tagList.addText(scope.newTag.text());
                     }
                     else if (shouldEditLastTag) {
                         tagList.selectPrior();
