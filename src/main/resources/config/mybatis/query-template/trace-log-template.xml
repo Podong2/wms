@@ -29,7 +29,7 @@
     </resultMap>
 
     <resultMap id="attachedFileResultMap" type="kr.wisestone.wms.web.rest.dto.AttachedFileDTO">
-        <id property="id" column="attachedFileId" />
+        <id property="id" column="replyAttachedFileId" />
         <result property="name" column="attachedFileName"/>
         <result property="size" column="attachedFileSize"/>
         <result property="contentType" column="attachedFileContentType"/>
@@ -45,7 +45,7 @@
         , tl.etc_value as etcValue, tl.attached_file_id as attachedFileId, tl.task_id as taskId, t.name as taskName, tl.project_id as projectId
         , tl.created_by as createdBy, tl.created_date as createdDate, tl.last_modified_by as lastModifiedBy, tl.last_modified_date as lastModifiedDate
         , u.profile_image_id as profileImageId, u.name as createdByName, u.id as createdById
-        , af.id as attachedFileId, af.name as attachedFileName
+        , af.id as replyAttachedFileId, af.name as attachedFileName
         , af.size as attachedFileSize, af.content_type as attachedFileContentType
         FROM owl_trace_log tl
         LEFT OUTER JOIN owl_task t ON tl.task_id = t.id
