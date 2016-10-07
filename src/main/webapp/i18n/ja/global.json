@@ -223,6 +223,7 @@
     },
     "footer": "フッターです",
     "common": {
+        "dataNull" : "Data not found.",
         "attachedFile" : {
             "fileName":"File Name",
             "fileType":"Content Type",
