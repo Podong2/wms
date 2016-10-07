@@ -49,7 +49,7 @@
         '<param name="autoStart" value="false" />\n' +
         '<param name="quality" value="high" />\n';
     DEFAULT_PREVIEW = '<div class="file-preview-other">\n' +
-        '<span class="{previewFileIconClass}">{previewFileIcon}</span>\n' +
+        '<span class="{previewFileIconClass}" style="display: table; vertical-align: middle">{previewFileIcon}</span>\n' +
         '</div>';
     //noinspection JSUnresolvedVariable
     objUrl = window.URL || window.webkitURL;
@@ -465,15 +465,15 @@
     };
     defaultPreviewTypes = ['image', 'html', 'text', 'video', 'audio', 'flash', 'pdf', 'object'];
     defaultPreviewSettings = {
-        image: {width: "auto", height: "160px"},
-        html: {width: "213px", height: "160px"},
-        text: {width: "213px", height: "160px"},
-        video: {width: "213px", height: "160px"},
-        audio: {width: "213px", height: "80px"},
-        flash: {width: "213px", height: "160px"},
-        object: {width: "160px", height: "160px"},
-        pdf: {width: "160px", height: "160px"},
-        other: {width: "160px", height: "160px"}
+        image: {width: "160px !important", height: "120px"},
+        html: {width: "160px !important", height: "120px"},
+        text: {width: "160px !important", height: "120px"},
+        video: {width: "160px !important", height: "120px"},
+        audio: {width: "160px !important", height: "120px"},
+        flash: {width: "160px !important", height: "120px"},
+        object: {width: "160px !important", height: "120px"},
+        pdf: {width: "160px !important", height: "120px"},
+        other: {width: "160px !important", height: "120px"}
     };
     defaultPreviewZoomSettings = {
         image: {width: "100%", height: "100%"},
@@ -3412,7 +3412,7 @@
         customPreviewTags: {},
         previewSettings: defaultPreviewSettings,
         fileTypeSettings: defaultFileTypeSettings,
-        previewFileIcon: '<i class="glyphicon glyphicon-file"></i>',
+        previewFileIcon: '<i class="glyphicon glyphicon-file" style="width:160px; height:120px; display: table-cell; vertical-align: middle"></i>',
         previewFileIconClass: 'file-other-icon',
         previewFileIconSettings: {},
         previewFileExtSettings: {},
