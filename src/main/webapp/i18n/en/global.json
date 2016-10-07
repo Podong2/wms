@@ -223,6 +223,7 @@
     },
     "footer": "This is your footer",
     "common": {
+        "dataNull" : "Data not found.",
         "attachedFile" : {
             "fileName":"File Name",
             "fileType":"Content Type",

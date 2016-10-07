@@ -224,6 +224,7 @@
     },
     "footer": "하단영역",
     "common": {
+        "dataNull" : "데이터가 없습니다.",
         "attachedFile" : {
             "fileName":"파일명",
             "fileType":"파일유형",
