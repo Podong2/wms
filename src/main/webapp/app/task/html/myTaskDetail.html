@@ -741,9 +741,7 @@
             <tbody>
                 <tr>
                     <td>
-                        <a ng-click="vm.commentFileAreaOpen = !vm.commentFileAreaOpen">
-                            <i class="fa fa-paperclip"></i>
-                        </a>
+                        <label for="input-5" class="cursor"><i class='fa fa-paperclip'></i></label>
                     </td>
                     <td>
                         <summernote ng-model="vm.comment.contents" on-init="init()" on-enter="enter()" on-focus="focus(evt)" config="dataService.getSummerNoteOptions(false)"
@@ -760,15 +758,7 @@
         </table>
     </div>
     <div class="task-file-area" ng-class="vm.commentFileAreaOpen ? 'on' : ''">
-        <div class="file-header-area">
-            <ul>
-                <li>파일 ({{commentFiles.length}})</li>
-                <li><label for="input-5" class="cursor"><i class='fa fa-paperclip'></i></label></li>
-                <li></li>
-                <li></li>
-            </ul>
-        </div>
-        <input id="input-5" name="input5[]" type="file" multiple class="file-loading" get-files file-type="comment">
+        <input id="input-5" name="input5[]" type="file" multiple class="file-loading" get-files file-type="comment" data-show-preview="false">
     </div>
 </div>
 

@@ -120,7 +120,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     statusId : vm.statusId,
                     orderType : vm.orderType,
                     page: vm.page - 1,
-                    size: 12,
+                    size: 15,
                     sort: 'desc'
                 }, onSuccess, onError);
             }
