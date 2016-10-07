@@ -70,8 +70,8 @@
             , u.created_by as createdBy, u.created_date as createdDate
             , u.last_modified_by as lastModifiedBy, u.last_modified_date as lastModifiedDate
         FROM owl_user u
-            INNER JOIN owl_project_user tu ON u.id = pu.user_id AND pu.project_id = #{id} and tu.user_type = 'ADMIN'
-        ORDER BY tu.id ASC
+            INNER JOIN owl_project_user pu ON u.id = pu.user_id AND pu.project_id = #{id} and pu.user_type = 'ADMIN'
+        ORDER BY pu.id ASC
     </select>
 
     <select id="getProjectWatchers" resultMap="userResultMap">
@@ -79,8 +79,8 @@
             , u.created_by as createdBy, u.created_date as createdDate
             , u.last_modified_by as lastModifiedBy, u.last_modified_date as lastModifiedDate
         FROM owl_user u
-            INNER JOIN owl_project_user tu ON u.id = pu.user_id AND pu.project_id = #{id} and tu.user_type = 'WATCHER'
-        ORDER BY tu.id ASC
+            INNER JOIN owl_project_user pu ON u.id = pu.user_id AND pu.project_id = #{id} and pu.user_type = 'WATCHER'
+        ORDER BY pu.id ASC
     </select>
 
     <select id="getProjectMembers" resultMap="userResultMap">
@@ -88,8 +88,8 @@
             , u.created_by as createdBy, u.created_date as createdDate
             , u.last_modified_by as lastModifiedBy, u.last_modified_date as lastModifiedDate
         FROM owl_user u
-            INNER JOIN owl_project_user tu ON u.id = pu.user_id AND pu.project_id = #{id} and tu.user_type = 'MEMBER'
-        ORDER BY tu.id ASC
+            INNER JOIN owl_project_user pu ON u.id = pu.user_id AND pu.project_id = #{id} and pu.user_type = 'MEMBER'
+        ORDER BY pu.id ASC
     </select>
 
     <select id="getParentProject" resultMap="projectResultMap">
