@@ -59,9 +59,14 @@ function sectionToggle($timeout, $rootScope) {
                 $("body").bind("click", function(e){
                     if ($($element).addClass("on"), $($element.parents('#editingSection').find('.editingSection')).addClass("on")) {
                         if (!$($element.parents('#editingSection')).has(e.target).length) {
-                            $('.editingSection').removeClass("on");
-                            $('.elementSection').removeClass("on");
-                            $rootScope.$broadcast("editingUpload")
+                            if($(".note-toolbar").has(e.target).length){
+
+                            }else{
+                                $('.editingSection').removeClass("on");
+                                $('.elementSection').removeClass("on");
+                                $rootScope.$broadcast("editingUpload")
+                            }
+
                         }
                     }
                 });
@@ -315,7 +320,7 @@ function watcherInfoBtnToggle($rootScope, $timeout) {
     return {
         restrict: 'A',
         link: function(scope, element, attr) {
-            var $elements = element.parents('td').children('.watcher-picker-info');
+            var $elements = element.parents('.watcher-list-area').children('.watcher-picker-info');
             var closeYn = false;
             element.on('click', function(_this) {
                 //$($elements).addClass("on");

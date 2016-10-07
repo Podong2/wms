@@ -125,21 +125,6 @@
                                               multiple="true" max-results-to-show="20" tag-type="assignees" modify-yn="{{vm.task.modifyYn}}" project-yn="false"></autocomplete>
                             </td>
                             <td style="position: relative;">
-                                <!-- 참조자 정보 팝업 -->
-                                <div class='row watcher-picker-info'>
-                                    <div class='col-md-4 padding-10' style='border-right:1px solid #ddd; height: 100%;'>
-                                        <img ng-src='/api/attachedFile/{{watcherInfo.profileImageId}}' ng-if='watcherInfo.profileImageId !=null' />
-                                        <img ng-src='/content/images/demo/male.png' ng-if='watcherInfo.profileImageId ==null' />
-                                    </div>
-                                    <div class='col-md-8 padding-10' style='height: 100%;'>
-                                        <i class="fa fa-close cursor pull-right" ng-click="vm.profileClose()"></i>
-                                        <ul>
-                                            <li>{{watcherInfo.name}}</li>
-                                            <li>{{watcherInfo.phone}}</li>
-                                            <li>{{watcherInfo.email}}</li>
-                                        </ul>
-                                    </div>
-                                </div>
 
                                 <label for="watcher" class="cursor task-label-btn" style="margin-bottom: 0px;" ng-click="vm.getCurrentWatchers()" watcher-picker-btn-toggle><span id="watcher"><i class="fa fa-user"></i> 참조자 {{vm.task.watchers.length == 0 ? '' : vm.task.watchers.length}}</span></label>
 
@@ -157,6 +142,21 @@
                                                 <span class="profile-close-btn close-btn cursor" ng-click="vm.removeWatcher(user)" ng-if="vm.task.modifyYn"><i class="fa fa-close"></i></span>
                                             </li>
                                         </ul>
+                                        <!-- 참조자 정보 팝업 -->
+                                        <div class='row watcher-picker-info'>
+                                            <div class='col-md-4 padding-10' style='border-right:1px solid #ddd; height: 100%;'>
+                                                <img ng-src='/api/attachedFile/{{watcherInfo.profileImageId}}' ng-if='watcherInfo.profileImageId !=null' />
+                                                <img ng-src='/content/images/demo/male.png' ng-if='watcherInfo.profileImageId ==null' />
+                                            </div>
+                                            <div class='col-md-8 padding-10' style='height: 100%;'>
+                                                <i class="fa fa-close cursor pull-right" ng-click="vm.profileClose()"></i>
+                                                <ul>
+                                                    <li>{{watcherInfo.name}}</li>
+                                                    <li>{{watcherInfo.phone}}</li>
+                                                    <li>{{watcherInfo.email}}</li>
+                                                </ul>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div class="watcher-input-area" ng-if="vm.task.modifyYn">
                                         <input type="text" class="form-control watcher-input" ng-model="vm.watcherName" style="border-right: 0; border-left:0;"  placeholder="이름을 입력하세요." maxlength="20" wms-kr-update/>

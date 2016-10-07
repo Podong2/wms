@@ -41,7 +41,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             vm.relatedTaskPopupClose = relatedTaskPopupClose;
             vm.removeRelatedTask = removeRelatedTask;
             vm.projectClose = projectClose;
-            vm.getCurrentWatchers = getCurrentWatchers;
+            //vm.getCurrentWatchers = getCurrentWatchers;
             vm.profileClose = profileClose;
             vm.windowOpen = windowOpen;
             vm.userInfo = Principal.getIdentity();
@@ -864,7 +864,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                     $log.debug("중복")
                 }else{
                     vm.DuplicationWatcherIds.push(watcher.id);
-                    setCurrentSearchWatcher(watcher)
+                    //setCurrentSearchWatcher(watcher) // 최근 선택한 사용자 저장
                     $scope.watchers.push(watcher);
                     if(vm.watcherName != '') $scope.pickerFindWatcher(vm.watcherName);
                 }
@@ -952,42 +952,42 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             }
 
             /* localStorage 에서 최근 검색한 사용자 가져오기 */
-            function getCurrentWatchers(){
-                vm.watcherName='';
-                var currentSearchWatcher = localStorage.getItem("currentSearchWatcher");
-                vm.watchers = [];
-                if (angular.isDefined(currentSearchWatcher) && currentSearchWatcher != null) {
-                    currentSearchWatcher = JSON.parse(currentSearchWatcher);
-                    vm.watcherList = currentSearchWatcher.watchers;
-                }
-            }
+            //function getCurrentWatchers(){
+            //    vm.watcherName='';
+            //    var currentSearchWatcher = localStorage.getItem("currentSearchWatcher");
+            //    vm.watchers = [];
+            //    if (angular.isDefined(currentSearchWatcher) && currentSearchWatcher != null) {
+            //        currentSearchWatcher = JSON.parse(currentSearchWatcher);
+            //        vm.watcherList = currentSearchWatcher.watchers;
+            //    }
+            //}
 
             /* localStorage에 최근 검색한 사용자 주입 */
-            function setCurrentSearchWatcher(watcher){
-                var currentSearchWatcher = localStorage.getItem("currentSearchWatcher");
-                vm.watchers = [];
-                if (angular.isDefined(currentSearchWatcher) && currentSearchWatcher != null) {
-                    currentSearchWatcher = JSON.parse(currentSearchWatcher);
-                    if(currentSearchWatcher.watchers.length >= 3){
-                        currentSearchWatcher.watchers.splice(0, 1);
-                        vm.watchers = currentSearchWatcher.watchers;
-                        vm.watchers.push(watcher);
-                        localStorage.setItem("currentSearchWatcher", JSON.stringify({
-                            watchers : vm.watchers,
-                        }));
-                    }else{
-                        vm.watchers = currentSearchWatcher.watchers;
-                        vm.watchers.push(watcher);
-                        localStorage.setItem("currentSearchWatcher", JSON.stringify({
-                            watchers : vm.watchers,
-                        }));
-                    }
-                } else {
-                    vm.watchers.push(watcher);
-                    localStorage.setItem("currentSearchWatcher", JSON.stringify({
-                        watchers : vm.watchers,
-                    }));
-                }
-            }
+            //function setCurrentSearchWatcher(watcher){
+            //    var currentSearchWatcher = localStorage.getItem("currentSearchWatcher");
+            //    vm.watchers = [];
+            //    if (angular.isDefined(currentSearchWatcher) && currentSearchWatcher != null) {
+            //        currentSearchWatcher = JSON.parse(currentSearchWatcher);
+            //        if(currentSearchWatcher.watchers.length >= 3){
+            //            currentSearchWatcher.watchers.splice(0, 1);
+            //            vm.watchers = currentSearchWatcher.watchers;
+            //            vm.watchers.push(watcher);
+            //            localStorage.setItem("currentSearchWatcher", JSON.stringify({
+            //                watchers : vm.watchers,
+            //            }));
+            //        }else{
+            //            vm.watchers = currentSearchWatcher.watchers;
+            //            vm.watchers.push(watcher);
+            //            localStorage.setItem("currentSearchWatcher", JSON.stringify({
+            //                watchers : vm.watchers,
+            //            }));
+            //        }
+            //    } else {
+            //        vm.watchers.push(watcher);
+            //        localStorage.setItem("currentSearchWatcher", JSON.stringify({
+            //            watchers : vm.watchers,
+            //        }));
+            //    }
+            //}
 
         }

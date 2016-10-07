@@ -2997,7 +2997,7 @@ text-align: right;
         background-color: #fff;
         border-radius: 3px;
         border: 1px solid #ddd;
-        bottom: 35px;
+        /*bottom: 35px;*/
         right: 14px;
         z-index: 100;
         box-shadow: 3px 3px 5px #ccc;

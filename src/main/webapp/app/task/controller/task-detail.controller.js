@@ -46,7 +46,7 @@
         vm.projectClose = projectClose;
         vm.windowOpen = windowOpen;
         vm.profileClose = profileClose;
-        vm.getCurrentWatchers = getCurrentWatchers;
+        //vm.getCurrentWatchers = getCurrentWatchers;
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
 
@@ -174,6 +174,8 @@
             }
         };
 
+        vm.preTtaskRepeatSchedule = [];
+
         function getTask(){
             // 파일 목록 주입
             vm.taskFiles = entity.attachedFiles;
@@ -240,7 +242,11 @@
                 console.log('File uploaded params', params);
             }).on('detailReload', function(e, params) {
                 $state.go("my-task.detail", {}, {reload : 'my-task.detail'});
-            })
+            }).on('filedeleted', function(event, key) {
+                console.log('Key = ' + key);
+                getTaskInfo();
+            });
+
             vm.task = entity;
 
             vm.DuplicationRelatedTaskIds = [];
@@ -801,6 +807,7 @@
                 toastr.success('태스크 수정 완료', '태스크 수정 완료');
                 $rootScope.$broadcast('projectEditClose');
                 //$rootScope.$broadcast('relatedTaskPopupClose');
+                $log.debug("response.data : ", response.data)
                 $rootScope.$broadcast('taskReload', response.data);
                 vm.task.removeAssigneeIds = "";
                 vm.task.removeWatcherIds = "";
@@ -835,6 +842,7 @@
         // 타스크 불러오기 성공
         function successTask(result){
             vm.task = result;
+            $rootScope.$broadcast('taskReload', result);
 
             vm.taskFiles = vm.task.attachedFiles;
             vm.previewFiles = [];
@@ -1090,6 +1098,7 @@
             });
             vm.taskRepeatSchedule.weekdays = typeIds.join(",");
         }
+        //vm.preTtaskRepeatSchedule = _.clone(vm.taskRepeatSchedule);
 
         // 반복설정 팝업 닫기
         function repeatClose(){
@@ -1166,7 +1175,7 @@
             }else{
                 //vm.DuplicationWatcherIds.push(watcher.id);
                 vm.uploadType = 'watcher';
-                setCurrentSearchWatcher(watcher)
+                //setCurrentSearchWatcher(watcher) // 최근 선택한 사용자 저장
                 vm.task.watchers.push(watcher);
                 if(vm.watcherName != '') $scope.pickerFindWatcher(vm.watcherName);
                 //$rootScope.$broadcast('watcherPopupClose');
@@ -1247,43 +1256,43 @@
         }
 
         /* localStorage 에서 최근 검색한 사용자 가져오기 */
-        function getCurrentWatchers(){
-            vm.watcherName='';
-            var currentSearchWatcher = localStorage.getItem("currentSearchWatcher");
-            vm.watchers = [];
-            if (angular.isDefined(currentSearchWatcher) && currentSearchWatcher != null) {
-                currentSearchWatcher = JSON.parse(currentSearchWatcher);
-                vm.watcherList = currentSearchWatcher.watchers;
-            }
-        }
+        //function getCurrentWatchers(){
+        //    vm.watcherName='';
+        //    var currentSearchWatcher = localStorage.getItem("currentSearchWatcher");
+        //    vm.watchers = [];
+        //    if (angular.isDefined(currentSearchWatcher) && currentSearchWatcher != null) {
+        //        currentSearchWatcher = JSON.parse(currentSearchWatcher);
+        //        vm.watcherList = currentSearchWatcher.watchers;
+        //    }
+        //}
 
         /* localStorage에 최근 검색한 사용자 주입 */
-        function setCurrentSearchWatcher(watcher){
-            var currentSearchWatcher = localStorage.getItem("currentSearchWatcher");
-            vm.watchers = [];
-            if (angular.isDefined(currentSearchWatcher) && currentSearchWatcher != null) {
-                currentSearchWatcher = JSON.parse(currentSearchWatcher);
-                if(currentSearchWatcher.watchers.length >= 3){
-                    currentSearchWatcher.watchers.splice(0, 1);
-                    vm.watchers = currentSearchWatcher.watchers;
-                    vm.watchers.push(watcher);
-                    localStorage.setItem("currentSearchWatcher", JSON.stringify({
-                        watchers : vm.watchers,
-                    }));
-                }else{
-                    vm.watchers = currentSearchWatcher.watchers;
-                    vm.watchers.push(watcher);
-                    localStorage.setItem("currentSearchWatcher", JSON.stringify({
-                        watchers : vm.watchers,
-                    }));
-                }
-            } else {
-                vm.watchers.push(watcher);
-                localStorage.setItem("currentSearchWatcher", JSON.stringify({
-                    watchers : vm.watchers,
-                }));
-            }
-        }
+        //function setCurrentSearchWatcher(watcher){
+        //    var currentSearchWatcher = localStorage.getItem("currentSearchWatcher");
+        //    vm.watchers = [];
+        //    if (angular.isDefined(currentSearchWatcher) && currentSearchWatcher != null) {
+        //        currentSearchWatcher = JSON.parse(currentSearchWatcher);
+        //        if(currentSearchWatcher.watchers.length >= 3){
+        //            currentSearchWatcher.watchers.splice(0, 1);
+        //            vm.watchers = currentSearchWatcher.watchers;
+        //            vm.watchers.push(watcher);
+        //            localStorage.setItem("currentSearchWatcher", JSON.stringify({
+        //                watchers : vm.watchers,
+        //            }));
+        //        }else{
+        //            vm.watchers = currentSearchWatcher.watchers;
+        //            vm.watchers.push(watcher);
+        //            localStorage.setItem("currentSearchWatcher", JSON.stringify({
+        //                watchers : vm.watchers,
+        //            }));
+        //        }
+        //    } else {
+        //        vm.watchers.push(watcher);
+        //        localStorage.setItem("currentSearchWatcher", JSON.stringify({
+        //            watchers : vm.watchers,
+        //        }));
+        //    }
+        //}
 
 
 
