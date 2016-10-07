@@ -525,10 +525,10 @@
 
                 <div class="panel panel-default min-height-100-p" ng-class="{'detail-content':vm.task.modifyYn, 'detail-content-disabled':!vm.task.modifyYn}" id="editingSection">
                     <div class="ibox">
-                        <div class="ibox_content elementSection" ng-if="vm.task.modifyYn" section-toggle style="min-height: 50px">
+                        <div class="ibox_content elementSection" ng-if="vm.task.modifyYn" section-toggle style="min-height: 50px; word-break: break-all;">
                             <span ng-bind-html="vm.renderHtml(vm.task.contents)" ></span>
                         </div>
-                        <div class="ibox_content elementSection" ng-if="!vm.task.modifyYn" style="min-height: 50px">
+                        <div class="ibox_content elementSection" ng-if="!vm.task.modifyYn" style="min-height: 50px; word-break: break-all;">
                             <span ng-bind-html="vm.renderHtml(vm.task.contents)" ></span>
                         </div>
                         <div class="content-edit editingSection" >
@@ -613,7 +613,7 @@
                             <!-- 댓글 영역 -->
                             <div ng-if="data.entityField == 'reply'" class="pad-l10  clear-both">
 
-                                <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px"></span> <span class="comment-created-date">&nbsp;&nbsp;{{data.createdDate | date : 'HH:mm'}}</span> <span ng-if="data.createdBy == vm.userInfo.login"  class="fa fa-times" ng-click="vm.removeComment(data.id)"></span>
+                                <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px; word-break: break-all;"></span> <span class="comment-created-date">&nbsp;&nbsp;{{data.createdDate | date : 'HH:mm'}}</span> <span ng-if="data.createdBy == vm.userInfo.login"  class="fa fa-times" ng-click="vm.removeComment(data.id)"></span>
                                 <br class="clear-both"/>
                                 <p ng-repeat="file in data.attachedFiles" class="pad-l20">
                                     <a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>
@@ -746,7 +746,7 @@
                         <summernote ng-model="vm.comment.contents" on-init="init()" on-enter="enter()" on-focus="focus(evt)" config="dataService.getSummerNoteOptions(false)"
                                     on-blur="blur(evt)" on-paste="paste()" on-keyup="keyup(evt)" contenteditable="true"
                                     on-keydown="keydown(evt)" on-change="change(contents)"
-                                    editable="editable" editor="editor" lang="ko-KR">
+                                    on-image-upload="imageUpload(files)" editable="editable" editor="editor" lang="ko-KR">
                         </summernote>
                     </td>
                     <td>
@@ -771,6 +771,6 @@
 
 <style>
     .btn-sm {
-        padding: 4px 7px 5px;
+        padding: 3px 5px 3px;
     }
 </style>

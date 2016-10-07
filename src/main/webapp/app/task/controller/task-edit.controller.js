@@ -219,8 +219,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 date: "",
                 datepickerOptions: {
                     customClass: '',
-                    minDate: new Date(),
-                    showWeeks: true
+                    showWeeks: false
                 }
             };
 
@@ -230,7 +229,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 datepickerOptions: {
                     customClass: '',
                     minDate: new Date(),
-                    showWeeks: true
+                    showWeeks: false
                 }
             };
             // 반복작업 시작시간
