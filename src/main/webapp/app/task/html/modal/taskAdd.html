@@ -1,6 +1,5 @@
 <owl-alert-close></owl-alert-close>
-<div class="modal-body" style="overflow-y: auto; padding: 15px; max-height: 580px;">
-    <!--<div class="ext-el-mask" id="ext-gen898" ng-show="vm.task.id == ''"></div>-->
+<div class="modal-header modal-edit" draggable="">
     <div class="row">
         <div class="col-md-12">
             <div class="col-md-9 padding-0">
@@ -20,7 +19,11 @@
             </div>
         </div>
     </div>
-    <div ng-class="viewTypeClass" style="padding-top: 10px; min-height: 440px" >
+</div>
+<div class="modal-body" style="overflow-y: auto; padding: 15px; max-height: 475px;">
+    <!--<div class="ext-el-mask" id="ext-gen898" ng-show="vm.task.id == ''"></div>-->
+
+    <div ng-class="viewTypeClass" style="padding-top: 10px; min-height: 340px" >
             <div class="pull-right" style="margin-top: 14px;">
                 <span class="task-create-date"><span class="task-create-date-text">{{vm.userInfo.name}} </span> {{ ( vm.date | date:"yyyy-MM-dd HH:mm") || 'empty' }}</span>
             </div>
@@ -217,7 +220,7 @@
 
                     <!-- 파일첨부 영역 -->
                     <td>
-                        <label for="subTaskAdd" class="cursor task-label-btn" ng-click="vm.fileAreaOpen = !vm.fileAreaOpen"><i class="fa fa-paperclip"></i> 파일 첨부 {{files.length == 0 ? '' : files.length}}</label>
+                        <label for="subTaskAdd" class="cursor task-label-btn" ng-click="vm.fileAreaOpen = !vm.fileAreaOpen" wms-scroll-focus><i class="fa fa-paperclip"></i> 파일 첨부 {{files.length == 0 ? '' : files.length}}</label>
                     </td>
 
                     <!-- 참조작업 영역 -->
@@ -523,7 +526,7 @@
             <summernote ng-model="vm.task.contents" on-init="init()" on-enter="enter()" on-focus="focus(evt)" config="dataService.getSummerNoteOptions(true)"
                 on-blur="blur(evt)" on-paste="paste()" on-keyup="keyup(evt)" contenteditable="true"
                 on-keydown="keydown(evt)" on-change="change(contents)"
-                on-image-upload="imageUpload(files)" editable="editable" editor="editor" lang="ko-KR" height="300">
+                on-image-upload="imageUpload(files)" editable="editable" editor="editor" lang="ko-KR" height="230">
             </summernote>
         </div>
 

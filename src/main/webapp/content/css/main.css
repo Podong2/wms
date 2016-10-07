@@ -3159,7 +3159,7 @@ text-align: right;
     border-bottom-color: #FF7F7F;
 }
 .modal-close-btn{
-    margin-top: -13px;
+    margin-top: -13px !important;
     font-size: 49px;
     font-weight: 100;
     height: 40px;
@@ -3273,7 +3273,9 @@ text-align: right;
     border-bottom: 1px solid #ccc;
 }
 /* member popup css end */
-
+body.wms-body.modal-open {
+    padding: 0 !important
+}
 
 
 

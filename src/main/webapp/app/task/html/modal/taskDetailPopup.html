@@ -1,14 +1,14 @@
 <owl-alert-close></owl-alert-close>
-<div class="modal-body" style="overflow-y: auto; padding: 15px; max-height: 530px;">
-            <div class="row">
-                <div class="col-md-12">
-                    <div><a ui-sref="my-task.detail({id : vm.task.parent.id, listType : vm.listType})" ng-click="vm.cancel()" class="cursor">{{vm.task.parent.name}}</a></div>
-                    <div class="col-md-9 padding-0">
-                        <i class="fa fa-exclamation-circle task-circle" ng-class="vm.task.importantYn ? 'on' : ''" ng-click="vm.task.importantYn = !vm.task.importantYn"></i>
-                        <input type="text" class="taskAddInput" ng-model="vm.task.name" enter-submit="vm.taskUpload()" placeholder="Task" ng-show="vm.task.modifyYn"/>
-                        <div class="disabled-task-title" ng-show="!vm.task.modifyYn">{{vm.task.name}}</div>
-                    </div>
-                    <div class="col-md-3 padding-0">
+<div class="modal-header modal-edit" draggable="">
+    <div class="row">
+        <div class="col-md-12">
+            <div><a ui-sref="my-task.detail({id : vm.task.parent.id, listType : vm.listType})" ng-click="vm.cancel()" class="cursor">{{vm.task.parent.name}}</a></div>
+            <div class="col-md-9 padding-0">
+                <i class="fa fa-exclamation-circle task-circle" ng-class="vm.task.importantYn ? 'on' : ''" ng-click="vm.task.importantYn = !vm.task.importantYn"></i>
+                <input type="text" class="taskAddInput" ng-model="vm.task.name" enter-submit="vm.taskUpload()" placeholder="Task" ng-show="vm.task.modifyYn"/>
+                <div class="disabled-task-title" ng-show="!vm.task.modifyYn">{{vm.task.name}}</div>
+            </div>
+            <div class="col-md-3 padding-0">
                     <span class="pull-right taskOptionBtnArea">
                         <span class="taskModalBtn" class="pull-right">
                             <i class="fa fa-arrows-alt"></i>
@@ -27,10 +27,14 @@
                         </span>
                         <button type="button" class="close modal-close-btn" ng-click="vm.cancel()">&times;</button>
                     </span>
-                    </div>
-                </div>
             </div>
-            <div class="viewTypeClass task-detail" style="margin-top: 10px; min-height: 430px">
+        </div>
+    </div>
+</div>
+
+<div class="modal-body" style="overflow-y: auto; padding: 15px; max-height: 475px;">
+
+            <div class="viewTypeClass task-detail" style="margin-top: 10px; min-height: 340px">
 
                 <!-- 상태 변경/등록일 -->
                 <div>
@@ -576,7 +580,7 @@
                                     <!-- 댓글 영역 -->
                                     <div ng-if="data.entityField == 'reply'" class="pad-l10  clear-both">
 
-                                        <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px"></span> {{data.createdDate | date : 'HH:mm'}} <span ng-if="data.createdBy == vm.userInfo.login"  class="fa fa-times" ng-click="vm.removeComment(data.id)"></span>
+                                        <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px; word-break: break-all;"></span> {{data.createdDate | date : 'HH:mm'}} <span ng-if="data.createdBy == vm.userInfo.login"  class="fa fa-times" ng-click="vm.removeComment(data.id)"></span>
                                         <br class="clear-both"/>
                                         <p ng-repeat="file in data.attachedFiles" class="pad-l20">
                                             <a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>
@@ -584,7 +588,7 @@
                                     </div>
 
                                     <!-- 시스템 영역 -->
-                                    <div ng-if="data.entityField != 'reply'" class="pad-l10 clear-both" >
+                                    <div ng-if="data.entityField != 'reply'" class="pad-l10 clear-both" style="word-break: break-all;">
 
                                         <span translate="audit.entity.task" ng-if="data.entityField == null || data.entityField == ''">엔티티</span>
                                         <span translate="audit.field.task.{{data.entityField}}" ng-if="(data.entityField != null && data.entityField != '') && data.entityField != 'taskUsers'">필드</span>
@@ -664,7 +668,7 @@
                                 </p>
                                 <div class="pad-l15 clear-both">
                                     <div ng-if="data.entityField == 'reply'" class="pad-l10">
-                                        <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px"></span>
+                                        <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px; word-break: break-all;"></span>
                                         {{data.createdDate | date : 'HH:mm'}} <span ng-if="data.createdBy == vm.userInfo.login"  class="fa fa-times" ng-click="vm.removeComment(data.id)"></span>
                                         <br class="clear-both"/>
                                         <p ng-repeat="file in data.attachedFiles" class="pad-l20">

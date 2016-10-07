@@ -703,6 +703,7 @@
 
         function onSubTaskSaveSuccess (result) {
             toastr.success('sub 태스크 생성 완료', 'sub 태스크 생성 완료');
+            vm.subTask.name = '';
             getTaskInfo();
             if($stateParams.parentType == 'project'){
                 $rootScope.$broadcast('projectReload');
@@ -844,7 +845,7 @@
         // 타스크 불러오기 성공
         function successTask(result){
             vm.task = result;
-            $rootScope.$broadcast('taskReload', result);
+            //$rootScope.$broadcast('taskReload', result);
 
             vm.taskFiles = vm.task.attachedFiles;
             vm.previewFiles = [];

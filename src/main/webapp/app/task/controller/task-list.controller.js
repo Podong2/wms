@@ -144,22 +144,13 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
             vm.reloadYn = false;
             $rootScope.$on("taskReload", function(event, args){
                 vm.reloadYn = true;
-                angular.forEach(vm.tasks ,function(value, index){
-                    if(value.id == args.id) {
-                        value.name = args.name;
-                        value.delayYn = args.delayYn;
-                        value.statusId = args.statusId;
-                        value.privateYn = args.privateYn;
-                        value.importantYn = args.importantYn;
-                        value.taskProjects = args.taskProjects;
-                        value.parent = args.parent;
-                        value.subTasks = args.subTasks;
-                        value.relatedTasks = args.relatedTasks;
-                        value.attachedFileExistYn = args.attachedFileExistYn;
-                        value.assignees = args.assignees;
-                        value.taskRepeatSchedule = args.taskRepeatSchedule;
-                    }
-                });
+                Task.query({
+                    listType : vm.listType,
+                    filterType : vm.filterType,
+                    page: 0,
+                    size: 15*(vm.page -1),
+                    sort: 'desc'
+                }, onSuccess, onError);
                 //getList(args);
             });
 
@@ -168,7 +159,7 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
             //}
 
             function onSuccess(data, headers) {
-                if(vm.page == 1) vm.tasks=[];
+                if(vm.page == 1 || vm.reloadYn) vm.tasks=[];
 
                 angular.forEach(data, function(task){
                     // if(task.statusGroup == "DELAYED") vm.delayed.push(task);
@@ -185,7 +176,8 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
 
                 MyTaskStatistics.get({listType : vm.listType}, countSuccess, onError); // 타스크 목록 카운트 정보 조회
                 $scope.taskScroll.loading = false;
-                vm.page++; //다음페이지 준비
+                if(!vm.reloadYn)vm.page++; //다음페이지 준비
+                vm.reloadYn = false;
                 if($stateParams.type != '') $state.go("my-task.detail", {id : vm.tasks[0].id, listType : 'TODAY'});
             }
             function countSuccess(result){
