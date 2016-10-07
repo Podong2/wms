@@ -141,7 +141,8 @@
                                     </div>
                                 </div>
 
-                                <label for="watcher" class="cursor task-label-btn" style="margin-bottom: 0px;" ng-click="vm.getCurrentWatchers()" watcher-picker-btn-toggle><span id="watcher"><i class="fa fa-user"></i> 참조자 {{vm.task.watchers.length == 0 ? '' : vm.task.watchers.length}}</span></label>
+                                <label for="watcher" class="cursor" ng-if="vm.task.watchers.length > 0 || vm.task.modifyYn" style="margin-bottom: 0px;" ng-click="pickerFindWatcher('')" watcher-picker-btn-toggle><span id="watcher"><i class="fa fa-user"></i> 참조자 {{vm.task.watchers.length == 0 ? '' : vm.task.watchers.length}}</span></label>
+                                <label for="watcher" class="btn-none" ng-if="vm.task.watchers.length == 0 && !vm.task.modifyYn" style="margin-bottom: 0px;"><span id="watcher"><i class="fa fa-user"></i> 참조자 {{vm.task.watchers.length == 0 ? '' : vm.task.watchers.length}}</span></label>
 
                                 <!-- 참조자 검색 및 등록 팝업 -->
                                 <div class="watcher-popup-area text-left">
@@ -275,7 +276,8 @@
 
                         <!-- 참조작업 영역 -->
                         <td style="position: relative;">
-                            <label style="margin-bottom: 0px;" for="subTaskAdd" class="cursor task-label-btn" ng-click="vm.relatedTaskOpen = !vm.relatedTaskOpen" related-task-picker-btn-toggle><i class="fa fa-share-alt"></i> 참조 작업 {{vm.task.relatedTasks.length == 0 ? '' : vm.task.relatedTasks.length}}</label>
+                            <label style="margin-bottom: 0px;" for="subTaskAdd" ng-if="vm.task.relatedTasks.length > 0 || vm.task.modifyYn" class="cursor" ng-click="vm.relatedTaskOpen = !vm.relatedTaskOpen" related-task-picker-btn-toggle><i class="fa fa-share-alt"></i> 참조 작업 {{vm.task.relatedTasks.length == 0 ? '' : vm.task.relatedTasks.length}}</label>
+                            <label style="margin-bottom: 0px;" ng-if="vm.task.relatedTasks.length == 0 && !vm.task.modifyYn" for="subTaskAdd" class="btn-none"><i class="fa fa-share-alt"></i> 참조 작업 {{vm.task.relatedTasks.length == 0 ? '' : vm.task.relatedTasks.length}}</label>
 
                             <!-- 참조작업 검색 및 등록 팝업 -->
                             <div class="relatedTask-popup-area text-left">
