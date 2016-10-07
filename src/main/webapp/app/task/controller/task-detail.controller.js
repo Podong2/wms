@@ -47,7 +47,6 @@
         vm.windowOpen = windowOpen;
         vm.profileClose = profileClose;
         vm.getCurrentWatchers = getCurrentWatchers;
-        vm.downloadZipFile = downloadZipFile;
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
 
