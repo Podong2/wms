@@ -35,7 +35,7 @@
                     <div class="table table-hover "when-scrolled="vm.getList()" style="margin-bottom: 0; border-bottom: 1px solid #ddd; overflow: hidden; overflow-y: auto; border-top:1px solid #ddd;" loading="taskScroll.loading">
                         <!--<i ng-show="taskScroll.loading" class="fa fa-spinner fa-spin" style="position: absolute; top: 60px; left: 49%;"></i>-->
                         <div class="task-area" dynamic-content-scroll area-type="list"><!-- dynamic-content-scroll을 이용하여 리스트 영역 높이 제어 -->
-                            <div ng-repeat="data in vm.tasks" class="task-repeat" ui-sref="my-task.detail({id : data.id, listType : vm.listType})">
+                            <div ng-repeat="data in vm.tasks" class="task-repeat" ui-sref="my-task.detail({id : data.id, listType : vm.listType})" task-active>
                                 <div class="wms-tree-node-list task-list clear-both cursor-important" ng-class="data.statusId == 1 ? 'blue' : (data.statusId == 2 ? 'green' : (data.statusId == 3 ? 'black' : 'red'))"
                                       ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
 

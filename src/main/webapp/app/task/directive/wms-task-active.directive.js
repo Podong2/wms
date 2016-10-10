@@ -28,6 +28,7 @@ function taskActive() {
                     $(".task-repeat").removeClass("active");
                     //$(".notification-list").addClass("active");
                     tElement.parents('.task-repeat').addClass("active");
+                    tElement.addClass("active");
                 });
             }
         }

@@ -166,14 +166,14 @@
             <!-- 프로젝트 생성 -->
             <li data-ui-sref-active="active" id="projectAddSection">
                 <a class="menu-item-parent projectAddValueSection" project-add-toggle>
-                    <i class="fa fa-lg fa-fw fa-plus-circle pull-right"></i><span class="menu-item-parent" translate="프로젝트/폴더 생성"></span>
+                    <i class="fa fa-lg fa-fw fa-plus-circle pull-right"></i><span class="menu-item-parent" translate="프로젝트 생성"></span>
                 </a>
                 <div class="project-picker projectAddSection" style="left: 100%;">
                     <div style="width: 300px;">
                         <div style="width: 300px;">
-                            <div class="project-picker-search padding-5">
-                                <label for="projectRadio"><input type="radio" name="addProject" id="projectRadio" value="false" ng-checked="vm.project.folderYn == false" ng-model="vm.project.folderYn">프로젝트</label>
-                                <label for="folderRadio"><input type="radio" name="addProject" id="folderRadio" value="true" ng-checked="vm.project.folderYn == true" ng-model="vm.project.folderYn">폴더</label>
+                            <div class="project-picker-search padding-5" style="padding-top: 10px !important;">
+                                <label for="projectRadio"><input type="hidden" name="addProject" id="projectRadio" value="false" ng-model="vm.project.folderYn">프로젝트 생성</label>
+                                <!--<label for="folderRadio"><input type="radio" name="addProject" id="folderRadio" value="true" ng-checked="vm.project.folderYn == true" ng-model="vm.project.folderYn">폴더</label>-->
                             </div>
                             <div class="project-picker-search">
                                 <input class="project-picker-search-input" type="text" ng-model="vm.project.name" enter-submit="vm.saveProject()" placeholder="제목을 입력하세요.">
@@ -185,7 +185,7 @@
 
             <li data-ui-sref-active="active">
                 <a ui-sref="my-project-list" class="menu-item-parent">
-                    <i class="fa fa-lg fa-fw fa-th-large pull-right"></i> <span class="menu-item-parent" translate="프로젝트/폴더"></span>
+                    <i class="fa fa-lg fa-fw fa-th-large pull-right"></i> <span class="menu-item-parent" translate="프로젝트"></span>
                 </a>
             </li>
 

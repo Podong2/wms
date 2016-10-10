@@ -29,7 +29,7 @@
             </div>
         <!-- 프로젝트/폴더 선택 -->
         <div id="projectPickerAddSection" class="taskAddProject position-relative">
-            <label for="addProject" class="cursor projectValueAddSection" ><i class="fa fa-plus" id="addProject"></i> <span project-picker-add-toggle>프로젝트/폴더 선택</span></label>
+            <label for="addProject" class="cursor projectValueAddSection" ><i class="fa fa-plus" id="addProject"></i> <span project-picker-add-toggle>프로젝트 선택</span></label>
                         <span class="task-project" ng-repeat="project in vm.task.taskProjects" wms-close-btn-display type="project">
                             {{project.name}}
                             <i class="fa fa-close project-close-btn close-btn" ng-click="project"></i>
@@ -39,7 +39,7 @@
                     <div style="width: 300px;">
                         <div class="padding-10 relatedTask-popup-header">
                             <span class="pull-right fa fa-close cursor picker-popup-close-btn" ng-click="vm.projectClose()"></span>
-                            프로젝트/폴더
+                            프로젝트
                         </div>
                         <div class="project-picker-search">
                             <input class="project-picker-search-input" type="text" ng-model="projectName" maxlength="50" enter-submit="vm.FindProjectList()" placeholder="프로젝트 또는 폴더를 선택하세요." wms-kr-update>
@@ -262,7 +262,7 @@
                                     작업 등록자 : <label for="createYn"><input type="checkbox" id="createYn" ng-model="vm.relatedSearchForm.createdBySelfYn"/> 본인</label>
                                 </div>
                                 <div class="related-task-search-div" style="display: inline-table;">
-                                    <div class="float-left">프로젝트/폴더 : </div>
+                                    <div class="float-left">프로젝트 : </div>
                                     <div class="padding-0 float-left">
                                         <autocomplete template-url="ngTagsInput/tag-item.html" source="findProjects" tags="projectPickerList" display-property="name" multiple="false" max-results-to-show="20" project-yn="true"></autocomplete>
                                     </div>
