@@ -465,7 +465,7 @@
     };
     defaultPreviewTypes = ['image', 'html', 'text', 'video', 'audio', 'flash', 'pdf', 'object'];
     defaultPreviewSettings = {
-        image: {width: "160px !important", height: "120px"},
+        image: {width: "100px !important", height: "88px"},
         html: {width: "160px !important", height: "120px"},
         text: {width: "160px !important", height: "120px"},
         video: {width: "160px !important", height: "120px"},
@@ -3412,7 +3412,7 @@
         customPreviewTags: {},
         previewSettings: defaultPreviewSettings,
         fileTypeSettings: defaultFileTypeSettings,
-        previewFileIcon: '<i class="glyphicon glyphicon-file" style="width:160px; height:120px; display: table-cell; vertical-align: middle"></i>',
+        previewFileIcon: '<i class="glyphicon glyphicon-file" style="width:100px; height:60px; display: table-cell; vertical-align: middle"></i>',
         previewFileIconClass: 'file-other-icon',
         previewFileIconSettings: {},
         previewFileExtSettings: {},
