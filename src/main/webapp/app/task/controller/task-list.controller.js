@@ -199,8 +199,6 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
                 ModalService.openModal(editModalConfig);
             }
 
-
-
             getList();
 
 

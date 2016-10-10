@@ -1365,6 +1365,10 @@ wms-select-box .dropdown-menu > .active > a{
     cursor: pointer;
 }
 
+.cursor-important {
+    cursor: pointer !important;
+}
+
 .cursor-inherit {
     cursor: inherit;
 }

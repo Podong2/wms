@@ -27,6 +27,8 @@ function taskListPopup($timeout) {
                 });
                 element.on('click', function (event) {
 
+                    event.stopPropagation();
+
                     $timeout(function () {
                         $('.sub-task-area-popup').removeClass('on');
                         $(event.target.children).addClass('on');
