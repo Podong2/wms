@@ -8,11 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class ProjectStatisticsDTO {
 
     private ProjectDTO project;
+
+    private List<ProjectStatisticsDTO> projectStatisticsChilds = new ArrayList<>();
 
     private Long projectCount = 0L;
 
@@ -21,4 +22,12 @@ public class ProjectStatisticsDTO {
     private Long taskCompleteCount = 0L;
 
     private Long taskTotalCount = 0L;
+
+    public ProjectStatisticsDTO(ProjectDTO project, Long projectCount, Long folderCount, Long taskCompleteCount, Long taskTotalCount) {
+        setProject(project);
+        setProjectCount(projectCount);
+        setFolderCount(folderCount);
+        setTaskCompleteCount(taskCompleteCount);
+        setTaskTotalCount(taskTotalCount);
+    }
 }

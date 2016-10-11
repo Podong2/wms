@@ -24,6 +24,8 @@ public class ProjectDTO implements Serializable {
 
     private Boolean adminYn = Boolean.FALSE;
 
+    private Boolean memberYn = Boolean.FALSE;
+
     private Long statusId;
 
     private String statusName;
@@ -229,5 +231,13 @@ public class ProjectDTO implements Serializable {
 
     public void setAdminYn(Boolean adminYn) {
         this.adminYn = adminYn;
+    }
+
+    public Boolean getMemberYn() {
+        return memberYn;
+    }
+
+    public void setMemberYn(Boolean memberYn) {
+        this.memberYn = memberYn;
     }
 }

@@ -256,10 +256,10 @@ public class ProjectResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<ProjectStatisticsDTO>> getProjectStatistics(@RequestParam(name = "listType", required = false) String listType) {
-        log.debug("REST request to get Project dashboard : {}", listType);
+    public ResponseEntity<List<ProjectStatisticsDTO>> getProjectStatistics(@RequestParam(name = "statusId", required = false) Long statusId
+                                                                        , @RequestParam(name = "orderType", required = false) String orderType) {
 
-        List<ProjectStatisticsDTO> projectStatisticsDTOs = projectService.getProjectStatistics(listType);
+        List<ProjectStatisticsDTO> projectStatisticsDTOs = projectService.getProjectStatusList(statusId, orderType);
 
         return Optional.ofNullable(projectStatisticsDTOs)
             .map(result -> new ResponseEntity<>(

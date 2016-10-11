@@ -479,7 +479,11 @@
                 #{item}
             </foreach>
         </if>
-        AND t.private_yn = 'N'
+
+        <if test="excludePrivate != null and excludePrivate == true">
+            AND t.private_yn = 'N'
+        </if>
+
         <if test="projectHistoryYn != null and projectHistoryYn == true">
             ORDER BY t.last_modified_date DESC
         </if>
