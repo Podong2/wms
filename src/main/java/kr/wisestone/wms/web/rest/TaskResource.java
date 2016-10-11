@@ -89,21 +89,21 @@ public class TaskResource {
      * @return the ResponseEntity with status 201 (Created) and with body the new taskDTO, or with status 400 (Bad Request) if the task has already an ID
      * @throws URISyntaxException if the Location URI syntax is incorrect
      */
-//    @RequestMapping(value = "/tasks",
-//        method = RequestMethod.POST,
-//        produces = MediaType.APPLICATION_JSON_VALUE)
-//    @Timed
-//    public ResponseEntity<TaskDTO> createTask(@RequestBody TaskForm taskForm) throws URISyntaxException {
-//        log.debug("REST request to save Task : {}", taskForm);
-//        if (taskForm.getId() != null) {
-//            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("task", "idexists", "A new task cannot already have an ID")).body(null);
-//        }
-//
-//        TaskDTO result = taskService.create(taskForm);
-//        return ResponseEntity.created(new URI("/api/tasks/" + result.getId()))
-//            .headers(HeaderUtil.createEntityCreationAlert("task", result.getId().toString()))
-//            .body(result);
-//    }
+    @RequestMapping(value = "/tasks/createByProject",
+        method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<TaskDTO> createTask(@RequestBody TaskForm taskForm) throws URISyntaxException {
+        log.debug("REST request to save Task : {}", taskForm);
+        if (taskForm.getId() != null) {
+            return ResponseEntity.badRequest().headers(HeaderUtil.createFailureAlert("task", "idexists", "A new task cannot already have an ID")).body(null);
+        }
+
+        TaskDTO result = taskService.saveTask(taskForm, null, null);
+        return ResponseEntity.created(new URI("/api/tasks/" + result.getId()))
+            .headers(HeaderUtil.createEntityCreationAlert("task", result.getId().toString()))
+            .body(result);
+    }
 
     @RequestMapping(value = "/tasks",
         method = RequestMethod.POST,
