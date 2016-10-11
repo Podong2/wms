@@ -3222,6 +3222,9 @@ text-align: right;
     z-index: 101;
     display: none;
 }
+.member-popup-area.noAdmin{
+    width : 250px !important;
+}
 .member-popup-area.on{
     display: block;
 }

@@ -29,7 +29,7 @@
                 <div class="pull-left">
                     <!-- 프로젝트/폴더 선택 -->
                     <div id="projectPickerSection" style="float:left;">
-                        <label for="addProject" class="cursor projectValueSection" ><i class="fa fa-plus" id="addProject"></i> <span project-picker-edit-toggle>프로젝트 추가</span></label>
+                        <label for="addProject" class="cursor projectValueSection" ng-if="vm.project.adminYn"><i class="fa fa-plus" id="addProject"></i> <span project-picker-edit-toggle>프로젝트 추가</span></label>
                         &nbsp;
                         <div class="project-picker projectPickerSection">
                             <div style="width: 300px;">
@@ -129,16 +129,17 @@
                             </div>
                         </div>
 
-                        <label for="watcher" class="cursor" style="margin-bottom: 0px;" common-popup-toggle><span id="member"><i class="fa fa-users"></i> 맴버 {{vm.project.projectMembers.length == 0 ? '' : vm.project.projectMembers.length}}</span></label>
+                        <label for="watcher" class="cursor btn-none" style="margin-bottom: 0px;" ng-show="!vm.project.adminYn && vm.project.projectMembers.length == 0"><i class="fa fa-users"></i> 맴버 {{vm.project.projectMembers.length == 0 ? '' : vm.project.projectMembers.length}}</label>
+                        <label for="watcher" class="cursor" style="margin-bottom: 0px;" ng-show="vm.project.adminYn || vm.project.projectMembers.length != 0" common-popup-toggle><span id="member"><i class="fa fa-users"></i> 맴버 {{vm.project.projectMembers.length == 0 ? '' : vm.project.projectMembers.length}}</span></label>
 
                         <!-- 맴버 검색 및 등록 팝업 -->
-                        <div class="member-popup-area text-left">
+                        <div class="member-popup-area text-left" ng-class="vm.project.adminYn ? '' : 'noAdmin'">
                             <div class="member-popup-header">
                                 <span class="pull-right fa fa-close cursor" ng-click="vm.commonPopupClose()"></span>
                                 맴버 추가
                             </div>
-                            <div class="row">
-                                <div class="col-md-6 padding-right-0" style="border-right: 1px solid #ddd; min-height: 219px;">
+                            <div class="row" ng-class="vm.project.adminYn? '' : 'margin-left-0'">
+                                <div class="col-md-6 padding-right-0" style="border-right: 1px solid #ddd; min-height: 219px;" ng-show="vm.project.adminYn">
                                     <div class="member-input-area" ng-if="vm.project.adminYn">
                                         <input type="text" class="form-control member-input" ng-model="vm.memberName" style="border-right: 0; border-left:0;"  placeholder="이름을 입력하세요." wms-kr-update wms-element-arrow-keys-move element-add="vm.memberAdd"/>
                                     </div>
@@ -165,20 +166,20 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-6 padding-left-0">
+                                <div class="padding-left-0" ng-class="vm.project.adminYn ? 'col-md-6' : 'col-md-12'">
 
-                                    <div class="member-input-area member-input-area-border" ng-if="vm.project.adminYn">
+                                    <div class="member-input-area member-input-area-border">
                                         <div class="pull-right" ng-click="vm.memberSearchYn = !vm.memberSearchYn">
                                             <i class="fa fa-search cursor"></i>
                                         </div>
                                         맴버 {{vm.project.projectMembers.length}}명
                                     </div>
 
-                                    <div class="member-input-area" ng-if="vm.project.adminYn && vm.memberSearchYn">
+                                    <div class="member-input-area" ng-if="vm.memberSearchYn">
                                         <input type="text" class="form-control member-input" ng-model="vm.memberFilter" style="border-right: 0; border-left:0; border-top:0;"  placeholder="이름을 입력하세요." wms-kr-update/>
                                     </div>
 
-                                    <div class="member-list-area watcher-list-area" ng-if="vm.project.adminYn" ng-class="vm.memberSearchYn ? 'on' : ''">
+                                    <div class="member-list-area watcher-list-area" ng-class="vm.memberSearchYn ? 'on' : ''">
                                         <div ng-repeat="data in vm.project.projectMembers | filter:vm.memberFilter track by $index" class="member-list-items">
                                             <div class="member-element" ng-class="data.currentYn ? 'current' : ''">
                                                 <div class="row">
@@ -187,7 +188,7 @@
                                                         <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.profileImageId}}" ng-if="data.profileImageId != null" uib-tooltip="{{data.createdByName}}" watcher-info-btn-toggle>
                                                     </div>
                                                     <div class="col-md-10 position-relative">
-                                                        <div class="pull-right">
+                                                        <div class="pull-right" ng-show="vm.project.adminYn">
                                                             <i class="fa fa-close cursor" ng-click="vm.removeMember(data)" style="position: absolute; top: 10px; right: 14px;"></i>
                                                         </div>
                                                         <div>{{data.name}}</div>
@@ -328,15 +329,18 @@
                         상태
                     </td>
                     <td style="border-right-width : 1px">
-                        <wms-select-box
-                            ng-model="vm.codes"
-                            selected-value="vm.project.statusId"
-                            dataSize="5"
-                            dataLiveSearch="false"
-                        ></wms-select-box>
+                        <ol class="nya-bs-select task-openYn-select" ng-model="vm.project.statusId" style="width: 90px;" disabled="!vm.project.adminYn">
+                            <li nya-bs-option="option in vm.codes track by $index" title="{{option.name}}" data-value="option.id">
+                                <a>
+                                    {{ option.name }}
+                                    <span class="glyphicon glyphicon-ok check-mark"></span>
+                                </a>
+                            </li>
+                        </ol>
                     </td>
                     <td>
-                        <label class="margin-bottom-0" ng-click="vm.fileAreaOpen = !vm.fileAreaOpen"><i class="fa fa-paperclip"></i> 파일 첨부 {{vm.previewFiles.length == 0 ? '' : vm.previewFiles.length}}</label>
+                        <label class="margin-bottom-0" ng-click="vm.fileAreaOpen = !vm.fileAreaOpen" ng-show="vm.project.adminYn"><i class="fa fa-paperclip"></i> 파일 첨부 {{vm.previewFiles.length == 0 ? '' : vm.previewFiles.length}}</label>
+                        <label class="btn-none margin-bottom-0" ng-show="!vm.project.adminYn"><i class="fa fa-paperclip"></i> 파일 첨부 {{vm.previewFiles.length == 0 ? '' : vm.previewFiles.length}}</label>
                     </td>
                 </tr>
                 </tbody>
