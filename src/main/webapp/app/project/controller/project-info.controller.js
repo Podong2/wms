@@ -104,6 +104,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             // 프로젝트 타스크 목록 필터
             function getTaskListInProject(listType){
                 vm.listType = listType;
+                vm.reloadYn =false;
                 $scope.chartFilterYn = false;
                 getList();
             }
@@ -134,8 +135,8 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 ProjectTasks.query({
                     projectId : $stateParams.id,
                     statusId : 1,
-                    page: 0,
-                    size: 12,
+                    page: vm.page -1,
+                    size: 15,
                     sort: 'desc'
                 }, getTaskSuccess, onError)
             }
