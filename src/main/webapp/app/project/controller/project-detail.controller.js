@@ -443,7 +443,7 @@
 
         vm.mentionIds = []; // mention ids
         function createComment(){
-            if(vm.comment.contents == ''){
+            if(vm.comment.contents == '' && $scope.commentFiles.length == 0){
                 toastr.warning('코멘트를 입력해주세요.', '코멘트 내용');
                 return false;
             }

@@ -31,26 +31,16 @@
                                 </ul>
                             </div>
                             <div class="col-md-4" style="padding: 70px 0 0;">
-                                <ul class="list-inline friends-list" style="margin-bottom: 0">
-                                    <li ng-repeat="user in vm.projectTeam | limitTo:4">
-                                        <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null" uib-tooltip="{{user.name}}" style="margin-right: 0">
-                                        <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}" style="margin-right: 0">
-                                    </li>
-                                    <li>
-                                        <span href-void ng-if="vm.projectTeam.length > 4">
-                                            <span class="activity">
-                                                <a class="position-relative"><i class="fa fa-plus user-profile-plus-btn"></i><b class="badge bg-color-red user-count-icon">{{vm.projectTeam.length - 4}}</b></a>
-                                            </span>
-                                        </span>
-                                    </li>
-                                </ul>
+                                {{vm.projectTeam.length}} 맴버
 
                                 <br/>
-                                {{vm.coumplatePercent.width}}완료 - 팀원 {{vm.projectTeam.length}}명
-                                <div class="progress progress-sm">
-                                    <div class="progress-bar bg-color-greenLight" role="progressbar" ng-style="vm.coumplatePercent">{{vm.info.completeCount}}/{{vm.tasks.length}}</div>
+                                {{vm.dDay}}d  남은기간
+                                <br/>
+                                {{vm.coumplatePercent.width}} 완료율
+                                <!--<div class="progress progress-sm">-->
+                                    <!--<div class="progress-bar bg-color-greenLight" role="progressbar" ng-style="vm.coumplatePercent">{{vm.info.completeCount}}/{{vm.tasks.length}}</div>-->
 
-                                </div>
+                                <!--</div>-->
                             </div>
                         </div>
                     </div>
@@ -94,43 +84,62 @@
                     <div style="clear: both"></div>
                         <div class="table table-bordered table-hover project-task-list-area" when-scrolled="vm.getTaskListInProject()" style="margin-bottom: 0; border-bottom: 1px solid #ddd; overflow: hidden; overflow-y: auto; border-top:1px solid #ddd;" loading="taskScroll.loading">
                             <div class="task-area" dynamic-content-scroll area-type="project-list">
-                                <div ng-repeat="data in vm.tasks" class="">
-                                    <div  class="wms-tree-node-list task-list" ng-class="data.statusId == 1 ? 'blue' : (data.statusId == 2 ? 'green' : (data.statusId == 3 ? 'black' : 'red'))"
-                                          ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
+                                <div ng-repeat="data in vm.tasks" class="task-repeat" ui-sref="my-project.taskDetail({taskId : data.id, listType : vm.listType, projectId : vm.project.id})" task-active>
+                                    <div class="wms-tree-node-list task-list clear-both cursor-important" ng-class="data.statusId == 1 ? 'blue' : (data.statusId == 2 ? 'green' : (data.statusId == 3 ? 'black' : 'red'))"
+                                         ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
 
-                                        <div class="pull-right">
-                                            <div>
-                                                <i class="fa fa-hourglass-end" style="float: left; padding: 8px; color:red;"></i>
-                                                <i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="float: left; padding: 8px;"></i>
-                                                {{data.endDate}}
+                                        <div class="task-list-item-header">
+                                            <div class="pull-right">
+                                                <div>
+                                                    <i class="fa fa-hourglass-end" style="padding: 6px; color:red;" ng-if="data.delayYn"></i>
+                                                    <i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="padding: 8px;"></i>
+                                                    <span ng-class="data.delayYn ? 'delay-color' : ''">{{data.endDate | date : 'MM-dd'}}</span>
+                                                </div>
                                             </div>
-                                            <div>
-                                                <ng-include src="'app/project/html/taskListRightArea.html'"></ng-include>
+                                            <i class="fa fa-exclamation-circle float-left" style="padding:5px 2px; color:red;" ng-if="data.importantYn"></i>
+                                            <div class="task-list-title-length task-list-title">
+                                                <a ui-sref="my-task.detail({id : data.id, listType : vm.listType})" task-active tooltip-placement="top-left" uib-tooltip="{{data.name}}">{{data.name}} </a>
                                             </div>
-                                        </div>
-
-                                        <div ng-class="data.assignees.length > 0 ? 'task-list-title' : ''">
-                                            <input type="checkbox"/>
-                                            <a ui-sref="my-project.taskDetail({taskId : data.id, listType : vm.listType, projectId : vm.project.id})">{{data.name}}</a>
-                                        </div>
-                                        <ul class="list-inline friends-list" style="margin-bottom: 0">
-                                            <li ng-repeat="user in data.assignees | limitTo:3">
-                                                <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}" style="margin-right: 0">
-                                                <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}" style="margin-right: 0">
-                                            </li>
-                                            <li ng-if="data.assignees.length > 3">
-                                                <a href-void>
+                                            <span class="fa fa-paperclip float-left" style="padding:5px 2px;" ng-if="data.attachedFileExistYn"></span>
+                                            <span class="fa fa-lock float-left" style="padding:5px 5px 5px 2px;" ng-if="data.privateYn"></span>
+                                            <ul class="list-inline friends-list" style="margin-bottom: 0">
+                                                <li ng-repeat="user in data.assignees | limitTo:3">
+                                                    <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}" style="margin-right: 0">
+                                                    <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}" style="margin-right: 0">
+                                                </li>
+                                                <li ng-if="data.assignees.length > 3" class="position-relative">
+                                                <span common-popup-toggle>
                                                     <span class="activity">
                                                         <a class="position-relative"><i class="fa fa-plus user-profile-plus-btn"></i> <b class="badge bg-color-red user-count-icon">{{data.assignees.length - 3}}</b></a>
                                                     </span>
-                                                </a>
-                                            </li>
-                                        </ul>
-                                        <span class="clear-both"></span>
-
-                                        <div class="task-project-list-area">
-                                            <span class="task-project-icon" ng-repeat="project in data.taskProjects">[{{project.folderYn ? '폴더' : '프로젝트'}}] {{project.name}}</span>
+                                                </span>
+                                                    <div class="other-users-popup">
+                                                        <ul class="" style="margin-bottom: 0">
+                                                            <li class="clear-both" ng-repeat="user in data.assignees | limitTo:99:3">
+                                                                <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}" style="margin-right: 0">
+                                                                <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}" style="margin-right: 0">
+                                                                {{user.name}}
+                                                            </li>
+                                                        </ul>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                            <span class="clear-both"></span>
                                         </div>
+
+                                        <div class="task-list-item-footer">
+                                            <div class="pull-right position-relative">
+                                                <div>
+                                                    <ng-include src="'app/task/html/taskListRightArea.html'"></ng-include>
+                                                </div>
+                                            </div>
+
+                                            <div class="task-project-list-area">
+                                                <span class="task-project-icon" ng-class="project.folderYn ? 'folder': ''" ng-repeat="project in data.taskProjects track by $index">[{{project.folderYn ? '폴더' : '프로젝트'}}] {{project.name}}</span>
+                                            </div>
+                                        </div>
+
+
                                     </div>
                                 </div>
                                 <div class="no-data" ng-if="vm.tasks.length == 0">

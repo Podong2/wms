@@ -121,7 +121,7 @@
                                 담당자
                             </td>
                             <td>
-                                <autocomplete template-url="ngTagsInput/tag-item-user.html" source="findUsers" tags="vm.task.assignees" display-property="name"
+                                <autocomplete template-url="ngTagsInput/tag-item-user.html" source="findUsers" tags="vm.task.assignees" display-property="id"
                                               multiple="true" max-results-to-show="20" tag-type="assignees" modify-yn="{{vm.task.modifyYn}}" project-yn="false"></autocomplete>
                             </td>
                             <td style="position: relative;">
@@ -331,7 +331,7 @@
                                                 <input type="checkbox" name="selectedFruits[]" value="{{data}}" ng-checked="checkedTask.indexOf(data) > -1" ng-click="toggleSelection(data)" wms-related-task-checked>
                                             </div>
                                             <div>
-                                                <span class="relatedTask-title" ng-class="data.assignees.length > 1 ? 'length' : ''" uib-tooltip="{{data.name}}" tooltip-placement="top-left">{{data.name}}</span>
+                                                <span class="relatedTask-title" ng-class="data.assignees.length > 1 ? 'length' : ''">{{data.name}}</span>
                                                 <ul class="list-inline friends-list" style="margin-bottom: 0; text-align: left;">
                                                     <li ng-repeat="user in data.assignees | limitTo:3" class="position-relative">
                                                         <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">

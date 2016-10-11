@@ -20,11 +20,13 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             vm.sortType="1";
             vm.projectInfoViewYn = false;
             vm.firstLoding = false; // 처음 로딩 유무
+            vm.pageType = 'project';
             vm.counts = { // 차트 카운트
                 delayedCount : 0,
                 holdCount : 0,
                 inProgressCount : 0,
-                completeCount : 0
+                completeCount : 0,
+                cancelCount : 0
             };
 
             // page 파라미터
@@ -53,10 +55,11 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
 
             vm.tasks=[]; // 총 목록
             vm.projectTeam = [];// 프로젝트 팀원 (중복제거)
-            vm.statusId = '';
+            vm.statusId = 1;
             vm.taskAdd = false;
             vm.orderType = '';
             vm.listType = '';
+            vm.dDay = '';
 
             // 작업 목록 필터값
             $scope.chartFilterYn = false;
@@ -130,7 +133,16 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             vm.reloadYn = false;
             $scope.$on("projectReload", function(event, args){
                 vm.reloadYn = true;
-                getList();
+                ProjectInfo.get({
+                    projectId : $stateParams.id,
+                    listType : vm.listType,
+                    statusId : vm.statusId,
+                    orderType : vm.orderType,
+                    page: 0,
+                    size: 15*(vm.page -1),
+                    sort: 'desc'
+                }, onSuccess, onError);
+                //getList();
             });
 
             //function showDetail(id){
@@ -139,6 +151,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             function onSuccess(data, headers) {
                 $log.debug("data", data);
                 //vm.tasks=[]; vm.delayed=[]; vm.scheduledToday=[]; vm.registeredToday=[]; vm.inProgress=[]; vm.noneScheduled=[]; vm.complete=[]; vm.hold=[]; vm.scheduled=[];  vm.cancel=[];
+                if(vm.page == 1 || vm.reloadYn) vm.tasks=[];
                 vm.project = data.project;
                 vm.info = data;
                 angular.forEach(data.tasks, function(task){
@@ -162,7 +175,8 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 }
                 vm.firstLoding = true;
                 $scope.taskScroll.loading = false;
-                if(data.tasks.length != 0) vm.page++; //다음페이지 준비
+                if(!vm.reloadYn)vm.page++; //다음페이지 준비
+                vm.reloadYn = false;
 
                 //vm.page = pagingParams.page;
 
@@ -179,11 +193,18 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     overlapYn = true;
                 });
 
+                /* 프로젝트 남을 날짜 계산 */
+                var day = new Date();
+                var endDate = new Date(vm.project.endDate);
+                var btDay = (endDate.getTime() - day.getTime()) / (1000*60*60*24) ;
+                vm.dDay = Math.round(btDay) <= 0 ? 0 : Math.round(btDay);
+
 
                 vm.coumplatePercent= {
                     width : vm.tasks.length == 0 ? '0%' : Math.floor(vm.info.completeCount / vm.tasks.length * 100) + '%'
                 };
 
+                $log.debug("vm.counts ", vm.counts)
                 $scope.pieData = [
                     {
                         key: "지연",
@@ -212,6 +233,13 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                         callback: function () {
                             chartFiltering('complete');
                         }
+                    },
+                    {
+                        key: "취소",
+                        y: vm.counts.cancelCount,
+                        callback: function () {
+                            chartFiltering('cancel');
+                        }
                     }
                 ];
 
@@ -224,7 +252,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                         showLabels: true, //그래프 내에 표시될 텍스트 노출 유무
                         duration: 500,
                         donut : true,
-                        title: "총 "+(vm.counts.delayedCount + vm.counts.holdCount + vm.counts.inProgressCount + vm.counts.completeCount)+"건",
+                        title: "총 "+(vm.counts.delayedCount + vm.counts.holdCount + vm.counts.inProgressCount + vm.counts.completeCount + vm.counts.cancelCount)+"건",
                         labelThreshold: 0.01,
                         labelSunbeamLayout: false, // 그래프 내 텍스트 회전 옵션
                         showLegend: false
@@ -250,6 +278,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                         }
                     }
                 };
+
             }
             function onError(error) {
                 AlertService.error(error.data.message);
@@ -262,6 +291,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 $scope.holdYn = false;
                 $scope.inProgressYn = false;
                 $scope.completeYn = false;
+                $scope.delayYn = false;
                 $scope.delayYn = false;
                 if(type == 'delay'){
                     $scope.delayYn = true;
@@ -281,9 +311,12 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 projectId : $stateParams.id
             }
 
+            /* 작업 생성 */
             function projectTaskAdd(){
                 projectIdPush()
-                if(vm.task.name != '') Task.save({name : vm.task.name, projectId : vm.task.projectId}, onSaveSuccess, onSaveError);
+                if(vm.task.name != '') {
+                    Task.save({name : vm.task.name, projectId : vm.task.projectId}, onSaveSuccess, onSaveError);
+                }
             }
             function onSaveSuccess (result) {
                 vm.reloadYn = true;

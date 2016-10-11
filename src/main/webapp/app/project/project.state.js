@@ -34,6 +34,7 @@
                 projectForm : function($stateParams, ProjectInfo){
                     return ProjectInfo.get({
                         projectId : $stateParams.id,
+                        statusId : 1,
                         page: 0,
                         size: 12,
                         sort: 'desc'
@@ -190,6 +191,35 @@
                     return $translate.refresh();
                 }]
             }
+        })
+        .state('my-project.taskDetailPopup', {
+            data: {
+                authorities: ['ROLE_USER'],
+                title : '작업 상세'
+            },
+            params : {
+                popupId : '',
+                popupListType : ''
+            },
+            onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
+                var params = $stateParams;
+                $uibModal.open({
+                    templateUrl: 'app/task/html/modal/taskDetailPopup.html',
+                    controller: 'TaskDetailCtrl',
+                    controllerAs: 'vm',
+                    backdrop: 'static',
+                    size: 'lg',
+                    resolve: {
+                        entity: ['$stateParams', 'Task', function($stateParams, Task) {
+                            return Task.get({id : params.popupId}).$promise;
+                        }]
+                    }
+                }).result.then(function() {
+                    //$state.go("my-task.detail", {}, {reload : 'my-task.detail'});
+                }).result.finally(function() {
+                    $state.go('^');
+                });
+            }]
         })
     }
 
