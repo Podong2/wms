@@ -1,9 +1,6 @@
 package kr.wisestone.wms.repository.dao;
 
-import kr.wisestone.wms.web.rest.dto.ProjectDTO;
-import kr.wisestone.wms.web.rest.dto.ProjectManagedAttachedFileDTO;
-import kr.wisestone.wms.web.rest.dto.TaskDTO;
-import kr.wisestone.wms.web.rest.dto.TaskStatisticsDTO;
+import kr.wisestone.wms.web.rest.dto.*;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -19,6 +16,10 @@ public class ProjectDAO {
 
     public List<ProjectManagedAttachedFileDTO> getProjectManagedAttachedFile(Map<String, Object> condition) {
         return sqlSession.selectList("kr.wisestone.wms.domain.Project.getProjectManagedAttachedFile", condition);
+    }
+
+    public List<ProjectHistoryListDTO> getProjectHistoryLists(Map<String, Object> condition) {
+        return sqlSession.selectList("kr.wisestone.wms.domain.Project.getProjectHistoryLists", condition);
     }
 
     public ProjectDTO getProject(Map<String, Object> condition) {

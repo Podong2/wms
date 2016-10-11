@@ -131,7 +131,7 @@
         });
     }
     function ProjectList($resource) {
-        var resourceUrl =  'api/projects/statistics';
+        var resourceUrl =  'api/projects/dashboard';
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},

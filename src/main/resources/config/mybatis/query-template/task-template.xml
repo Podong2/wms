@@ -20,6 +20,7 @@
         <result property="endDate" column="endDate"/>
         <result property="attachedFileExistYn" column="attachedFileExistYn"/>
         <result property="templateYn" column="templateYn"/>
+        <result property="privateYn" column="privateYn"/>
         <result property="importantYn" column="importantYn"/>
         <result property="parentId" column="parentId"/>
         <result property="createdBy" column="createdBy"/>
@@ -358,8 +359,6 @@
             LEFT JOIN owl_code tc ON t.status_id = tc.id
             LEFT OUTER JOIN owl_task_project tpr ON tpr.task_id = t.id
             LEFT JOIN owl_project tp ON tp.id = tpr.project_id
-            LEFT OUTER JOIN owl_task_user tu ON tu.task_id = t.id AND tu.user_type = 'ASSIGNEE'
-            LEFT JOIN owl_user u ON tu.user_id = u.id
             LEFT OUTER JOIN owl_task_repeat_schedule trs ON trs.task_id = t.id
             ORDER BY t.orderTarget DESC, t.end_date ASC, t.start_date ASC, t.name ASC
     </select>
@@ -438,7 +437,7 @@
             ORDER BY t.name ASC
     </select>
 
-    <select id="getProjectTasks" resultType="java.util.ArrayList" resultMap="taskListResultMap" parameterType="java.util.HashMap">
+    <select id="getProjectTasksByIncludePrivate" resultType="java.util.ArrayList" resultMap="taskListResultMap" parameterType="java.util.HashMap">
         SELECT t.id as id, t.name as name, t.start_date as startDate, t.end_date as endDate, tc.id as statusId, tc.name as statusName
             , t.created_by as createdBy, t.created_date as createdDate, t.last_modified_by as lastModifiedBy, t.last_modified_date as lastModifiedDate
             , CASE
@@ -478,14 +477,6 @@
                      open="(" separator="," close=")">
                 #{item}
             </foreach>
-        </if>
-
-        <if test="excludePrivate != null and excludePrivate == true">
-            AND t.private_yn = 'N'
-        </if>
-
-        <if test="projectHistoryYn != null and projectHistoryYn == true">
-            ORDER BY t.last_modified_date DESC
         </if>
     </select>
 

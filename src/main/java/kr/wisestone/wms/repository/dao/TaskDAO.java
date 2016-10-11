@@ -24,8 +24,8 @@ public class TaskDAO {
         return sqlSession.selectList("kr.wisestone.wms.domain.Task.getTasksByCondition", condition);
     }
 
-    public List<TaskDTO> getProjectTasks(Map<String, Object> condition) {
-        return sqlSession.selectList("kr.wisestone.wms.domain.Task.getProjectTasks", condition);
+    public List<TaskDTO> getProjectTasksByIncludePrivate(Map<String, Object> condition) {
+        return sqlSession.selectList("kr.wisestone.wms.domain.Task.getProjectTasksByIncludePrivate", condition);
     }
 
     public List<TaskDTO> getProjectManagedTasks(Map<String, Object> condition) {

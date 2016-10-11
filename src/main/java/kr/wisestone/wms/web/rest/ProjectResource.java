@@ -176,9 +176,9 @@ public class ProjectResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<TaskDTO>> findHistoryTasks(@ModelAttribute ProjectTaskCondition projectTaskCondition) {
+    public ResponseEntity<List<ProjectHistoryListDTO>> findHistoryTasks(@ModelAttribute ProjectTaskCondition projectTaskCondition) {
         log.debug("REST request to get Project : {}", projectTaskCondition.getProjectId());
-        List<TaskDTO> taskDTOs = projectService.findHistoryTasks(projectTaskCondition.getProjectId());
+        List<ProjectHistoryListDTO> taskDTOs = projectService.findHistoryTasks(projectTaskCondition.getProjectId());
 
         return Optional.ofNullable(taskDTOs)
             .map(result -> new ResponseEntity<>(
@@ -187,20 +187,28 @@ public class ProjectResource {
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
+    @RequestMapping(value = "/projects/statistics",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<ProjectTaskManageDTO> getProjectStatistics(@ModelAttribute ProjectTaskCondition projectTaskCondition) {
+        log.debug("REST request to get Project : {}", projectTaskCondition.getProjectId());
+
+        ProjectTaskManageDTO projectTaskManageDTO = projectService.getProjectStatistics(projectTaskCondition);
+
+        return new ResponseEntity<>(projectTaskManageDTO, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/projects/findManagedTasks",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<ProjectTaskManageDTO> findManagedProjectTasks(@ModelAttribute ProjectTaskCondition projectTaskCondition, Pageable pageable) {
+    public ResponseEntity<List<TaskDTO>> findManagedProjectTasks(@ModelAttribute ProjectTaskCondition projectTaskCondition, Pageable pageable) {
         log.debug("REST request to get Project : {}", projectTaskCondition.getProjectId());
-
-        ProjectDTO projectDTO = projectService.findOne(projectTaskCondition.getProjectId());
 
         List<TaskDTO> taskDTOs = projectService.findAllTasks(projectTaskCondition, pageable);
 
-        return new ResponseEntity<>(
-                new ProjectTaskManageDTO(projectDTO, taskDTOs),
-                HttpStatus.OK);
+        return new ResponseEntity<>(taskDTOs, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/projects/findManagedAttachedFiles/{id}",
@@ -252,7 +260,7 @@ public class ProjectResource {
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @RequestMapping(value = "/projects/statistics",
+    @RequestMapping(value = "/projects/dashboard",
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed

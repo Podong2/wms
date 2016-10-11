@@ -491,7 +491,39 @@ public class ProjectService {
     }
 
     @Transactional(readOnly = true)
-    public List<TaskDTO> findHistoryTasks(Long projectId) {
+    public ProjectTaskManageDTO getProjectStatistics(ProjectTaskCondition projectTaskCondition) {
+
+        ProjectDTO projectDTO = this.findOne(projectTaskCondition.getProjectId());
+
+        Project project = projectRepository.findOne(projectTaskCondition.getProjectId());
+
+        if(project == null)
+            throw new CommonRuntimeException("error.project.notFound");
+
+        List<Long> projectIds = getChildProjectIds(project);
+
+        Map<String, Object> condition = Maps.newHashMap(ImmutableMap.<String, Object>builder().
+            put("projectIds", projectIds).
+            build());
+
+        if(projectTaskCondition.getStatusId() != null)
+            condition.put("statusId", projectTaskCondition.getStatusId());
+
+        condition.put("listType", projectTaskCondition.getListType());
+        condition.put("statusType", projectTaskCondition.getStatusType());
+
+        if(projectTaskCondition.getListType().equalsIgnoreCase(ProjectTaskCondition.LIST_TYPE_WEEK)) {
+            condition.put("weekStartDate", DateUtil.getWeekStartDate());
+            condition.put("weekEndDate", DateUtil.getWeekEndDate());
+        }
+
+        List<TaskDTO> taskDTOs = this.taskDAO.getProjectManagedTasks(condition);
+
+        return new ProjectTaskManageDTO(projectDTO, taskDTOs);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProjectHistoryListDTO> findHistoryTasks(Long projectId) {
 
         Project project = projectRepository.findOne(projectId);
 
@@ -502,10 +534,9 @@ public class ProjectService {
 
         Map<String, Object> condition = Maps.newHashMap();
         condition.put("projectIds", projectIds);
-        condition.put("projectHistoryYn", Boolean.TRUE);
-        condition.put("excludePrivate", Boolean.TRUE);
+        condition.put("projectId", projectId);
 
-        List<TaskDTO> taskDTOs = taskDAO.getProjectTasks(condition);
+        List<ProjectHistoryListDTO> taskDTOs = projectDAO.getProjectHistoryLists(condition);
 
         return taskDTOs;
     }
@@ -617,9 +648,8 @@ public class ProjectService {
 
         Map<String, Object> condition = Maps.newHashMap();
         condition.put("projectIds", projectIds);
-        condition.put("excludePrivate", Boolean.FALSE);
 
-        List<TaskDTO> taskDTOs = taskDAO.getProjectTasks(condition);
+        List<TaskDTO> taskDTOs = taskDAO.getProjectTasksByIncludePrivate(condition);
 
         return taskDTOs;
     }

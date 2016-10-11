@@ -4,6 +4,31 @@
 
 <mapper namespace="kr.wisestone.wms.domain.Project">
 
+
+    <resultMap id="projectHistoryListResultMap" type="kr.wisestone.wms.web.rest.dto.ProjectHistoryListDTO">
+        <id property="id" column="id" />
+        <result property="taskId" column="taskId" />
+        <result property="name" column="name"/>
+        <result property="statusId" column="statusId"/>
+        <result property="statusName" column="statusName"/>
+        <result property="startDate" column="startDate"/>
+        <result property="endDate" column="endDate"/>
+        <result property="parentId" column="parentId"/>
+        <result property="createdBy" column="createdBy"/>
+        <result property="createdByName" column="createdByName"/>
+        <result property="createdByImageId" column="createdByImageId"/>
+        <result property="createdDate" column="createdDate"/>
+        <result property="lastModifiedBy" column="lastModifiedBy"/>
+        <result property="lastModifiedDate" column="lastModifiedDate"/>
+        <result property="sharedAttachedFileId" column="sharedAttachedFileId"/>
+        <result property="sharedAttachedFileName" column="sharedAttachedFileName"/>
+        <result property="sharedAttachedFileContentType" column="sharedAttachedFileContentType"/>
+        <result property="sharedAttachedFileSize" column="sharedAttachedFileSize"/>
+        <result property="historyType" column="historyType"/>
+        <collection property="assignees" select="getTaskAssignees" column="taskId" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.UserDTO"/>
+        <collection property="taskProjects" select="getTaskProjects" column="taskId" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.ProjectDTO"/>
+    </resultMap>
+
     <resultMap id="projectManagedAttachedFileResultMap" type="kr.wisestone.wms.web.rest.dto.ProjectManagedAttachedFileDTO">
         <result property="location" column="location"/>
         <result property="locationType" column="locationType"/>
@@ -64,6 +89,27 @@
         <result property="lastModifiedBy" column="lastModifiedBy"/>
         <result property="lastModifiedDate" column="lastModifiedDate"/>
     </resultMap>
+
+    <select id="getTaskProjects" resultMap="projectResultMap">
+        SELECT p.id as id, p.name as name
+        , CASE
+        WHEN p.folder_yn = 'Y' THEN true
+        WHEN p.folder_yn = 'N' THEN false
+        END as folderYn
+        , p.created_by as createdBy, p.created_date as createdDate
+        , p.last_modified_by as lastModifiedBy, p.last_modified_date as lastModifiedDate
+        FROM owl_project p
+        WHERE p.id IN (SELECT tp.project_id FROM owl_task_project tp WHERE tp.task_id = #{taskId})
+    </select>
+
+    <select id="getTaskAssignees" resultMap="userResultMap">
+        SELECT u.id as id, u.name as name, u.profile_image_id as profileImageId, u.phone as phone, u.email as email, u.login as login
+        , u.created_by as createdBy, u.created_date as createdDate
+        , u.last_modified_by as lastModifiedBy, u.last_modified_date as lastModifiedDate
+        FROM owl_user u
+        INNER JOIN owl_task_user tu ON u.id = tu.user_id AND tu.task_id = #{taskId} and tu.user_type = 'ASSIGNEE'
+        ORDER BY tu.id ASC
+    </select>
 
     <select id="getProjectAdmins" resultMap="userResultMap">
         SELECT u.id as id, u.name as name, u.profile_image_id as profileImageId, u.phone as phone, u.email as email, u.login as login
@@ -217,6 +263,46 @@
             </foreach>
         </if>
         AND tl.reply_yn = 'Y'
+    </select>
+
+    <select id="getProjectHistoryLists" resultType="java.util.ArrayList" resultMap="projectHistoryListResultMap" parameterType="java.util.HashMap">
+        SELECT h.id, h.taskId, h.name, h.startDate, h.endDate, h.statusId, h.statusName
+            , h.createdBy, h.createdByName, h.createdByImageId, h.createdDate, h.lastModifiedBy, h.lastModifiedDate, h.parentId
+            , h.sharedAttachedFileId, h.sharedAttachedFileName, h.sharedAttachedFileContentType, h.sharedAttachedFileSize
+            , h.historyType
+        FROM (
+            SELECT t.id as id, t.id as taskId, t.name as name, t.start_date as startDate, t.end_date as endDate, tc.id as statusId, tc.name as statusName
+                , t.created_by as createdBy, cu.name as createdByName, cu.profile_image_id as createdByImageId, t.created_date as createdDate, t.last_modified_by as lastModifiedBy, t.last_modified_date as lastModifiedDate
+                , t.parent_id as parentId
+                , null as sharedAttachedFileId, '' as sharedAttachedFileName, '' as sharedAttachedFileContentType, null as sharedAttachedFileSize
+                , 'TASK' as historyType
+            FROM owl_task t
+                LEFT JOIN owl_code tc ON t.status_id = tc.id
+                LEFT OUTER JOIN owl_task_project tpr ON tpr.task_id = t.id
+                LEFT JOIN owl_project tp ON tp.id = tpr.project_id
+                INNER JOIN owl_user cu ON t.created_by = cu.login
+            WHERE 1=1
+            <if test="projectIds != null">
+                AND tpr.project_id IN
+                <foreach item="item" index="index" collection="projectIds"
+                         open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </if>
+            UNION ALL
+            SELECT psaf.id as id
+                , null as taskId, '' as name, '' as startDate, '' as endDate, null as statusId, '' as statusName
+                , psaf.created_by as createdBy, cu.name as createdByName, cu.profile_image_id as createdByImageId, psaf.created_date as createdDate
+                , psaf.last_modified_by as lastModifiedBy, psaf.last_modified_date as lastModifiedDate
+                , null as parentId
+                , af.id as sharedAttachedFileId, af.name as sharedAttachedFileName, af.content_type as sharedAttachedFileContentType, af.size as sharedAttachedFileSize
+                , 'SHARED_ATTACHED_FILE' as historyType
+            FROM owl_project_shared_attached_file psaf
+                LEFT JOIN owl_attached_file af ON psaf.attached_file_id = af.id
+                LEFT JOIN owl_user cu ON psaf.created_by = cu.login
+            WHERE psaf.project_id = #{projectId}
+        ) as h
+        ORDER BY h.lastModifiedDate DESC
     </select>
 
 </mapper>
