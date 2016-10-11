@@ -42,7 +42,7 @@
                         projectId : $stateParams.id,
                         statusId : 1,
                         page: 0,
-                        size: 12,
+                        size: 15,
                         sort: 'desc'
                     }).$promise;
                 }
