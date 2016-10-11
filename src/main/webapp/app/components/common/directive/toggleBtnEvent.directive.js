@@ -9,6 +9,7 @@ angular.module('wmsApp')
     .directive('userPickerBtnToggle', userPickerBtnToggle)
     .directive('watcherPickerBtnToggle', watcherPickerBtnToggle)
     .directive('watcherInfoBtnToggle', watcherInfoBtnToggle)
+    .directive('memberInfoBtnToggle', memberInfoBtnToggle)
     .directive('relatedTaskPickerBtnToggle', relatedTaskPickerBtnToggle)
     .directive('subTaskUserInfoBtnToggle', subTaskUserInfoBtnToggle)
     .directive('commonPopupToggle', commonPopupToggle)
@@ -23,6 +24,7 @@ projectAddToggle.$inject=['$timeout', '$rootScope'];
 userPickerBtnToggle.$inject=['$timeout'];
 watcherPickerBtnToggle.$inject=['$rootScope', '$timeout'];
 watcherInfoBtnToggle.$inject=['$rootScope', '$timeout'];
+memberInfoBtnToggle.$inject=['$rootScope', '$timeout'];
 relatedTaskPickerBtnToggle.$inject=['$rootScope', '$timeout'];
 subTaskUserInfoBtnToggle.$inject=['$rootScope', '$timeout'];
 commonPopupToggle.$inject=['$rootScope', '$timeout'];
@@ -428,6 +430,43 @@ function subTaskUserInfoBtnToggle($rootScope, $timeout) {
                             $($elements).parents('li').find('.watcher-picker-info').removeClass("on");
                         }else{
                             $elements.parents('li').find('.watcher-picker-info').addClass("on");
+                        }
+                    }, 100);
+
+                }
+            });
+
+        }
+    }
+}
+
+/**
+ * 참조자 정보 팝업 토글
+ * @param $timeout
+ * @returns {{restrict: string, link: link}}
+ */
+function memberInfoBtnToggle($rootScope, $timeout) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attr) {
+            var $elements = element.parents('.member-list-items').children('.watcher-picker-info');
+            element.on('click', function(_this) {
+                $timeout(function(){
+                    $($elements).addClass("on");
+                }, 100);
+            });
+            $rootScope.$on('profileClose', function(){
+                $timeout(function(){
+                    $($elements).removeClass("on");
+                }, 100);
+            });
+            $('body').click(function (e) {
+                if ($($elements).has(e.target).length) {
+                    $elements.addClass("on");
+                }else{
+                    $timeout(function () {
+                        if (!$('.watcher-item').has(e.target).length) {
+                            $($elements).removeClass("on");
                         }
                     }, 100);
 
