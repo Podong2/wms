@@ -811,7 +811,8 @@
                 $rootScope.$broadcast('projectEditClose');
                 //$rootScope.$broadcast('relatedTaskPopupClose');
                 $log.debug("response.data : ", response.data)
-                $rootScope.$broadcast('taskReload', response.data);
+                if($stateParams.parentType != undefined && $stateParams.parentType == 'project') $rootScope.$broadcast('projectReload', response.data);
+                else  $rootScope.$broadcast('taskReload', response.data);
                 vm.task.removeAssigneeIds = "";
                 vm.task.removeWatcherIds = "";
                 vm.task.removeRelatedTaskIds ="";
@@ -823,7 +824,8 @@
                 vm.repeatClose(); // 반복설정 팝업 닫기
                 $scope.files = [];
                 if(vm.uploadType == '') {
-                    $state.go("my-task.detail", {}, {reload : 'my-task.detail'});
+                    if($stateParams.parentType != undefined && $stateParams.parentType == 'project') $state.go("my-project.taskDetail", {}, {reload : 'my-project.taskDetail'});
+                    else $state.go("my-task.detail", {}, {reload : 'my-task.detail'});
                 }
                 else {
                     getTaskInfo();

@@ -97,7 +97,7 @@
                         관리자
                     </td>
                     <td colspan="4">
-                        <autocomplete template-url="ngTagsInput/tag-item-user.html" source="findUsers" tags="vm.project.projectAdmins" display-property="name" multiple="true"
+                        <autocomplete template-url="ngTagsInput/tag-item-user.html" source="findUsers" tags="vm.project.projectAdmins" display-property="id" multiple="true"
                                       max-results-to-show="20" tag-type="projectAdminIds" modify-yn="{{vm.project.modifyYn}}" project-yn="false"></autocomplete>
                     </td>
                     <!--<td>-->
@@ -525,9 +525,7 @@
             <tbody>
             <tr>
                 <td>
-                    <a ng-click="vm.commentFileAreaOpen = !vm.commentFileAreaOpen">
-                        <i class="fa fa-paperclip"></i>
-                    </a>
+                    <label for="input-5" class="cursor"><i class='fa fa-paperclip'></i></label>
                 </td>
                 <td>
                     <summernote ng-model="vm.comment.contents" on-init="init()" on-enter="enter()" on-focus="focus(evt)" config="dataService.getSummerNoteOptions(false)"
@@ -544,15 +542,7 @@
         </table>
     </div>
     <div class="task-file-area" ng-class="vm.commentFileAreaOpen ? 'on' : ''">
-        <div class="file-header-area">
-            <ul>
-                <li>파일 ({{commentFiles.length}})</li>
-                <li><label for="input-5" class="cursor"><i class='fa fa-paperclip'></i></label></li>
-                <li></li>
-                <li></li>
-            </ul>
-        </div>
-        <input id="input-5" name="input5[]" type="file" multiple class="file-loading" get-files file-type="comment">
+        <input id="input-5" name="input5[]" type="file" multiple class="file-loading" get-files file-type="comment" data-show-preview="false">
     </div>
 </div>
 

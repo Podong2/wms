@@ -15,6 +15,7 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
             vm.taskDetailModalOpen = taskDetailModalOpen;
             vm.filterSearch = filterSearch;
             //vm.showDetail = showDetail;
+            vm.pageType = 'task';
 
             // page 파라미터
             vm.params = {

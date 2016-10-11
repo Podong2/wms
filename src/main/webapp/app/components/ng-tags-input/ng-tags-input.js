@@ -1219,7 +1219,7 @@ tagsInput.factory('tiUtil', ["$timeout", "$q", function($timeout, $q) {
     };
 
     self.replaceSpacesWithDashes = function(str) {
-        return self.safeToString(str).replace(/\s/g, '-');
+        return self.safeToString(str); // hsy .replace(/\s/g, '-')
     };
 
     self.isModifierOn = function(event) {
@@ -1277,7 +1277,7 @@ tagsInput.run(["$templateCache", function($templateCache) {
     "</div>" +
     "<div class=\"tags\" ng-class=\"{focused: hasFocus}\">" +
     "<ul class=\"tag-list\">" +
-    "<li class=\"tag-item\" ng-repeat=\"tag in tagList.items track by track(tag)\" ng-class=\"getTagClass(tag, $index)\" ng-click=\"eventHandlers.tag.click(tag, $event)\" style='position: relative;'>" +
+    "<li class=\"tag-item\" ng-repeat=\"tag in tagList.items track by $index\" ng-class=\"getTagClass(tag, $index)\" ng-click=\"eventHandlers.tag.click(tag, $event)\" style='position: relative;'>" +
     "<ti-tag-item scope=\"templateScope\" data=\"::tag\" tag-list=\"::tagList.items\" modify-yn='::modifyYn'></ti-tag-item>" +
     "</li>" +
     "</ul>" +
@@ -1285,7 +1285,7 @@ tagsInput.run(["$templateCache", function($templateCache) {
     "<input maxlength=\"20\" class=\"input user-picker-input user-picker-input-area\" ng-show='projectYn == \"false\" && modifyYn == \"true\"' wms-kr-update autocomplete=\"off\" ng-model=\"newTag.text\" ng-model-options=\"{getterSetter: true}\" ng-keydown=\"eventHandlers.input.keydown($event)\" ng-focus=\"eventHandlers.input.focus($event)\" ng-blur=\"eventHandlers.input.blur($event)\" ng-paste=\"eventHandlers.input.paste($event)\" ng-trim=\"false\" ng-class=\"{'invalid-tag': newTag.invalid}\" ng-disabled=\"disabled\" ti-bind-attrs=\"{type: options.type, placeholder: options.placeholder, tabindex: options.tabindex, spellcheck: options.spellcheck}\" ti-autosize>" +
     "</span>" +
     "<input maxlength=\"20\" class=\"input user-picker-input\" style='border-bottom: 1px solid #ddd' ng-show='projectYn == \"true\" && tagList.items.length == 0' wms-kr-update autocomplete=\"off\" ng-model=\"newTag.text\" ng-model-options=\"{getterSetter: true}\" ng-keydown=\"eventHandlers.input.keydown($event)\" ng-focus=\"eventHandlers.input.focus($event)\" ng-blur=\"eventHandlers.input.blur($event)\" ng-paste=\"eventHandlers.input.paste($event)\" ng-trim=\"false\" ng-class=\"{'invalid-tag': newTag.invalid}\" ng-disabled=\"disabled\" ti-bind-attrs=\"{type: options.type, placeholder: options.placeholder, tabindex: options.tabindex, spellcheck: options.spellcheck}\">" +
-    "</div></div>"
+    "</div></div>"// 동명이인 문제로 track by track(tag) ->> $index
   );
 
     // hsy 태그 아이템 템플릿 영역 커스텀
@@ -1295,10 +1295,10 @@ tagsInput.run(["$templateCache", function($templateCache) {
     "<img ng-src='/api/attachedFile/{{data.profileImageId}}' ng-if='data.profileImageId !=null' /><img ng-src='/content/images/demo/male.png' ng-if='data.profileImageId ==null' />" +
     "</div>" +
     "<div class='right-panel' close-btn-display>" +
-    "<span>{{$getDisplayText()}}</span><!-- ng-show='tagList.length < 4'-->" +
+    "<span>{{data.name}}</span><!-- ng-show='tagList.length < 4'-->" +
     "<a ng-if='modifyYn == \"true\"' class='remove-button ng-tag-input-remove-button close-btn' ng-click='$removeTag()'>&#10006;</a>" +
     "</div>" +
-    "</div>"
+    "</div>"// 동명이인 문제로 $getDisplayText() -> name 출력
   );
 
     // hsy 태그 아이템 템플릿 영역 커스텀
@@ -1317,8 +1317,8 @@ tagsInput.run(["$templateCache", function($templateCache) {
   $templateCache.put('ngTagsInput/auto-complete.html',
     "<div class=\"autocomplete\" ng-if=\"suggestionList.visible\">" +
     "<ul class=\"suggestion-list\">" +
-    "<li class=\"suggestion-item\" ng-repeat=\"item in suggestionList.items track by track(item)\" ng-class=\"getSuggestionClass(item, $index)\" ng-click=\"addSuggestionByIndex($index)\" ng-mouseenter=\"suggestionList.select($index)\"><ti-autocomplete-match scope=\"templateScope\" data=\"::item\"></ti-autocomplete-match></li>" +
-    "</ul></div>"
+    "<li class=\"suggestion-item\" ng-repeat=\"item in suggestionList.items track by $index\" ng-class=\"getSuggestionClass(item, $index)\" ng-click=\"addSuggestionByIndex($index)\" ng-mouseenter=\"suggestionList.select($index)\"><ti-autocomplete-match scope=\"templateScope\" data=\"::item\"></ti-autocomplete-match></li>" +
+    "</ul></div>"// 동명이인 문제로 track by track(item) ->> $index
   );
 
     // hsy 옵션 템플릿 영역 커스텀
@@ -1327,7 +1327,7 @@ tagsInput.run(["$templateCache", function($templateCache) {
     "<img ng-src='/api/attachedFile/{{data.profileImageId}}' ng-if='data.profileImageId !=null' /><img ng-src='/content/images/demo/male.png' ng-if='data.profileImageId ==null' />" +
     "</div>" +
     "<div class='right-panel'>" +
-    "<span ng-bind-html='$highlight($getDisplayText())'></span>" +
+    "<span ng-bind-html='$highlight(data.name)'></span>" +
     "<span>{{data.email}}</span>" +
     "</div>"
   );
