@@ -31,6 +31,7 @@
         var service = {
             findByName : findByName
             , findByNameAndExcludeIds : findByNameAndExcludeIds
+            , findByProjectMemberAndExcludeIds : findByProjectMemberAndExcludeIds
         }
         return service;
 
@@ -54,6 +55,18 @@
             }).success(function (result) {
                 deferred.resolve(result);
                 $log.debug("find by Tasks : ", result);
+            });
+            return deferred.promise;
+        }
+
+        function findByProjectMemberAndExcludeIds(name, projectId, excludeIds){
+            var deferred = $q.defer();
+            $http({
+                url :'/api/users/findProjectMember',
+                params : {name : name, projectId : projectId, excludeIds : excludeIds}
+            }).success(function (result) {
+                deferred.resolve(result);
+                $log.debug("find by project members : ", result);
             });
             return deferred.promise;
         }

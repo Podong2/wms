@@ -14,7 +14,8 @@
         return {
             restrict: 'A',
             scope : {
-                inputValue : '=inputValue'
+                inputValue : '=inputValue',
+                elementAdd : '&'
             },
             replace: false,
             link: function (scope, element, attrs) {
@@ -54,7 +55,11 @@
                                 event.preventDefault();
                             }
                         } else if (event.keyCode === 13) {
-                            scope.my_tree_grid.remove_node();
+                            var elementValues = {
+                                id : ''
+                            }
+                            elementValues.id = $('.arrow-event-li.active').data('id');
+                            scope.elementAdd()(elementValues);
                             event.preventDefault();
                         }else{
                             $timeout(function(){

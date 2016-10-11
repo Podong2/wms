@@ -3233,6 +3233,7 @@ text-align: right;
     overflow: hidden;
     overflow-y: auto;
     max-height: 188px;
+    height:188px;
 }
 .member-search-list-area .member-search-element:hover{
     background: #FFEEDC !important;
@@ -3255,6 +3256,12 @@ text-align: right;
     overflow-y: auto;
     max-height: 188px;
 }
+.member-list-area.on{
+    max-height: 155px !important;
+}
+.member-list-area .member-element.current{
+    background: #FFF3E4 !important;
+}
 .member-list-area .member-element:hover{
     background: #FFEEDC !important;
 }
@@ -3264,7 +3271,7 @@ text-align: right;
     padding: 7px 10px;
 }
 .member-list-area .member-element:first-child{
-    border-top: 0;
+    border-top: 0 !important;
 }
 .member-list-area .member-element img{
     width: 30px;
