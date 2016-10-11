@@ -27,6 +27,9 @@
         vm.watcherAdd = watcherAdd;
         vm.removeWatcher = removeWatcher;
         vm.getTraceLog = getTraceLog;
+        vm.commonPopupClose = commonPopupClose;
+        vm.memberAdd = memberAdd;
+        vm.removeMember = removeMember;
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
 
@@ -85,6 +88,12 @@
         vm.fileListYn = false;
         vm.watcherName = '';
         vm.DuplicationWatcherIds = [];
+
+        /* member관련 파라미터 */
+        vm.DuplicationMemberIds = [];
+        vm.memberSearchYn = false;
+        vm.memberFilter = '';
+        vm.currentMemberIds= [];
 
         var previewFile = {
             caption: '',
@@ -289,6 +298,11 @@
                 projectUpload();
             }
         });
+        $scope.$watchCollection('vm.project.projectMembers', function(newValue, oldValue){
+            if(newValue != undefined && oldValue !== newValue && oldValue.length < newValue.length) {
+                projectUpload();
+            }
+        });
         $scope.$watchCollection('vm.project.parentProjectIds', function(newValue, oldValue){
             if(newValue != undefined && oldValue !== newValue) {
                 vm.projectReload = true;
@@ -321,6 +335,7 @@
         function projectUpload(){
             if(vm.project.projectAdmins != [])userIdPush(vm.project.projectAdmins, "projectAdminIds");
             if(vm.project.projectWatchers != [])userIdPush(vm.project.projectWatchers, "projectWatcherIds");
+            if(vm.project.projectMembers != [])userIdPush(vm.project.projectMembers, "projectMemberIds");
 
             $log.debug("vm.project update ;::::::", vm.project);
             ProjectEdit.uploadProject({
@@ -335,6 +350,7 @@
                 $rootScope.$broadcast('projectEditClose');
                 vm.project.removeAssigneeIds = "";
                 vm.project.removeProjectWatcherIds = "";
+                vm.project.removeProjectMemberIds = "";
                 vm.project.removeRelatedTaskIds ="";
                 vm.project.projectAdminIds = "";
                 vm.project.projectUserIds = "";
@@ -357,6 +373,20 @@
             vm.dueDateTo.date = DateUtils.toDate(vm.responseProjectData.endDate);
             setProjectAttachedFiles();
             vm.project.modifyYn = true;// 임시
+
+            if(vm.uploadType == 'member'){ // 업로드 타입이 맴버 일 시 맴버 목록 리로드
+                $scope.pickerFindMember(vm.memberName);
+                vm.uploadType = '';
+                if(vm.currentMemberIds.length > 0){
+                    angular.forEach(vm.currentMemberIds, function(id, index){
+                        angular.forEach(vm.project.projectMembers, function(member){
+                            if(id == member.id){
+                                member.currentYn = true;
+                            }
+                        })
+                    })
+                }
+            }
         }
         function onError(){
 
@@ -667,6 +697,56 @@
         //        }));
         //    }
         //}
+
+
+        function commonPopupClose(){
+            $rootScope.$broadcast("commonPopupClose");
+        }
+
+        // 맴버 데이터 주입
+        function memberAdd(member){
+            vm.uploadType = 'member';
+            vm.currentMemberIds.push(member.id)
+            vm.project.projectMembers.push(member);
+            $scope.$apply();
+            //$scope.pickerFindMember(vm.memberName);
+            //$rootScope.$broadcast('watcherPopupClose');
+        }
+
+        // 맴버 명 실시간 검색
+        $scope.$watchCollection('vm.memberName', function(newValue){
+            if(newValue != '' && newValue != undefined){
+                $log.debug("vm.memberName : ", newValue);
+                vm.memberName = newValue;
+                if(vm.memberName != '') $scope.pickerFindMember(vm.memberName);
+            }
+        });
+
+        /* member picker */
+        $scope.pickerFindMember = function(name) {
+
+            var userIds = [];
+            angular.forEach(vm.project.projectMembers, function(val){
+                userIds.push(val.id);
+            });
+
+            var excludeUserIds = userIds.join(",");
+            vm.DuplicationMemberIds = excludeUserIds;
+
+            findUser.findByProjectMemberAndExcludeIds(name, vm.project.id, excludeUserIds).then(function(result){
+                $log.debug("memberList : ", result);
+                vm.memberList = result;
+            }); //user search
+        };
+
+        // 맴버 데이터 제거
+        function removeMember(member){
+            vm.uploadType = 'member';
+            vm.project.removeProjectMemberIds = member.id;
+            projectUpload();
+            //$scope.pickerFindMember(vm.memberName);
+        }
+
 
 
 

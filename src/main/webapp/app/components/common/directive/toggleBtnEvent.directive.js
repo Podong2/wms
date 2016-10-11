@@ -452,7 +452,9 @@ function commonPopupToggle($rootScope, $timeout) {
                 $($element.next()).addClass("on");
             });
             $rootScope.$on('commonPopupClose', function(){
-                $($element.next()).removeClass("on");
+                $timeout(function(){
+                    $($element.next()).removeClass("on");
+                }, 100);
             })
             $('body').click(function (e) {
                 if (!$($element.parent()).has(e.target).length) {
