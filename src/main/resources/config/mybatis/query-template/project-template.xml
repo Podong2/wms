@@ -57,7 +57,7 @@
         <result property="createdDate" column="createdDate"/>
         <result property="lastModifiedBy" column="lastModifiedBy"/>
         <result property="lastModifiedDate" column="lastModifiedDate"/>
-        <collection property="projectParents" select="getParentProject" column="id" javaType="kr.wisestone.wms.web.rest.dto.ProjectDTO" />
+        <collection property="projectParents" select="getParentProject" column="id" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.ProjectDTO" />
         <collection property="attachedFiles" javaType="java.util.ArrayList" resultMap="attachedFileResultMap"/>
         <collection property="projectAdmins" select="getProjectAdmins" column="id" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.UserDTO"/>
         <collection property="projectWatchers" select="getProjectWatchers" column="id" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.UserDTO"/>
