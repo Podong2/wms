@@ -34,4 +34,6 @@ public class ProjectTaskCondition {
     private String orderType;
 
     private String statusType;
+
+    private String taskName;
 }

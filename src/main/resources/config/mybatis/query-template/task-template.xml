@@ -521,6 +521,9 @@
                 #{item}
             </foreach>
         </if>
+        <if test="taskName != null">
+            WHERE LOWER(t.name) LIKE LOWER('%'||#{taskName}||'%')
+        </if>
         <choose>
             <when test="listType == 'TOTAL'">
                 <if test="statusId != null">
