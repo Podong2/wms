@@ -6,6 +6,7 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mysema.query.BooleanBuilder;
+import com.mysema.query.types.OrderSpecifier;
 import kr.wisestone.wms.common.exception.CommonRuntimeException;
 import kr.wisestone.wms.common.util.DateUtil;
 import kr.wisestone.wms.domain.*;
@@ -33,9 +34,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.time.ZonedDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -115,16 +114,6 @@ public class ProjectService {
                 projectDTO.setAdminYn(Boolean.TRUE);
             }
         }
-
-//
-//        User user = userService.findByLogin(project.getCreatedBy());
-//        projectDTO.setCreatedByName(user.getName());
-//
-//        this.copyProjectRelationProperties(project, projectDTO);
-//
-//        if(!project.getProjectAttachedFiles().isEmpty()) {
-//            projectDTO.setAttachedFiles(project.getPlainProjectAttachedFiles().stream().map(AttachedFileDTO::new).collect(Collectors.toList()));
-//        }
 
         return projectDTO;
     }
@@ -295,6 +284,112 @@ public class ProjectService {
     }
 
     @Transactional(readOnly = true)
+    public List<ProjectStatisticsDTO> getProjectStatusList(Long statusId, String orderType) {
+
+        String login = SecurityUtils.getCurrentUserLogin();
+
+        QProject $project = QProject.project;
+
+        BooleanBuilder predicate = new BooleanBuilder();
+
+        if(statusId != null)
+            predicate.and($project.status.id.eq(statusId));
+
+        predicate.and($project.projectUsers.any().user.login.eq(login));
+
+        predicate.and($project.projectParents.isEmpty()
+            .or($project.projectParents.any().parent.projectUsers.any().user.login.ne(login))
+        );
+
+        List<OrderSpecifier> orderSpecifiers = Lists.newArrayList();
+
+        if(StringUtils.hasText(orderType)) {
+
+            if(orderType.equals("MODIFIED_DATE")) {
+                orderSpecifiers.add(QProject.project.lastModifiedBy.desc());
+            } else if(orderType.equals("TEXT_ASC")) {
+
+                orderSpecifiers.add(QProject.project.name.asc());
+            } else if(orderType.equals("TEXT_DESC")) {
+
+                orderSpecifiers.add(QProject.project.name.desc());
+            }
+        }
+
+        List<Project> projects = null;
+
+        if(orderSpecifiers.isEmpty()) {
+            projects = Lists.newArrayList(projectRepository.findAll(predicate));
+        } else {
+            projects = Lists.newArrayList(projectRepository.findAll(predicate, orderSpecifiers.toArray(new OrderSpecifier[orderSpecifiers.size()])));
+        }
+
+        List<ProjectStatisticsDTO> projectDTOs = Lists.newArrayList();
+
+        for(Project project : projects) {
+
+            if(isParentRelatedToLoginUser(project)) continue;
+
+            ProjectDTO projectDTO = this.findOne(project.getId());
+
+            List<TaskDTO> taskDTOs = this.findTasksByProjectIdsIncludePrivate(Lists.newArrayList(project.getId()));
+
+            Long taskCompleteCount = taskDTOs.stream().filter(taskDTO -> taskDTO.getStatusId().equals(Task.STATUS_COMPLETE)).count();
+            Long taskTotalCount = taskDTOs.stream().count();
+
+            ProjectStatisticsDTO projectStatisticsDTO = new ProjectStatisticsDTO(projectDTO, 0L, 0L, taskCompleteCount, taskTotalCount);
+
+            this.getChildProjectWithStatistics(projectStatisticsDTO, project.getProjectChilds(), orderType);
+
+            projectDTOs.add(projectStatisticsDTO);
+        }
+
+        return projectDTOs;
+    }
+
+    private void getChildProjectWithStatistics(ProjectStatisticsDTO parent, Set<ProjectRelation> projectChilds, String orderType) {
+
+        List<ProjectStatisticsDTO> childProjectDTOs = Lists.newArrayList();
+
+        for(ProjectRelation projectRelation : projectChilds) {
+
+            ProjectDTO projectDTO = this.findOne(projectRelation.getChild().getId());
+
+            List<TaskDTO> taskDTOs = this.findTasksByProjectIdsIncludePrivate(Lists.newArrayList(projectDTO.getId()));
+
+            Long taskCompleteCount = taskDTOs.stream().filter(taskDTO -> taskDTO.getStatusId().equals(Task.STATUS_COMPLETE)).count();
+            Long taskTotalCount = taskDTOs.stream().count();
+
+            ProjectStatisticsDTO projectStatisticsDTO = new ProjectStatisticsDTO(projectDTO, 0L, 0L, taskCompleteCount, taskTotalCount);
+
+            this.getChildProjectWithStatistics(projectStatisticsDTO, projectRelation.getChild().getProjectChilds(), orderType);
+
+            childProjectDTOs.add(projectStatisticsDTO);
+        }
+
+        if(StringUtils.hasText(orderType)) {
+
+            if(orderType.equals("MODIFIED_DATE")) {
+                Collections.sort(childProjectDTOs, (p1, p2) -> {
+
+                    Long p1Time = DateUtil.convertFromZonedDateTime(p1.getProject().getLastModifiedDate()).getTime();
+                    Long p2Time = DateUtil.convertFromZonedDateTime(p2.getProject().getLastModifiedDate()).getTime();
+
+                    return (int)(p1Time - p2Time);
+                });
+            } else if(orderType.equals("TEXT_ASC")) {
+
+                Collections.sort(childProjectDTOs, (p1, p2) -> p1.getProject().getName().compareTo(p2.getProject().getName()));
+            } else if(orderType.equals("TEXT_DESC")) {
+
+                Collections.sort(childProjectDTOs, (p1, p2) -> p2.getProject().getName().compareTo(p1.getProject().getName()));
+            }
+        }
+
+        parent.setProjectStatisticsChilds(childProjectDTOs);
+    }
+
+    @Transactional(readOnly = true)
     public List<ProjectDTO> findActiveProjects() {
 
         String login = SecurityUtils.getCurrentUserLogin();
@@ -317,7 +412,7 @@ public class ProjectService {
 
             if(isParentRelatedToLoginUser(project)) continue;
 
-            ProjectDTO projectDTO = projectMapper.projectToProjectDTO(project);
+            ProjectDTO projectDTO = new ProjectDTO(project);
 
             this.bindChildProjects(projectDTO, project.getProjectChilds());
 
@@ -353,7 +448,7 @@ public class ProjectService {
 
         for(ProjectRelation projectRelation : projectChilds) {
 
-            ProjectDTO projectDTO = projectMapper.projectToProjectDTO(projectRelation.getChild());
+            ProjectDTO projectDTO = new ProjectDTO(projectRelation.getChild());
 
             this.bindChildProjects(projectDTO, projectRelation.getChild().getProjectChilds());
 
@@ -408,6 +503,7 @@ public class ProjectService {
         Map<String, Object> condition = Maps.newHashMap();
         condition.put("projectIds", projectIds);
         condition.put("projectHistoryYn", Boolean.TRUE);
+        condition.put("excludePrivate", Boolean.TRUE);
 
         List<TaskDTO> taskDTOs = taskDAO.getProjectTasks(condition);
 
@@ -517,75 +613,14 @@ public class ProjectService {
         return this.attachedFileMapper.attachedFilesToAttachedFileDTOs(project.getPlainProjectSharedAttachedFiles());
     }
 
-    @Transactional(readOnly = true)
-    public List<ProjectStatisticsDTO> getProjectStatistics(String listType) {
-
-        String login = SecurityUtils.getCurrentUserLogin();
-
-        QProject $project = QProject.project;
-
-        BooleanBuilder predicate = new BooleanBuilder();
-
-        if("IN_PROGRESS".equalsIgnoreCase(listType)) {
-            predicate.and($project.status.id.eq(Project.STATUS_ACTIVE));
-        } else if("COMPLETION".equalsIgnoreCase(listType)) {
-            predicate.and($project.status.id.eq(Project.STATUS_COMPLETE));
-        }
-
-        predicate.and($project.projectUsers.any().user.login.eq(login));
-
-        predicate.and(
-            $project.projectParents.isEmpty()
-                .or($project.projectParents.any().parent.projectUsers.isEmpty()
-                    .or($project.projectParents.any().parent.projectUsers.any().user.login.ne(login)))
-        );
-
-        List<Project> projects = Lists.newArrayList(projectRepository.findAll(predicate));
-
-        List<ProjectStatisticsDTO> projectStatisticsDTOs = Lists.newArrayList();
-
-        for(Project project : projects) {
-
-            ProjectDTO projectDTO = this.projectMapper.projectToProjectDTO(project);
-
-            this.copyProjectRelationProperties(project, projectDTO);
-
-            List<Project> childProjects = Lists.newArrayList();
-            this.getChildProjectList(project.getProjectChilds(), childProjects);
-
-            Long childProjectCount = childProjects.stream().filter(childProject -> childProject.getFolderYn() == Boolean.FALSE).count();
-            Long childFolderCount = childProjects.stream().filter(childProject -> childProject.getFolderYn() == Boolean.TRUE).count();
-
-            List<TaskDTO> taskDTOs = this.findTasksByProjectIds(getChildProjectIds(project));
-
-            Long taskCompleteCount = taskDTOs.stream().filter(taskDTO -> taskDTO.getStatusId().equals(Task.STATUS_COMPLETE)).count();
-            Long taskTotalCount = taskDTOs.stream().count();
-
-            ProjectStatisticsDTO projectStatisticsDTO = new ProjectStatisticsDTO(projectDTO, childProjectCount, childFolderCount, taskCompleteCount, taskTotalCount);
-
-            projectStatisticsDTOs.add(projectStatisticsDTO);
-        }
-
-        return projectStatisticsDTOs;
-    }
-
-    private List<TaskDTO> findTasksByProjectIds(List<Long> projectIds) {
+    private List<TaskDTO> findTasksByProjectIdsIncludePrivate(List<Long> projectIds) {
 
         Map<String, Object> condition = Maps.newHashMap();
         condition.put("projectIds", projectIds);
+        condition.put("excludePrivate", Boolean.FALSE);
 
         List<TaskDTO> taskDTOs = taskDAO.getProjectTasks(condition);
 
         return taskDTOs;
-    }
-
-    private void getChildProjectList(Set<ProjectRelation> projectChilds, List<Project> childProjects) {
-
-        for(ProjectRelation projectRelation : projectChilds) {
-
-            this.getChildProjectList(projectRelation.getChild().getProjectChilds(), childProjects);
-
-            childProjects.add(projectRelation.getChild());
-        }
     }
 }

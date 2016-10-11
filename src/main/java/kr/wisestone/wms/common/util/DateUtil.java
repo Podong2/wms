@@ -139,4 +139,8 @@ public class DateUtil {
 
         return ZonedDateTime.ofInstant(date.toInstant(), ZoneId.systemDefault());
     }
+
+    public static Date convertFromZonedDateTime(ZonedDateTime zonedDateTime) {
+        return Date.from(zonedDateTime.toInstant());
+    }
 }
