@@ -89,7 +89,7 @@
             , u.last_modified_by as lastModifiedBy, u.last_modified_date as lastModifiedDate
         FROM owl_user u
             INNER JOIN owl_project_user pu ON u.id = pu.user_id AND pu.project_id = #{id} and pu.user_type = 'MEMBER'
-        ORDER BY pu.id ASC
+        ORDER BY pu.id DESC
     </select>
 
     <select id="getParentProject" resultMap="projectResultMap">
