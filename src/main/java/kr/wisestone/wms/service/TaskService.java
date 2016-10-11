@@ -234,11 +234,14 @@ public class TaskService {
             origin.setStatus(this.codeRepository.findOne(taskForm.getStatusId()));
         }
 
-        for(MultipartFile multipartFile : files) {
+        if(files != null && !files.isEmpty()) {
 
-            AttachedFile attachedFile = this.attachedFileService.saveFile(multipartFile);
+            for(MultipartFile multipartFile : files) {
 
-            origin.addAttachedFile(attachedFile);
+                AttachedFile attachedFile = this.attachedFileService.saveFile(multipartFile);
+
+                origin.addAttachedFile(attachedFile);
+            }
         }
 
         origin = taskRepository.save(origin);
