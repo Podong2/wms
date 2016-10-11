@@ -5,9 +5,9 @@
         .module('wmsApp')
         .controller('projectDetailCtrl', projectDetailCtrl);
 
-    projectDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', '$log', 'ProjectEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectInfo', 'ProjectFindByName', 'tableService', '$cookies', 'projectForm'];
+    projectDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', '$log', 'ProjectEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectInfo', 'ProjectFindByName', 'tableService', '$cookies', 'projectStatistics', 'projectTaskList'];
 
-    function projectDetailCtrl($scope, $rootScope, $stateParams, Task, Code, $log, ProjectEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, TaskListSearch, dataService, Principal, ProjectFind, ProjectInfo, ProjectFindByName, tableService, $cookies, projectForm ) {
+    function projectDetailCtrl($scope, $rootScope, $stateParams, Task, Code, $log, ProjectEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, TaskListSearch, dataService, Principal, ProjectFind, ProjectInfo, ProjectFindByName, tableService, $cookies, projectStatistics, projectTaskList ) {
         var vm = this;
         vm.baseUrl = window.location.origin;
         $log.debug("$stateParams.project : ", $stateParams.project)
@@ -107,7 +107,7 @@
             attachedFileId : ''
         };
 
-        $log.debug("$stateParams.project :" ,projectForm.project);
+        $log.debug("$stateParams.project :" , projectStatistics);
 
         function getProject(){
             var previewFile = {

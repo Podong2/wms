@@ -4,6 +4,7 @@
         .module('wmsApp')
         .factory('Project', Project)
         .factory('ProjectInfo', ProjectInfo)
+        .factory('ProjectTasks', ProjectTasks)
         .factory('ProjectHistoryTasksInfo', ProjectHistoryTasksInfo)
         .factory('ProjectFind', ProjectFind)
         .factory('ProjectFindByName', ProjectFindByName)
@@ -14,6 +15,7 @@
 
     Project.$inject = ['$resource'];
     ProjectInfo.$inject = ['$resource'];
+    ProjectTasks.$inject = ['$resource'];
     ProjectHistoryTasksInfo.$inject = ['$http', '$log', '$q'];
     ProjectFind.$inject = ['$resource'];
     ProjectFindByName.$inject = ['$resource'];
@@ -40,8 +42,26 @@
         });
     }
 
-    function ProjectInfo ($resource) {
+    function ProjectTasks ($resource) {
         var resourceUrl =  'api/projects/findManagedTasks:id';
+
+        return $resource(resourceUrl, {}, {
+            'query': { method: 'GET', isArray: true},
+            'get': {
+                method: 'GET',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    return data;
+                }
+            },
+            'update': { method:'PUT' }
+        });
+    }
+
+    function ProjectInfo ($resource) {
+        var resourceUrl =  'api/projects/statistics:id';
 
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},

@@ -31,8 +31,14 @@
                     $translatePartialLoader.addPart('global');
                     return $translate.refresh();
                 }],
-                projectForm : function($stateParams, ProjectInfo){
+                projectStatistics : function($stateParams, ProjectInfo){
                     return ProjectInfo.get({
+                        projectId : $stateParams.id,
+                        statusId : 1
+                    }).$promise;
+                },
+                projectTaskList : function($stateParams, ProjectTasks){
+                    return ProjectTasks.query({
                         projectId : $stateParams.id,
                         statusId : 1,
                         page: 0,

@@ -5,8 +5,8 @@
 
 angular.module('wmsApp')
     .controller("projectInfoCtrl", projectInfoCtrl);
-projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLinks', '$rootScope', '$state', 'ProjectInfo', '$stateParams', 'toastr', 'projectForm', 'PaginationUtil'];
-        function projectInfoCtrl($scope, Code, $log, Task, AlertService, ParseLinks, $rootScope, $state, ProjectInfo, $stateParams, toastr, projectForm, PaginationUtil) {
+projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLinks', '$rootScope', '$state', 'ProjectInfo', '$stateParams', 'toastr', 'ProjectTasks', 'PaginationUtil', 'TaskCreateByProject', 'projectStatistics', 'projectTaskList'];
+        function projectInfoCtrl($scope, Code, $log, Task, AlertService, ParseLinks, $rootScope, $state, ProjectInfo, $stateParams, toastr, ProjectTasks, PaginationUtil, TaskCreateByProject, projectStatistics, projectTaskList) {
             var vm = this;
             vm.baseUrl = window.location.origin;
             //vm.codes = Code.query();
@@ -125,10 +125,31 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     page: vm.page - 1,
                     size: 15,
                     sort: 'desc'
-                }, onSuccess, onError);
+                }, onInfoSuccess, onError);
+
             }
+            function onInfoSuccess(data){
+                vm.data = data;
+                $log.debug("프로젝트 정보 : ", data);
+                ProjectTasks.query({
+                    projectId : $stateParams.id,
+                    statusId : 1,
+                    page: 0,
+                    size: 12,
+                    sort: 'desc'
+                }, getTaskSuccess, onError)
+            }
+            function getTaskSuccess(tasks){
+                vm.data.tasks = tasks;
+                $log.debug("프로젝트 작업 정보 : ", tasks);
+                onSuccess(vm.data);
+            }
+
             //getList();
-            onSuccess(projectForm)
+            vm.data = projectStatistics;
+            vm.data.tasks = projectTaskList;
+            $log.debug("project Info : ", vm.data);
+            onSuccess(vm.data);
 
             vm.reloadYn = false;
             $scope.$on("projectReload", function(event, args){
@@ -149,7 +170,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             //    $rootScope.$broadcast("showDetail", { id : id });
             //}
             function onSuccess(data, headers) {
-                $log.debug("data", data);
+                $log.debug("프로젝트 및 작업 정보 : ", data);
                 //vm.tasks=[]; vm.delayed=[]; vm.scheduledToday=[]; vm.registeredToday=[]; vm.inProgress=[]; vm.noneScheduled=[]; vm.complete=[]; vm.hold=[]; vm.scheduled=[];  vm.cancel=[];
                 if(vm.page == 1 || vm.reloadYn) vm.tasks=[];
                 vm.project = data.project;
@@ -311,16 +332,17 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 projectId : $stateParams.id
             }
 
-            /* 작업 생성 */
+            /*  */
             function projectTaskAdd(){
                 projectIdPush()
                 if(vm.task.name != '') {
-                    Task.save({name : vm.task.name, projectId : vm.task.projectId}, onSaveSuccess, onSaveError);
+                    TaskCreateByProject.save({name : vm.task.name, projectId : vm.task.projectId}, onSaveSuccess, onSaveError);
                 }
             }
             function onSaveSuccess (result) {
                 vm.reloadYn = true;
                 vm.taskAdd = false;
+                vm.page = 1;
                 $log.debug("프로젝트 타스크 생성 결과 : ", result);
                 toastr.success('태스크 생성 완료', '태스크 생성 완료');
                 getList();

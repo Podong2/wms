@@ -98,7 +98,7 @@
                     </td>
                     <td colspan="4">
                         <autocomplete template-url="ngTagsInput/tag-item-user.html" source="findUsers" tags="vm.project.projectAdmins" display-property="id" multiple="true"
-                                      max-results-to-show="20" tag-type="projectAdminIds" modify-yn="{{vm.project.modifyYn}}" project-yn="false"></autocomplete>
+                                      max-results-to-show="20" tag-type="projectAdminIds" modify-yn="{{vm.project.adminYn}}" project-yn="false"></autocomplete>
                     </td>
                     <!--<td>-->
                         <!--공유-->
@@ -139,10 +139,10 @@
                             </div>
                             <div class="row">
                                 <div class="col-md-6 padding-right-0" style="border-right: 1px solid #ddd; min-height: 219px;">
-                                    <div class="member-input-area" ng-if="vm.project.modifyYn">
+                                    <div class="member-input-area" ng-if="vm.project.adminYn">
                                         <input type="text" class="form-control member-input" ng-model="vm.memberName" style="border-right: 0; border-left:0;"  placeholder="이름을 입력하세요." wms-kr-update wms-element-arrow-keys-move element-add="vm.memberAdd"/>
                                     </div>
-                                    <div class="member-search-list-area watcher-search-list-area" ng-if="vm.project.modifyYn">
+                                    <div class="member-search-list-area watcher-search-list-area" ng-if="vm.project.adminYn">
                                         <div>
                                             <div ng-repeat="data in vm.memberList track by $index" class="arrow-event-li" data-id="{{data.id}}" ng-class="$index == 0 ? 'start-arrow' : ''">
                                                 <div class="member-search-element cursor arrow-event-li" ng-click="vm.memberAdd(data)">
@@ -167,18 +167,18 @@
                                 </div>
                                 <div class="col-md-6 padding-left-0">
 
-                                    <div class="member-input-area member-input-area-border" ng-if="vm.project.modifyYn">
+                                    <div class="member-input-area member-input-area-border" ng-if="vm.project.adminYn">
                                         <div class="pull-right" ng-click="vm.memberSearchYn = !vm.memberSearchYn">
                                             <i class="fa fa-search cursor"></i>
                                         </div>
                                         맴버 {{vm.project.projectMembers.length}}명
                                     </div>
 
-                                    <div class="member-input-area" ng-if="vm.project.modifyYn && vm.memberSearchYn">
+                                    <div class="member-input-area" ng-if="vm.project.adminYn && vm.memberSearchYn">
                                         <input type="text" class="form-control member-input" ng-model="vm.memberFilter" style="border-right: 0; border-left:0; border-top:0;"  placeholder="이름을 입력하세요." wms-kr-update/>
                                     </div>
 
-                                    <div class="member-list-area watcher-list-area" ng-if="vm.project.modifyYn" ng-class="vm.memberSearchYn ? 'on' : ''">
+                                    <div class="member-list-area watcher-list-area" ng-if="vm.project.adminYn" ng-class="vm.memberSearchYn ? 'on' : ''">
                                         <div ng-repeat="data in vm.project.projectMembers | filter:vm.memberFilter track by $index" class="member-list-items">
                                             <div class="member-element" ng-class="data.currentYn ? 'current' : ''">
                                                 <div class="row">
@@ -237,7 +237,7 @@
                                     <li class="watcher-item" ng-repeat="user in vm.project.projectWatchers" style="position: relative; margin: 0 3px 3px;" ng-click="vm.watcherInfoAdd(user)" wms-close-btn-display>
                                         <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}" watcher-info-btn-toggle>
                                         <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}" watcher-info-btn-toggle>
-                                        <span class="profile-close-btn close-btn cursor" ng-click="vm.removeWatcher(user)" ng-if="vm.project.modifyYn"><i class="fa fa-close"></i></span>
+                                        <span class="profile-close-btn close-btn cursor" ng-click="vm.removeWatcher(user)" ng-if="vm.project.adminYn"><i class="fa fa-close"></i></span>
                                     </li>
                                 </ul>
 
@@ -257,10 +257,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="watcher-input-area" ng-if="vm.project.modifyYn">
+                            <div class="watcher-input-area" ng-if="vm.project.adminYn">
                                 <input type="text" class="form-control watcher-input" ng-model="vm.watcherName" style="border-right: 0; border-left:0;"  placeholder="이름을 입력하세요." wms-kr-update/>
                             </div>
-                            <div class="watcher-search-list-area padding-5" ng-if="vm.project.modifyYn">
+                            <div class="watcher-search-list-area padding-5" ng-if="vm.project.adminYn">
                                 <div ng-repeat="data in vm.watcherList track by $index">
                                     <div class="watcher-search-element cursor" ng-click="vm.watcherAdd(data)">
                                         <div class="row">
@@ -295,11 +295,14 @@
                         <div class="">
                             <p class="input-group">
                                 <input type="text" class="form-control startDate" edit-state="true" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.dueDateFrom.date" is-open="vm.dueDateFrom.open"
-                                       datepicker-options="vm.dueDateFrom.datepickerOptions" close-text="Close" style="border: 0px none;"/>
-                                          <span class="input-group-btn">
+                                       datepicker-options="vm.dueDateFrom.datepickerOptions" close-text="Close" style="border: 0px none;" ng-show="vm.project.adminYn"/>
+                                <span ng-show="!vm.project.adminYn">
+                                    {{vm.dueDateFrom.date | date : 'yyyy-MM-dd'}}
+                                </span>
+                                          <span class="input-group-btn" ng-show="vm.project.adminYn">
                                               <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDateFrom')" style="border: 0px none; box-shadow: none;"><i class="fa fa-calendar"></i></button>
                                           </span>
-                                <i class="fa fa-close date-close-btn" ng-click="vm.dueDateFrom.date = ''" ng-show="vm.project.startDate != ''"></i>
+                                <i class="fa fa-close date-close-btn" ng-click="vm.dueDateFrom.date = ''" ng-show="vm.project.startDate != '' && vm.project.adminYn"></i>
                             </p>
                         </div>
                     </td>
@@ -310,11 +313,14 @@
                         <div class="">
                             <p class="input-group">
                                 <input type="text" class="form-control" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.dueDateTo.date" is-open="vm.dueDateTo.open"
-                                       datepicker-options="vm.dueDateTo.datepickerOptions" close-text="Close" style="border: 0px none;"/>
-                                      <span class="input-group-btn">
-                                          <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDateTo')" style="border: 0px none; box-shadow: none;"><i class="fa fa-calendar"></i></button>
-                                      </span>
-                                <i class="fa fa-close date-close-btn" ng-click="vm.dueDateTo.date = ''" ng-show="vm.project.endDate != ''"></i>
+                                       datepicker-options="vm.dueDateTo.datepickerOptions" close-text="Close" style="border: 0px none;" ng-show="vm.project.adminYn"/>
+                                <span ng-show="!vm.project.adminYn">
+                                    {{vm.dueDateTo.date | date : 'yyyy-MM-dd'}}
+                                </span>
+                                  <span class="input-group-btn" ng-show="vm.project.adminYn">
+                                      <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDateTo')" style="border: 0px none; box-shadow: none;"><i class="fa fa-calendar"></i></button>
+                                  </span>
+                                <i class="fa fa-close date-close-btn" ng-click="vm.dueDateTo.date = ''" ng-show="vm.project.endDate != '' && vm.project.adminYn"></i>
                             </p>
                         </div>
                     </td>
