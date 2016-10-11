@@ -477,6 +477,9 @@ public class ProjectService {
         if(projectTaskCondition.getStatusId() != null)
             condition.put("statusId", projectTaskCondition.getStatusId());
 
+        if(StringUtils.hasText(projectTaskCondition.getTaskName()))
+            condition.put("taskName", projectTaskCondition.getTaskName());
+
         condition.put("listType", projectTaskCondition.getListType());
         condition.put("statusType", projectTaskCondition.getStatusType());
 
@@ -508,6 +511,9 @@ public class ProjectService {
 
         if(projectTaskCondition.getStatusId() != null)
             condition.put("statusId", projectTaskCondition.getStatusId());
+
+        if(StringUtils.hasText(projectTaskCondition.getTaskName()))
+            condition.put("taskName", projectTaskCondition.getTaskName());
 
         condition.put("listType", projectTaskCondition.getListType());
         condition.put("statusType", projectTaskCondition.getStatusType());
