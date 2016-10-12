@@ -177,6 +177,7 @@
                 WHEN p.folder_yn = 'Y' THEN true
                 WHEN p.folder_yn = 'N' THEN false
             END as folderYn
+            , p.contents as contents
             , pc.id as statusId, pc.name as statusName
             , af.id as attachedFileId, af.name as attachedFileName
             , af.size as attachedFileSize, af.content_type as attachedFileContentType
