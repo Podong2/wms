@@ -5,9 +5,11 @@
         .module('wmsApp')
         .controller('projectDetailCtrl', projectDetailCtrl);
 
-    projectDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', '$log', 'ProjectEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'FindTasks', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectInfo', 'ProjectFindByName', 'tableService', '$cookies', 'projectStatistics', 'projectTaskList'];
+    projectDetailCtrl.$inject = ['$scope', '$rootScope', '$stateParams', 'Task', 'Code', '$log', 'ProjectEdit', 'DateUtils', 'findUser', '$q', '$sce', '$state', 'toastr', 'SubTask', 'ModalService'
+        , 'FindTasks', 'TaskListSearch', 'dataService', 'Principal', 'ProjectFind', 'ProjectInfo', 'ProjectFindByName', 'tableService', '$cookies', 'projectStatistics', 'projectTaskList'];
 
-    function projectDetailCtrl($scope, $rootScope, $stateParams, Task, Code, $log, ProjectEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, FindTasks, TaskListSearch, dataService, Principal, ProjectFind, ProjectInfo, ProjectFindByName, tableService, $cookies, projectStatistics, projectTaskList ) {
+    function projectDetailCtrl($scope, $rootScope, $stateParams, Task, Code, $log, ProjectEdit, DateUtils, findUser, $q, $sce, $state, toastr, SubTask, ModalService
+        , FindTasks, TaskListSearch, dataService, Principal, ProjectFind, ProjectInfo, ProjectFindByName, tableService, $cookies, projectStatistics, projectTaskList ) {
         var vm = this;
         vm.baseUrl = window.location.origin;
         $log.debug("$stateParams.project : ", $stateParams.project)
@@ -748,6 +750,18 @@
             //$scope.pickerFindMember(vm.memberName);
         }
 
+
+        // 작업 본문 복원 팝업 오픈
+        vm.projectRevertModalOpen = projectRevertModalOpen;
+        function projectRevertModalOpen(){
+            var editModalConfig = {
+                size : "lg",
+                url : "app/task/html/modal/taskRevertModal.html",
+                ctrl : "projectRevertCtrl",
+                data : vm.project
+            };
+            ModalService.openModal(editModalConfig);
+        }
 
 
 

@@ -177,7 +177,8 @@
             createComment : createComment,
             createProjectFiles : createProjectFiles,
             deleteAttachedFile : deleteAttachedFile,
-            removeComment : removeComment
+            removeComment : removeComment,
+            putContentRevert : putContentRevert,
         };
         return service;
 
@@ -236,6 +237,15 @@
             var deferred = $q.defer();
             $http.delete('/api/trace-log/'+parameter, {}, {}).then(function (result) {
                 $log.debug("result : ", result);
+                deferred.resolve(result);
+            });
+            return deferred.promise;
+        }
+
+        function putContentRevert(id, traceLogId){
+            var deferred = $q.defer();
+            $http.put( '/api/project/revert/'+ id , {}, {id : id, params : {traceLogId : traceLogId}}).then(function (result) {
+                $log.debug("taskList : ", result);
                 deferred.resolve(result);
             });
             return deferred.promise;

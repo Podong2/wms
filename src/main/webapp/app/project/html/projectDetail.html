@@ -351,8 +351,12 @@
         <div>
             <div class="panel panel-default min-height-100-p detail-content" id="editingSection">
                 <div class="ibox">
-                    <div class="ibox_content elementSection"  section-toggle style="min-height: 30px">
-                        <span ng-bind-html="vm.renderHtml(vm.project.contents)"></span>
+
+                    <div class="ibox_content elementSection" ng-if="vm.project.adminYn" section-toggle style="min-height: 50px; word-break: break-all;">
+                        <span ng-bind-html="vm.renderHtml(vm.project.contents)" ></span>
+                    </div>
+                    <div class="ibox_content elementSection" ng-if="!vm.project.adminYn" style="min-height: 50px; word-break: break-all;">
+                        <span ng-bind-html="vm.renderHtml(vm.project.contents)" ></span>
                     </div>
 
                     <div class="content-edit editingSection" >
@@ -363,6 +367,9 @@
                                     data-on-image-upload="imageUpload(files)"></summernote>
                     </div>
                 </div>
+            </div>
+            <div style="text-align: right;">
+                <button type="button" class="btn" ng-click="vm.projectRevertModalOpen()" ng-if="vm.project.adminYn" >복원</button>
             </div>
         </div>
 

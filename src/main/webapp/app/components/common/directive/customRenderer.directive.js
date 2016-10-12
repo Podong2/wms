@@ -13,8 +13,8 @@ function customRenderer($compile, $filter, $log, $sce) {
             data: "=",
             rendererCallback: "="
         },
-        controller : ['$scope', '$element', '$attrs', '$rootScope', 'DeleteAttachedFile', '$sce', 'TaskEdit', '$state',
-            function ($scope, $element, $attrs, $rootScope, DeleteAttachedFile, $sce, TaskEdit, $state) {
+        controller : ['$scope', '$element', '$attrs', '$rootScope', 'DeleteAttachedFile', '$sce', 'TaskEdit', '$state', 'ProjectEdit',
+            function ($scope, $element, $attrs, $rootScope, DeleteAttachedFile, $sce, TaskEdit, $state, ProjectEdit) {
                 // 첨부 파일 다운로드
                 $scope.fileDownLoad = function(key){
                     var iframe = $("<iframe/>").hide().appendTo("body").load(function() {
@@ -42,6 +42,12 @@ function customRenderer($compile, $filter, $log, $sce) {
                 $scope.revertTaskContent = function(data){
                     TaskEdit.putContentRevert(data.taskId, data.id).then(function(){
                         $rootScope.$broadcast('task-detail-reload');
+                        $rootScope.$broadcast('cancel');
+                    });
+                }
+                $scope.revertProjectContent = function(data){
+                    ProjectEdit.putContentRevert(data.entityId, data.id).then(function(){
+                        $rootScope.$broadcast('project-detail-reload');
                         $rootScope.$broadcast('cancel');
                     });
                 }
@@ -148,6 +154,9 @@ function customRenderer($compile, $filter, $log, $sce) {
                         break;
                     case "set_task_content" :
                         customTag = "<button type='button' class='btn' ng-click='revertTaskContent(data)'><i class='fa fa-download'></i></button>";
+                        break;
+                    case "set_project_content" :
+                        customTag = "<button type='button' class='btn' ng-click='revertProjectContent(data)'><i class='fa fa-download'></i></button>";
                         break;
                     case "project-date" :
                         if(scope.data.startDate != '' || scope.data.endDate != '') customTag = "<span>"+ scope.data.startDate + "<span ng-show='data.startDate != \"\" && data.endDate != \"\"'>~</span>" + scope.data.endDate +"</span>";
