@@ -275,4 +275,17 @@ public class ProjectResource {
                 HttpStatus.OK))
             .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
+
+    @RequestMapping(value = "/project/revert/{id}",
+        method = RequestMethod.PUT,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<ProjectDTO> revertTaskContents(@PathVariable Long id, @RequestParam Long traceLogId) throws URISyntaxException {
+        log.debug("REST request to update Task id : {}", id);
+
+        ProjectDTO result = projectService.revertProjectContents(id, traceLogId);
+        return ResponseEntity.ok()
+            .headers(HeaderUtil.createEntityUpdateAlert("task", result.getId().toString()))
+            .body(result);
+    }
 }

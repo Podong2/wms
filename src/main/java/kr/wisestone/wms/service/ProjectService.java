@@ -617,4 +617,24 @@ public class ProjectService {
 
         return taskDTOs;
     }
+
+    @Transactional
+    public ProjectDTO revertProjectContents(Long id, Long traceLogId) {
+
+        if(id == null)
+            throw new CommonRuntimeException("error.project.targetIdIsNull");
+
+        Project project = projectRepository.findOne(id);
+
+        if(project == null)
+            throw new CommonRuntimeException("error.project.notFound");
+
+        TraceLog traceLog = traceLogService.findOne(traceLogId);
+
+        project.setContents(traceLog.getNewValue());
+
+        project = projectRepository.save(project);
+
+        return projectMapper.projectToProjectDTO(project);
+    }
 }
