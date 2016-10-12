@@ -204,7 +204,7 @@ function customRenderer($compile, $filter, $log, $sce) {
                                     "<li class='position-relative'>" +
                                         "<span common-popup-toggle>" +
                                         "<span class='activity'>" +
-                                        "<a class='position-relative'><i class='fa fa-play'></i></a>" +
+                                        "<a class='position-relative'>… <i class='fa fa-play'></i></a>" +
                                         "</span>" +
                                         "</span>" +
                                         "<div class='other-users-popup'>" +
@@ -268,8 +268,8 @@ function customRenderer($compile, $filter, $log, $sce) {
                         else if(scope.data.memberYn) userType = "<span>(맴버 <i class='fa fa-users'></i>)</span>";
                         else if(scope.data.watcherYn) userType = "<span>(공유 <i class='fa fa-eye'></i>)</span>";
 
-                        if(scope.data.depth == 0) customTag = "<div class='project-list-title-length'><strong>" +"<i class='fa fa-angle-down' ng-if='!data.childsYn'></i> " + scope.data.name + "</strong>" + userType + "</div>" ;
-                        else customTag = "<div class='project-list-title-length'><span> "+ depth +"<i class='fa fa-angle-down' ng-if='!data.childsYn'></i> "+ scope.data.name + "</span>" + userType + "</div>" ;
+                        if(scope.data.depth == 0) customTag = "<div class='project-list-title-length cursor' data-ui-sref='my-project({id:data.id})'><strong>" +"<i class='fa fa-angle-down' ng-if='!data.childsYn'></i> " + scope.data.name + "</strong>" + userType + "</div>" ;
+                        else customTag = "<div class='project-list-title-length cursor' data-ui-sref='my-project({id:data.id})'><span> "+ depth +"<i class='fa fa-angle-down' ng-if='!data.childsYn'></i> "+ scope.data.name + "</span>" + userType + "</div>" ;
                         break;
                 }
 

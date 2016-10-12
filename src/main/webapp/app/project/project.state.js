@@ -181,6 +181,10 @@
                 authorities: [],
                 title : '프로젝트 작업 목록'
             },
+            params : {
+              statusId :'',
+              orderType :''
+            },
             views: {//
                 'content@app': {//
                     templateUrl: 'app/project/html/projectList.html', // home에 사용될 template html 파일

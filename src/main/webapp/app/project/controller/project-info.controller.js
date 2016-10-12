@@ -137,7 +137,9 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 $log.debug("프로젝트 정보 : ", data);
                 ProjectTasks.query({
                     projectId : $stateParams.id,
-                    statusId : 1,
+                    listType : vm.listType,
+                    statusId : vm.statusId,
+                    orderType : vm.orderType,
                     page: vm.page -1,
                     size: 15,
                     sort: 'desc'
@@ -155,8 +157,8 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     projectId : $stateParams.id,
                     taskName : vm.taskName,
                     statusId : 1,
-                    page: vm.page -1,
-                    size: 15,
+                    page: 0,
+                    size: 99999,
                     sort: 'desc'
                 }, findTaskSuccess, onError)
             }
