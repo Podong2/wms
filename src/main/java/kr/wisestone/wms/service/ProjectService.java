@@ -1,8 +1,6 @@
 package kr.wisestone.wms.service;
 
-import com.google.common.base.Predicate;
 import com.google.common.collect.ImmutableMap;
-import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.mysema.query.BooleanBuilder;
@@ -20,7 +18,6 @@ import kr.wisestone.wms.web.rest.dto.*;
 import kr.wisestone.wms.web.rest.form.ProjectForm;
 import kr.wisestone.wms.web.rest.mapper.AttachedFileMapper;
 import kr.wisestone.wms.web.rest.mapper.ProjectMapper;
-import kr.wisestone.wms.web.rest.mapper.UserMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
@@ -31,10 +28,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.Nullable;
 import javax.inject.Inject;
 import java.time.ZonedDateTime;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -54,12 +53,6 @@ public class ProjectService {
 
     @Inject
     private TaskService taskService;
-
-    @Inject
-    private UserService userService;
-
-    @Inject
-    private UserMapper userMapper;
 
     @Inject
     private TraceLogService traceLogService;
@@ -101,13 +94,9 @@ public class ProjectService {
     public ProjectDTO findOne(Long id) {
         log.debug("Request to get Project : {}", id);
 
-        Map<String, Object> condition = Maps.newHashMap(ImmutableMap.<String, Object>builder().
-            put("id", id).
-            build());
-
         User loginUser = SecurityUtils.getCurrentUser();
 
-        ProjectDTO projectDTO = projectDAO.getProject(condition);
+        ProjectDTO projectDTO = projectDAO.getProject(id);
 
         for(UserDTO admin : projectDTO.getProjectAdmins()) {
             if(admin.getLogin().equals(loginUser.getLogin())) {
@@ -233,52 +222,19 @@ public class ProjectService {
 
         String login = SecurityUtils.getCurrentUserLogin();
 
-        if(StringUtils.isEmpty(name)) {
-
-            BooleanBuilder predicate = new BooleanBuilder();
-            predicate.and(QProject.project.projectUsers.any().user.login.eq(login));
-
-            if(excludeIds != null && !excludeIds.isEmpty()) {
-                predicate.and(QProject.project.id.notIn(excludeIds));
-            }
-
-            Pageable pageable = new PageRequest(0, 3, Sort.Direction.DESC, "createdDate");
-
-            List<Project> projects = Lists.newArrayList(this.projectRepository.findAll(predicate, pageable));
-
-            List<ProjectDTO> projectDTOs = Lists.newArrayList();
-
-            for(Project project : projects) {
-                ProjectDTO projectDTO = projectMapper.projectToProjectDTO(project);
-
-                this.copyProjectRelationProperties(project, projectDTO);
-
-                projectDTOs.add(projectDTO);
-            }
-
-            return projectDTOs;
-        }
-
-        BooleanBuilder predicate = new BooleanBuilder();
-
-        predicate.and(QProject.project.name.containsIgnoreCase(name));
-        predicate.and(QProject.project.projectUsers.any().user.login.eq(login));
+        Map<String, Object> condition = Maps.newHashMap(ImmutableMap.<String, Object>builder().
+            put("userId", login).
+        build());
 
         if(excludeIds != null && !excludeIds.isEmpty()) {
-            predicate.and(QProject.project.id.notIn(excludeIds));
+            condition.put("excludeIds", excludeIds);
         }
 
-        List<Project> projects = Lists.newArrayList(this.projectRepository.findAll(predicate));
-
-        List<ProjectDTO> projectDTOs = Lists.newArrayList();
-
-        for(Project project : projects) {
-            ProjectDTO projectDTO = projectMapper.projectToProjectDTO(project);
-
-            this.copyProjectRelationProperties(project, projectDTO);
-
-            projectDTOs.add(projectDTO);
+        if(StringUtils.hasText(name)) {
+            condition.put("name", name);
         }
+
+        List<ProjectDTO> projectDTOs = this.projectDAO.getProjectByName(condition);
 
         return projectDTOs;
     }
@@ -406,7 +362,7 @@ public class ProjectService {
                     .or($project.projectParents.any().parent.projectUsers.any().user.login.ne(login))
         );
 
-        List<Project> projects = Lists.newArrayList(projectRepository.findAll(predicate));
+        List<Project> projects = Lists.newArrayList(projectRepository.findAll(predicate, QProject.project.id.asc()));
 
         List<ProjectDTO> projectDTOs = Lists.newArrayList();
 
