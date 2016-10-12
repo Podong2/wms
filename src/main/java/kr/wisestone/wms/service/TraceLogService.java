@@ -11,6 +11,7 @@ import kr.wisestone.wms.domain.*;
 import kr.wisestone.wms.repository.TraceLogRepository;
 import kr.wisestone.wms.repository.dao.TraceLogDAO;
 import kr.wisestone.wms.security.SecurityUtils;
+import kr.wisestone.wms.web.rest.condition.TraceLogCondition;
 import kr.wisestone.wms.web.rest.dto.AttachedFileDTO;
 import kr.wisestone.wms.web.rest.dto.TraceLogDTO;
 import kr.wisestone.wms.web.rest.form.TraceLogForm;
@@ -68,26 +69,21 @@ public class TraceLogService {
     private TraceLogDAO traceLogDAO;
 
     @Transactional(readOnly = true)
-    public List<TraceLogDTO> findByEntityIdAndEntityName(Long entityId, String entityName, String entityField) {
+    public List<TraceLogDTO> findByEntityIdAndEntityName(TraceLogCondition traceLogCondition) {
 
         Map<String, Object> condition = Maps.newHashMap(ImmutableMap.<String, Object>builder().
-            put("entityId", entityId).
-            put("entityName", entityName).
+            put("entityId", traceLogCondition.getEntityId()).
+            put("entityName", traceLogCondition.getEntityName()).
             build());
 
-        if(StringUtils.hasText(entityField))
-            condition.put("entityField", entityField);
+        if(StringUtils.hasText(traceLogCondition.getEntityField()))
+            condition.put("entityField", traceLogCondition.getEntityField());
 
-        return traceLogDAO.getTraceLogs(condition);
-    }
+        condition.put("recentYn", traceLogCondition.getRecentYn());
 
-    public List<TraceLogDTO> findByEntityIdAndEntityNameAndAttachedFileIsNotNull(Long entityId, String entityName) {
-
-        Map<String, Object> condition = Maps.newHashMap(ImmutableMap.<String, Object>builder().
-            put("entityId", entityId).
-            put("entityName", entityName).
-            put("attachedFileEmptyYn", Boolean.TRUE).
-            build());
+        if(traceLogCondition.getOffset() != null) {
+            condition.put("offset", traceLogCondition.getOffset());
+        }
 
         return traceLogDAO.getTraceLogs(condition);
     }

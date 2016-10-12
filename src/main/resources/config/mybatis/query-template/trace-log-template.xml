@@ -72,6 +72,32 @@
             SELECT itlaf.id FROM owl_trace_log_attached_file itlaf WHERE itlaf.trace_log_id = tl.id
             )
         </if>
+        <if test="recentYn != null and recentYn == true">
+            AND to_char(tl.created_date, 'YYYY-MM-DD') IN (
+                SELECT to_char(itl.created_date, 'YYYY-MM-DD') as createdDate
+                FROM owl_trace_log itl
+                WHERE 1=1
+                <choose>
+                    <when test="entityName == 'Task'">
+                        AND itl.task_id = #{entityId}
+                    </when>
+                    <when test="entityName == 'Project'">
+                        AND itl.project_id = #{entityId}
+                    </when>
+                    <otherwise>
+                        AND itl.entity_id = #{entityId}
+                    </otherwise>
+                </choose>
+                GROUP BY createdDate
+                ORDER BY createdDate DESC
+                <if test="offset == null">
+                    OFFSET 0 LIMIT 2
+                </if>
+                <if test="offset != null">
+                    OFFSET #{offset} LIMIT 1
+                </if>
+            )
+        </if>
         ORDER BY tl.id ASC
     </select>
 
