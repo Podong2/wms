@@ -204,7 +204,7 @@
             , u.created_by as createdBy, u.created_date as createdDate
             , u.last_modified_by as lastModifiedBy, u.last_modified_date as lastModifiedDate
         FROM owl_user u
-            INNER JOIN owl_task_user tu ON u.id = tu.user_id AND tu.task_id = #{id} and tu.user_type = 'WATCHER'
+            INNER JOIN owl_task_user tu ON u.id = tu.user_id AND tu.task_id = #{id} and tu.user_type = 'SHARER'
         ORDER BY tu.id ASC
     </select>
 
@@ -235,7 +235,7 @@
                 AND it.id IN (SELECT itu.task_id
                 FROM owl_task_user itu
                 LEFT JOIN owl_user iu ON itu.user_id = iu.id
-                WHERE itu.user_type = 'WATCHER'
+                WHERE itu.user_type = 'SHARER'
                 AND iu.login = #{userId})
             </when>
         </choose>
@@ -668,7 +668,7 @@
                 AND t.id IN (SELECT tu.task_id
                         FROM owl_task_user tu
                         LEFT JOIN owl_user u ON tu.user_id = u.id
-                        WHERE tu.user_type = 'WATCHER'
+                        WHERE tu.user_type = 'SHARER'
                         AND u.login = #{userId})
                 AND t.created_by != #{userId}
             ) as watchedCount) c

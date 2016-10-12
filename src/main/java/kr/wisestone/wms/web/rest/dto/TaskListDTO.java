@@ -245,7 +245,7 @@ public class TaskListDTO implements Serializable {
             setStatusId(task.getStatus().getId());
 
         setAssigneesCount((long) task.findTaskUsersByType(UserType.ASSIGNEE).size());
-        setWatchersCount((long) task.findTaskUsersByType(UserType.WATCHER).size());
+        setWatchersCount((long) task.findTaskUsersByType(UserType.SHARER).size());
         setImportantYn(task.getImportantYn());
         setTemplateYn(task.getTemplateYn());
         setStatusGroup(statusGroup);

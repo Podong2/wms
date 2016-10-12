@@ -112,7 +112,7 @@ public class TaskRepeatScheduleService {
             task.getPlainTaskProject().forEach(repeatTask::updateTaskProject);
 
         List<User> assignees = task.findTaskUsersByType(UserType.ASSIGNEE);
-        List<User> watchers = task.findTaskUsersByType(UserType.WATCHER);
+        List<User> watchers = task.findTaskUsersByType(UserType.SHARER);
 
         if(assignees != null && !assignees.isEmpty()) {
 
@@ -124,7 +124,7 @@ public class TaskRepeatScheduleService {
         if(watchers != null && !watchers.isEmpty()) {
 
             for(User user : watchers) {
-                repeatTask.addTaskUser(user, UserType.WATCHER);
+                repeatTask.addTaskUser(user, UserType.SHARER);
             }
         }
 

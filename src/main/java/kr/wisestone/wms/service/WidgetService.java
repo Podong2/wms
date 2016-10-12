@@ -107,7 +107,7 @@ public class WidgetService {
                 taskListWidgetDTO.addAssignedTasks(taskDTO);
             }
 
-            if(task.findTaskUser(loginUser, UserType.WATCHER).isPresent()) {
+            if(task.findTaskUser(loginUser, UserType.SHARER).isPresent()) {
                 taskListWidgetDTO.addWatchedTasks(taskDTO);
             }
 
@@ -153,7 +153,7 @@ public class WidgetService {
         if(type.equalsIgnoreCase("assigned")) {
             predicate.and($task.taskUsers.any().user.login.eq(loginUser.getLogin()).and($task.taskUsers.any().userType.eq(UserType.ASSIGNEE)));
         } else if(type.equalsIgnoreCase("watched")) {
-            predicate.and($task.taskUsers.any().user.login.eq(loginUser.getLogin()).and($task.taskUsers.any().userType.eq(UserType.WATCHER)));
+            predicate.and($task.taskUsers.any().user.login.eq(loginUser.getLogin()).and($task.taskUsers.any().userType.eq(UserType.SHARER)));
         } else if(type.equalsIgnoreCase("created")) {
             predicate.and($task.createdBy.eq(loginUser.getLogin()));
         }

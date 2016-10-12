@@ -157,7 +157,7 @@ public class TaskForm {
             User user = new User();
             user.setId(id);
 
-            task.addTaskUser(user, UserType.WATCHER);
+            task.addTaskUser(user, UserType.SHARER);
         }
 
 
@@ -167,7 +167,7 @@ public class TaskForm {
             User user = new User();
             user.setId(id);
 
-            task.removeTaskUser(user, UserType.WATCHER);
+            task.removeTaskUser(user, UserType.SHARER);
         }
 
         for(Long id : getRelatedTaskIds()) {
