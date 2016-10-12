@@ -262,7 +262,7 @@ public class ProjectService {
         if(StringUtils.hasText(orderType)) {
 
             if(orderType.equals("MODIFIED_DATE")) {
-                orderSpecifiers.add(QProject.project.lastModifiedBy.desc());
+                orderSpecifiers.add(QProject.project.lastModifiedDate.desc());
             } else if(orderType.equals("TEXT_ASC")) {
 
                 orderSpecifiers.add(QProject.project.name.asc());
@@ -333,14 +333,14 @@ public class ProjectService {
                     Long p1Time = DateUtil.convertFromZonedDateTime(p1.getProject().getLastModifiedDate()).getTime();
                     Long p2Time = DateUtil.convertFromZonedDateTime(p2.getProject().getLastModifiedDate()).getTime();
 
-                    return (int)(p1Time - p2Time);
+                    return (int)(p2Time - p1Time);
                 });
             } else if(orderType.equals("TEXT_ASC")) {
 
-                Collections.sort(childProjectDTOs, (p1, p2) -> p1.getProject().getName().compareTo(p2.getProject().getName()));
+                Collections.sort(childProjectDTOs, (p1, p2) -> p2.getProject().getName().compareTo(p1.getProject().getName()));
             } else if(orderType.equals("TEXT_DESC")) {
 
-                Collections.sort(childProjectDTOs, (p1, p2) -> p2.getProject().getName().compareTo(p1.getProject().getName()));
+                Collections.sort(childProjectDTOs, (p1, p2) -> p1.getProject().getName().compareTo(p2.getProject().getName()));
             }
         }
 
