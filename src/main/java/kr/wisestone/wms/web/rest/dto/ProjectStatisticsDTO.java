@@ -23,11 +23,47 @@ public class ProjectStatisticsDTO {
 
     private Long taskTotalCount = 0L;
 
-    public ProjectStatisticsDTO(ProjectDTO project, Long projectCount, Long folderCount, Long taskCompleteCount, Long taskTotalCount) {
+    private Boolean adminYn = Boolean.FALSE;
+
+    private Boolean memberYn = Boolean.FALSE;
+
+    private Boolean watcherYn = Boolean.FALSE;
+
+    public ProjectStatisticsDTO(ProjectDTO project, Long projectCount, Long folderCount, Long taskCompleteCount, Long taskTotalCount, String loginUser) {
         setProject(project);
         setProjectCount(projectCount);
         setFolderCount(folderCount);
         setTaskCompleteCount(taskCompleteCount);
         setTaskTotalCount(taskTotalCount);
+
+        for(UserDTO admin : project.getProjectAdmins()) {
+            if(admin.getLogin().equals(loginUser)) {
+                this.adminYn = Boolean.TRUE;
+
+                break;
+            }
+        }
+
+        if(this.adminYn == Boolean.FALSE) {
+
+            for(UserDTO member : project.getProjectMembers()) {
+                if(member.getLogin().equals(loginUser)) {
+                    this.memberYn = Boolean.TRUE;
+
+                    break;
+                }
+            }
+        }
+
+        if(this.adminYn == Boolean.FALSE && this.memberYn == Boolean.FALSE) {
+
+            for(UserDTO watcher : project.getProjectWatchers()) {
+                if(watcher.getLogin().equals(loginUser)) {
+                    this.watcherYn = Boolean.TRUE;
+
+                    break;
+                }
+            }
+        }
     }
 }

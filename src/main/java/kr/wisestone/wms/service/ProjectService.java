@@ -337,7 +337,7 @@ public class ProjectService {
             Long taskCompleteCount = taskDTOs.stream().filter(taskDTO -> taskDTO.getStatusId().equals(Task.STATUS_COMPLETE)).count();
             Long taskTotalCount = taskDTOs.stream().count();
 
-            ProjectStatisticsDTO projectStatisticsDTO = new ProjectStatisticsDTO(projectDTO, 0L, 0L, taskCompleteCount, taskTotalCount);
+            ProjectStatisticsDTO projectStatisticsDTO = new ProjectStatisticsDTO(projectDTO, 0L, 0L, taskCompleteCount, taskTotalCount, login);
 
             this.getChildProjectWithStatistics(projectStatisticsDTO, project.getProjectChilds(), orderType);
 
@@ -348,6 +348,8 @@ public class ProjectService {
     }
 
     private void getChildProjectWithStatistics(ProjectStatisticsDTO parent, Set<ProjectRelation> projectChilds, String orderType) {
+
+        String login = SecurityUtils.getCurrentUserLogin();
 
         List<ProjectStatisticsDTO> childProjectDTOs = Lists.newArrayList();
 
@@ -360,7 +362,7 @@ public class ProjectService {
             Long taskCompleteCount = taskDTOs.stream().filter(taskDTO -> taskDTO.getStatusId().equals(Task.STATUS_COMPLETE)).count();
             Long taskTotalCount = taskDTOs.stream().count();
 
-            ProjectStatisticsDTO projectStatisticsDTO = new ProjectStatisticsDTO(projectDTO, 0L, 0L, taskCompleteCount, taskTotalCount);
+            ProjectStatisticsDTO projectStatisticsDTO = new ProjectStatisticsDTO(projectDTO, 0L, 0L, taskCompleteCount, taskTotalCount, login);
 
             this.getChildProjectWithStatistics(projectStatisticsDTO, projectRelation.getChild().getProjectChilds(), orderType);
 
