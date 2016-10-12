@@ -399,7 +399,7 @@ public class ProjectService {
         QProject $project = QProject.project;
 
         BooleanBuilder predicate = new BooleanBuilder();
-        predicate.and($project.status.id.eq(Project.STATUS_ACTIVE));
+//        predicate.and($project.status.id.eq(Project.STATUS_ACTIVE));
         predicate.and($project.projectUsers.any().user.login.eq(login));
 
         predicate.and($project.projectParents.isEmpty()
