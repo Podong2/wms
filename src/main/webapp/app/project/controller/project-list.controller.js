@@ -19,7 +19,7 @@ projectListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$roo
             vm.responseData = [];
             vm.projects = [];
             vm.childs = [];
-            vm.statusId = $stateParams.statusId == '' ? 1 : $stateParams.statusId;
+            vm.statusId = $stateParams.statusId == '' ? '' : $stateParams.statusId;
             vm.orderType = $stateParams.orderType == '' ? 'MODIFIED_DATE' : $stateParams.orderType;
 
             $scope.$watchCollection('vm.statusId', function(newValue, oldValue){
