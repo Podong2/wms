@@ -77,11 +77,6 @@ public class ProjectForm {
             status.setId(this.statusId);
 
             project.setStatus(status);
-        } else {
-            Code status = new Code();
-            status.setId(Project.STATUS_ACTIVE);
-
-            project.setStatus(status);
         }
 
         for(Long id : getProjectAdminIds()) {
@@ -130,7 +125,6 @@ public class ProjectForm {
 
             project.addProjectUser(user, UserType.WATCHER);
         }
-
 
         for(Long id : getRemoveProjectWatcherIds()) {
             if(id == null) continue;
