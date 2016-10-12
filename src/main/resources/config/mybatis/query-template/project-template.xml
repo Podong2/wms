@@ -64,6 +64,27 @@
         <collection property="projectMembers" select="getProjectMembers" column="id" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.TaskDTO"/>
     </resultMap>
 
+    <resultMap id="projectListResultMap" type="kr.wisestone.wms.web.rest.dto.ProjectDTO">
+        <id property="id" column="id" />
+        <result property="name" column="name"/>
+        <result property="contents" column="contents"/>
+        <result property="statusId" column="statusId"/>
+        <result property="statusName" column="statusName"/>
+        <result property="startDate" column="startDate"/>
+        <result property="endDate" column="endDate"/>
+        <result property="folderYn" column="templateYn"/>
+        <result property="createdBy" column="createdBy"/>
+        <result property="createdByName" column="createdByName"/>
+        <result property="createdDate" column="createdDate"/>
+        <result property="lastModifiedBy" column="lastModifiedBy"/>
+        <result property="lastModifiedDate" column="lastModifiedDate"/>
+        <collection property="projectParents" select="getParentProject" column="id" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.ProjectDTO" />
+        <collection property="attachedFiles" javaType="java.util.ArrayList" resultMap="attachedFileResultMap"/>
+        <collection property="projectAdmins" select="getProjectAdmins" column="id" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.UserDTO"/>
+        <collection property="projectWatchers" select="getProjectWatchers" column="id" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.UserDTO"/>
+        <collection property="projectMembers" select="getProjectMembers" column="id" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.TaskDTO"/>
+    </resultMap>
+
     <resultMap id="attachedFileResultMap" type="kr.wisestone.wms.web.rest.dto.AttachedFileDTO">
         <id property="id" column="attachedFileId" />
         <result property="name" column="attachedFileName"/>
@@ -166,6 +187,46 @@
             LEFT OUTER JOIN owl_project_attached_file paf ON paf.project_id = p.id
             LEFT JOIN owl_attached_file af ON paf.attached_file_id = af.id
         WHERE p.id = #{id}
+    </select>
+
+    <select id="getProjects" resultType="kr.wisestone.wms.web.rest.dto.ProjectDTO" resultMap="projectListResultMap" parameterType="java.util.HashMap">
+        SELECT p.id as id, p.name as name, p.start_date as startDate, p.end_date as endDate
+            , CASE
+                WHEN p.folder_yn = 'Y' THEN true
+                WHEN p.folder_yn = 'N' THEN false
+            END as folderYn
+            , pc.id as statusId, pc.name as statusName
+            , af.id as attachedFileId, af.name as attachedFileName
+            , af.size as attachedFileSize, af.content_type as attachedFileContentType
+            , p.created_by as createdBy, (SELECT name FROM owl_user cu WHERE cu.login = p.created_by) as createdByName, p.created_date as createdDate
+            , p.last_modified_by as lastModifiedBy, p.last_modified_date as lastModifiedDate
+        FROM owl_project p
+            LEFT JOIN owl_code pc ON p.status_id = pc.id
+            LEFT OUTER JOIN owl_project_attached_file paf ON paf.project_id = p.id
+            LEFT JOIN owl_attached_file af ON paf.attached_file_id = af.id
+        WHERE 1=1
+        AND (p.created_by = #{userId}
+            OR EXISTS (SELECT pu.id
+                        FROM owl_project_user pu
+                        LEFT JOIN owl_user piu ON pu.user_id = piu.id
+                        WHERE pu.project_id = p.id
+                        AND piu.login = #{userId}
+                )
+        )
+        <if test="name != null">
+            AND LOWER(p.name) LIKE LOWER('%'||#{name}||'%')
+        </if>
+        <if test="excludeIds != null">
+            AND p.id NOT IN
+            <foreach item="item" index="index" collection="excludeIds"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        ORDER BY p.created_date DESC
+        <if test="name == null">
+            OFFSET 0 LIMIT 3
+        </if>
     </select>
 
     <select id="getProjectManagedAttachedFile" resultType="java.util.ArrayList" resultMap="projectManagedAttachedFileResultMap" parameterType="java.util.HashMap">

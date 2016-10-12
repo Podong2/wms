@@ -22,7 +22,11 @@ public class ProjectDAO {
         return sqlSession.selectList("kr.wisestone.wms.domain.Project.getProjectHistoryLists", condition);
     }
 
-    public ProjectDTO getProject(Map<String, Object> condition) {
-        return sqlSession.selectOne("kr.wisestone.wms.domain.Project.getProject", condition);
+    public List<ProjectDTO> getProjectByName(Map<String, Object> condition) {
+        return sqlSession.selectList("kr.wisestone.wms.domain.Project.getProjects", condition);
+    }
+
+    public ProjectDTO getProject(Long id) {
+        return sqlSession.selectOne("kr.wisestone.wms.domain.Project.getProject", id);
     }
 }

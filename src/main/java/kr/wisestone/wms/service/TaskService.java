@@ -3,18 +3,14 @@ package kr.wisestone.wms.service;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.mysema.query.BooleanBuilder;
-import com.mysema.query.jpa.JPASubQuery;
-import com.mysema.query.types.OrderSpecifier;
 import kr.wisestone.wms.common.exception.CommonRuntimeException;
-import kr.wisestone.wms.common.util.DateUtil;
+import kr.wisestone.wms.common.util.WebAppUtil;
 import kr.wisestone.wms.domain.*;
 import kr.wisestone.wms.repository.CodeRepository;
 import kr.wisestone.wms.repository.TaskRepository;
 import kr.wisestone.wms.repository.dao.TaskDAO;
 import kr.wisestone.wms.repository.search.TaskSearchRepository;
 import kr.wisestone.wms.security.SecurityUtils;
-import kr.wisestone.wms.web.rest.condition.ProjectTaskCondition;
 import kr.wisestone.wms.web.rest.condition.TaskCondition;
 import kr.wisestone.wms.web.rest.dto.*;
 import kr.wisestone.wms.web.rest.form.TaskForm;
@@ -30,7 +26,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.inject.Inject;
 import java.time.ZonedDateTime;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -54,9 +49,6 @@ public class TaskService {
 
     @Inject
     private NotificationService notificationService;
-
-    @Inject
-    private UserService userService;
 
     @Inject
     private AttachedFileService attachedFileService;
@@ -84,12 +76,13 @@ public class TaskService {
 
         User loginUser = SecurityUtils.getCurrentUser();
 
-        Map<String, Object> condition = Maps.newHashMap();
-        condition.put("userId", loginUser.getLogin());
-        condition.put("listType", taskCondition.getListType());
-        condition.put("filterType", taskCondition.getFilterType());
-        condition.put("offset", pageable.getOffset());
-        condition.put("limit", pageable.getPageSize());
+        Map<String, Object> condition = Maps.newHashMap(ImmutableMap.<String, Object>builder().
+            put("userId", loginUser.getLogin()).
+            put("listType", taskCondition.getListType()).
+            put("filterType", taskCondition.getFilterType()).
+            put("offset", pageable.getOffset()).
+            put("limit", pageable.getPageSize()).
+        build());
 
         List<TaskDTO> taskDTOs = taskDAO.getMyTasks(condition);
 
@@ -106,10 +99,12 @@ public class TaskService {
 
         User loginUser = SecurityUtils.getCurrentUser();
 
-        Map<String, Object> condition = Maps.newHashMap();
-        condition.put("userId", loginUser.getLogin());
-        condition.put("listType", taskCondition.getListType());
-        condition.put("filterType", taskCondition.getFilterType());
+
+        Map<String, Object> condition = Maps.newHashMap(ImmutableMap.<String, Object>builder().
+            put("userId", loginUser.getLogin()).
+            put("listType", taskCondition.getListType()).
+            put("filterType", taskCondition.getFilterType()).
+        build());
 
         TaskStatisticsDTO taskStatisticsDTO = taskDAO.getTaskCount(condition);
 
@@ -126,10 +121,11 @@ public class TaskService {
 
         User loginUser = SecurityUtils.getCurrentUser();
 
-        Map<String, Object> condition = Maps.newHashMap();
-        condition.put("userId", loginUser.getLogin());
-        condition.put("listType", taskCondition.getListType());
-        condition.put("filterType", taskCondition.getFilterType());
+        Map<String, Object> condition = Maps.newHashMap(ImmutableMap.<String, Object>builder().
+            put("userId", loginUser.getLogin()).
+            put("listType", taskCondition.getListType()).
+            put("filterType", taskCondition.getFilterType()).
+        build());
 
         TaskStatisticsDTO taskStatisticsDTO = taskDAO.getTaskCount(condition);
 
@@ -174,6 +170,12 @@ public class TaskService {
 
         TaskDTO taskDTO = taskDAO.getTask(id);
 
+        this.bindModifyPermission(loginUser, taskDTO);
+
+        return taskDTO;
+    }
+
+    private void bindModifyPermission(User loginUser, TaskDTO taskDTO) {
         if(taskDTO.getCreatedBy().equals(loginUser.getLogin())) {
             taskDTO.setModifyYn(Boolean.TRUE);
         }
@@ -196,8 +198,6 @@ public class TaskService {
                 }
             }
         }
-
-        return taskDTO;
     }
 
     public Task findOne(Long id) {
@@ -303,8 +303,9 @@ public class TaskService {
         }
 
         Task savedTask = taskRepository.save(origin);
-//        taskSearchRepository.save(origin);
+
         TaskDTO result = new TaskDTO(savedTask);
+
         this.copyTaskRelationProperties(savedTask, result);
 
         return result;
