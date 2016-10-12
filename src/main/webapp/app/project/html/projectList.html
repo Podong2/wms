@@ -1,4 +1,5 @@
-<div class="well" style="overflow-y: auto; background-color: #fff; height: 100%; min-height: 500px">
+<div id="content" ng-cloak>
+    <div class="layout-scroll" style="position: relative; overflow: hidden; overflow-y: auto" dynamic-content-scroll area-type="content">
     <wms-select-box
         ng-model="vm.projectListType"
         selected-value="vm.listType"
@@ -6,40 +7,44 @@
         dataLiveSearch="false"
     ></wms-select-box>
         <div>
-            <ul class="project-list-area">
-                <li ng-repeat="data in vm.projectList">
-                    <div class="title">(icon) <span class="project-name">{{data.project.name}}</span> {{data.project.startDate | date : 'yyyy-MM-dd'}} <span data-ng-show="data.project.startDate !=''">~</span> {{data.project.endDate | date : 'yyyy-MM-dd'}}</div>
-                    <div style="min-height: 119px;">
-                        (icon) 프로젝트 {{data.projectCount}}<br/>
-                    </div>
 
-                    <div>
+            <wms-tree-table ng-model="vm.projects" table-configs="vm.tableConfigs" update-callback="updateCallback"></wms-tree-table>
 
-                        <ul class="list-inline friends-list" style="margin-left: 2px;">
-                            <li ng-repeat="user in data.projectTeam | limitTo:4">
-                                <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null" uib-tooltip="{{user.name}}">
-                                <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
-                            </li>
-                            <li>
-                                <span href-void ng-if="data.projectTeam.length > 4">
-                                    <span class="activity">
-                                        <div class="plus-btn"><i class="fa fa-plus" style="font-size: 22px;"><b class="badge bg-color-red" style="position: absolute;">{{data.projectTeam.length - 4}}</b></i></div>
-                                    </span>
-                                </span>
-                            </li>
-                        </ul>
+            <!--<ul class="project-list-area">-->
+                <!--<li ng-repeat="data in vm.projectList">-->
+                    <!--<div class="title">(icon) <span class="project-name">{{data.project.name}}</span> {{data.project.startDate | date : 'yyyy-MM-dd'}} <span data-ng-show="data.project.startDate !=''">~</span> {{data.project.endDate | date : 'yyyy-MM-dd'}}</div>-->
+                    <!--<div style="min-height: 119px;">-->
+                        <!--(icon) 프로젝트 {{data.projectCount}}<br/>-->
+                    <!--</div>-->
 
-                        <div>
-                            <span class="pull-right">{{data.taskCompleteCount}}/{{data.taskTotalCount}} 작업</span>
-                            <span >{{data.taskPercent.width}} 완료</span>
-                        </div>
-                        <div class="progress">
-                            <div class="progress-bar bg-color-green" role="progressbar" ng-style="data.taskPercent"></div>
-                        </div>
-                    </div>
-                </li>
-            </ul>
+                    <!--<div>-->
+
+                        <!--<ul class="list-inline friends-list" style="margin-left: 2px;">-->
+                            <!--<li ng-repeat="user in data.projectTeam | limitTo:4">-->
+                                <!--<img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null" uib-tooltip="{{user.name}}">-->
+                                <!--<img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">-->
+                            <!--</li>-->
+                            <!--<li>-->
+                                <!--<span href-void ng-if="data.projectTeam.length > 4">-->
+                                    <!--<span class="activity">-->
+                                        <!--<div class="plus-btn"><i class="fa fa-plus" style="font-size: 22px;"><b class="badge bg-color-red" style="position: absolute;">{{data.projectTeam.length - 4}}</b></i></div>-->
+                                    <!--</span>-->
+                                <!--</span>-->
+                            <!--</li>-->
+                        <!--</ul>-->
+
+                        <!--<div>-->
+                            <!--<span class="pull-right">{{data.taskCompleteCount}}/{{data.taskTotalCount}} 작업</span>-->
+                            <!--<span >{{data.taskPercent.width}} 완료</span>-->
+                        <!--</div>-->
+                        <!--<div class="progress">-->
+                            <!--<div class="progress-bar bg-color-green" role="progressbar" ng-style="data.taskPercent"></div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</li>-->
+            <!--</ul>-->
         </div>
+    </div>
 </div>
 <style>
     .project-list-area{

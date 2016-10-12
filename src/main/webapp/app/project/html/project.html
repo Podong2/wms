@@ -59,16 +59,17 @@
 
                     <div style="clear: both">
                         <div class="pull-right">
-                            <ol class="nya-bs-select " ng-model="vm.orderType" style="width: 90px;">
-                                <li nya-bs-option="option in vm.orderTypes" title="{{option.name}}" data-value="option.id">
-                                    <a>
-                                        {{ option.name }}
-                                        <span class="glyphicon glyphicon-ok check-mark"></span>
-                                    </a>
-                                </li>
-                            </ol>
+                            <!--<ol class="nya-bs-select " ng-model="vm.orderType" style="width: 90px;">-->
+                                <!--<li nya-bs-option="option in vm.orderTypes" title="{{option.name}}" data-value="option.id">-->
+                                    <!--<a>-->
+                                        <!--{{ option.name }}-->
+                                        <!--<span class="glyphicon glyphicon-ok check-mark"></span>-->
+                                    <!--</a>-->
+                                <!--</li>-->
+                            <!--</ol>-->
+                            <i class="fa fa-search padding-5 cursor" style="font-size: 19px;" ng-click="vm.taskInputFunction('search')"></i>
                         </div>
-                        <button class="btn btn-default btn-sm btn-radius" ng-click="vm.taskAdd = !vm.taskAdd">작업 생성+</button>
+                        <button class="btn btn-default btn-sm btn-radius" ng-click="vm.taskInputFunction('add')">작업 생성+</button>
                         <ol class="nya-bs-select " ng-model="vm.statusId" style="width: 90px;">
                             <li nya-bs-option="option in vm.codes" title="{{option.name}}" data-value="option.id">
                                 <a>
@@ -79,7 +80,10 @@
                         </ol>
                     </div>
                     <div ng-show="vm.taskAdd">
-                        <input type="text" class="taskAddInput" ng-model="vm.task.name" enter-submit="vm.projectTaskAdd()" style="width: 100%; border-top: 1px solid #ddd" placeholder="작업명을 입력하세요."/>
+                        <input type="text" class="taskAddInput" ng-model="vm.task.name" enter-submit="vm.projectTaskAdd()" style="width: 100%; border-top: 1px solid #ddd" placeholder="생성할 작업명을 입력하세요."/>
+                    </div>
+                    <div ng-show="vm.taskSearch">
+                        <input type="text" class="taskAddInput" ng-model="vm.taskName" enter-submit="vm.findTasks()" style="width: 100%; border-top: 1px solid #ddd" placeholder="검색할 작업명을 입력하세요."/>
                     </div>
                     <div style="clear: both"></div>
                         <div class="table table-bordered table-hover project-task-list-area" when-scrolled="vm.getTaskListInProject()" style="margin-bottom: 0; border-bottom: 1px solid #ddd; overflow: hidden; overflow-y: auto; border-top:1px solid #ddd;" loading="taskScroll.loading">

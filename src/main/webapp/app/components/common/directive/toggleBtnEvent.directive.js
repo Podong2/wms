@@ -13,6 +13,7 @@ angular.module('wmsApp')
     .directive('relatedTaskPickerBtnToggle', relatedTaskPickerBtnToggle)
     .directive('subTaskUserInfoBtnToggle', subTaskUserInfoBtnToggle)
     .directive('commonPopupToggle', commonPopupToggle)
+    .directive('commonUserInfoBtnToggle', commonUserInfoBtnToggle)
     .directive('gnbTaskHistoryToggle', gnbTaskHistoryToggle);
 toggleEvent.$inject=['$compile', '$filter', '$log', '$sce', '$timeout'];
 sectionToggle.$inject=['$timeout', '$rootScope'];
@@ -28,6 +29,7 @@ memberInfoBtnToggle.$inject=['$rootScope', '$timeout'];
 relatedTaskPickerBtnToggle.$inject=['$rootScope', '$timeout'];
 subTaskUserInfoBtnToggle.$inject=['$rootScope', '$timeout'];
 commonPopupToggle.$inject=['$rootScope', '$timeout'];
+commonUserInfoBtnToggle.$inject=['$rootScope', '$timeout'];
 gnbTaskHistoryToggle.$inject=['$timeout'];
 function toggleEvent($compile, $filter, $log, $sce, $timeout) {
 
@@ -416,7 +418,7 @@ function subTaskUserInfoBtnToggle($rootScope, $timeout) {
             $rootScope.$on('profileClose', function(){
                 $timeout(function(){
                     $($elements).parents('li').find('.watcher-picker-info').removeClass("on");
-                }, 100);
+                }, 10);
             });
             $('body').click(function (e) {
                 if ($($elements).parents('li').find('.watcher-picker-info').has(e.target).length) {
@@ -431,7 +433,7 @@ function subTaskUserInfoBtnToggle($rootScope, $timeout) {
                         }else{
                             $elements.parents('li').find('.watcher-picker-info').addClass("on");
                         }
-                    }, 100);
+                    }, 10);
 
                 }
             });
@@ -478,6 +480,41 @@ function memberInfoBtnToggle($rootScope, $timeout) {
 }
 
 /**
+ * 공통 사용자 정보 팝업 토글
+ * @param $timeout
+ * @returns {{restrict: string, link: link}}
+ */
+function commonUserInfoBtnToggle($rootScope, $timeout) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attr) {
+            var $elements = element;
+            element.on('click', function(_this) {
+                $($elements).parent('li').find('.common-picker-info').addClass("on");
+            });
+            $rootScope.$on('profileClose', function(){
+                $timeout(function(){
+                    $($elements).parent('li').find('.common-picker-info').removeClass("on");
+                }, 10);
+            });
+            $('body').click(function (e) {
+                var closeYnElement = e.target.getAttribute("class");
+                $timeout(function () {
+                    if (!$elements.parent('li').has(e.target).length) {
+                        $($elements).parent('li').find('.common-picker-info').removeClass("on");
+                    }else if(closeYnElement != null && closeYnElement.indexOf("close") > -1){
+                        $($elements).parent('li').find('.common-picker-info').removeClass("on");
+                    }else{
+                        //$elements.parents('li').find('.watcher-picker-info').addClass("on");
+                    }
+                }, 10);
+            });
+
+        }
+    }
+}
+
+/**
  * 공통 팝업 토글
  * @param $timeout
  * @returns {{restrict: string, link: link}}
@@ -499,7 +536,7 @@ function commonPopupToggle($rootScope, $timeout) {
                 if (!$($element.parent()).has(e.target).length) {
                     $($element.next()).removeClass("on");
                 }else{
-                    $($element.next()).addClass("on");
+                    //$($element.next()).addClass("on");
                 }
             });
 

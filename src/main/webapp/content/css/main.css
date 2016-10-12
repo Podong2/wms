@@ -2372,6 +2372,10 @@ td.red{border-left: 5px solid #777 !important;}
     left: 86px;
     z-index: 100;
     cursor: pointer;
+    display: none;
+}
+.date-close-btn.on{
+    display: block;
 }
 .project-menu-area{
     width:100%;
@@ -2995,7 +2999,7 @@ text-align: right;
 
 /* watcher picker popup css */
     .watcher-picker-info{
-        position: absolute;
+        position: absolute !important;
         width: 300px;
         height: 75px;
         background-color: #fff;
@@ -3016,10 +3020,49 @@ text-align: right;
         padding-left: 10px !important;
     }
     .watcher-picker-info ul li{
+        border-top: 0 !important;
         margin-left: 0 !important;
         margin-top: 0 !important;
+        padding: 0 !important;
     }
     .watcher-picker-info img{
+        width: 50px !important;
+        height: 50px !important;
+        margin: 0;
+        outline: 1px solid #bfbfbf;
+        border: 1px solid #fff;
+    }
+/* watcher picker popup css end */
+
+/* common picker popup css */
+    .common-picker-info{
+        position: absolute !important;
+        width: 300px;
+        height: 75px;
+        background-color: #fff;
+        border-radius: 3px;
+        border: 1px solid #ddd;
+        /*bottom: 35px;*/
+        right: 14px;
+        z-index: 100;
+        box-shadow: 3px 3px 5px #ccc;
+        display: none;
+    }
+    .common-picker-info.on{
+        display: block !important;
+    }
+    .common-picker-info ul {
+        list-style: none !important;
+        text-align: left !important;
+        padding-left: 10px !important;
+    }
+    .common-picker-info ul li{
+        border-top: 0 !important;
+        margin-left: 0 !important;
+        margin-top: 0 !important;
+        padding: 0 !important;
+    }
+    .common-picker-info img{
         width: 50px !important;
         height: 50px !important;
         margin: 0;
@@ -3223,7 +3266,11 @@ text-align: right;
     display: none;
 }
 .member-popup-area.noAdmin{
-    width : 250px !important;
+    width: 250px !important;
+}
+.member-popup-area.common{
+    width: 250px !important;
+    top : 20px; !important;
 }
 .member-popup-area.on{
     display: block;
@@ -3290,7 +3337,12 @@ text-align: right;
 body.wms-body.modal-open {
     padding: 0 !important
 }
-
+.project-list-title-length{
+    max-width: 280px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 
 
 

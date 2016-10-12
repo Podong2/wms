@@ -19,6 +19,7 @@
                 columnDefinitions: "=columnDefinitions",
                 disabled: '@disabled',
                 enableFilter: '@enableFilter',
+                enableCollapse: '@enableCollapse',
                 enableSort: '@enableSort',
                 enableClone: '@enableClone'
             },

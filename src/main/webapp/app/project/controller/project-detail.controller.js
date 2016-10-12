@@ -548,7 +548,7 @@
             $log.debug("vm.previewFiles : ", vm.previewFiles);
             vm.responseData = _.clone(vm.previewFiles);
 
-            fileViewConfig();
+            fileViewConfig(vm.project);
 
         }
 
@@ -556,6 +556,7 @@
             $("#input-4").fileinput({
                 uploadUrl : '/api/projects/uploadFile',
                 project : project,
+                modifyYn : project == undefined ? false : project.adminYn, // 수정권한
                 type : 'project',
                 token : $scope.getToken(),
                 showCaption: false,
@@ -770,11 +771,14 @@
             .setDAlign("text-center")
             .setDType("renderer")
             .setDRenderer("file_download"));
-        vm.tableConfigs.push(tableService.getConfig("삭제", "")
-            .setHWidth("width-80-p")
-            .setDAlign("text-center")
-            .setDType("renderer")
-            .setDRenderer("file_remove"));
+        if(vm.project.adminYn){
+            vm.tableConfigs.push(tableService.getConfig("삭제", "")
+                .setHWidth("width-80-p")
+                .setDAlign("text-center")
+                .setDType("renderer")
+                .setDRenderer("file_remove"));
+        }
+
 
 
     }

@@ -46,6 +46,14 @@ function customRenderer($compile, $filter, $log, $sce) {
                     });
                 }
 
+                $scope.setUserInfo = function(user){
+                    $scope.userInfo = user;
+                }
+
+                $scope.profileClose = function (){
+                    $rootScope.$broadcast("profileClose")
+                }
+
 
         }],
         link: function (scope, element, attrs) {
@@ -141,6 +149,128 @@ function customRenderer($compile, $filter, $log, $sce) {
                     case "set_task_content" :
                         customTag = "<button type='button' class='btn' ng-click='revertTaskContent(data)'><i class='fa fa-download'></i></button>";
                         break;
+                    case "project-date" :
+                        if(scope.data.startDate != '' || scope.data.endDate != '') customTag = "<span>"+ scope.data.startDate + "<span ng-show='data.startDate != \"\" && data.endDate != \"\"'>~</span>" + scope.data.endDate +"</span>";
+                        else customTag = "<span>-</span>";
+                        break;
+                    case "project-task-count" :
+                        if(scope.data.taskCompleteCount != 0 || scope.data.taskTotalCount != 0) customTag = "<span>"+ scope.data.taskCompleteCount + "<span>/</span>" + scope.data.taskTotalCount +"</span>";
+                        else customTag = "<span>-</span>";
+                        break;
+                    case "project-task-percent" :
+                        if(scope.data.taskPercent.width != '') customTag = "<span>"+ scope.data.taskPercent.width + "</span>";
+                        else customTag = "<span>-</span>";
+                        break;
+                    case "project-member" :
+                        if(scope.data.projectMembers.length > 0) {
+                            customTag = "<div class='position-relative'><span class='cursor' common-popup-toggle>"+ scope.data.projectMembers.length + "명</span>";
+                            customTag += '<div class="member-popup-area text-left common" users="data.projectMembers" type="member" common-users-popup></div></div>';
+                        }
+                        else customTag = "<div><span>-</span>";
+
+                        break;
+                    case "project-watcher" :
+                        if(scope.data.projectWatchers.length > 0) {
+                            customTag = "<div class='position-relative'><span class='cursor' common-popup-toggle>"+ scope.data.projectWatchers.length + "명</span>";
+                            customTag += '<div class="member-popup-area text-left common" users="data.projectWatchers" type="watcher" common-users-popup></div></div>';
+                        }
+                        else customTag = "<span>-</span>";
+                        break;
+                    case "project-admin" :
+                        if(scope.data.projectAdmins.length > 0) {
+                            customTag += "<ul class='list-inline friends-list' style='margin-bottom: 0'>";
+
+                            angular.forEach(scope.data.projectAdmins, function(value, index){
+                                if(index < 3)
+                                customTag += "<li>" +
+
+                                    "<div class='row watcher-picker-info'>" +
+                                    "<div class='col-md-4 padding-10 text-center' style='border-right:1px solid #ddd; height: 100%;'>" +
+                                    "<img ng-src='/api/attachedFile/"+ value.profileImageId +"' ng-if='"+ value.profileImageId +" !=null' />" +
+                                    "<img ng-src='/content/images/demo/male.png' ng-if='"+ value.profileImageId +" ==null' />" +
+                                    "</div>" +
+                                    "<div class='col-md-8 padding-10' style='height: 100%;'>" +
+                                    "<i class='fa fa-close cursor pull-right' ng-click='profileClose()'></i>" +
+                                    "<ul>" +
+                                    "<li>"+value.name+"</li>" +
+                                    "<li>"+(value.phone == null ? '' : value.phone)+"</li>" +
+                                    "<li>"+value.email+"</li>" +
+                                    "</ul></div></div>" +
+
+                                    "<span class='cursor' sub-task-user-info-btn-toggle>" + value.name + "<span ng-if='"+ (index + 1) +" != data.projectAdmins.length'>,</span></span></li>";
+                            });
+                            if(scope.data.projectAdmins.length > 3){
+                                customTag +=
+                                    "<li class='position-relative'>" +
+                                        "<span common-popup-toggle>" +
+                                        "<span class='activity'>" +
+                                        "<a class='position-relative'><i class='fa fa-play'></i></a>" +
+                                        "</span>" +
+                                        "</span>" +
+                                        "<div class='other-users-popup'>" +
+                                            "<ul class='' style='margin-bottom: 0'>";
+                                angular.forEach(scope.data.projectAdmins, function(value, index){
+                                    if(index > 2)
+                                        customTag += "<li class='clear-both text-left'>" +
+
+                                            "<div class='row common-picker-info'>" +
+                                            "<div class='col-md-4 padding-10 text-center' style='border-right:1px solid #ddd; height: 100%;'>" +
+                                            "<img ng-src='/api/attachedFile/"+ value.profileImageId +"' ng-if='"+ value.profileImageId +" !=null' />" +
+                                            "<img ng-src='/content/images/demo/male.png' ng-if='"+ value.profileImageId +" ==null' />" +
+                                            "</div>" +
+                                            "<div class='col-md-8 padding-10' style='height: 100%;'>" +
+                                            "<i class='fa fa-close cursor pull-right' ng-click='profileClose()'></i>" +
+                                            "<ul>" +
+                                            "<li>" + value.name + "</li>" +
+                                            "<li>" + value.phone + "</li>" +
+                                            "<li>" + value.email + "</li>" +
+                                            "</ul></div></div>"+
+                                            "<div class='cursor' common-user-info-btn-toggle>"+ value.name + "</div></li>";
+                                });
+
+                                customTag += "</ul>" +
+                                        "</div>" +
+                                    "</li>" ;
+                            }
+
+                            customTag += "</ul>";
+
+                        } else customTag = "<span>-</span>";
+                        break;
+                    case "project-update-date" :
+
+                        var date = prettyDate(scope.data.lastModifiedDate);
+
+                        if(scope.data.lastModifiedDate != '') customTag = "<span>"+ date + "</span>";
+                        else customTag = "<span>-</span>";
+                        break;
+                    case "project-status" :
+                        if(scope.data.statusId > 0){
+                            switch (scope.data.statusId){
+                                case 1 : customTag = "<span>활성</span>";break;
+                                case 2 : customTag = "<span>완료</span>";break;
+                                case 3 : customTag = "<span>보류</span>";break;
+                                case 4 : customTag = "<span>취소</span>";break;
+                                default : customTag = "<span>-</span>";break;
+                            }
+                        } else if(scope.data.statusId == 0){
+                            customTag = "<span>-</span>";
+                        }
+                        break;
+                    case "project-name" :
+                        if(scope.data.depth == undefined) scope.data.depth = 0;
+                        var depth = '';
+                        for(var i =0; i < scope.data.depth; i ++){
+                            depth += '<span style="margin-left: 5px;">&nbsp;&nbsp;&nbsp;&nbsp;</span>'
+                        }
+                        var userType = '';
+                        if(scope.data.adminYn) userType = "<span>(관리자 <i class='fa fa-user'></i>)</span>";
+                        else if(scope.data.memberYn) userType = "<span>(맴버 <i class='fa fa-users'></i>)</span>";
+                        else if(scope.data.watcherYn) userType = "<span>(공유 <i class='fa fa-eye'></i>)</span>";
+
+                        if(scope.data.depth == 0) customTag = "<div class='project-list-title-length'><strong>" +"<i class='fa fa-angle-down' ng-if='!data.childsYn'></i> " + scope.data.name + "</strong>" + userType + "</div>" ;
+                        else customTag = "<div class='project-list-title-length'><span> "+ depth +"<i class='fa fa-angle-down' ng-if='!data.childsYn'></i> "+ scope.data.name + "</span>" + userType + "</div>" ;
+                        break;
                 }
 
                 var linkFn = $compile(customTag);
@@ -157,6 +287,31 @@ function customRenderer($compile, $filter, $log, $sce) {
             }
             else {
                 renderer();
+            }
+
+            /* 날짜 분전, 시간전, 일전, 주전 표현 */
+            function prettyDate(time){
+                var date = new Date((time || "").replace(/-/g,"/").replace(/[TZ]/g," ").split(".")[0]),
+                    diff = (((new Date()).getTime() - date.getTime()) / 1000);
+
+                diff = diff - 33000;
+                if(diff < 0) diff = 0;
+                var day_diff = Math.floor(diff / 86400);
+
+                if ( isNaN(day_diff) || day_diff < 0 )
+                    return;
+
+                return day_diff == 0 && (
+                    diff < 60 && "방금전" ||
+                    diff < 120 && "1분전" ||
+                    diff < 3600 && Math.floor( diff / 60 ) + " 분전" ||
+                    diff < 7200 && "1 시간전" ||
+                    diff < 86400 && Math.floor( diff / 3600 ) + " 시간전") ||
+                    day_diff <= 1 && new Date(time).format("yyyy-MM-dd") ||
+                    day_diff < 7 && new Date(time).format("yyyy-MM-dd") ||
+                    day_diff < 31 && new Date(time).format("yyyy-MM-dd") ||
+                    day_diff < 360 && new Date(time).format("yyyy-MM-dd") ||
+                    day_diff >= 360 && new Date(time).format("yyyy-MM-dd")
             }
         }
     }

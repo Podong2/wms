@@ -14,6 +14,8 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             vm.projectTaskAdd = projectTaskAdd;
             vm.getTaskListInProject = getTaskListInProject;
             vm.initProjectTaskList = initProjectTaskList;
+            vm.taskInputFunction = taskInputFunction;
+            vm.findTasks = findTasks;
             //vm.showDetail = showDetail;
             vm.codes = [{"id":'', "name":"선택"},{"id":1,"name":"활성"},{"id":2,"name":"완료"},{"id":3,"name":"보류"},{"id":4,"name":"취소"}]
             vm.orderTypes = [{"id":'', "name":"선택"},{"id":'IMPORTANT',"name":"중요도"},{"id":'TASK_NAME',"name":"텍스트 오름 차순"}];
@@ -57,6 +59,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             vm.projectTeam = [];// 프로젝트 팀원 (중복제거)
             vm.statusId = 1;
             vm.taskAdd = false;
+            vm.taskSearch = false;
             vm.orderType = '';
             vm.listType = '';
             vm.dDay = '';
@@ -144,6 +147,22 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 vm.data.tasks = tasks;
                 $log.debug("프로젝트 작업 정보 : ", tasks);
                 onSuccess(vm.data);
+            }
+
+
+            function findTasks(){
+                ProjectTasks.query({
+                    projectId : $stateParams.id,
+                    taskName : vm.taskName,
+                    statusId : 1,
+                    page: vm.page -1,
+                    size: 15,
+                    sort: 'desc'
+                }, findTaskSuccess, onError)
+            }
+            function findTaskSuccess(tasks){
+                vm.tasks = tasks;
+                $log.debug("프로젝트 작업 정보 : ", tasks);
             }
 
             //getList();
@@ -369,6 +388,17 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     vm.orderType = '';
                 }else{
                     getList();
+                }
+            }
+            function taskInputFunction(type){
+                if(type == 'add'){
+                    vm.taskAdd = vm.taskAdd ? false : true;
+                    vm.taskSearch = false;
+                    vm.taskName = '';
+                }else{
+                    vm.taskAdd = false;
+                    vm.taskSearch = vm.taskSearch ? false : true;
+                    vm.taskName = vm.taskSearch ? vm.taskName : '';
                 }
             }
 

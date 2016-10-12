@@ -146,6 +146,10 @@
         }
     },
     "entity": {
+        "user" : {
+            "member" : "맴버",
+            "watcher" : "공유"
+        },
         "action": {
             "addblob": "Blob 추가",
             "addimage": "이미지 추가",

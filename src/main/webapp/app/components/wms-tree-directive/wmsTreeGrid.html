@@ -39,10 +39,10 @@
 <div class="form-group" ng-if="enableFilter != 'false'">
     <div class="input-group">
         <label>필터: </label>
-        <input class="form-control" ng-model="_filter.name">
+        <input class="form-control" ng-model="_filter.name" wms-kr-update>
     </div>
 </div>
-<div class="voffset-b2">
+<div class="voffset-b2"ng-if="enableCollapse != 'false'">
     <button type="button" class="btn btn-default" ng-click="expandAll();">전체 열기</button>
     <button type="button" class="btn btn-default" ng-click="collapseAll();">전체 닫기</button>
 </div>
