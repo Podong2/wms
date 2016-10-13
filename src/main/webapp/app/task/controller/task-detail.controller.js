@@ -705,11 +705,8 @@
             toastr.success('sub 태스크 생성 완료', 'sub 태스크 생성 완료');
             vm.subTask.name = '';
             getTaskInfo();
-            if($stateParams.parentType == 'project'){
-                $rootScope.$broadcast('projectReload');
-            }else if($stateParams.parentType == 'task'){
-                $rootScope.$broadcast('taskReload', $stateParams.listType);
-            }
+            if($stateParams.parentType != undefined && $stateParams.parentType == 'project') $rootScope.$broadcast('projectReload');
+            else  $rootScope.$broadcast('taskReload');
         }
         function onSaveError () {
         }
@@ -1299,6 +1296,40 @@
         //    }
         //}
 
+        vm.getCheckedData = getCheckedData;
+        vm.filesRemove = filesRemove;
+        vm.downloadFiles = downloadFiles;
+        // 데이터 가져오기
+        function getData () {
+            return vm.previewFiles;
+        };
+        //선택된 데이터 가져오기
+        function getCheckedData () {
+            var checkData = [];
+
+            angular.forEach(getData(), function (value, index) {
+                if (value.checked) {
+                    checkData.push(value.id);
+                }
+            });
+
+            return checkData;
+        }
+        $scope.checkedData = [];
+        function filesRemove(){
+            $scope.checkedData = getCheckedData();
+            vm.task.removeTargetFiles = $scope.checkedData.join(",");
+            $log.debug("파일 삭제 id 목록 : ", vm.task.removeTargetFiles);
+            taskUpload();
+        }
+        function downloadFiles(){
+            $scope.checkedData = getCheckedData();
+            vm.task.downloadFiles = $scope.checkedData.join(",");
+            $log.debug("파일 삭제 id 목록 : ", vm.task.removeTargetFiles);
+            var iframe = $("<iframe/>").hide().appendTo("body").load(function() {
+                iframe.remove();
+            }).attr("src", "/api/attachedFile?targetIds=" + vm.task.downloadFiles + "&name=task");
+        }
 
 
 
@@ -1308,12 +1339,12 @@
             .setDAlign("text-center")
             .setHAlign("text-center")
             .setDType("check"));
-        vm.tableConfigs.push(tableService.getConfig("이름", "caption")
-            .setHWidth("width-200-p")
-            .setDAlign("text-center")
+        vm.tableConfigs.push(tableService.getConfig("파일명", "caption")
+            .setHWidth("width-300-p")
+            .setDAlign("text-left")
             .setDColor('field1_color'));
         vm.tableConfigs.push(tableService.getConfig("파일 크기", "size")
-            .setHWidth("width-200-p")
+            .setHWidth("width-100-p")
             .setDAlign("text-center"));
         vm.tableConfigs.push(tableService.getConfig("다운로드", "")
             .setHWidth("width-80-p")

@@ -232,7 +232,8 @@
             createComment : createComment,
             putContentRevert : putContentRevert,
             removeComment : removeComment,
-            putSubTask : putSubTask
+            putSubTask : putSubTask,
+            downloadFiles : downloadFiles,
         }
         return service;
 
@@ -299,6 +300,15 @@
             var deferred = $q.defer();
             $http.put( '/api/tasks/modifySubTask', {}, {params : parameter}).then(function (result) {
                 $log.debug("하위 작업 수정 결과 service : ", result);
+                deferred.resolve(result);
+            });
+            return deferred.promise;
+        }
+
+        function downloadFiles(parameter){
+            var deferred = $q.defer();
+            $http.get( '/api/attachedFile', {}, {params : parameter}).then(function (result) {
+                $log.debug("다중 파일 다운로드 service : ", result);
                 deferred.resolve(result);
             });
             return deferred.promise;
