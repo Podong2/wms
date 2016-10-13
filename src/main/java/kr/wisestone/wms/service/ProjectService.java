@@ -105,32 +105,13 @@ public class ProjectService {
             }
         }
 
+        for(UserDTO member : projectDTO.getProjectMembers()) {
+            if(member.getLogin().equals(loginUser.getLogin())) {
+                projectDTO.setMemberYn(Boolean.TRUE);
+            }
+        }
+
         return projectDTO;
-    }
-
-    private void copyProjectRelationProperties(Project project, ProjectDTO projectDTO) {
-
-        List<User> projectAdmins = project.getPlainProjectUsers(UserType.ADMIN);
-
-        if(projectAdmins != null && !projectAdmins.isEmpty()) {
-            projectDTO.setProjectAdmins(projectAdmins.stream().map(UserDTO::new).collect(Collectors.toList()));
-        }
-
-        List<User> projectWatchers = project.getPlainProjectUsers(UserType.WATCHER);
-
-        if(projectWatchers != null && !projectWatchers.isEmpty()) {
-            projectDTO.setProjectWatchers(projectWatchers.stream().map(UserDTO::new).collect(Collectors.toList()));
-        }
-
-        List<User> projectMembers = project.getPlainProjectUsers(UserType.MEMBER);
-
-        if(projectMembers != null && !projectMembers.isEmpty()) {
-            projectDTO.setProjectWatchers(projectMembers.stream().map(UserDTO::new).collect(Collectors.toList()));
-        }
-
-        if(project.getProjectParents() != null && !project.getProjectParents().isEmpty()) {
-            projectDTO.setProjectParents(project.getPlainProjectParent().stream().map(ProjectDTO::new).collect(Collectors.toList()));
-        }
     }
 
     @Transactional
