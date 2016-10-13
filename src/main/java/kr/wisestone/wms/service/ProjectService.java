@@ -338,10 +338,10 @@ public class ProjectService {
                 });
             } else if(orderType.equals("TEXT_ASC")) {
 
-                Collections.sort(childProjectDTOs, (p1, p2) -> p2.getProject().getName().compareTo(p1.getProject().getName()));
+                Collections.sort(childProjectDTOs, (p1, p2) -> p1.getProject().getName().compareTo(p2.getProject().getName()));
             } else if(orderType.equals("TEXT_DESC")) {
 
-                Collections.sort(childProjectDTOs, (p1, p2) -> p1.getProject().getName().compareTo(p2.getProject().getName()));
+                Collections.sort(childProjectDTOs, (p1, p2) -> p2.getProject().getName().compareTo(p1.getProject().getName()));
             }
         }
 
