@@ -264,8 +264,6 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
             vm.tableConfigs.push(tableService.getConfig("이름", "name")
                 .setHWidth("width-200-p")
                 .setDAlign("text-center")
-                .setDColor('field1_color')
-                .setDIcon('icon')
                 .setDType("renderer")
                 .setDRenderer("file_name"));
             vm.tableConfigs.push(tableService.getConfig("파일 크기", "size")
@@ -281,7 +279,9 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
                 .setDRenderer("file_location"));
             vm.tableConfigs.push(tableService.getConfig("버전", "")
                 .setHWidth("width-200-p")
-                .setDAlign("text-center"));
+                .setDAlign("text-center")
+                .setDType("renderer")
+                .setDRenderer("file_version"));
             vm.tableConfigs.push(tableService.getConfig("다운로드", "")
                 .setHWidth("width-80-p")
                 .setDAlign("text-center")

@@ -31,6 +31,7 @@ function customRenderer($compile, $filter, $log, $sce) {
                     ProjectEdit.deleteAttachedFile([{entityName : $scope.params.entityName, entityId : $scope.params.entityId, attachedFileId : $scope.params.attachedFileId}]).then(function(result){
                         $log.debug("프로젝트 파일 삭제 : ", result);
                         $rootScope.$broadcast('task-detail-reload')
+                        $rootScope.$broadcast('project-detail-reload')
                         $rootScope.$broadcast('project-file-reload')
                     });
                 };
@@ -156,6 +157,9 @@ function customRenderer($compile, $filter, $log, $sce) {
                         break;
                     case "set_project_content" :
                         customTag = "<button type='button' class='btn' ng-click='revertProjectContent(data)'><i class='fa fa-download'></i></button>";
+                        break;
+                    case "file_version" :
+                        customTag = "<span>-</span>";
                         break;
                     case "project-date" :
                         if(scope.data.startDate != '' || scope.data.endDate != '') customTag = "<span>"+ scope.data.startDate + "<span ng-show='data.startDate != \"\" && data.endDate != \"\"'>~</span>" + scope.data.endDate +"</span>";
