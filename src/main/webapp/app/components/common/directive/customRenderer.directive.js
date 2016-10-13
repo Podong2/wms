@@ -13,8 +13,8 @@ function customRenderer($compile, $filter, $log, $sce) {
             data: "=",
             rendererCallback: "="
         },
-        controller : ['$scope', '$element', '$attrs', '$rootScope', 'DeleteAttachedFile', '$sce', 'TaskEdit', '$state', 'ProjectEdit',
-            function ($scope, $element, $attrs, $rootScope, DeleteAttachedFile, $sce, TaskEdit, $state, ProjectEdit) {
+        controller : ['$scope', '$element', '$attrs', '$rootScope', '$sce', 'TaskEdit', '$state', 'ProjectEdit',
+            function ($scope, $element, $attrs, $rootScope, $sce, TaskEdit, $state, ProjectEdit) {
                 // 첨부 파일 다운로드
                 $scope.fileDownLoad = function(key){
                     var iframe = $("<iframe/>").hide().appendTo("body").load(function() {
@@ -26,39 +26,38 @@ function customRenderer($compile, $filter, $log, $sce) {
                     $scope.params = {
                         entityName : entityName,
                         entityId : entityId,
-                        attachedFileId : attachedFileId,
+                        attachedFileId : attachedFileId
                     };
-                    DeleteAttachedFile.delete({entityName : $scope.params.entityName, entityId : $scope.params.entityId, attachedFileId : $scope.params.attachedFileId},
-                        function (result) {
-                            $log.debug("프로젝트 파일 삭제 : ", result);
-                            $rootScope.$broadcast('task-detail-reload')
-                            $rootScope.$broadcast('project-file-reload')
-                        });
-                }
+                    ProjectEdit.deleteAttachedFile([{entityName : $scope.params.entityName, entityId : $scope.params.entityId, attachedFileId : $scope.params.attachedFileId}]).then(function(result){
+                        $log.debug("프로젝트 파일 삭제 : ", result);
+                        $rootScope.$broadcast('task-detail-reload')
+                        $rootScope.$broadcast('project-file-reload')
+                    });
+                };
                 //설명 html 형식으로 표현
                 $scope.renderHtml = function(data) {
                     return $sce.trustAsHtml(data);
-                }
+                };
                 $scope.revertTaskContent = function(data){
                     TaskEdit.putContentRevert(data.taskId, data.id).then(function(){
                         $rootScope.$broadcast('task-detail-reload');
                         $rootScope.$broadcast('cancel');
                     });
-                }
+                };
                 $scope.revertProjectContent = function(data){
                     ProjectEdit.putContentRevert(data.entityId, data.id).then(function(){
                         $rootScope.$broadcast('project-detail-reload');
                         $rootScope.$broadcast('cancel');
                     });
-                }
+                };
 
                 $scope.setUserInfo = function(user){
                     $scope.userInfo = user;
-                }
+                };
 
                 $scope.profileClose = function (){
                     $rootScope.$broadcast("profileClose")
-                }
+                };
 
 
         }],
