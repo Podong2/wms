@@ -5,6 +5,7 @@ import com.google.common.collect.Lists;
 import kr.wisestone.wms.service.ProjectService;
 import kr.wisestone.wms.web.rest.condition.ProjectTaskCondition;
 import kr.wisestone.wms.web.rest.dto.*;
+import kr.wisestone.wms.web.rest.form.ProjectFileDeleteForm;
 import kr.wisestone.wms.web.rest.form.ProjectForm;
 import kr.wisestone.wms.web.rest.mapper.ProjectMapper;
 import kr.wisestone.wms.web.rest.util.HeaderUtil;
@@ -230,16 +231,13 @@ public class ProjectResource {
         method = RequestMethod.DELETE,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<Void> removeManagedAttachedFiles(
-            @RequestParam(name = "entityName") String entityName
-        , @RequestParam(name = "entityId") Long entityId
-        , @RequestParam(name = "attachedFileId") Long attachedFileId) {
+    public ResponseEntity<Void> removeManagedAttachedFiles(@RequestBody ProjectFileDeleteForm projectFileDeleteForm) {
 
         log.debug("REST request to delete Project file : {}");
 
-        projectService.removeProjectFile(entityName, entityId, attachedFileId);
+        projectService.removeProjectFile(projectFileDeleteForm);
 
-        return ResponseEntity.ok().headers(HeaderUtil.createEntitySingleDeletionAlert("attachedFile", attachedFileId.toString())).build();
+        return ResponseEntity.ok().headers(HeaderUtil.createEntityMultipleDeletionAlert("attachedFile", "")).build();
     }
 
     @RequestMapping(value = "/projects/addProjectSharedAttachedFile",

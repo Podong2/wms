@@ -15,6 +15,7 @@ import kr.wisestone.wms.repository.dao.TaskDAO;
 import kr.wisestone.wms.security.SecurityUtils;
 import kr.wisestone.wms.web.rest.condition.ProjectTaskCondition;
 import kr.wisestone.wms.web.rest.dto.*;
+import kr.wisestone.wms.web.rest.form.ProjectFileDeleteForm;
 import kr.wisestone.wms.web.rest.form.ProjectForm;
 import kr.wisestone.wms.web.rest.mapper.AttachedFileMapper;
 import kr.wisestone.wms.web.rest.mapper.ProjectMapper;
@@ -543,51 +544,58 @@ public class ProjectService {
     }
 
     @Transactional
-    public void removeProjectFile(String entityName, Long entityId, Long attachedFileId) {
+    public void removeProjectFile(ProjectFileDeleteForm projectFileDeleteForm) {
 
-        if(entityName.equalsIgnoreCase(ProjectManagedAttachedFileDTO.LOCATION_TASK)) {
+        for(ProjectFileDeleteForm.ProjectFileDeleteObject projectFileDeleteObject : projectFileDeleteForm.getProjectFileDeleteTargets()) {
 
-            Task task = taskService.findOne(entityId);
+            String entityName = projectFileDeleteObject.getEntityName();
+            Long entityId = projectFileDeleteObject.getEntityId();
+            Long attachedFileId = projectFileDeleteObject.getAttachedFileId();
 
-            TaskAttachedFile taskAttachedFile = task.findAttachedFile(attachedFileId);
+            if(entityName.equalsIgnoreCase(ProjectManagedAttachedFileDTO.LOCATION_TASK)) {
 
-            if(taskAttachedFile != null) {
-                task.removeAttachedFile(attachedFileId);
+                Task task = taskService.findOne(entityId);
+
+                TaskAttachedFile taskAttachedFile = task.findAttachedFile(attachedFileId);
+
+                if(taskAttachedFile != null) {
+                    task.removeAttachedFile(attachedFileId);
+                }
+
+                taskService.save(task);
+
+            } else if(entityName.equalsIgnoreCase(ProjectManagedAttachedFileDTO.LOCATION_PROJECT)) {
+
+                Project project = projectRepository.findOne(entityId);
+
+                ProjectAttachedFile projectAttachedFile = project.findAttachedFile(attachedFileId);
+
+                if(projectAttachedFile != null) {
+                    project.removeAttachedFile(attachedFileId);
+                }
+
+                projectRepository.save(project);
+
+            } else if(entityName.equalsIgnoreCase(ProjectManagedAttachedFileDTO.LOCATION_PROJECT_SHARED)) {
+
+                Project project = projectRepository.findOne(entityId);
+
+                ProjectSharedAttachedFile projectAttachedFile = project.findSharedAttachedFile(attachedFileId);
+
+                if(projectAttachedFile != null) {
+                    project.removeSharedAttachedFile(attachedFileId);
+                }
+
+                projectRepository.save(project);
+
+            } else if(entityName.equalsIgnoreCase(ProjectManagedAttachedFileDTO.LOCATION_TASK_REPLY)) {
+
+                this.traceLogService.removeAttachedFileByEntityIdAndEntityNameAndAttachedFileId(entityId, "Task", attachedFileId);
+
+            } else if(entityName.equalsIgnoreCase(ProjectManagedAttachedFileDTO.LOCATION_PROJECT_REPLY)) {
+
+                this.traceLogService.removeAttachedFileByEntityIdAndEntityNameAndAttachedFileId(entityId, "Project", attachedFileId);
             }
-
-            taskService.save(task);
-
-        } else if(entityName.equalsIgnoreCase(ProjectManagedAttachedFileDTO.LOCATION_PROJECT)) {
-
-            Project project = projectRepository.findOne(entityId);
-
-            ProjectAttachedFile projectAttachedFile = project.findAttachedFile(attachedFileId);
-
-            if(projectAttachedFile != null) {
-                project.removeAttachedFile(attachedFileId);
-            }
-
-            projectRepository.save(project);
-
-        } else if(entityName.equalsIgnoreCase(ProjectManagedAttachedFileDTO.LOCATION_PROJECT_SHARED)) {
-
-            Project project = projectRepository.findOne(entityId);
-
-            ProjectSharedAttachedFile projectAttachedFile = project.findSharedAttachedFile(attachedFileId);
-
-            if(projectAttachedFile != null) {
-                project.removeSharedAttachedFile(attachedFileId);
-            }
-
-            projectRepository.save(project);
-
-        } else if(entityName.equalsIgnoreCase(ProjectManagedAttachedFileDTO.LOCATION_TASK_REPLY)) {
-
-            this.traceLogService.removeAttachedFileByEntityIdAndEntityNameAndAttachedFileId(entityId, "Task", attachedFileId);
-
-        } else if(entityName.equalsIgnoreCase(ProjectManagedAttachedFileDTO.LOCATION_PROJECT_REPLY)) {
-
-            this.traceLogService.removeAttachedFileByEntityIdAndEntityNameAndAttachedFileId(entityId, "Project", attachedFileId);
         }
     }
 
