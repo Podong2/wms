@@ -9,14 +9,13 @@ import kr.wisestone.wms.common.constant.NotificationConfig;
 import kr.wisestone.wms.common.util.WebAppUtil;
 import kr.wisestone.wms.domain.*;
 import kr.wisestone.wms.repository.NotificationRepository;
+import kr.wisestone.wms.repository.TaskRepository;
 import kr.wisestone.wms.repository.dao.ProjectDAO;
 import kr.wisestone.wms.repository.dao.TaskDAO;
 import kr.wisestone.wms.repository.search.NotificationSearchRepository;
 import kr.wisestone.wms.security.SecurityUtils;
 import kr.wisestone.wms.service.dto.NotificationParameterDTO;
-import kr.wisestone.wms.web.rest.dto.NotificationDTO;
-import kr.wisestone.wms.web.rest.dto.ProjectDTO;
-import kr.wisestone.wms.web.rest.dto.TaskDTO;
+import kr.wisestone.wms.web.rest.dto.*;
 import kr.wisestone.wms.web.rest.mapper.NotificationMapper;
 import kr.wisestone.wms.web.rest.mapper.TraceLogMapper;
 import kr.wisestone.wms.web.rest.mapper.UserMapper;
@@ -37,6 +36,7 @@ import javax.inject.Inject;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import static org.elasticsearch.index.query.QueryBuilders.queryStringQuery;
 
@@ -81,6 +81,9 @@ public class NotificationService {
 
     @Inject
     private ProjectDAO projectDAO;
+
+    @Inject
+    private TaskRepository taskRepository;
 
     /**
      * Save a notification.
@@ -279,7 +282,7 @@ public class NotificationService {
 
         User loginUser = SecurityUtils.getCurrentUser();
 
-        TaskDTO task = this.taskDAO.getTask(traceLog.getTaskId());
+        TaskDTO task = this.findTaskDTO(traceLog.getTaskId());
 
         Map<String, Object> contents = Maps.newHashMap(ImmutableMap.<String, Object>builder().
             put("task", task).
@@ -303,6 +306,44 @@ public class NotificationService {
 
             this.saveAndSendNotification(notificationParameterVo);
         }
+    }
+
+
+    private TaskDTO findTaskDTO(Long taskId) {
+
+        Task task = taskRepository.findOne(taskId);
+        TaskDTO taskDTO = new TaskDTO(task);
+
+        this.copyTaskRelationProperties(task, taskDTO);
+
+        if(!task.getTaskAttachedFiles().isEmpty()) {
+            taskDTO.setAttachedFiles(task.getPlainTaskAttachedFiles().stream().map(AttachedFileDTO::new).collect(Collectors.toList()));
+        }
+
+        return taskDTO;
+    }
+
+    private void copyTaskRelationProperties(Task task, TaskDTO taskDTO) {
+        if(task.getTaskUsers() != null && !task.getTaskUsers().isEmpty()) {
+            taskDTO.setAssignees(task.findTaskUsersByType(UserType.ASSIGNEE).stream().map(UserDTO::new).collect(Collectors.toList()));
+            taskDTO.setWatchers(task.findTaskUsersByType(UserType.WATCHER).stream().map(UserDTO::new).collect(Collectors.toList()));
+        }
+
+        if(task.getSubTasks() != null && !task.getSubTasks().isEmpty())
+            taskDTO.setSubTasks(task.getSubTasks().stream().map(TaskDTO::new).collect(Collectors.toList()));
+
+        if(task.getRelatedTasks() != null && !task.getRelatedTasks().isEmpty())
+            taskDTO.setRelatedTasks(task.getPlainRelatedTask().stream().map(TaskDTO::new).collect(Collectors.toList()));
+
+        if(task.getParent() != null)
+            taskDTO.setParent(new TaskDTO(task.getParent()));
+
+        if(task.getTaskProjects() != null && !task.getTaskProjects().isEmpty()) {
+            taskDTO.setTaskProjects(task.getPlainTaskProject().stream().map(ProjectDTO::new).collect(Collectors.toList()));
+        }
+
+        if(task.getTaskRepeatSchedule() != null)
+            taskDTO.setTaskRepeatSchedule(new TaskRepeatScheduleDTO(task.getTaskRepeatSchedule()));
     }
 
     private String getNotificationTitle(NotificationConfig notification) {
