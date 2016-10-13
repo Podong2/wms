@@ -225,8 +225,14 @@
 
         function deleteAttachedFile(projectFileDeleteTargets){
             var deferred = $q.defer();
-            $log.debug("Project 파일 삭제 data : ", projectFileDeleteTargets)
-            $http.delete( 'api/projects/removeManagedAttachedFiles', {},{projectFileDeleteTargets : projectFileDeleteTargets}).then(function (result) {
+            $log.debug("Project 파일 삭제 data : ", projectFileDeleteTargets);
+            var params = {
+                method : "DELETE",
+                url : 'api/projects/removeManagedAttachedFiles',
+                data : {projectFileDeleteTargets : projectFileDeleteTargets},
+                headers: {"Content-Type": "application/json;charset=utf-8"}
+            };
+            $http(params).then(function (result) {
                 $log.debug("ProjectList : ", result);
                 deferred.resolve(result);
             });
