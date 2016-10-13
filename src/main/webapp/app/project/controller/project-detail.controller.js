@@ -32,6 +32,10 @@
         vm.commonPopupClose = commonPopupClose;
         vm.memberAdd = memberAdd;
         vm.removeMember = removeMember;
+        vm.projectRevertModalOpen = projectRevertModalOpen;
+        vm.getCheckedData = getCheckedData;
+        vm.filesRemove = filesRemove;
+        vm.downloadFiles = downloadFiles;
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
 
@@ -373,7 +377,6 @@
                 }
                 else {
                     projectDetailReload();
-                    vm.uploadType = '';
                 }
 
             });
@@ -401,6 +404,7 @@
                     })
                 }
             }
+            vm.uploadType = '';
         }
         function onError(){
 
@@ -653,8 +657,10 @@
             vm.DuplicationWatcherIds = excludeUserIds;
 
             findUser.findByNameAndExcludeIds(name, excludeUserIds).then(function(result){
+                vm.watcherList = [];
                 $log.debug("watcherList : ", result);
                 vm.watcherList = result;
+                $rootScope.$broadcast("initArrows")
             }); //user search
         };
 
@@ -724,7 +730,7 @@
             vm.currentMemberIds.push(member.id)
             vm.project.projectMembers.push(member);
             $scope.$apply();
-            //$scope.pickerFindMember(vm.memberName);
+            $scope.pickerFindMember(vm.memberName);
             //$rootScope.$broadcast('watcherPopupClose');
         }
 
@@ -749,8 +755,10 @@
             vm.DuplicationMemberIds = excludeUserIds;
 
             findUser.findByProjectMemberAndExcludeIds(name, vm.project.id, excludeUserIds).then(function(result){
+                vm.memberList=[];
                 $log.debug("memberList : ", result);
                 vm.memberList = result;
+                $rootScope.$broadcast("initArrows")
             }); //user search
         };
 
@@ -764,10 +772,6 @@
 
 
         // 작업 본문 복원 팝업 오픈
-        vm.projectRevertModalOpen = projectRevertModalOpen;
-        vm.getCheckedData = getCheckedData;
-        vm.filesRemove = filesRemove;
-        vm.downloadFiles = downloadFiles;
         function projectRevertModalOpen(){
             var editModalConfig = {
                 size : "lg",
@@ -821,12 +825,12 @@
             .setDAlign("text-center")
             .setHAlign("text-center")
             .setDType("check"));
-        vm.tableConfigs.push(tableService.getConfig("이름", "caption")
-            .setHWidth("width-200-p")
-            .setDAlign("text-center")
+        vm.tableConfigs.push(tableService.getConfig("파일명", "caption")
+            .setHWidth("width-300-p")
+            .setDAlign("text-left")
             .setDColor('field1_color'));
         vm.tableConfigs.push(tableService.getConfig("파일 크기", "size")
-            .setHWidth("width-200-p")
+            .setHWidth("width-100-p")
             .setDAlign("text-center"));
         vm.tableConfigs.push(tableService.getConfig("다운로드", "")
             .setHWidth("width-80-p")

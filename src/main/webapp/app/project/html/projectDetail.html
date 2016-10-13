@@ -145,7 +145,7 @@
                                     </div>
                                     <div class="member-search-list-area watcher-search-list-area" ng-if="vm.project.adminYn">
                                         <div>
-                                            <div ng-repeat="data in vm.memberList track by $index" class="arrow-event-li" data-id="{{data.id}}" ng-class="$index == 0 ? 'start-arrow' : ''">
+                                            <div ng-repeat="data in vm.memberList track by $index" class="arrow-event-li" data-id="{{data.id}}" value="{{data.id}}" ng-class="$index == 0 ? 'start-arrow active' : ''">
                                                 <div class="member-search-element cursor arrow-event-li" ng-click="vm.memberAdd(data)">
                                                     <div class="row">
                                                         <div class="col-md-2">
@@ -179,7 +179,7 @@
                                         <input type="text" class="form-control member-input" ng-model="vm.memberFilter" style="border-right: 0; border-left:0; border-top:0;"  placeholder="이름을 입력하세요." wms-kr-update/>
                                     </div>
 
-                                    <div class="member-list-area watcher-list-area" ng-class="vm.memberSearchYn ? 'on' : ''">
+                                    <div class="member-list-area" ng-class="vm.memberSearchYn ? 'on' : ''">
                                         <div ng-repeat="data in vm.project.projectMembers | filter:vm.memberFilter track by $index" class="member-list-items">
                                             <div class="member-element" ng-class="data.currentYn ? 'current' : ''">
                                                 <div class="row">

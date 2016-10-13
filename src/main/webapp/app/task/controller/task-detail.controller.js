@@ -46,6 +46,9 @@
         vm.projectClose = projectClose;
         vm.windowOpen = windowOpen;
         vm.profileClose = profileClose;
+        vm.getCheckedData = getCheckedData;
+        vm.filesRemove = filesRemove;
+        vm.downloadFiles = downloadFiles;
         //vm.getCurrentWatchers = getCurrentWatchers;
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
@@ -746,10 +749,12 @@
 
             var excludeUserIds = userIds.join(",");
             vm.DuplicationWatcherIds = excludeUserIds;
-
+            $log.debug("excludeUserIds : ", excludeUserIds);
             findUser.findByNameAndExcludeIds(name, excludeUserIds).then(function(result){
+                vm.watcherList=[];
                 $log.debug("watcherList : ", result);
                 vm.watcherList = result;
+                $rootScope.$broadcast("initArrows")
             }); //user search
         };
 
@@ -1171,7 +1176,8 @@
 
         // 참조자 데이터 주입
         function watcherAdd(watcher){
-            var index = vm.DuplicationWatcherIds.indexOf(watcher.id);
+            var array = vm.DuplicationWatcherIds.split(",");
+            var index = array.indexOf(watcher.id.toString());
             if(index > -1){
                 $log.debug("중복")
             }else{
@@ -1296,9 +1302,7 @@
         //    }
         //}
 
-        vm.getCheckedData = getCheckedData;
-        vm.filesRemove = filesRemove;
-        vm.downloadFiles = downloadFiles;
+
         // 데이터 가져오기
         function getData () {
             return vm.previewFiles;

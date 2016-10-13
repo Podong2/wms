@@ -7,9 +7,9 @@
     angular.module('wmsApp')
         .directive('wmsElementArrowKeysMove', wmsElementArrowKeysMove);
 
-    wmsElementArrowKeysMove.$inject = ['$log', '$timeout'];
+    wmsElementArrowKeysMove.$inject = ['$log', '$timeout', '$rootScope'];
 
-    function wmsElementArrowKeysMove($log, $timeout) {
+    function wmsElementArrowKeysMove($log, $timeout, $rootScope) {
 
         return {
             restrict: 'A',
@@ -19,54 +19,69 @@
             },
             replace: false,
             link: function (scope, element, attrs) {
-                var $curr = $( ".start-arrow" );
-                var $currElement = '';
-                $curr.css( "background", "#f99" );
+                scope.$curr = $( ".start-arrow" );
+                scope.$currElement = '';
+                scope.$curr.css( "background", "#f99" );
+
+                $rootScope.$on("initArrows", function(){
+                    $( ".arrow-event-li" ).css( "background", "" );
+                    $( ".arrow-event-li" ).removeClass( "active" );
+                    $('.watcher-search-list-area').css('scrollTop', 0);
+                    $('.watcher-search-list-area').animate({ scrollTop: 0 }, 0);
+                    scope.$curr = $( ".start-arrow" );
+                    scope.$currElement = '';
+                    scope.$curr.css( "background", "#f99" );
+                    scope.$curr.addClass( "active" );
+                });
+
+
                 element.on("keydown keypress", function (event) {
 
                         if (event.keyCode === 40) { //아래
-                            $currElement = $curr.next();
-                            if($currElement.length != 0){
-                                $curr = $currElement;
+                            scope.$currElement = scope.$curr.next();
+                            if(scope.$currElement.length != 0){
+                                scope.$curr = scope.$currElement;
                                 $( ".arrow-event-li" ).css( "background", "" );
                                 $( ".arrow-event-li" ).removeClass( "active" );
-                                $curr.css( "background", "#f99" );
-                                $curr.addClass( "active" );
-                                var top = $curr.offset().top - $('.watcher-search-list-area').offset().top + $('.watcher-search-list-area').scrollTop();
+                                scope.$curr.css( "background", "#f99" );
+                                scope.$curr.addClass( "active" );
+                                var top = scope.$curr.offset().top - $('.watcher-search-list-area').offset().top + $('.watcher-search-list-area').scrollTop();
                                 if(top > 140){
-                                    $log.debug($curr.offset().top - $('.watcher-search-list-area').offset().top + $('.watcher-search-list-area').scrollTop())
-                                    $('.watcher-search-list-area').css('scrollTop', $curr.offset().top - $('.watcher-search-list-area').offset().top + $('.watcher-search-list-area').scrollTop());
-                                    $('.watcher-search-list-area').animate({ scrollTop: $curr.offset().top - $('.watcher-search-list-area').offset().top + $('.watcher-search-list-area').scrollTop() }, 0);
+                                    $log.debug(scope.$curr.offset().top - $('.watcher-search-list-area').offset().top + $('.watcher-search-list-area').scrollTop())
+                                    $('.watcher-search-list-area').css('scrollTop', scope.$curr.offset().top - $('.watcher-search-list-area').offset().top + $('.watcher-search-list-area').scrollTop());
+                                    $('.watcher-search-list-area').animate({ scrollTop: scope.$curr.offset().top - $('.watcher-search-list-area').offset().top + $('.watcher-search-list-area').scrollTop() }, 0);
                                 }
                                 event.preventDefault();
                             }
                             event.preventDefault();
                         } else if (event.keyCode === 38) { // 위
-                            $currElement = $curr.prev();
-                            if($currElement.length != 0){
-                                $curr = $currElement;
+                            scope.$currElement = scope.$curr.prev();
+                            if(scope.$currElement.length != 0){
+                                scope.$curr = scope.$currElement;
                                 $( ".arrow-event-li" ).css( "background", "" );
                                 $( ".arrow-event-li" ).removeClass( "active" );
-                                $curr.css( "background", "#f99" );
-                                $curr.addClass( "active" );
-                                $log.debug($curr.offset().top - $('.watcher-search-list-area').offset().top + $('.watcher-search-list-area').scrollTop())
-                                $('.watcher-search-list-area').css('scrollTop', $curr.offset().top - $('.watcher-search-list-area').offset().top + $('.watcher-search-list-area').scrollTop());
-                                $('.watcher-search-list-area').animate({ scrollTop: $curr.offset().top - $('.watcher-search-list-area').offset().top + $('.watcher-search-list-area').scrollTop() }, 0);
+                                scope.$curr.css( "background", "#f99" );
+                                scope.$curr.addClass( "active" );
+                                $log.debug(scope.$curr.offset().top - $('.watcher-search-list-area').offset().top + $('.watcher-search-list-area').scrollTop())
+                                $('.watcher-search-list-area').css('scrollTop', scope.$curr.offset().top - $('.watcher-search-list-area').offset().top + $('.watcher-search-list-area').scrollTop());
+                                $('.watcher-search-list-area').animate({ scrollTop: scope.$curr.offset().top - $('.watcher-search-list-area').offset().top + $('.watcher-search-list-area').scrollTop() }, 0);
                                 event.preventDefault();
                             }
                         } else if (event.keyCode === 13) {
-                            var elementValues = {
+                            scope.elementValues = {
                                 id : ''
                             }
-                            elementValues.id = $('.arrow-event-li.active').data('id');
-                            scope.elementAdd()(elementValues);
+                            var active = scope.$curr[0];
+                            scope.elementValues.id = active.getAttribute('value');
+                            scope.elementAdd()(scope.elementValues);
+                            scope.$apply()
                             event.preventDefault();
                         }else{
                             $timeout(function(){
-                                $curr = $( ".start-arrow" );
-                                $currElement = $( ".start-arrow" );
-                                $curr.css( "background", "#f99" );
-                                $currElement.css( "background", "#f99" );
+                                scope.$curr = $( ".start-arrow" );
+                                scope.$currElement = $( ".start-arrow" );
+                                scope.$curr.css( "background", "#f99" );
+                                scope.$currElement.css( "background", "#f99" );
                             }, 300);
                         }
                         //else if (event.keyCode === 13) {

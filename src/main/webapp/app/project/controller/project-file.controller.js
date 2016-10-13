@@ -8,6 +8,9 @@ angular.module('wmsApp')
 projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope', '$state', '$stateParams', 'toastr',  'Principal', 'ProjectAttachedList', 'tableService', 'ProjectEdit', '$cookies'];
         function projectFileCtrl($scope, Code, $log, AlertService, $rootScope, $state, $stateParams, toastr,  Principal, ProjectAttachedList, tableService, ProjectEdit, $cookies) {
             var vm = this;
+
+            vm.getCheckedData = getCheckedData;
+            vm.filesRemove = filesRemove;
             vm.userInfo = Principal.getIdentity();
             vm.projectAttachedList = [];
             vm.fileList = [];
@@ -180,6 +183,43 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
                     getFileList();
                 });
             }
+
+
+            function getData () {
+                return vm.fileList;
+            };
+            //선택된 데이터 가져오기
+            function getCheckedData () {
+                var checkData = [];
+                var fileDatas = {
+                    entityName : '',
+                    entityId : '',
+                    attachedFileId : ''
+                }
+                angular.forEach(getData(), function (value, index) {
+                    if (value.checked) {
+                        fileDatas.entityName= value.locationType;
+                        fileDatas.entityId= value.locationId;
+                        fileDatas.attachedFileId= value.id;
+                        checkData.push(fileDatas);
+                        fileDatas = { entityName : '', entityId : '', attachedFileId : '' }
+                    }
+                });
+
+                return checkData;
+            }
+            $scope.checkedData = [];
+            vm.projectFileDeleteTargets = [];
+            function filesRemove(){
+                $scope.checkedData = getCheckedData();
+
+                //vm.task.removeTargetFiles = $scope.checkedData.join(",");
+                $log.debug("파일 삭제 목록 : ", $scope.checkedData);
+                ProjectEdit.deleteAttachedFile($scope.checkedData).then(function(result){
+                    getFileList();
+                });
+            }
+
 
             vm.tableConfigs = [];
             vm.tableConfigs.push(tableService.getConfig("", "checked")

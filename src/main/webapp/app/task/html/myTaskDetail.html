@@ -160,11 +160,11 @@
                                         </div>
                                     </div>
                                     <div class="watcher-input-area" ng-if="vm.task.modifyYn">
-                                        <input type="text" class="form-control watcher-input" input-value="vm.watcherName" ng-model="vm.watcherName" style="border-right: 0; border-left:0;"  placeholder="이름을 입력하세요." maxlength="20" wms-kr-update wms-element-arrow-keys-move/>
+                                        <input type="text" class="form-control watcher-input" input-value="vm.watcherName" ng-model="vm.watcherName" style="border-right: 0; border-left:0;"  placeholder="이름을 입력하세요." maxlength="20" wms-kr-update wms-element-arrow-keys-move element-add="vm.watcherAdd"/>
                                     </div>
                                     <div class="watcher-search-list-area padding-5" ng-if="vm.task.modifyYn">
                                         <div>
-                                            <div ng-repeat="data in vm.watcherList track by $index" class="arrow-event-li" ng-class="$index == 0 ? 'start-arrow' : ''">
+                                            <div ng-repeat="data in vm.watcherList track by $index" class="arrow-event-li" data-id="{{data.id}}" value="{{data.id}}" ng-class="$index == 0 ? 'start-arrow active' : ''">
                                                 <div class="watcher-search-element cursor arrow-event-li" ng-click="vm.watcherAdd(data)">
                                                     <div class="row">
                                                         <div class="col-md-2">

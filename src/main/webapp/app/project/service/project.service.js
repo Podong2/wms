@@ -223,10 +223,10 @@
             });
         }
 
-        function deleteAttachedFile(parameter){
+        function deleteAttachedFile(projectFileDeleteTargets){
             var deferred = $q.defer();
-            $log.debug("Project 파일 삭제 data : ", parameter)
-            $http.delete( 'api/projects/removeManagedAttachedFiles', {}, {entityName : parameter.entityName, entityId : parameter.entityId, attachedFileId : parameter.attachedFileId}).then(function (result) {
+            $log.debug("Project 파일 삭제 data : ", projectFileDeleteTargets)
+            $http.delete( 'api/projects/removeManagedAttachedFiles', {},{projectFileDeleteTargets : projectFileDeleteTargets}).then(function (result) {
                 $log.debug("ProjectList : ", result);
                 deferred.resolve(result);
             });
