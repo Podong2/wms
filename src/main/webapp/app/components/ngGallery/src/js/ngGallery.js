@@ -41,8 +41,8 @@
         // Set the default template
         $templateCache.put(template_url,
             '<div class="{{ baseClass }}">' +
-            '  <div class="image-list-area" ng-repeat="i in images" wms-iamge-active ng-dblclick="openGallery($index)" style="display: inline-block">' +
-            '    <img ng-src="{{ i.thumb }}" class="{{ thumbClass }}" alt="Image {{ $index + 1 }}" />' +
+            '  <div class="image-list-area" ng-repeat="i in images track by $index" wms-iamge-active image="i" ng-dblclick="openGallery($index)" style="display: inline-block">' +
+            '    <img ng-src="{{ i.thumb }}" class="{{ thumbClass }}" alt="Image {{ $index + 1 }}" id="{{i.id}}" entityId="{{i.entityId}}" entityName="{{i.entityName}}"/>' +
                 '<div>{{i.description}}({{i.size}})</div>' +
             '  </div>' +
             '</div>' +
@@ -240,6 +240,9 @@
     function wmsIamgeActive(){
         return {
             restrict: 'A',
+            scope : {
+                image : "="
+            },
             link: function(scope, element, attr) {
                 element.on('click', function(_this) {
                     element.toggleClass("on");

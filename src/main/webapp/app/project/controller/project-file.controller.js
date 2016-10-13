@@ -11,8 +11,10 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
 
             vm.getCheckedData = getCheckedData;
             vm.filesRemove = filesRemove;
+            vm.downloadFiles = downloadFiles;
             vm.userInfo = Principal.getIdentity();
             vm.projectAttachedList = [];
+            vm.project = [];
             vm.fileList = [];
             vm.files = [];
             vm.filesCopy = [];
@@ -128,6 +130,8 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
                 vm.projectAttachedList = result;
                 vm.imageList =[];
                 vm.fileList =[];
+                vm.responseData = [];
+                vm.images = [];
                 angular.forEach(result, function(value, index){
                     vm.projectAttachedList[index].name = value.attachedFile.name;
                     vm.projectAttachedList[index].id = value.attachedFile.id;
@@ -157,7 +161,9 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
                             img: window.location.origin + "/api/attachedFile/" + val.id,
                             description: val.name,
                             size : val.size,
-                            id : val.id
+                            id : val.id,
+                            entityName: val.locationType,
+                            entityId: val.locationId
                         };
                         vm.images.push(vm.image);
                 });
@@ -189,7 +195,7 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
                 return vm.fileList;
             };
             //선택된 데이터 가져오기
-            function getCheckedData () {
+            function getCheckedData (type) {
                 var checkData = [];
                 var fileDatas = {
                     entityName : '',
@@ -198,11 +204,16 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
                 }
                 angular.forEach(getData(), function (value, index) {
                     if (value.checked) {
-                        fileDatas.entityName= value.locationType;
-                        fileDatas.entityId= value.locationId;
-                        fileDatas.attachedFileId= value.id;
-                        checkData.push(fileDatas);
-                        fileDatas = { entityName : '', entityId : '', attachedFileId : '' }
+                        if(type == 'remove'){
+                            fileDatas.entityName= value.locationType;
+                            fileDatas.entityId= value.locationId;
+                            fileDatas.attachedFileId= value.id;
+                            checkData.push(fileDatas);
+                            fileDatas = { entityName : '', entityId : '', attachedFileId : '' }
+                        }else{
+                            checkData.push(value.id);
+                        }
+
                     }
                 });
 
@@ -210,8 +221,13 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
             }
             $scope.checkedData = [];
             vm.projectFileDeleteTargets = [];
-            function filesRemove(){
-                $scope.checkedData = getCheckedData();
+            /* 프로젝트 파일 다중 삭제 */
+            function filesRemove(type){
+                if(type == 'img') {
+                    $scope.checkedData = vm.removeImages;
+                }else{
+                    $scope.checkedData = getCheckedData('remove');
+                }
 
                 //vm.task.removeTargetFiles = $scope.checkedData.join(",");
                 $log.debug("파일 삭제 목록 : ", $scope.checkedData);
@@ -219,6 +235,24 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
                     getFileList();
                 });
             }
+
+            /* 프로젝트 파일 다중 다운로드 */
+            function downloadFiles(type){
+                if(type == 'img') {
+                    $scope.checkedData = vm.downloadImages;
+                }else{
+                    $scope.checkedData = getCheckedData('download');
+                }
+
+                vm.project.downloadFiles = $scope.checkedData.join(",");
+                $log.debug("파일 삭제 id 목록 : ", vm.project.removeTargetFiles);
+                var iframe = $("<iframe/>").hide().appendTo("body").load(function() {
+                    iframe.remove();
+                }).attr("src", "/api/attachedFile?targetIds=" + vm.project.downloadFiles + "&name=project");
+            }
+
+            vm.removeImages = [];
+            vm.downloadImages = [];
 
 
             vm.tableConfigs = [];

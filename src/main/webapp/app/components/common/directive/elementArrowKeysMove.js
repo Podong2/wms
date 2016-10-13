@@ -19,41 +19,37 @@
             },
             replace: false,
             link: function (scope, element, attrs) {
-                scope.$curr = $( ".start-arrow" );
+                scope.$curr = $(element).parent().next().find(".start-arrow" );
                 scope.$currElement = '';
                 scope.$curr.css( "background", "#f99" );
 
                 $rootScope.$on("initArrows", function(){
-                    var watcherSearchListArea = $('.watcher-search-list-area');
-                    var arrowEventLi =$( ".arrow-event-li" );
-
-                    arrowEventLi.css( "background", "" );
-                    arrowEventLi.removeClass( "active" );
-                    watcherSearchListArea.css('scrollTop', 0);
-                    watcherSearchListArea.animate({ scrollTop: 0 }, 0);
+                    $( ".arrow-event-li" ).css( "background", "" );
+                    $( ".arrow-event-li" ).removeClass( "active" );
+                    scope.$curr.parents(".watcher-search-list-area").css('scrollTop', 0);
+                    scope.$curr.parents(".watcher-search-list-area").animate({ scrollTop: 0 }, 0);
                     scope.$curr = $( ".start-arrow" );
                     scope.$currElement = '';
                     scope.$curr.css( "background", "#f99" );
                     scope.$curr.addClass( "active" );
                 });
 
-                element.on("keydown keypress", function (event) { // 키 이벤트 체크
-                    var watcherSearchListArea = $('.watcher-search-list-area');
-                    var arrowEventLi =$( ".arrow-event-li" );
+
+                element.on("keydown keypress", function (event) {
 
                     if (event.keyCode === 40) { //아래
-                        scope.$currElement = scope.$curr.next(); //다음 태그 가져오기
+                        scope.$currElement = scope.$curr.next();
                         if(scope.$currElement.length != 0){
-                            scope.$curr = scope.$currElement; //가져온 다음태그 주입
-                            arrowEventLi.css( "background", "" );
-                            arrowEventLi.removeClass( "active" );
+                            scope.$curr = scope.$currElement;
+                            $( ".arrow-event-li" ).css( "background", "" );
+                            $( ".arrow-event-li" ).removeClass( "active" );
                             scope.$curr.css( "background", "#f99" );
                             scope.$curr.addClass( "active" );
-                            var top = scope.$curr.offset().top - watcherSearchListArea.offset().top + watcherSearchListArea.scrollTop(); // 높이 체크
-                            if(top > 140){ // 높이가 140이상일때 스크롤 이벤트 수행
-                                $log.debug(scope.$curr.offset().top - watcherSearchListArea.offset().top + watcherSearchListArea.scrollTop())
-                                watcherSearchListArea.css('scrollTop', scope.$curr.offset().top - watcherSearchListArea.offset().top + watcherSearchListArea.scrollTop());
-                                watcherSearchListArea.animate({ scrollTop: scope.$curr.offset().top - watcherSearchListArea.offset().top + watcherSearchListArea.scrollTop() }, 0);
+                            var top = scope.$curr.offset().top - scope.$curr.parents(".watcher-search-list-area").offset().top + scope.$curr.parents(".watcher-search-list-area").scrollTop();
+                            if(top > 140){
+                                $log.debug(scope.$curr.offset().top - scope.$curr.parents(".watcher-search-list-area").offset().top + scope.$curr.parents(".watcher-search-list-area").scrollTop())
+                                scope.$curr.parents(".watcher-search-list-area").css('scrollTop', scope.$curr.offset().top - scope.$curr.parents(".watcher-search-list-area").offset().top + scope.$curr.parents(".watcher-search-list-area").scrollTop());
+                                scope.$curr.parents(".watcher-search-list-area").animate({ scrollTop: scope.$curr.offset().top - scope.$curr.parents(".watcher-search-list-area").offset().top + scope.$curr.parents(".watcher-search-list-area").scrollTop() }, 0);
                             }
                             event.preventDefault();
                         }
@@ -62,16 +58,16 @@
                         scope.$currElement = scope.$curr.prev();
                         if(scope.$currElement.length != 0){
                             scope.$curr = scope.$currElement;
-                            arrowEventLi.css( "background", "" );
-                            arrowEventLi.removeClass( "active" );
+                            $( ".arrow-event-li" ).css( "background", "" );
+                            $( ".arrow-event-li" ).removeClass( "active" );
                             scope.$curr.css( "background", "#f99" );
                             scope.$curr.addClass( "active" );
-                            $log.debug(scope.$curr.offset().top - watcherSearchListArea.offset().top + watcherSearchListArea.scrollTop())
-                            watcherSearchListArea.css('scrollTop', scope.$curr.offset().top - watcherSearchListArea.offset().top + watcherSearchListArea.scrollTop());
-                            watcherSearchListArea.animate({ scrollTop: scope.$curr.offset().top - watcherSearchListArea.offset().top + watcherSearchListArea.scrollTop() }, 0);
+                            $log.debug(scope.$curr.offset().top - scope.$curr.parents(".watcher-search-list-area").offset().top + scope.$curr.parents(".watcher-search-list-area").scrollTop())
+                            scope.$curr.parents(".watcher-search-list-area").css('scrollTop', scope.$curr.offset().top - scope.$curr.parents(".watcher-search-list-area").offset().top + scope.$curr.parents(".watcher-search-list-area").scrollTop());
+                            scope.$curr.parents(".watcher-search-list-area").animate({ scrollTop: scope.$curr.offset().top - scope.$curr.parents(".watcher-search-list-area").offset().top + scope.$curr.parents(".watcher-search-list-area").scrollTop() }, 0);
                             event.preventDefault();
                         }
-                    } else if (event.keyCode === 13) { //enter
+                    } else if (event.keyCode === 13) {
                         scope.elementValues = {
                             id : ''
                         }
@@ -80,7 +76,7 @@
                         scope.elementAdd()(scope.elementValues);
                         scope.$apply()
                         event.preventDefault();
-                    }else{ //초기 로딩
+                    }else{
                         $timeout(function(){
                             scope.$curr = $( ".start-arrow" );
                             scope.$currElement = $( ".start-arrow" );

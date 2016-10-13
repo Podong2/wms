@@ -7,11 +7,12 @@
     <div ng-show="vm.tabArea[0].status">
         <div class="project-file-btn-area">
             <div class="pull-right">
-                <button type='button' class='btn'><i class='fa fa-download'></i></button>
-                <button type='button' class='btn'><i class='fa fa-upload'></i></button>
-                <button type='button' class='btn'><i class='fa fa-trash'></i></button>
+                <button type='button' class='btn' wms-project-file-download download-images="vm.downloadImages" download-event="vm.downloadFiles"><i class='fa fa-download'></i></button>
+                <label for="input-3" class="cursor"><span type='button' class='btn'><i class='fa fa-upload'></i></span></label>
+                <button type='button' class='btn' wms-project-file-remove remove-images="vm.removeImages" remove-event="vm.filesRemove"><i class='fa fa-trash'></i></button>
             </div>
         </div>
+        {{vm.removeImages}}
         <div style="width: 100%;">
             <ng-gallery images="vm.images" thumbs-num="10"></ng-gallery>
         </div>
@@ -22,7 +23,7 @@
     <div ng-show="vm.tabArea[1].status">
         <div class="project-file-btn-area clear-both">
             <div class="pull-right">
-                <button type='button' class='btn'><i class='fa fa-download'></i></button>
+                <button type='button' class='btn' ng-click="vm.downloadFiles()"><i class='fa fa-download'></i></button>
                 <label for="input-3" class="cursor"><span type='button' class='btn'><i class='fa fa-upload'></i></span></label>
                 <button type='button' class='btn' ng-click="vm.filesRemove()"><i class='fa fa-trash'></i></button>
             </div>
