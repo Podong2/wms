@@ -270,7 +270,7 @@
             if(oldValue != newValue && newValue != '' && newValue != undefined){
                 var formatDate = new Date(newValue).format("yyyy-MM-dd");
                 vm.project.startDate= formatDate;
-            }else if(newValue == ''){
+            }else if(newValue == '' || newValue == null && newValue != undefined){
                 vm.project.startDate= '';
             }
 
@@ -280,28 +280,32 @@
             if(oldValue != newValue && newValue != '' && newValue != undefined){
                 var formatDate = new Date(newValue).format("yyyy-MM-dd");
                 vm.project.endDate = formatDate;
-            }else if(newValue == ''){
+            }else if(newValue == '' || newValue == null && newValue != undefined){
                 vm.project.endDate = '';
             }
         });
 
         $scope.$watchGroup(['vm.project.startDate', 'vm.project.endDate',  'vm.project.statusId', 'vm.project.importantYn'], function(newValue, oldValue){
             if( newValue[0] != undefined && oldValue != newValue) {
+                vm.uploadType = 'option';
                 projectUpload();
             }
         });
         $scope.$watchCollection('vm.project.projectAdmins', function(newValue, oldValue){
             if(newValue != undefined && oldValue !== newValue && oldValue.length < newValue.length) {
+                vm.uploadType = 'admin';
                 projectUpload();
             }
         });
         $scope.$watchCollection('vm.project.projectWatchers', function(newValue, oldValue){
             if(newValue != undefined && oldValue !== newValue && oldValue.length < newValue.length) {
+                vm.uploadType = 'watcher';
                 projectUpload();
             }
         });
         $scope.$watchCollection('vm.project.projectMembers', function(newValue, oldValue){
             if(newValue != undefined && oldValue !== newValue && oldValue.length < newValue.length) {
+                vm.uploadType = 'member';
                 projectUpload();
             }
         });
@@ -362,8 +366,16 @@
                 vm.previewFileUrl=[];
                 //projectDetailReload();
                 vm.getTraceLog(vm.project.id);
-                //$state.go("my-project.detail", {}, {reload : 'my-project.detail'});
-                projectDetailReload();
+
+                if(vm.uploadType == '' || vm.uploadType == undefined) {
+                    vm.project = [];
+                    $state.go("my-project.detail", {}, {reload : true});
+                }
+                else {
+                    projectDetailReload();
+                    vm.uploadType = '';
+                }
+
             });
         }
 
@@ -753,6 +765,9 @@
 
         // 작업 본문 복원 팝업 오픈
         vm.projectRevertModalOpen = projectRevertModalOpen;
+        vm.getCheckedData = getCheckedData;
+        vm.filesRemove = filesRemove;
+        vm.downloadFiles = downloadFiles;
         function projectRevertModalOpen(){
             var editModalConfig = {
                 size : "lg",
@@ -761,6 +776,39 @@
                 data : vm.project
             };
             ModalService.openModal(editModalConfig);
+        }
+
+        // 데이터 가져오기
+        function getData () {
+            return vm.previewFiles;
+        };
+        //선택된 데이터 가져오기
+        function getCheckedData () {
+            var checkData = [];
+
+            angular.forEach(getData(), function (value, index) {
+                if (value.checked) {
+                    checkData.push(value.id);
+                }
+            });
+
+            return checkData;
+        }
+        $scope.checkedData = [];
+        function filesRemove(){
+            $scope.checkedData = getCheckedData();
+            vm.project.removeTargetFiles = $scope.checkedData.join(",");
+            $log.debug("파일 삭제 id 목록 : ", vm.project.removeTargetFiles);
+            projectUpload();
+        }
+
+        function downloadFiles(){
+            $scope.checkedData = getCheckedData();
+            vm.project.downloadFiles = $scope.checkedData.join(",");
+            $log.debug("파일 삭제 id 목록 : ", vm.project.removeTargetFiles);
+            var iframe = $("<iframe/>").hide().appendTo("body").load(function() {
+                iframe.remove();
+            }).attr("src", "/api/attachedFile?targetIds=" + vm.project.downloadFiles + "&name=project");
         }
 
 

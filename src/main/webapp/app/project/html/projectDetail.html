@@ -303,7 +303,7 @@
                                           <span class="input-group-btn" ng-show="vm.project.adminYn">
                                               <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDateFrom')" style="border: 0px none; box-shadow: none;"><i class="fa fa-calendar"></i></button>
                                           </span>
-                                <i class="fa fa-close date-close-btn close-btn" ng-click="vm.dueDateFrom.date = ''" ng-show="vm.project.startDate != '' && vm.project.adminYn"></i>
+                                <i class="fa fa-close date-close-btn close-btn" ng-click="vm.dueDateFrom.date = ''" ng-show="vm.dueDateFrom.date != null && vm.project.adminYn "></i>
                             </p>
                         </div>
                     </td>
@@ -321,7 +321,7 @@
                                   <span class="input-group-btn" ng-show="vm.project.adminYn">
                                       <button type="button" class="btn btn-default" ng-click="vm.openCalendar($event, 'dueDateTo')" style="border: 0px none; box-shadow: none;"><i class="fa fa-calendar"></i></button>
                                   </span>
-                                <i class="fa fa-close date-close-btn close-btn" ng-click="vm.dueDateTo.date = ''" ng-show="vm.project.endDate != '' && vm.project.adminYn"></i>
+                                <i class="fa fa-close date-close-btn close-btn" ng-click="vm.dueDateTo.date = ''" ng-show="vm.dueDateTo.date != null && vm.project.adminYn"></i>
                             </p>
                         </div>
                     </td>
@@ -377,10 +377,10 @@
             <div class="file-header-area">
                 <ul>
                     <li>파일 ({{vm.previewFiles.length}})</li>
-                    <li><i class="fa fa-download"></i></li>
+                    <li ng-if="vm.fileListYn" ng-click="vm.downloadFiles()"><i class="fa fa-download"></i></li>
                     <li ng-if="vm.project.adminYn"><label for="input-4" class="cursor"><i class='fa fa-paperclip'></i></label></li>
                     <li><i class="fa fa-list" ng-click="vm.fileListYn = !vm.fileListYn" file-list-yn></i></li>
-                    <li ng-if="vm.project.adminYn"><i class="fa fa-trash"></i></li>
+                    <li ng-if="vm.fileListYn && vm.project.adminYn" ng-click="vm.filesRemove()"><i class="fa fa-trash"></i></li>
                     <li></li>
                     <li></li>
                 </ul>

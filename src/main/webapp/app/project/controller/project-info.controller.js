@@ -193,20 +193,10 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             //}
             function onSuccess(data, headers) {
                 $log.debug("프로젝트 및 작업 정보 : ", data);
-                //vm.tasks=[]; vm.delayed=[]; vm.scheduledToday=[]; vm.registeredToday=[]; vm.inProgress=[]; vm.noneScheduled=[]; vm.complete=[]; vm.hold=[]; vm.scheduled=[];  vm.cancel=[];
                 if(vm.page == 1 || vm.reloadYn) vm.tasks=[];
                 vm.project = data.project;
                 vm.info = data;
                 angular.forEach(data.tasks, function(task){
-                    //if(task.statusGroup == "DELAYED") vm.delayed.push(task);
-                    //if(task.statusGroup == "SCHEDULED_TODAY") vm.scheduledToday.push(task);
-                    //if(task.statusGroup == "REGISTERED_TODAY") vm.registeredToday.push(task);
-                    //if(task.statusGroup == "IN_PROGRESS") vm.inProgress.push(task);
-                    //if(task.statusGroup == "NONE_SCHEDULED") vm.noneScheduled.push(task);
-                    //if(task.statusGroup == "SCHEDULED") vm.scheduled.push(task); // 예정
-                    //if(task.statusGroup == "HOLD") vm.hold.push(task);  //보류
-                    //if(task.statusGroup == "COMPLETE") vm.complete.push(task); // 완료
-                    //if(task.statusGroup == "CANCEL") vm.cancel.push(task); // 완료
                     vm.tasks.push(task);
                 });
                 if(!vm.firstLoding){
@@ -240,7 +230,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 var day = new Date();
                 var endDate = new Date(vm.project.endDate);
                 var btDay = (endDate.getTime() - day.getTime()) / (1000*60*60*24) ;
-                vm.dDay = Math.round(btDay) <= 0 ? 0 : Math.round(btDay);
+                vm.dDay = btDay > 0 ? Math.round(btDay) <= 0 ? 0 : Math.round(btDay) : '0';
 
 
                 vm.coumplatePercent= {
