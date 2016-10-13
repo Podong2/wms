@@ -553,10 +553,10 @@
                 <div class="file-header-area">
                     <ul>
                         <li>파일 ({{vm.previewFiles.length}})</li>
-                        <li ng-if="vm.fileListYn"><label class="cursor"><i class="fa fa-download" uib-tooltip="다운로드"></i></label></li>
+                        <li ng-if="vm.fileListYn" ng-click="vm.downloadFiles()"><label class="cursor"><i class="fa fa-download" uib-tooltip="다운로드"></i></label></li>
                         <li ng-if="vm.task.modifyYn"><label for="input-4" class="cursor"><i class='fa fa-paperclip' uib-tooltip="파일 첨부"></i></label></li>
                         <li><label class="cursor" ng-click="vm.fileListYn = !vm.fileListYn" file-list-yn><i class="fa fa-list" ng-if="!vm.fileListYn" uib-tooltip="목록 보기"></i><i class="fa fa-picture-o" ng-if="vm.fileListYn" uib-tooltip="썸네일 보기"></i></label></li>
-                        <li ng-if="vm.task.modifyYn && vm.fileListYn"><label class="cursor"><i class="fa fa-trash" uib-tooltip="파일 삭제"></i></label></li>
+                        <li ng-if="vm.task.modifyYn && vm.fileListYn" ng-click="vm.filesRemove()"><label class="cursor"><i class="fa fa-trash" uib-tooltip="파일 삭제"></i></label></li>
                         <li></li>
                         <li></li>
                     </ul>
