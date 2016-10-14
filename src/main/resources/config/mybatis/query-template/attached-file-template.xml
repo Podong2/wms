@@ -1,0 +1,35 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.wisestone.wms.domain.AttachedFile">
+
+    <delete id="purgeOrphanAttachedFile">
+        DELETE FROM owl_attached_file af
+        WHERE af.id IN (
+            SELECT iaf.id
+            FROM owl_attached_file iaf
+            WHERE NOT EXISTS (
+                SELECT taf.id
+                FROM owl_task_attached_file taf
+                WHERE iaf.id = taf.attached_file_id
+            )
+            AND NOT EXISTS (
+                SELECT paf.id
+                FROM owl_project_attached_file paf
+                WHERE iaf.id = paf.attached_file_id
+            )
+            AND NOT EXISTS (
+                SELECT psaf.id
+                FROM owl_project_shared_attached_file psaf
+                WHERE iaf.id = psaf.attached_file_id
+            )
+            AND NOT EXISTS (
+                SELECT tlaf.id
+                FROM owl_trace_log_attached_file tlaf
+                WHERE iaf.id = tlaf.attached_file_id
+            )
+        )
+    </delete>
+
+</mapper>

@@ -244,6 +244,13 @@ public class TaskService {
             }
         }
 
+        for(Long fileId : taskForm.getContentUploadFiles()) {
+
+            AttachedFile attachedFile = this.attachedFileService.findOne(fileId);
+
+            origin.addAttachedFile(attachedFile);
+        }
+
         origin = taskRepository.save(origin);
 
         if(subTasks != null && !subTasks.isEmpty()) {
@@ -290,6 +297,13 @@ public class TaskService {
         for(MultipartFile multipartFile : files) {
 
             AttachedFile attachedFile = this.attachedFileService.saveFile(multipartFile);
+
+            origin.addAttachedFile(attachedFile);
+        }
+
+        for(Long fileId : taskForm.getContentUploadFiles()) {
+
+            AttachedFile attachedFile = this.attachedFileService.findOne(fileId);
 
             origin.addAttachedFile(attachedFile);
         }

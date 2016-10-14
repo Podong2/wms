@@ -54,6 +54,8 @@ public class TaskForm {
 
     private List<Long> removeTargetFiles = new ArrayList<>();
 
+    private List<Long> contentUploadFiles = new ArrayList<>();
+
     private TaskRepeatScheduleDTO taskRepeatSchedule;
 
     private String subTasks;

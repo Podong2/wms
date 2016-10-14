@@ -21,6 +21,11 @@ public class AttachedFileService {
     @Inject
     private AttachedFileRepository attachedFileRepository;
 
+    @Transactional(readOnly = true)
+    public AttachedFile findOne(Long fileId) {
+        return this.attachedFileRepository.findOne(fileId);
+    }
+
     @Transactional
     public AttachedFile saveFile(MultipartFile multipartFile) {
 

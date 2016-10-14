@@ -21,6 +21,8 @@ public class TraceLogForm {
 
     private List<Long> removeAttachedFileIds = new ArrayList<>();
 
+    private List<Long> contentUploadFiles = new ArrayList<>();
+
     public TraceLog bind() {
         TraceLog traceLog = new TraceLog();
 

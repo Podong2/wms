@@ -132,6 +132,13 @@ public class ProjectService {
             origin.addAttachedFile(attachedFile);
         }
 
+        for(Long fileId : projectForm.getContentUploadFiles()) {
+
+            AttachedFile attachedFile = this.attachedFileService.findOne(fileId);
+
+            origin.addAttachedFile(attachedFile);
+        }
+
         if(!projectForm.getRemoveTargetFiles().isEmpty()) {
 
             for(Long targetFileId : projectForm.getRemoveTargetFiles()) {

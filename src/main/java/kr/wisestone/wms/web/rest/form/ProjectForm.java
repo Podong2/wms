@@ -43,6 +43,8 @@ public class ProjectForm {
 
     private List<Long> removeTargetFiles = new ArrayList<>();
 
+    private List<Long> contentUploadFiles = new ArrayList<>();
+
     public Project bind(Project project) {
 
         if(StringUtils.hasText(this.name))

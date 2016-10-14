@@ -134,6 +134,13 @@ public class TraceLogService {
             traceLog.addAttachedFile(attachedFile);
         }
 
+        for(Long fileId : traceLogForm.getContentUploadFiles()) {
+
+            AttachedFile attachedFile = this.attachedFileService.findOne(fileId);
+
+            traceLog.addAttachedFile(attachedFile);
+        }
+
         traceLog = traceLogRepository.save(traceLog);
 
         if(traceLog.getReplyYn() && traceLog.getEntityName().equals("Task")) {
@@ -155,6 +162,13 @@ public class TraceLogService {
         for(MultipartFile multipartFile : files) {
 
             AttachedFile attachedFile = this.attachedFileService.saveFile(multipartFile);
+
+            origin.addAttachedFile(attachedFile);
+        }
+
+        for(Long fileId : traceLogForm.getContentUploadFiles()) {
+
+            AttachedFile attachedFile = this.attachedFileService.findOne(fileId);
 
             origin.addAttachedFile(attachedFile);
         }
