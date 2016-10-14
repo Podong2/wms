@@ -332,7 +332,11 @@ public class TaskDTO implements Serializable {
         if(StringUtils.hasText(this.endDate)) {
             String today = DateUtil.getTodayWithYYYYMMDD();
 
-            if(DateUtil.convertStrToDate(this.endDate, "yyyy-MM-dd").getTime() < DateUtil.convertStrToDate(today, "yyyy-MM-dd").getTime()) {
+            Long endDate = DateUtil.convertStrToDate(this.endDate, "yyyy-MM-dd").getTime();
+
+            Long now = DateUtil.convertStrToDate(today, "yyyy-MM-dd").getTime();
+
+            if(endDate < now) {
                 return Boolean.TRUE;
             }
         }

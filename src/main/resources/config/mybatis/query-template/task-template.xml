@@ -300,7 +300,7 @@
                             END as orderTarget
                             ,it.*
                         FROM owl_task it
-                        WHERE (to_char(now(), 'YYYY-MM-DD') &lt; it.start_date OR (it.start_date = '' AND it.end_date = ''))
+                        WHERE (to_char(now(), 'YYYY-MM-DD') &lt; it.start_date OR ((it.start_date IS NULL OR it.start_date = '') AND (it.end_date IS NULL OR it.end_date = '')))
                         AND it.status_id = 1
                         AND (created_by = #{userId}
                             OR EXISTS (SELECT tu.id
@@ -556,7 +556,7 @@
                 AND t.status_id = 1
             </when>
             <when test="statusType == 'IN_PROGRESS'">
-                AND (t.end_date = '' OR t.end_date >= to_char(now(), 'YYYY-MM-DD'))
+                AND ((t.end_date IS NULL OR t.end_date = '') OR t.end_date >= to_char(now(), 'YYYY-MM-DD'))
                 AND t.status_id = 1
             </when>
             <when test="statusType == 'CANCEL'">
@@ -627,7 +627,7 @@
                 AND it.status_id = 1
             </when>
             <when test="listType == 'SCHEDULED'">
-                WHERE (to_char(now(), 'YYYY-MM-DD') &lt; it.start_date OR (it.start_date = '' AND it.end_date = ''))
+                WHERE (to_char(now(), 'YYYY-MM-DD') &lt; it.start_date OR ((it.start_date IS NULL OR it.start_date = '') AND (it.end_date IS NULL OR it.end_date = '')))
                 AND it.status_id = 1
             </when>
             <when test="listType == 'HOLD'">
