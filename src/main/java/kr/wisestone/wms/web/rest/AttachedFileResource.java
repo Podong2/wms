@@ -66,7 +66,7 @@ public class AttachedFileResource {
     public ResponseEntity<List<AttachedFile>> createAttachedFile(MultipartHttpServletRequest request) throws URISyntaxException {
         log.debug("REST request to save");
 
-        List<MultipartFile> multipartFiles = request.getFiles("files");
+        List<MultipartFile> multipartFiles = request.getFiles("file");
 
         List<AttachedFile> savedAttachedFiles = Lists.newArrayList();
 
