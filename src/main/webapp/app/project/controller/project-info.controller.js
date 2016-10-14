@@ -89,24 +89,24 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 isFirstDisabled: false
             };
 
-            $scope.$watchCollection('vm.statusId', function(newValue, oldValue){
-                if(newValue != undefined && oldValue != newValue) {
-                    $scope.chartFilterYn = false;
-                    vm.page = 1;
-                    vm.tasks=[];
-                    getList();
-                }
-            });
-            $scope.$watchCollection('vm.orderType', function(newValue, oldValue){
-                if(newValue != undefined && oldValue != newValue) {
-                    $scope.chartFilterYn = false;
-                    vm.page = 1;
-                    vm.tasks=[];
-                    getList();
-                }
-            });
+            //$scope.$watchCollection('vm.statusId', function(newValue, oldValue){
+            //    if(newValue != undefined && oldValue != newValue) {
+            //        $scope.chartFilterYn = false;
+            //        vm.page = 1;
+            //        vm.tasks=[];
+            //        getList();
+            //    }
+            //});
+            //$scope.$watchCollection('vm.orderType', function(newValue, oldValue){
+            //    if(newValue != undefined && oldValue != newValue) {
+            //        $scope.chartFilterYn = false;
+            //        vm.page = 1;
+            //        vm.tasks=[];
+            //        getList();
+            //    }
+            //});
 
-            // 프로젝트 타스크 목록 필터
+            // 프로젝트 타스크 목록 스크롤
             function getTaskListInProject(listType){
                 vm.listType = listType;
                 vm.reloadYn =false;
@@ -131,6 +131,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 $log.debug("검색 필터 projectId : ", $stateParams.id)
                 $log.debug("검색 필터 vm.listType : ", vm.listType)
                 $log.debug("검색 필터 vm.statusId : ", vm.statusId)
+                $log.debug("검색 필터 vm.statusType : ", vm.statusType)
                 $log.debug("검색 필터 vm.orderType : ", vm.orderType)
                 $log.debug("검색 필터 vm.page : ", vm.page)
                 ProjectInfo.get({
@@ -139,6 +140,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     statusId : vm.statusId,
                     orderType : vm.orderType,
                     statusType : vm.statusType,
+                    taskName : vm.taskName,
                     page: vm.page - 1,
                     size: 15,
                     sort: 'desc'
@@ -154,6 +156,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     statusId : vm.statusId,
                     orderType : vm.orderType,
                     statusType : vm.statusType,
+                    taskName : vm.taskName,
                     page: vm.page -1,
                     size: 15,
                     sort: 'desc'
@@ -169,8 +172,11 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             function findTasks(){
                 ProjectTasks.query({
                     projectId : $stateParams.id,
+                    listType : vm.listType,
+                    statusId : vm.statusId,
+                    orderType : vm.orderType,
+                    statusType : vm.statusType,
                     taskName : vm.taskName,
-                    statusId : 1,
                     page: 0,
                     size: 99999,
                     sort: 'desc'
@@ -195,6 +201,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     listType : vm.listType,
                     statusId : vm.statusId,
                     orderType : vm.orderType,
+                    statusType : vm.statusType,
                     page: 0,
                     size: 15*(vm.page -1),
                     sort: 'desc'

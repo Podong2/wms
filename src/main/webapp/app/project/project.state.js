@@ -34,13 +34,15 @@
                 projectStatistics : function($stateParams, ProjectInfo){
                     return ProjectInfo.get({
                         projectId : $stateParams.id,
-                        statusId : 1
+                        statusId : 1,
+                        listType : 'TOTAL',
                     }).$promise;
                 },
                 projectTaskList : function($stateParams, ProjectTasks){
                     return ProjectTasks.query({
                         projectId : $stateParams.id,
                         statusId : 1,
+                        listType : 'TOTAL',
                         page: 0,
                         size: 15,
                         sort: 'desc'
