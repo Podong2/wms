@@ -49,6 +49,7 @@
         vm.getCheckedData = getCheckedData;
         vm.filesRemove = filesRemove;
         vm.downloadFiles = downloadFiles;
+        vm.setRepeatDate = setRepeatDate;
         //vm.getCurrentWatchers = getCurrentWatchers;
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
@@ -298,6 +299,16 @@
 
         // 반복설정 월~일 날짜 선택 버튼 상태값
         vm.weekDaysArea = [
+            {status : false},
+            {status : false},
+            {status : false},
+            {status : false},
+            {status : false},
+            {status : false},
+            {status : false}
+        ];
+        // 반복설정 월~일 날짜 선택 버튼 상태값 초기값
+        vm.preWeekDaysArea = [
             {status : false},
             {status : false},
             {status : false},
@@ -788,7 +799,7 @@
             if(vm.task.assignees != [])userIdPush(vm.task.assignees, "assigneeIds");
             if(vm.task.watchers != [])userIdPush(vm.task.watchers, "watcherIds");
             if(vm.task.relatedTasks != [])userIdPush(vm.task.relatedTasks, "relatedTaskIds");
-            vm.task.taskRepeatSchedule = vm.taskRepeatSchedule;
+            vm.task.taskRepeatSchedule = _.clone(vm.taskRepeatSchedule);
             vm.task.importantYn = vm.task.importantYn == null ? '': vm.task.importantYn;
 
             if(vm.task.projectId == null)
@@ -1052,15 +1063,27 @@
         function weekDaysAreaSetting() {
             if(vm.task.taskRepeatSchedule != null && vm.task.taskRepeatSchedule.weekdays != ''){
                 var weekday = vm.task.taskRepeatSchedule.weekdays.split(',');
+
+                initWeekDaysStatus();
+
                 angular.forEach(weekday, function (value, index) {
                     vm.weekDaysArea[value-1].status = true;
                 });
                 $log.debug("vm.weekDaysArea", vm.weekDaysArea)
+            }else if(vm.task.taskRepeatSchedule == null || vm.task.taskRepeatSchedule.weekdays == ''){
+                initWeekDaysStatus();
             }
         }
 
+        // 반복설정 weekdays 값 초기화
+        function initWeekDaysStatus(){
+            angular.forEach(vm.weekDaysArea, function (value, index) {
+                value.status = false;
+            });
+        }
+
         // 매월 선택 시 날짜, 요일 영역 오픈
-        vm.monthlyAreaOpen = vm.task.taskRepeatSchedule == null ? '' : (vm.task.taskRepeatSchedule.repeatType == 'MONTHLY_DATE' || vm.task.taskRepeatSchedule.repeatType == 'MONTHLY_WEEKDAY' ? true : false);
+        vm.monthlyAreaOpen = vm.task.taskRepeatSchedule == null ? '' : (!!(vm.task.taskRepeatSchedule.repeatType == 'MONTHLY_DATE' || vm.task.taskRepeatSchedule.repeatType == 'MONTHLY_WEEKDAY'));
 
         // 반복설정 타입 주입
         function setRepeatType(type){
@@ -1105,7 +1128,37 @@
             });
             vm.taskRepeatSchedule.weekdays = typeIds.join(",");
         }
-        //vm.preTtaskRepeatSchedule = _.clone(vm.taskRepeatSchedule);
+
+        // 반복설정 값 & 일정 저장
+        function setRepeatDate(){
+            vm.preTtaskRepeatSchedule = _.clone(vm.taskRepeatSchedule);
+            vm.task.taskRepeatSchedule = _.clone(vm.taskRepeatSchedule);
+            taskUpload();
+        }
+        // 반복설정 값 & 일정 초기 데이터 저장
+        vm.setPreRepeatDate = setPreRepeatDate;
+        vm.initRepeatDate = initRepeatDate;
+        function setPreRepeatDate(){
+            vm.preTtaskRepeatSchedule = _.clone(vm.taskRepeatSchedule);
+            vm.preWeekDaysArea = _.clone(vm.weekDaysArea);
+            vm.startDate = _.clone(vm.task.startDate);
+            vm.endDate = _.clone(vm.task.endDate);
+        }
+
+        // 반복설정 초기화
+        function initRepeatDate(){
+            vm.taskRepeatSchedule = _.clone(vm.preTtaskRepeatSchedule);
+            vm.monthlyAreaOpen = vm.task.taskRepeatSchedule == null ? '' : (!!(vm.taskRepeatSchedule.repeatType == 'MONTHLY_DATE' || vm.taskRepeatSchedule.repeatType == 'MONTHLY_WEEKDAY')); // 반복타입 초기화
+            vm.adventStartTime.date = vm.task.taskRepeatSchedule == null ? '' : DateUtils.toDate('2016-11-11 '+vm.task.taskRepeatSchedule.adventDateStartTime); // 시작 시간 초기화
+            vm.repeatDueDateFrom.date = vm.task.taskRepeatSchedule == null ? '' : DateUtils.toDate(vm.task.taskRepeatSchedule.startDate); // 시작일 초기화
+            vm.repeatDueDateTo.date = vm.task.taskRepeatSchedule == null ? '' : DateUtils.toDate(vm.task.taskRepeatSchedule.endDate); //종료일 초기화
+            vm.dueDateFrom.date = DateUtils.toDate(vm.startDate);
+            vm.dueDateTo.date = DateUtils.toDate(vm.endDate);
+            vm.task.startDate = vm.startDate;
+            vm.task.endDate = vm.endDate;
+            weekDaysAreaSetting();
+            $rootScope.$broadcast('repeatClose');
+        }
 
         // 반복설정 팝업 닫기
         function repeatClose(){

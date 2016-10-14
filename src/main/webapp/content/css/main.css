@@ -2548,6 +2548,9 @@ td.red{border-left: 5px solid #777 !important;}
 .repeat-btn-group button:focus{
     background-color: #fff;
 }
+.repeat-div-1 button{
+    padding: 4px 8px;
+}
 /* repeat date picker css end */
 .clear-both{
     clear: both;

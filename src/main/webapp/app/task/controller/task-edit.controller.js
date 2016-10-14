@@ -44,6 +44,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             //vm.getCurrentWatchers = getCurrentWatchers;
             vm.profileClose = profileClose;
             vm.windowOpen = windowOpen;
+            vm.setRepeatDate = setRepeatDate;
             vm.userInfo = Principal.getIdentity();
 
             vm.DuplicationWatcherIds = [];
@@ -206,6 +207,16 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
 
             // 반복설정 월~일 날짜 선택 버튼 상태값
             vm.weekDaysArea = [
+                {status : false},
+                {status : false},
+                {status : false},
+                {status : false},
+                {status : false},
+                {status : false},
+                {status : false}
+            ];
+            // 반복설정 월~일 날짜 선택 버튼 상태값 초기값
+            vm.preWeekDaysArea = [
                 {status : false},
                 {status : false},
                 {status : false},
@@ -563,7 +574,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 if($scope.watchers != [])userIdPush($scope.watchers, "watcherIds"); //참조자
                 if(vm.task.relatedTaskList != [])userIdPush(vm.task.relatedTaskList, "relatedTaskIds"); //참조 작업
                 if(vm.taskProject != [])userIdPush(vm.taskProject, "projectIds"); // 프로젝트
-                vm.task.taskRepeatSchedule = vm.taskRepeatSchedule; // 반복작업 주입
+                vm.task.taskRepeatSchedule = _.clone(vm.taskRepeatSchedule);
                 if(vm.task.privateYn) vm.subTasks = []; // 비공개일 시 하위 작업 삭제
 
                 // 하위작업 주입 및 담당자 아이디 주입
@@ -783,15 +794,27 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             function weekDaysAreaSetting() {
                 if(vm.task.taskRepeatSchedule != null && vm.task.taskRepeatSchedule.weekdays != ''){
                     var weekday = vm.task.taskRepeatSchedule.weekdays.split(',');
+
+                    initWeekDaysStatus();
+
                     angular.forEach(weekday, function (value, index) {
                         vm.weekDaysArea[value-1].status = true;
                     });
                     $log.debug("vm.weekDaysArea", vm.weekDaysArea)
+                }else if(vm.task.taskRepeatSchedule != null && vm.task.taskRepeatSchedule.weekdays == ''){
+                    initWeekDaysStatus();
                 }
             }
 
+            // 반복설정 weekdays 값 초기화
+            function initWeekDaysStatus(){
+                angular.forEach(vm.weekDaysArea, function (value, index) {
+                    value.status = false;
+                });
+            }
+
             // 매월 선택 시 날짜, 요일 영역 오픈
-            vm.monthlyAreaOpen = vm.task.taskRepeatSchedule == null ? '' : (vm.task.taskRepeatSchedule.repeatType == 'MONTHLY_DATE' || vm.task.taskRepeatSchedule.repeatType == 'MONTHLY_WEEKDAY' ? true : false);
+            vm.monthlyAreaOpen = vm.task.taskRepeatSchedule == null ? '' : (!!(vm.task.taskRepeatSchedule.repeatType == 'MONTHLY_DATE' || vm.task.taskRepeatSchedule.repeatType == 'MONTHLY_WEEKDAY'));
 
             // 반복설정 타입 주입
             function setRepeatType(type){
@@ -836,6 +859,38 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 vm.taskRepeatSchedule.weekdays = typeIds.join(",");
             }
 
+            // 반복설정 값 & 일정 저장
+            function setRepeatDate(){
+                vm.preTtaskRepeatSchedule = _.clone(vm.taskRepeatSchedule);
+                vm.task.taskRepeatSchedule = _.clone(vm.taskRepeatSchedule);
+                $rootScope.$broadcast('repeatClose');
+            }
+            // 반복설정 값 & 일정 초기 데이터 저장
+            vm.setPreRepeatDate = setPreRepeatDate;
+            vm.initRepeatDate = initRepeatDate;
+            function setPreRepeatDate(){
+                vm.preTtaskRepeatSchedule = _.clone(vm.taskRepeatSchedule);
+                vm.preWeekDaysArea = _.clone(vm.weekDaysArea);
+                vm.startDate = _.clone(vm.task.startDate);
+                vm.endDate = _.clone(vm.task.endDate);
+            }
+
+            // 반복설정 초기화
+            function initRepeatDate(){
+                vm.taskRepeatSchedule = _.clone(vm.preTtaskRepeatSchedule);
+                vm.task.taskRepeatSchedule = _.clone(vm.preTtaskRepeatSchedule);
+                vm.monthlyAreaOpen = vm.task.taskRepeatSchedule == null ? '' : (!!(vm.taskRepeatSchedule.repeatType == 'MONTHLY_DATE' || vm.taskRepeatSchedule.repeatType == 'MONTHLY_WEEKDAY')); // 반복타입 초기화
+                vm.adventStartTime.date = vm.task.taskRepeatSchedule == null ? '' : DateUtils.toDate('2016-11-11 '+vm.task.taskRepeatSchedule.adventDateStartTime); // 시작 시간 초기화
+                vm.repeatDueDateFrom.date = vm.task.taskRepeatSchedule == null ? '' : DateUtils.toDate(vm.task.taskRepeatSchedule.startDate); // 시작일 초기화
+                vm.repeatDueDateTo.date = vm.task.taskRepeatSchedule == null ? '' : DateUtils.toDate(vm.task.taskRepeatSchedule.endDate); //종료일 초기화
+                vm.dueDateFrom.date = DateUtils.toDate(vm.startDate);
+                vm.dueDateTo.date = DateUtils.toDate(vm.endDate);
+                vm.task.startDate = vm.startDate;
+                vm.task.endDate = vm.endDate;
+                weekDaysAreaSetting();
+                $rootScope.$broadcast('repeatClose');
+            }
+
 
             function repeatClose(){
                 $rootScope.$broadcast('repeatClose');
@@ -846,7 +901,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             }
 
             function taskUpload(){
-                vm.task.taskRepeatSchedule = vm.taskRepeatSchedule;
+                vm.task.taskRepeatSchedule = _.clone(vm.taskRepeatSchedule);
                 repeatClose();
             }
 

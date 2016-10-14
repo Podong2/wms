@@ -53,7 +53,7 @@
         </div>
         - 반복설정<br/><br/>
         <div ng-show="vm.repeatOpenYn">
-            <div class="" style="clear:both; margin-bottom: 5px;">
+            <div class="repeat-div-1" style="clear:both; margin-bottom: 5px;">
                 <div class="btn-group" role="group" aria-label="..." style="margin-bottom: 5px">
                     <button type="button" class="btn btn-default repeatTypeBtn" ng-class="vm.taskRepeatSchedule.repeatType == 'DAILY'? 'active' : ''" ng-click="vm.setRepeatType('DAILY')">매일</button>
                     <button type="button" class="btn btn-default repeatTypeBtn" ng-class="vm.taskRepeatSchedule.repeatType == 'WEEKLY'? 'active' : ''" ng-click="vm.setRepeatType('WEEKLY')">매주</button>
@@ -68,10 +68,10 @@
                         <td class="" ng-show="vm.monthlyAreaOpen">
                             <div class="wms-form">
                                 <div class="inline-group">
-                                    <label class="radio">
+                                    <label class="radio" style="width: 65px; padding-left: 0;">
                                         <input type="radio" name="radio-inline-1" ng-model="vm.taskRepeatSchedule.repeatType" ng-click="vm.setRepeatType('')" value="MONTHLY_DATE" checked="checked">
                                         <i></i>날짜</label>
-                                    <label class="radio">
+                                    <label class="radio" style="width: 65px; padding-left: 0;">
                                         <input type="radio" name="radio-inline-1" ng-model="vm.taskRepeatSchedule.repeatType" ng-click="vm.setRepeatType('')" value="MONTHLY_WEEKDAY">
                                         <i></i>요일</label>
                                 </div>
@@ -112,7 +112,7 @@
                     </tbody>
                 </table>
             </div>
-
+            <br/>
             <div class="clear-both" style="margin-bottom: 5px">
                 <table class="repeat-table">
                     <colgroup>
@@ -198,8 +198,8 @@
     </div><!-- 일정 반복 설정 영역 끝-->
 
     <div class="modal-footer text-center" >
-        <button type="button" class="btn btn_icon btn_customs" ng-click="vm.taskUpload()" owl-btn-check></button>
-        <button type="button" class="btn btn_icon btn_customs2 " ng-click="vm.repeatClose()" owl-btn-cancel></button>
+        <button type="button" class="btn btn_icon btn_customs" ng-click="vm.setRepeatDate()"owl-btn-check></button>
+        <button type="button" class="btn btn_icon btn_customs2 " ng-click="vm.initRepeatDate()" owl-btn-cancel></button>
     </div>
 
 </div><!-- 달력 팝업 끝 -->
