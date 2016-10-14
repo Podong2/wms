@@ -16,6 +16,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             vm.initProjectTaskList = initProjectTaskList;
             vm.taskInputFunction = taskInputFunction;
             vm.findTasks = findTasks;
+            vm.getTaskListInProjectFilter = getTaskListInProjectFilter;
             //vm.showDetail = showDetail;
             vm.codes = [{"id":'', "name":"선택"},{"id":1,"name":"활성"},{"id":2,"name":"완료"},{"id":3,"name":"보류"},{"id":4,"name":"취소"}]
             vm.orderTypes = [{"id":'', "name":"선택"},{"id":'IMPORTANT',"name":"중요도"},{"id":'TASK_NAME',"name":"텍스트 오름 차순"}];
@@ -62,6 +63,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             vm.taskSearch = false;
             vm.orderType = '';
             vm.listType = '';
+            vm.statusType = '';
             vm.dDay = '';
 
             // 작업 목록 필터값
@@ -112,6 +114,16 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 getList();
             }
 
+            // 프로젝트 타스크 목록 필터
+            function getTaskListInProjectFilter(listType){
+                vm.listType = listType;
+                vm.reloadYn =false;
+                $scope.chartFilterYn = false;
+                vm.tasks=[];
+                vm.page = 1;
+                getList();
+            }
+
 
             vm.listType = 'TOTAL'
 
@@ -126,6 +138,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     listType : vm.listType,
                     statusId : vm.statusId,
                     orderType : vm.orderType,
+                    statusType : vm.statusType,
                     page: vm.page - 1,
                     size: 15,
                     sort: 'desc'
@@ -140,6 +153,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     listType : vm.listType,
                     statusId : vm.statusId,
                     orderType : vm.orderType,
+                    statusType : vm.statusType,
                     page: vm.page -1,
                     size: 15,
                     sort: 'desc'
@@ -243,35 +257,35 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                         key: "지연",
                         y: vm.counts.delayedCount,
                         callback: function () {
-                            chartFiltering('delay');
+                            chartFiltering('DELAYED');
                         }
                     },
                     {
                         key: "보류",
                         y: vm.counts.holdCount,
                         callback: function () {
-                            chartFiltering('hold');
+                            chartFiltering('HOLD');
                         }
                     },
                     {
                         key: "진행",
                         y: vm.counts.inProgressCount,
                         callback: function () {
-                            chartFiltering('inProgress');
+                            chartFiltering('IN_PROGRESS');
                         }
                     },
                     {
                         key: "완료",
                         y: vm.counts.completeCount,
                         callback: function () {
-                            chartFiltering('complete');
+                            chartFiltering('COMPLETE');
                         }
                     },
                     {
                         key: "취소",
                         y: vm.counts.cancelCount,
                         callback: function () {
-                            chartFiltering('cancel');
+                            chartFiltering('CANCEL');
                         }
                     }
                 ];
@@ -317,7 +331,6 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 AlertService.error(error.data.message);
             }
 
-
             function chartFiltering(type){
                 vm.page = 1;
                 $scope.chartFilterYn = true;
@@ -325,17 +338,19 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 $scope.inProgressYn = false;
                 $scope.completeYn = false;
                 $scope.delayYn = false;
-                $scope.delayYn = false;
-                if(type == 'delay'){
+                if(type == 'DELAYED'){
                     $scope.delayYn = true;
-                }else if(type == 'complete'){
+                }else if(type == 'COMPLETE'){
                     $scope.completeYn = true;
-                }else if(type == 'hold'){
+                }else if(type == 'HOLD'){
                     $scope.holdYn = true;
-                }else if(type == 'inProgress'){
+                }else if(type == 'IN_PROGRESS'){
                     $scope.inProgressYn = true;
+                }else if(type == 'CANCEL'){
+                    $scope.cancelYn = true;
                 }
-                $scope.$apply()
+                vm.statusType = type;
+                $scope.$apply();
                 getList();
             }
 
