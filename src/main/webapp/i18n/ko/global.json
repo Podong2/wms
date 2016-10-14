@@ -102,7 +102,7 @@
     "audit": {
         "entity": {
             "task": "작업",
-            "project": "프로젝트/폴더"
+            "project": "프로젝트"
         },
         "field": {
             "task": {
@@ -113,10 +113,10 @@
                 "contents": "본문",
                 "status": "상태",
                 "assignee": "담당자",
-                "watcher": "참조자",
+                "watcher": "공유자",
                 "relatedTasks": "참조 작업",
                 "subTasks": "하위 작업",
-                "taskProjects": "프로젝트/폴더",
+                "taskProjects": "프로젝트",
                 "taskRepeatSchedule": "반복일정",
                 "taskAttachedFiles": "첨부파일",
                 "importantYn": "중요여부",
@@ -132,7 +132,7 @@
                 "status": "상태",
                 "admin": "관리자",
                 "sharer": "공유자",
-                "projectRelation": "상위 프로젝트/폴더",
+                "projectRelation": "상위 프로젝트",
                 "projectAttachedFiles": "첨부파일",
                 "taskAttachedFiles": "첨부파일",
                 "taskUsers" : "공유자",

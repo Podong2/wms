@@ -1045,4 +1045,28 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             //    }
             //}
 
+
+            function imageUpload(files, editor) {
+                var listFiles = [];
+                angular.forEach(files, function (file, index) {
+                    listFiles.push(file);
+                });
+
+                Issue.uploadFile({
+                    method: "POST",
+                    file: listFiles,
+                    fileFormDataName: "file"
+                }).then(function (response) {
+                    if (response.data.message.status == uiConstant.common.SUCCESS) {
+                        angular.forEach(response.data.attachedFiles, function (fileInfo, index) {
+                            var editorTarget = $.summernote.eventHandler.getModule();
+                            editorTarget.insertImage($scope.editable, fileInfo.path);
+                        });
+                    }
+                    else {
+
+                    }
+                });
+            };
+
         }

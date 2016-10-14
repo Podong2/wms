@@ -42,7 +42,7 @@
                             프로젝트
                         </div>
                         <div class="project-picker-search">
-                            <input class="project-picker-search-input" type="text" ng-model="projectName" maxlength="50" enter-submit="vm.FindProjectList()" placeholder="프로젝트 또는 폴더를 선택하세요." wms-kr-update>
+                            <input class="project-picker-search-input" type="text" ng-model="projectName" maxlength="50" enter-submit="vm.FindProjectList()" placeholder="프로젝트를 선택하세요." wms-kr-update>
                         </div>
                         <div class="project-picker-list-area">
                             <div class="project-picker-list">
@@ -68,7 +68,7 @@
             </div>
         </div>
 
-        <!-- task 상태, 담당자, 참조자 선택 영역 -->
+        <!-- task 상태, 담당자, 공유자 선택 영역 -->
         <div class="task-options-area task-status-user-aera">
             <table class="table table-bordered" style="border-top: 0; border-bottom: 0;">
                 <colgroup>
@@ -102,13 +102,13 @@
                     </td>
                     <td style="position: relative;">
 
-                        <label for="watcher" class="cursor task-label-btn" ng-click="vm.getCurrentWatchers()" watcher-picker-btn-toggle><span id="watcher"><i class="fa fa-user"></i> 참조자 {{watchers.length == 0 ? '' : watchers.length}}</span></label>
+                        <label for="watcher" class="cursor task-label-btn" ng-click="vm.getCurrentWatchers()" watcher-picker-btn-toggle><span id="watcher"><i class="fa fa-user"></i> 공유자 {{watchers.length == 0 ? '' : watchers.length}}</span></label>
 
-                        <!-- 참조자 검색 및 등록 팝업 -->
+                        <!-- 공유자 검색 및 등록 팝업 -->
                         <div class="watcher-popup-area text-left">
                             <div class="padding-5 watcher-popup-header">
                                 <span class="pull-right fa fa-close cursor picker-popup-close-btn" ng-click="vm.watcherPopupClose()"></span>
-                                참조자 {{watchers.length}}명
+                                공유자 {{watchers.length}}명
                             </div>
                             <div class="watcher-list-area padding-10" ng-show="watchers.length > 0">
                                 <ul class="list-inline friends-list" style="margin-bottom: 0">
@@ -523,11 +523,13 @@
         </div>
 
         <div>
-            <summernote ng-model="vm.task.contents" on-init="init()" on-enter="enter()" on-focus="focus(evt)" config="dataService.getSummerNoteOptions(true)"
-                on-blur="blur(evt)" on-paste="paste()" on-keyup="keyup(evt)" contenteditable="true"
-                on-keydown="keydown(evt)" on-change="change(contents)"
-                on-image-upload="imageUpload(files)" editable="editable" editor="editor" lang="ko-KR" height="230">
-            </summernote>
+            <div ng-controller="uploadCtrl">
+                <summernote ng-model="vm.task.contents" on-init="init()" on-enter="enter()" on-focus="focus(evt)" config="dataService.getSummerNoteOptions(true)"
+                            on-blur="blur(evt)" on-paste="paste()" on-keyup="keyup(evt)" contenteditable="true"
+                            on-keydown="keydown(evt)" on-change="change(contents)"
+                            on-image-upload="imageUpload(files)" editable="editable" editor="editor" lang="ko-KR" height="230">
+                </summernote>
+            </div>
         </div>
 
         <div class="task-file-area" ng-class="(vm.fileAreaOpen || vm.files.length > 0) ? 'on' : ''">

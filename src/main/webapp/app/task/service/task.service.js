@@ -234,6 +234,7 @@
             removeComment : removeComment,
             putSubTask : putSubTask,
             downloadFiles : downloadFiles,
+            fileUpload : fileUpload,
         }
         return service;
 
@@ -241,6 +242,14 @@
             parameter.url = "api/tasks";
             return $upload.upload(parameter).then(function (response) {
                 $log.debug("타스크 생성 결과 : ", response);
+                return response;
+            });
+        }
+
+        function fileUpload(parameter){
+            parameter.url = "api/attachedFile";
+            return $upload.upload(parameter).then(function (response) {
+                $log.debug("에디터 이미지 생성 결과 : ", response);
                 return response;
             });
         }

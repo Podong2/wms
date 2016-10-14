@@ -17,7 +17,7 @@
                         <ul class="nav nav-tabs nav-justified my-task-top-menu">
                             <li class="text-center"><span ng-class="vm.taskType == 'ASSIGNED' ? 'active' : ''"  ng-click="vm.taskTypeChange('ASSIGNED')"><i class="fa fa-list"></i>담당자 {{vm.task.assignedTasks.length}}</span></li>
                             <li class="text-center"><span ng-class="vm.taskType == 'CREATED' ? 'active' : ''" ng-click="vm.taskTypeChange('CREATED')"><i class="fa fa-check-square-o"></i>요청한 {{vm.task.createdTasks.length}}</span></li>
-                            <li class="text-center"><span ng-class="vm.taskType == 'WATCHED' ? 'active' : ''" ng-click="vm.taskTypeChange('WATCHED')"><i class="fa fa-eye"></i>참조 {{vm.task.watchedTasks.length}}</span></li>
+                            <li class="text-center"><span ng-class="vm.taskType == 'WATCHED' ? 'active' : ''" ng-click="vm.taskTypeChange('WATCHED')"><i class="fa fa-eye"></i>공유 {{vm.task.watchedTasks.length}}</span></li>
                         </ul>
                     </div>
                 </div>
@@ -78,7 +78,7 @@
                                 <span class="clear-both"></span>
 
                                 <div class="task-project-list-area">
-                                    <span class="task-project-icon" ng-repeat="project in data.taskProjects">[{{project.folderYn ? '폴더' : '프로젝트'}}] {{project.name}}</span>
+                                    <span class="task-project-icon" ng-repeat="project in data.taskProjects">{{project.name}}</span>
                                 </div>
                             </div>
                         </div>
@@ -117,7 +117,7 @@
                                 <span class="clear-both"></span>
 
                                 <div class="task-project-list-area">
-                                    <span class="task-project-icon" ng-repeat="project in data.taskProjects">[{{project.folderYn ? '폴더' : '프로젝트'}}] {{project.name}}</span>
+                                    <span class="task-project-icon" ng-repeat="project in data.taskProjects">{{project.name}}</span>
                                 </div>
                             </div>
                         </div>
@@ -157,7 +157,7 @@
                                 <span class="clear-both"></span>
 
                                 <div class="task-project-list-area">
-                                    <span class="task-project-icon" ng-repeat="project in data.taskProjects">[{{project.folderYn ? '폴더' : '프로젝트'}}] {{project.name}}</span>
+                                    <span class="task-project-icon" ng-repeat="project in data.taskProjects">{{project.name}}</span>
                                 </div>
                             </div>
                         </div>

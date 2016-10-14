@@ -47,7 +47,8 @@
         $scope.imageUpload = function(files) {
             console.log('image upload:', files);
             console.log('image upload\'s editable:', $scope.editable);
-            $scope.editor.summernote("editor.insertImage", window.location.origin + "/api/attachedFile/" + 5);
+            //$scope.editor.summernote("editor.insertImage", window.location.origin + "/" + 5);
+            //$scope.editor.summernote("editor.insertImage", window.location.origin + "/api/attachedFile/" + 5);
 
         }
 

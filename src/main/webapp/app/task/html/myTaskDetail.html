@@ -126,14 +126,14 @@
                             </td>
                             <td style="position: relative;">
 
-                                <label for="watcher" class="cursor" ng-if="vm.task.watchers.length > 0 || vm.task.modifyYn" style="margin-bottom: 0px;" watcher-picker-btn-toggle><span id="watcher"><i class="fa fa-user"></i> 참조자 {{vm.task.watchers.length == 0 ? '' : vm.task.watchers.length}}</span></label>
-                                <label for="watcher" class="btn-none" ng-if="vm.task.watchers.length == 0 && !vm.task.modifyYn" style="margin-bottom: 0px;"><span id="watcher"><i class="fa fa-user"></i> 참조자 {{vm.task.watchers.length == 0 ? '' : vm.task.watchers.length}}</span></label>
+                                <label for="watcher" class="cursor" ng-if="vm.task.watchers.length > 0 || vm.task.modifyYn" style="margin-bottom: 0px;" watcher-picker-btn-toggle><span id="watcher"><i class="fa fa-user"></i> 공유자 {{vm.task.watchers.length == 0 ? '' : vm.task.watchers.length}}</span></label>
+                                <label for="watcher" class="btn-none" ng-if="vm.task.watchers.length == 0 && !vm.task.modifyYn" style="margin-bottom: 0px;"><span id="watcher"><i class="fa fa-user"></i> 공유자 {{vm.task.watchers.length == 0 ? '' : vm.task.watchers.length}}</span></label>
 
-                                <!-- 참조자 검색 및 등록 팝업 -->
+                                <!-- 공유자 검색 및 등록 팝업 -->
                                 <div class="watcher-popup-area text-left">
                                     <div class="padding-5 watcher-popup-header">
                                         <span class="pull-right fa fa-close cursor" ng-click="vm.watcherPopupClose()"></span>
-                                        참조자 {{vm.task.watchers.length}}명
+                                        공유자 {{vm.task.watchers.length}}명
                                     </div>
                                     <div class="watcher-list-area padding-10" ng-show="vm.task.watchers.length > 0">
                                         <ul class="list-inline friends-list" style="margin-bottom: 0">
@@ -143,7 +143,7 @@
                                                 <span class="profile-close-btn close-btn cursor" ng-click="vm.removeWatcher(user)" ng-if="vm.task.modifyYn"><i class="fa fa-close"></i></span>
                                             </li>
                                         </ul>
-                                        <!-- 참조자 정보 팝업 -->
+                                        <!-- 공유자 정보 팝업 -->
                                         <div class='row watcher-picker-info'>
                                             <div class='col-md-4 padding-10' style='border-right:1px solid #ddd; height: 100%;'>
                                                 <img ng-src='/api/attachedFile/{{watcherInfo.profileImageId}}' ng-if='watcherInfo.profileImageId !=null' />
@@ -183,7 +183,7 @@
                                             일치하는 사용자가 없습니다.
                                         </div>
                                     </div>
-                                </div><!-- 참조자 검색 및 등록 팝업 end -->
+                                </div><!-- 공유자 검색 및 등록 팝업 end -->
 
                             </td>
                         </tr>
