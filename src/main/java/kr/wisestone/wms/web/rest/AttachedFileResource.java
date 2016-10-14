@@ -1,10 +1,13 @@
 package kr.wisestone.wms.web.rest;
 
 import com.codahale.metrics.annotation.Timed;
+import com.google.common.collect.Lists;
 import kr.wisestone.wms.common.constant.Constants;
 import kr.wisestone.wms.domain.AttachedFile;
 import kr.wisestone.wms.repository.AttachedFileRepository;
 import kr.wisestone.wms.service.AttachedFileService;
+import kr.wisestone.wms.web.rest.dto.TaskDTO;
+import kr.wisestone.wms.web.rest.form.TaskForm;
 import kr.wisestone.wms.web.rest.util.HeaderUtil;
 import kr.wisestone.wms.web.view.AttachedFileDownloadView;
 import kr.wisestone.wms.web.view.ZipFileDownloadView;
@@ -21,8 +24,10 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.inject.Inject;
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * 특정도메인과 연계되어 처리되므로 컨트롤러가 필요없으나 현재 단계에서 첨부파일 테스트를 위해 등록함, 추후 삭제 예정
@@ -58,16 +63,18 @@ public class AttachedFileResource {
         method = RequestMethod.POST,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<AttachedFile> createAttachedFile(MultipartHttpServletRequest request) throws URISyntaxException {
+    public ResponseEntity<List<AttachedFile>> createAttachedFile(MultipartHttpServletRequest request) throws URISyntaxException {
         log.debug("REST request to save");
 
         List<MultipartFile> multipartFiles = request.getFiles("files");
 
-        for(MultipartFile multipartFile : multipartFiles) {
-            this.attachedFileService.saveFile(multipartFile);
-        }
+        List<AttachedFile> savedAttachedFiles = Lists.newArrayList();
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        savedAttachedFiles.addAll(multipartFiles.stream().map(
+            multipartFile -> this.attachedFileService.saveFile(multipartFile)).collect(Collectors.toList())
+        );
+
+        return new ResponseEntity<>(savedAttachedFiles, HttpStatus.OK);
     }
 
     /**
