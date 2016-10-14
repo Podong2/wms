@@ -25,16 +25,16 @@ uploadCtrl.$inject=['$scope', '$upload', '$log', '$filter', 'TaskEdit', '$cookie
         function imageUpload (files) {
             var listFiles = [];
             angular.forEach(files, function (file, index) {
-                if (!angular.isDefined(file.name)) {
-                    var fileType = file.type.split("/");
-                    var imageType = "";
-
-                    if (fileType[0] == "image") {
-                        imageType = "." + fileType[1];
-                    }
-
-                    file.name = new Date().getTime() + imageType;
-                }
+                //if (!angular.isDefined(file.name)) {
+                //    var fileType = file.type.split("/");
+                //    var imageType = "";
+                //
+                //    if (fileType[0] == "image") {
+                //        imageType = "." + fileType[1];
+                //    }
+                //
+                //    file.name = new Date().getTime() + imageType;
+                //}
 
                 listFiles.push(file);
             });
@@ -61,9 +61,9 @@ uploadCtrl.$inject=['$scope', '$upload', '$log', '$filter', 'TaskEdit', '$cookie
                 type: 'POST',
                 success: function(response){
                         $log.debug(response);
-                        //angular.forEach(response.data.attachedFiles, function (fileInfo, index) {
-                        //    $scope.editor.summernote("editor.insertImage", window.location.origin + "/attachedFile" + fileInfo.path);
-                        //});
+                        angular.forEach(response, function (fileInfo, index) {
+                            $scope.editor.summernote("editor.insertImage", window.location.origin + "/api/attachedFile/" + fileInfo.id);
+                        });
                 },
                 error: function(){
 

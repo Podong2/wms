@@ -564,8 +564,19 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             //
             //    return deferred.promise;
             //};
-
+            vm.contentUploadFiles = [];
             function taskUpdate(){
+
+                //  에디터에서 실제 서버에 올라가는 시점에 사용된 이미지 정보. 이 정보로 이슈와 파일첨부에서 연결시킨다.
+                $("#issueEdit").find("img").each(function () {
+                    var path = $(this).attr("src");
+                    var realPath = path.split("attachedFile/");
+
+                    if (angular.isDefined(realPath[1]) && realPath != null) {
+                        vm.contentUploadFiles.push(realPath[1]);
+                    }
+                });
+
                 if(vm.task.name == null || vm.task.name == '') {
                     toastr.warning('작업명을 입력하세요', '작업 생성');
                     return false;
@@ -574,6 +585,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 if($scope.watchers != [])userIdPush($scope.watchers, "watcherIds"); //참조자
                 if(vm.task.relatedTaskList != [])userIdPush(vm.task.relatedTaskList, "relatedTaskIds"); //참조 작업
                 if(vm.taskProject != [])userIdPush(vm.taskProject, "projectIds"); // 프로젝트
+                if(vm.contentUploadFiles != [])userIdPush(vm.contentUploadFiles, "contentUploadFiles"); // 프로젝트
                 vm.task.taskRepeatSchedule = _.clone(vm.taskRepeatSchedule);
                 if(vm.task.privateYn) vm.subTasks = []; // 비공개일 시 하위 작업 삭제
 
@@ -610,7 +622,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 var typeIds = new Array();
 
                 angular.forEach(userInfo, function(val){
-                    if(type == 'projectIds')typeIds.push(val);
+                    if(type == 'projectIds' || type=='contentUploadFiles')typeIds.push(val);
                     else typeIds.push(val.id);
                 });
 
@@ -1044,29 +1056,5 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             //        }));
             //    }
             //}
-
-
-            function imageUpload(files, editor) {
-                var listFiles = [];
-                angular.forEach(files, function (file, index) {
-                    listFiles.push(file);
-                });
-
-                Issue.uploadFile({
-                    method: "POST",
-                    file: listFiles,
-                    fileFormDataName: "file"
-                }).then(function (response) {
-                    if (response.data.message.status == uiConstant.common.SUCCESS) {
-                        angular.forEach(response.data.attachedFiles, function (fileInfo, index) {
-                            var editorTarget = $.summernote.eventHandler.getModule();
-                            editorTarget.insertImage($scope.editable, fileInfo.path);
-                        });
-                    }
-                    else {
-
-                    }
-                });
-            };
 
         }
