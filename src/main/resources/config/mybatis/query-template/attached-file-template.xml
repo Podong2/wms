@@ -29,6 +29,11 @@
                 FROM owl_trace_log_attached_file tlaf
                 WHERE iaf.id = tlaf.attached_file_id
             )
+            AND NOT EXISTS (
+                SELECT u.id
+                FROM owl_user u
+                WHERE iaf.id = u.profile_image_id
+            )
         )
     </delete>
 
