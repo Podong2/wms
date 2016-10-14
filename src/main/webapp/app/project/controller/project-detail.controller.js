@@ -84,7 +84,8 @@
         vm.date = '';
         vm.assigneeUsers = [];
         vm.logArrayData = [];
-        vm.codes = Code.query();
+        //vm.codes = Code.query();
+        vm.codes = [{"id":'', "name":"선택"},{"id":1,"name":"활성"},{"id":2,"name":"완료"},{"id":3,"name":"보류"},{"id":4,"name":"취소"}];
         vm.commentList = [];
         vm.projectList = [];
         vm.responseData = [];
