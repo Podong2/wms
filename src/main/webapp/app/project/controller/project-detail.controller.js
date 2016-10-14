@@ -144,6 +144,8 @@
 
             vm.getTraceLog($stateParams.project.id);
 
+            $stateParams.project.statusId  = $stateParams.project.statusId == null ? '' : $stateParams.project.statusId;
+
             return $stateParams.project;
         }
 
@@ -343,10 +345,25 @@
         };
 
         /* 프로젝트 업로드 */
+        vm.contentUploadFiles=[];
         function projectUpload(){
+            //  에디터에서 실제 서버에 올라가는 시점에 사용된 이미지 정보. 이 정보로 이슈와 파일첨부에서 연결시킨다.
+            $("#issueEdit").find("img").each(function () {
+                var path = $(this).attr("src");
+                var realPath = path.split("attachedFile/");
+
+                if (angular.isDefined(realPath[1]) && realPath != null) {
+                    var index = vm.contentUploadFiles.indexOf(realPath[1]);
+                    if(index == -1){
+                        vm.contentUploadFiles.push(realPath[1]);
+                    }
+                }
+            });
+
             if(vm.project.projectAdmins != [])userIdPush(vm.project.projectAdmins, "projectAdminIds");
             if(vm.project.projectWatchers != [])userIdPush(vm.project.projectWatchers, "projectWatcherIds");
             if(vm.project.projectMembers != [])userIdPush(vm.project.projectMembers, "projectMemberIds");
+            if(vm.contentUploadFiles != [])userIdPush(vm.contentUploadFiles, "contentUploadFiles"); // 프로젝트
 
             $log.debug("vm.project update ;::::::", vm.project);
             ProjectEdit.uploadProject({
@@ -420,7 +437,12 @@
             var typeIds = new Array();
 
             angular.forEach(userInfo, function(val){
-                typeIds.push(val.id);
+                if(type=='contentUploadFiles'){
+                    typeIds.push(val);
+                }else{
+                    typeIds.push(val.id);
+                }
+
             });
 
             vm.project[type] = typeIds.join(",");

@@ -362,11 +362,14 @@
                     </div>
 
                     <div class="content-edit editingSection" >
-                        <summernote config="dataService.getSummerNoteOptions(true)"
-                                    lang="ko-KR" ng-model="vm.project.contents"
-                                    data-editor="editor"
-                                    data-editable="editable"
-                                    data-on-image-upload="imageUpload(files)"></summernote>
+                        <div id="issueEdit" ng-controller="uploadCtrl">
+                            <summernote config="dataService.getSummerNoteOptions(true)"
+                                        lang="ko-KR" ng-model="vm.project.contents"
+                                        data-editor="editor"
+                                        data-editable="editable"
+                                        data-on-image-upload="imageUpload(files)"></summernote>
+                        </div>
+
                     </div>
                 </div>
             </div>

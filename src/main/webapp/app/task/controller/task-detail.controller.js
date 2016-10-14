@@ -795,10 +795,26 @@
         };
 
         /* 타스크 업로드 */
+        vm.contentUploadFiles=[];
         function taskUpload(){
+
+            //  에디터에서 실제 서버에 올라가는 시점에 사용된 이미지 정보. 이 정보로 이슈와 파일첨부에서 연결시킨다.
+            $("#issueEdit").find("img").each(function () {
+                var path = $(this).attr("src");
+                var realPath = path.split("attachedFile/");
+
+                if (angular.isDefined(realPath[1]) && realPath != null) {
+                    var index = vm.contentUploadFiles.indexOf(realPath[1]);
+                    if(index == -1){
+                        vm.contentUploadFiles.push(realPath[1]);
+                    }
+                }
+            });
+
             if(vm.task.assignees != [])userIdPush(vm.task.assignees, "assigneeIds");
             if(vm.task.watchers != [])userIdPush(vm.task.watchers, "watcherIds");
             if(vm.task.relatedTasks != [])userIdPush(vm.task.relatedTasks, "relatedTaskIds");
+            if(vm.contentUploadFiles != [])userIdPush(vm.contentUploadFiles, "contentUploadFiles"); // 프로젝트
             vm.task.taskRepeatSchedule = _.clone(vm.taskRepeatSchedule);
             vm.task.importantYn = vm.task.importantYn == null ? '': vm.task.importantYn;
 
@@ -923,7 +939,11 @@
 
             var typeIds = [];
             angular.forEach(userInfo, function(val){
-                typeIds.push(val.id);
+                if(type=='contentUploadFiles'){
+                    typeIds.push(val);
+                }else{
+                    typeIds.push(val.id);
+                }
             });
 
             vm.task[type] = typeIds.join(",");
