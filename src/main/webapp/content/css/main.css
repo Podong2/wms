@@ -3336,6 +3336,16 @@ body.wms-body.modal-open {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+.project-history-btn-area{
+    padding-left: 95px;
+    margin-bottom: 10px;
+}
+.project-history-btn-area span{
+    margin-right: 10px;
+}
+.project-history-btn-area span:hover {
+    border-bottom: 1px solid #000;
+}
 
 
 

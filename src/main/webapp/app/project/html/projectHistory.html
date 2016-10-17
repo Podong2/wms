@@ -1,10 +1,11 @@
 <div style=" background-color: #fff;">
-
     <div ng-repeat="task in vm.tasks track by $index" ng-init="taskIndex = $index">
         <!-- 작업 타이틀&사용자 아이콘 -->
         <div style=" margin-bottom: 15px;">
-            <a ng-click="vm.taskHistoryOpen($index, task.id, task.historyArea)" class="project-history-title"><i class="fa " ng-class="task.historyArea ? 'fa-minus' : 'fa-plus'"></i> {{task.name}} </a>
-
+            <a ng-click="vm.taskHistoryOpen($index, task.id, task.historyArea)" class="project-history-title">
+                <i class="fa " ng-class="task.historyArea ? 'fa-minus' : 'fa-plus'"></i>
+                <i class="fa fa-paperclip" ng-show="task.historyType == 'SHARED_ATTACHED_FILE'"></i>
+                {{task.historyType == 'SHARED_ATTACHED_FILE' ? '파일' : task.name}} </a>
             <ul class="list-inline friends-list float-left" style="margin-bottom: 0">
                 <li ng-repeat="user in task.assignees | limitTo:3">
                     <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
@@ -18,24 +19,30 @@
                     </a>
                 </li>
             </ul>
-            <a ng-click="vm.taskHistoryOpen($index, task.id, task.historyArea)" class="project-history-title"> {{task.taskProjects[0].name}} {{task.lastModifiedDate | date : 'yyyy-MM-dd HH:mm' }}</a>
+            <span class="project-history-title">
+                {{task.historyType == 'SHARED_ATTACHED_FILE' ? vm.projectInfo.name : task.taskProjects[0].name}} {{task.lastModifiedDate | date : 'yyyy-MM-dd HH:mm' }}
+            </span>
             <div class="clear-both"></div>
+            <div class="project-history-info clear-both" ng-show="task.historyType != 'SHARED_ATTACHED_FILE'">
+                일정 : <span ng-if="task.startDate == '' && task.endDate == ''">미정</span><span ng-if="task.startDate != '' || task.endDate != ''">{{task.startDate | date : 'yyyy-MM-dd'}} ~ {{task.endDate | date : 'yyyy-MM-dd'}}</span>, 담당자 : <span ng-repeat="user in task.assignees"> {{user.name}}</span>
+            </div>
         </div>
 
         <!-- 히스토리 영역 -->
         <div ng-if="task.historyArea">
-            <div class="clear-both padding-left-20">
-                <span ng-click="vm.getTaskTwoDateHistory($index, task.id)" ng-show="!task.endDataYn">이전내용 더 보기</span>
-                <span ng-show="!task.endDataYn">전체보기</span>
+            <div class="clear-both project-history-btn-area" ng-show="task.historyType != 'SHARED_ATTACHED_FILE'">
+                <span ng-click="vm.getTaskTwoDateHistory($index, task.id, true)" ng-show="!task.endDataYn">이전내용 더 보기</span>
+                <span ng-click="vm.getTaskTwoDateHistory($index, task.id, false)" ng-show="!task.endDataYn">전체보기</span>
                 <span ng-show="task.endDataYn && !task.endDataCloseYn" ng-click="task.endDataCloseYn = !task.endDataCloseYn">이전내용 숨기기</span>
                 <span ng-show="task.endDataCloseYn" ng-click="task.endDataCloseYn = !task.endDataCloseYn">이전내용 전체보기</span>
             </div>
 
             <!-- Timeline Content -->
-            <div class="smart-timeline" ng-show="!task.endDataCloseYn">
+            <div class="smart-timeline">
                 <ul class="smart-timeline-list">
-                    <!-- 로그 보기 -->
-                    <li ng-repeat="data in task.TaskAuditLog.data" ng-if="!vm.commentViewType">
+
+                    <!-- 로그 보기 모든 히스토리 목록-->
+                    <li ng-repeat="data in task.TaskAuditLog.data track by $index" ng-show="!vm.commentViewType && !task.endDataCloseYn && task.historyType != 'SHARED_ATTACHED_FILE'">
                         <div class="comment-header-area">
                             <div class="smart-timeline-icon" ng-if="(task.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (task.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')">
                                 {{task.TaskAuditLog.data[$index].createdDate | date : 'MM/dd'}}
@@ -128,12 +135,151 @@
                                 <!--</p>-->
                             </div>
                         </div>
-                    </li>
+                    </li><!-- 로그 보기 모든 히스토리 목록 끝-->
+
+                    <!-- 로그 보기 파일 히스토리 -->
+                    <li ng-show="!vm.commentViewType && !task.endDataCloseYn && task.historyType == 'SHARED_ATTACHED_FILE'">
+                        <div class="comment-header-area">
+                            <div class="smart-timeline-icon">
+                                {{task.createdDate | date : 'MM/dd'}}
+                            </div>
+                            <div class="smart-timeline-content">
+                                <ul class="list-inline friends-list float-left comment-user-profile comment-user-title">
+                                    <li>
+                                        <img ng-src="/content/images/demo/male.png" ng-if="task.profileImageId == null || task.profileImageId == '' " uib-tooltip="{{task.createdByName}}">
+                                        <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{task.profileImageId}}" ng-if="task.profileImageId != null" uib-tooltip="{{task.createdByName}}">
+                                    </li>
+                                </ul>
+                                <p class="comment-user-title">
+                                    <a href-void><strong>{{task.createdByName}}</strong> </a>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="pad-l123 comment-content-area">
+                            <!-- 시스템 영역 -->
+                            <div class="pad-l10 clear-both" >
+
+                                <span><i class="fa fa-paperclip"></i> 파일첨부 </span>
+                                <span>
+                                    <span>
+                                        <i class="fa fa-paperclip"></i>
+                                        <a ng-click="vm.fileDownLoad(task.sharedAttachedFileId)"> {{task.sharedAttachedFileName}}</a>
+                                    </span>
+                                </span>
+                                <span class="comment-created-date">&nbsp;&nbsp;{{task.createdDate | date : 'HH:mm'}}</span>
+                                <br class="clear-both"/>
+
+                                <!--{{data.createdBy}} 이 {{data.entityField}} {{data.newValue}}를 {{data.persistType}}하였습니다. {{data.createdDate | date : 'HH:mm'}}-->
+                                <!--<br/>-->
+                                <!--<p ng-repeat="file in data.attachedFiles" class="pad-l20">-->
+                                <!--<a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>-->
+                                <!--</p>-->
+                            </div>
+                        </div>
+                    </li><!-- 로그 보기 파일 히스토리 끝-->
+
+                    <!-- 로그 보기 이전내용 숨긴 최근 2일 로그 목록-->
+                    <li ng-repeat="data in task.currentLogs.data track by $index" ng-show="task.endDataCloseYn">
+                        <div class="comment-header-area">
+                            <div class="smart-timeline-icon" ng-if="(task.currentLogs.data[$index].createdDate | date : 'MM/dd') != (task.currentLogs.data[$index-1].createdDate | date : 'MM/dd')">
+                                {{task.currentLogs.data[$index].createdDate | date : 'MM/dd'}}
+                            </div>
+                            <div class="smart-timeline-content">
+
+                                <ul class="list-inline friends-list float-left comment-user-profile"
+                                    ng-if="task.currentLogs.data[$index].createdBy != task.currentLogs.data[$index-1].createdBy
+                                            || (task.currentLogs.data[$index].createdDate | date : 'MM/dd') != (task.currentLogs.data[$index-1].createdDate | date : 'MM/dd')"
+                                                    ng-class="vm.currentLogs.data[$index].createdBy != vm.currentLogs.data[$index-1].createdBy
+                                            || (task.currentLogs.data[$index].createdDate | date : 'MM/dd') != (task.currentLogs.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
+                                    <li>
+                                        <img ng-src="/content/images/demo/male.png" ng-if="data.profileImageId == null || data.profileImageId == '' " uib-tooltip="{{data.createdByName}}">
+                                        <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.profileImageId}}" ng-if="data.profileImageId != null" uib-tooltip="{{data.createdByName}}">
+                                    </li>
+                                </ul>
+
+                                <p ng-if="task.currentLogs.data[$index].createdBy != task.currentLogs.data[$index-1].createdBy
+                            || (task.currentLogs.data[$index].createdDate | date : 'MM/dd') != (task.currentLogs.data[$index-1].createdDate | date : 'MM/dd')"
+                                   ng-class="vm.currentLogs.data[$index].createdBy != vm.currentLogs.data[$index-1].createdBy
+                            || (task.currentLogs.data[$index].createdDate | date : 'MM/dd') != (task.currentLogs.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
+                                    <a href-void><strong>{{data.createdByName}}</strong> </a><a class="comment-mention-btn" editor-mention-write user-name="data.createdByName" user-id="data.createdById">댓글</a>
+                                </p>
+
+                            </div>
+                        </div>
+                        <div class="pad-l123 comment-content-area">
+                            <!-- 댓글 영역 -->
+                            <div ng-if="data.entityField == 'reply'" class="pad-l10  clear-both">
+
+                                <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px" ng-if="data.newValue != ''"></span>
+                                <span style="float: left; margin-right: 5px" ng-if="data.newValue == ''">파일첨부</span>
+                                <span class="comment-created-date">&nbsp;&nbsp;{{data.createdDate | date : 'HH:mm'}}</span> <span ng-if="data.createdBy == vm.userInfo.login"  class="fa fa-times" ng-click="vm.removeComment(data.id)"></span>
+                                <br class="clear-both"/>
+                                <p ng-repeat="file in data.attachedFiles" class="pad-l20">
+                                    <a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>
+                                </p>
+                            </div>
+
+                            <!-- 시스템 영역 -->
+                            <div ng-if="data.entityField != 'reply'" class="pad-l10 clear-both" >
+
+                                <span translate="audit.entity.task" ng-if="data.entityField == null || data.entityField == ''">엔티티</span>
+                                <span translate="audit.field.task.{{data.entityField}}" ng-if="(data.entityField != null && data.entityField != '') && data.entityField != 'taskUsers'">필드</span>
+                                <span translate="audit.field.task.{{data.etcValue}}"  ng-if="(data.entityField != null && data.entityField != '') && data.entityField == 'taskUsers'">필드</span>
+                                <span translate="audit.persist-type.{{data.persistType}}">유형</span>
+                                    <span ng-if="data.entityField != 'taskAttachedFiles' && data.entityField != 'taskRepeatSchedule' && data.entityField != 'contents'">
+                                        <span ng-if="data.persistType == 'INSERT' || data.persistType == 'UPDATE'">
+                                            <span ng-if="data.entityField == 'importantYn'">
+                                                <span ng-if="data.newValue == 'true'">
+                                                    활성
+                                                </span>
+                                                <span ng-if="data.newValue == 'false'">
+                                                    비활성
+                                                </span>
+                                            </span>
+                                            <span ng-if="data.entityField == 'privateYn'">
+                                                <span ng-if="data.newValue == 'true'">
+                                                    공개
+                                                </span>
+                                                <span ng-if="data.newValue == 'false'">
+                                                    비공개
+                                                </span>
+                                            </span>
+                                            <span ng-if="data.entityField != 'importantYn' && data.entityField != 'privateYn'">
+                                                {{data.newValue}}
+                                            </span>
+                                        </span>
+                                        <span ng-if="data.persistType == 'DELETE'">
+                                            {{data.oldValue}}
+                                        </span>
+                                    </span>
+                                    <span ng-if="data.entityField == 'taskAttachedFiles' && data.entityField != 'taskRepeatSchedule' && data.entityField != 'contents'">
+
+                                        <span ng-if="data.persistType == 'INSERT' || data.persistType == 'UPDATE'">
+                                            <i class="fa fa-paperclip"></i>
+                                            <a ng-click="vm.fileDownLoad(data.attachedFileId)">{{data.newValue}}</a>
+                                        </span>
+                                        <span ng-if="data.persistType == 'DELETE'">
+                                            {{data.oldValue}}
+                                        </span>
+                                    </span>
+                                <span class="comment-created-date">&nbsp;&nbsp;{{data.createdDate | date : 'HH:mm'}}</span>
+                                <br class="clear-both"/>
+
+                                <!--{{data.createdBy}} 이 {{data.entityField}} {{data.newValue}}를 {{data.persistType}}하였습니다. {{data.createdDate | date : 'HH:mm'}}-->
+                                <!--<br/>-->
+                                <!--<p ng-repeat="file in data.attachedFiles" class="pad-l20">-->
+                                <!--<a ng-click="vm.fileDownLoad(file.id)">{{file.name}}</a>-->
+                                <!--</p>-->
+                            </div>
+                        </div>
+                    </li><!-- 로그 보기 이전내용 숨긴 최근 2일 로그 목록 끝-->
+
+
                 </ul>
             </div><!-- END Timeline Content -->
 
             <!-- 댓글 입력 영역 -->
-            <div class="row comment-area" style="border-top: 1px solid #ddd; padding-top: 10px;">
+            <div class="row comment-area" style="border-top: 1px solid #ddd; padding-top: 10px;" ng-show="task.historyType != 'SHARED_ATTACHED_FILE'">
                 <div class="col-md-11">
                     <div class="row">
                         <div class="col-md-1">

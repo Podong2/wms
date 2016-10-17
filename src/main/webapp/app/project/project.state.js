@@ -111,7 +111,8 @@
                 authorities: []
             },
             params : {
-              projectId : ''
+                projectId : '',
+                project: {}
             },
             views: {//
                 'content@app': {//
@@ -137,6 +138,9 @@
                 authorities: [],
                 title : '프로젝트 히스토리'
             },
+            params: { // project DTO 데이타 전달
+                project: {}
+            },
             views: {//
                 'functionView@my-project-functions': {//
                     templateUrl: 'app/project/html/projectHistory.html', // home에 사용될 template html 파일
@@ -160,6 +164,9 @@
             data: {
                 authorities: [],
                 title : '프로젝트 파일'
+            },
+            params: { // project DTO 데이타 전달
+                project: {}
             },
             views: {//
                 'functionView@my-project-functions': {//

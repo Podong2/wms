@@ -24,18 +24,37 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
             vm.TaskAuditLog = [];
             $scope.commentFiles = [];
             vm.commentFileAreaOpen = false;
+            vm.projectInfo = '';
+            var projectInfo = localStorage.getItem("projectInfo");
+            if (angular.isDefined(projectInfo) && projectInfo != null) {
+                projectInfo = JSON.parse(projectInfo);
+                vm.projectInfo = projectInfo.project;
+            }
 
-            function getTaskTwoDateHistory(index, taskId){
-                TaskListSearch.TaskAudigLog({'entityId' : taskId, 'entityName' : 'Task', recentYn : true, offset : vm.tasks[index].offset}).then(function(result){
+            function getTaskTwoDateHistory(index, taskId, recentYn){
+                if(!recentYn){
+                    vm.tasks[index].recentYn = recentYn;
+                    vm.tasks[index].offset = 0;
+                    vm.tasks[index].endDataYn = true;
+                }
+                TaskListSearch.TaskAudigLog({'entityId' : taskId, 'entityName' : 'Task', recentYn : vm.tasks[index].recentYn, offset : vm.tasks[index].offset}).then(function(result){
                     $log.debug("이전 내용 더보기 결과 : ", result);
                     if(result.data.length == 0){
                         vm.tasks[index].endDataYn = true;
                     }else{
-                        angular.forEach(result.data, function(value){
-                            vm.tasks[index].TaskAuditLog.data.push(value)
-                        });
-                        vm.tasks[index].offset += 2;
+                        if(!recentYn){
+                            vm.tasks[index].TaskAuditLog.data = _.clone(result.data);
+                        }else{
+                            angular.forEach(vm.tasks[index].TaskAuditLog.data, function(value){
+                                result.data.push(value)
+                            });
+                            vm.tasks[index].TaskAuditLog.data = _.clone(result.data);
+                            vm.tasks[index].offset += 1;
+                        }
+
                     }
+                    $log.debug("이전 내용 더보기 결과 : ", vm.tasks[index].TaskAuditLog);
+                    $log.debug("이전 내용 최근 2일 : ", vm.tasks[index].currentLogs);
 
                 });
             }
@@ -118,8 +137,18 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
                         vm.tasks[index].offset = 2;
                         vm.tasks[index].endDataYn = false;
                         vm.tasks[index].endDataCloseYn = false;
+                        vm.tasks[index].recentYn = true;
+                        if(result.historyType == "SHARED_ATTACHED_FILE"){
+                            vm.tasks[index].TaskAuditLog.sharedAttachedFileId = vm.tasks[index].sharedAttachedFileId;
+                            vm.tasks[index].TaskAuditLog.sharedAttachedFileName = vm.tasks[index].sharedAttachedFileName;
+                            vm.tasks[index].TaskAuditLog.sharedAttachedFileSize = vm.tasks[index].sharedAttachedFileSize;
+                            vm.tasks[index].TaskAuditLog.historyType = vm.tasks[index].historyType;
+                        }
+                        vm.tasks[index].currentLogs = _.clone(vm.tasks[index].TaskAuditLog);
+                        $log.debug("최초 히스토리 불러오기 : ", vm.tasks)
+                        $log.debug("최초 히스토리 2일 로그 목록 : ", vm.tasks[index].currentLogs)
                     });
-                    $log.debug("최초 히스토리 불러오기 : ", vm.tasks)
+
                 }
             }
 
@@ -168,7 +197,18 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
                     toastr.success('태스크 댓글 등록 완료', '태스크 댓글 등록 완료');
                     vm.comment.contents = [];
                     $scope.commentFiles=[];
-                    TaskListSearch.TaskAudigLog({'entityId' : vm.comment.entityId, 'entityName' : 'Task'}).then(function(result){
+
+                    $log.debug("최근 히스토리 날짜 체크 : ", vm.tasks[index].TaskAuditLog.data[vm.tasks[index].TaskAuditLog.data.length -1].createdDate)
+                    var today = new Date().format("yyyy-MM-dd");
+                    var target = new Date(vm.tasks[index].TaskAuditLog.data[vm.tasks[index].TaskAuditLog.data.length -1].createdDate).format("yyyy-MM-dd");
+                    var limit = 0;
+                    if(today == target){
+                        limit = 0;
+                    }else{
+                        limit = vm.tasks[index].offset-1;
+                    }
+
+                    TaskListSearch.TaskAudigLog({'entityId' : vm.comment.entityId, 'entityName' : 'Task', recentYn : vm.tasks[index].recentYn, offset : (vm.tasks[index].offset-1), limit : 0}).then(function(result){
                         vm.tasks[vm.index].TaskAuditLog = result;
                     });
 

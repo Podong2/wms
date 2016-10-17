@@ -26,6 +26,12 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
                 entityId : '',
                 attachedFileId : ''
             };
+            vm.projectInfo = '';
+            var projectInfo = localStorage.getItem("projectInfo");
+            if (angular.isDefined(projectInfo) && projectInfo != null) {
+                projectInfo = JSON.parse(projectInfo);
+                vm.projectInfo = projectInfo.project;
+            }
 
             $scope.getToken = function() {
                 return $cookies.get("CSRF-TOKEN");

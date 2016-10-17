@@ -10,6 +10,12 @@ projectFunctionsCtrl.$inject=['$state', '$stateParams', '$log', '$scope', '$time
             var vm = this;
             $log.debug("function $stateParams : ", $stateParams);
             vm.projectId = $stateParams.projectId;
+            vm.project = $stateParams.project;
+            if(vm.project != null && vm.project != undefined && vm.project.name != undefined){
+                localStorage.setItem("projectInfo", JSON.stringify({
+                    project : vm.project,
+                }));
+            }
 
             vm.stateInfo = $state.current.name;
             vm.state = $state.get(vm.stateInfo);
