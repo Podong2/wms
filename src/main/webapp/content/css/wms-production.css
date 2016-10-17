@@ -12055,6 +12055,18 @@ html.hidden-menu-mobile-lock {
     padding-left: 0 !important
 }
 
+.padding-left-5 {
+    padding-left: 5px !important
+}
+
+.padding-left-10 {
+    padding-left: 10px !important
+}
+
+.padding-left-20 {
+    padding-left: 20px !important
+}
+
 .padding-top-0 {
     padding-top: 0 !important
 }
@@ -12139,6 +12151,15 @@ html.hidden-menu-mobile-lock {
 
 .margin-left-0 {
     margin-left: 0 !important
+}
+.margin-left-5 {
+    margin-left: 5px !important
+}
+.margin-left-10 {
+    margin-left: 10px !important
+}
+.margin-left-20 {
+    margin-left: 20px !important
 }
 
 .margin-bottom-0 {
