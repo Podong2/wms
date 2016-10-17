@@ -3,7 +3,7 @@
         <div class="col-md-12">
             <div class="col-md-9">
                 <!--<i class="fa fa-exclamation-circle task-circle" ng-class="vm.project.importantYn ? 'on' : ''" ng-click="vm.project.importantYn = !vm.project.importantYn"></i>-->
-                <input type="text" class="taskAddInput" ng-model="vm.project.name" enter-submit="vm.projectUpload()" placeholder="Task" wms-kr-update/>
+                <input type="text" class="taskAddInput" maxlength="30" ng-model="vm.project.name" enter-submit="vm.projectUpload()" placeholder="Task" wms-kr-update/>
             </div>
             <div class="col-md-3">
                 <span class="pull-right taskOptionBtnArea">
