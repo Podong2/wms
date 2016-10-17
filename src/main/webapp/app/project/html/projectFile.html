@@ -7,9 +7,11 @@
     <div ng-show="vm.tabArea[0].status">
         <div class="project-file-btn-area">
             <div class="pull-right">
-                <button type='button' class='btn' wms-project-file-download download-images="vm.downloadImages" download-event="vm.downloadFiles"><i class='fa fa-download'></i></button>
-                <label for="input-3" class="cursor"><span type='button' class='btn'><i class='fa fa-upload'></i></span></label>
-                <button type='button' class='btn' wms-project-file-remove remove-images="vm.removeImages" remove-event="vm.filesRemove"><i class='fa fa-trash'></i></button>
+                <label class="cursor" wms-project-file-download download-images="vm.downloadImages" download-event="vm.downloadFiles"><span class='btn btn-default'><i class='fa fa-download'></i></span></label>
+                <label ng-show="vm.projectInfo.adminYn || vm.projectInfo.memberYn" for="input-3" class="cursor"><span class='btn btn-default'><i class='fa fa-upload'></i></span></label>
+                <label ng-show="!vm.projectInfo.adminYn && !vm.projectInfo.memberYn"><span class='btn btn-default disabled'><i class='fa fa-upload'></i></span></label>
+                <label ng-show="vm.projectInfo.adminYn" class="cursor" wms-project-file-remove remove-images="vm.removeImages" remove-event="vm.filesRemove" ><span class='btn btn-default'><i class='fa fa-trash'></i></span></label> <!-- ng-show="vm.projectInfo.adminYn"-->
+                <label ng-show="!vm.projectInfo.adminYn"><span class='btn btn-default disabled'><i class='fa fa-trash'></i></span></label> <!-- ng-show="vm.projectInfo.adminYn"-->
             </div>
         </div>
         <div style="width: 100%;">
@@ -22,9 +24,11 @@
     <div ng-show="vm.tabArea[1].status">
         <div class="project-file-btn-area clear-both">
             <div class="pull-right">
-                <button type='button' class='btn' ng-click="vm.downloadFiles()"><i class='fa fa-download'></i></button>
-                <label for="input-3" class="cursor"><span type='button' class='btn'><i class='fa fa-upload'></i></span></label>
-                <button type='button' class='btn' ng-click="vm.filesRemove()"><i class='fa fa-trash'></i></button>
+                <label class="cursor" ng-click="vm.downloadFiles()"><span type='button' class='btn btn-default'><i class='fa fa-download'></i></span></label>
+                <label ng-show="vm.projectInfo.adminYn || vm.projectInfo.memberYn" for="input-3" class="cursor"><span type='button' class='btn btn-default'><i class='fa fa-upload'></i></span></label>
+                <label ng-show="!vm.projectInfo.adminYn && !vm.projectInfo.memberYn"><span type='button' class='btn btn-default disabled'><i class='fa fa-upload'></i></span></label>
+                <label ng-show="vm.projectInfo.adminYn" class="cursor" ng-click="vm.filesRemove()"><span type='button' class='btn btn-default'><i class='fa fa-trash'></i></span></label>
+                <label ng-show="!vm.projectInfo.adminYn"><span type='button' class='btn btn-default disabled'><i class='fa fa-trash'></i></span></label>
             </div>
             <span class="clear-both"></span>
         </div>

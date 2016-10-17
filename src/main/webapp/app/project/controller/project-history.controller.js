@@ -196,7 +196,7 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
             function removeComment(taskId, index, traceLogId) {
                 TaskEdit.removeComment(traceLogId).then(function(response){
                     toastr.error('태스크 댓글 삭제 완료', '태스크 댓글 삭제 완료');
-                    TaskListSearch.TaskAudigLog({'entityId' : taskId, 'entityName' : 'Task'}).then(function(result){
+                    TaskListSearch.TaskAudigLog({'entityId' : taskId, 'entityName' : 'Task', recentYn : vm.tasks[index].recentYn, offset : 0, limit : vm.tasks[index].offset}).then(function(result){
                         vm.tasks[index].TaskAuditLog = result;
                     });
                 });

@@ -50,6 +50,7 @@
         vm.filesRemove = filesRemove;
         vm.downloadFiles = downloadFiles;
         vm.setRepeatDate = setRepeatDate;
+        vm.getTaskAudigLog = getTaskAudigLog;
         //vm.getCurrentWatchers = getCurrentWatchers;
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
@@ -924,7 +925,7 @@
             //});
 
 
-            getTaskAudigLog();
+            vm.getTaskAudigLog();
 
             $log.debug("내작업 정보 : ", vm.task);
             $log.debug("내작업 파일 불러온 정보 : ", vm.previewFiles);
@@ -989,7 +990,7 @@
                 toastr.success('태스크 댓글 생성 완료', '태스크 댓글 생성 완료');
                 $scope.commentFiles = [];
                 vm.comment.contents='';
-                getTaskAudigLog();
+                vm.getTaskAudigLog(vm.recentYn);
             });
         }
 
@@ -1009,8 +1010,10 @@
 
         }
 
-        function getTaskAudigLog(){
-            TaskListSearch.TaskAudigLog({'entityId' : vm.task.id, 'entityName' : 'Task'}).then(function(result){
+        vm.recentYn = true;
+        function getTaskAudigLog(recentYn){
+            vm.recentYn = recentYn;
+            TaskListSearch.TaskAudigLog({'entityId' : vm.task.id, 'entityName' : 'Task', recentYn : vm.recentYn}).then(function(result){
                 vm.TaskAuditLog = result;
                 vm.commentList=[];
                 angular.forEach(vm.TaskAuditLog.data, function(val){
@@ -1213,7 +1216,7 @@
         function removeComment(traceLogId) {
             TaskEdit.removeComment(traceLogId).then(function(response){
                 toastr.error('태스크 댓글 삭제 완료', '태스크 댓글 삭제 완료');
-                getTaskAudigLog();
+                vm.getTaskAudigLog(vm.recentYn);
             });
         }
 
