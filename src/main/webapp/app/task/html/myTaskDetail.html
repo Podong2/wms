@@ -579,6 +579,9 @@
             <!-- Timeline Content -->
             <div class="smart-timeline" style="margin-top: 5px;">
                 <div style="display: inline-table; width: 100%;"><a class="pull-right" ng-click="vm.commentViewType = !vm.commentViewType" ng-show="vm.commentList.length > 0">{{vm.commentViewType ? '히스토리&댓글 보기' : '댓글만 보기'}} ({{vm.commentViewType ? vm.TaskAuditLog.data.length : vm.commentList.length }})</a></div>
+                <div class="project-history-btn-area text-center">
+                    <span ng-click="vm.getTaskAudigLog(false)" ng-show="vm.recentYn">전체보기</span>
+                </div>
                 <ul class="smart-timeline-list">
 
                     <!-- 로그&댓글 보기 -->

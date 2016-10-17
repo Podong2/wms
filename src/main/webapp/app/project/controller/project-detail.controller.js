@@ -95,6 +95,7 @@
         vm.fileListYn = false;
         vm.watcherName = '';
         vm.DuplicationWatcherIds = [];
+        vm.recentYn = true; // 히스토리 전체보기 유무
 
         /* member관련 파라미터 */
         vm.DuplicationMemberIds = [];
@@ -507,13 +508,14 @@
                 $scope.commentFiles = [];
                 vm.comment.contents='';
 
-                vm.getTraceLog(vm.project.id);
+                vm.getTraceLog(vm.project.id, vm.recentYn);
             });
         }
 
-        function getTraceLog(projectId) {
+        function getTraceLog(projectId, recentYn) {
             vm.commentList=[];
-            TaskListSearch.TaskAudigLog({'entityId' : projectId, 'entityName' : 'Project'}).then(function(result){
+            vm.recentYn = recentYn;
+            TaskListSearch.TaskAudigLog({'entityId' : projectId, 'entityName' : 'Project', recentYn : vm.recentYn}).then(function(result){
                 vm.TaskAuditLog = result;
                 vm.commentList=[];
                 angular.forEach(vm.TaskAuditLog.data, function(val){
@@ -543,7 +545,7 @@
         function removeComment(traceLogId) {
             ProjectEdit.removeComment(traceLogId).then(function(response){
                 toastr.error('프로젝트 댓글 삭제 완료', '프로젝트 댓글 삭제 완료');
-                TaskListSearch.TaskAudigLog({'entityId' : vm.project.id, 'entityName' : 'Project'}).then(function(result){
+                TaskListSearch.TaskAudigLog({'entityId' : vm.project.id, 'entityName' : 'Project', recentYn : vm.recentYn}).then(function(result){
                     vm.TaskAuditLog = result;
                     vm.commentList=[];
                     angular.forEach(vm.TaskAuditLog.data, function(val){
