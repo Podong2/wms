@@ -174,14 +174,20 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
                     var today = new Date().format("yyyy-MM-dd");
                     var target = new Date(vm.tasks[index].TaskAuditLog.data[vm.tasks[index].TaskAuditLog.data.length -1].createdDate).format("yyyy-MM-dd");
                     var limit = 0;
-                    if(today == target){
-                        limit = 0;
-                    }else{
-                        limit = vm.tasks[index].offset-1;
+                    var offset = 0;
+                    if(today == target){ // 최근 히스토리가 오늘인 경우
+                        limit = vm.tasks[index].offset;
+                        offset = 0;
+                    }else{// 최근 히스토리가 오늘이 아닌경우
+                        limit = vm.tasks[index].offset + 1;
+                        vm.tasks[index].offset += 1;
+                        offset = 0;
                     }
 
-                    TaskListSearch.TaskAudigLog({'entityId' : vm.comment.entityId, 'entityName' : 'Task', recentYn : vm.tasks[index].recentYn, offset : (vm.tasks[index].offset-1), limit : 0}).then(function(result){
-                        vm.tasks[vm.index].TaskAuditLog = result;
+                    TaskListSearch.TaskAudigLog({'entityId' : vm.comment.entityId, 'entityName' : 'Task', recentYn : vm.tasks[index].recentYn, offset : offset, limit : limit}).then(function(result){
+                        vm.tasks[index].TaskAuditLog = '';
+                        vm.tasks[index].TaskAuditLog = result;
+                        $log.debug("코멘트 입력 후 히스토리 불러오기 : ", vm.tasks)
                     });
 
                 });
