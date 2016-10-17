@@ -443,7 +443,7 @@
                     <div class="pad-l123 comment-content-area">
 
                         <!-- 댓글 영역 -->
-                        <div ng-if="data.entityField == 'reply'" class="pad-l10  clear-both">
+                        <div ng-if="data.entityField == 'reply'" class="pad-l10  clear-both" style="word-break: break-all;">
 
                             <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px" ng-if="data.newValue != ''"></span>
                             <span style="float: left; margin-right: 5px" ng-if="data.newValue == ''">파일첨부</span>
@@ -455,7 +455,7 @@
                         </div>
 
                         <!-- 시스템 영역 -->
-                        <div ng-if="data.entityField != 'reply'" class="pad-l10 clear-both" >
+                        <div ng-if="data.entityField != 'reply'" class="pad-l10 clear-both" style="word-break: break-all;" >
 
                             <span translate="audit.entity.project" ng-if="data.entityField == null || data.entityField == ''">엔티티</span>
                             <span translate="audit.field.project.{{data.entityField}}" ng-if="(data.entityField != null && data.entityField != '') && data.entityField != 'projectUsers'">필드</span>

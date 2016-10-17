@@ -166,7 +166,7 @@
             <!-- 프로젝트 생성 -->
             <li data-ui-sref-active="active" id="projectAddSection">
                 <a class="menu-item-parent projectAddValueSection" project-add-toggle>
-                    <i class="fa fa-lg fa-fw fa-plus-circle pull-right"></i><span class="menu-item-parent" translate="프로젝트 생성"></span>
+                    <i class="fa fa-lg fa-fw fa-plus-circle"></i><span class="menu-item-parent" translate="프로젝트 생성"></span>
                 </a>
                 <div class="project-picker projectAddSection" style="left: 100%;">
                     <div style="width: 300px;">
@@ -185,7 +185,7 @@
 
             <li data-ui-sref-active="active">
                 <a ui-sref="my-project-list" class="menu-item-parent">
-                    <i class="fa fa-lg fa-fw fa-th-large pull-right"></i> <span class="menu-item-parent" translate="프로젝트"></span>
+                    <i class="fa fa-lg fa-fw fa-th-large"></i> <span class="menu-item-parent" translate="프로젝트"></span>
                 </a>
             </li>
 
@@ -194,9 +194,9 @@
             <li data-menu-collapse ng-repeat="list in vm.projectList track by $index">
 
                 <a data-ui-sref="my-project({id:list.id})">
-                    <i style="background: #9fda58; margin-left:10px; width: 25px; height: 10px"></i>
-                    <span class="menu-item-parent" data-ui-sref="my-project({id:list.id})">{{list.name}}</span>
-                    <span class="collapse-sign" ng-if="list.projectChilds.length > 0"><em class="fa fa-plus-square-o"></em></span>
+                    <i style="background: #9fda58; width: 25px; height: 10px"></i>
+                    <span class="menu-item-parent side-menu-title-length" data-ui-sref="my-project({id:list.id})">{{list.name}}</span>
+                    <span class="menu-item-parent collapse-sign" ng-if="list.projectChilds.length > 0"><em class="fa fa-plus-square-o"></em></span>
                 </a>
                 <ul uib-dropdown-menu ng-if="list.projectChilds.length > 0">
                     <li data-ui-sref-active="active" data-menu-collapse  data-ng-repeat="child in list.projectChilds track by $index" ng-include="'nodes_renderer.html'">
@@ -249,7 +249,7 @@
         <script type="text/ng-template" id="nodes_renderer.html">
             <a class="lnb-menu-btn">
                 <span class="fa fa-list" ng-show="!child.folderYn" data-ui-sref="my-project.detail({id : child.id})" ></span>&nbsp;
-                <span translate="{{child.name}}" data-ui-sref="my-project.detail({id : child.id})" >{{child.name}}</span>
+                <span class="side-menu-title-length" translate="{{child.name}}" data-ui-sref="my-project.detail({id : child.id})" >{{child.name}}</span>
                 <span class="collapse-sign" ng-show="child.projectChilds.length > 0"><em class="fa fa-plus-square-o"></em></span>
             </a>
             <ul uib-dropdown-menu>
