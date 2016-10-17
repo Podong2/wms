@@ -50,6 +50,7 @@ projectCtrl.$inject=['$scope', 'Code', '$log', 'toastr', '$state', '$timeout', '
                 $log.debug("프로젝트 생성 결과 : ", result);
                 toastr.success('프로젝트 생성 완료', '프로젝트 생성 완료');
                 $rootScope.$broadcast("projectAddClose");
+                vm.project.name = '';
                 Project.query({}, onSuccess, onError);
                 $state.go("my-project", {id : result.id});
             }

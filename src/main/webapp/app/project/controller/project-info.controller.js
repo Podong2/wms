@@ -89,22 +89,22 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 isFirstDisabled: false
             };
 
-            //$scope.$watchCollection('vm.statusId', function(newValue, oldValue){
-            //    if(newValue != undefined && oldValue != newValue) {
-            //        $scope.chartFilterYn = false;
-            //        vm.page = 1;
-            //        vm.tasks=[];
-            //        getList();
-            //    }
-            //});
-            //$scope.$watchCollection('vm.orderType', function(newValue, oldValue){
-            //    if(newValue != undefined && oldValue != newValue) {
-            //        $scope.chartFilterYn = false;
-            //        vm.page = 1;
-            //        vm.tasks=[];
-            //        getList();
-            //    }
-            //});
+            $scope.$watchCollection('vm.statusId', function(newValue, oldValue){
+                if(newValue != undefined && oldValue != newValue) {
+                    $scope.chartFilterYn = false;
+                    vm.page = 1;
+                    vm.tasks=[];
+                    getList();
+                }
+            });
+            $scope.$watchCollection('vm.orderType', function(newValue, oldValue){
+                if(newValue != undefined && oldValue != newValue) {
+                    $scope.chartFilterYn = false;
+                    vm.page = 1;
+                    vm.tasks=[];
+                    getList();
+                }
+            });
 
             // 프로젝트 타스크 목록 스크롤
             function getTaskListInProject(listType){

@@ -16,6 +16,7 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
             vm.createComment = createComment;
             vm.createCommentFile = createCommentFile;
             vm.removeComment = removeComment;
+            vm.getTaskTwoDateHistory = getTaskTwoDateHistory;
             vm.userInfo = Principal.getIdentity();
             vm.tasks=[];
             vm.history = [];
@@ -23,6 +24,21 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
             vm.TaskAuditLog = [];
             $scope.commentFiles = [];
             vm.commentFileAreaOpen = false;
+
+            function getTaskTwoDateHistory(index, taskId){
+                TaskListSearch.TaskAudigLog({'entityId' : taskId, 'entityName' : 'Task', recentYn : true, offset : vm.tasks[index].offset}).then(function(result){
+                    $log.debug("이전 내용 더보기 결과 : ", result);
+                    if(result.data.length == 0){
+                        vm.tasks[index].endDataYn = true;
+                    }else{
+                        angular.forEach(result.data, function(value){
+                            vm.tasks[index].TaskAuditLog.data.push(value)
+                        });
+                        vm.tasks[index].offset += 2;
+                    }
+
+                });
+            }
 
             vm.taskId = '';
             vm.index = 0;
@@ -93,13 +109,17 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
             function taskHistoryOpen(index, taskId, openYn){
                 angular.forEach(vm.tasks, function(value, key){
                     value.historyArea = false;
-                    value.TaskAuditLog = [];
+                    //value.TaskAuditLog = [];
                 });
                 if(!openYn) vm.tasks[index].historyArea = true;
-                if(vm.tasks[index].historyArea){
-                    TaskListSearch.TaskAudigLog({'entityId' : taskId, 'entityName' : 'Task'}).then(function(result){
+                if(vm.tasks[index].historyArea && vm.tasks[index].TaskAuditLog == undefined){
+                    TaskListSearch.TaskAudigLog({'entityId' : taskId, 'entityName' : 'Task', recentYn : true, offset : 0}).then(function(result){
                         vm.tasks[index].TaskAuditLog = result;
+                        vm.tasks[index].offset = 2;
+                        vm.tasks[index].endDataYn = false;
+                        vm.tasks[index].endDataCloseYn = false;
                     });
+                    $log.debug("최초 히스토리 불러오기 : ", vm.tasks)
                 }
             }
 

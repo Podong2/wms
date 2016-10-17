@@ -3,9 +3,9 @@
     <div ng-repeat="task in vm.tasks track by $index" ng-init="taskIndex = $index">
         <!-- 작업 타이틀&사용자 아이콘 -->
         <div style=" margin-bottom: 15px;">
-            <a ng-click="vm.taskHistoryOpen($index, task.id, task.historyArea)" class="project-history-title"><i class="fa " ng-class="task.historyArea ? 'fa-minus' : 'fa-plus'"></i> {{task.name}}   </a>
+            <a ng-click="vm.taskHistoryOpen($index, task.id, task.historyArea)" class="project-history-title"><i class="fa " ng-class="task.historyArea ? 'fa-minus' : 'fa-plus'"></i> {{task.name}} </a>
 
-            <ul class="list-inline friends-list" style="margin-bottom: 0">
+            <ul class="list-inline friends-list float-left" style="margin-bottom: 0">
                 <li ng-repeat="user in task.assignees | limitTo:3">
                     <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
                     <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
@@ -18,17 +18,21 @@
                     </a>
                 </li>
             </ul>
-
-            <div class="project-history-info clear-both">
-                일정 : <span ng-if="task.startDate == '' && task.endDate == ''">미정</span><span ng-if="task.startDate != '' || task.endDate != ''">{{task.startDate | date : 'yyyy-MM-dd'}} ~ {{task.endDate | date : 'yyyy-MM-dd'}}</span>, 담당자 : <span ng-repeat="user in task.assignees"> {{user.name}}</span>
-            </div>
+            <a ng-click="vm.taskHistoryOpen($index, task.id, task.historyArea)" class="project-history-title"> {{task.taskProjects[0].name}} {{task.lastModifiedDate | date : 'yyyy-MM-dd HH:mm' }}</a>
+            <div class="clear-both"></div>
         </div>
 
         <!-- 히스토리 영역 -->
         <div ng-if="task.historyArea">
+            <div class="clear-both padding-left-20">
+                <span ng-click="vm.getTaskTwoDateHistory($index, task.id)" ng-show="!task.endDataYn">이전내용 더 보기</span>
+                <span ng-show="!task.endDataYn">전체보기</span>
+                <span ng-show="task.endDataYn && !task.endDataCloseYn" ng-click="task.endDataCloseYn = !task.endDataCloseYn">이전내용 숨기기</span>
+                <span ng-show="task.endDataCloseYn" ng-click="task.endDataCloseYn = !task.endDataCloseYn">이전내용 전체보기</span>
+            </div>
 
             <!-- Timeline Content -->
-            <div class="smart-timeline">
+            <div class="smart-timeline" ng-show="!task.endDataCloseYn">
                 <ul class="smart-timeline-list">
                     <!-- 로그 보기 -->
                     <li ng-repeat="data in task.TaskAuditLog.data" ng-if="!vm.commentViewType">
