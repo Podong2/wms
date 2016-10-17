@@ -129,14 +129,23 @@ function customRenderer($compile, $filter, $log, $sce) {
                             else if(contentType[1] == 'vnd.ms-powerpoint') customTag = "<i class='fa fa-file-powerpoint-o'></i>";
                             else customTag = "<i class='fa fa-file-text-o'></i>";
                         }
+
+                        $log.debug("scope.data.locationType : ", scope.data.locationType);
+
                         customTag += " <span ng-click='fileDownLoad(3)'>"+ scope.data.name + "</span>";
                         break;
                     case "file_location" :
-                        if(scope.data.locationType == 'TASK' || scope.data.locationType == 'TASK_REPLY'){
-                            customTag = "<a ui-sref='my-task.detail({id \: " + scope.data.locationId + ", listType : \"TODAY\"})' >"+ scope.data.location +"</a>";
-                        }else{
+
+                        if(scope.data.locationType == 'TASK') {
+                            customTag = "<a ui-sref='my-task.detail({id \: " + scope.data.locationId + ", listType : \"TODAY\"})' >" + scope.data.location + "</a>";
+                        } else if(scope.data.locationType == 'TASK_REPLY'){
+                            customTag = "<span>[댓글]</span> <a ui-sref='my-task.detail({id \: " + scope.data.locationId + ", listType : \"TODAY\"})' >"+ scope.data.location +"</a>";
+                        } else if(scope.data.locationType == 'PROJECT_REPLY'){
+                            customTag = "<span>[댓글]</span> <a ui-sref='my-project({id \: " + scope.data.locationId + "})' >"+ scope.data.location +"</a>";
+                        } else {
                             customTag = "<a ui-sref='my-project({id \: " + scope.data.locationId + "})' >"+ scope.data.location +"</a>";
                         }
+
                         break;
                     case "file_download" :
                             customTag = "<button type='button' class='btn' ng-click='fileDownLoad(data)'><i class='fa fa-download'></i></button>";
