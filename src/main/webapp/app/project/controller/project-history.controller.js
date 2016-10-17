@@ -31,34 +31,6 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
                 vm.projectInfo = projectInfo.project;
             }
 
-            function getTaskTwoDateHistory(index, taskId, recentYn){
-                if(!recentYn){
-                    vm.tasks[index].recentYn = recentYn;
-                    vm.tasks[index].offset = 0;
-                    vm.tasks[index].endDataYn = true;
-                }
-                TaskListSearch.TaskAudigLog({'entityId' : taskId, 'entityName' : 'Task', recentYn : vm.tasks[index].recentYn, offset : vm.tasks[index].offset}).then(function(result){
-                    $log.debug("이전 내용 더보기 결과 : ", result);
-                    if(result.data.length == 0){
-                        vm.tasks[index].endDataYn = true;
-                    }else{
-                        if(!recentYn){
-                            vm.tasks[index].TaskAuditLog.data = _.clone(result.data);
-                        }else{
-                            angular.forEach(vm.tasks[index].TaskAuditLog.data, function(value){
-                                result.data.push(value)
-                            });
-                            vm.tasks[index].TaskAuditLog.data = _.clone(result.data);
-                            vm.tasks[index].offset += 1;
-                        }
-
-                    }
-                    $log.debug("이전 내용 더보기 결과 : ", vm.tasks[index].TaskAuditLog);
-                    $log.debug("이전 내용 최근 2일 : ", vm.tasks[index].currentLogs);
-
-                });
-            }
-
             vm.taskId = '';
             vm.index = 0;
             function createCommentFile(id, index){
@@ -232,6 +204,36 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
                 });
                 vm.comment.mentionIds = typeIds.join(",");
             }
+
+            /* 이전내용 가져오기 */
+            function getTaskTwoDateHistory(index, taskId, recentYn){
+                if(!recentYn){
+                    vm.tasks[index].recentYn = recentYn;
+                    vm.tasks[index].offset = 0;
+                    vm.tasks[index].endDataYn = true;
+                }
+                TaskListSearch.TaskAudigLog({'entityId' : taskId, 'entityName' : 'Task', recentYn : vm.tasks[index].recentYn, offset : vm.tasks[index].offset}).then(function(result){
+                    $log.debug("이전 내용 더보기 결과 : ", result);
+                    if(result.data.length == 0){
+                        vm.tasks[index].endDataYn = true;
+                    }else{
+                        if(!recentYn){
+                            vm.tasks[index].TaskAuditLog.data = _.clone(result.data);
+                        }else{
+                            angular.forEach(vm.tasks[index].TaskAuditLog.data, function(value){
+                                result.data.push(value)
+                            });
+                            vm.tasks[index].TaskAuditLog.data = _.clone(result.data);
+                            vm.tasks[index].offset += 1;
+                        }
+
+                    }
+                    $log.debug("이전 내용 더보기 결과 : ", vm.tasks[index].TaskAuditLog);
+                    $log.debug("이전 내용 최근 2일 : ", vm.tasks[index].currentLogs);
+
+                });
+            }
+
 
             $("#input-5").fileinput({
                 uploadUrl : '/tasks/uploadFile',
