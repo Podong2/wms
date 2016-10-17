@@ -32,6 +32,7 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
                 projectInfo = JSON.parse(projectInfo);
                 vm.projectInfo = projectInfo.project;
             }
+            $log.debug("projectInfo : ", vm.projectInfo)
 
             $scope.getToken = function() {
                 return $cookies.get("CSRF-TOKEN");
@@ -132,6 +133,7 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
             }
             getFileList();
             function onProjectSuccess (result) {
+                $log.debug("프로젝트 파일 페이지 result : ", result);
                 vm.projectAttachedList = [];
                 vm.projectAttachedList = result;
                 vm.imageList =[];
@@ -293,11 +295,12 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
                 .setDAlign("text-center")
                 .setDType("renderer")
                 .setDRenderer("file_download"));
-            vm.tableConfigs.push(tableService.getConfig("삭제", "")
-                .setHWidth("width-80-p")
-                .setDAlign("text-center")
-                .setDType("renderer")
-                .setDRenderer("file_remove"));
-
+            if(vm.projectInfo.adminYn){
+                vm.tableConfigs.push(tableService.getConfig("삭제", "")
+                    .setHWidth("width-80-p")
+                    .setDAlign("text-center")
+                    .setDType("renderer")
+                    .setDRenderer("file_remove"));
+            }
 
         }
