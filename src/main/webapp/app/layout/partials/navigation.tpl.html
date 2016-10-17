@@ -193,8 +193,8 @@
 
             <li data-menu-collapse ng-repeat="list in vm.projectList track by $index">
 
-                <a>
-                    <i style="background: #9fda58; margin-left:10px; width: 25px; height: 10px" data-ui-sref="my-project({id:list.id})"></i>
+                <a data-ui-sref="my-project({id:list.id})">
+                    <i style="background: #9fda58; margin-left:10px; width: 25px; height: 10px"></i>
                     <span class="menu-item-parent" data-ui-sref="my-project({id:list.id})">{{list.name}}</span>
                     <span class="collapse-sign" ng-if="list.projectChilds.length > 0"><em class="fa fa-plus-square-o"></em></span>
                 </a>
