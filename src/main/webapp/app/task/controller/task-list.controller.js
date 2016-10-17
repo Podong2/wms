@@ -52,6 +52,7 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
             vm.watchedTask=[]; // 참조작업
             vm.listType = "TODAY";
             vm.filterType = '';
+            vm.scrollLoderYn = true; // 스크롤 시 결과값이 있으면 true 결과 값이 없으면 false를 주어 반복로딩을 막는다.
 
             vm.taskPopup = false;
             vm.subTaskPopup = false;
@@ -115,6 +116,7 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
                 vm.page = 1;
                 vm.listType = type;
                 vm.filterType = '';
+                vm.scrollLoderYn = true;
                 getList();
             }
 
@@ -122,29 +124,34 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
                 vm.page = 1;
                 vm.listType = type;
                 vm.filterType = filterType;
+                vm.scrollLoderYn = true;
                 getList();
             }
 
 
             /* 타스크 목록 불러오기 */
             function getList(){
-                $log.debug("검색 필터 vm.listType : ", vm.listType)
-                $log.debug("검색 필터 vm.statusId : ", vm.statusId)
-                $log.debug("검색 필터 vm.orderType : ", vm.orderType)
-                $log.debug("검색 필터 vm.page : ", vm.page)
-                Task.query({
-                    listType : vm.listType,
-                    filterType : vm.filterType,
-                    page: vm.page - 1,
-                    size: 15,
-                    sort: 'desc'
-                }, onSuccess, onError);
+                if(vm.scrollLoderYn){
+                    $log.debug("검색 필터 vm.listType : ", vm.listType)
+                    $log.debug("검색 필터 vm.statusId : ", vm.statusId)
+                    $log.debug("검색 필터 vm.orderType : ", vm.orderType)
+                    $log.debug("검색 필터 vm.page : ", vm.page)
+                    Task.query({
+                        listType : vm.listType,
+                        filterType : vm.filterType,
+                        page: vm.page - 1,
+                        size: 15,
+                        sort: 'desc'
+                    }, onSuccess, onError);
+                }
+
             }
 
 
             vm.reloadYn = false;
             $rootScope.$on("taskReload", function(event, args){
                 vm.reloadYn = true;
+                vm.scrollLoderYn = true;
                 Task.query({
                     listType : vm.listType,
                     filterType : vm.filterType,
@@ -174,7 +181,7 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
                     vm.tasks.push(task);
                 });
                 $log.debug('작업 목록 : ', vm.tasks);
-
+                if(data.length == 0) vm.scrollLoderYn = false;
                 MyTaskStatistics.get({listType : vm.listType}, countSuccess, onError); // 타스크 목록 카운트 정보 조회
                 $scope.taskScroll.loading = false;
                 if(!vm.reloadYn)vm.page++; //다음페이지 준비

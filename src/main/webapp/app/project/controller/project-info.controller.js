@@ -65,6 +65,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             vm.listType = '';
             vm.statusType = '';
             vm.dDay = '';
+            vm.scrollLoderYn = true; // 스크롤 시 결과값이 있으면 true 결과 값이 없으면 false를 주어 반복로딩을 막는다.
 
             // 작업 목록 필터값
             $scope.chartFilterYn = false;
@@ -94,6 +95,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     $scope.chartFilterYn = false;
                     vm.page = 1;
                     vm.tasks=[];
+                    vm.scrollLoderYn = true;
                     getList();
                 }
             });
@@ -102,6 +104,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     $scope.chartFilterYn = false;
                     vm.page = 1;
                     vm.tasks=[];
+                    vm.scrollLoderYn = true;
                     getList();
                 }
             });
@@ -111,7 +114,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 vm.listType = listType;
                 vm.reloadYn =false;
                 $scope.chartFilterYn = false;
-                getList();
+                if(vm.scrollLoderYn) getList();
             }
 
             // 프로젝트 타스크 목록 필터
@@ -119,6 +122,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 vm.listType = listType;
                 vm.reloadYn =false;
                 $scope.chartFilterYn = false;
+                vm.scrollLoderYn = true;
                 vm.tasks=[];
                 vm.page = 1;
                 getList();
@@ -164,6 +168,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             }
             function getTaskSuccess(tasks){
                 vm.data.tasks = tasks;
+                if(vm.data.tasks.length == 0) vm.scrollLoderYn = false;
                 $log.debug("프로젝트 작업 정보 : ", tasks);
                 onSuccess(vm.data);
             }
@@ -184,6 +189,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             }
             function findTaskSuccess(tasks){
                 vm.tasks = tasks;
+                vm.scrollLoderYn = false;
                 $log.debug("프로젝트 작업 정보 : ", tasks);
             }
 
@@ -345,6 +351,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 $scope.inProgressYn = false;
                 $scope.completeYn = false;
                 $scope.delayYn = false;
+                vm.scrollLoderYn = true;
                 if(type == 'DELAYED'){
                     $scope.delayYn = true;
                 }else if(type == 'COMPLETE'){
@@ -396,6 +403,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             function initProjectTaskList(){
                 vm.tasks=[];
                 vm.page = 1;
+                vm.scrollLoderYn = true;
                 if(vm.statusId != '' || vm.orderType != ''){
                     vm.listType = 'TOTAL';
                     vm.statusId = '';
