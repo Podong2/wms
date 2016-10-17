@@ -14,4 +14,6 @@ public class TraceLogCondition {
     private Boolean recentYn = Boolean.TRUE;
 
     private Long offset;
+
+    private Long limit;
 }

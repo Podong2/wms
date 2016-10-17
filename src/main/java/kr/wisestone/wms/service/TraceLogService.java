@@ -85,6 +85,10 @@ public class TraceLogService {
             condition.put("offset", traceLogCondition.getOffset());
         }
 
+        if(traceLogCondition.getLimit() != null) {
+            condition.put("limit", traceLogCondition.getLimit());
+        }
+
         return traceLogDAO.getTraceLogs(condition);
     }
 
