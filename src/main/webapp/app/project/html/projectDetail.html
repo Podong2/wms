@@ -225,7 +225,8 @@
 
                     <td style="position: relative;">
 
-                        <label for="watcher" class="cursor" style="margin-bottom: 0px;" ng-click="vm.getCurrentWatchers()" watcher-picker-btn-toggle><span id="watcher"><i class="fa fa-user"></i> 공유자 {{vm.project.projectWatchers.length == 0 ? '' : vm.project.projectWatchers.length}}</span></label>
+                        <label for="watcher" class="cursor btn-none" style="margin-bottom: 0px;" ng-show="!vm.project.adminYn && vm.project.projectWatchers.length == 0"><span id="watcher"><i class="fa fa-user"></i> 공유자 {{vm.project.projectWatchers.length == 0 ? '' : vm.project.projectWatchers.length}}</span></label>
+                        <label for="watcher" class="cursor" style="margin-bottom: 0px;"  ng-show="vm.project.adminYn || vm.project.projectWatchers.length != 0" ng-click="vm.getCurrentWatchers()" watcher-picker-btn-toggle><span id="watcher"><i class="fa fa-user"></i> 공유자 {{vm.project.projectWatchers.length == 0 ? '' : vm.project.projectWatchers.length}}</span></label>
 
                         <!-- 공유자 검색 및 등록 팝업 -->
                         <div class="watcher-popup-area text-left">
