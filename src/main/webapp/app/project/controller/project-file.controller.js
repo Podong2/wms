@@ -269,7 +269,7 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
                 .setDType("check"));
             vm.tableConfigs.push(tableService.getConfig("이름", "name")
                 .setHWidth("width-200-p")
-                .setDAlign("text-center")
+                .setDAlign("text-left")
                 .setDType("renderer")
                 .setDRenderer("file_name"));
             vm.tableConfigs.push(tableService.getConfig("파일 크기", "size")
