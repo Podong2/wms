@@ -1,5 +1,5 @@
 @font-face {
-    font-family: 'wms-default-font';
+    font-family: 'wms-default';
     src: url('./custom-css/fonts/NanumGothic-Regular.eot');
     src: url('./custom-css/fonts/NanumGothic-Regular.eot?#iefix') format('eot'),
     url('./custom-css/fonts/NanumGothic-Regular.woff') format('woff'),
@@ -10,7 +10,7 @@
 }
 
 @font-face {
-    font-family: 'wms-default-font';
+    font-family: 'wms-default';
     src: url('./custom-css/fonts/NanumGothic-Bold.eot');
     src: url('./custom-css/fonts/NanumGothic-Bold.eot?#iefix') format('eot'),
     url('./custom-css/fonts/NanumGothic-Bold.woff') format('woff'),
@@ -23,12 +23,12 @@
 /* This font face inherits and overrides the previous font face, but only for chrome */
 @media screen and (-webkit-min-device-pixel-ratio:0) {
     @font-face {
-        font-family: 'wms-default-font';
+        font-family: 'wms-default';
         font-weight: normal;
         src: url('./custom-css/fonts/NanumGothic-Regular.svg') format('svg');
     }
     @font-face {
-        font-family: 'wms-default-font';
+        font-family: 'wms-default';
         font-weight: 700;
         src: url('./custom-css/fonts/NanumGothic-Bold.svg') format('svg');
     }
@@ -37,7 +37,7 @@
 
 body {
     background: #fcfcfc;
-    font-family: "wms-default-font", Helvetica, Arial, sans-serif;
+    font-family: "wms-default", Helvetica, Arial, sans-serif;
     color: #333;
 }
 
