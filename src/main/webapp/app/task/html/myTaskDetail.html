@@ -77,7 +77,7 @@
                                 </div>
                             </div>
                             <div class="task-project" ng-repeat="project in vm.task.taskProjects" wms-close-btn-display type="project">
-                                {{project.name}}
+                                <span>{{project.name}}</span>
                                 <i class="fa fa-close cursor project-close-btn close-btn" ng-if="vm.task.modifyYn"  ng-click="vm.projectRemoveInTask(project.id)"></i>
                             </div>
                         </div>

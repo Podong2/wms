@@ -63,7 +63,7 @@
                         </div>
                     </div>
                     <div class="task-project" ng-repeat="project in vm.project.projectParents">
-                        {{project.name}}
+                        <span>{{project.name}}</span>
                         <i class="fa fa-close" ng-click="vm.projectRemove(project.id)"></i>
                     </div>
                 </div>

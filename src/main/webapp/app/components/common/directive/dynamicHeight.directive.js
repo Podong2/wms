@@ -12,26 +12,39 @@
 'use strict';
 
 angular.module('wmsApp')
-.directive('dynamicHeight', dynamicHeight)
-.directive('dynamicViewHeight', dynamicViewHeight);
+//.directive('dynamicHeight', dynamicHeight)
+//.directive('dynamicViewHeight', dynamicViewHeight)
+.directive('dynamicSideMenu', dynamicSideMenu);
+    //
+    //function dynamicHeight() {
+    //    return {
+    //        restrict: 'A',
+    //        template: '',
+    //        link: function (scope, tElement, tAttrs) {
+    //            tElement.css("max-height", (window.innerHeight - 250) + "px");
+    //        }
+    //    }
+    //}
+    //
+    //function dynamicViewHeight() {
+    //    return {
+    //        restrict: 'A',
+    //        template: '',
+    //        link: function (scope, tElement, tAttrs) {
+    //            $(window).resize(function () {
+    //                $(".modal-body").css("max-height", (window.innerHeight - 250) + "px");
+    //            }).resize();
+    //        }
+    //    }
+    //}
 
-    function dynamicHeight() {
-        return {
-            restrict: 'A',
-            template: '',
-            link: function (scope, tElement, tAttrs) {
-                tElement.css("max-height", (window.innerHeight - 250) + "px");
-            }
-        }
-    }
-
-    function dynamicViewHeight() {
+    function dynamicSideMenu() {
         return {
             restrict: 'A',
             template: '',
             link: function (scope, tElement, tAttrs) {
                 $(window).resize(function () {
-                    $(".modal-body").css("max-height", (window.innerHeight - 250) + "px");
+                    $(".lnb-scroll").css("max-height", (window.innerHeight - 270) + "px");
                 }).resize();
             }
         }
