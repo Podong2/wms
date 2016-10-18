@@ -5,7 +5,7 @@
                 <div >
                 <!--<div ui-view="taskList"></div>-->
                 <uib-accordion close-others="oneAtATime">
-                    <div style="font-weight: bold; font-size: 16px; background: #fff; padding: 0 10px; word-break: break-all;">
+                    <div style="font-weight: bold; font-size: 16px; background: #fff; padding: 0 10px; word-break: break-all; border-bottom: 1px solid rgb(221, 221, 221);">
                         <a class="pull-right" project-dynamic-height project-info-view-yn="vm.projectInfoViewYn">{{vm.projectInfoViewYn ? '∧' : '∨'}}</a>
                         <a ui-sref="my-project.detail({project:vm.project})"><i class="fa fa-folder-open-o"></i> <span>{{vm.project.name}}</span>
                             <span ng-show="!vm.project.folderYn">
@@ -18,8 +18,8 @@
                         </a>
 
                     </div>
-                    <div style="background: #fff; padding: 0 10px; border-top : 1px solid #ddd" ng-if="vm.projectInfoViewYn">
-                        <div class="row">
+                    <div style="background: #fff; padding: 0 10px;" ng-if="vm.projectInfoViewYn">
+                        <div class="row" style="border-bottom: 1px solid rgb(221, 221, 221);">
                             <div class="col-md-5" style="padding: 0">
                                 <pie-chart data="pieData" options="pieOptions"></pie-chart>
                             </div>
@@ -65,20 +65,15 @@
                             </div>
                         </div>
                     </div>
-                    <div style="font-weight: bold; font-size: 16px; background: #fff; padding: 0 0px; ">
-                        <ul class="nav nav-tabs nav-justified project-menu-area">
-                            <li class="text-center cursor" ng-click="vm.initProjectTaskList()"><span>목록</span></li>
-                            <!--<li class="text-center"><span>차트</span></li>-->
-                            <li class="text-center cursor" ui-sref="my-project-functions.history({projectId : vm.project.id, id : vm.project.id, project : vm.project})"><span>히스토리</span></li>
-                            <!--<li class="text-center"><span>리포트</span></li>-->
-                            <!--<li class="text-center"><span>작업일정</span></li>-->
-                            <!--<li class="text-center"><span>대화방</span></li>-->
-                            <li class="text-center cursor" ui-sref="my-project-functions.file({projectId : vm.project.id, id : vm.project.id, project : vm.project})"><span>파일</span></li>
-                            <!--<li class="text-center"><span><i class="fa fa-ellipsis-v"></i></span></li>-->
+                    <div style="background: #fff;">
+                        <ul class="nav nav-tabs project-menu-area">
+                            <li role="presentation" class="text-center cursor active" style="width:33%"><a ng-click="vm.initProjectTaskList()">목록</a></li>
+                            <li role="presentation" class="text-center cursor" style="width:34%"><a ui-sref="my-project-functions.history({projectId : vm.project.id, id : vm.project.id, project : vm.project})">히스토리</a></li>
+                            <li role="presentation" class="text-center cursor" style="width:33%"><a ui-sref="my-project-functions.file({projectId : vm.project.id, id : vm.project.id, project : vm.project})">파일</a></li>
                         </ul>
                     </div>
 
-                    <div style="clear: both">
+                    <div style="clear: both;margin-top:3px;">
                         <div class="pull-right">
                             <!--<ol class="nya-bs-select " ng-model="vm.orderType" style="width: 90px;">-->
                                 <!--<li nya-bs-option="option in vm.orderTypes" title="{{option.name}}" data-value="option.id">-->
@@ -90,7 +85,7 @@
                             <!--</ol>-->
                             <i class="fa fa-search padding-5 cursor" style="font-size: 19px;" ng-click="vm.taskInputFunction('search')"></i>
                         </div>
-                        <button class="btn btn-default btn-sm btn-radius" ng-click="vm.taskInputFunction('add')">작업 생성+</button>
+                        <button class="btn btn-default btn-radius" ng-click="vm.taskInputFunction('add')">작업 생성+</button>
                         <ol class="nya-bs-select " ng-model="vm.statusId" style="width: 90px;">
                             <li nya-bs-option="option in vm.codes" title="{{option.name}}" data-value="option.id">
                                 <a>

@@ -24,12 +24,18 @@
                     </div>
                 </div>
                 <div class="col-lg-10 col-md-10 col-sm-10 col-xs-10 bhoechie-tab">
-                    <ul class="nav nav-tabs nav-justified my-task-top-menu">
-                        <li class="text-center"><span ng-class="vm.taskType == 'SCHEDULED' ? 'active' : ''" ng-click="vm.taskTypeChange('SCHEDULED')"><i class="fa fa-calendar-plus-o"></i>스케줄 {{vm.task.repeatScheduledTasks.length}}</span></li>
-                        <!--<li class="text-center"><span ng-class="vm.taskType == 'TEMPLATE' ? 'active' : ''"  ng-click="vm.taskTypeChange('TEMPLATE')"><i class="fa fa-calendar-plus-o"></i>템플릿 0</span></li>-->
-                        <li class="text-center"><span ng-class="vm.taskType == 'ASSIGNED' ? 'active' : ''"  ng-click="vm.taskTypeChange('ASSIGNED')"><i class="fa fa-list"></i>담당자 {{vm.task.assignedTasks.length}}</span></li>
-                        <li class="text-center"><span ng-class="vm.taskType == 'CREATED' ? 'active' : ''" ng-click="vm.taskTypeChange('CREATED')"><i class="fa fa-check-square-o"></i>요청한 {{vm.task.createdTasks.length}}</span></li>
-                        <li class="text-center"><span ng-class="vm.taskType == 'WATCHED' ? 'active' : ''" ng-click="vm.taskTypeChange('WATCHED')"><i class="fa fa-eye"></i>공유 {{vm.task.watchedTasks.length}}</span></li>
+                    <ul class="nav nav-tabs ">
+
+                            <li role="presentation" class="text-center cursor" ng-class="vm.taskType == 'SCHEDULED' ? 'active' : ''" style="width:25%"><a ng-click="vm.taskTypeChange('SCHEDULED')"><i class="fa fa-calendar-plus-o"></i>스케줄 {{vm.task.repeatScheduledTasks.length}}</a></li>
+                            <li role="presentation" class="text-center cursor" ng-class="vm.taskType == 'ASSIGNED' ? 'active' : ''" style="width:25%"><a ng-click="vm.taskTypeChange('ASSIGNED')"><i class="fa fa-list"></i>담당자 {{vm.task.assignedTasks.length}}</a></li>
+                            <li role="presentation" class="text-center cursor" ng-class="vm.taskType == 'CREATED' ? 'active' : ''" style="width:25%"><a ng-click="vm.taskTypeChange('CREATED')"><i class="fa fa-check-square-o"></i>요청한 {{vm.task.createdTasks.length}}</a></li>
+                            <li role="presentation" class="text-center cursor" ng-class="vm.taskType == 'WATCHED' ? 'active' : ''" style="width:25%"><a ng-click="vm.taskTypeChange('WATCHED')"><i class="fa fa-eye"></i>공유 {{vm.task.watchedTasks.length}}</a></li>
+
+                        <!--<li class="text-center"><span ng-class="vm.taskType == 'SCHEDULED' ? 'active' : ''" ng-click="vm.taskTypeChange('SCHEDULED')"><i class="fa fa-calendar-plus-o"></i>스케줄 {{vm.task.repeatScheduledTasks.length}}</span></li>-->
+                        <!--&lt;!&ndash;<li class="text-center"><span ng-class="vm.taskType == 'TEMPLATE' ? 'active' : ''"  ng-click="vm.taskTypeChange('TEMPLATE')"><i class="fa fa-calendar-plus-o"></i>템플릿 0</span></li>&ndash;&gt;-->
+                        <!--<li class="text-center"><span ng-class="vm.taskType == 'ASSIGNED' ? 'active' : ''"  ng-click="vm.taskTypeChange('ASSIGNED')"><i class="fa fa-list"></i>담당자 {{vm.task.assignedTasks.length}}</span></li>-->
+                        <!--<li class="text-center"><span ng-class="vm.taskType == 'CREATED' ? 'active' : ''" ng-click="vm.taskTypeChange('CREATED')"><i class="fa fa-check-square-o"></i>요청한 {{vm.task.createdTasks.length}}</span></li>-->
+                        <!--<li class="text-center"><span ng-class="vm.taskType == 'WATCHED' ? 'active' : ''" ng-click="vm.taskTypeChange('WATCHED')"><i class="fa fa-eye"></i>공유 {{vm.task.watchedTasks.length}}</span></li>-->
                     </ul>
                     <!-- flight section -->
                     <div class="bhoechie-tab-content active">

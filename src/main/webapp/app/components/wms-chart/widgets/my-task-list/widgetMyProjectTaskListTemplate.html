@@ -14,10 +14,13 @@
                         </div>
                     </div>
                     <div class="col-md-8" style="padding-left: 0">
-                        <ul class="nav nav-tabs nav-justified my-task-top-menu">
-                            <li class="text-center"><span ng-class="vm.taskType == 'ASSIGNED' ? 'active' : ''"  ng-click="vm.taskTypeChange('ASSIGNED')"><i class="fa fa-list"></i>담당자 {{vm.task.assignedTasks.length}}</span></li>
-                            <li class="text-center"><span ng-class="vm.taskType == 'CREATED' ? 'active' : ''" ng-click="vm.taskTypeChange('CREATED')"><i class="fa fa-check-square-o"></i>요청한 {{vm.task.createdTasks.length}}</span></li>
-                            <li class="text-center"><span ng-class="vm.taskType == 'WATCHED' ? 'active' : ''" ng-click="vm.taskTypeChange('WATCHED')"><i class="fa fa-eye"></i>공유 {{vm.task.watchedTasks.length}}</span></li>
+                        <ul class="nav nav-tabs ">
+                            <li role="presentation" class="text-center cursor" ng-class="vm.taskType == 'ASSIGNED' ? 'active' : ''" style="width:33%"><a ng-click="vm.taskTypeChange('ASSIGNED')"><i class="fa fa-list"></i>담당자 {{vm.task.assignedTasks.length}}</a></li>
+                            <li role="presentation" class="text-center cursor" ng-class="vm.taskType == 'CREATED' ? 'active' : ''" style="width:34%"><a ng-click="vm.taskTypeChange('CREATED')"><i class="fa fa-check-square-o"></i>요청한 {{vm.task.createdTasks.length}}</a></li>
+                            <li role="presentation" class="text-center cursor" ng-class="vm.taskType == 'WATCHED' ? 'active' : ''" style="width:33%"><a ng-click="vm.taskTypeChange('WATCHED')"><i class="fa fa-eye"></i>공유 {{vm.task.watchedTasks.length}}</a></li>
+                            <!--<li class="text-center"><span ng-class="vm.taskType == 'ASSIGNED' ? 'active' : ''"  ng-click="vm.taskTypeChange('ASSIGNED')"><i class="fa fa-list"></i>담당자 {{vm.task.assignedTasks.length}}</span></li>-->
+                            <!--<li class="text-center"><span ng-class="vm.taskType == 'CREATED' ? 'active' : ''" ng-click="vm.taskTypeChange('CREATED')"><i class="fa fa-check-square-o"></i>요청한 {{vm.task.createdTasks.length}}</span></li>-->
+                            <!--<li class="text-center"><span ng-class="vm.taskType == 'WATCHED' ? 'active' : ''" ng-click="vm.taskTypeChange('WATCHED')"><i class="fa fa-eye"></i>공유 {{vm.task.watchedTasks.length}}</span></li>-->
                         </ul>
                     </div>
                 </div>
