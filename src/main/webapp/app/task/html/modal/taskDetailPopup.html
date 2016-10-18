@@ -64,10 +64,10 @@
                                                                     <div class="project-picker-list-item-title">{{project.name}}</div>
                                                                     <div class="project-picker-list-item-path" >
                                                                         <div>
-                                                                        <span ng-repeat="projectParent in project.projectParents track by $index">
-                                                                            <span ng-if="$index != 0">, </span>
-                                                                            [{{projectParent.name}}]
-                                                                        </span>
+                                                                            <span ng-repeat="projectParent in project.projectParents track by $index">
+                                                                                <span ng-if="$index != 0">, </span>
+                                                                                [{{projectParent.name}}]
+                                                                            </span>
                                                                         </div>
                                                                     </div>
                                                                 </div>
@@ -80,7 +80,7 @@
                                     </div>
                                 </div>
                                 <div class="task-project" ng-repeat="project in vm.task.taskProjects">
-                                    {{project.name}}
+                                    <span>{{project.name}}</span>
                                     <i class="fa fa-close cursor" ng-click="vm.projectRemoveInTask(project.id)"></i>
                                 </div>
                             </div>

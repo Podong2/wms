@@ -347,7 +347,7 @@
 
         /* 프로젝트 업로드 */
         vm.contentUploadFiles=[];
-        function projectUpload(){
+        function projectUpload(type){
             //  에디터에서 실제 서버에 올라가는 시점에 사용된 이미지 정보. 이 정보로 이슈와 파일첨부에서 연결시킨다.
             $("#issueEdit").find("img").each(function () {
                 var path = $(this).attr("src");
@@ -360,6 +360,10 @@
                     }
                 }
             });
+
+            if(type){
+                vm.projectReload = true;
+            }
 
             if(vm.project.projectAdmins != [])userIdPush(vm.project.projectAdmins, "projectAdminIds");
             if(vm.project.projectWatchers != [])userIdPush(vm.project.projectWatchers, "projectWatcherIds");

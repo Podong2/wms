@@ -759,6 +759,13 @@ Social Buttons
         width: auto;
 
     }
+    .project-list-title-length{
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+    }
     /* side nav Toggle Styles  END */
 }
 @media screen and (min-width: 768px) and (max-width: 991px) {
@@ -795,6 +802,13 @@ Social Buttons
     .detail-info-area .header{
         border-bottom: 1px solid #ddd;
     }
+    .project-list-title-length{
+        max-width: 150px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+    }
 }
 @media screen and (min-width: 992px) and (max-width: 1366px) {
     .slideBtnArea {
@@ -809,6 +823,13 @@ Social Buttons
         white-space: nowrap;
         width: 2020px !important;
     }
+    .project-list-title-length{
+        max-width: 180px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+    }
 }
 @media (min-width: 1250px) {
     .slideBtnArea {
@@ -822,6 +843,22 @@ Social Buttons
     .slideMenu ul{
         white-space: nowrap;
         width: 2020px;
+    }
+    .project-list-title-length{
+        max-width: 200px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
+    }
+}
+@media (min-width: 1367px) {
+    .project-list-title-length{
+        max-width: 300px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        display: inline-block;
     }
 }
 
@@ -3419,12 +3456,13 @@ text-align: right;
 body.wms-body.modal-open {
     padding: 0 !important
 }
-.project-list-title-length{
-    max-width: 280px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
+/*.project-list-title-length{*/
+    /*max-width: 200px;*/
+    /*overflow: hidden;*/
+    /*text-overflow: ellipsis;*/
+    /*white-space: nowrap;*/
+    /*display: inline-block;*/
+/*}*/
 .project-history-btn-area{
     padding-left: 95px;
     margin-bottom: 10px;
@@ -3445,7 +3483,24 @@ body.wms-body.modal-open {
 h1, h2, h3, h4, h5, h6 {
     font-family: "wms-default", Helvetica, Arial, sans-serif !important;
 }
-
+.project-info-count-area {
+    background-color: #f9f9f9;
+}
+.project-info-count-area ul{
+    list-style: none; padding-left: 0;
+}
+.project-info-count-area ul li{
+    padding: 14px 0 0;
+}
+.project-info-count-area .project-info-count{
+    background: #fff; border-radius: 50%; border: 1px solid #c8def4; height: 50px; width: 50px; padding-top: 15px;
+}
+.project-info-count-area .project-info-count-column{
+    line-height: 50px; padding-left: 0;
+}
+.project-info-count-area .project-info-count div{
+    width: 100%; text-align: center;
+}
 
 
 

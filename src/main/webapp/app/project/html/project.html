@@ -18,7 +18,7 @@
                         </a>
 
                     </div>
-                    <div style="background: #fff; padding: 0 10px; border-top : 1px solid #aaa" ng-if="vm.projectInfoViewYn">
+                    <div style="background: #fff; padding: 0 10px; border-top : 1px solid #ddd" ng-if="vm.projectInfoViewYn">
                         <div class="row">
                             <div class="col-md-5" style="padding: 0">
                                 <pie-chart data="pieData" options="pieOptions"></pie-chart>
@@ -30,13 +30,34 @@
                                     <li><a class="cursor" ng-click="vm.getTaskListInProjectFilter('DELAYED')">지연된 작업</a></li>
                                 </ul>
                             </div>
-                            <div class="col-md-4" style="padding: 70px 0 0;">
-                                {{vm.projectTeam.length}} 맴버
+                            <div class="col-md-4 project-info-count-area">
+                                <ul>
+                                    <li class="row">
+                                        <div class="col-md-6">
+                                            <div class="project-info-count"><div>{{vm.projectTeam.length}}</div></div>
+                                        </div>
+                                        <div class="col-md-6 project-info-count-column">
+                                            맴버
+                                        </div>
+                                    </li>
+                                    <li class="row">
+                                        <div class="col-md-6">
+                                            <div class="project-info-count"><div>{{vm.dDay}}d</div></div>
+                                        </div>
+                                        <div class="col-md-6 project-info-count-column">
+                                            남은기간
+                                        </div>
+                                    </li>
+                                    <li class="row">
+                                        <div class="col-md-6">
+                                            <div class="project-info-count"><div>{{vm.coumplatePercent.width}}</div></div>
+                                        </div>
+                                        <div class="col-md-6 project-info-count-column">
+                                            완료율
+                                        </div>
+                                    </li>
+                                </ul>
 
-                                <br/>
-                                {{vm.dDay}}d  남은기간
-                                <br/>
-                                {{vm.coumplatePercent.width}} 완료율
                                 <!--<div class="progress progress-sm">-->
                                     <!--<div class="progress-bar bg-color-greenLight" role="progressbar" ng-style="vm.coumplatePercent">{{vm.info.completeCount}}/{{vm.tasks.length}}</div>-->
 
