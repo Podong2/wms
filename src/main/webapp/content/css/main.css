@@ -2504,7 +2504,7 @@ td.red{border-left: 5px solid #777 !important;}
 
 /* notification */
 .notification-menu{
-    margin-top: 34px;
+    /*margin-top: 34px;*/
     font-size: 16px;
     margin-right: 5px;
 }
@@ -2518,7 +2518,7 @@ td.red{border-left: 5px solid #777 !important;}
     color:#aaa;
 }
 .notification-title{
-    padding: 5px;
+    margin: 10px;
 }
 .notification-list.active{
     background-color: #FFE6E6 !important;
