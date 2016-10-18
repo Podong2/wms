@@ -962,7 +962,6 @@ li.active > a{
 .nav-tabs {
     border-bottom: 5px solid #E1BD82;
     color: #8693a0;
-    font: bold 13px "맑은 고딕", NanumGothic, "나눔고딕", "Apple SD Gothic Neo";
 }
 
 .nav-tabs > li {
@@ -3394,7 +3393,9 @@ body.wms-body.modal-open {
     white-space: nowrap;
 }
 
-
+h1, h2, h3, h4, h5, h6 {
+    font-family: "wms-default", Helvetica, Arial, sans-serif !important;
+}
 
 
 
