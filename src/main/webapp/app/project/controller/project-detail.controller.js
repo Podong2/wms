@@ -81,6 +81,8 @@
             console.log('Key = ' + key);
         });
 
+        $log.debug("$stateParams.fileListType : ", $stateParams.fileListType)
+
         vm.date = '';
         vm.assigneeUsers = [];
         vm.logArrayData = [];
@@ -91,12 +93,13 @@
         vm.responseData = [];
         vm.previewFiles = []; // 파일 테이블 목록
         vm.previewFileUrl = []; // 파일 url 목록
+        vm.fileListType = $stateParams.fileListType == 'list' ? $stateParams.fileListType : 'image'; // 파일 첨부영역 타입 : image, list (파일 다중 삭제 시 리로드 후 보여질 파일 첨부영역)
+        $log.debug("로딩 후 파일 목록 타입 : ", vm.fileListType)
         vm.project = getProject();
         vm.fileListYn = false;
         vm.watcherName = '';
         vm.DuplicationWatcherIds = [];
         vm.recentYn = true; // 히스토리 전체보기 유무
-
         /* member관련 파라미터 */
         vm.DuplicationMemberIds = [];
         vm.memberSearchYn = false;
@@ -210,6 +213,13 @@
                 projectIds.push(value.id);
             });
             excludeIds = projectIds.join(",");
+
+            // 파일 목록에서 삭제 시 리로드 후 파일 목록을 화면에 노출
+            if(vm.fileListType == 'list') {
+                vm.fileListYn = true;
+                $rootScope.$broadcast('fileAreaClose');
+            }
+
             ProjectFind.query({name : '', excludeIds : excludeIds}, onProjectSuccess, onProjectError);
         }
         function FindProjectList(){
@@ -218,6 +228,12 @@
         }
         function onProjectSuccess (result) {
             vm.projectList = result;
+
+            // 파일 목록에서 삭제 시 리로드 후 파일 목록을 화면에 노출
+            if(vm.fileListType == 'list') {
+                vm.fileListYn = true;
+                $rootScope.$broadcast('fileAreaClose');
+            }
         }
         function onProjectError (result) {
             toastr.error('프로젝트 목록 불러오기 실패', '프로젝트 목록 불러오기 실패');
@@ -371,6 +387,7 @@
             if(vm.contentUploadFiles != [])userIdPush(vm.contentUploadFiles, "contentUploadFiles"); // 프로젝트
 
             $log.debug("vm.project update ;::::::", vm.project);
+            $log.debug("vm.fileListType ;::::::", vm.fileListType);
             ProjectEdit.uploadProject({
                 method : "POST",
                 file : vm.files,
@@ -396,7 +413,7 @@
 
                 if(vm.uploadType == '' || vm.uploadType == undefined) {
                     vm.project = [];
-                    $state.go("my-project.detail", {}, {reload : true});
+                    $state.go("my-project.detail", {fileListType : vm.fileListType}, {reload : true});
                 }
                 else {
                     projectDetailReload();
@@ -834,6 +851,7 @@
             $scope.checkedData = getCheckedData();
             vm.project.removeTargetFiles = $scope.checkedData.join(",");
             $log.debug("파일 삭제 id 목록 : ", vm.project.removeTargetFiles);
+            vm.fileListType = 'list';
             projectUpload();
         }
 

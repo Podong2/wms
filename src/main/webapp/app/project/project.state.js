@@ -58,7 +58,8 @@
                 title : '작업 상세'
             },
             params: { // project DTO 데이타 전달
-                project: {}
+                project: {},
+                fileListType : ''
             },
             views: {//
                 'projectDetail': {//

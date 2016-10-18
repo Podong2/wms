@@ -132,6 +132,7 @@
         vm.watcherName = '';
         vm.relatedTaskName = '';
         vm.fileListYn = false;
+        vm.fileListType = $stateParams.fileListType == 'list' ? $stateParams.fileListType : 'image'; // 파일 첨부영역 타입 : image, list (파일 다중 삭제 시 리로드 후 보여질 파일 첨부영역)
         vm.uploadType = ''; // 상세 업로드 타입 (참조자, 참조작업 시 리로드 안함)
         // 하위 작업 업데이트 파라미터
         vm.subTaskUpdateForm = {
@@ -262,6 +263,12 @@
                 $scope.checkedTask.push(value);
                 $scope.checkedTaskIds.push(value.id);
             })
+
+            // 파일 목록에서 삭제 시 리로드 후 파일 목록을 화면에 노출
+            if(vm.fileListType == 'list') {
+                vm.fileListYn = true;
+                $rootScope.$broadcast('fileAreaClose');
+            }
         });
 
         vm.responseDataCheck = _.clone(vm.task);
@@ -840,7 +847,7 @@
                 toastr.success('태스크 수정 완료', '태스크 수정 완료');
                 $rootScope.$broadcast('projectEditClose');
                 //$rootScope.$broadcast('relatedTaskPopupClose');
-                $log.debug("response.data : ", response.data)
+                $log.debug("response.data : ", response.data);
                 if($stateParams.parentType != undefined && $stateParams.parentType == 'project') $rootScope.$broadcast('projectReload', response.data);
                 else  $rootScope.$broadcast('taskReload', response.data);
                 vm.task.removeAssigneeIds = "";
@@ -855,7 +862,7 @@
                 $scope.files = [];
                 if(vm.uploadType == '') {
                     if($stateParams.parentType != undefined && $stateParams.parentType == 'project') $state.go("my-project.taskDetail", {}, {reload : 'my-project.taskDetail'});
-                    else $state.go("my-task.detail", {}, {reload : 'my-task.detail'});
+                    else $state.go("my-task.detail", {fileListType : vm.fileListType}, {reload : 'my-task.detail'});
                 }
                 else {
                     getTaskInfo();
@@ -1400,6 +1407,7 @@
             $scope.checkedData = getCheckedData();
             vm.task.removeTargetFiles = $scope.checkedData.join(",");
             $log.debug("파일 삭제 id 목록 : ", vm.task.removeTargetFiles);
+            vm.fileListType = 'list';
             taskUpload();
         }
         function downloadFiles(){
@@ -1410,8 +1418,6 @@
                 iframe.remove();
             }).attr("src", "/api/attachedFile?targetIds=" + vm.task.downloadFiles + "&name=task");
         }
-
-
 
         vm.tableConfigs = [];
         vm.tableConfigs.push(tableService.getConfig("", "checked")
@@ -1454,6 +1460,7 @@
         function cancel () {
             $scope.$close(true);
         }
+
     }
 
 })();

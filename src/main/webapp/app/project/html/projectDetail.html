@@ -385,7 +385,7 @@
                     <li>파일 ({{vm.previewFiles.length}})</li>
                     <li ng-if="vm.fileListYn" ng-click="vm.downloadFiles()"><i class="fa fa-download"></i></li>
                     <li ng-if="vm.project.adminYn"><label for="input-4" class="cursor"><i class='fa fa-paperclip'></i></label></li>
-                    <li><i class="fa fa-list" ng-click="vm.fileListYn = !vm.fileListYn" file-list-yn></i></li>
+                    <li><label class="cursor" ng-click="vm.fileListYn = !vm.fileListYn" file-list-yn><i class="fa fa-list" ng-if="!vm.fileListYn" uib-tooltip="목록 보기"></i><i class="fa fa-picture-o" ng-if="vm.fileListYn" uib-tooltip="썸네일 보기"></i></label></li>
                     <li ng-if="vm.fileListYn && vm.project.adminYn" ng-click="vm.filesRemove()"><i class="fa fa-trash"></i></li>
                     <li></li>
                     <li></li>

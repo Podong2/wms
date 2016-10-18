@@ -23,8 +23,11 @@ function fileListYn($timeout, $rootScope) {
             //    $('.projectAddSection').removeClass("on");
             //    $('.projectAddValueSection').removeClass("on");
             //});
+            $rootScope.$on('fileAreaClose', function(){
+                $(".file-input").addClass('on')
+            });
             element.on('click', function(_this) {
-                    $(".file-input").toggleClass('on')
+                $(".file-input").toggleClass('on')
             });
         }
     }
