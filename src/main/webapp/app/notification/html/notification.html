@@ -12,12 +12,14 @@
             <bg-pane min-size="400">
                 <!--<div ui-view="taskList"></div>-->
                     <div class="pull-right notification-menu">
-                        <a class="text-center cursor" ng-class="vm.tabArea[0].status == true ? 'active' : ''" ng-click="vm.getList(0)"><span>새로운 알림</span></a>
-                        <a class="text-center cursor" ng-class="vm.tabArea[1].status == true ? 'active' : ''" ng-click="vm.getReadList(1)"><span>확인한 알림</span></a>
+                        <ul class="nav nav-tabs pull-left" role="tablist">
+                            <li role="presentation" class="text-center cursor" ng-class="vm.tabArea[0].status == true ? 'active' : ''" style="width:50%"><a ng-click="vm.getList(0)">새로운 알림</a></li>
+                            <li role="presentation" class="text-center cursor" ng-class="vm.tabArea[1].status == true ? 'active' : ''" style="width:50%"><a ng-click="vm.getReadList(1)">확인한 알림</a></li>
+                        </ul>
                         <span><i class="fa fa-cog"></i></span>
                     </div>
                     <div class="notification-title">
-                        <h3>
+                        <h3 style="margin:0px;">
                             <strong>알림</strong>
                         </h3>
                     </div>
