@@ -8964,9 +8964,9 @@ input[type=color].ui-autocomplete-loading, input[type=date].ui-autocomplete-load
 }
 
 .nav-tabs > li.active > a {
-    -webkit-box-shadow: 0 -2px 0 #57889c;
-    -moz-box-shadow: 0 -2px 0 #57889c;
-    box-shadow: 0 -2px 0 #57889c;
+    /*-webkit-box-shadow: 0 -2px 0 #57889c;*/
+    /*-moz-box-shadow: 0 -2px 0 #57889c;*/
+    /*box-shadow: 0 -2px 0 #57889c;*/
     border-top-width: 0 !important;
     margin-top: 1px !important;
     font-weight: 700

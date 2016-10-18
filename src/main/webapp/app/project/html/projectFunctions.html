@@ -1,13 +1,8 @@
 <div class="well layout-scroll" style="background-color: #fff; height: 100%;">
-    <ul class="nav nav-tabs nav-justified project-menu-area">
-        <li class="text-center" data-ui-sref="my-project({id:vm.projectId})"><span>목록</span></li>
-        <!--<li class="text-center"><span>차트</span></li>-->
-        <li class="text-center" data-ui-sref="my-project-functions.history({projectId : vm.projectId, id : vm.projectId, project : vm.project})" ng-class="vm.state.name == 'my-project-functions.history' ? 'active' : ''" ng-click="vm.getStateName()"><span>히스토리</span></li>
-        <!--<li class="text-center"><span>리포트</span></li>-->
-        <!--<li class="text-center"><span>작업일정</span></li>-->
-        <!--<li class="text-center"><span>대화방</span></li>-->
-        <li class="text-center" data-ui-sref="my-project-functions.file({projectId : vm.projectId, id : vm.projectId, project : vm.project})" ng-class="vm.state.name == 'my-project-functions.file' ? 'active' : ''" ng-click="vm.getStateName()"><span>파일</span></li>
-        <!--<li class="text-center"><span><i class="fa fa-ellipsis-v"></i></span></li>-->
+    <ul class="nav nav-tabs project-menu-area">
+        <li role="presentation" class="text-center cursor" style="width:33%"><a  data-ui-sref="my-project({id:vm.projectId})">목록</a></li>
+        <li role="presentation" class="text-center cursor" ng-class="vm.state.name == 'my-project-functions.history' ? 'active' : ''" ng-click="vm.getStateName()" style="width:34%"><a data-ui-sref="my-project-functions.history({projectId : vm.projectId, id : vm.projectId, project : vm.project})">히스토리</a></li>
+        <li role="presentation" class="text-center cursor" ng-class="vm.state.name == 'my-project-functions.file' ? 'active' : ''" ng-click="vm.getStateName()" style="width:33%"><a data-ui-sref="my-project-functions.file({projectId : vm.projectId, id : vm.projectId, project : vm.project})">파일</a></li>
     </ul>
 
     <div class="layout-scroll project-function-content" ui-view="functionView" dynamic-content-scroll area-type="project-function">

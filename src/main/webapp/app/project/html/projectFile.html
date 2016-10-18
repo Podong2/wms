@@ -1,7 +1,10 @@
 <div class="" style="background-color: #fff;">
-    <ul class="nav nav-tabs nav-justified project-menu-area">
-        <li class="text-center" ng-class="vm.tabArea[0].status == true ? 'active' : ''" ng-click="vm.tabDisplay(0)"><span>이미지</span></li>
-        <li class="text-center" ng-class="vm.tabArea[1].status == true ? 'active' : ''" ng-click="vm.tabDisplay(1)"><span>파일</span></li>
+    <ul class="nav nav-tabs project-menu-area">
+        <!--<li class="text-center" ng-class="vm.tabArea[0].status == true ? 'active' : ''" ng-click="vm.tabDisplay(0)"><span>이미지</span></li>-->
+        <!--<li class="text-center" ng-class="vm.tabArea[1].status == true ? 'active' : ''" ng-click="vm.tabDisplay(1)"><span>파일</span></li>-->
+
+        <li role="presentation" ng-class="vm.tabArea[0].status == true ? 'active' : ''" class="text-center cursor" style="width:50%"><a ng-click="vm.tabDisplay(0)">이미지</a></li>
+        <li role="presentation" ng-class="vm.tabArea[1].status == true ? 'active' : ''" class="text-center cursor" style="width:50%"><a ng-click="vm.tabDisplay(1)">파일</a></li>
     </ul>
     <!-- 이미지 탭 -->
     <div ng-show="vm.tabArea[0].status">
