@@ -188,11 +188,12 @@
                     <i class="fa fa-lg fa-fw fa-th-large"></i> <span class="menu-item-parent" translate="프로젝트"></span>
                 </a>
             </li>
+        </ul>
+
+        <ul data-wms-Menu  data-ng-controller="projectCtrl as vm" class="lnb-scroll" dynamic-side-menu>
 
             <!-- 프로젝트 목록 -->
-
             <li data-menu-collapse ng-repeat="list in vm.projectList track by $index">
-
                 <a data-ui-sref="my-project({id:list.id})">
                     <i style="background: #9fda58; width: 25px; height: 10px"></i>
                     <span class="menu-item-parent side-menu-title-length" data-ui-sref="my-project({id:list.id})">{{list.name}}</span>
@@ -205,9 +206,7 @@
                         <!--</a>-->
                     </li>
                 </ul>
-
             </li>
-
 
             <!-- 관리자 -->
             <li data-menu-collapse>

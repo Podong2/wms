@@ -50,8 +50,8 @@
                                     <div class="task-list-item-header">
                                         <div class="pull-right">
                                             <div>
-                                                <i class="fa fa-hourglass-end" style="padding: 6px; color:red;" ng-if="data.delayYn"></i>
-                                                <i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="padding: 8px;"></i>
+                                                <i class="fa fa-hourglass-end" style="padding: 2px; color:red;" ng-if="data.delayYn"></i>
+                                                <i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="padding: 2px;"></i>
                                                 <span ng-class="data.delayYn ? 'delay-color' : ''">{{data.endDate | date : 'MM-dd'}}</span>
                                             </div>
                                         </div>

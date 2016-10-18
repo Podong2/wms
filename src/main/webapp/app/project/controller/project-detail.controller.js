@@ -515,15 +515,17 @@
         function getTraceLog(projectId, recentYn) {
             vm.commentList=[];
             vm.recentYn = recentYn;
-            TaskListSearch.TaskAudigLog({'entityId' : projectId, 'entityName' : 'Project', recentYn : vm.recentYn}).then(function(result){
-                vm.TaskAuditLog = result;
-                vm.commentList=[];
-                angular.forEach(vm.TaskAuditLog.data, function(val){
-                    if(val.entityField == 'reply'){
-                        vm.commentList.push(val);
-                    }
+            if(projectId != '' && projectId != undefined && projectId != null){
+                TaskListSearch.TaskAudigLog({'entityId' : projectId, 'entityName' : 'Project', recentYn : vm.recentYn}).then(function(result){
+                    vm.TaskAuditLog = result;
+                    vm.commentList=[];
+                    angular.forEach(vm.TaskAuditLog.data, function(val){
+                        if(val.entityField == 'reply'){
+                            vm.commentList.push(val);
+                        }
+                    });
                 });
-            });
+            }
         }
 
         // 코멘트 멘션 유저 아이디 주입
