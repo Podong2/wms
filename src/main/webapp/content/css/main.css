@@ -1473,6 +1473,12 @@ wms-select-box .dropdown-menu > .active > a{
 .width-352-p {
     width: 352px;
 }
+.width-400-p {
+    width: 400px;
+}
+.width-500-p {
+    width: 500px;
+}
 
 .cursor {
     cursor: pointer;

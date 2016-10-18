@@ -894,7 +894,7 @@
                 previewFile.caption = value.name;
                 previewFile.locationType = 'Task';
                 previewFile.locationId = vm.task.id;
-                previewFile.size = value.size;
+                previewFile.size = byteCalculation(value.size);
                 previewFile.url = window.location.origin + "/api/attachedFile/" + value.id;
                 previewFile.id = value.id;
                 var fileInfo = _.clone(previewFile);
@@ -1235,7 +1235,7 @@
 
             if(e == "-Infinity") return "0 "+s[0];
             else
-                return (bytes/Math.pow(1024, Math.floor(e))).toFixed(2)+" "+s[e];
+                return (bytes/Math.pow(1024, Math.floor(e))).toFixed(0)+" "+s[e];
         }
 
         // 하위 작업 날짜 폼 입력 및 하위 작업 정보 주입
@@ -1426,11 +1426,11 @@
             .setHAlign("text-center")
             .setDType("check"));
         vm.tableConfigs.push(tableService.getConfig("파일명", "caption")
-            .setHWidth("width-300-p")
+            .setHWidth("*")
             .setDAlign("text-left")
             .setDColor('field1_color'));
-        vm.tableConfigs.push(tableService.getConfig("파일 크기", "size")
-            .setHWidth("width-100-p")
+        vm.tableConfigs.push(tableService.getConfig("파일크기", "size")
+            .setHWidth("width-80-p")
             .setDAlign("text-center"));
         vm.tableConfigs.push(tableService.getConfig("다운로드", "")
             .setHWidth("width-80-p")
@@ -1439,7 +1439,7 @@
             .setDRenderer("file_download"));
         if(vm.task.modifyYn){ // 수정권한 체크
             vm.tableConfigs.push(tableService.getConfig("삭제", "")
-                .setHWidth("width-80-p")
+                .setHWidth("width-60-p")
                 .setDAlign("text-center")
                 .setDType("renderer")
                 .setDRenderer("file_remove"));
