@@ -1,6 +1,43 @@
+@font-face {
+    font-family: 'wms-default';
+    src: url('./custom-css/fonts/NanumGothic-Regular.eot');
+    src: url('./custom-css/fonts/NanumGothic-Regular.eot?#iefix') format('eot'),
+    url('./custom-css/fonts/NanumGothic-Regular.woff') format('woff'),
+    url('./custom-css/fonts/NanumGothic-Regular.ttf') format('truetype'),
+    url('./custom-css/fonts/NanumGothic-Regular.svg') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'wms-default';
+    src: url('./custom-css/fonts/NanumGothic-Bold.eot');
+    src: url('./custom-css/fonts/NanumGothic-Bold.eot?#iefix') format('eot'),
+    url('./custom-css/fonts/NanumGothic-Bold.woff') format('woff'),
+    url('./custom-css/fonts/NanumGothic-Bold.ttf') format('truetype'),
+    url('./custom-css/fonts/NanumGothic-Bold.svg') format('svg');
+    font-weight: 700;
+    font-style: normal;
+}
+
+/* This font face inherits and overrides the previous font face, but only for chrome */
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+    @font-face {
+        font-family: 'wms-default';
+        font-weight: normal;
+        src: url('./custom-css/fonts/NanumGothic-Regular.svg') format('svg');
+    }
+    @font-face {
+        font-family: 'wms-default';
+        font-weight: 700;
+        src: url('./custom-css/fonts/NanumGothic-Bold.svg') format('svg');
+    }
+}
+
+
 body {
     background: #fcfcfc;
-    font-family: "나눔고딕", Helvetica, Arial, sans-serif;
+    font-family: "wms-default", Helvetica, Arial, sans-serif;
     color: #333;
 }
 
@@ -954,7 +991,6 @@ li.active > a{
 .nav-tabs {
     border-bottom: 5px solid #E1BD82;
     color: #8693a0;
-    font: bold 13px "맑은 고딕", NanumGothic, "나눔고딕", "Apple SD Gothic Neo";
 }
 
 .nav-tabs > li {
@@ -3406,7 +3442,9 @@ body.wms-body.modal-open {
     white-space: nowrap;
 }
 
-
+h1, h2, h3, h4, h5, h6 {
+    font-family: "wms-default", Helvetica, Arial, sans-serif !important;
+}
 
 
 
