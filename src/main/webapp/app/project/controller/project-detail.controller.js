@@ -157,8 +157,6 @@
 
         vm.project.modifyYn = true;// 임시
 
-
-
         vm.responseProjectData = _.clone(vm.project);
         $log.debug("vm.project  : ", vm.project );
 
@@ -685,8 +683,8 @@
         }
 
         // 참조자 명 실시간 검색
-        $scope.$watchCollection('vm.watcherName', function(newValue){
-            if(newValue != '' && newValue != undefined){
+        $scope.$watchCollection('vm.watcherName', function(newValue, oldValue){
+            if(newValue != '' && newValue != undefined && newValue != oldValue){
                 $log.debug("vm.watcherName : ", newValue);
                 vm.watcherName = newValue;
                 if(vm.watcherName != '') $scope.pickerFindWatcher(vm.watcherName);

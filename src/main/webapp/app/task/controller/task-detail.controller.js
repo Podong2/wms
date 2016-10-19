@@ -648,11 +648,15 @@
             $scope.pickerFindUsers(newValue);
         });
         // 참조자 명 실시간 검색
-        $scope.$watchCollection('vm.watcherName', function(newValue){
-            if(newValue != '' && newValue != undefined){
-                $log.debug("vm.watcherName : ", newValue);
-                $scope.watcherName = newValue;
-                $scope.pickerFindWatcher(newValue);
+        var watcherName = '';
+        $scope.$watchCollection('vm.watcherName', function(newValue, oldValue){
+            if(newValue != '' && newValue != undefined && newValue != oldValue){
+                if(watcherName != newValue){
+                    watcherName = newValue;
+                    $log.debug("vm.watcherName : ", newValue);
+                    $scope.watcherName = newValue;
+                    $scope.pickerFindWatcher(newValue);
+                }
             }
         });
         // 참조작업 실시간 검색
@@ -759,12 +763,19 @@
             }); //user search
         };
         /* watcher picker */
-        $scope.pickerFindWatcher = function(name) {
+        $scope.pickerFindWatcher = function(name, removeId) {
 
             var userIds = [];
             angular.forEach(vm.task.watchers, function(val){
                 userIds.push(val.id);
             });
+
+            if(removeId != undefined && removeId != null){
+                var index = userIds.indexOf(removeId);
+                if(index > -1){
+                    userIds.splice(index, 1);
+                }
+            }
 
             var excludeUserIds = userIds.join(",");
             vm.DuplicationWatcherIds = excludeUserIds;
@@ -1278,7 +1289,7 @@
             //$rootScope.$broadcast('watcherPopupClose');
             vm.uploadType = 'watcher';
             vm.task.removeWatcherIds = watcher.id;
-            if(vm.watcherName != '') $scope.pickerFindWatcher(vm.watcherName);
+            if(vm.watcherName != '') $scope.pickerFindWatcher(vm.watcherName, watcher.id);
             taskUpload();
         }
 
