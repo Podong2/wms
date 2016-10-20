@@ -51,7 +51,7 @@
                     <!-- ASSIGNED search -->
                     <div class="bhoechie-tab-content" ng-show=" vm.taskType == 'ASSIGNED'">
                         <div ng-repeat="data in vm.task.assignedTasks" class="task-repeat" ui-sref="my-task.detail({id : data.id, listType : vm.listType})" task-active>
-                            <div class="wms-tree-node-list task-list clear-both cursor-important" style="padding:6px;" ng-class="data.statusId == 1 ? 'blue' : (data.statusId == 2 ? 'green' : (data.statusId == 3 ? 'black' : 'red'))"
+                            <div class="wms-tree-node-list task-list clear-both cursor-important" style="padding:6px;border-right:0px; border-left:0px;" ng-class="data.statusId == 1 ? 'blue' : (data.statusId == 2 ? 'green' : (data.statusId == 3 ? 'black' : 'red'))"
                                  ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
 
                                 <div class="task-list-item-header">
@@ -113,7 +113,7 @@
                     <div class="bhoechie-tab-content" ng-show=" vm.taskType == 'CREATED'">
 
                         <div ng-repeat="data in vm.task.createdTasks" class="task-repeat" ui-sref="my-task.detail({id : data.id, listType : vm.listType})" task-active>
-                            <div class="wms-tree-node-list task-list clear-both cursor-important" style="padding:6px;" ng-class="data.statusId == 1 ? 'blue' : (data.statusId == 2 ? 'green' : (data.statusId == 3 ? 'black' : 'red'))"
+                            <div class="wms-tree-node-list task-list clear-both cursor-important" style="padding:6px; border-right:0px; border-left:0px;" ng-class="data.statusId == 1 ? 'blue' : (data.statusId == 2 ? 'green' : (data.statusId == 3 ? 'black' : 'red'))"
                                  ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
 
                                 <div class="task-list-item-header">
@@ -174,7 +174,7 @@
                     <!-- WATCHED -->
                     <div class="bhoechie-tab-content" ng-show=" vm.taskType == 'WATCHED'">
                         <div ng-repeat="data in vm.task.watchedTasks" class="task-repeat" ui-sref="my-task.detail({id : data.id, listType : vm.listType})" task-active>
-                            <div class="wms-tree-node-list task-list clear-both cursor-important" style="padding:6px;" ng-class="data.statusId == 1 ? 'blue' : (data.statusId == 2 ? 'green' : (data.statusId == 3 ? 'black' : 'red'))"
+                            <div class="wms-tree-node-list task-list clear-both cursor-important" style="padding:6px; border-right:0px; border-left:0px;" ng-class="data.statusId == 1 ? 'blue' : (data.statusId == 2 ? 'green' : (data.statusId == 3 ? 'black' : 'red'))"
                                  ng-class="expandingProperty.cellClass" compile="expandingProperty.cellTemplate">
 
                                 <div class="task-list-item-header">
