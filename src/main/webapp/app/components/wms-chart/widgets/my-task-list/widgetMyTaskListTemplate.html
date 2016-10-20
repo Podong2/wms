@@ -37,12 +37,12 @@
                         <!--<li class="text-center"><span ng-class="vm.taskType == 'CREATED' ? 'active' : ''" ng-click="vm.taskTypeChange('CREATED')"><i class="fa fa-check-square-o"></i>요청한 {{vm.task.createdTasks.length}}</span></li>-->
                         <!--<li class="text-center"><span ng-class="vm.taskType == 'WATCHED' ? 'active' : ''" ng-click="vm.taskTypeChange('WATCHED')"><i class="fa fa-eye"></i>공유 {{vm.task.watchedTasks.length}}</span></li>-->
                     </ul>
-                    <!-- flight section -->
-                    <div class="bhoechie-tab-content active">
-                        <div ng-repeat="task in vm.task">
-                            {{}}
-                        </div>
-                    </div>
+                    <!--&lt;!&ndash; flight section &ndash;&gt;-->
+                    <!--<div class="bhoechie-tab-content active">-->
+                        <!--<div ng-repeat="task in vm.task">-->
+                            <!--{{}}-->
+                        <!--</div>-->
+                    <!--</div>-->
                     <!-- SCHEDULED section -->
                     <div class="bhoechie-tab-content" ng-show=" vm.taskType == 'SCHEDULED'">
                         <div ng-repeat="data in vm.task.repeatScheduledTasks" class="wms-chart-list">

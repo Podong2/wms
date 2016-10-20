@@ -39,15 +39,6 @@ public class WidgetService {
     private static final String LIST_TYPE_SCHEDULED = "SCHEDULED";
 
     @Inject
-    private TaskRepository taskRepository;
-
-    @Inject
-    private TaskMapper taskMapper;
-
-    @Inject
-    private TaskService taskService;
-
-    @Inject
     private WidgetDAO widgetDAO;
 
     @Transactional(readOnly = true)

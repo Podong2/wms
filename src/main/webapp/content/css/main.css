@@ -2787,7 +2787,9 @@ div.bhoechie-tab-menu div.list-group>a.active:after{
 div.bhoechie-tab-content{
     background-color: #ffffff;
     padding: 0px 0px 0px 0px;
-    max-height: 262px;
+    max-height: 234px;
+    min-height: 234px;
+    height: 234px;
     overflow: hidden;
     overflow-y: auto;
 }
