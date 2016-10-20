@@ -11,7 +11,13 @@ public class TaskStatisticsDTO {
 
     private Long assignedCount;
 
+    private Long assignedCompleteCount;
+
     private Long createdCount;
 
+    private Long createdCompleteCount;
+
     private Long watchedCount;
+
+    private Long watchedCompleteCount;
 }

@@ -20,7 +20,8 @@ function wmsSelectBox($document, $log, $compile) {
             multiple : '@',
             datasize : '@',
             datalivesearch : '@',
-            disabled : '@'
+            disabled : '@',
+            selectBoxSize : '@'
         },
         replace : false,
         controller : ['$scope', '$element', '$attrs', '$rootScope', function ($scope, $element, $attrs, $rootScope) {
@@ -28,14 +29,22 @@ function wmsSelectBox($document, $log, $compile) {
         compile: function (element) {
             return function($scope){
                 var template = '';
+
+                var widthStyle = '';
+
+                if($scope.selectBoxSize != null && $scope.selectBoxSize != undefined)
+                    widthStyle = 'width:'+$scope.selectBoxSize;
+
+                $log.debug("$scope.selectWidth", $scope.selectWidth);
+
                 if($scope.multiple == 'true'){
-                    template = '<ol class="nya-bs-select col-sm-2" ng-model="selectedValue" style="padding: 0" actions-box="' + $scope.actionsBox + '" multiple data-size="'+ $scope.datasize +'" data-live-search="'+ $scope.datalivesearch +'" disabled="'+ $scope.disabled +'">' +
+                    template = '<ol class="nya-bs-select col-sm-2" ng-model="selectedValue" style="padding: 0;'+widthStyle+'" actions-box="' + $scope.actionsBox + '" multiple data-size="'+ $scope.datasize +'" data-live-search="'+ $scope.datalivesearch +'" disabled="'+ $scope.disabled +'">' +
                         '<li nya-bs-option="option in save" title="{{option.name}}" data-value="option.id">' +
                         '<a><span><span class="glyphicon" ng-class="option.icon"></span> {{ option.name }}</span><span class="glyphicon glyphicon-ok check-mark"></span></a>' +
                         '</li>' +
                         '</ol>';
                 }else{
-                    template = '<ol class="nya-bs-select col-sm-2" ng-model="selectedValue" style="padding: 0" actions-box="' + $scope.actionsBox + '" data-size="'+ $scope.datasize +'" data-live-search="'+ $scope.datalivesearch +'" disabled="'+ $scope.disabled +'">' +
+                    template = '<ol class="nya-bs-select col-sm-2" ng-model="selectedValue" style="padding: 0;'+widthStyle+'" actions-box="' + $scope.actionsBox + '" data-size="'+ $scope.datasize +'" data-live-search="'+ $scope.datalivesearch +'" disabled="'+ $scope.disabled +'">' +
                         '<li nya-bs-option="option in save" title="{{option.name}}" data-value="option.id">' +
                         '<a><span><span class="glyphicon" ng-class="option.icon"></span> {{ option.name }}</span><span class="glyphicon glyphicon-ok check-mark"></span></a>' +
                         '</li>' +

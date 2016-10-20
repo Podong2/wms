@@ -2797,8 +2797,8 @@ div.bhoechie-tab-container{
     padding: 0 !important;
     border-radius: 4px;
     -moz-border-radius: 4px;
-    -webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);
-    -moz-box-shadow: 0 6px 12px rgba(0,0,0,.175);
+    /*-webkit-box-shadow: 0 6px 12px rgba(0,0,0,.175);*/
+    /*-moz-box-shadow: 0 6px 12px rgba(0,0,0,.175);*/
     background-clip: padding-box;
     opacity: 0.97;
     filter: alpha(opacity=97);
@@ -2807,7 +2807,7 @@ div.bhoechie-tab-menu{
     padding-right: 0;
     padding-left: 0;
     padding-bottom: 0;
-    padding-top: 50px;
+    padding-top: 40px;
 }
 div.bhoechie-tab-menu.project-list{
     padding-top: 0;
@@ -2850,8 +2850,10 @@ div.bhoechie-tab-menu div.list-group>a.active:after{
 
 div.bhoechie-tab-content{
     background-color: #ffffff;
-    padding: 10px 20px;
-    max-height: 284px;
+    padding: 0px 0px 0px 0px;
+    max-height: 234px;
+    min-height: 234px;
+    height: 234px;
     overflow: hidden;
     overflow-y: auto;
 }
@@ -2869,7 +2871,7 @@ div.bhoechie-tab{
 }
 .widget-project-list-area{
     border-bottom: 1px solid #ddd;
-    padding: 9px 16px;
+    padding: 3px 3px;
 }
 .task-chart-area .progress{
 text-align: right;
@@ -3592,6 +3594,11 @@ h1, h2, h3, h4, h5, h6 {
 .project-info-count-area .project-info-count div{
     width: 100%; text-align: center;
 }
+
+.widget .panel-body {
+    padding-top : 0px;
+    padding-bottom : 0px;
+}
 .project-function-title{
     width: 30%;
     font-weight: bold;
@@ -3599,7 +3606,6 @@ h1, h2, h3, h4, h5, h6 {
     color: #4285F4;
     padding: 7px 0;
 }
-
 
 
 

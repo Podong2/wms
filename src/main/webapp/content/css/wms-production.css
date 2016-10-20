@@ -4722,7 +4722,7 @@ textarea.clone {
     height: 31px;
     margin: 10px 0 0 5px;
     padding: 0 22px;
-    font: 300 15px/29px 'Open Sans', Helvetica, Arial, sans-serif;
+    /*font: 300 15px/29px 'Open Sans', Helvetica, Arial, sans-serif;*/
     cursor: pointer
 }
 
@@ -4825,7 +4825,7 @@ textarea.clone {
     border-style: solid;
     border-radius: 0;
     background: #fff;
-    font: 13px/16px 'Open Sans', Helvetica, Arial, sans-serif;
+    /*font: 13px/16px 'Open Sans', Helvetica, Arial, sans-serif;*/
     color: #404040;
     appearance: normal;
     -moz-appearance: none;
@@ -5109,7 +5109,7 @@ textarea.clone {
     padding: 0 25px;
     outline: 0;
     border: 0;
-    font: 300 15px/31px 'Open Sans', Helvetica, Arial, sans-serif;
+    /*font: 300 15px/31px 'Open Sans', Helvetica, Arial, sans-serif;*/
     text-decoration: none;
     color: #fff;
     cursor: pointer
@@ -5535,7 +5535,7 @@ textarea.clone {
     display: block;
     padding: 25px 30px;
     background: rgba(255, 255, 255, .9);
-    font: 300 18px/27px 'Open Sans', Helvetica, Arial, sans-serif;
+    /*font: 300 18px/27px 'Open Sans', Helvetica, Arial, sans-serif;*/
     text-align: center
 }
 

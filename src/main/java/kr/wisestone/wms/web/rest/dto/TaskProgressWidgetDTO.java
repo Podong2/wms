@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class TaskProgressWidgetDTO {
 
+    private Long totalCount = 0L;
+
     private Long assignedTaskTotalCount = 0L;
 
     private Long createdTaskTotalCount = 0L;
@@ -16,4 +18,5 @@ public class TaskProgressWidgetDTO {
     private Long createdTaskCompleteCount = 0L;
 
     private Long watchedTaskCompleteCount = 0L;
+
 }
