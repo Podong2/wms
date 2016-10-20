@@ -1,0 +1,102 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.wisestone.wms.domain.Dashboard">
+
+    <resultMap id="taskProgressCountResultMap" type="kr.wisestone.wms.web.rest.dto.TaskProgressWidgetDTO">
+        <result property="totalCount" column="totalCount"/>
+        <result property="assignedTaskTotalCount" column="assignedTaskTotalCount"/>
+        <result property="createdTaskTotalCount" column="createdTaskTotalCount"/>
+        <result property="watchedTaskTotalCount" column="watchedTaskTotalCount"/>
+        <result property="assignedTaskCompleteCount" column="assignedTaskCompleteCount"/>
+        <result property="createdTaskCompleteCount" column="createdTaskCompleteCount"/>
+        <result property="watchedTaskCompleteCount" column="watchedTaskCompleteCount"/>
+    </resultMap>
+
+    <sql id="taskCountInnerQuery">
+        SELECT it.*
+        FROM owl_task it
+        WHERE (it.status_id = 1 OR it.status_id = 2)
+        AND ((it.end_date &lt;= #{monthEndDate} AND it.end_date >= #{monthStartDate}) OR (it.end_date IS NULL OR it.end_date = ''))
+        <if test="projectId != null">
+            AND it.id IN (
+                SELECT tp.task_id
+                FROM owl_task_project tp
+                WHERE tp.project_id = #{projectId}
+            )
+        </if>
+    </sql>
+
+    <select id="getTaskProgressCount" resultMap="taskProgressCountResultMap" parameterType="java.util.HashMap">
+        SELECT (c.assignedTaskTotalCount + c.createdTaskTotalCount + c.watchedTaskTotalCount) as totalCount
+        , c.assignedTaskTotalCount, c.createdTaskTotalCount, c.watchedTaskTotalCount
+        , c.assignedTaskCompleteCount, c.createdTaskCompleteCount, c.watchedTaskCompleteCount
+        FROM (SELECT (SELECT COUNT(t.id)
+              FROM (<include refid="taskCountInnerQuery"/>) t
+                        WHERE t.id IN (SELECT tu.task_id
+                        FROM owl_task_user tu
+                        LEFT JOIN owl_user u ON tu.user_id = u.id
+                        WHERE tu.user_type = 'ASSIGNEE'
+                        AND u.login = #{userId})
+            ) as assignedTaskTotalCount
+            , (SELECT COUNT(t.id)
+                FROM (<include refid="taskCountInnerQuery"/>) t
+                WHERE t.id IN (SELECT tu.task_id
+                        FROM owl_task_user tu
+                        LEFT JOIN owl_user u ON tu.user_id = u.id
+                        WHERE tu.user_type = 'ASSIGNEE'
+                        AND u.login = #{userId})
+                AND t.status_id = 2
+            ) as assignedTaskCompleteCount
+            , (SELECT COUNT(t.id)
+                FROM (<include refid="taskCountInnerQuery"/>) t
+                WHERE NOT t.id IN (SELECT tu.task_id
+                        FROM owl_task_user tu
+                        LEFT JOIN owl_user u ON tu.user_id = u.id
+                        WHERE tu.user_type = 'ASSIGNEE'
+                        AND u.login = #{userId})
+                AND t.created_by = #{userId}
+            ) as createdTaskTotalCount
+            , (SELECT COUNT(t.id)
+                FROM (<include refid="taskCountInnerQuery"/>) t
+                WHERE NOT t.id IN (SELECT tu.task_id
+                        FROM owl_task_user tu
+                        LEFT JOIN owl_user u ON tu.user_id = u.id
+                        WHERE tu.user_type = 'ASSIGNEE'
+                        AND u.login = #{userId})
+                AND t.created_by = #{userId}
+                AND t.status_id = 2
+            ) as createdTaskCompleteCount
+            , (SELECT COUNT(t.id)
+                FROM (<include refid="taskCountInnerQuery"/>) t
+                WHERE NOT t.id IN (SELECT tu.task_id
+                        FROM owl_task_user tu
+                        LEFT JOIN owl_user u ON tu.user_id = u.id
+                        WHERE tu.user_type = 'ASSIGNEE'
+                        AND u.login = #{userId})
+                AND t.id IN (SELECT tu.task_id
+                        FROM owl_task_user tu
+                        LEFT JOIN owl_user u ON tu.user_id = u.id
+                        WHERE tu.user_type = 'SHARER'
+                        AND u.login = #{userId})
+                AND t.created_by != #{userId}
+            ) as watchedTaskTotalCount
+            , (SELECT COUNT(t.id)
+                FROM (<include refid="taskCountInnerQuery"/>) t
+                WHERE NOT t.id IN (SELECT tu.task_id
+                        FROM owl_task_user tu
+                        LEFT JOIN owl_user u ON tu.user_id = u.id
+                        WHERE tu.user_type = 'ASSIGNEE'
+                        AND u.login = #{userId})
+                AND t.id IN (SELECT tu.task_id
+                        FROM owl_task_user tu
+                        LEFT JOIN owl_user u ON tu.user_id = u.id
+                        WHERE tu.user_type = 'SHARER'
+                        AND u.login = #{userId})
+                        AND t.created_by != #{userId}
+                AND t.status_id = 2
+            ) as watchedTaskCompleteCount) c
+    </select>
+
+</mapper>

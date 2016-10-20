@@ -45,7 +45,7 @@ angular.module('wms.widget.myTaskList', ['adf.provider'])
     vm.getTodayTask = getTodayTask;
     vm.taskTypeChange = taskTypeChange;
     vm.listType = "TODAY";
-    vm.taskType = 'SCHEDULED';
+    vm.taskType = 'ASSIGNED';
 
     function taskTypeChange(type){
         vm.taskType = type;

@@ -1,6 +1,8 @@
 package kr.wisestone.wms.service;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.mysema.query.BooleanBuilder;
 import kr.wisestone.wms.common.util.DateUtil;
 import kr.wisestone.wms.domain.QTask;
@@ -9,6 +11,7 @@ import kr.wisestone.wms.domain.User;
 import kr.wisestone.wms.domain.UserType;
 import kr.wisestone.wms.domain.util.JSR310PersistenceConverters;
 import kr.wisestone.wms.repository.TaskRepository;
+import kr.wisestone.wms.repository.dao.WidgetDAO;
 import kr.wisestone.wms.security.SecurityUtils;
 import kr.wisestone.wms.web.rest.condition.TaskCondition;
 import kr.wisestone.wms.web.rest.condition.WidgetCondition;
@@ -24,6 +27,7 @@ import javax.inject.Inject;
 import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -42,6 +46,9 @@ public class WidgetService {
 
     @Inject
     private TaskService taskService;
+
+    @Inject
+    private WidgetDAO widgetDAO;
 
     @Transactional(readOnly = true)
     public TaskListWidgetDTO getTaskListWidgetData(WidgetCondition widgetCondition) {
@@ -122,54 +129,21 @@ public class WidgetService {
     @Transactional(readOnly = true)
     public TaskProgressWidgetDTO getTaskProgressWidgetData(WidgetCondition widgetCondition) {
 
-        TaskProgressWidgetDTO taskProgressWidgetDTO = new TaskProgressWidgetDTO();
+        Date monthStartDate = DateUtil.getMonthStartDate();
+        Date monthEndDate = DateUtil.getMonthEndDate();
 
-        List<Task> assignedTasks = this.getTaskByUserType(widgetCondition.getProjectId(), "assigned");
-        List<Task> watchedTasks = this.getTaskByUserType(widgetCondition.getProjectId(), "watched");
-        List<Task> createdTasks = this.getTaskByUserType(widgetCondition.getProjectId(), "created");
+        Map<String, Object> condition = Maps.newHashMap(ImmutableMap.<String, Object>builder().
+            put("monthStartDate", monthStartDate).
+            put("monthEndDate", monthEndDate).
+            put("userId", SecurityUtils.getCurrentUserLogin()).
+            build());
 
-        taskProgressWidgetDTO.setCreatedTaskTotalCount(createdTasks.stream().count());
-        taskProgressWidgetDTO.setWatchedTaskTotalCount(watchedTasks.stream().count());
-        taskProgressWidgetDTO.setAssignedTaskTotalCount(assignedTasks.stream().count());
+        if(widgetCondition.getProjectId() != null) {
+            condition.put("projectId", widgetCondition.getProjectId());
+        }
 
-        taskProgressWidgetDTO.setCreatedTaskCompleteCount(getCompleteCountByList(createdTasks));
-        taskProgressWidgetDTO.setWatchedTaskCompleteCount(getCompleteCountByList(watchedTasks));
-        taskProgressWidgetDTO.setAssignedTaskCompleteCount(getCompleteCountByList(assignedTasks));
+        TaskProgressWidgetDTO taskProgressWidgetDTO = this.widgetDAO.getTaskProgressCount(condition);
 
         return taskProgressWidgetDTO;
-    }
-
-    private List<Task> getTaskByUserType(Long projectId, String type) {
-
-        User loginUser = SecurityUtils.getCurrentUser();
-
-        QTask $task = QTask.task;
-
-        Date startDate = DateUtil.getMonthStartDate();
-        Date endDate = DateUtil.getMonthEndDate();
-
-        BooleanBuilder predicate = new BooleanBuilder();
-
-        if(type.equalsIgnoreCase("assigned")) {
-            predicate.and($task.taskUsers.any().user.login.eq(loginUser.getLogin()).and($task.taskUsers.any().userType.eq(UserType.ASSIGNEE)));
-        } else if(type.equalsIgnoreCase("watched")) {
-            predicate.and($task.taskUsers.any().user.login.eq(loginUser.getLogin()).and($task.taskUsers.any().userType.eq(UserType.SHARER)));
-        } else if(type.equalsIgnoreCase("created")) {
-            predicate.and($task.createdBy.eq(loginUser.getLogin()));
-        }
-
-        predicate.and($task.status.id.eq(Task.STATUS_ACTIVE).or($task.status.id.eq(Task.STATUS_COMPLETE)));
-        predicate.and($task.lastModifiedDate.goe(DateUtil.convertToZonedDateTime(startDate)));
-        predicate.and($task.lastModifiedDate.loe(DateUtil.convertToZonedDateTime(endDate)));
-
-        if(projectId != null) {
-            predicate.and($task.taskProjects.any().project.id.eq(projectId));
-        }
-
-        return Lists.newArrayList(taskRepository.findAll(predicate));
-    }
-
-    private Long getCompleteCountByList(List<Task> tasks) {
-        return tasks.stream().filter(taskDTO -> taskDTO.getStatus().getId().equals(Task.STATUS_COMPLETE)).count();
     }
 }
