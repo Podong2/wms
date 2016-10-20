@@ -9,14 +9,15 @@
                 <div class="col-md-7 task-chart-area" style="padding-left: 0">
 
                     <div style="text-align: right">
+                        <h4 class="title pull-left">#작업 진척률</h4>
                         <wms-select-box
                             ng-model="vm.projectList"
                             selected-value="vm.projectId"
                             dataSize="5"
                             dataLiveSearch="false"
+                            select-box-size="160px"
                         ></wms-select-box>
                     </div>
-                    <h4 class="title">#작업 진척률</h4>
                     <div>- 내가 담당자인 작업</div>
                     <div class="progress">
                         <div class="progress-bar bg-color-blueLight" role="progressbar" ng-style="vm.assignedPercent">{{vm.assignedPercent.width}}</div><span>{{vm.taskCountInfo.assignedTaskCompleteCount}}/{{vm.taskCountInfo.assignedTaskTotalCount}}</span>
