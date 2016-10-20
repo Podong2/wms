@@ -3,17 +3,18 @@
         <div class="row clear-both" >
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 bhoechie-tab-container">
                 <div class="row">
-                    <div class="col-md-5" style="padding-right: 0">
+                    <div class="col-md-3" style="padding-right: 0">
                         <div class="widget-project-list-area">
                             <wms-select-box
                                 ng-model="vm.projectList"
                                 selected-value="vm.projectId"
                                 dataSize="5"
                                 dataLiveSearch="false"
+                                select-box-size="100%"
                             ></wms-select-box>
                         </div>
                     </div>
-                    <div class="col-md-7" style="padding-left: 0">
+                    <div class="col-md-9" style="padding-left: 0">
                         <ul class="nav nav-tabs ">
                             <li role="presentation" class="text-center cursor" ng-class="vm.taskType == 'ASSIGNED' ? 'active' : ''" style="width:33%"><a ng-click="vm.taskTypeChange('ASSIGNED')"><i class="fa fa-list"></i>담당자 {{vm.task.assignedTasks.length}}</a></li>
                             <li role="presentation" class="text-center cursor" ng-class="vm.taskType == 'CREATED' ? 'active' : ''" style="width:34%"><a ng-click="vm.taskTypeChange('CREATED')"><i class="fa fa-check-square-o"></i>요청한 {{vm.task.createdTasks.length}}</a></li>
