@@ -2786,8 +2786,8 @@ div.bhoechie-tab-menu div.list-group>a.active:after{
 
 div.bhoechie-tab-content{
     background-color: #ffffff;
-    padding: 0px 0px 0px 10px;
-    max-height: 284px;
+    padding: 0px 0px 0px 0px;
+    max-height: 262px;
     overflow: hidden;
     overflow-y: auto;
 }
@@ -3529,8 +3529,10 @@ h1, h2, h3, h4, h5, h6 {
     width: 100%; text-align: center;
 }
 
-
-
+.widget .panel-body {
+    padding-top : 0px;
+    padding-bottom : 0px;
+}
 
 
 
