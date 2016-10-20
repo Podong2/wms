@@ -3,7 +3,7 @@
         <ul class="margin-bottom-0">
             <li ng-repeat="task in data.subTasks" class="sub-task-popup-list" ng-class="task.statusId == 1 ? 'blue' : (task.statusId == 2 ? 'green' : (task.statusId == 3 ? 'black' : 'red'))">
                 <div class="sub-task-popup-title" ng-class="task.assignees.length > 0 ? 'task-list-title' : ''" style="line-height: 25px;">
-                    <a ui-sref="my-task.detailPopup({popupId : task.id, popupListType : vm.listType,taskId : task.id})" ng-if="vm.pageType == 'task'">{{task.name}}</a>
+                    <a ng-click="vm.openTaskPopup(task.id, vm.listType)" ng-if="vm.pageType == 'task'">{{task.name}}</a> <!-- my-task.detailPopup({popupId : task.id, popupListType : vm.listType, taskId : task.id}) -->
                     <a ui-sref="my-project.taskDetailPopup({popupId : task.id, popupListType : vm.listType,taskId : task.id})" ng-if="vm.pageType == 'project'">{{task.name}}</a>
                 </div>
                 <!--<ul class="list-inline friends-list text-right margin-right-10" style="margin-bottom: 0">-->

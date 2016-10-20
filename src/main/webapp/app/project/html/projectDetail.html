@@ -355,10 +355,10 @@
             <div class="panel panel-default min-height-100-p detail-content" id="editingSection">
                 <div class="ibox">
 
-                    <div class="ibox_content elementSection" ng-if="vm.project.adminYn" section-toggle style="min-height: 50px; word-break: break-all;">
+                    <div class="ibox_content elementSection word-break-all" ng-if="vm.project.adminYn" section-toggle style="min-height: 50px;">
                         <span ng-bind-html="vm.renderHtml(vm.project.contents)" ></span>
                     </div>
-                    <div class="ibox_content elementSection" ng-if="!vm.project.adminYn" style="min-height: 50px; word-break: break-all;">
+                    <div class="ibox_content elementSection word-break-all" ng-if="!vm.project.adminYn" style="min-height: 50px;">
                         <span ng-bind-html="vm.renderHtml(vm.project.contents)" ></span>
                     </div>
 
@@ -443,7 +443,7 @@
                     <div class="pad-l123 comment-content-area">
 
                         <!-- 댓글 영역 -->
-                        <div ng-if="data.entityField == 'reply'" class="pad-l10  clear-both" style="word-break: break-all;">
+                        <div ng-if="data.entityField == 'reply'" class="pad-l10 clear-both word-break-all">
 
                             <span ng-bind-html="vm.renderHtml(data.newValue)" style="float: left; margin-right: 5px" ng-if="data.newValue != ''"></span>
                             <span style="float: left; margin-right: 5px" ng-if="data.newValue == ''">파일첨부</span>
@@ -455,7 +455,7 @@
                         </div>
 
                         <!-- 시스템 영역 -->
-                        <div ng-if="data.entityField != 'reply'" class="pad-l10 clear-both" style="word-break: break-all;" >
+                        <div ng-if="data.entityField != 'reply'" class="pad-l10 clear-both word-break-all">
 
                             <span translate="audit.entity.project" ng-if="data.entityField == null || data.entityField == ''">엔티티</span>
                             <span translate="audit.field.project.{{data.entityField}}" ng-if="(data.entityField != null && data.entityField != '') && data.entityField != 'projectUsers'">필드</span>

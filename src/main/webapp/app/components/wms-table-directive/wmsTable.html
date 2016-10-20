@@ -33,10 +33,10 @@
                         </div>
                         <div bo-switch-default>
                             <div bo-switch="tableConfig.dHtmlConverter">
-                                <div bo-switch-when="true" style="word-break: break-all;">
+                                <div bo-switch-when="true" class="word-break-all">
                                     <span ng-bind-html="tableService.convertHtml(row[tableConfig.dAttr])"></span>
                                 </div>
-                                <div bo-switch-when="false" style="word-break: break-all;" translate="{{::row[tableConfig.dAttr]}}">
+                                <div bo-switch-when="false" class="word-break-all" translate="{{::row[tableConfig.dAttr]}}">
 
                                 </div>
                             </div>

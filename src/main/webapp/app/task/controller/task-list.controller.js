@@ -5,14 +5,14 @@
 
 angular.module('wmsApp')
     .controller("taskListCtrl", taskListCtrl);
-taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLinks', '$rootScope', '$state', 'MyTaskStatistics', '$stateParams', 'PaginationUtil', 'ModalService'];
-        function taskListCtrl($scope, Code, $log, Task, AlertService, ParseLinks, $rootScope, $state, MyTaskStatistics, $stateParams, PaginationUtil, ModalService) {
+taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLinks', '$rootScope', '$state', 'MyTaskStatistics', '$stateParams', 'PaginationUtil', 'ModalService', 'TaskInfo'];
+        function taskListCtrl($scope, Code, $log, Task, AlertService, ParseLinks, $rootScope, $state, MyTaskStatistics, $stateParams, PaginationUtil, ModalService, TaskInfo) {
             var vm = this;
             vm.baseUrl = window.location.origin;
             vm.tabDisplay = tabDisplay;
             vm.getList = getList;
             vm.taskListPopup = taskListPopup;
-            vm.taskDetailModalOpen = taskDetailModalOpen;
+            vm.openTaskPopup = openTaskPopup;
             vm.filterSearch = filterSearch;
             //vm.showDetail = showDetail;
             vm.pageType = 'task';
@@ -197,14 +197,23 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
             }
 
             // 작업 상세 팝업 오픈 테스트
-            function taskDetailModalOpen(){
-                var editModalConfig = {
-                    size : "lg",
-                    url : "app/task/html/modal/taskDetailPopup.html",
-                    ctrl : "TaskDetailCtrl"
-                };
+            function openTaskPopup(taskId, listType){
+                $log.debug("taskId : ", taskId)
+                TaskInfo.get({id : taskId}, successTask, erorrTask);
 
-                ModalService.openModal(editModalConfig);
+                //var editModalConfig = {
+                //    size : "lg",
+                //    url : "app/task/html/modal/taskDetailPopup.html",
+                //    ctrl : "TaskDetailCtrl"
+                //};
+                //
+                //ModalService.openModal(editModalConfig);
+            }
+            function successTask(result){
+                $state.go("my-task.detailPopup", {task : result})
+            }
+            function erorrTask(){
+
             }
 
             getList();

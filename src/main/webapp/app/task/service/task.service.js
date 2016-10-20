@@ -3,6 +3,7 @@
     angular
         .module('wmsApp')
         .factory('Task', Task)
+        .factory('TaskInfo', TaskInfo)
         .factory('SubTask', SubTask)
         .factory('FindTasks', FindTasks)
         .factory('TaskRemove', TaskRemove)
@@ -16,6 +17,7 @@
         .factory('TaskCreateByProject', TaskCreateByProject);
 
     Task.$inject = ['$resource'];
+    TaskInfo.$inject = ['$resource'];
     SubTask.$inject = ['$resource'];
     FindTasks.$inject = ['$http', '$log', '$q'];
     TaskRemove.$inject = ['$resource'];
@@ -30,9 +32,26 @@
 
     function Task ($resource) {
         var resourceUrl =  'api/tasks/:id';
-
+        console.log("여기?")
         return $resource(resourceUrl, {}, {
             'query': { method: 'GET', isArray: true},
+            'get': {
+                method: 'GET',
+                transformResponse: function (data) {
+                    if (data) {
+                        data = angular.fromJson(data);
+                    }
+                    return data;
+                }
+            },
+            'update': { method:'PUT' }
+        });
+    }
+
+    function TaskInfo ($resource) {
+        var resourceUrl =  'api/tasks/:id';
+        console.log("아님 여기?")
+        return $resource(resourceUrl, {}, {
             'get': {
                 method: 'GET',
                 transformResponse: function (data) {

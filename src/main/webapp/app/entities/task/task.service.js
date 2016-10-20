@@ -2,35 +2,35 @@
     'use strict';
     angular
         .module('wmsApp')
-        .factory('Task', Task)
+        //.factory('Task', Task)
         .factory('SubTask', SubTask)
         .factory('FindTasks', FindTasks)
         .factory('TaskRemove', TaskRemove)
         .factory('TaskEdit', TaskEdit);
 
-    Task.$inject = ['$resource'];
+    //Task.$inject = ['$resource'];
     SubTask.$inject = ['$resource'];
     FindTasks.$inject = ['$http', '$log', '$q'];
     TaskRemove.$inject = ['$resource'];
     TaskEdit.$inject = ['$log', '$upload', '$http', '$q'];
 
-    function Task ($resource) {
-        var resourceUrl =  'api/tasks/:id';
-
-        return $resource(resourceUrl, {}, {
-            'query': { method: 'GET', isArray: true},
-            'get': {
-                method: 'GET',
-                transformResponse: function (data) {
-                    if (data) {
-                        data = angular.fromJson(data);
-                    }
-                    return data;
-                }
-            },
-            'update': { method:'PUT' }
-        });
-    }
+    //function Task ($resource) {
+    //    var resourceUrl =  'api/tasks/:id';
+    //
+    //    return $resource(resourceUrl, {}, {
+    //        'query': { method: 'GET', isArray: true},
+    //        'get': {
+    //            method: 'GET',
+    //            transformResponse: function (data) {
+    //                if (data) {
+    //                    data = angular.fromJson(data);
+    //                }
+    //                return data;
+    //            }
+    //        },
+    //        'update': { method:'PUT' }
+    //    });
+    //}
 
     function SubTask ($resource) {
         var resourceUrl =  'api/tasks/createSubTask/:id';

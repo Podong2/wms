@@ -49,10 +49,10 @@
                             <div bo-switch="tableConfig.dHtmlConverter">
                                 <span class="{{row[tableConfig.dIcon]}}" style="color:{{row[tableConfig.dColor]}};"></span>
                                 <div style="display:inline-block;">
-                                    <div bo-switch-when="true" >
+                                    <div bo-switch-when="true" class="word-break-all">
                                         <span ng-bind-html="tableService.convertHtml(row[tableConfig.dAttr])"></span>
                                     </div>
-                                    <div bo-switch-when="false" translate="{{::row[tableConfig.dAttr]}}">
+                                    <div bo-switch-when="false" translate="{{::row[tableConfig.dAttr]}}" class="word-break-all">
 
                                     </div>
                                 </div>

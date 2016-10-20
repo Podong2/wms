@@ -121,18 +121,18 @@ function customRenderer($compile, $filter, $log, $sce) {
                     case "file_name" :
                         var contentType = scope.data.contentType.split('/');
                         if(contentType[0] == 'image'){
-                            customTag = "<i class='fa fa-file-image-o'></i>"
+                            customTag = "<div class='word-break-all' style='width: 200px;'><i class='fa fa-file-image-o'></i>"
                         }else {
-                            if(contentType[1] == 'msword') customTag = "<i class='fa fa-file-word-o'></i>";
-                            else if(contentType[1] == 'pdf') customTag = "<i class='fa fa-file-pdf-o'></i>";
-                            else if(contentType[1] == 'excel') customTag = "<i class='fa fa-file-excel-o'></i>";
-                            else if(contentType[1] == 'vnd.ms-powerpoint') customTag = "<i class='fa fa-file-powerpoint-o'></i>";
-                            else customTag = "<i class='fa fa-file-text-o'></i>";
+                            if(contentType[1] == 'msword') customTag = "<div class='word-break-all' style='width: 200px;'><i class='fa fa-file-word-o'></i>";
+                            else if(contentType[1] == 'pdf') customTag = "<div class='word-break-all' style='width: 200px;'><i class='fa fa-file-pdf-o'></i>";
+                            else if(contentType[1] == 'excel') customTag = "<div class='word-break-all' style='width: 200px;'><i class='fa fa-file-excel-o'></i>";
+                            else if(contentType[1] == 'vnd.ms-powerpoint') customTag = "<div class='word-break-all' style='width: 200px;'><i class='fa fa-file-powerpoint-o'></i>";
+                            else customTag = "<div class='word-break-all' style='width: 200px;'><i class='fa fa-file-text-o'></i>";
                         }
 
                         $log.debug("scope.data.locationType : ", scope.data.locationType);
 
-                        customTag += " <span ng-click='fileDownLoad(3)'>"+ scope.data.name + "</span>";
+                        customTag += " <span ng-click='fileDownLoad(3)'>"+ scope.data.name + "</span></div>";
                         break;
                     case "file_location" :
 

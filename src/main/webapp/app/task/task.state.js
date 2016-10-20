@@ -220,19 +220,22 @@
             },
             params : {
                 popupId : '',
-                popupListType : ''
+                popupListType : '',
+                task : ''
             },
             onEnter: ['$stateParams', '$state', '$uibModal', function($stateParams, $state, $uibModal) {
                 var params = $stateParams;
                 $uibModal.open({
+                    animation : false,
                     templateUrl: 'app/task/html/modal/taskDetailPopup.html',
                     controller: 'TaskDetailCtrl',
                     controllerAs: 'vm',
                     backdrop: 'static',
                     size: 'lg',
                     resolve: {
-                        entity: ['$stateParams', 'Task', function($stateParams, Task) {
-                            return Task.get({id : params.popupId}).$promise;
+                        entity: ['$log', function($log) {
+                            $log.debug("params.tas : ", params.task);
+                            return params.task;
                         }]
                     }
                 }).result.then(function() {

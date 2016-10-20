@@ -5,7 +5,7 @@
                 <div >
                 <!--<div ui-view="taskList"></div>-->
                 <uib-accordion close-others="oneAtATime">
-                    <div style="font-weight: bold; font-size: 16px; background: #fff; padding: 0 10px; word-break: break-all; border-bottom: 1px solid rgb(221, 221, 221);">
+                    <div class="word-break-all" style="font-weight: bold; font-size: 16px; background: #fff; padding: 0 10px; border-bottom: 1px solid rgb(221, 221, 221);">
                         <a class="pull-right" project-dynamic-height project-info-view-yn="vm.projectInfoViewYn">{{vm.projectInfoViewYn ? '∧' : '∨'}}</a>
                         <a ui-sref="my-project.detail({project:vm.project})"><i class="fa fa-folder-open-o"></i> <span>{{vm.project.name}}</span>
                             <span ng-show="!vm.project.folderYn">

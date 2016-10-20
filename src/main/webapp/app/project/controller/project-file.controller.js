@@ -291,7 +291,7 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
                 .setDType("renderer")
                 .setDRenderer("file_version"));
             vm.tableConfigs.push(tableService.getConfig("다운로드", "")
-                .setHWidth("width-80-p")
+                .setHWidth("width-100-p")
                 .setDAlign("text-center")
                 .setDType("renderer")
                 .setDRenderer("file_download"));

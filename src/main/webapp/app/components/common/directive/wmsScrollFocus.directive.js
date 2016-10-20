@@ -1,11 +1,26 @@
 angular.module('wmsApp')
-    .directive('wmsScrollFocus', wmsScrollFocus);
+    .directive('wmsScrollFocus', wmsScrollFocus)
+    .directive('wmsModalScrollFocus', wmsModalScrollFocus);
 wmsScrollFocus.$inject=['$rootScope', '$timeout'];
-/**
- * 공통 팝업 토글
- * @param $timeout
- * @returns {{restrict: string, link: link}}
- */
+wmsModalScrollFocus.$inject=['$rootScope', '$timeout'];
+
+function wmsModalScrollFocus($rootScope, $timeout) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attr) {
+            var $element = element;
+            element.on('click', function(e) {
+                $timeout(function(){
+                    $('.modal-body').css('scrollTop', $(".file-area-ul").offset().top - 100);
+                    $('.modal-body').animate({ scrollTop: $(".file-area-ul").offset().top - 100 }, 100);
+                    //window.scrollTo(0, $(".file-area-ul").offset().top);
+                }, 100)
+
+            });
+        }
+    }
+}
+
 function wmsScrollFocus($rootScope, $timeout) {
     return {
         restrict: 'A',
@@ -13,8 +28,8 @@ function wmsScrollFocus($rootScope, $timeout) {
             var $element = element;
             element.on('click', function(e) {
                 $timeout(function(){
-                    $('.modal-body').css('scrollTop', $(".file-area-ul").offset().top);
-                    $('.modal-body').animate({ scrollTop: $(".file-area-ul").offset().top }, 100);
+                    $('.task-detail-area').css('scrollTop', $(".file-area-ul").offset().top - 100);
+                    $('.task-detail-area').animate({ scrollTop: $(".file-area-ul").offset().top - 100 }, 100);
                     //window.scrollTo(0, $(".file-area-ul").offset().top);
                 }, 100)
 

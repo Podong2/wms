@@ -64,6 +64,7 @@
         }
         function openModal(parameter) {
             modalInstance = $uibModal.open({
+                animation : false,
                 templateUrl: parameter.url,
                 controller: parameter.ctrl,
                 controllerAs: 'vm',

@@ -11,10 +11,17 @@ projectFunctionsCtrl.$inject=['$state', '$stateParams', '$log', '$scope', '$time
             $log.debug("function $stateParams : ", $stateParams);
             vm.projectId = $stateParams.projectId;
             vm.project = $stateParams.project;
-            if(vm.project != null && vm.project != undefined && vm.project.name != undefined){
+            if(vm.project != null && vm.project != undefined && vm.project.name != undefined && vm.project.name != ''){
                 localStorage.setItem("projectInfo", JSON.stringify({
                     project : vm.project,
                 }));
+            }
+            if($stateParams.project.id == undefined){
+                var projectInfo = localStorage.getItem("projectInfo");
+                if (angular.isDefined(projectInfo) && projectInfo != null) {
+                    projectInfo = JSON.parse(projectInfo);
+                    vm.project = projectInfo.project;
+                }
             }
 
             vm.stateInfo = $state.current.name;

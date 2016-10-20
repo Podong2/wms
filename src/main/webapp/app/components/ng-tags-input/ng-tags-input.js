@@ -213,6 +213,7 @@ tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tag
         controller: ["$scope", "$attrs", "$element", "$rootScope", "ModalService", function($scope, $attrs, $element, $rootScope, ModalService) {
             $scope.events = tiUtil.simplePubSub();
             $scope.baseUrl = window.location.origin;
+            $scope.duplicateName = '';
             tagsInputConfig.load('tagsInput', $scope, $attrs, {
                 template: [String, $scope.templateUrl],
                 type: [String, 'text', validateType],
@@ -300,7 +301,8 @@ tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tag
                 input = element.find('input'),
                 validationOptions = ['minTags', 'maxTags', 'allowLeftoverText'],
                 setElementValidity,
-                focusInput;
+                focusInput,
+                duplicateName;
             var $element = element.find('.user-picker-info');
 
             setElementValidity = function() {
@@ -320,6 +322,14 @@ tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tag
             scope.newTag = {
                 text: function(value) {
                     if (angular.isDefined(value)) {
+                        //console.log("scope.duplicateName : " + scope.duplicateName)
+                        //console.log("value : " + value)
+                        //if(scope.duplicateName != value && value != ''){
+                        //    scope.duplicateName = value;
+                        //}else if(scope.duplicateName == value){
+                        //    return value;
+                        //}
+
                         scope.text = value;
                         events.trigger('input-change', value);
                     }
@@ -618,7 +628,7 @@ tagsInput.directive('tiTagItem', ["tiUtil", function(tiUtil) {
  */
 tagsInput.directive('autoComplete', ["$document", "$timeout", "$sce", "$q", "tagsInputConfig", "tiUtil", "$rootScope", function($document, $timeout, $sce, $q, tagsInputConfig, tiUtil, $rootScope) {
     function SuggestionList(loadFn, options, events) {
-        var self = {}, getDifference, lastPromise, getTagId;
+        var self = {}, getDifference, lastPromise, getTagId, duplicateName;
 
         getTagId = function() {
             return options.tagsInput.keyProperty || options.tagsInput.displayProperty;

@@ -1,45 +1,44 @@
 <div class="" style="background-color: #fff;">
-    <ul class="nav nav-tabs project-menu-area">
+
+    <div class="pull-right" ng-show="vm.tabArea[0].status">
+        <label class="cursor" wms-project-file-download download-images="vm.downloadImages" download-event="vm.downloadFiles"><span class='btn btn-default'><i class='fa fa-download'></i></span></label>
+        <label ng-show="vm.projectInfo.adminYn || vm.projectInfo.memberYn" for="input-3" class="cursor"><span class='btn btn-default'><i class='fa fa-upload'></i></span></label>
+        <label ng-show="!vm.projectInfo.adminYn && !vm.projectInfo.memberYn"><span class='btn btn-default disabled'><i class='fa fa-upload'></i></span></label>
+        <label ng-show="vm.projectInfo.adminYn" class="cursor" wms-project-file-remove remove-images="vm.removeImages" remove-event="vm.filesRemove" ><span class='btn btn-default'><i class='fa fa-trash'></i></span></label> <!-- ng-show="vm.projectInfo.adminYn"-->
+        <label ng-show="!vm.projectInfo.adminYn"><span class='btn btn-default disabled'><i class='fa fa-trash'></i></span></label> <!-- ng-show="vm.projectInfo.adminYn"-->
+    </div>
+
+    <div class="pull-right" ng-show="vm.tabArea[1].status">
+        <label class="cursor" ng-click="vm.downloadFiles()"><span type='button' class='btn btn-default'><i class='fa fa-download'></i></span></label>
+        <label ng-show="vm.projectInfo.adminYn || vm.projectInfo.memberYn" for="input-3" class="cursor"><span type='button' class='btn btn-default'><i class='fa fa-upload'></i></span></label>
+        <label ng-show="!vm.projectInfo.adminYn && !vm.projectInfo.memberYn"><span type='button' class='btn btn-default disabled'><i class='fa fa-upload'></i></span></label>
+        <label ng-show="vm.projectInfo.adminYn" class="cursor" ng-click="vm.filesRemove()"><span type='button' class='btn btn-default'><i class='fa fa-trash'></i></span></label>
+        <label ng-show="!vm.projectInfo.adminYn"><span type='button' class='btn btn-default disabled'><i class='fa fa-trash'></i></span></label>
+    </div>
+
+    <ul id="tabs"  class="nav nav-tabs nav-border-tabs" data-tabs="tabs">
         <!--<li class="text-center" ng-class="vm.tabArea[0].status == true ? 'active' : ''" ng-click="vm.tabDisplay(0)"><span>이미지</span></li>-->
         <!--<li class="text-center" ng-class="vm.tabArea[1].status == true ? 'active' : ''" ng-click="vm.tabDisplay(1)"><span>파일</span></li>-->
 
-        <li role="presentation" ng-class="vm.tabArea[0].status == true ? 'active' : ''" class="text-center cursor" style="width:50%"><a ng-click="vm.tabDisplay(0)">이미지</a></li>
-        <li role="presentation" ng-class="vm.tabArea[1].status == true ? 'active' : ''" class="text-center cursor" style="width:50%"><a ng-click="vm.tabDisplay(1)">파일</a></li>
+        <li data-toggle="tab" ng-class="vm.tabArea[0].status == true ? 'active' : ''" class="text-center cursor" style="width:8%;"><a ng-click="vm.tabDisplay(0)">이미지</a></li>
+        <li data-toggle="tab" ng-class="vm.tabArea[1].status == true ? 'active' : ''" class="text-center cursor" style="width:8%;"><a ng-click="vm.tabDisplay(1)">파일</a></li>
     </ul>
     <!-- 이미지 탭 -->
     <div ng-show="vm.tabArea[0].status">
         <div class="project-file-btn-area">
-            <div class="pull-right">
-                <label class="cursor" wms-project-file-download download-images="vm.downloadImages" download-event="vm.downloadFiles"><span class='btn btn-default'><i class='fa fa-download'></i></span></label>
-                <label ng-show="vm.projectInfo.adminYn || vm.projectInfo.memberYn" for="input-3" class="cursor"><span class='btn btn-default'><i class='fa fa-upload'></i></span></label>
-                <label ng-show="!vm.projectInfo.adminYn && !vm.projectInfo.memberYn"><span class='btn btn-default disabled'><i class='fa fa-upload'></i></span></label>
-                <label ng-show="vm.projectInfo.adminYn" class="cursor" wms-project-file-remove remove-images="vm.removeImages" remove-event="vm.filesRemove" ><span class='btn btn-default'><i class='fa fa-trash'></i></span></label> <!-- ng-show="vm.projectInfo.adminYn"-->
-                <label ng-show="!vm.projectInfo.adminYn"><span class='btn btn-default disabled'><i class='fa fa-trash'></i></span></label> <!-- ng-show="vm.projectInfo.adminYn"-->
-            </div>
         </div>
-        <div style="width: 100%;">
+        <div class="project-function-file" style="width: 100%;" dynamic-content-scroll area-type="project-function-file">
             <ng-gallery images="vm.images" thumbs-num="10"></ng-gallery>
         </div>
-
     </div>
 
     <!-- 파일 탭 -->
     <div ng-show="vm.tabArea[1].status">
         <div class="project-file-btn-area clear-both">
-            <div class="pull-right">
-                <label class="cursor" ng-click="vm.downloadFiles()"><span type='button' class='btn btn-default'><i class='fa fa-download'></i></span></label>
-                <label ng-show="vm.projectInfo.adminYn || vm.projectInfo.memberYn" for="input-3" class="cursor"><span type='button' class='btn btn-default'><i class='fa fa-upload'></i></span></label>
-                <label ng-show="!vm.projectInfo.adminYn && !vm.projectInfo.memberYn"><span type='button' class='btn btn-default disabled'><i class='fa fa-upload'></i></span></label>
-                <label ng-show="vm.projectInfo.adminYn" class="cursor" ng-click="vm.filesRemove()"><span type='button' class='btn btn-default'><i class='fa fa-trash'></i></span></label>
-                <label ng-show="!vm.projectInfo.adminYn"><span type='button' class='btn btn-default disabled'><i class='fa fa-trash'></i></span></label>
-            </div>
-            <span class="clear-both"></span>
         </div>
-
-        <div class="clear-both">
+        <div class="clear-both project-function-file" dynamic-content-scroll area-type="project-function-file">
             <wms-table ng-model="vm.fileList" table-configs="vm.tableConfigs" update-callback="updateCallback"></wms-table>
         </div>
-
     </div>
 
 </div>

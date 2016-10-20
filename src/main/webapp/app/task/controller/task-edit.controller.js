@@ -546,7 +546,9 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             $scope.findProjects = function(name) {
                 $log.debug("name - : ", name);
                 var deferred = $q.defer();
-                ProjectFindByName.query({name : name},onProjectPickerSuccess, onProjectPickerError)
+                if(name != null && name != ''){
+                    ProjectFindByName.query({name : name},onProjectPickerSuccess, onProjectPickerError)
+                }
                 function onProjectPickerSuccess(result){
                     deferred.resolve(result);
                     $log.debug("projectList : ", result);
@@ -642,6 +644,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             //}
 
             vm.deleteProjectElement = deleteProjectElement;
+            vm.getProjectList = getProjectList;
             function deleteProjectElement(_this){
                 $log.debug(_this)
             }
@@ -652,6 +655,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             }
             // 프로젝트목록 필터링
             function FindProjectList(){
+                $log.debug("프로젝트 검색2!!")
                 ProjectFindByName.query({name : $scope.projectName},onProjectSuccess, onProjectError)
             }
             function onProjectSuccess (result) {
@@ -660,11 +664,13 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             function onProjectError (result) {
                 toastr.error('프로젝트 목록 불러오기 실패', '프로젝트 목록 불러오기 실패');
             }
-            getProjectList(); // 프로젝트 목록 불러오기
+            //getProjectList(); // 프로젝트 목록 불러오기
 
             // 프로젝트 명 실시간 검색
-            $scope.$watchCollection('projectName', function(){
-                FindProjectList();
+            $scope.$watchCollection('projectName', function(newValue, oldValue){
+                if(newValue !=undefined && oldValue != newValue){
+                    FindProjectList();
+                }
             });
 
             // 사용자 명 실시간 검색

@@ -51,6 +51,12 @@
         vm.downloadFiles = downloadFiles;
         vm.setRepeatDate = setRepeatDate;
         vm.getTaskAudigLog = getTaskAudigLog;
+        vm.getProjectList = getProjectList;
+        vm.getSubTasks = getSubTasks;
+
+        function getSubTasks(){
+            vm.subTaskOpen = !vm.subTaskOpen;
+        }
         //vm.getCurrentWatchers = getCurrentWatchers;
         vm.userInfo = Principal.getIdentity();
         $scope.dataService = dataService;
@@ -134,6 +140,7 @@
         vm.fileListYn = false;
         vm.fileListType = $stateParams.fileListType == 'list' ? $stateParams.fileListType : 'image'; // 파일 첨부영역 타입 : image, list (파일 다중 삭제 시 리로드 후 보여질 파일 첨부영역)
         vm.uploadType = ''; // 상세 업로드 타입 (참조자, 참조작업 시 리로드 안함)
+        vm.subTasks = [];
         // 하위 작업 업데이트 파라미터
         vm.subTaskUpdateForm = {
             id : '',
@@ -148,6 +155,12 @@
 
         $scope.checkedTask = [];
         $scope.checkedTaskIds = [];
+
+        // 하위작업, 파일첨부, 참조작업 클릭 이벤트 데이터
+        vm.subTaskOpen = false;
+        vm.fileAreaOpen = false;
+        vm.commentFileAreaOpen = false;
+        vm.relatedTaskOpen = false;
 
         vm.relatedSearchYn = true; // 참조작업 검색 오픈 유무
         vm.relatedSearchAgainYn = false;
@@ -208,7 +221,8 @@
         }
 
         /* 로그& 댓글 불러오기 */
-        TaskListSearch.TaskAudigLog({'entityId' : vm.task.id, 'entityName' : 'Task'}).then(function(result){
+        $log.debug("entity : ", entity)
+        TaskListSearch.TaskAudigLog({'entityId' : entity.id, 'entityName' : 'Task'}).then(function(result){
             vm.TaskAuditLog = result;
             $log.debug("작업 로그 목록 : ", vm.TaskAuditLog);
             angular.forEach(vm.TaskAuditLog.data, function(val){
@@ -269,6 +283,8 @@
                 vm.fileListYn = true;
                 $rootScope.$broadcast('fileAreaClose');
             }
+
+            vm.subTasks = vm.task.subTasks;
         });
 
         vm.responseDataCheck = _.clone(vm.task);
@@ -290,11 +306,6 @@
             removeAttachedFileIds : ''
         };
 
-        // 하위작업, 파일첨부, 참조작업 클릭 이벤트 데이터
-        vm.subTaskOpen = false;
-        vm.fileAreaOpen = false;
-        vm.commentFileAreaOpen = false;
-        vm.relatedTaskOpen = false;
 
         $scope.files = [];
 
@@ -629,7 +640,7 @@
         function onProjectError (result) {
             toastr.error('프로젝트 목록 불러오기 실패', '프로젝트 목록 불러오기 실패');
         }
-        getProjectList();
+        //getProjectList();
 
         // 달력 오픈
         function openCalendar(e, picker) {
@@ -637,10 +648,11 @@
         }
 
         // 프로젝트 실시간 검색
-        $scope.$watchCollection('projectName', function(){
-            FindProjectList();
+        $scope.$watchCollection('projectName', function(newValue, oldValue){
+            if(newValue !=undefined && oldValue != newValue){
+                FindProjectList();
+            }
         });
-
         // 담당자 실시간 검색
         $scope.$watchCollection('vm.userName', function(newValue){
             $log.debug("vm.userName : ", newValue);
@@ -802,7 +814,9 @@
         $scope.findProjects = function(name) {
             $log.debug("name - : ", name);
             var deferred = $q.defer();
-            ProjectFindByName.query({name : name},onProjectPickerSuccess, onProjectPickerError)
+            if(name != null && name != ''){
+                ProjectFindByName.query({name : name},onProjectPickerSuccess, onProjectPickerError)
+            }
             function onProjectPickerSuccess(result){
                 deferred.resolve(result);
                 $log.debug("projectList : ", result);
@@ -897,6 +911,7 @@
             vm.task = result;
             //$rootScope.$broadcast('taskReload', result);
 
+            vm.subTasks = vm.task.subTasks;
             vm.taskFiles = vm.task.attachedFiles;
             vm.previewFiles = [];
             vm.previewFileUrl = [];
@@ -1031,7 +1046,7 @@
         vm.recentYn = true;
         function getTaskAudigLog(recentYn){
             vm.recentYn = recentYn;
-            TaskListSearch.TaskAudigLog({'entityId' : vm.task.id, 'entityName' : 'Task', recentYn : vm.recentYn}).then(function(result){
+            TaskListSearch.TaskAudigLog({'entityId' : entity.id, 'entityName' : 'Task', recentYn : vm.recentYn}).then(function(result){
                 vm.TaskAuditLog = result;
                 vm.commentList=[];
                 angular.forEach(vm.TaskAuditLog.data, function(val){
