@@ -289,8 +289,8 @@ function customRenderer($compile, $filter, $log, $sce) {
                         else if(scope.data.memberYn) userType = "<span>(맴버 <i class='fa fa-users'></i>)</span>";
                         else if(scope.data.watcherYn) userType = "<span>(공유 <i class='fa fa-eye'></i>)</span>";
 
-                        if(scope.data.depth == 0) customTag = "<div class='project-list-title-length' data-ui-sref='my-project({id:data.id})'><strong>" +"<i class='fa fa-angle-down' ng-if='!data.childsYn'></i> " + scope.data.name + "</strong>" + userType + "</div>" ;
-                        else customTag = "<div class='project-list-title-length' data-ui-sref='my-project({id:data.id})'><span> "+ depth +"<i class='fa fa-angle-down' ng-if='!data.childsYn'></i> "+ scope.data.name + "</span>" + userType + "</div>" ;
+                        if(scope.data.depth == 0) customTag = "<div data-ui-sref='my-project({id:data.id})'><strong class='project-list-title-length' tooltip-placement='top-left' uib-tooltip='"+ scope.data.name +"'>" +"<i class='fa fa-angle-down' ng-if='!data.childsYn'></i> " + scope.data.name + "</strong>" + userType + "</div>" ;
+                        else customTag = "<div data-ui-sref='my-project({id:data.id})'><span class='project-list-title-length' tooltip-placement='top-left' uib-tooltip='"+ scope.data.name +"'> "+ depth +"<i class='fa fa-angle-down' ng-if='!data.childsYn'></i> "+ scope.data.name + "</span>" + userType + "</div>" ;
                         break;
                 }
 

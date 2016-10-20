@@ -151,7 +151,7 @@ projectListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$roo
                 .setDType("renderer")
                 .setDRenderer("project-task-percent"));
             vm.tableConfigs.push(tableService.getConfig("관리자", "")
-                .setHWidth("width-200-p")
+                .setHWidth("width-180-p")
                 .setDAlign("text-center")
                 .setDType("renderer")
                 .setDRenderer("project-admin"));
@@ -166,7 +166,7 @@ projectListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$roo
                 .setDType("renderer")
                 .setDRenderer("project-watcher"));
             vm.tableConfigs.push(tableService.getConfig("최근 업데이트", "")
-                .setHWidth("width-100-p")
+                .setHWidth("width-120-p")
                 .setDAlign("text-center")
                 .setDType("renderer")
                 .setDRenderer("project-update-date"));

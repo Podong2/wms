@@ -26,8 +26,8 @@ angular.module('wmsApp')
                 tElement.on('click', function () {
 
                     scope.projectInfoViewYn = !scope.projectInfoViewYn;
-                    if(scope.projectInfoViewYn) minusHeight = 431;
-                    else minusHeight = 229;
+                    if(scope.projectInfoViewYn) minusHeight = 432;
+                    else minusHeight = 231;
                     $(".project-task-list-area").css("height", (window.innerHeight - minusHeight) + "px");
 
                 }).resize();

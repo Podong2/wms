@@ -193,6 +193,9 @@
                 authorities: [],
                 title : '작업 상세'
             },
+            params : {
+                fileListType : ''
+            },
             views: {//
                 'taskDetail': {//
                     templateUrl: 'app/task/html/myTaskDetail.html', // home에 사용될 template html 파일

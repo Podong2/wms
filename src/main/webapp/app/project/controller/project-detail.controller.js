@@ -81,6 +81,8 @@
             console.log('Key = ' + key);
         });
 
+        $log.debug("$stateParams.fileListType : ", $stateParams.fileListType)
+
         vm.date = '';
         vm.assigneeUsers = [];
         vm.logArrayData = [];
@@ -91,12 +93,13 @@
         vm.responseData = [];
         vm.previewFiles = []; // 파일 테이블 목록
         vm.previewFileUrl = []; // 파일 url 목록
+        vm.fileListType = $stateParams.fileListType == 'list' ? $stateParams.fileListType : 'image'; // 파일 첨부영역 타입 : image, list (파일 다중 삭제 시 리로드 후 보여질 파일 첨부영역)
+        $log.debug("로딩 후 파일 목록 타입 : ", vm.fileListType)
         vm.project = getProject();
         vm.fileListYn = false;
         vm.watcherName = '';
         vm.DuplicationWatcherIds = [];
         vm.recentYn = true; // 히스토리 전체보기 유무
-
         /* member관련 파라미터 */
         vm.DuplicationMemberIds = [];
         vm.memberSearchYn = false;
@@ -154,8 +157,6 @@
 
         vm.project.modifyYn = true;// 임시
 
-
-
         vm.responseProjectData = _.clone(vm.project);
         $log.debug("vm.project  : ", vm.project );
 
@@ -210,6 +211,13 @@
                 projectIds.push(value.id);
             });
             excludeIds = projectIds.join(",");
+
+            // 파일 목록에서 삭제 시 리로드 후 파일 목록을 화면에 노출
+            if(vm.fileListType == 'list') {
+                vm.fileListYn = true;
+                $rootScope.$broadcast('fileAreaClose');
+            }
+
             ProjectFind.query({name : '', excludeIds : excludeIds}, onProjectSuccess, onProjectError);
         }
         function FindProjectList(){
@@ -218,6 +226,12 @@
         }
         function onProjectSuccess (result) {
             vm.projectList = result;
+
+            // 파일 목록에서 삭제 시 리로드 후 파일 목록을 화면에 노출
+            if(vm.fileListType == 'list') {
+                vm.fileListYn = true;
+                $rootScope.$broadcast('fileAreaClose');
+            }
         }
         function onProjectError (result) {
             toastr.error('프로젝트 목록 불러오기 실패', '프로젝트 목록 불러오기 실패');
@@ -347,7 +361,7 @@
 
         /* 프로젝트 업로드 */
         vm.contentUploadFiles=[];
-        function projectUpload(){
+        function projectUpload(type){
             //  에디터에서 실제 서버에 올라가는 시점에 사용된 이미지 정보. 이 정보로 이슈와 파일첨부에서 연결시킨다.
             $("#issueEdit").find("img").each(function () {
                 var path = $(this).attr("src");
@@ -361,12 +375,17 @@
                 }
             });
 
+            if(type){
+                vm.projectReload = true;
+            }
+
             if(vm.project.projectAdmins != [])userIdPush(vm.project.projectAdmins, "projectAdminIds");
             if(vm.project.projectWatchers != [])userIdPush(vm.project.projectWatchers, "projectWatcherIds");
             if(vm.project.projectMembers != [])userIdPush(vm.project.projectMembers, "projectMemberIds");
             if(vm.contentUploadFiles != [])userIdPush(vm.contentUploadFiles, "contentUploadFiles"); // 프로젝트
 
             $log.debug("vm.project update ;::::::", vm.project);
+            $log.debug("vm.fileListType ;::::::", vm.fileListType);
             ProjectEdit.uploadProject({
                 method : "POST",
                 file : vm.files,
@@ -392,7 +411,7 @@
 
                 if(vm.uploadType == '' || vm.uploadType == undefined) {
                     vm.project = [];
-                    $state.go("my-project.detail", {}, {reload : true});
+                    $state.go("my-project.detail", {fileListType : vm.fileListType}, {reload : true});
                 }
                 else {
                     projectDetailReload();
@@ -664,8 +683,8 @@
         }
 
         // 참조자 명 실시간 검색
-        $scope.$watchCollection('vm.watcherName', function(newValue){
-            if(newValue != '' && newValue != undefined){
+        $scope.$watchCollection('vm.watcherName', function(newValue, oldValue){
+            if(newValue != '' && newValue != undefined && newValue != oldValue){
                 $log.debug("vm.watcherName : ", newValue);
                 vm.watcherName = newValue;
                 if(vm.watcherName != '') $scope.pickerFindWatcher(vm.watcherName);
@@ -830,6 +849,7 @@
             $scope.checkedData = getCheckedData();
             vm.project.removeTargetFiles = $scope.checkedData.join(",");
             $log.debug("파일 삭제 id 목록 : ", vm.project.removeTargetFiles);
+            vm.fileListType = 'list';
             projectUpload();
         }
 

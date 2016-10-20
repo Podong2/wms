@@ -24,14 +24,16 @@
                 scope.$curr.css( "background", "#f99" );
 
                 $rootScope.$on("initArrows", function(){
-                    $( ".arrow-event-li" ).css( "background", "" );
-                    $( ".arrow-event-li" ).removeClass( "active" );
-                    scope.$curr.parents(".watcher-search-list-area").css('scrollTop', 0);
-                    scope.$curr.parents(".watcher-search-list-area").animate({ scrollTop: 0 }, 0);
-                    scope.$curr = $( ".start-arrow" );
-                    scope.$currElement = '';
-                    scope.$curr.css( "background", "#f99" );
-                    scope.$curr.addClass( "active" );
+                    $timeout(function(){
+                        $( ".arrow-event-li" ).css( "background", "" );
+                        $( ".arrow-event-li" ).removeClass( "active" );
+                        scope.$curr.parents(".watcher-search-list-area").css('scrollTop', 0);
+                        scope.$curr.parents(".watcher-search-list-area").animate({ scrollTop: 0 }, 0);
+                        scope.$curr = $( ".start-arrow" );
+                        scope.$currElement = '';
+                        scope.$curr.css( "background", "#f99" );
+                        scope.$curr.addClass( "active" );
+                    }, 100)
                 });
 
 
@@ -76,13 +78,13 @@
                         scope.elementAdd()(scope.elementValues);
                         scope.$apply()
                         event.preventDefault();
-                    }else{
-                        $timeout(function(){
-                            scope.$curr = $( ".start-arrow" );
-                            scope.$currElement = $( ".start-arrow" );
-                            scope.$curr.css( "background", "#f99" );
-                            scope.$currElement.css( "background", "#f99" );
-                        }, 300);
+                    }else if(event.keyCode !== undefined && event.keyCode !== null && event.keyCode !== 40 && event.keyCode !== 13 && event.keyCode !== 38){
+                        scope.$curr = $( ".start-arrow" );
+                        scope.$currElement = $( ".start-arrow" );
+                        $( ".arrow-event-li" ).css( "background", "" );
+                        $( ".arrow-event-li" ).removeClass( "active" );
+                        scope.$curr.css( "background", "#f99" );
+                        scope.$currElement.css( "background", "#f99" );
                     }
                     //else if (event.keyCode === 13) {
                     //    scope.my_tree_grid.remove_node();

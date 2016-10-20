@@ -72,9 +72,11 @@
         <div class="task-options-area task-status-user-aera">
             <table class="table table-bordered" style="border-top: 0; border-bottom: 0;">
                 <colgroup>
-                    <col width="86px">
+                    <col width="87px">
                     <col width="60px">
-                    <col width="*">
+                    <col width="140px">
+                    <col width="200px">
+                    <col width="200px">
                     <col width="150px">
                 </colgroup>
                 <tbody>
@@ -97,7 +99,7 @@
                     <td>
                         담당자
                     </td>
-                    <td>
+                    <td colspan="3">
                         <autocomplete template-url="ngTagsInput/tag-item-user.html" source="findUsers" tags="assigneeUser" display-property="name" multiple="true" max-results-to-show="20" tag-type="assignees" modify-yn="{{vm.modifyYn}}" project-yn="false"></autocomplete>
                     </td>
                     <td style="position: relative;">
@@ -163,25 +165,8 @@
                         <!--<autocomplete template-url="ngTagsInput/tag-item-user.html" source="findUsers" tags="watchers" display-property="name" multiple="true" max-results-to-show="20" tag-type="watchers"></autocomplete>-->
                     <!--</td>-->
                 </tr>
-                </tbody>
-            </table>
-
-        </div>
-
-        <!-- task option 선택 영역 -->
-        <div class="task-options-area task-status-user-aera">
-            <table class="table table-bordered" style="border-top: 0; border-bottom: 0;">
-                <colgroup>
-                    <col width="87px">
-                    <col width="200px">
-                    <col width="200px">
-                    <col width="200px">
-                    <col width="200px">
-                    <!--<col width="145px">-->
-                </colgroup>
-                <tbody>
                 <tr>
-                    <td class="task-options">
+                    <td class="task-options position-relative">
                         <span class="fa privateYn-icon" ng-class="vm.task.privateYn ? 'fa-lock' : 'fa-unlock-alt'"></span>
                         <ol class="nya-bs-select task-openYn-select" ng-model="vm.task.privateYn">
                             <li nya-bs-option="option in vm.privateYns" title="{{option.name}}" data-value="option.id">
@@ -192,7 +177,7 @@
                             </li>
                         </ol>
                     </td>
-                    <td>
+                    <td colspan="2">
                         <div id="repeatAddSection" class="task-calender-btn">
                             <i class="icon-append glyphicon glyphicon-retweet cursor" ng-if="vm.taskRepeatSchedule.repeatType != '' && vm.taskRepeatSchedule != null " style="float: left; padding: 12px 5px;" ng-click="vm.setPreRepeatDate()"></i>
                             <i class="icon-append fa fa-calendar cursor" style="float: left; padding: 14px 5px;" repeat-picker-toggle ng-click="vm.setPreRepeatDate()"></i>

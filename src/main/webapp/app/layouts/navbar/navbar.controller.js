@@ -5,9 +5,9 @@
         .module('wmsApp')
         .controller('NavbarController', NavbarController);
 
-    NavbarController.$inject = ['$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', '$scope', '$rootScope', 'navbarService', '$log', 'permissionCheck', 'UnreadCount', 'TodayTotalCount'];
+    NavbarController.$inject = ['$state', 'Auth', 'Principal', 'ProfileService', 'LoginService', '$scope', '$rootScope', 'navbarService', '$log', 'permissionCheck', 'UnreadCount', 'TodayTotalCount', 'toastr', 'Project'];
 
-    function NavbarController ($state, Auth, Principal, ProfileService, LoginService, $scope, $rootScope, navbarService, $log, permissionCheck, UnreadCount, TodayTotalCount) {
+    function NavbarController ($state, Auth, Principal, ProfileService, LoginService, $scope, $rootScope, navbarService, $log, permissionCheck, UnreadCount, TodayTotalCount, toastr, Project) {
         var vm = this;
         vm.baseUrl = window.location.origin;
         //$log.debug("NavbarController 탔다");
@@ -29,6 +29,23 @@
         vm.collapseNavbar = collapseNavbar;
         vm.$state = $state;
         vm.getMenu = getMenu;
+        vm.saveProject = saveProject;
+
+        function saveProject(){
+            $log.debug("세이브")
+            if(vm.project.name != '') Project.save(vm.project, onSaveSuccess, onSaveError);
+        }
+
+        function onSaveSuccess (result) {
+            $log.debug("프로젝트 생성 결과 : ", result);
+            toastr.success('프로젝트 생성 완료', '프로젝트 생성 완료');
+            $rootScope.$broadcast("projectAddClose");
+            vm.project.name = '';
+            $rootScope.$broadcast('projectReloading');
+            $state.go("my-project", {id : result.id});
+        }
+        function onSaveError () {
+        }
 
         function login() {
             collapseNavbar();
