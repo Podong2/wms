@@ -245,6 +245,9 @@
                     AND it.end_date != ''
                     AND it.end_date &lt;= #{weekEndDate}
                 </when>
+                <when test="listType == 'SCHEDULED'">
+                    AND (to_char(now(), 'YYYY-MM-DD') &lt; it.start_date OR ((it.start_date IS NULL OR it.start_date = '') AND (it.end_date IS NULL OR it.end_date = '')))
+                </when>
             </choose>
             AND it.status_id = 1
             <include refid="taskListFilterTypeQuery" />
