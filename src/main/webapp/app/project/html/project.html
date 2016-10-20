@@ -8,10 +8,9 @@
                     <div class="word-break-all" style="font-weight: bold; font-size: 16px; background: #fff; padding: 0 10px; border-bottom: 1px solid rgb(221, 221, 221);">
                         <a class="pull-right" project-dynamic-height project-info-view-yn="vm.projectInfoViewYn">{{vm.projectInfoViewYn ? '∧' : '∨'}}</a>
                         <a ui-sref="my-project.detail({project:vm.project})"><i class="fa fa-folder-open-o"></i> <span>{{vm.project.name}}</span>
-                            <span ng-show="!vm.project.folderYn">
+                            <span ng-show="vm.project.endDate != '' || vm.project.startDate != ''">
                                 [
                                 일정 :
-                                <span ng-if="vm.project.startDate == '' && vm.project.endDate == ''">미정</span>
                                 <span ng-if="vm.project.startDate != '' || vm.project.endDate != ''">{{vm.project.startDate | date : 'yyyy-MM-dd'}} ~ {{vm.project.endDate | date : 'yyyy-MM-dd'}}</span>
                                 ]
                             </span>
@@ -40,7 +39,7 @@
                                             맴버
                                         </div>
                                     </li>
-                                    <li class="row">
+                                    <li class="row" ng-show="vm.project.endDate != ''">
                                         <div class="col-md-6">
                                             <div class="project-info-count"><div>{{vm.dDay}}d</div></div>
                                         </div>

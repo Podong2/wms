@@ -310,6 +310,7 @@
         $scope.$watchGroup(['vm.project.startDate', 'vm.project.endDate',  'vm.project.statusId', 'vm.project.importantYn'], function(newValue, oldValue){
             if( newValue[0] != undefined && oldValue != newValue) {
                 vm.uploadType = 'option';
+                vm.projectReload = true;
                 projectUpload();
             }
         });
@@ -394,7 +395,10 @@
                 fileFormDataName : "file"
             }).then(function (response) {
                 toastr.success('프로젝트 수정 완료', '프로젝트 수정 완료');
-                if(vm.projectReload) $rootScope.$broadcast('projectReloading');
+                if(vm.projectReload) {
+                    $rootScope.$broadcast('projectReloading'); // 프로젝트 좌측메뉴 목록
+                    $rootScope.$broadcast('projectReload'); // 프로젝트 목록 정보
+                }
                 $rootScope.$broadcast('projectEditClose');
                 vm.project.removeAssigneeIds = "";
                 vm.project.removeProjectWatcherIds = "";
