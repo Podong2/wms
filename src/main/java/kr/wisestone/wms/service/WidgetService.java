@@ -53,77 +53,45 @@ public class WidgetService {
     @Transactional(readOnly = true)
     public TaskListWidgetDTO getTaskListWidgetData(WidgetCondition widgetCondition) {
 
-        User loginUser = SecurityUtils.getCurrentUser();
-
-        QTask $task = QTask.task;
-
-        BooleanBuilder predicate = new BooleanBuilder();
-
-        predicate.and($task.taskUsers.any().user.login.eq(loginUser.getLogin()).or($task.createdBy.eq(loginUser.getLogin())));
-        predicate.and($task.status.id.eq(Task.STATUS_ACTIVE));
+        Map<String, Object> condition = Maps.newHashMap(ImmutableMap.<String, Object>builder().
+            put("listType", widgetCondition.getListType()).
+            put("userId", SecurityUtils.getCurrentUserLogin()).
+        build());
 
         if(widgetCondition.getProjectId() != null) {
-            predicate.and($task.taskProjects.any().project.id.eq(widgetCondition.getProjectId()));
+            condition.put("projectId", widgetCondition.getProjectId());
         }
 
         switch (widgetCondition.getListType()) {
-            case LIST_TYPE_TODAY:
-
-                String today = DateUtil.getTodayWithYYYYMMDD();
-
-                predicate.and($task.period.endDate.isNotEmpty());
-                predicate.and($task.period.endDate.loe(today));
-
-                break;
             case LIST_TYPE_TOMORROW:
 
                 String tomorrow = DateUtil.convertDateToStr(DateUtil.addDays(new Date(), 1), "yyyy-MM-dd");
 
-                predicate.and($task.period.endDate.isNotEmpty());
-                predicate.and($task.period.endDate.loe(tomorrow));
+                condition.put("tomorrow", tomorrow);
 
                 break;
             case LIST_TYPE_THIS_WEEK:
 
                 String weekEndDate = DateUtil.convertDateToStr(DateUtil.getWeekEndDate(), "yyyy-MM-dd");
 
-                predicate.and($task.period.endDate.isNotEmpty());
-                predicate.and($task.period.endDate.loe(weekEndDate));
-
-                break;
-            case LIST_TYPE_SCHEDULED:
+                condition.put("tomorrow", weekEndDate);
 
                 break;
         }
-
-        List<Task> result = Lists.newArrayList(taskRepository.findAll(predicate, QTask.task.period.endDate.asc()));
 
         TaskListWidgetDTO taskListWidgetDTO = new TaskListWidgetDTO();
-
-        for(Task task : result) {
-
-            TaskDTO taskDTO = new TaskDTO(task);
-
-            taskService.copyTaskRelationProperties(task, taskDTO);
-
-            if(task.getTaskRepeatSchedule() != null && StringUtils.hasText(task.getTaskRepeatSchedule().getRepeatType())) {
-                taskListWidgetDTO.addRepeatScheduledTasks(taskDTO);
-            }
-
-            if(task.findTaskUser(loginUser, UserType.ASSIGNEE).isPresent()) {
-                taskListWidgetDTO.addAssignedTasks(taskDTO);
-            }
-
-            if(task.findTaskUser(loginUser, UserType.SHARER).isPresent()) {
-                taskListWidgetDTO.addWatchedTasks(taskDTO);
-            }
-
-            if(task.getCreatedBy().equals(loginUser.getLogin())) {
-                taskListWidgetDTO.addCreatedTasks(taskDTO);
-            }
-        }
+        taskListWidgetDTO.setAssignedTasks(this.getWidgetTaskListByFilterType(condition, "ASSIGNED"));
+        taskListWidgetDTO.setWatchedTasks(this.getWidgetTaskListByFilterType(condition, "WATCHED"));
+        taskListWidgetDTO.setCreatedTasks(this.getWidgetTaskListByFilterType(condition, "REQUESTED"));
 
         return taskListWidgetDTO;
+    }
+
+    private List<TaskDTO> getWidgetTaskListByFilterType(Map<String, Object> condition, String filterType) {
+
+        condition.put("filterType", filterType);
+
+        return this.widgetDAO.getWidgetTasks(condition);
     }
 
     @Transactional(readOnly = true)
@@ -136,7 +104,7 @@ public class WidgetService {
             put("monthStartDate", monthStartDate).
             put("monthEndDate", monthEndDate).
             put("userId", SecurityUtils.getCurrentUserLogin()).
-            build());
+        build());
 
         if(widgetCondition.getProjectId() != null) {
             condition.put("projectId", widgetCondition.getProjectId());
