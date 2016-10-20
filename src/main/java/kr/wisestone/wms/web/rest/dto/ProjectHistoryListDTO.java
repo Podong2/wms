@@ -35,7 +35,7 @@ public class ProjectHistoryListDTO implements Serializable {
 
     private String createdByName;
 
-    private Long createdByProfileImage;
+    private Long createdByImageId;
 
     private ZonedDateTime lastModifiedDate;
 
@@ -163,12 +163,12 @@ public class ProjectHistoryListDTO implements Serializable {
         this.createdByName = createdByName;
     }
 
-    public Long getCreatedByProfileImage() {
-        return createdByProfileImage;
+    public Long getCreatedByImageId() {
+        return createdByImageId;
     }
 
-    public void setCreatedByProfileImage(Long createdByProfileImage) {
-        this.createdByProfileImage = createdByProfileImage;
+    public void setCreatedByImageId(Long createdByImageId) {
+        this.createdByImageId = createdByImageId;
     }
 
     public ZonedDateTime getLastModifiedDate() {

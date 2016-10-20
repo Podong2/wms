@@ -146,7 +146,7 @@ Developement Ribbon
     border: 1px solid #faa;
     color: #fff;
     display: block;
-    font: bold 81.25% 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font: bold 81.25% "wms-default", 'Helvetica Neue', Helvetica, Arial, sans-serif;
     margin: 1px 0;
     padding: 10px 50px;
     text-align: center;
@@ -870,7 +870,7 @@ Social Buttons
 
 .date-picker-name {
     color: #818181;
-    font: 12px NanumGothic, 나눔고딕, 맑은 고딕, Apple SD Gothic Neo;
+    font: 12px "wms-default", NanumGothic, 나눔고딕, 맑은 고딕, Apple SD Gothic Neo;
     text-align: center;
     width: 100%;
     background-image: -webkit-gradient(linear, left 0%, left 100%, from(#ffffff), to(#ffffff));
@@ -898,7 +898,7 @@ Social Buttons
     margin: 0 5px;
     background: #e5e5e5;
     border-radius: 100%;
-    font-family: 'Tahoma';
+    font-family: "wms-default", 'Tahoma';
     font-size: 12px;
     text-align: center;
     text-decoration: none;
@@ -1249,7 +1249,7 @@ tr.angular-ui-tree-empty {
     border: 1px solid #ccc;
     z-index: 1060;
     max-width: 276px;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: "wms-default","Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
@@ -2197,21 +2197,21 @@ i:active, .i:active, i:focus, .i:focus{
     border-top: 1px solid #ddd;
     height: 67px;
 }
-.task-list.green{border-left: 5px solid green;}
-.task-list.blue{border-left: 5px solid blue;}
-.task-list.black{border-left: 5px solid #B119E9;}
+.task-list.green{border-left: 5px solid rgba(0, 128, 47, 0.71);}
+.task-list.blue{border-left: 5px solid rgba(0, 70, 255, 0.71);}
+.task-list.black{border-left: 5px solid rgba(171, 40, 233, 0.71);}
 .task-list.red{border-left: 5px solid #777;}
 .sub-task-popup-list{
     border-top: 1px solid #ddd;
     height: 65px;
 }
-.sub-task-popup-list.green{border-left: 5px solid green;}
-.sub-task-popup-list.blue{border-left: 5px solid blue;}
-.sub-task-popup-list.black{border-left: 5px solid #B119E9;}
+.sub-task-popup-list.green{border-left: 5px solid rgba(0, 128, 47, 0.71);}
+.sub-task-popup-list.blue{border-left: 5px solid rgba(0, 70, 255, 0.71);}
+.sub-task-popup-list.black{border-left: 5px solid rgba(171, 40, 233, 0.71);}
 .sub-task-popup-list.red{border-left: 5px solid #777;}
-td.green{border-left: 5px solid green !important;}
-td.blue{border-left: 5px solid blue !important;}
-td.black{border-left: 5px solid #B119E9 !important;}
+td.green{border-left: 5px solid rgba(0, 128, 47, 0.71) !important;}
+td.blue{border-left: 5px solid rgba(0, 70, 255, 0.71) !important;}
+td.black{border-left: 5px solid rgba(171, 40, 233, 0.71) !important;}
 td.red{border-left: 5px solid #777 !important;}
 
 .sub-task-popup-list:first-child{
@@ -2273,7 +2273,7 @@ td.red{border-left: 5px solid #777 !important;}
     margin: 2px;
     padding: 0 8px;
     display: inline-block;
-    font: 14px "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font: 14px "wms-default", "Helvetica Neue", Helvetica, Arial, sans-serif;
     height: 26px;
     line-height: 25px;
     border-radius: 15px;
@@ -2441,7 +2441,7 @@ td.red{border-left: 5px solid #777 !important;}
     top: 27px !important;
 }
 .task-repeat.active{
-    background-color: #FFE6E6 !important;
+    background-color: rgba(50, 118, 177, 0.11) !important;
 }
 .task-list-item-header, .task-list-item-footer{
     height:25px;
@@ -2628,7 +2628,7 @@ td.red{border-left: 5px solid #777 !important;}
     margin: 10px;
 }
 .notification-list.active{
-    background-color: #FFE6E6 !important;
+    background-color: rgba(50, 118, 177, 0.11) !important;
 }
 
 /* notification end */
@@ -2910,7 +2910,7 @@ text-align: right;
     }
     .gnb-task-history-area .gnb-task-history-list .history-day-title{
         text-align: center;
-        font-size: 14px;
+        font-size: 16px;
         font-weight: bold;
         color:#9bcc60;
     }
