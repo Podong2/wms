@@ -7863,12 +7863,12 @@ aside {
 #logo {
     display: inline-block;
     width: 175px;
-    margin-top: 13px;
-    margin-left: 9px
+    margin-top: 0px;
+    margin-left: 0px
 }
 
 #logo img {
-    width: 110px;
+    width: 160px;
     height: auto;
     padding-left: 3px
 }
