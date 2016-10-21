@@ -412,7 +412,10 @@ public class Task extends AbstractAuditingEntity implements Serializable, Tracea
                 logRecord.setTaskId(this.getParent().getId());
             }
 
-            logRecord.setEntityName(ClassUtils.getShortName(this.getParent().getClass()));
+
+            String entityName = ClassUtils.getShortName(this.getParent().getClass());
+
+            logRecord.setEntityName(entityName.replaceAll("_", ""));
             logRecord.setEntityField("subTasks");
             logRecord.setEntityId(this.getId());
         }

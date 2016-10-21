@@ -5,7 +5,7 @@
             <a ng-click="vm.taskHistoryOpen($index, task.id, task.historyArea)" class="project-history-title">
                 <i class="fa " ng-class="task.historyArea ? 'fa-minus' : 'fa-plus'"></i>
                 <i class="fa fa-paperclip" ng-show="task.historyType == 'SHARED_ATTACHED_FILE'"></i>
-                {{task.historyType == 'SHARED_ATTACHED_FILE' ? '파일' : task.name}} </a>
+                {{task.historyType == 'SHARED_ATTACHED_FILE' ? task.sharedAttachedFileName : task.name}} </a>
             <ul class="list-inline friends-list float-left" style="margin-bottom: 0;padding: 5px;" ng-style="{ 'margin-right' : (task.assignees.length > 3) ? '20px' : '0px' }">
                 <li ng-repeat="user in task.assignees | limitTo:3">
                     <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
@@ -29,9 +29,7 @@
             <div class="clear-both"></div>
             <div class="project-history-info clear-both" ng-show="task.historyType != 'SHARED_ATTACHED_FILE'">
                 일정 :
-                    <span ng-if="task.startDate == '' && task.endDate == ''" style="border-right: 1px solid #E4E4E4;padding-right: 4px;">미정</span>
-                    <span ng-if="task.startDate != '' || task.endDate != ''" style="border-right: 1px solid #E4E4E4;padding-right: 4px;">{{task.startDate | date : 'yyyy-MM-dd'}} ~ {{task.endDate | date : 'yyyy-MM-dd'}}</span>
-                <span ng-if="task.assignees.length > 0">, 담당자 : <span ng-repeat="user in task.assignees"> {{user.name}}</span></span>
+                <span ng-if="task.startDate == '' && task.endDate == ''" style="border-right: 1px solid #E4E4E4;padding-right: 4px;">미정</span><span ng-if="task.startDate != '' || task.endDate != ''" style="border-right: 1px solid #E4E4E4;padding-right: 4px;">{{task.startDate | date : 'yyyy-MM-dd'}} ~ {{task.endDate | date : 'yyyy-MM-dd'}}</span><span ng-if="task.assignees.length > 0">, 담당자 : <span ng-repeat="user in task.assignees"> {{user.name}}</span></span>
             </div>
         </div>
 
