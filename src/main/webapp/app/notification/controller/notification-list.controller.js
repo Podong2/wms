@@ -11,7 +11,6 @@ notificationListCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootSc
             vm.baseUrl = window.location.origin;
             //vm.showDetail = showDetail;
             vm.notificationReadChange = notificationReadChange;
-            vm.getReadList = getReadList;
             vm.getList = getList;
 
             vm.notifications=[]; // 총 목록
@@ -25,21 +24,56 @@ notificationListCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootSc
                 { status: false }  // 확인한 알림
             ];
             vm.listType = 'UN_READ';
+            // 목록 스크롤 로딩
+            $scope.taskScroll= {
+                loading : false
+            };
 
-            function getList(number){
+            /* 알림 목록 // 0 : 안읽은, 1: 읽은 */
+            function getList(number, initYn){
                 tabDisplay(number);
-                vm.listType = 'UN_READ';
-                vm.notifications = [];
-                Notification.query({listType : 'UN_READ'}, onSuccess, onError);
+                vm.initYn = initYn == undefined ? false : initYn;
+                if(number != undefined){
+                    vm.page = 1;
+                    if(number == 0) vm.listType = 'UN_READ';
+                    else vm.listType ='READ';
+                }
+                Notification.query({
+                    listType : vm.listType,
+                    page: vm.page - 1,
+                    size: 15,
+                    sort: 'desc'
+                }, onSuccess, onError);
             }
             vm.getList(0);
 
-            function getReadList(number){
-                tabDisplay(number);
-                vm.listType = 'READ';
-                vm.notifications = [];
-                Notification.query({listType : 'READ'}, onSuccess, onError);
+            function onSuccess(data, headers) {
+                $log.debug("notifications : ", data);
+                if(data.length > 0){
+                    if(vm.initYn) vm.notifications = [];
+                    angular.forEach(data, function (newValue, oldValue){
+                        vm.notifications.push(newValue)
+                    });
+                    vm.page++;
+                    $scope.taskScroll.loading = false;
+                    //if(vm.firstYn) $state.go("my-notification.taskDetail", {taskId : vm.notifications[0].taskDTO.id, listType : 'TODAY'}); // 첫 알림 상세 오픈
+                }
             }
+            function onError(error) {
+                AlertService.error(error.data.message);
+            }
+
+            ///* 읽은 알림 목록 */
+            //function getReadList(number){
+            //    tabDisplay(number);
+            //    vm.listType = 'READ';
+            //    Notification.query({
+            //        listType : 'READ',
+            //        page: vm.page - 1,
+            //        size: 15,
+            //        sort: 'desc'
+            //    }, onSuccess, onError);
+            //}
 
             //  탭메뉴 영역 표시 여부 지정
             function tabDisplay (number) {
@@ -53,22 +87,12 @@ notificationListCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootSc
                 });
             }
 
-            function onSuccess(data, headers) {
-                $log.debug("notifications : ", data);
-                if(data.length > 0){
-                    vm.notifications = data;
-                    //if(vm.firstYn) $state.go("my-notification.taskDetail", {taskId : vm.notifications[0].taskDTO.id, listType : 'TODAY'}); // 첫 알림 상세 오픈
-                }
-            }
-            function onError(error) {
-                AlertService.error(error.data.message);
-            }
-
+            /* 알림 읽음 변경 */
             function notificationReadChange(id, checkType, index){
                 vm.firstYn = false;
                 if(checkType != 'confirm') vm.notifications[index].readYn = true;
                 ReadUpload.put(id, checkType).then(function(){
-                    Notification.query({listType : vm.listType}, onSuccess, onError);
+                    getList(0, true)
                 });
             }
 

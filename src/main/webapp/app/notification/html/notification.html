@@ -13,8 +13,8 @@
                 <!--<div ui-view="taskList"></div>-->
                     <div class="pull-right notification-menu">
                         <ul class="nav nav-tabs pull-left" role="tablist">
-                            <li role="presentation" class="text-center cursor" ng-class="vm.tabArea[0].status == true ? 'active' : ''" style="width:50%"><a ng-click="vm.getList(0)">새로운 알림</a></li>
-                            <li role="presentation" class="text-center cursor" ng-class="vm.tabArea[1].status == true ? 'active' : ''" style="width:50%"><a ng-click="vm.getReadList(1)">확인한 알림</a></li>
+                            <li role="presentation" class="text-center cursor" ng-class="vm.tabArea[0].status == true ? 'active' : ''" style="width:50%"><a ng-click="vm.getList(0, true)">새로운 알림</a></li>
+                            <li role="presentation" class="text-center cursor" ng-class="vm.tabArea[1].status == true ? 'active' : ''" style="width:50%"><a ng-click="vm.getList(1, true)">확인한 알림</a></li>
                         </ul>
                         <span><i class="fa fa-cog"></i></span>
                     </div>
@@ -24,8 +24,8 @@
                         </h3>
                     </div>
 
-                    <div class="table table-bordered table-hover " style="margin-bottom: 0;">
-                        <div>
+                    <div class="table table-bordered table-hover " when-scrolled="vm.getList()" loading="taskScroll.loading" style="margin-bottom: 0; border-bottom: 1px solid #ddd; overflow: hidden; overflow-y: auto; border-top:1px solid #ddd;" >
+                        <div class="task-area" dynamic-content-scroll area-type="list">
                             <div ng-repeat="data in vm.notifications track by $index" class="task-list-repeat" ng-class="data.readYn ? 'read' : ''">
 
                                 <!-- 타스크 영역 -->
