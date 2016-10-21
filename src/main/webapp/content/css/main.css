@@ -2581,14 +2581,30 @@ td.red{border-left: 5px solid #777 !important;}
     float: left;
     list-style:none;
 }
+.project-history-title-area{
+    padding-bottom: 10px;
+    border-bottom: 1px dotted #E2E2E2;
+    margin-bottom: 10px;
+}
+
 .project-history-title{
-    font-size: 24px; float:left;
-    margin-right: 10px; color : #999;
+    font-size: 24px;
+    float:left;
+    margin-right: 10px;
+    /*color : #999;*/
     font-weight: 500;
+}
+.project-history-title-sub{
+    font-size: 16px;
+    color: #999
 }
 .project-history-info{
     margin-left: 27px;
-    font-size: 16px;
+    font-size: 14px;
+}
+.project-history-info-area{
+    border-bottom: 1px dotted #E2E2E2;
+    margin-bottom: 10px;
 }
 .project-file-btn-area{
     width: 100%;

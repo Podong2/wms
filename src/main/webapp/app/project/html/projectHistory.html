@@ -1,12 +1,12 @@
 <div style=" background-color: #fff;">
     <div ng-repeat="task in vm.tasks track by $index" ng-init="taskIndex = $index">
         <!-- 작업 타이틀&사용자 아이콘 -->
-        <div style=" margin-bottom: 15px;">
+        <div class="project-history-title-area">
             <a ng-click="vm.taskHistoryOpen($index, task.id, task.historyArea)" class="project-history-title">
                 <i class="fa " ng-class="task.historyArea ? 'fa-minus' : 'fa-plus'"></i>
                 <i class="fa fa-paperclip" ng-show="task.historyType == 'SHARED_ATTACHED_FILE'"></i>
                 {{task.historyType == 'SHARED_ATTACHED_FILE' ? '파일' : task.name}} </a>
-            <ul class="list-inline friends-list float-left" style="margin-bottom: 0">
+            <ul class="list-inline friends-list float-left" style="margin-bottom: 0;padding: 5px;" ng-style="{ 'margin-right' : (task.assignees.length > 3) ? '20px' : '0px' }">
                 <li ng-repeat="user in task.assignees | limitTo:3">
                     <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}">
                     <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}">
@@ -19,9 +19,12 @@
                     </a>
                 </li>
             </ul>
-            <span class="project-history-title">
-                {{task.historyType == 'SHARED_ATTACHED_FILE' ? vm.projectInfo.name : task.taskProjects[0].name}} {{task.lastModifiedDate | date : 'yyyy-MM-dd HH:mm' }}
-            </span>
+            <div style="padding-top: 10px;">
+                <span class="project-history-title-sub">
+                    {{task.historyType == 'SHARED_ATTACHED_FILE' ? vm.projectInfo.name : task.taskProjects[0].name}} {{task.lastModifiedDate | date : 'yyyy-MM-dd HH:mm' }}
+                </span>
+            </div>
+
             <div class="clear-both"></div>
             <div class="project-history-info clear-both" ng-show="task.historyType != 'SHARED_ATTACHED_FILE'">
                 일정 : <span ng-if="task.startDate == '' && task.endDate == ''">미정</span><span ng-if="task.startDate != '' || task.endDate != ''">{{task.startDate | date : 'yyyy-MM-dd'}} ~ {{task.endDate | date : 'yyyy-MM-dd'}}</span>, 담당자 : <span ng-repeat="user in task.assignees"> {{user.name}}</span>
@@ -29,7 +32,7 @@
         </div>
 
         <!-- 히스토리 영역 -->
-        <div ng-if="task.historyArea">
+        <div class="project-history-info-area" ng-if="task.historyArea">
             <div class="clear-both project-history-btn-area" ng-show="task.historyType != 'SHARED_ATTACHED_FILE'">
                 <span ng-click="vm.getTaskTwoDateHistory($index, task.id, true)" ng-show="!task.endDataYn">이전내용 더 보기</span>
                 <span ng-click="vm.getTaskTwoDateHistory($index, task.id, false)" ng-show="!task.endDataYn">전체보기</span>
