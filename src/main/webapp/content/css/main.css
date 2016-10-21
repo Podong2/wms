@@ -2448,7 +2448,7 @@ td.red{border-left: 5px solid #777 !important;}
 }
 .other-users-popup{
     position: absolute;
-    width : 120px;
+    width : 180px;
     min-height:30px;
     border-radius: 3px;
     border : 1px solid #ddd;
