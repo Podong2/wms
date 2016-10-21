@@ -19,15 +19,19 @@
                     </a>
                 </li>
             </ul>
-            <div style="padding-top: 10px;">
+            <div>
                 <span class="project-history-title-sub">
-                    {{task.historyType == 'SHARED_ATTACHED_FILE' ? vm.projectInfo.name : task.taskProjects[0].name}} {{task.lastModifiedDate | date : 'yyyy-MM-dd HH:mm' }}
+                    <span class="task-project-icon">{{task.historyType == 'SHARED_ATTACHED_FILE' ? vm.projectInfo.name : task.taskProjects[0].name}}</span>
+                    {{task.lastModifiedDate | date : 'yyyy-MM-dd HH:mm' }} 수정됨
                 </span>
             </div>
 
             <div class="clear-both"></div>
             <div class="project-history-info clear-both" ng-show="task.historyType != 'SHARED_ATTACHED_FILE'">
-                일정 : <span ng-if="task.startDate == '' && task.endDate == ''">미정</span><span ng-if="task.startDate != '' || task.endDate != ''">{{task.startDate | date : 'yyyy-MM-dd'}} ~ {{task.endDate | date : 'yyyy-MM-dd'}}</span>, 담당자 : <span ng-repeat="user in task.assignees"> {{user.name}}</span>
+                일정 :
+                    <span ng-if="task.startDate == '' && task.endDate == ''" style="border-right: 1px solid #E4E4E4;padding-right: 4px;">미정</span>
+                    <span ng-if="task.startDate != '' || task.endDate != ''" style="border-right: 1px solid #E4E4E4;padding-right: 4px;">{{task.startDate | date : 'yyyy-MM-dd'}} ~ {{task.endDate | date : 'yyyy-MM-dd'}}</span>
+                <span ng-if="task.assignees.length > 0">, 담당자 : <span ng-repeat="user in task.assignees"> {{user.name}}</span></span>
             </div>
         </div>
 

@@ -2595,12 +2595,28 @@ td.red{border-left: 5px solid #777 !important;}
     font-weight: 500;
 }
 .project-history-title-sub{
-    font-size: 16px;
-    color: #999
+    font-size: 13px;
+    color: #B2B2B2
 }
 .project-history-info{
     margin-left: 27px;
     font-size: 14px;
+}
+
+.project-history-title-sub .task-project-icon {
+    height: 26px;
+    background-color: #528CE0;
+    padding: 4px;
+    margin: 5px 8px 0px 0px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    color: #fff;
+    display: inline-block;
+    max-width: 150px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .project-history-info-area{
     border-bottom: 1px dotted #E2E2E2;
