@@ -44,7 +44,9 @@ public class ProjectTaskManageDTO {
         ).count();
 
         Long delayedCount = tasks.stream().filter(
-            TaskDTO::getDelayYn
+            taskDTO
+                -> !taskDTO.getStatusId().equals(Task.STATUS_CANCEL) && !taskDTO.getStatusId().equals(Task.STATUS_HOLD)
+                    && !taskDTO.getStatusId().equals(Task.STATUS_COMPLETE) && taskDTO.getDelayYn()
         ).count();
 
         Long totalCount = (long) tasks.size();
