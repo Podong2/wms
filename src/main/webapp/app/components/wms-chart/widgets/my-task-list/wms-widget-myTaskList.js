@@ -39,12 +39,14 @@ angular.module('wms.widget.myTaskList', ['adf.provider'])
           controllerAs : 'vm'
         }
       });
-  }]).controller('myTaskListCtrl', ["$scope", 'DashboardMyTask', '$log', function($scope, DashboardMyTask, $log){
+  }]).controller('myTaskListCtrl', ["$scope", 'DashboardMyTask', '$log', 'TaskInfo', '$state', function($scope, DashboardMyTask, $log, TaskInfo, $state){
     var vm = this;
     vm.baseUrl = window.location.origin;
     vm.getTodayTask = getTodayTask;
     vm.taskTypeChange = taskTypeChange;
+    vm.openTaskPopup = openTaskPopup;
     vm.listType = "TODAY";
+    vm.pageType = 'task';
     vm.taskType = 'ASSIGNED';
 
     function taskTypeChange(type){
@@ -59,6 +61,26 @@ angular.module('wms.widget.myTaskList', ['adf.provider'])
         vm.task = result;
     }
     function error(){
+
+    }
+
+    // 작업 상세 팝업 오픈 테스트
+    function openTaskPopup(taskId, listType){
+        $log.debug("taskId : ", taskId)
+        TaskInfo.get({id : taskId}, successTask, erorrTask);
+
+        //var editModalConfig = {
+        //    size : "lg",
+        //    url : "app/task/html/modal/taskDetailPopup.html",
+        //    ctrl : "TaskDetailCtrl"
+        //};
+        //
+        //ModalService.openModal(editModalConfig);
+    }
+    function successTask(result){
+        $state.go("my-task.detailPopup", {task : result})
+    }
+    function erorrTask(){
 
     }
 

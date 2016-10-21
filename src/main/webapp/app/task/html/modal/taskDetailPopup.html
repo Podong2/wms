@@ -470,7 +470,7 @@
                                 </tbody>
                             </table>
 
-                            <div ng-show="vm.subTaskOpen && vm.task.modifyYn">
+                            <div ng-show="vm.subTaskOpen && vm.task.modifyYn && !vm.task.privateYn">
                                 <input type="text" class="form-control subTask-input" ng-model="vm.subTask.name" enter-submit="vm.subTaskSave()" placeholder=" 추가할 작업명을 입력하세요."/>
                             </div>
                         </div>
