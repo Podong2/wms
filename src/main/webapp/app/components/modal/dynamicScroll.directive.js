@@ -65,6 +65,9 @@ angular.module('wmsApp')
                     }else if(scope.areaType == 'project-function-file'){
                         minusHeight = 230;
                         $(tElement).css("height", (window.innerHeight - minusHeight) + "px");
+                    }else if(scope.areaType == 'project-function-history'){
+                        minusHeight = 170;
+                        $(tElement).css("height", (window.innerHeight - minusHeight) + "px");
                     }else if(scope.areaType == 'project-list'){
                         minusHeight = 229;
                         $(tElement).parent().css("height", (window.innerHeight - minusHeight) + "px");
