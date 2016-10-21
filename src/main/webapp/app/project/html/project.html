@@ -24,9 +24,9 @@
                             </div>
                             <div class="col-md-3" style="padding: 70px 0 0;">
                                 <ul>
-                                    <li><a class="cursor" ng-click="vm.getTaskListInProjectFilter('TOTAL')">전체</a></li>
-                                    <li><a class="cursor" ng-click="vm.getTaskListInProjectFilter('WEEK')">이번주</a></li>
-                                    <li><a class="cursor" ng-click="vm.getTaskListInProjectFilter('DELAYED')">지연된 작업</a></li>
+                                    <li><a class="cursor" style="font-size: 16px;font-weight: bold;" ng-click="vm.getTaskListInProjectFilter('TOTAL')">전체</a></li>
+                                    <li><a class="cursor" style="font-size: 16px;font-weight: bold;" ng-click="vm.getTaskListInProjectFilter('WEEK')">이번주</a></li>
+                                    <li><a class="cursor" style="font-size: 16px;font-weight: bold;" ng-click="vm.getTaskListInProjectFilter('DELAYED')">지연된 작업</a></li>
                                 </ul>
                             </div>
                             <div class="col-md-4 project-info-count-area">
@@ -36,7 +36,7 @@
                                             <div class="project-info-count"><div>{{vm.projectTeam.length}}</div></div>
                                         </div>
                                         <div class="col-md-6 project-info-count-column">
-                                            맴버
+                                            멤버
                                         </div>
                                     </li>
                                     <li class="row" ng-show="vm.project.endDate != ''">

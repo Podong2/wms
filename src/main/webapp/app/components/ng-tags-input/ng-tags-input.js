@@ -1319,7 +1319,7 @@ tagsInput.run(["$templateCache", function($templateCache) {
   $templateCache.put('ngTagsInput/tag-item-user.html',
     "<div class='tag-template'>" +
     "<div class='left-panel'>" +
-    "<img ng-src='/api/attachedFile/{{data.profileImageId}}' ng-if='data.profileImageId !=null' /><img ng-src='/content/images/demo/male.png' ng-if='data.profileImageId ==null' />" +
+    "<img style='background-color: #ffffff;' ng-src='/api/attachedFile/{{data.profileImageId}}' ng-if='data.profileImageId !=null' /><img ng-src='/content/images/demo/male.png' ng-if='data.profileImageId ==null' />" +
     "</div>" +
     "<div class='right-panel' close-btn-display>" +
     "<span>{{data.name}}</span><!-- ng-show='tagList.length < 4'-->" +

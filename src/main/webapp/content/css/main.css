@@ -2448,7 +2448,7 @@ td.red{border-left: 5px solid #777 !important;}
 }
 .other-users-popup{
     position: absolute;
-    width : 120px;
+    width : 180px;
     min-height:30px;
     border-radius: 3px;
     border : 1px solid #ddd;
@@ -2883,9 +2883,9 @@ div.bhoechie-tab-menu div.list-group>a.active:after{
 div.bhoechie-tab-content{
     background-color: #ffffff;
     padding: 0px 0px 0px 0px;
-    max-height: 234px;
-    min-height: 234px;
-    height: 234px;
+    max-height: 233px;
+    min-height: 233px;
+    height: 233px;
     overflow: hidden;
     overflow-y: auto;
 }
@@ -3625,7 +3625,7 @@ h1, h2, h3, h4, h5, h6 {
     background: #fff; border-radius: 50%; border: 1px solid #c8def4; height: 50px; width: 50px; padding-top: 15px;
 }
 .project-info-count-area .project-info-count-column{
-    line-height: 50px; padding-left: 0;
+    line-height: 50px; padding-left: 0; font-size: 16px;
 }
 .project-info-count-area .project-info-count div{
     width: 100%; text-align: center;
