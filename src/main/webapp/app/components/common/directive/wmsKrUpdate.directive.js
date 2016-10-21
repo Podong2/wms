@@ -14,40 +14,48 @@ function wmsKrUpdate() {
 
                 var blank_pattern = /^\s+|\s+$/g;
 
-                element.keyup(function () {
-                    if (element.val().length > 0) {
-                        if (element.val().replace(blank_pattern, '') == "") {
-                            element.val("");
-                            return false;
+                element.keyup(function (event) {
+                    if (event.keyCode !== 40) {
+                        if (element.val().length > 0) {
+                            if (element.val().replace(blank_pattern, '') == "") {
+                                element.val("");
+                                return false;
+                            }
                         }
+                        ngModel.$setViewValue(element.val());
+                        scope.$apply();
                     }
 
-                    ngModel.$setViewValue(element.val());
-                    scope.$apply();
+
                 });
 
-                element.blur(function () {
-                    if (element.val().length > 0) {
-                        if (element.val().replace(blank_pattern, '') == "") {
-                            element.val("");
-                            return false;
+                element.blur(function (event) {
+                    if (event.keyCode !== 40) {
+                        if (element.val().length > 0) {
+                            if (element.val().replace(blank_pattern, '') == "") {
+                                element.val("");
+                                return false;
+                            }
                         }
-                    }
 
-                    ngModel.$setViewValue(element.val());
-                    scope.$apply();
+                        ngModel.$setViewValue(element.val());
+                        scope.$apply();
+                    }
                 });
 
-                element.keydown(function () {
-                    if (element.val().length > 0) {
-                        if (element.val().replace(blank_pattern, '') == "") {
-                            element.val("");
-                            return false;
+                element.keydown(function (event) {
+                    if (event.keyCode !== 40) {
+                        if (element.val().length > 0) {
+                            if (element.val().replace(blank_pattern, '') == "") {
+                                element.val("");
+                                return false;
+                            }
                         }
+                        ngModel.$setViewValue(element.val());
+                        scope.$apply();
                     }
 
-                    ngModel.$setViewValue(element.val());
-                    scope.$apply();
+
                 });
             }
         }

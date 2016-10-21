@@ -75,10 +75,10 @@
         .config(config)
         .run(run);
 
-    config.$inject = ['nyaBsConfigProvider', 'dashboardProvider', '$compileProvider', 'toastrConfig'];
+    config.$inject = ['nyaBsConfigProvider', 'dashboardProvider', '$compileProvider', 'toastrConfig', 'tagsInputConfigProvider'];
     run.$inject = ['stateHandler', 'translationHandler', 'editableOptions'];
 
-    function config(nyaBsConfigProvider, dashboardProvider, $compileProvider, toastrConfig) {
+    function config(nyaBsConfigProvider, dashboardProvider, $compileProvider, toastrConfig, tagsInputConfigProvider) {
         $compileProvider.debugInfoEnabled(false); // Remove debug info (angularJS >= 1.3)
 
         nyaBsConfigProvider.setLocalizedText('ko', {
@@ -144,6 +144,8 @@
             titleClass: 'toast-title',
             toastClass: 'toast'
         });
+
+        tagsInputConfigProvider.setTextAutosizeThreshold(30);
     }
 
     function run(stateHandler, translationHandler, editableOptions) {

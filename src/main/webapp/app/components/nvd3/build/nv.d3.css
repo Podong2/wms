@@ -289,7 +289,8 @@ svg.nvd3-svg {
 
 
 .nvd3 text {
-    font: normal 12px Arial;
+    font: 12px Arial;
+    font-family: "wms-default", serif;
 }
 
 .nvd3 .title {
@@ -386,7 +387,7 @@ svg.nvd3-svg {
     stroke-opacity: .7;
 }
 
-.nvd3 .nv-parallelCoordinates-brush .extent 
+.nvd3 .nv-parallelCoordinates-brush .extent
 {
     fill: #fff;
     fill-opacity: .6;
@@ -405,7 +406,7 @@ svg.nvd3-svg {
   stroke: black;
   stroke-width: 1;
   stroke-opacity: 1;
-  stroke-dasharray: 5, 5; 
+  stroke-dasharray: 5, 5;
 }
 .nvd3.nv-pie path {
     stroke-opacity: 0;

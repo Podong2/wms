@@ -213,7 +213,8 @@ tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tag
         controller: ["$scope", "$attrs", "$element", "$rootScope", "ModalService", function($scope, $attrs, $element, $rootScope, ModalService) {
             $scope.events = tiUtil.simplePubSub();
             $scope.baseUrl = window.location.origin;
-            $scope.duplicateName = '';
+            $scope.duplicateName = ''; // hsy 중복값
+            $scope.duplicateYn = false; // hsy 중복여부
             tagsInputConfig.load('tagsInput', $scope, $attrs, {
                 template: [String, $scope.templateUrl],
                 type: [String, 'text', validateType],
@@ -253,6 +254,16 @@ tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tag
                     },
                     resetTag: function(tag) {
                         return $scope.tagList.remove(0);
+                    },
+                    resetDuplicationName: function() { // 중복값고 중복여부를 초기화시킨다.
+                        $scope.duplicateYn = false;
+                        return $scope.duplicateName ='';
+                    },
+                    getDuplicateYn: function() { // 중복여부 체크 function
+                        return $scope.duplicateYn;
+                    },
+                    getDuplicateName: function() { // hsy 중복값 체크 용도 test function
+                        return $scope.duplicateName;
                     },
                     getTags: function() {
                         return $scope.tagList.items;
@@ -322,16 +333,17 @@ tagsInput.directive('tagsInput', ["$timeout", "$document", "$window", "$q", "tag
             scope.newTag = {
                 text: function(value) {
                     if (angular.isDefined(value)) {
-                        //console.log("scope.duplicateName : " + scope.duplicateName)
-                        //console.log("value : " + value)
-                        //if(scope.duplicateName != value && value != ''){
-                        //    scope.duplicateName = value;
-                        //}else if(scope.duplicateName == value){
-                        //    return value;
-                        //}
+                        if(scope.duplicateName != value && value != ''){ // hsy 이전값과 최근값이 다르면 중복값에 최근값을 저장한다.
+                            scope.duplicateName = value;
+                        }else if(scope.duplicateName == value){ // hsy 이전 입력값고 최근입력값이 동일하면 duplicateYn 줘서 검색된 사용자목록창을 닫지않고 유지시킨다.
+                            scope.text = value;
+                            scope.duplicateName = '';
+                            scope.duplicateYn = true;
+                            return
+                        }
 
                         scope.text = value;
-                        events.trigger('input-change', value);
+                        events.trigger('input-change', value); // hsy input에 값이 변경되었으면 input-change 이벤트를 호출한다.
                     }
                     else {
                         return scope.text || '';
@@ -822,12 +834,17 @@ tagsInput.directive('autoComplete', ["$document", "$timeout", "$sce", "$q", "tag
                     suggestionList.reset();
                 })
                 .on('input-change', function(value) {
-                    if (shouldLoadSuggestions(value)) {
+                    if (shouldLoadSuggestions(value)) { // value가 있으면 사용자 로드 하고 '' 이면 suggestionList.reset(); 이였는데 중복값 초기화로 변경
 
                         suggestionList.load(value, tagsInput.getTags());
                     }
                     else {
-                        suggestionList.reset();
+                        if(shouldLoadSuggestions(value) && !tagsInput.getDuplicateYn()){ // hsy value값이 null 이 아니고 중복체크상태가 false라면
+                            tagsInput.getDuplicateName();
+                            //suggestionList.reset();
+                            tagsInput.resetDuplicationName(); // 중복체크값을 초기화 시킨다.
+                        }else{
+                        }
                     }
                 })
                 .on('input-focus', function() {
@@ -860,6 +877,7 @@ tagsInput.directive('autoComplete', ["$document", "$timeout", "$sce", "$q", "tag
                         }
                         else if (key === KEYS.enter || key === KEYS.tab) {
                             handled = scope.addSuggestion();
+                            tagsInput.resetDuplicationName(); // hsy 태그 입력 후 중복체크값을 초기화 시킨다.
                         }
                     }
                     else {
@@ -1029,7 +1047,6 @@ function closeBtnDisplay($timeout) {
         }
     }
 }
-
 
     /**
  * @ngdoc service

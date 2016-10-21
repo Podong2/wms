@@ -270,7 +270,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     {
                         key: "지연",
                         y: vm.counts.delayedCount,
-                        color : '#FF8D8D',
+                        color : '#FF6161',
                         callback: function () {
                             chartFiltering('DELAYED');
                         }
@@ -278,7 +278,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     {
                         key: "보류",
                         y: vm.counts.holdCount,
-                        color : '#EC8DFF',
+                        color : '#E663FF',
                         callback: function () {
                             chartFiltering('HOLD');
                         }
@@ -286,7 +286,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     {
                         key: "진행",
                         y: vm.counts.inProgressCount,
-                        color : '#8DA2FF',
+                        color : '#5B79FF',
                         callback: function () {
                             chartFiltering('IN_PROGRESS');
                         }
@@ -294,7 +294,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     {
                         key: "완료",
                         y: vm.counts.completeCount,
-                        color : '#91FF8D',
+                        color : '#60FF5A',
                         callback: function () {
                             chartFiltering('COMPLETE');
                         }
@@ -302,7 +302,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     {
                         key: "취소",
                         y: vm.counts.cancelCount,
-                        color : '#CCCCCC',
+                        color : '#BFBFBF',
                         callback: function () {
                             chartFiltering('CANCEL');
                         }
@@ -321,7 +321,8 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                         title: "총 "+(vm.counts.delayedCount + vm.counts.holdCount + vm.counts.inProgressCount + vm.counts.completeCount + vm.counts.cancelCount)+"건",
                         labelThreshold: 0.01,
                         labelSunbeamLayout: false, // 그래프 내 텍스트 회전 옵션
-                        showLegend: false
+                        showLegend: false,
+                        growOnHover : false
                         // legend: {
                         //     margin: {
                         //         top: 5,
