@@ -3625,7 +3625,7 @@ h1, h2, h3, h4, h5, h6 {
     background: #fff; border-radius: 50%; border: 1px solid #c8def4; height: 50px; width: 50px; padding-top: 15px;
 }
 .project-info-count-area .project-info-count-column{
-    line-height: 50px; padding-left: 0;
+    line-height: 50px; padding-left: 0; font-size: 16px;
 }
 .project-info-count-area .project-info-count div{
     width: 100%; text-align: center;
