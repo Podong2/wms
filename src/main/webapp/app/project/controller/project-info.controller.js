@@ -270,7 +270,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     {
                         key: "지연",
                         y: vm.counts.delayedCount,
-                        color : '#FF333F',
+                        color : '#FF8D8D',
                         callback: function () {
                             chartFiltering('DELAYED');
                         }
@@ -278,7 +278,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     {
                         key: "보류",
                         y: vm.counts.holdCount,
-                        color : '#FF5ADB',
+                        color : '#EC8DFF',
                         callback: function () {
                             chartFiltering('HOLD');
                         }
@@ -286,7 +286,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     {
                         key: "진행",
                         y: vm.counts.inProgressCount,
-                        color : '#2276BF',
+                        color : '#8DA2FF',
                         callback: function () {
                             chartFiltering('IN_PROGRESS');
                         }
@@ -294,7 +294,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     {
                         key: "완료",
                         y: vm.counts.completeCount,
-                        color : '#99E865',
+                        color : '#91FF8D',
                         callback: function () {
                             chartFiltering('COMPLETE');
                         }
@@ -302,7 +302,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     {
                         key: "취소",
                         y: vm.counts.cancelCount,
-                        color : '#565953',
+                        color : '#CCCCCC',
                         callback: function () {
                             chartFiltering('CANCEL');
                         }
