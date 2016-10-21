@@ -10,6 +10,7 @@ import kr.wisestone.wms.common.util.WebAppUtil;
 import kr.wisestone.wms.domain.*;
 import kr.wisestone.wms.repository.NotificationRepository;
 import kr.wisestone.wms.repository.TaskRepository;
+import kr.wisestone.wms.repository.dao.NotificationDAO;
 import kr.wisestone.wms.repository.dao.ProjectDAO;
 import kr.wisestone.wms.repository.dao.TaskDAO;
 import kr.wisestone.wms.repository.search.NotificationSearchRepository;
@@ -83,6 +84,9 @@ public class NotificationService {
     private ProjectDAO projectDAO;
 
     @Inject
+    private NotificationDAO notificationDAO;
+
+    @Inject
     private TaskRepository taskRepository;
 
     /**
@@ -107,53 +111,20 @@ public class NotificationService {
      *  @return the list of entities
      */
     @Transactional(readOnly = true)
-    public Page<NotificationDTO> findAll(String listType, Pageable pageable) {
+    public List<NotificationDTO> findAll(String listType, Pageable pageable) {
 
         User loginUser = SecurityUtils.getCurrentUser();
 
-        QNotification $notification = QNotification.notification;
-        QNotificationRecipient $notificationRecipient = QNotificationRecipient.notificationRecipient;
+        Map<String, Object> condition = Maps.newHashMap(ImmutableMap.<String, Object>builder().
+            put("userId", loginUser.getId()).
+            put("listType", listType).
+            put("offset", pageable.getOffset()).
+            put("limit", pageable.getPageSize()).
+            build());
 
-        BooleanBuilder predicate = new BooleanBuilder();
-        BooleanBuilder readStatusPredicate = new BooleanBuilder();
+        List<NotificationDTO> notificationDTOs = this.notificationDAO.getNotifications(condition);
 
-        if("UN_READ".equals(listType)) {
-            readStatusPredicate.and($notificationRecipient.confirmYn.isFalse());
-        } else {
-            readStatusPredicate.and($notificationRecipient.confirmYn.isTrue());
-        }
-
-        predicate.and($notification.id.in(new JPASubQuery()
-            .from($notificationRecipient)
-            .where($notificationRecipient.recipient.eq(loginUser.getId()).and(readStatusPredicate))
-            .list($notificationRecipient.notification.id)));
-
-        log.debug("Request to get all Notifications");
-        Page<Notification> result = notificationRepository.findAll(predicate, PaginationUtil.applySort(pageable, Sort.Direction.DESC, "createdDate"));
-
-        List<NotificationDTO> notificationDTOs = Lists.newArrayList();
-
-        for(Notification notification : result.getContent()) {
-
-            NotificationDTO notificationDTO = notificationMapper.notificationToNotificationDTO(notification);
-
-            if(notification.getSender() != null) {
-                User sender = this.userService.findOne(notification.getSender());
-                notificationDTO.setSender(this.userMapper.userToUserDTO(sender));
-            }
-
-            if("Task".equalsIgnoreCase(notificationDTO.getEntityName())) {
-                notificationDTO.setTaskDTO(this.taskDAO.getTask(notificationDTO.getEntityId()));
-            } else if("Project".equalsIgnoreCase(notificationDTO.getEntityName())) {
-                notificationDTO.setProjectDTO(this.projectDAO.getProject(notificationDTO.getEntityId()));
-            }
-
-            notificationDTO.setReadYn(notification.checkReadYn(loginUser.getId()));
-
-            notificationDTOs.add(notificationDTO);
-        }
-
-        return new PageImpl<>(notificationDTOs, pageable, result.getTotalElements());
+        return notificationDTOs;
     }
 
     /**
@@ -254,7 +225,7 @@ public class NotificationService {
         String title = this.getTaskNotificationTitle(createdTaskDTO);
 
         NotificationParameterDTO notificationParameterVo = new NotificationParameterDTO(
-            notificationConfig, notifyMethod, title, contents, userMapper.userToUserDTO(loginUser), toUsers, createdTaskDTO);
+            notificationConfig, notifyMethod, title, contents, userMapper.userToUserDTO(loginUser), toUsers.stream().distinct().collect(Collectors.toList()), createdTaskDTO);
 
         this.saveAndSendNotification(notificationParameterVo);
     }
@@ -302,7 +273,7 @@ public class NotificationService {
 
         if(!toUsers.isEmpty()) {
             NotificationParameterDTO notificationParameterVo = new NotificationParameterDTO(
-                notificationConfig, notifyMethod, title, contents, userMapper.userToUserDTO(loginUser), toUsers, traceLog);
+                notificationConfig, notifyMethod, title, contents, userMapper.userToUserDTO(loginUser), toUsers.stream().distinct().collect(Collectors.toList()), traceLog);
 
             this.saveAndSendNotification(notificationParameterVo);
         }

@@ -1,0 +1,138 @@
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="kr.wisestone.wms.domain.Notification">
+
+    <resultMap id="notificationListResultMap" type="kr.wisestone.wms.web.rest.dto.NotificationDTO">
+        <id property="id" column="id" />
+        <result property="title" column="title"/>
+        <result property="contents" column="contents"/>
+        <result property="entityId" column="entityId"/>
+        <result property="entityName" column="entityName"/>
+        <result property="entityField" column="entityField"/>
+        <result property="entityValue" column="entityValue"/>
+        <result property="etcValue" column="etcValue"/>
+        <result property="persistType" column="persistType"/>
+        <result property="readYn" column="readYn"/>
+        <association property="sender" select="getSender" column="createdBy" javaType="kr.wisestone.wms.web.rest.dto.UserDTO" />
+        <association property="taskDTO" select="getNotificationTask" column="taskId" javaType="kr.wisestone.wms.web.rest.dto.TaskDTO" />
+        <association property="projectDTO" select="getNotificationProject" column="projectId" javaType="kr.wisestone.wms.web.rest.dto.ProjectDTO" />
+    </resultMap>
+
+    <resultMap id="linkedTaskResultMap" type="kr.wisestone.wms.web.rest.dto.TaskDTO">
+        <id property="id" column="id" />
+        <result property="name" column="name"/>
+        <result property="startDate" column="startDate"/>
+        <result property="endDate" column="endDate"/>
+        <result property="statusId" column="statusId"/>
+        <result property="statusName" column="statusName"/>
+        <result property="createdBy" column="createdBy"/>
+        <result property="createdDate" column="createdDate"/>
+        <result property="lastModifiedBy" column="lastModifiedBy"/>
+        <result property="lastModifiedDate" column="lastModifiedDate"/>
+        <collection property="assignees" javaType="java.util.ArrayList" resultMap="assigneeUserResultMap"/>
+    </resultMap>
+
+    <resultMap id="assigneeUserResultMap" type="kr.wisestone.wms.web.rest.dto.UserDTO">
+        <id property="id" column="assigneeId" />
+        <result property="name" column="assigneeName"/>
+        <result property="login" column="assigneeLogin"/>
+        <result property="profileImageId" column="assigneeProfileImageId"/>
+        <result property="phone" column="assigneePhone"/>
+        <result property="email" column="assigneeEmail"/>
+    </resultMap>
+
+    <resultMap id="projectResultMap" type="kr.wisestone.wms.web.rest.dto.ProjectDTO">
+        <id property="id" column="id" />
+        <result property="name" column="name"/>
+        <result property="folderYn" column="folderYn"/>
+        <result property="createdBy" column="createdBy"/>
+        <result property="createdDate" column="createdDate"/>
+        <result property="lastModifiedBy" column="lastModifiedBy"/>
+        <result property="lastModifiedDate" column="lastModifiedDate"/>
+    </resultMap>
+
+    <resultMap id="userResultMap" type="kr.wisestone.wms.web.rest.dto.UserDTO">
+        <id property="id" column="id" />
+        <result property="name" column="name"/>
+        <result property="login" column="login"/>
+        <result property="profileImageId" column="profileImageId"/>
+        <result property="phone" column="phone"/>
+        <result property="email" column="email"/>
+    </resultMap>
+
+    <select id="getNotificationTask" resultMap="linkedTaskResultMap">
+        SELECT t.id as id, t.name as name, t.start_Date as startDate, t.end_date as endDate
+        , tc.id as statusId, tc.name as statusName
+        , u.id as assigneeId, u.name as assigneeName, u.profile_image_id as assigneeProfileImageId
+        , u.phone as assigneePhone, u.email as assigneeEmail, u.login as assigneeLogin
+        , t.created_by as createdBy, t.created_date as createdDate
+        , t.last_modified_by as lastModifiedBy, t.last_modified_date as lastModifiedDate
+        FROM owl_task t
+        LEFT JOIN owl_code tc ON t.status_id = tc.id
+        LEFT OUTER JOIN owl_task_user tu ON tu.task_id = t.id AND tu.user_type = 'ASSIGNEE'
+        LEFT JOIN owl_user u ON tu.user_id = u.id
+        WHERE t.id = #{entityId}
+    </select>
+
+    <select id="getNotificationProject" resultMap="projectResultMap">
+        SELECT p.id as id, p.name as name
+        , CASE
+        WHEN p.folder_yn = 'Y' THEN true
+        WHEN p.folder_yn = 'N' THEN false
+        END as folderYn
+        , p.created_by as createdBy, p.created_date as createdDate
+        , p.last_modified_by as lastModifiedBy, p.last_modified_date as lastModifiedDate
+        FROM owl_project p
+        WHERE p.id = #{entityId}
+    </select>
+
+    <select id="getSender" resultMap="userResultMap">
+        SELECT u.id as id, u.name as name, u.profile_image_id as profileImageId, u.phone as phone, u.email as email, u.login as login
+        , u.created_by as createdBy, u.created_date as createdDate
+        , u.last_modified_by as lastModifiedBy, u.last_modified_date as lastModifiedDate
+        FROM owl_user u
+        WHERE u.login = #{createdBy}
+    </select>
+
+    <select id="getNotifications" resultType="java.util.ArrayList" resultMap="notificationListResultMap" parameterType="java.util.HashMap">
+        SELECT n.id as id, n.title as title, n.contents as contents
+            , n.entity_id as entityId, n.entity_name as entityName, n.entity_field as entityField
+            , n.entity_value as entityValue, n.etc_value as etcValue, n.persist_type as persistType
+            , CASE
+                WHEN n.entity_name = 'Task' THEN n.entity_id
+                WHEN n.entity_name = 'Task_' THEN n.entity_id
+                ELSE null
+            END as taskId
+            , CASE
+                WHEN n.entity_name = 'Project' THEN n.entity_id
+                ELSE null
+            END as projectId
+            , (SELECT
+                CASE
+                    WHEN nr.read_yn = 'Y' THEN true
+                    WHEN nr.read_yn = 'N' THEN false
+                END as readYn
+                FROM owl_notification_recipient nr
+                WHERE nr.recipient_id = #{userId}
+                AND nr.notification_id = n.id
+            ) as readYn
+            , n.created_by as createdBy, n.created_date as createdDate, n.last_modified_by as lastModifiedBy, n.last_modified_date as lastModifiedDate
+
+        FROM owl_notification n
+        WHERE n.id IN (
+            SELECT nr.notification_id
+            FROM owl_notification_recipient nr
+            WHERE nr.recipient_id = #{userId}
+            <if test="listType == 'UN_READ'">
+                AND nr.confirm_yn = 'N'
+            </if>
+            <if test="listType == 'READ'">
+                AND nr.confirm_yn = 'Y'
+            </if>
+        )
+        OFFSET #{offset} LIMIT #{limit}
+    </select>
+
+</mapper>

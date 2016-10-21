@@ -56,9 +56,8 @@ public class NotificationResource {
 
         throws URISyntaxException {
         log.debug("REST request to get a page of Notifications");
-        Page<NotificationDTO> page = notificationService.findAll(listType, pageable);
-        HttpHeaders headers = PaginationUtil.generatePaginationHttpHeaders(page, "/api/notifications");
-        return new ResponseEntity<>(page.getContent(), headers, HttpStatus.OK);
+        List<NotificationDTO> notificationDTOs = notificationService.findAll(listType, pageable);
+        return new ResponseEntity<>(notificationDTOs, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/notifications/getUnreadCount",
