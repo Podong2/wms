@@ -39,12 +39,14 @@ angular.module('wms.widget.myProjectTaskList', ['adf.provider'])
           controllerAs : 'vm'
         }
       });
-  }]).controller('myProjectTaskListCtrl', ["$scope", 'DashboardMyTask', '$log', 'Project', function($scope, DashboardMyTask, $log, Project){
+  }]).controller('myProjectTaskListCtrl', ["$scope", 'DashboardMyTask', '$log', 'Project', 'TaskInfo', '$state', function($scope, DashboardMyTask, $log, Project, TaskInfo, $state){
     var vm = this;
     vm.baseUrl = window.location.origin;
     vm.getTodayTask = getTodayTask;
     vm.taskTypeChange = taskTypeChange;
+    vm.openTaskPopup = openTaskPopup;
     vm.listType = "TODAY";
+    vm.pageType = 'task';
     vm.taskType = 'ASSIGNED';
     vm.projectList=[{
         contents:null,
@@ -85,6 +87,27 @@ angular.module('wms.widget.myProjectTaskList', ['adf.provider'])
     $scope.$watchCollection('vm.projectId', function(oldValue, newValue){
         DashboardMyTask.get({listType : vm.listType, projectId : vm.projectId}, success, error)
     });
+
+    // 작업 상세 팝업 오픈 테스트
+    function openTaskPopup(taskId, listType){
+        $log.debug("taskId : ", taskId)
+        TaskInfo.get({id : taskId}, successTask, erorrTask);
+
+        //var editModalConfig = {
+        //    size : "lg",
+        //    url : "app/task/html/modal/taskDetailPopup.html",
+        //    ctrl : "TaskDetailCtrl"
+        //};
+        //
+        //ModalService.openModal(editModalConfig);
+    }
+    function successTask(result){
+        $state.go("my-task.detailPopup", {task : result})
+    }
+    function erorrTask(){
+
+    }
+
 
     getTodayTask(); //오늘 작업
     getProjectList(); // 프로젝트 목록(최상위 프로젝트만 씀)
