@@ -221,16 +221,17 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             function onSuccess(data, headers) {
                 $log.debug("프로젝트 및 작업 정보 : ", data);
                 if(vm.page == 1 || vm.reloadYn) vm.tasks=[];
+                vm.info = _.clone(data);
                 vm.project = data.project;
-                vm.info = data;
                 angular.forEach(data.tasks, function(task){
                     vm.tasks.push(task);
                 });
+                vm.counts.delayedCount = data.delayedCount;
+                vm.counts.holdCount = data.holdCount;
+                vm.counts.inProgressCount = data.inProgressCount;
+                vm.counts.completeCount = data.completeCount;
+                vm.counts.cancelCount = data.cancelCount;
                 if(!vm.firstLoding){
-                    vm.counts.delayedCount = vm.info.delayedCount;
-                    vm.counts.holdCount = vm.info.holdCount;
-                    vm.counts.inProgressCount = vm.info.inProgressCount;
-                    vm.counts.completeCount = vm.info.completeCount;
                     $state.go("my-project.detail", {project : vm.project});
                 }
                 vm.firstLoding = true;
@@ -269,6 +270,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     {
                         key: "지연",
                         y: vm.counts.delayedCount,
+                        color : '#FF8D8D',
                         callback: function () {
                             chartFiltering('DELAYED');
                         }
@@ -276,6 +278,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     {
                         key: "보류",
                         y: vm.counts.holdCount,
+                        color : '#EC8DFF',
                         callback: function () {
                             chartFiltering('HOLD');
                         }
@@ -283,6 +286,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     {
                         key: "진행",
                         y: vm.counts.inProgressCount,
+                        color : '#8DA2FF',
                         callback: function () {
                             chartFiltering('IN_PROGRESS');
                         }
@@ -290,6 +294,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     {
                         key: "완료",
                         y: vm.counts.completeCount,
+                        color : '#91FF8D',
                         callback: function () {
                             chartFiltering('COMPLETE');
                         }
@@ -297,6 +302,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     {
                         key: "취소",
                         y: vm.counts.cancelCount,
+                        color : '#CCCCCC',
                         callback: function () {
                             chartFiltering('CANCEL');
                         }

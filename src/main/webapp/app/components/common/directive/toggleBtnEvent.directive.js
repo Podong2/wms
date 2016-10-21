@@ -181,15 +181,15 @@ function projectPickerEditToggle($timeout, $rootScope) {
             $('body').click(function (e) {
                 if ($($element).addClass("on"), $($element).find('.projectValueSection').addClass("on")) {
                     if (!$($element).parents('#projectPickerSection').has(e.target).length) {
-                        $('.projectPickerSection').removeClass("on");
-                        $('.projectValueSection').removeClass("on");
+                        $($element).removeClass("on");
+                        $($element).find('.projectValueSection').removeClass("on");
                     }
                 }
             });
             $rootScope.$on('projectEditClose', function(){
                 $timeout(function () {
-                    $('.projectPickerSection').removeClass("on");
-                    $('.projectValueSection').removeClass("on");
+                    $($element).removeClass("on");
+                    $($element).find('.projectValueSection').removeClass("on");
                 }, 100);
             });
             element.on('click', function(_this) {

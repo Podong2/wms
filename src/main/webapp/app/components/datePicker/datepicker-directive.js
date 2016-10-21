@@ -65,7 +65,7 @@ function repeatPickerToggle($timeout, $rootScope) {
                 });
                 $('body').click(function (e) {
                         if (!$($element.parent()).has(e.target).length) {
-                            if(e.target.getAttribute('class') != null && e.target.getAttribute('class').split(" ").indexOf("btn-default") == -1){
+                            if(e.target.getAttribute('class') != null && e.target.getAttribute('class').split(" ").indexOf("btn") == -1){
                                 $('.repeat-edit-section').removeClass("on");
                             }
                         }else if(displayYn){
@@ -102,7 +102,7 @@ function repeatPickerAddToggle($timeout, $rootScope) {
             });
             $('body').click(function (e) {
                     if (!$('#repeatAddSection').has(e.target).length) {
-                        if(e.target.getAttribute('class') != null && e.target.getAttribute('class').split(" ").indexOf("btn-default") == -1){
+                        if(e.target.getAttribute('class') != null && e.target.getAttribute('class').split(" ").indexOf("btn") == -1){
                             $('.repeat-add-section').removeClass("on");
                         }
                     }else if(displayYn){

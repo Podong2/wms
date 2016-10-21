@@ -2912,9 +2912,12 @@ text-align: right;
 
 /* 사용자 css */
 .top-profile-img-btn{
-    height: 29px;
+    height: 30px;
     margin-top: 10px;
     border-radius: 3px;
+}
+.top-profile-img-btn:hover{
+    border-color: #999 !important;
 }
 .user-profile-info .form-group label, .user-profile-info .form-group input{
     margin-top: 15px;
@@ -3599,7 +3602,7 @@ body.wms-body.modal-open {
     border-bottom: 1px solid #000;
 }
 .side-menu-title-length{
-    max-width: 130px;
+    max-width: 125px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;

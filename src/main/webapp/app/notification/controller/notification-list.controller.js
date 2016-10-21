@@ -48,12 +48,13 @@ notificationListCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootSc
             vm.getList(0);
 
             function onSuccess(data, headers) {
-                $log.debug("notifications : ", data);
                 if(data.length > 0){
                     if(vm.initYn) vm.notifications = [];
                     angular.forEach(data, function (newValue, oldValue){
                         vm.notifications.push(newValue)
                     });
+
+                    $log.debug("notifications : ", vm.notifications);
                     vm.page++;
                     $scope.taskScroll.loading = false;
                     //if(vm.firstYn) $state.go("my-notification.taskDetail", {taskId : vm.notifications[0].taskDTO.id, listType : 'TODAY'}); // 첫 알림 상세 오픈
