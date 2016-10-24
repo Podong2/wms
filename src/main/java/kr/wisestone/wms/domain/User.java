@@ -325,7 +325,7 @@ public class User extends AbstractAuditingEntity implements UserDetails, Seriali
 
         User user = (User) o;
 
-        if (!login.equals(user.login)) {
+        if (!id.equals(user.id)) {
             return false;
         }
 
@@ -334,7 +334,7 @@ public class User extends AbstractAuditingEntity implements UserDetails, Seriali
 
     @Override
     public int hashCode() {
-        return login.hashCode();
+        return id.hashCode();
     }
 
     @Override

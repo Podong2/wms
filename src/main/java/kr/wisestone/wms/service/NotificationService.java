@@ -224,10 +224,14 @@ public class NotificationService {
 
         String title = this.getTaskNotificationTitle(createdTaskDTO);
 
-        NotificationParameterDTO notificationParameterVo = new NotificationParameterDTO(
-            notificationConfig, notifyMethod, title, contents, userMapper.userToUserDTO(loginUser), toUsers.stream().distinct().collect(Collectors.toList()), createdTaskDTO);
+        List<User> filteredToUsers = toUsers.stream().filter(user -> !user.getId().equals(loginUser.getId())).collect(Collectors.toList());
 
-        this.saveAndSendNotification(notificationParameterVo);
+        if(!filteredToUsers.isEmpty()) {
+            NotificationParameterDTO notificationParameterVo = new NotificationParameterDTO(
+                notificationConfig, notifyMethod, title, contents, userMapper.userToUserDTO(loginUser), filteredToUsers.stream().distinct().collect(Collectors.toList()), createdTaskDTO);
+
+            this.saveAndSendNotification(notificationParameterVo);
+        }
     }
 
     @Transactional
@@ -271,9 +275,11 @@ public class NotificationService {
         if(task.getWatchers() != null)
             toUsers.addAll(userMapper.userDTOsToUsers(task.getWatchers()));
 
-        if(!toUsers.isEmpty()) {
+        List<User> filteredToUsers = toUsers.stream().filter(user -> !user.getId().equals(loginUser.getId())).collect(Collectors.toList());
+
+        if(!filteredToUsers.isEmpty()) {
             NotificationParameterDTO notificationParameterVo = new NotificationParameterDTO(
-                notificationConfig, notifyMethod, title, contents, userMapper.userToUserDTO(loginUser), toUsers.stream().distinct().collect(Collectors.toList()), traceLog);
+                notificationConfig, notifyMethod, title, contents, userMapper.userToUserDTO(loginUser), filteredToUsers.stream().distinct().collect(Collectors.toList()), traceLog);
 
             this.saveAndSendNotification(notificationParameterVo);
         }
