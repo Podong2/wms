@@ -71,6 +71,9 @@ angular.module('wmsApp')
                     }else if(scope.areaType == 'project-list'){
                         minusHeight = 229;
                         $(tElement).parent().css("height", (window.innerHeight - minusHeight) + "px");
+                    }else if(scope.areaType == 'notification-list'){
+                        minusHeight = 150;
+                        $(tElement).parent().css("height", (window.innerHeight - minusHeight) + "px");
                     }
 
                 }).resize();

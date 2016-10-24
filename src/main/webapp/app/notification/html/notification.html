@@ -25,7 +25,7 @@
                     </div>
 
                     <div class="table table-bordered table-hover " when-scrolled="vm.getList()" loading="taskScroll.loading" style="margin-bottom: 0; border-bottom: 1px solid #ddd; overflow: hidden; overflow-y: auto; border-top:1px solid #ddd;" >
-                        <div class="task-area" dynamic-content-scroll area-type="list">
+                        <div class="task-area" dynamic-content-scroll area-type="notification-list">
                             <div ng-repeat="data in vm.notifications track by $index" class="task-list-repeat" ng-class="data.readYn ? 'read' : ''">
 
                                 <!-- 타스크 영역 -->
@@ -38,7 +38,7 @@
                                             <div>{{data.createdDate | date : 'MM-dd HH:mm'}}</div>
                                         </div>
                                         <!-- 좌측영역 -->
-                                        <div class="cursor" ui-sref="my-notification.taskDetail({taskId : data.taskDTO.id, listType : 'TODAY'})" ng-click="vm.notificationReadChange(data.id, 'read', $index)"  notification-active>
+                                        <div class="cursor position-relative" ui-sref="my-notification.taskDetail({taskId : data.taskDTO.id, listType : 'TODAY'})" ng-click="vm.notificationReadChange(data.id, 'read', $index)"  notification-active>
                                             <div>
                                                 <div class="float-left notification-name task-list-title-length" style="line-height: 30px; margin-right: 10px;" tooltip-placement="top-left" uib-tooltip="{{data.title}}">{{data.title}} </div>
 
@@ -63,8 +63,8 @@
                                         <!-- 우측영역 -->
                                         <div class="pull-right">
                                             <div class="wms-form text-right width-20-p">
-                                                <label class="radio state-success padding-0">
-                                                    <input type="radio" ng-click="vm.notificationReadChange(data.id, 'confirm')" name="radio"><i></i>
+                                                <label class="radio state-success padding-0" ng-show="vm.listType == 'UN_READ'" >
+                                                    <input type="radio" ng-click="vm.notificationReadChange(data.id, 'confirm', $index)" class="radio-btn" name="radio"><i></i>
                                                 </label>
                                             </div>
                                         </div>

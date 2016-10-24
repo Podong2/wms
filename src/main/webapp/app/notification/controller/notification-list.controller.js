@@ -35,6 +35,7 @@ notificationListCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootSc
                 vm.initYn = initYn == undefined ? false : initYn;
                 if(number != undefined){
                     vm.page = 1;
+                    vm.notifications = [];
                     if(number == 0) vm.listType = 'UN_READ';
                     else vm.listType ='READ';
                 }
@@ -58,9 +59,6 @@ notificationListCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootSc
                     vm.page++;
                     $scope.taskScroll.loading = false;
                     //if(vm.firstYn) $state.go("my-notification.taskDetail", {taskId : vm.notifications[0].taskDTO.id, listType : 'TODAY'}); // 첫 알림 상세 오픈
-                } else {
-                    vm.page = 0;
-                    vm.notifications = [];
                 }
             }
             function onError(error) {
@@ -94,9 +92,11 @@ notificationListCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootSc
             /* 알림 읽음 변경 */
             function notificationReadChange(id, checkType, index){
                 vm.firstYn = false;
-                if(checkType != 'confirm') vm.notifications[index].readYn = true;
+
                 ReadUpload.put(id, checkType).then(function(){
-                    getList(0, true)
+                    if(checkType != 'confirm') vm.notifications[index].readYn = true;
+                    else if(checkType == 'confirm' && vm.listType == 'UN_READ') vm.notifications.splice(index, 1);
+                    $(".radio-btn").attr("checked", false);
                 });
             }
 
