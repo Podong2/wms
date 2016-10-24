@@ -3644,17 +3644,7 @@ h1, h2, h3, h4, h5, h6 {
     /*padding: 7px 0;*/
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+.tooltip {
+    font-family: "wms-default", Helvetica, Arial, sans-serif;
+}
 
