@@ -20,7 +20,7 @@
             </thead>
             <tbody>
             <tr ng-repeat="row in displayCollection" ng-init="selectIndex = $index" ng-class="row.checked == true ? 'table-active' : ''">
-                <td bindonce ng-repeat="tableConfig in tableConfigs" bo-class="[tableConfig.dAlign, tableConfig.visible]">
+                <td bindonce ng-repeat="tableConfig in tableConfigs" bo-class="[tableConfig.dAlign, tableConfig.visible]" style="vertical-align: middle;">
                     <div bo-switch="tableConfig.dType">
                         <div bo-switch-when="check">
                             <input type="checkbox" ng-model="row.checked" ng-disabled="row.readOnly">

@@ -1319,7 +1319,7 @@ tagsInput.run(["$templateCache", function($templateCache) {
   $templateCache.put('ngTagsInput/tag-item-user.html',
     "<div class='tag-template'>" +
     "<div class='left-panel'>" +
-    "<img style='background-color: #ffffff;' ng-src='/api/attachedFile/{{data.profileImageId}}' ng-if='data.profileImageId !=null' /><img ng-src='/content/images/demo/male.png' ng-if='data.profileImageId ==null' />" +
+    "<img style='background-color: #ffffff;' ng-src='/api/attachedFile/{{data.profileImageId}}' ng-if='data.profileImageId !=null' style='margin-bottom: 1px;' /><img ng-src='/content/images/demo/male.png' ng-if='data.profileImageId ==null' style='margin-bottom: 1px;' />" +
     "</div>" +
     "<div class='right-panel' close-btn-display>" +
     "<span>{{data.name}}</span><!-- ng-show='tagList.length < 4'-->" +
@@ -1351,7 +1351,7 @@ tagsInput.run(["$templateCache", function($templateCache) {
     // hsy 옵션 템플릿 영역 커스텀
   $templateCache.put('ngTagsInput/auto-complete-match.html',
     "<div class='left-panel' ng-if='data.email != null'>" +
-    "<img ng-src='/api/attachedFile/{{data.profileImageId}}' ng-if='data.profileImageId !=null' /><img ng-src='/content/images/demo/male.png' ng-if='data.profileImageId ==null' />" +
+    "<img ng-src='/api/attachedFile/{{data.profileImageId}}' ng-if='data.profileImageId !=null' style='margin-bottom: 1px;' /><img ng-src='/content/images/demo/male.png' ng-if='data.profileImageId ==null' style='margin-bottom: 1px;' />" +
     "</div>" +
     "<div class='right-panel'>" +
     "<span ng-bind-html='$highlight(data.name)'></span>" +
