@@ -58,6 +58,9 @@ notificationListCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootSc
                     vm.page++;
                     $scope.taskScroll.loading = false;
                     //if(vm.firstYn) $state.go("my-notification.taskDetail", {taskId : vm.notifications[0].taskDTO.id, listType : 'TODAY'}); // 첫 알림 상세 오픈
+                } else {
+                    vm.page = 0;
+                    vm.notifications = [];
                 }
             }
             function onError(error) {
