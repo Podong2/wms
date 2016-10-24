@@ -1408,11 +1408,11 @@ wms-select-box .dropdown-menu > .active > a{
 }
 
 .width-10-p {
-    width: 10px;
+    width: 10px !important;
 }
 
 .width-20-p {
-    width: 20px;
+    width: 20px !important;
 }
 
 .width-30-p {

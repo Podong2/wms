@@ -1102,7 +1102,7 @@
             $.extend(true, settings, self.fileActionSettings.dragSettings);
             $el.sortable(settings);
         },
-        _initPreview: function (isInit) {
+        _initPreview: function (isInit) { // 로드 시 파일 프리뷰 그리는 부분
             var self = this, cap = self.initialCaption || '', out;
             if (!previewCache.count(self.id)) {
                 self._clearPreview();
@@ -2373,7 +2373,7 @@
                     }
                     setTimeout(function () {
                         readFile(index + 1);
-                    }, 100);
+                    }, 0);
                     self._initFileActions();
                     if (self.removeFromPreviewOnError) {
                         $('#' + previewId).remove();
@@ -2447,7 +2447,7 @@
                     self.addToStack(file);
                     setTimeout(function () {
                         readFile(i + 1);
-                    }, 100);
+                    }, 0);
                     self._raise('fileloaded', [file, previewId, i, reader]);
                     return;
                 }
@@ -2467,7 +2467,7 @@
                         self._errorHandler(evt, caption);
                     };
                     reader.onload = function (theFile) {
-                        self._previewFile(i, file, theFile, previewId, previewData);
+                        self._previewFile(i, file, theFile, previewId, previewData); // 파일 프리뷰 그리는부분
                         self._initFileActions();
                     };
                     reader.onloadend = function () {
@@ -2477,19 +2477,19 @@
                             $status.html(msg);
                             self._updateFileDetails(numFiles);
                             readFile(i + 1);
-                        }, 100);
+                        }, 0);
                         self._raise('fileloaded', [file, previewId, i, reader]);
                     };
-                    reader.onprogress = function (data) {
-                        if (data.lengthComputable) {
-                            var fact = (data.loaded / data.total) * 100, progress = Math.ceil(fact);
-                            msg = msgProgress.replace('{index}', i + 1).replace('{files}', numFiles)
-                                .replace('{percent}', progress).replace('{name}', caption);
-                            setTimeout(function () {
-                                $status.html(msg);
-                            }, 100);
-                        }
-                    };
+                    //reader.onprogress = function (data) {
+                    //    if (data.lengthComputable) {
+                    //        var fact = (data.loaded / data.total) * 100, progress = Math.ceil(fact);
+                    //        msg = msgProgress.replace('{index}', i + 1).replace('{files}', numFiles)
+                    //            .replace('{percent}', progress).replace('{name}', caption);
+                    //        setTimeout(function () {
+                    //            $status.html(msg);
+                    //        }, 0);
+                    //    }
+                    //};
                     isText = ifSet('text', settings, defaultFileTypeSettings.text);
                     isImage = ifSet('image', settings, defaultFileTypeSettings.image);
 
