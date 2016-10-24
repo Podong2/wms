@@ -1294,9 +1294,10 @@ tr.angular-ui-tree-empty {
     top: 0px;
     cursor: pointer;
     text-align: left;
-    font-size: 12px;
+    /*font-size: 14px;*/
     height: 43px;
-    line-height: 40px;
+    line-height: 42px;
+    color: #000;
 }
 
 /* :::::::::::::::::::::: select box style ::::::::::::::::::::::: */
