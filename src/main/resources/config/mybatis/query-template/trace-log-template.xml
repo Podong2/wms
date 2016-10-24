@@ -123,7 +123,7 @@
         LEFT OUTER JOIN owl_trace_log_attached_file tlaf ON tlaf.trace_log_id = tl.id
         LEFT JOIN owl_attached_file af ON tlaf.attached_file_id = af.id
         LEFT JOIN owl_user u ON tl.created_by = u.login
-        WHERE tl.entity_name = 'Task'
+        WHERE (tl.entity_name = 'Task' OR tl.entity_name = 'Task_')
         AND tl.reply_yn = 'N'
         AND tl.task_id IN (
             SELECT it.id
