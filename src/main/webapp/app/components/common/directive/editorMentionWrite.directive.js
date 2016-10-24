@@ -53,20 +53,21 @@ function taskEditorMentionWrite($compile, $filter, $log, $sce, $timeout) {
                     if(id == scope.userId) duplicationYn = true;
                 }
 
-                    var el = editable[1];
-                    var range = document.createRange();
-                    var sel = window.getSelection();
-                    var childLength = el.childNodes.length;
-                    if (childLength > 0) {
-                        var lastNode = el.childNodes[childLength - 1];
-                        var lastNodeChildren = lastNode.childNodes.length;
-                        range.setStart(lastNode, lastNodeChildren);
-                        range.collapse(true);
-                        sel.removeAllRanges();
-                        sel.addRange(range);
-                    }
+                /* summernote의 맨 마지막에 포커싱가기 */
+                var el = editable[1];
+                var range = document.createRange();
+                var sel = window.getSelection();
+                var childLength = el.childNodes.length;
+                if (childLength > 0) {
+                    var lastNode = el.childNodes[childLength - 1];
+                    var lastNodeChildren = lastNode.childNodes.length;
+                    range.setStart(lastNode, lastNodeChildren);
+                    range.collapse(true);
+                    sel.removeAllRanges();
+                    sel.addRange(range);
+                }
 
-                    editorElementBody.summernote('pasteHTML', '<span class="mentionUser" id="'+ scope.userId +'">@'+ scope.userName +'</span>&nbsp;');
+                editorElementBody.summernote('pasteHTML', '<span class="mentionUser" id="'+ scope.userId +'">@'+ scope.userName +'</span>&nbsp;');
 
 
 

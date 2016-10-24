@@ -62,8 +62,8 @@
                                     <div class="task-list-item-footer">
                                         <!-- 우측영역 -->
                                         <div class="pull-right">
-                                            <div class="wms-form text-right">
-                                                <label class="radio state-success">
+                                            <div class="wms-form text-right width-20-p">
+                                                <label class="radio state-success padding-0">
                                                     <input type="radio" ng-click="vm.notificationReadChange(data.id, 'confirm')" name="radio"><i></i>
                                                 </label>
                                             </div>
@@ -71,7 +71,7 @@
                                         <!-- 좌측영역 -->
                                         <div class="cursor" ui-sref="my-notification.taskDetail({taskId : data.taskDTO.id, listType : 'TODAY'})" ng-click="vm.notificationReadChange(data.id, 'read', $index)"  notification-active>
                                             <div class="clear-both">
-                                                <ul class="list-inline friends-list float-left" style="margin-bottom: 0;">
+                                                <ul class="list-inline friends-list float-left margin-left-0" style="margin-bottom: 0;">
                                                     <li>
                                                         <img ng-src="/content/images/demo/male.png" ng-if="data.sender.profileImageId == null || data.sender.profileImageId == '' " uib-tooltip="{{data.sender.name}}">
                                                         <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.sender.profileImageId}}" ng-if="data.sender.profileImageId != null" uib-tooltip="{{data.sender.name}}">
