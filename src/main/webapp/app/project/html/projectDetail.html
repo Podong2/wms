@@ -180,7 +180,7 @@
                                     </div>
 
                                     <div class="member-list-area" ng-class="vm.memberSearchYn ? 'on' : ''">
-                                        <div ng-repeat="data in vm.project.projectMembers | filter:vm.memberFilter track by $index" class="member-list-items">
+                                        <div ng-repeat="data in vm.project.projectMembers | filter:{name : vm.memberFilter} track by $index" class="member-list-items">
                                             <div class="member-element" ng-class="data.currentYn ? 'current' : ''">
                                                 <div class="row">
                                                     <div class="col-md-2 watcher-item" ng-click="vm.watcherInfoAdd(data)">

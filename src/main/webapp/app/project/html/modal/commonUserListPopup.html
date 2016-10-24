@@ -13,7 +13,7 @@
                 <input type="text" class="form-control member-input" ng-model="vm.memberFilter" style="border-right: 0; border-left:0; border-top:0;"  placeholder="이름을 입력하세요." wms-kr-update/>
             </div>
             <div class="member-list-area watcher-list-area" ng-class="memberSearchYn ? 'on' : ''">
-                <div ng-repeat="data in users | filter : vm.memberFilter track by $index" class="member-list-items">
+                <div ng-repeat="data in users | filter : {name : vm.memberFilter} track by $index" class="member-list-items">
                     <div class="member-element">
                         <div class="row">
                             <div class="col-md-2 watcher-item" ng-click="commonInfoAdd(data)">
