@@ -133,6 +133,7 @@
                 "status": "상태",
                 "admin": "관리자",
                 "sharer": "공유자",
+                "watcher": "공유자",
                 "member": "멤버",
                 "projectRelation": "상위 프로젝트",
                 "projectAttachedFiles": "첨부파일",
