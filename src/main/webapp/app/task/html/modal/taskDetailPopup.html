@@ -251,8 +251,8 @@
 
                             <!-- 하위작업 영역 -->
                             <td>
-                                <label for="subTaskAdd" class="cursor margin-bottom-0" ng-click="vm.getSubTasks()" wms-sub-task-input-focus><i class="fa fa-outdent" id="subTaskAdd" > <span>하위 작업 {{vm.task.subTasks.length == 0 ? '' : vm.task.subTasks.length}}</span></i></label>
-                                <!--<label ng-if="!vm.task.modifyYn" for="subTaskDisabled" class="btn-none margin-bottom-0" disabled="disabled"><i class="fa fa-outdent" id="subTaskDisabled" > <span>하위 작업 {{vm.task.subTasks.length == 0 ? '' : vm.task.subTasks.length}}</span></i></label>-->
+                                <label ng-if="!vm.task.privateYn" for="subTaskAdd" class="cursor margin-bottom-0" ng-click="vm.subTaskOpen = !vm.subTaskOpen" wms-sub-task-input-focus><i class="fa fa-outdent" id="subTaskAdd" ></i> <span>하위 작업 {{vm.task.subTasks.length == 0 ? '' : vm.task.subTasks.length}}</span></label>
+                                <label ng-if="vm.task.privateYn" for="subTaskAdd" class="btn-none margin-bottom-0" ><i class="fa fa-outdent" id="subTaskAdd" ></i> <span>하위 작업</span></label>
                             </td>
 
                             <!-- 파일첨부 영역 -->
