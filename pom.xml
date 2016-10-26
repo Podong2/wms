@@ -971,7 +971,7 @@
                                     <goal>bower</goal>
                                 </goals>
                                 <configuration>
-                                    <arguments>install --no-color -f</arguments>
+                                    <arguments>install --no-color</arguments>
                                 </configuration>
                             </execution>
                             <execution>
