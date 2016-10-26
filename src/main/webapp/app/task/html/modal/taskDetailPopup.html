@@ -193,7 +193,7 @@
                             <td class="task-options position-relative">
                                 <span class="fa privateYn-icon" ng-class="{'fa-lock' : vm.task.privateYn, 'fa-unlock-alt' : !vm.task.privateYn, 'disabled-color' : !vm.task.modifyYn}" ></span>
                                 <ol class="nya-bs-select task-openYn-select" ng-model="vm.task.privateYn" disabled="!vm.task.modifyYn">
-                                    <li nya-bs-option="option in vm.privateYns" title="{{option.name}}" data-value="option.id">
+                                    <li nya-bs-option="option in vm.privateYns" title="{{option.name}}" data-value="option.id" style="width: 105px;">
                                         <a>
                                             <span class="fa" ng-class="option.icon"></span> {{ option.name }}
                                             <span class="glyphicon glyphicon-ok check-mark"></span>
