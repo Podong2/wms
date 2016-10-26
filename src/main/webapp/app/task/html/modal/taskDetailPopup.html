@@ -122,7 +122,7 @@
                                     </li>
                                 </ol>
                             </td>
-                            <td>
+                            <td  ng-class="!vm.task.modifyYn ? 'btn-none': ''">
                                 담당자
                             </td>
                             <td colspan="4">
@@ -235,12 +235,12 @@
                                         </div>
 
                                     </div>
-                                    <div ng-if="!vm.task.modifyYn">
+                                    <div ng-if="!vm.task.modifyYn" class="btn-none">
                                         <i class="icon-append glyphicon glyphicon-retweet" ng-if="vm.task.taskRepeatSchedule.repeatType != '' && vm.task.taskRepeatSchedule != null " style="float: left; padding: 12px 5px;"></i>
                                         <i class="icon-append fa fa-calendar" style="float: left; padding: 12px 5px;"></i>
                                         <div class="form-group" style="margin-bottom: 0; position: relative;">
                                         <span class="input-group wms-form">
-                                            <span class="dueDateValues disabled-calender" >{{vm.task.startDate | date : 'MM-dd'}} {{vm.task.startDate =='' && vm.task.endDate == '' ? '일정' : '~'}} {{vm.task.endDate | date : 'MM-dd'}}</span>
+                                            <span class="dueDateValues disabled-calender"  style="color:#aaa" >{{vm.task.startDate | date : 'MM-dd'}} {{vm.task.startDate =='' && vm.task.endDate == '' ? '일정' : '~'}} {{vm.task.endDate | date : 'MM-dd'}}</span>
                                         </span>
                                         </div>
                                     </div>

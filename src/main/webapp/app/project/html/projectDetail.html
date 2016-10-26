@@ -92,7 +92,7 @@
                 </colgroup>
                 <tbody>
                 <tr>
-                    <td>
+                    <td ng-class="!vm.project.adminYn ? 'btn-none' : ''">
                         관리자
                     </td>
                     <td colspan="4">
@@ -291,11 +291,11 @@
                     </td>
                 </tr>
                 <tr ng-show="!vm.project.folderYn">
-                    <td>
+                    <td ng-class="!vm.project.adminYn ? 'btn-none' : ''">
                         시작일
                     </td>
                     <td>
-                        <div class="">
+                        <div class="" ng-class="!vm.project.adminYn ? 'btn-none' : ''">
                             <p class="input-group" wms-close-btn-display>
                                 <input type="text" class="form-control startDate" edit-state="true" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.dueDateFrom.date" is-open="vm.dueDateFrom.open"
                                        datepicker-options="vm.dueDateFrom.datepickerOptions" close-text="Close" style="border: 0px none;" ng-show="vm.project.adminYn"/>
@@ -309,11 +309,11 @@
                             </p>
                         </div>
                     </td>
-                    <td>
+                    <td ng-class="!vm.project.adminYn ? 'btn-none' : ''">
                         종료일
                     </td>
                     <td>
-                        <div class="">
+                        <div class=""  ng-class="!vm.project.adminYn ? 'btn-none' : ''">
                             <p class="input-group" wms-close-btn-display>
                                 <input type="text" class="form-control" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.dueDateTo.date" is-open="vm.dueDateTo.open"
                                        datepicker-options="vm.dueDateTo.datepickerOptions" close-text="Close" style="border: 0px none;" ng-show="vm.project.adminYn"/>
@@ -327,7 +327,7 @@
                             </p>
                         </div>
                     </td>
-                    <td>
+                    <td ng-class="!vm.project.adminYn ? 'btn-none' : ''">
                         상태
                     </td>
                     <td style="border-right-width : 1px">
