@@ -684,6 +684,13 @@
         function findRelatedTask(){
             if($scope.projectPickerList.length > 0) vm.relatedSearchForm.projectId = $scope.projectPickerList[0].id;
             vm.relatedSearchForm.excludeIds = vm.DuplicationRelatedTaskIds;
+
+            $log.debug("vm.task.id : ", vm.task.id);
+
+            vm.relatedSearchForm.excludeIds.push(vm.task.id);
+
+            $log.debug("vm.relatedSearchForm, : ", vm.relatedSearchForm);
+
             if(vm.relatedSearchForm.name == ''){
                 vm.relatedTaskValidateYn = true;
             }else{
