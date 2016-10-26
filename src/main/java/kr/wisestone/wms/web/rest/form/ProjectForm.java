@@ -143,7 +143,7 @@ public class ProjectForm {
             Project parent = new Project();
             parent.setId(id);
 
-            project.addParentProject(parent);
+            project.updateParentProject(parent);
         }
 
 

@@ -284,12 +284,21 @@ public class Project extends AbstractAuditingEntity implements Traceable {
         else return null;
     }
 
-    public Project addParentProject(Project parent) {
+    public Project updateParentProject(Project parent) {
+
+        this.clearParentProject();
 
         ProjectRelation origin = this.findParentProject(parent);
 
         if(origin == null && !this.checkIsDuplex(parent) && !parent.getId().equals(this.getId()))
             this.projectParents.add(new ProjectRelation(this, parent));
+
+        return this;
+    }
+
+    private Project clearParentProject() {
+
+        this.projectParents.clear();
 
         return this;
     }

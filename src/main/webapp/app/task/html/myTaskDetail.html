@@ -6,7 +6,7 @@
                 <div class="col-md-9 padding-0">
                     <i class="fa fa-exclamation-circle task-circle" ng-class="vm.task.importantYn ? 'on' : ''" ng-click="vm.task.importantYn = !vm.task.importantYn" ng-show="vm.task.modifyYn"></i>
                     <i class="fa fa-exclamation-circle task-circle on" ng-show="!vm.task.modifyYn && vm.task.importantYn"></i>
-                    <input type="text" class="taskAddInput" maxlength="500" ng-model="vm.task.name" enter-submit="vm.taskUpload()" placeholder="Task" ng-show="vm.task.modifyYn" wms-kr-update/>
+                    <input type="text" class="taskAddInput" maxlength="500" ng-model="vm.task.name" enter-submit="vm.taskUpload()" ng-show="vm.task.modifyYn" wms-kr-update/>
                     <div class="disabled-task-title" ng-show="!vm.task.modifyYn">{{vm.task.name}}</div>
                 </div>
                 <div class="col-md-3 padding-0">
@@ -77,8 +77,7 @@
                                 </div>
                             </div>
                             <div class="task-project" ng-repeat="project in vm.task.taskProjects" wms-close-btn-display type="project">
-                                <span>{{project.name}}</span>
-                                <i class="fa fa-close cursor project-close-btn close-btn" ng-if="vm.task.modifyYn"  ng-click="vm.projectRemoveInTask(project.id)"></i>
+                                {{project.name}} <i class="fa fa-close cursor project-close-btn close-btn" ng-if="vm.task.modifyYn"  ng-click="vm.projectRemoveInTask(project.id)"></i>
                             </div>
                         </div>
                     </div>
@@ -252,8 +251,8 @@
 
                         <!-- 하위작업 영역 -->
                         <td>
-                            <label for="subTaskAdd" class="cursor margin-bottom-0" ng-click="vm.subTaskOpen = !vm.subTaskOpen" wms-sub-task-input-focus><i class="fa fa-outdent" id="subTaskAdd" ></i> <span>하위 작업 {{vm.task.subTasks.length == 0 ? '' : vm.task.subTasks.length}}</span></label>
-                            <!--<label ng-if="!vm.task.modifyYn" for="subTaskDisabled" class="btn-none margin-bottom-0" disabled="disabled"><i class="fa fa-outdent" id="subTaskDisabled" > <span>하위 작업 {{vm.task.subTasks.length == 0 ? '' : vm.task.subTasks.length}}</span></i></label>-->
+                            <label ng-if="!vm.task.privateYn" for="subTaskAdd" class="cursor margin-bottom-0" ng-click="vm.subTaskOpen = !vm.subTaskOpen" wms-sub-task-input-focus><i class="fa fa-outdent" id="subTaskAdd" ></i> <span>하위 작업 {{vm.task.subTasks.length == 0 ? '' : vm.task.subTasks.length}}</span></label>
+                            <label ng-if="vm.task.privateYn" for="subTaskAdd" class="btn-none margin-bottom-0" ><i class="fa fa-outdent" id="subTaskAdd" ></i> <span>하위 작업</span></label>
                         </td>
 
                         <!-- 파일첨부 영역 -->
@@ -314,7 +313,7 @@
                                     <div class="padding-5 related-task-item-list" ng-repeat="data in vm.relatedTaskList track by $index">
                                         <div class="relatedTask-search-element">
                                             <div class="pull-right">
-                                                <input type="checkbox" name="selectedFruits[]" value="{{data}}" ng-checked="checkedTask.indexOf(data) > -1" ng-click="toggleSelection(data)" wms-related-task-checked>
+                                                <input type="checkbox" maxlength="500" name="selectedFruits[]" value="{{data}}" ng-checked="checkedTask.indexOf(data) > -1" ng-click="toggleSelection(data)" wms-related-task-checked>
                                             </div>
                                             <div>
                                                 <span class="relatedTask-title" ng-class="data.assignees.length > 1 ? 'length' : ''">{{data.name}}</span>

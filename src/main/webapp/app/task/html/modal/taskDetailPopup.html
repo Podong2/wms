@@ -80,8 +80,7 @@
                                     </div>
                                 </div>
                                 <div class="task-project" ng-repeat="project in vm.task.taskProjects">
-                                    <span>{{project.name}}</span>
-                                    <i class="fa fa-close cursor" ng-click="vm.projectRemoveInTask(project.id)"></i>
+                                    {{project.name}} <i class="fa fa-close cursor" ng-click="vm.projectRemoveInTask(project.id)"></i>
                                 </div>
                             </div>
                         </div>

@@ -3,7 +3,7 @@
         <div class="col-md-12">
             <div class="col-md-9">
                 <!--<i class="fa fa-exclamation-circle task-circle" ng-class="vm.project.importantYn ? 'on' : ''" ng-click="vm.project.importantYn = !vm.project.importantYn"></i>-->
-                <input type="text" class="taskAddInput" maxlength="30" ng-model="vm.project.name" enter-submit="vm.projectUpload()" placeholder="Task" wms-kr-update/>
+                <input type="text" class="taskAddInput" maxlength="30" ng-model="vm.project.name" enter-submit="vm.projectUpload()" wms-kr-update/>
             </div>
             <div class="col-md-3">
                 <span class="pull-right taskOptionBtnArea">
@@ -63,8 +63,7 @@
                         </div>
                     </div>
                     <div class="task-project" ng-repeat="project in vm.project.projectParents">
-                        <span>{{project.name}}</span>
-                        <i class="fa fa-close" ng-click="vm.projectRemove(project.id)"></i>
+                        {{project.name}} <i class="fa fa-close" ng-click="vm.projectRemove(project.id)"></i>
                     </div>
                 </div>
             </div>
@@ -176,7 +175,7 @@
                                     </div>
 
                                     <div class="member-input-area" ng-if="vm.memberSearchYn">
-                                        <input type="text" class="form-control member-input" ng-model="vm.memberFilter" style="border-right: 0; border-left:0; border-top:0;"  placeholder="이름을 입력하세요." wms-kr-update/>
+                                        <input type="text" maxlength="20" class="form-control member-input" ng-model="vm.memberFilter" style="border-right: 0; border-left:0; border-top:0;"  placeholder="이름을 입력하세요." wms-kr-update/>
                                     </div>
 
                                     <div class="member-list-area" ng-class="vm.memberSearchYn ? 'on' : ''">

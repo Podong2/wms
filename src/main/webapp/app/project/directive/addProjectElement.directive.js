@@ -30,7 +30,7 @@ function wmsAddProjectElement($log, $compile, $rootScope) {
             link: function (scope, element, attrs) {
                 element.on('click', function(){
                     if(scope.taskProject.indexOf(scope.project.id) == -1){
-                        var template = '<span class="task-project" ng-click="vm.deleteProjectElement($this)" wms-close-btn-display type="project">'+scope.project.name+'<i class="fa fa-close project-close-btn close-btn" ng-click="projectDelete(project.id, $event)"></i></span>';
+                        var template = '<span class="task-project" ng-click="vm.deleteProjectElement($this)" wms-close-btn-display type="project">'+scope.project.name+' <i class="fa fa-close project-close-btn close-btn" ng-click="projectDelete(project.id, $event)"></i></span>';
                         scope.addProjectId(scope.project.id);
                         var linkFn = $compile(template);
                         var content = linkFn(scope);

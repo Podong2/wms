@@ -406,6 +406,8 @@
                 vm.project.removeRelatedTaskIds ="";
                 vm.project.projectAdminIds = "";
                 vm.project.projectUserIds = "";
+                if(vm.project.statusId == null)
+                    vm.project.statusId = "";
                 vm.projectReload = false;
                 vm.responseData = [];
                 vm.previewFiles=[];
@@ -430,6 +432,10 @@
             vm.responseProjectData = _.clone(vm.project);
             vm.dueDateFrom.date = DateUtils.toDate(vm.responseProjectData.startDate);
             vm.dueDateTo.date = DateUtils.toDate(vm.responseProjectData.endDate);
+
+            if(vm.project.statusId == null)
+                vm.project.statusId = "";
+            
             setProjectAttachedFiles();
             vm.project.modifyYn = true;// 임시
 

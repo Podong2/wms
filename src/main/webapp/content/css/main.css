@@ -1,5 +1,5 @@
 @font-face {
-    font-family: 'wms-default';
+    font-family: '나눔 고딕';
     src: url('./custom-css/fonts/NanumGothic-Regular.eot');
     src: url('./custom-css/fonts/NanumGothic-Regular.eot?#iefix') format('eot'),
     url('./custom-css/fonts/NanumGothic-Regular.woff') format('woff'),
@@ -10,7 +10,7 @@
 }
 
 @font-face {
-    font-family: 'wms-default';
+    font-family: '나눔 고딕';
     src: url('./custom-css/fonts/NanumGothic-Bold.eot');
     src: url('./custom-css/fonts/NanumGothic-Bold.eot?#iefix') format('eot'),
     url('./custom-css/fonts/NanumGothic-Bold.woff') format('woff'),
@@ -23,12 +23,12 @@
 /* This font face inherits and overrides the previous font face, but only for chrome */
 @media screen and (-webkit-min-device-pixel-ratio:0) {
     @font-face {
-        font-family: 'wms-default';
+        font-family: '나눔 고딕';
         font-weight: normal;
         src: url('./custom-css/fonts/NanumGothic-Regular.svg') format('svg');
     }
     @font-face {
-        font-family: 'wms-default';
+        font-family: '나눔 고딕';
         font-weight: 700;
         src: url('./custom-css/fonts/NanumGothic-Bold.svg') format('svg');
     }
@@ -37,7 +37,7 @@
 
 body {
     background: #fcfcfc;
-    font-family: "wms-default", Helvetica, Arial, sans-serif;
+    font-family: "나눔 고딕", Helvetica, Arial, sans-serif;
     color: #333;
 }
 
@@ -146,7 +146,7 @@ Developement Ribbon
     border: 1px solid #faa;
     color: #fff;
     display: block;
-    font: bold 81.25% "wms-default", 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font: bold 81.25% "나눔 고딕", 'Helvetica Neue', Helvetica, Arial, sans-serif;
     margin: 1px 0;
     padding: 10px 50px;
     text-align: center;
@@ -870,7 +870,7 @@ Social Buttons
 
 .date-picker-name {
     color: #818181;
-    font: 12px "wms-default", NanumGothic, 나눔고딕, 맑은 고딕, Apple SD Gothic Neo;
+    font: 12px "나눔 고딕", NanumGothic, 나눔고딕, 맑은 고딕, Apple SD Gothic Neo;
     text-align: center;
     width: 100%;
     background-image: -webkit-gradient(linear, left 0%, left 100%, from(#ffffff), to(#ffffff));
@@ -898,7 +898,7 @@ Social Buttons
     margin: 0 5px;
     background: #e5e5e5;
     border-radius: 100%;
-    font-family: "wms-default", 'Tahoma';
+    font-family: "나눔 고딕", 'Tahoma';
     font-size: 12px;
     text-align: center;
     text-decoration: none;
@@ -1249,7 +1249,7 @@ tr.angular-ui-tree-empty {
     border: 1px solid #ccc;
     z-index: 1060;
     max-width: 276px;
-    font-family: "wms-default","Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: "나눔 고딕","Helvetica Neue",Helvetica,Arial,sans-serif;
     font-size: 14px;
     font-style: normal;
     font-weight: 400;
@@ -2075,10 +2075,10 @@ i:active, .i:active, i:focus, .i:focus{
     /*padding-top: 5px;*/
 }
 .project-picker .project-picker-list-area .project-picker-list .project-picker-list-item{
-    border-left: 4px solid transparent;
+    margin-left: 4px;
     display: block;
-    padding: 6px 6px;
-    height: 48px;
+    padding-left: 6px;
+    height: 54px;
     box-sizing: border-box;
     cursor: pointer;
 }
@@ -2274,7 +2274,7 @@ td.red{border-left: 5px solid #777 !important;}
     margin: 2px;
     padding: 0 8px;
     display: inline-block;
-    font: 14px "wms-default", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font: 14px "나눔 고딕", "Helvetica Neue", Helvetica, Arial, sans-serif;
     height: 26px;
     line-height: 25px;
     border-radius: 15px;
@@ -2291,8 +2291,8 @@ td.red{border-left: 5px solid #777 !important;}
 }
 
 .task-project i{
-    position: relative;
-    bottom:7px;
+    position: inherit;
+    /*bottom:7px;*/
 }
 
 .task-list-right-info div{
@@ -3483,7 +3483,7 @@ text-align: right;
 }
 .disabled-calender{
     cursor: inherit !important;
-    width: 85px !important;
+    width: 120px !important;
     left: 0;
 }
 .disabled-task-title{
@@ -3610,7 +3610,7 @@ body.wms-body.modal-open {
 }
 
 h1, h2, h3, h4, h5, h6 {
-    font-family: "wms-default", Helvetica, Arial, sans-serif !important;
+    font-family: "나눔 고딕", Helvetica, Arial, sans-serif !important;
 }
 .project-info-count-area {
     background-color: #f9f9f9;
@@ -3645,6 +3645,6 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .tooltip {
-    font-family: "wms-default", Helvetica, Arial, sans-serif;
+    font-family: "나눔 고딕", Helvetica, Arial, sans-serif;
 }
 
