@@ -259,9 +259,9 @@
             <version>${mariadb.version}</version>
         </dependency>
         <dependency>
-        <groupId>org.postgresql</groupId>
-        <artifactId>postgresql</artifactId>
-        <version>${postgresql.version}</version>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
         </dependency>
         <dependency>
             <groupId>org.assertj</groupId>
@@ -583,7 +583,7 @@
                             <outputDirectory>target/classes</outputDirectory>
                             <useDefaultDelimiters>false</useDefaultDelimiters>
                             <delimiters>
-                              <delimiter>#</delimiter>
+                                <delimiter>#</delimiter>
                             </delimiters>
                             <resources>
                                 <resource>
@@ -627,7 +627,7 @@
                         </goals>
                         <configuration>
                             <includes>
-                              <include>**/*Cucumber*.java</include>
+                                <include>**/*Cucumber*.java</include>
                             </includes>
                         </configuration>
                     </execution>
@@ -885,7 +885,7 @@
                     <artifactId>lombok-maven-plugin</artifactId>
                     <version>1.16.8.0</version>
                 </plugin>
-             </plugins>
+            </plugins>
         </pluginManagement>
     </build>
 
@@ -922,86 +922,6 @@
                             <packagingExcludes>WEB-INF/lib/tomcat-*.jar</packagingExcludes>
                         </configuration>
                     </plugin>
-                    <plugin>
-                        <groupId>com.github.eirslett</groupId>
-                        <artifactId>frontend-maven-plugin</artifactId>
-                        <version>1.0</version>
-                        <executions>
-                            <execution>
-                                <id>install node and npm</id>
-                                <goals>
-                                    <goal>install-node-and-npm</goal>
-                                </goals>
-                                <configuration>
-                                    <nodeVersion>v4.4.3</nodeVersion>
-                                    <npmVersion>3.8.3</npmVersion>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>npm install</id>
-                                <goals>
-                                    <goal>npm</goal>
-                                </goals>
-                                <configuration>
-                                    <arguments>install</arguments>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>bower install</id>
-                                <goals>
-                                    <goal>bower</goal>
-                                </goals>
-                                <configuration>
-                                    <arguments>install --no-color -f</arguments>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>gulp build</id>
-                                <goals>
-                                    <goal>gulp</goal>
-                                </goals>
-                                <configuration>
-                                    <arguments>build --no-notification</arguments>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>gulp test</id>
-                                <goals>
-                                    <goal>gulp</goal>
-                                </goals>
-                                <phase>test</phase>
-                                <configuration>
-                                    <arguments>test --no-notification</arguments>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <artifactId>maven-clean-plugin</artifactId>
-                        <version>2.5</version>
-                        <configuration>
-                            <filesets>
-                                <fileset>
-                                    <directory>target/www/</directory>
-                                </fileset>
-                            </filesets>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-war-plugin</artifactId>
-                        <configuration>
-                            <warSourceDirectory>target/www/</warSourceDirectory>
-                            <packagingExcludes>WEB-INF/lib/tomcat-*.jar</packagingExcludes>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-maven-plugin</artifactId>
-                        <configuration>
-                            <executable>true</executable>
-                        </configuration>
-                    </plugin>
                 </plugins>
             </build>
             <properties>
@@ -1013,105 +933,6 @@
         </profile>
         <profile>
             <id>prod</id>
-            <dependencies>
-                <dependency>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-tomcat</artifactId>
-                </dependency>
-            </dependencies>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.github.eirslett</groupId>
-                        <artifactId>frontend-maven-plugin</artifactId>
-                        <version>1.0</version>
-                        <executions>
-                            <execution>
-                                <id>install node and npm</id>
-                                <goals>
-                                    <goal>install-node-and-npm</goal>
-                                </goals>
-                                <configuration>
-                                    <nodeVersion>v4.4.3</nodeVersion>
-                                    <npmVersion>3.8.3</npmVersion>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>npm install</id>
-                                <goals>
-                                    <goal>npm</goal>
-                                </goals>
-                                <configuration>
-                                    <arguments>install</arguments>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>bower install</id>
-                                <goals>
-                                    <goal>bower</goal>
-                                </goals>
-                                <configuration>
-                                    <arguments>install --no-color -f</arguments>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>gulp build</id>
-                                <goals>
-                                    <goal>gulp</goal>
-                                </goals>
-                                <configuration>
-                                    <arguments>build --no-notification</arguments>
-                                </configuration>
-                            </execution>
-                            <execution>
-                                <id>gulp test</id>
-                                <goals>
-                                    <goal>gulp</goal>
-                                </goals>
-                                <phase>test</phase>
-                                <configuration>
-                                    <arguments>test --no-notification</arguments>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                    <plugin>
-                        <artifactId>maven-clean-plugin</artifactId>
-                        <version>2.5</version>
-                        <configuration>
-                            <filesets>
-                                <fileset>
-                                    <directory>target/www/</directory>
-                                </fileset>
-                            </filesets>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-war-plugin</artifactId>
-                        <configuration>
-                            <warSourceDirectory>target/www/</warSourceDirectory>
-                            <packagingExcludes>WEB-INF/lib/tomcat-*.jar</packagingExcludes>
-                        </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.springframework.boot</groupId>
-                        <artifactId>spring-boot-maven-plugin</artifactId>
-                        <configuration>
-                            <executable>true</executable>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-            <properties>
-                <!-- log configuration -->
-                <logback.loglevel>INFO</logback.loglevel>
-                <!-- default Spring profiles -->
-                <spring.profiles.active>prod${profile.no-swagger}</spring.profiles.active>
-            </properties>
-        </profile>
-        <profile>
-            <id>test</id>
             <dependencies>
                 <dependency>
                     <groupId>org.springframework.boot</groupId>
@@ -1206,7 +1027,7 @@
                 <!-- log configuration -->
                 <logback.loglevel>INFO</logback.loglevel>
                 <!-- default Spring profiles -->
-                <spring.profiles.active>test${profile.no-swagger}</spring.profiles.active>
+                <spring.profiles.active>prod${profile.no-swagger}</spring.profiles.active>
             </properties>
         </profile>
     </profiles>
