@@ -79,6 +79,8 @@ public class ProjectForm {
             status.setId(this.statusId);
 
             project.setStatus(status);
+        } else {
+            project.setStatus(null);
         }
 
         for(Long id : getProjectAdminIds()) {

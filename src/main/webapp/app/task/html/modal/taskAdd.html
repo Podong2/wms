@@ -237,7 +237,7 @@
                             </div>
                             <div class="relatedTask-input-area padding-5 border-top" ng-show="vm.relatedSearchYn">
                                 <div class="related-task-search-div">
-                                    작업명 : <input type="text" class="related-task-input" ng-model="vm.relatedSearchForm.name" enter-submit="vm.findRelatedTask()" ng-keydown="vm.relatedTaskValidateYn = false" ng-class="vm.relatedSearchForm.name == '' && vm.relatedTaskValidateYn ? 'task-name-validate' : ''" style="border-right: 0; border-left:0; border-top: 0"  placeholder="작업명을 입력하세요."/>
+                                    작업명 : <input type="text" maxlength="500" class="related-task-input" ng-model="vm.relatedSearchForm.name" enter-submit="vm.findRelatedTask()" ng-keydown="vm.relatedTaskValidateYn = false" ng-class="vm.relatedSearchForm.name == '' && vm.relatedTaskValidateYn ? 'task-name-validate' : ''" style="border-right: 0; border-left:0; border-top: 0"  placeholder="작업명을 입력하세요."/>
                                 </div>
                                 <div class="related-task-search-div">
                                     담당자 : <input type="text" class="" ng-model="vm.relatedSearchForm.assigneeName" style="border-right: 0; border-left:0; border-top: 0"  placeholder="이름을 입력하세요."/>
