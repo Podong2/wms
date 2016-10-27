@@ -207,7 +207,7 @@ public class ProjectService {
     }
 
     @Transactional(readOnly = true)
-    public List<ProjectDTO> findByNameLike(String name, List<Long> excludeIds) {
+    public List<ProjectDTO> findByNameLike(String name, List<Long> excludeIds, Long projectId) {
 
         String login = SecurityUtils.getCurrentUserLogin();
 
@@ -221,6 +221,10 @@ public class ProjectService {
 
         if(StringUtils.hasText(name)) {
             condition.put("name", name);
+        }
+
+        if(projectId != null) {
+            condition.put("projectId", projectId);
         }
 
         List<ProjectDTO> projectDTOs = this.projectDAO.getProjectByName(condition);

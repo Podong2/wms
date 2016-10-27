@@ -224,6 +224,12 @@
                 #{item}
             </foreach>
         </if>
+        <if test="projectId != null">
+            AND p.id NOT IN (SELECT pr.child_id
+                            FROM owl_project_relation pr
+                            WHERE pr.parent_id = #{projectId}
+            )
+        </if>
         ORDER BY p.created_date DESC
         <if test="name == null">
             OFFSET 0 LIMIT 3

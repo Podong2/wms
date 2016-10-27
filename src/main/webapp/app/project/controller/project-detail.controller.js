@@ -218,11 +218,11 @@
                 $rootScope.$broadcast('fileAreaClose');
             }
 
-            ProjectFind.query({name : '', excludeIds : excludeIds}, onProjectSuccess, onProjectError);
+            ProjectFind.query({name : '', excludeIds : excludeIds, projectId : vm.project.id}, onProjectSuccess, onProjectError);
         }
         function FindProjectList(){
             $log.debug($scope.projectName);
-            ProjectFindByName.query({name : $scope.projectName, excludeIds : excludeIds},onProjectSuccess, onProjectError)
+            ProjectFindByName.query({name : $scope.projectName, excludeIds : excludeIds, projectId : vm.project.id},onProjectSuccess, onProjectError)
         }
         function onProjectSuccess (result) {
             vm.projectList = result;
@@ -435,7 +435,7 @@
 
             if(vm.project.statusId == null)
                 vm.project.statusId = "";
-            
+
             setProjectAttachedFiles();
             vm.project.modifyYn = true;// 임시
 
