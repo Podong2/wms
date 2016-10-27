@@ -377,7 +377,8 @@ public class UserService {
 
         BooleanBuilder predicate = new BooleanBuilder();
 
-        predicate.and(QUser.user.name.containsIgnoreCase(name));
+        if(StringUtils.hasText(name))
+            predicate.and(QUser.user.name.containsIgnoreCase(name));
 
         if(excludeIds != null && !excludeIds.isEmpty())
             predicate.and(QUser.user.id.notIn(excludeIds));
