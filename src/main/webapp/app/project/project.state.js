@@ -85,7 +85,8 @@
             },
             params : {
                 parentType : 'project',
-                projectId : ''
+                projectId : '',
+                fileListType : ''
             },
             views: {//
                 'projectDetail': {//

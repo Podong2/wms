@@ -194,7 +194,8 @@
                 title : '작업 상세'
             },
             params : {
-                fileListType : ''
+                fileListType : '',
+                parentType : 'task'
             },
             views: {//
                 'taskDetail': {//
@@ -234,7 +235,7 @@
                     size: 'lg',
                     resolve: {
                         entity: ['$log', function($log) {
-                            $log.debug("params.tas : ", params.task);
+                            $log.debug("params.task : ", params.task);
                             return params.task;
                         }]
                     }
