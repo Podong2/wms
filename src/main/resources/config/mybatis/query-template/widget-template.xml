@@ -235,7 +235,7 @@
             <choose>
                 <when test="listType == 'TODAY'">
                     AND it.end_date != ''
-                    AND it.end_date &lt;= to_char(now(), 'YYYY-MM-DD')
+                    AND to_char(now(), 'YYYY-MM-DD') >= it.start_date
                 </when>
                 <when test="listType == 'TOMORROW'">
                     AND it.end_date != ''
@@ -243,6 +243,7 @@
                 </when>
                 <when test="listType == 'THIS_WEEK'">
                     AND it.end_date != ''
+                    AND it.end_date >= #{weekStartDate}
                     AND it.end_date &lt;= #{weekEndDate}
                 </when>
                 <when test="listType == 'SCHEDULED'">
