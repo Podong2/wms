@@ -284,7 +284,8 @@
                 $rootScope.$broadcast('fileAreaClose');
             }
 
-            vm.subTasks = vm.task.subTasks;
+            //vm.subTasks = _.clone(vm.task.subTasks);
+            angular.copy(vm.task.subTasks, vm.subTasks)
         });
 
         vm.responseDataCheck = _.clone(vm.task);
@@ -557,7 +558,7 @@
                 var d = newValue;
                 var formatDate =
                     DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
-                vm.subTaskUpdateForm.startDate = formatDate;
+                vm.subTaskUpdateForm.startDate = _.clone(formatDate);
             }
         });
         // 하위 작업 종료 시간 포멧 변경(기간)
@@ -571,7 +572,7 @@
                 $scope.subTaskDueDateTo = newValue;
                 var d = newValue;
                 if(newValue != '') var formatDate = DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
-                vm.subTaskUpdateForm.endDate = formatDate;
+                vm.subTaskUpdateForm.endDate = _.clone(formatDate);
             }
         });
         // 본인체크시 본인이름 담당자명에 주입
@@ -919,8 +920,8 @@
         function successTask(result){
             vm.task = result;
             //$rootScope.$broadcast('taskReload', result);
-
-            vm.subTasks = vm.task.subTasks;
+            angular.copy(vm.task.subTasks, vm.subTasks)
+            //vm.subTasks = _.clone(vm.task.subTasks);
             vm.taskFiles = vm.task.attachedFiles;
             vm.previewFiles = [];
             vm.previewFileUrl = [];
@@ -1013,7 +1014,7 @@
                 toastr.warning('코멘트를 입력해주세요.', '코멘트 내용');
                 return false;
             }
-            vm.comment.contents.replace("<p><br></p>/g", "");
+            //vm.comment.contents.replace(/<p><br>/gi, "");
             var $mention = $(".comment-area .mentionUser");
             vm.comment.mentionIds = [];
             vm.mentionIds = [];
@@ -1231,7 +1232,13 @@
             $rootScope.$broadcast('repeatClose');
         }
         // 하위 작업 팝업 닫기
-        function subTaskClose(){
+        function subTaskClose(index){
+            if(index != undefined){
+                vm.subTaskDueDateFrom.date = DateUtils.toDate(vm.subTasks[index].startDate);
+                vm.subTaskDueDateTo.date = DateUtils.toDate(vm.subTasks[index].endDate);
+                vm.task.subTasks[index].startDate = _.clone(vm.subTasks[index].startDate);
+                vm.task.subTasks[index].endDate = _.clone(vm.subTasks[index].endDate);
+            }
             $rootScope.$broadcast('subTaskClose');
         }
         // 프로젝트 팝업 닫기
