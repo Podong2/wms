@@ -397,7 +397,15 @@ public class ProjectService {
 
         List<ProjectDTO> childProjectDTOs = Lists.newArrayList();
 
+        User user = SecurityUtils.getCurrentUser();
+
         for(ProjectRelation projectRelation : projectChilds) {
+
+            Project project = projectRelation.getChild();
+
+            if(!project.checkRelatedProjectUser(user)) {
+                continue;
+            }
 
             ProjectDTO projectDTO = new ProjectDTO(projectRelation.getChild());
 
@@ -411,6 +419,8 @@ public class ProjectService {
 
     @Transactional(readOnly = true)
     public List<TaskDTO> findAllTasks(ProjectTaskCondition projectTaskCondition, Pageable pageable) {
+
+        User user = SecurityUtils.getCurrentUser();
 
         Project project = projectRepository.findOne(projectTaskCondition.getProjectId());
 
@@ -438,6 +448,9 @@ public class ProjectService {
             condition.put("weekStartDate", DateUtil.getWeekStartDate());
             condition.put("weekEndDate", DateUtil.getWeekEndDate());
         }
+
+        condition.put("loginUserId", user.getId());
+        condition.put("loginUserLogin", user.getLogin());
 
         List<TaskDTO> taskDTOs = this.taskDAO.getProjectManagedTasks(condition);
 
