@@ -1059,7 +1059,7 @@
             TaskListSearch.TaskAudigLog({'entityId' : entity.id, 'entityName' : 'Task', recentYn : vm.recentYn}).then(function(result){
                 vm.TaskAuditLog = result;
                 vm.commentList=[];
-                angular.forEach(vm.TaskAuditLog.data, function(val){
+                angular.forEach(vm.TaskAuditLog.data.traceLogs, function(val){
                     if(val.entityField == 'reply'){
                         vm.commentList.push(val);
                     }

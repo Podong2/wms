@@ -14,6 +14,7 @@ import kr.wisestone.wms.security.SecurityUtils;
 import kr.wisestone.wms.web.rest.condition.TraceLogCondition;
 import kr.wisestone.wms.web.rest.dto.AttachedFileDTO;
 import kr.wisestone.wms.web.rest.dto.TraceLogDTO;
+import kr.wisestone.wms.web.rest.dto.TraceLogListInfoDTO;
 import kr.wisestone.wms.web.rest.form.TraceLogForm;
 import kr.wisestone.wms.web.rest.mapper.AttachedFileMapper;
 import kr.wisestone.wms.web.rest.mapper.TraceLogMapper;
@@ -69,7 +70,7 @@ public class TraceLogService {
     private TraceLogDAO traceLogDAO;
 
     @Transactional(readOnly = true)
-    public List<TraceLogDTO> findByEntityIdAndEntityName(TraceLogCondition traceLogCondition) {
+    public TraceLogListInfoDTO findByEntityIdAndEntityName(TraceLogCondition traceLogCondition) {
 
         Map<String, Object> condition = Maps.newHashMap(ImmutableMap.<String, Object>builder().
             put("entityId", traceLogCondition.getEntityId()).
@@ -89,7 +90,11 @@ public class TraceLogService {
             condition.put("limit", traceLogCondition.getLimit());
         }
 
-        return traceLogDAO.getTraceLogs(condition);
+        List<TraceLogDTO> traceLogs = traceLogDAO.getTraceLogs(condition);
+
+        Integer dateCount = traceLogDAO.getTraceLogDateCount(condition);
+
+        return new TraceLogListInfoDTO(traceLogs, dateCount);
     }
 
     public TraceLog removeAttachedFileByEntityIdAndEntityNameAndAttachedFileId(Long entityId, String entityName, Long attachedFileId) {

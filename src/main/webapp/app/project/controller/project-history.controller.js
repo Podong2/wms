@@ -117,7 +117,7 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
                             vm.tasks[index].TaskAuditLog.sharedAttachedFileSize = vm.tasks[index].sharedAttachedFileSize;
                             vm.tasks[index].TaskAuditLog.historyType = vm.tasks[index].historyType;
                         }
-                        vm.tasks[index].currentLogs = _.clone(vm.tasks[index].TaskAuditLog);
+                        vm.tasks[index].currentLogs = _.clone(vm.tasks[index].TaskAuditLog.data.traceLogs);
                         $log.debug("최초 히스토리 불러오기 : ", vm.tasks)
                         $log.debug("최초 히스토리 2일 로그 목록 : ", vm.tasks[index].currentLogs)
                     });
@@ -171,9 +171,9 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
                     vm.comment.contents = [];
                     $scope.commentFiles=[];
 
-                    $log.debug("최근 히스토리 날짜 체크 : ", vm.tasks[index].TaskAuditLog.data[vm.tasks[index].TaskAuditLog.data.length -1].createdDate)
+                    $log.debug("최근 히스토리 날짜 체크 : ", vm.tasks[index].TaskAuditLog.data.traceLogs[vm.tasks[index].TaskAuditLog.data.traceLogs.length -1].createdDate)
                     var today = new Date().format("yyyy-MM-dd");
-                    var target = new Date(vm.tasks[index].TaskAuditLog.data[vm.tasks[index].TaskAuditLog.data.length -1].createdDate).format("yyyy-MM-dd");
+                    var target = new Date(vm.tasks[index].TaskAuditLog.data.traceLogs[vm.tasks[index].TaskAuditLog.data.traceLogs.length -1].createdDate).format("yyyy-MM-dd");
                     var limit = 0;
                     var offset = 0;
                     if(today == target){ // 최근 히스토리가 오늘인 경우
@@ -225,12 +225,12 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
                         vm.tasks[index].endDataYn = true;
                     }else{
                         if(!recentYn){
-                            vm.tasks[index].TaskAuditLog.data = _.clone(result.data);
+                            vm.tasks[index].TaskAuditLog.data.traceLogs = _.clone(result.data.traceLogs);
                         }else{
-                            angular.forEach(vm.tasks[index].TaskAuditLog.data, function(value){
-                                result.data.push(value)
+                            angular.forEach(vm.tasks[index].TaskAuditLog.data.traceLogs, function(value){
+                                result.data.traceLogs.push(value)
                             });
-                            vm.tasks[index].TaskAuditLog.data = _.clone(result.data);
+                            vm.tasks[index].TaskAuditLog.data.traceLogs = _.clone(result.data.traceLogs);
                             vm.tasks[index].offset += 1;
                         }
 

@@ -533,40 +533,40 @@
                 </div>
                 <!-- Timeline Content -->
                 <div class="smart-timeline" style="margin-top: 5px;">
-                    <div style="display: inline-table; width: 100%;"><a class="pull-right" ng-click="vm.commentViewType = !vm.commentViewType" ng-show="vm.commentList.length > 0">{{vm.commentViewType ? '히스토리&댓글 보기' : '댓글만 보기'}} ({{vm.commentViewType ? vm.TaskAuditLog.data.length : vm.commentList.length }})</a></div>
+                    <div style="display: inline-table; width: 100%;"><a class="pull-right" ng-click="vm.commentViewType = !vm.commentViewType" ng-show="vm.commentList.length > 0">{{vm.commentViewType ? '히스토리&댓글 보기' : '댓글만 보기'}} ({{vm.commentViewType ? vm.TaskAuditLog.data.traceLogs.length : vm.commentList.length }})</a></div>
                     <div class="project-history-btn-area text-center">
-                        <span ng-click="vm.getTaskAudigLog(false)" ng-show="vm.recentYn">전체보기</span>
+                        <span ng-click="vm.getTaskAudigLog(false)" ng-show="vm.recentYn && vm.TaskAuditLog.data.showMoreYn">전체보기</span>
                     </div>
                     <ul class="smart-timeline-list">
 
                         <!-- 로그&댓글 보기 -->
-                        <li ng-repeat="data in vm.TaskAuditLog.data" ng-if="!vm.commentViewType">
+                        <li ng-repeat="data in vm.TaskAuditLog.data.traceLogs" ng-if="!vm.commentViewType">
 
                             <!-- 날짜&프로필사진&이름&댓글 영역 -->
                             <div class="comment-header-area">
                                 <!-- 날짜 출력 영역 -->
-                                <div class="smart-timeline-icon" ng-if="(vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')">
-                                    {{vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd'}}
+                                <div class="smart-timeline-icon" ng-if="(vm.TaskAuditLog.data.traceLogs[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data.traceLogs[$index-1].createdDate | date : 'MM/dd')">
+                                    {{vm.TaskAuditLog.data.traceLogs[$index].createdDate | date : 'MM/dd'}}
                                 </div>
 
                                 <!-- 프로필 정보 및 댓글 버튼 -->
                                 <div class="smart-timeline-content">
 
                                     <ul class="list-inline friends-list float-left comment-user-profile"
-                                        ng-if="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
-                                || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')"
-                                        ng-class="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
-                                || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
+                                        ng-if="vm.TaskAuditLog.data.traceLogs[$index].createdBy != vm.TaskAuditLog.data.traceLogs[$index-1].createdBy
+                                || (vm.TaskAuditLog.data.traceLogs[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data.traceLogs[$index-1].createdDate | date : 'MM/dd')"
+                                        ng-class="vm.TaskAuditLog.data.traceLogs[$index].createdBy != vm.TaskAuditLog.data.traceLogs[$index-1].createdBy
+                                || (vm.TaskAuditLog.data.traceLogs[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data.traceLogs[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
                                         <li>
                                             <img ng-src="/content/images/demo/male.png" ng-if="data.profileImageId == null || data.profileImageId == '' " uib-tooltip="{{data.createdByName}}">
                                             <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.profileImageId}}" ng-if="data.profileImageId != null" uib-tooltip="{{data.createdByName}}">
                                         </li>
                                     </ul>
 
-                                    <p ng-if="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
-                                || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')"
-                                       ng-class="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
-                                || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
+                                    <p ng-if="vm.TaskAuditLog.data.traceLogs[$index].createdBy != vm.TaskAuditLog.data.traceLogs[$index-1].createdBy
+                                || (vm.TaskAuditLog.data.traceLogs[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data.traceLogs[$index-1].createdDate | date : 'MM/dd')"
+                                       ng-class="vm.TaskAuditLog.data.traceLogs[$index].createdBy != vm.TaskAuditLog.data.traceLogs[$index-1].createdBy
+                                || (vm.TaskAuditLog.data.traceLogs[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data.traceLogs[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
                                         <a href-void><strong>{{data.createdByName}}</strong> </a><a class="comment-mention-btn" task-editor-mention-write user-name="data.createdByName" user-id="data.createdById">댓글</a>
                                     </p>
                                 </div>
@@ -651,10 +651,10 @@
                                 </div>
                                 <div class="smart-timeline-content">
                                     <ul class="list-inline friends-list float-left comment-user-profile"
-                                        ng-if="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
-                                || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd')"
-                                        ng-class="vm.TaskAuditLog.data[$index].createdBy != vm.TaskAuditLog.data[$index-1].createdBy
-                                || (vm.TaskAuditLog.data[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
+                                        ng-if="vm.TaskAuditLog.data.traceLogs[$index].createdBy != vm.TaskAuditLog.data.traceLogs[$index-1].createdBy
+                                || (vm.TaskAuditLog.data.traceLogs[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data.traceLogs[$index-1].createdDate | date : 'MM/dd')"
+                                        ng-class="vm.TaskAuditLog.data.traceLogs[$index].createdBy != vm.TaskAuditLog.data.traceLogs[$index-1].createdBy
+                                || (vm.TaskAuditLog.data.traceLogs[$index].createdDate | date : 'MM/dd') != (vm.TaskAuditLog.data.traceLogs[$index-1].createdDate | date : 'MM/dd') ? 'comment-user-title' : ''">
                                         <li>
                                             <img ng-src="/content/images/demo/male.png" ng-if="data.profileImageId == null || data.profileImageId == '' " uib-tooltip="{{data.createdByName}}">
                                             <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{data.profileImageId}}" ng-if="data.profileImageId != null" uib-tooltip="{{data.createdByName}}">

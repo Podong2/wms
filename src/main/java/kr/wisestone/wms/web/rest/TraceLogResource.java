@@ -7,6 +7,7 @@ import kr.wisestone.wms.repository.TraceLogRepository;
 import kr.wisestone.wms.service.TraceLogService;
 import kr.wisestone.wms.web.rest.condition.TraceLogCondition;
 import kr.wisestone.wms.web.rest.dto.TraceLogDTO;
+import kr.wisestone.wms.web.rest.dto.TraceLogListInfoDTO;
 import kr.wisestone.wms.web.rest.form.TraceLogForm;
 import kr.wisestone.wms.web.rest.mapper.AttachedFileMapper;
 import kr.wisestone.wms.web.rest.mapper.TraceLogMapper;
@@ -58,11 +59,11 @@ public class TraceLogResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<TraceLogDTO>> getTraceLog(TraceLogCondition condition)
+    public ResponseEntity<TraceLogListInfoDTO> getTraceLog(TraceLogCondition condition)
         throws URISyntaxException {
         log.debug("REST request to get a page of Tasks");
 
-        List<TraceLogDTO> traceLogDTOs = traceLogService.findByEntityIdAndEntityName(condition);
+        TraceLogListInfoDTO traceLogDTOs = traceLogService.findByEntityIdAndEntityName(condition);
 
         return new ResponseEntity<>(traceLogDTOs, HttpStatus.OK);
     }
