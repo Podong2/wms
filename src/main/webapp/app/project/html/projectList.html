@@ -1,5 +1,5 @@
 <div id="content" ng-cloak>
-    <div class="layout-scroll" style="position: relative; overflow: hidden; overflow-y: auto" dynamic-content-scroll area-type="content">
+    <h4 class="margin-bottom-5">프로젝트 보기</h4>
     <wms-select-box
         ng-model="vm.codes"
         selected-value="vm.statusId"
@@ -12,6 +12,8 @@
         dataSize="5"
         dataLiveSearch="false"
     ></wms-select-box>
+    <div class="layout-scroll" style="position: relative; overflow: hidden; overflow-y: auto" dynamic-content-scroll area-type="content">
+
         <div class="margin-top-10">
 
             <wms-tree-table ng-model="vm.projects" table-configs="vm.tableConfigs" update-callback="updateCallback"></wms-tree-table>

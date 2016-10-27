@@ -706,7 +706,7 @@ angular.module('adf')
 angular.module('adf.locale')
 .constant('adfLocale',
   {
-    defaultLocale: 'en-GB',
+    defaultLocale: 'ko-KR',
     frameworkLocales: {
       'en-GB': {
         ADF_COMMON_CLOSE: 'Close',
@@ -730,6 +730,28 @@ angular.module('adf.locale')
         ADF_WIDGET_TOOLTIP_FULLSCREEN: 'Fullscreen widget',
         ADF_WIDGET_TOOLTIP_REMOVE: 'Remove widget'
       },
+        'ko-KR': {
+            ADF_COMMON_CLOSE: '닫기',
+            ADF_COMMON_DELETE: '삭제',
+            ADF_COMMON_TITLE: '제목',
+            ADF_COMMON_CANCEL: '취소',
+            ADF_COMMON_APPLY: 'Apply',
+            ADF_COMMON_EDIT_DASHBOARD: '대시보드 수정',
+            ADF_EDIT_DASHBOARD_STRUCTURE_LABEL: '구조',
+            ADF_DASHBOARD_TITLE_TOOLTIP_ADD: '위젯 생성',
+            ADF_DASHBOARD_TITLE_TOOLTIP_SAVE: '위젯 생성',
+            ADF_DASHBOARD_TITLE_TOOLTIP_EDIT_MODE: '위젯 수정',
+            ADF_DASHBOARD_TITLE_TOOLTIP_UNDO: '변경사항 취소',
+            ADF_WIDGET_ADD_HEADER: '위젯 생성',
+            ADF_WIDGET_DELETE_CONFIRM_MESSAGE: '정말로 위젯을 제거하시겠습니까?',
+            ADF_WIDGET_TOOLTIP_REFRESH: '위젯 콘텐츠 새로 고침',
+            ADF_WIDGET_TOOLTIP_MOVE: '위젯 위치 변경',
+            ADF_WIDGET_TOOLTIP_COLLAPSE: '위젯 축소',
+            ADF_WIDGET_TOOLTIP_EXPAND: '위젯 확장',
+            ADF_WIDGET_TOOLTIP_EDIT: '편집 위젯 구성',
+            ADF_WIDGET_TOOLTIP_FULLSCREEN: '전체 보기',
+            ADF_WIDGET_TOOLTIP_REMOVE: '위젯 제거'
+        },
       'sv-SE': {
         ADF_COMMON_CLOSE: 'Stäng',
         ADF_COMMON_DELETE: 'Ta bort',

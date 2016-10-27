@@ -3346,7 +3346,7 @@ text-align: right;
         height:47px;
         padding: 7px 3px;
     }
-    .watcher-search-list-area .watcher-search-element:active{
+    .watcher-search-list-area .watcher-search-element:active, .watcher-search-list-area .watcher-search-element:hover{
         background: #FFEEDC !important;
     }
     .watcher-search-list-area .watcher-search-element:first-child{
@@ -3646,5 +3646,12 @@ h1, h2, h3, h4, h5, h6 {
 
 .tooltip {
     font-family: "나눔 고딕", Helvetica, Arial, sans-serif;
+}
+
+.file-input-default-icon{
+    width: 96px;
+    height: 60px;
+    display: table-cell;
+    vertical-align: middle;
 }
 

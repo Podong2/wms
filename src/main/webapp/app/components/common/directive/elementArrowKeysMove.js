@@ -69,7 +69,7 @@
                             scope.$curr.parents(".watcher-search-list-area").animate({ scrollTop: scope.$curr.offset().top - scope.$curr.parents(".watcher-search-list-area").offset().top + scope.$curr.parents(".watcher-search-list-area").scrollTop() }, 0);
                             event.preventDefault();
                         }
-                    } else if (event.keyCode === 13) {
+                    } else if (event.keyCode === 13) { //enter
                         scope.elementValues = {
                             id : ''
                         }
