@@ -1012,6 +1012,7 @@
                 toastr.warning('코멘트를 입력해주세요.', '코멘트 내용');
                 return false;
             }
+            vm.comment.contents.replace("<p><br></p>/g", "");
             var $mention = $(".comment-area .mentionUser");
             vm.comment.mentionIds = [];
             vm.mentionIds = [];

@@ -475,12 +475,21 @@
                                                     <img class="cursor" ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}" sub-task-user-info-btn-toggle>
                                                     <span class="profile-close-btn close-btn cursor" ng-click="vm.subTaskUserRemove(user.id, list)" ng-if="list.modifyYn"><i class="fa fa-close"></i></span>
                                                 </li>
-                                                <li ng-if="list.assignees.length > 3">
-                                                    <a href-void>
+                                                <li class="position-relative" ng-if="list.assignees.length > 3">
+                                                    <span common-popup-toggle>
                                                         <span class="activity">
                                                             <a class="position-relative"><i class="fa fa-plus user-profile-plus-btn"></i> <b class="badge bg-color-red user-count-icon">{{list.assignees.length - 3}}</b></a>
                                                         </span>
-                                                    </a>
+                                                    </span>
+                                                    <div class="other-users-popup">
+                                                        <ul class="" style="margin-bottom: 0">
+                                                            <li class="clear-both margin-top-0" ng-repeat="user in list.assignees | limitTo:99:3">
+                                                                <img ng-src="/content/images/demo/male.png" ng-if="user.profileImageId == null || user.profileImageId == '' " uib-tooltip="{{user.name}}" style="margin-right: 0">
+                                                                <img ng-src="{{vm.baseUrl}}/api/attachedFile/{{user.profileImageId}}" ng-if="user.profileImageId != null" uib-tooltip="{{user.name}}" style="margin-right: 0">
+                                                                {{user.name}}
+                                                            </li>
+                                                        </ul>
+                                                    </div>
                                                 </li>
                                             </ul>
                                         </div>
@@ -490,7 +499,7 @@
                         </table>
 
                         <div ng-show="vm.subTaskOpen && vm.task.modifyYn && !vm.task.privateYn">
-                            <input type="text" class="form-control subTask-input" ng-model="vm.subTask.name" enter-submit="vm.subTaskSave()" placeholder=" 추가할 작업명을 입력하세요."/>
+                            <input type="text" class="form-control subTask-input" maxlength="500" ng-model="vm.subTask.name" enter-submit="vm.subTaskSave()" placeholder=" 추가할 작업명을 입력하세요."/>
                         </div>
                     </div>
                     <!--<div class="related-task-area" ng-class="vm.relatedTaskOpen ? 'on' : ''"  style="border-top: 1px solid #ddd">-->
