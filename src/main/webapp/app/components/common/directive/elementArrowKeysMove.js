@@ -21,7 +21,7 @@
             link: function (scope, element, attrs) {
                 scope.$curr = $(element).parent().next().find(".start-arrow" );
                 scope.$currElement = '';
-                scope.$curr.css( "background", "#f99" );
+                scope.$curr.css( "background", "#E1F2FF" );
 
                 $rootScope.$on("initArrows", function(){
                     $timeout(function(){
@@ -31,7 +31,7 @@
                         scope.$curr.parents(".watcher-search-list-area").animate({ scrollTop: 0 }, 0);
                         scope.$curr = $( ".start-arrow" );
                         scope.$currElement = '';
-                        scope.$curr.css( "background", "#f99" );
+                        scope.$curr.css( "background", "#E1F2FF" );
                         scope.$curr.addClass( "active" );
                     }, 100)
                 });
@@ -45,7 +45,7 @@
                             scope.$curr = scope.$currElement;
                             $( ".arrow-event-li" ).css( "background", "" );
                             $( ".arrow-event-li" ).removeClass( "active" );
-                            scope.$curr.css( "background", "#f99" );
+                            scope.$curr.css( "background", "#E1F2FF" );
                             scope.$curr.addClass( "active" );
                             var top = scope.$curr.offset().top - scope.$curr.parents(".watcher-search-list-area").offset().top + scope.$curr.parents(".watcher-search-list-area").scrollTop();
                             if(top > 140){
@@ -62,7 +62,7 @@
                             scope.$curr = scope.$currElement;
                             $( ".arrow-event-li" ).css( "background", "" );
                             $( ".arrow-event-li" ).removeClass( "active" );
-                            scope.$curr.css( "background", "#f99" );
+                            scope.$curr.css( "background", "#E1F2FF" );
                             scope.$curr.addClass( "active" );
                             $log.debug(scope.$curr.offset().top - scope.$curr.parents(".watcher-search-list-area").offset().top + scope.$curr.parents(".watcher-search-list-area").scrollTop())
                             scope.$curr.parents(".watcher-search-list-area").css('scrollTop', scope.$curr.offset().top - scope.$curr.parents(".watcher-search-list-area").offset().top + scope.$curr.parents(".watcher-search-list-area").scrollTop());
@@ -83,8 +83,8 @@
                         scope.$currElement = $( ".start-arrow" );
                         $( ".arrow-event-li" ).css( "background", "" );
                         $( ".arrow-event-li" ).removeClass( "active" );
-                        scope.$curr.css( "background", "#f99" );
-                        scope.$currElement.css( "background", "#f99" );
+                        scope.$curr.css( "background", "#E1F2FF" );
+                        scope.$currElement.css( "background", "#E1F2FF" );
                     }
                     //else if (event.keyCode === 13) {
                     //    scope.my_tree_grid.remove_node();

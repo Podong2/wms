@@ -2083,7 +2083,7 @@ i:active, .i:active, i:focus, .i:focus{
     cursor: pointer;
 }
 .project-picker .project-picker-list-area .project-picker-list .project-picker-list-item:hover{
-    background-color: #F0F8FE;
+    background-color: #E1F2FF;
 }
 .project-picker .project-picker-list-area .project-picker-list .project-picker-list-item:active{
     background-color: #D6EFFF;
@@ -3347,7 +3347,7 @@ text-align: right;
         padding: 7px 3px;
     }
     .watcher-search-list-area .watcher-search-element:active, .watcher-search-list-area .watcher-search-element:hover{
-        background: #FFEEDC !important;
+        background: #E1F2FF !important;
     }
     .watcher-search-list-area .watcher-search-element:first-child{
         border-top: 0;
@@ -3392,7 +3392,7 @@ text-align: right;
         padding-right: 7px;
     }
     .related-task-highlight{
-        background: #FFEEDC !important;
+        background: #E1F2FF !important;
     }
     .relatedTask-search-list-area .relatedTask-search-element:first-child{
         border-top: 0;
@@ -3430,6 +3430,9 @@ text-align: right;
     }
     .related-task-item-list{
         line-height: 27px;
+    }
+    .related-task-item-list:hover{
+        background: #E1F2FF !important;
     }
     .relatedTask-list-item-title:hover{
         border-bottom: 1px solid #000;
@@ -3534,7 +3537,7 @@ text-align: right;
     height:188px;
 }
 .member-search-list-area .member-search-element:hover{
-    background: #FFEEDC !important;
+    background: #E1F2FF !important;
 }
 .member-search-list-area .member-search-element{
     border-top: 1px solid #ddd !important;
@@ -3561,7 +3564,7 @@ text-align: right;
     background: #FFF3E4 !important;
 }
 .member-list-area .member-element:hover{
-    background: #FFEEDC !important;
+    background: #E1F2FF !important;
 }
 .member-list-area .member-element{
     border-top: 1px solid #ddd !important;

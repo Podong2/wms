@@ -141,12 +141,12 @@ tags-input .autocomplete .suggestion-item {
     background-color: #fff;
 }
 tags-input .autocomplete .suggestion-item.selected {
-    color: #fff;
-    background-color: #0097cf;
+    color: #000;
+    background-color: #E1F2FF;
 }
 tags-input .autocomplete .suggestion-item.selected em {
-    color: #fff;
-    background-color: #0097cf;
+    color: #000;
+    background-color: #E1F2FF;
 }
 tags-input .autocomplete .suggestion-item em {
     font: normal bold 16px "나눔 고딕", "Helvetica Neue", Helvetica, Arial, sans-serif;

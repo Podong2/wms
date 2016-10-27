@@ -112,7 +112,7 @@
             $http({
                 url :'/api/tasks/findByName',
                 params : {name : name}
-            }).success(function (result) {
+            }, {ignoreLoadingBar: true}).success(function (result) {
                 deferred.resolve(result);
                 $log.debug("find by Tasks : ", result);
             });
