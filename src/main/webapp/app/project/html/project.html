@@ -34,13 +34,14 @@
                             </div>
                             <div class="col-md-4 project-info-count-area">
                                 <ul>
-                                    <li class="row">
+                                    <li class="row position-relative">
                                         <div class="col-md-6">
                                             <div class="project-info-count"><div>{{vm.projectTeam.length}}</div></div>
                                         </div>
-                                        <div class="col-md-6 project-info-count-column">
+                                        <div class="col-md-6 project-info-count-column cursor" common-popup-toggle>
                                             멤버
                                         </div>
+                                        <div class="member-popup-area text-left common" users="vm.project.projectMembers" type="member" common-users-popup></div>
                                     </li>
                                     <li class="row" ng-show="vm.project.endDate != ''">
                                         <div class="col-md-6">
