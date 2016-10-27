@@ -32,8 +32,10 @@ projectCtrl.$inject=['$scope', 'Code', '$log', 'toastr', '$state', '$timeout', '
             }
 
             function onSuccess (result) {
+                vm.projectList = [];
+
                 vm.projectList = result;
-                $rootScope.$broadcast('projectListLoading')
+                $rootScope.$broadcast('projectListLoading');
                 $log.debug("vm.projectList : ", vm.projectList);
             }
             function onError (result) {
