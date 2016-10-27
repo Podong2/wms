@@ -32,7 +32,7 @@
         vm.saveProject = saveProject;
 
         function saveProject(){
-            $log.debug("세이브")
+            $log.debug("세이브");
             if(vm.project.name != '') Project.save(vm.project, onSaveSuccess, onSaveError);
         }
 

@@ -396,7 +396,7 @@
             }).then(function (response) {
                 toastr.success('프로젝트 수정 완료', '프로젝트 수정 완료');
                 if(vm.projectReload) {
-                    $rootScope.$broadcast('projectReloading'); // 프로젝트 좌측메뉴 목록
+                    // $rootScope.$broadcast('projectReloading'); // 프로젝트 좌측메뉴 목록
                     $rootScope.$broadcast('projectReload'); // 프로젝트 목록 정보
                 }
                 $rootScope.$broadcast('projectEditClose');
