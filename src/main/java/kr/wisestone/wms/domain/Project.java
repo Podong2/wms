@@ -333,6 +333,16 @@ public class Project extends AbstractAuditingEntity implements Traceable {
         else return Boolean.FALSE;
     }
 
+    public Boolean checkRelatedProjectUser(User user) {
+
+        List<ProjectUser> projectUsers = this.getProjectUsers().stream().filter(
+            projectUser
+                -> projectUser.getUser().getId().equals(user.getId())
+        ).collect(Collectors.toList());
+
+        return projectUsers != null && !projectUsers.isEmpty();
+    }
+
     @Override
     public TraceLog getTraceLog(String persisType) {
 

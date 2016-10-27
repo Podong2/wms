@@ -563,6 +563,10 @@
                 AND t.status_id = 4
             </when>
         </choose>
+        AND (t.private_yn = 'N'
+            OR (t.private_yn = 'Y' AND t.id IN (SELECT itu.task_id FROM owl_task_user itu WHERE itu.user_id = #{loginUserId}))
+            OR (t.private_yn = 'Y' AND t.created_by = #{loginUserLogin})
+        )
         ORDER BY t.created_date DESC
         OFFSET #{offset} LIMIT #{limit}
     </select>
