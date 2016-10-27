@@ -75,6 +75,7 @@ angular.module('wms.widget.myProjectTaskList', ['adf.provider'])
     }
 
     function onSuccess (result) {
+        vm.projectList.push({name: "전체 프로젝트", id : ''})
         angular.forEach(result, function(val){
             vm.projectList.push(val);
         })

@@ -1297,7 +1297,7 @@ tagsInput.run(["$templateCache", function($templateCache) {
         "<i class='fa fa-close cursor pull-right' ng-click=\"eventHandlers.info.click()\"></i>" +
             "<ul>" +
                 "<li>{{tagInfo.name}}</li>" +
-                "<li>{{tagInfo.phone}}</li>" +
+                "<li ng-if='tagInfo.phone != null && tagInfo.phone != \"null\"'>{{tagInfo.phone}}</li>" +
                 "<li>{{tagInfo.email}}</li>" +
             "</ul>" +
         "</div>" +

@@ -100,4 +100,8 @@ notificationListCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootSc
                 });
             }
 
+            $rootScope.$on("notificationReload", function(){
+                getList(vm.listType == 'UN_READ' ? 0:1, true)
+            })
+
         }

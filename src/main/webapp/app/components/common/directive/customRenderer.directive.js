@@ -203,9 +203,9 @@ function customRenderer($compile, $filter, $log, $sce) {
 
                             angular.forEach(scope.data.projectAdmins, function(value, index){
                                 if(index < 3)
-                                customTag += "<li>" +
+                                customTag += "<li class='position-relative'>" +
 
-                                    "<div class='row watcher-picker-info'>" +
+                                    "<div class='row watcher-picker-info' style='top: 20px;'>" +
                                     "<div class='col-md-4 padding-10 text-center' style='border-right:1px solid #ddd; height: 100%;'>" +
                                     "<img ng-src='/api/attachedFile/"+ value.profileImageId +"' ng-if='"+ value.profileImageId +" !=null' />" +
                                     "<img ng-src='/content/images/demo/male.png' ng-if='"+ value.profileImageId +" ==null' />" +
@@ -232,9 +232,9 @@ function customRenderer($compile, $filter, $log, $sce) {
                                             "<ul class='' style='margin-bottom: 0'>";
                                 angular.forEach(scope.data.projectAdmins, function(value, index){
                                     if(index > 2)
-                                        customTag += "<li class='clear-both text-left'>" +
+                                        customTag += "<li class='clear-both text-left position-relative'>" +
 
-                                            "<div class='row common-picker-info'>" +
+                                            "<div class='row common-picker-info' style='top: 25px;'>" +
                                             "<div class='col-md-4 padding-10 text-center' style='border-right:1px solid #ddd; height: 100%;'>" +
                                             "<img ng-src='/api/attachedFile/"+ value.profileImageId +"' ng-if='"+ value.profileImageId +" !=null' />" +
                                             "<img ng-src='/content/images/demo/male.png' ng-if='"+ value.profileImageId +" ==null' />" +
@@ -243,7 +243,7 @@ function customRenderer($compile, $filter, $log, $sce) {
                                             "<i class='fa fa-close cursor pull-right' ng-click='profileClose()'></i>" +
                                             "<ul>" +
                                             "<li>" + value.name + "</li>" +
-                                            "<li>" + value.phone + "</li>" +
+                                            "<li>"+(value.phone == null ? '' : value.phone)+"</li>" +
                                             "<li>" + value.email + "</li>" +
                                             "</ul></div></div>"+
                                             "<div class='cursor' common-user-info-btn-toggle>"+ value.name + "</div></li>";

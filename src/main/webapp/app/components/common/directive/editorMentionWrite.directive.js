@@ -52,7 +52,9 @@ function taskEditorMentionWrite($compile, $filter, $log, $sce, $timeout) {
                     var id = mention.getAttribute('id');
                     if(id == scope.userId) duplicationYn = true;
                 }
-
+                if(summernoteElement.find('>p').html() == '<br>'){
+                    summernoteElement.find('>p').html('')
+                }
                 /* summernote의 맨 마지막에 포커싱가기 */
                 var el = editable[1];
                 var range = document.createRange();

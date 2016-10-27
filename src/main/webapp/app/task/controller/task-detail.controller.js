@@ -881,6 +881,7 @@
                 //$rootScope.$broadcast('relatedTaskPopupClose');
                 $log.debug("response.data : ", response.data);
                 if($stateParams.parentType != undefined && $stateParams.parentType == 'project') $rootScope.$broadcast('projectReload', response.data);
+                //if($stateParams.parentType != undefined && $stateParams.parentType == 'notification') $rootScope.$broadcast('notificationReload', response.data);
                 else  $rootScope.$broadcast('taskReload', response.data);
                 vm.task.removeAssigneeIds = "";
                 vm.task.removeWatcherIds = "";

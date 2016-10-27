@@ -75,7 +75,8 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
                     });
                     $log.debug("vm.tasks : ", vm.tasks);
 
-                    //taskHistoryOpen(0, vm.tasks[0].id, vm.tasks[0].historyArea);
+                    taskHistoryOpen(0, vm.tasks[0].id, vm.tasks[0].historyArea);
+
                 }, function(reason) {
                     AlertService.error(reason);
                 });

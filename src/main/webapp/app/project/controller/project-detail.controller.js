@@ -435,7 +435,7 @@
 
             if(vm.project.statusId == null)
                 vm.project.statusId = "";
-            
+
             setProjectAttachedFiles();
             vm.project.modifyYn = true;// 임시
 
@@ -872,6 +872,11 @@
             }).attr("src", "/api/attachedFile?targetIds=" + vm.project.downloadFiles + "&name=project");
         }
 
+        vm.initMemberFilter = initMemberFilter;
+        function initMemberFilter(){
+            vm.memberFilter = '';
+            vm.memberSearchYn = false;
+        }
 
 
 

@@ -129,7 +129,7 @@
                         </div>
 
                         <label for="watcher" class="cursor btn-none" style="margin-bottom: 0px;" ng-show="!vm.project.adminYn && vm.project.projectMembers.length == 0"><i class="fa fa-users"></i> 맴버 {{vm.project.projectMembers.length == 0 ? '' : vm.project.projectMembers.length}}</label>
-                        <label for="watcher" class="cursor" style="margin-bottom: 0px;" ng-show="vm.project.adminYn || vm.project.projectMembers.length != 0" common-popup-toggle><span id="member"><i class="fa fa-users"></i> 맴버 {{vm.project.projectMembers.length == 0 ? '' : vm.project.projectMembers.length}}</span></label>
+                        <label for="watcher" class="cursor" style="margin-bottom: 0px;" ng-click="pickerFindMember()" ng-show="vm.project.adminYn || vm.project.projectMembers.length != 0" common-popup-toggle><span id="member"><i class="fa fa-users"></i> 맴버 {{vm.project.projectMembers.length == 0 ? '' : vm.project.projectMembers.length}}</span></label>
 
                         <!-- 맴버 검색 및 등록 팝업 -->
                         <div class="member-popup-area text-left" ng-class="vm.project.adminYn ? '' : 'noAdmin'">
@@ -140,7 +140,7 @@
                             <div class="row" ng-class="vm.project.adminYn? '' : 'margin-left-0'">
                                 <div class="col-md-6 padding-right-0" style="border-right: 1px solid #ddd; min-height: 219px;" ng-show="vm.project.adminYn">
                                     <div class="member-input-area" ng-if="vm.project.adminYn">
-                                        <input type="text" class="form-control member-input" ng-model="vm.memberName" style="border-right: 0; border-left:0;"  placeholder="이름을 입력하세요." wms-kr-update wms-element-arrow-keys-move element-add="vm.memberAdd"/>
+                                        <input type="text" class="form-control member-input" ng-model="vm.memberName" maxlength="20" style="border-right: 0; border-left:0;"  placeholder="이름을 입력하세요." wms-kr-update wms-element-arrow-keys-move element-add="vm.memberAdd"/>
                                     </div>
                                     <div class="member-search-list-area watcher-search-list-area" ng-if="vm.project.adminYn">
                                         <div>
@@ -160,7 +160,7 @@
                                             </div>
                                         </div>
 
-                                        <div ng-if="vm.watcherList.length == 0">
+                                        <div ng-if="vm.memberList.length == 0">
                                             일치하는 사용자가 없습니다.
                                         </div>
                                     </div>
@@ -171,15 +171,15 @@
                                         <div class="pull-right" ng-click="vm.memberSearchYn = !vm.memberSearchYn">
                                             <i class="fa fa-search cursor"></i>
                                         </div>
-                                        맴버 {{vm.project.projectMembers.length}}명
+                                        <span ng-click="vm.initMemberFilter()">맴버 {{vm.project.projectMembers.length}}명</span>
                                     </div>
 
                                     <div class="member-input-area" ng-if="vm.memberSearchYn">
-                                        <input type="text" maxlength="20" class="form-control member-input" ng-model="vm.memberFilter" style="border-right: 0; border-left:0; border-top:0;"  placeholder="이름을 입력하세요." wms-kr-update/>
+                                        <input type="text" maxlength="20" class="form-control member-input" maxlength="20" ng-model="vm.memberFilter" style="border-right: 0; border-left:0; border-top:0;"  placeholder="이름을 입력하세요." wms-kr-update/>
                                     </div>
 
                                     <div class="member-list-area" ng-class="vm.memberSearchYn ? 'on' : ''">
-                                        <div ng-repeat="data in vm.project.projectMembers | filter:{name : vm.memberFilter} track by $index" class="member-list-items">
+                                        <div ng-repeat="data in  vm.filteredMembers = (vm.project.projectMembers | filter:{name : vm.memberFilter}) track by $index" class="member-list-items">
                                             <div class="member-element" ng-class="data.currentYn ? 'current' : ''">
                                                 <div class="row">
                                                     <div class="col-md-2 watcher-item" ng-click="vm.watcherInfoAdd(data)">
@@ -212,7 +212,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div ng-if="vm.watcherList.length == 0">
+                                        <div ng-if="vm.filteredMembers.length == 0">
                                             일치하는 사용자가 없습니다.
                                         </div>
                                     </div>
@@ -576,4 +576,3 @@
         padding: 4px 7px 5px;
     }
 </style>
-
