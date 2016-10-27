@@ -21,4 +21,9 @@ public class TraceLogDAO {
     public List<TraceLogDTO> getRecentTraceLogs(Map<String, Object> condition) {
         return sqlSession.selectList("kr.wisestone.wms.domain.TraceLog.getRecentTraceLogs", condition);
     }
+
+    public Integer getTraceLogDateCount(Map<String, Object> condition) {
+
+        return sqlSession.selectOne("kr.wisestone.wms.domain.TraceLog.getTraceLogDateCount", condition);
+    }
 }

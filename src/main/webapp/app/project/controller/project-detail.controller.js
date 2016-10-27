@@ -548,7 +548,7 @@
                 TaskListSearch.TaskAudigLog({'entityId' : projectId, 'entityName' : 'Project', recentYn : vm.recentYn}).then(function(result){
                     vm.TaskAuditLog = result;
                     vm.commentList=[];
-                    angular.forEach(vm.TaskAuditLog.data, function(val){
+                    angular.forEach(vm.TaskAuditLog.data.traceLogs, function(val){
                         if(val.entityField == 'reply'){
                             vm.commentList.push(val);
                         }
@@ -579,7 +579,7 @@
                 TaskListSearch.TaskAudigLog({'entityId' : vm.project.id, 'entityName' : 'Project', recentYn : vm.recentYn}).then(function(result){
                     vm.TaskAuditLog = result;
                     vm.commentList=[];
-                    angular.forEach(vm.TaskAuditLog.data, function(val){
+                    angular.forEach(vm.TaskAuditLog.data.traceLogs, function(val){
                         if(val.entityField == 'reply'){
                             vm.commentList.push(val);
                         }

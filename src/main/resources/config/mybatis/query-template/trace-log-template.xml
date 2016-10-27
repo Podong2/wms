@@ -106,6 +106,26 @@
         ORDER BY tl.id ASC
     </select>
 
+    <select id="getTraceLogDateCount" resultType="int" parameterType="java.util.HashMap">
+        SELECT count(uniqueDate.createdDate)
+        FROM (SELECT to_char(itl.created_date, 'YYYY-MM-DD') as createdDate
+        FROM owl_trace_log itl
+        WHERE 1=1
+        <choose>
+            <when test="entityName == 'Task'">
+                AND itl.task_id = #{entityId}
+            </when>
+            <when test="entityName == 'Project'">
+                AND itl.project_id = #{entityId}
+            </when>
+            <otherwise>
+                AND itl.entity_id = #{entityId}
+            </otherwise>
+        </choose>
+        GROUP BY createdDate
+        ORDER BY createdDate DESC) uniqueDate
+    </select>
+
     <select id="getRecentTraceLogs" resultType="java.util.ArrayList" resultMap="traceLogListResultMap" parameterType="java.util.HashMap">
         SELECT tl.id as id, tl.entity_id as entityId, tl.entity_name as entityName, tl.entity_field as entityField
         , CASE

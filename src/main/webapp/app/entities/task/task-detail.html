@@ -168,7 +168,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr ng-repeat="log in vm.TaskAuditLog.data track by log.id">
+                <tr ng-repeat="log in vm.TaskAuditLog.data.traceLogs track by log.id">
                     <td class="width-200-p text-center"><span translate="wmsApp.task.{{log.entityField}}" ng-show="log.entityField != ''">field</span></td>
                     <td class="width-200-p text-center" translate="entity.action.{{log.persistType}}">persist type</td>
                     <td class="width-200-p" ng-if="log.entityField == 'contents'"><span ng-bind-html="vm.renderHtml(log.oldValue)"></span></td>
