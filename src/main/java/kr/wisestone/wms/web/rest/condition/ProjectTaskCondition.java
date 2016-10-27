@@ -36,4 +36,8 @@ public class ProjectTaskCondition {
     private String statusType;
 
     private String taskName;
+
+    private Long limit;
+
+    private Long offset;
 }

@@ -207,7 +207,7 @@ public class ProjectService {
     }
 
     @Transactional(readOnly = true)
-    public List<ProjectDTO> findByNameLike(String name, List<Long> excludeIds) {
+    public List<ProjectDTO> findByNameLike(String name, List<Long> excludeIds, Long projectId) {
 
         String login = SecurityUtils.getCurrentUserLogin();
 
@@ -221,6 +221,10 @@ public class ProjectService {
 
         if(StringUtils.hasText(name)) {
             condition.put("name", name);
+        }
+
+        if(projectId != null) {
+            condition.put("projectId", projectId);
         }
 
         List<ProjectDTO> projectDTOs = this.projectDAO.getProjectByName(condition);
@@ -490,6 +494,25 @@ public class ProjectService {
         condition.put("projectId", projectId);
 
         List<ProjectHistoryListDTO> taskDTOs = projectDAO.getProjectHistoryLists(condition);
+
+        return taskDTOs;
+    }
+
+    @Transactional(readOnly = true)
+    public List<ProjectHistoryListDTO> findProjectFileHistoryList(ProjectTaskCondition projectTaskCondition) {
+
+        Map<String, Object> condition = Maps.newHashMap();
+        condition.put("projectId", projectTaskCondition.getProjectId());
+
+        if(projectTaskCondition.getLimit() != null) {
+            condition.put("limit", projectTaskCondition.getLimit());
+        }
+
+        if(projectTaskCondition.getOffset() != null) {
+            condition.put("offset", projectTaskCondition.getOffset());
+        }
+
+        List<ProjectHistoryListDTO> taskDTOs = projectDAO.getProjectFileHistoryList(condition);
 
         return taskDTOs;
     }

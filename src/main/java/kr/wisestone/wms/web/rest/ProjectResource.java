@@ -136,10 +136,11 @@ public class ProjectResource {
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
     public ResponseEntity<List<ProjectDTO>> findByName(@RequestParam(value = "name", required = false) String name
-                                                        , @RequestParam(value = "excludeIds", required = false) List<Long> excludeIds) {
+                                                        , @RequestParam(value = "excludeIds", required = false) List<Long> excludeIds
+                                                        , @RequestParam(value = "projectId", required = false) Long projectId) {
         log.debug("REST request to get Project name : {}", name);
 
-        List<ProjectDTO> projectDTOs = projectService.findByNameLike(name, excludeIds);
+        List<ProjectDTO> projectDTOs = projectService.findByNameLike(name, excludeIds, projectId);
 
         return new ResponseEntity<>(projectDTOs, HttpStatus.OK);
     }
@@ -180,6 +181,21 @@ public class ProjectResource {
     public ResponseEntity<List<ProjectHistoryListDTO>> findHistoryTasks(@ModelAttribute ProjectTaskCondition projectTaskCondition) {
         log.debug("REST request to get Project : {}", projectTaskCondition.getProjectId());
         List<ProjectHistoryListDTO> taskDTOs = projectService.findHistoryTasks(projectTaskCondition.getProjectId());
+
+        return Optional.ofNullable(taskDTOs)
+            .map(result -> new ResponseEntity<>(
+                result,
+                HttpStatus.OK))
+            .orElse(new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @RequestMapping(value = "/projects/findProjectFileHistoryList",
+        method = RequestMethod.GET,
+        produces = MediaType.APPLICATION_JSON_VALUE)
+    @Timed
+    public ResponseEntity<List<ProjectHistoryListDTO>> findProjectFileHistoryList(@ModelAttribute ProjectTaskCondition projectTaskCondition) {
+        log.debug("REST request to get Project : {}", projectTaskCondition.getProjectId());
+        List<ProjectHistoryListDTO> taskDTOs = projectService.findProjectFileHistoryList(projectTaskCondition);
 
         return Optional.ofNullable(taskDTOs)
             .map(result -> new ResponseEntity<>(
