@@ -19,7 +19,7 @@ spring:
             enabled: true # we use gulp + BrowserSync for livereload
     datasource:
 #        url: jdbc:mariadb://211.238.12.102:3306/owl_wms_dev
-        url: jdbc:postgresql://211.238.12.101:5432/wms_test
+        url: jdbc:postgresql://211.238.12.101:5432/wms
         name:
 #        username: root
         username: wms
