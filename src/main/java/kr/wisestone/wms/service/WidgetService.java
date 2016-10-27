@@ -63,9 +63,11 @@ public class WidgetService {
                 break;
             case LIST_TYPE_THIS_WEEK:
 
+                String weekStartDate = DateUtil.convertDateToStr(DateUtil.getWeekStartDate(), "yyyy-MM-dd");
                 String weekEndDate = DateUtil.convertDateToStr(DateUtil.getWeekEndDate(), "yyyy-MM-dd");
 
-                condition.put("tomorrow", weekEndDate);
+                condition.put("weekStartDate", weekStartDate);
+                condition.put("weekEndDate", weekEndDate);
 
                 break;
         }
