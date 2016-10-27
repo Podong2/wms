@@ -96,6 +96,7 @@ public class NotificationParameterDTO {
         this.setEntityId(taskDTO.getId());
         this.setEntityName("Task");
         this.setEntityValue(taskDTO.getName());
+        this.setPersistType("CREATED");
     }
 
     public NotificationParameterDTO(NotificationConfig notificationConfig, String notificationMethod
