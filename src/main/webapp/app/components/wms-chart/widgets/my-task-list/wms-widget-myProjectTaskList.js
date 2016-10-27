@@ -53,7 +53,7 @@ angular.module('wms.widget.myProjectTaskList', ['adf.provider'])
         endDate:'',
         folderYn:false,
         id:'',
-        name:"선택하세요"
+        name:"전체 프로젝트"
     }];
     vm.projectId= '';
     function taskTypeChange(type){
@@ -75,7 +75,6 @@ angular.module('wms.widget.myProjectTaskList', ['adf.provider'])
     }
 
     function onSuccess (result) {
-        vm.projectList.push({name: "전체 프로젝트", id : ''})
         angular.forEach(result, function(val){
             vm.projectList.push(val);
         })

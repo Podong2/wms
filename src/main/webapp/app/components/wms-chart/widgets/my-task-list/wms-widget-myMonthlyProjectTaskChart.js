@@ -50,7 +50,7 @@ angular.module('wms.widget.myMonthlyProjectTaskChart', ['adf.provider', 'nvd3', 
         endDate:'',
         folderYn:false,
         id:'',
-        name:"선택하세요"
+        name:"전체 프로젝트"
     }];
     vm.projectId= '';
     vm.assignedPercent='';
