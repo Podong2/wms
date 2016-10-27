@@ -358,6 +358,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 findUser.findByNameAndExcludeIds(name, excludeUserIds).then(function(result){
                     $log.debug("watcherList : ", result);
                     vm.watcherList = result;
+                    $rootScope.$broadcast("initArrows")
                 }); //user search
             };
 
@@ -683,11 +684,15 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 }
             });
             // 참조자 명 실시간 검색
-            $scope.$watchCollection('vm.watcherName', function(newValue){
-                if(newValue != '' && newValue != undefined){
-                    $log.debug("vm.watcherName : ", newValue);
-                    $scope.watcherName = newValue;
-                    $scope.pickerFindWatcher(newValue);
+            var watcherName = '';
+            $scope.$watchCollection('vm.watcherName', function(newValue, oldValue){
+                if(newValue != '' && newValue != undefined && newValue != oldValue){
+                    if(watcherName != newValue){
+                        watcherName = newValue;
+                        $log.debug("vm.watcherName : ", newValue);
+                        $scope.watcherName = newValue;
+                        $scope.pickerFindWatcher(newValue);
+                    }
                 }
             });
             // 참조자 명 실시간 검색
@@ -941,15 +946,29 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
             // 참조자 데이터 주입
             function watcherAdd(watcher){
                 var index = vm.DuplicationWatcherIds.indexOf(watcher.id);
-                if(index > -1){
-                    $log.debug("중복")
+                if(watcher.name  != undefined && watcher.name  != '' && watcher.name  != null){
+                    if(index > -1){
+                        $log.debug("중복")
+                    }else{
+                        vm.DuplicationWatcherIds.push(watcher.id);
+                        //setCurrentSearchWatcher(watcher) // 최근 선택한 사용자 저장
+                        $scope.watchers.push(watcher);
+                    }
                 }else{
-                    vm.DuplicationWatcherIds.push(watcher.id);
-                    //setCurrentSearchWatcher(watcher) // 최근 선택한 사용자 저장
-                    $scope.watchers.push(watcher);
-                    if(vm.watcherName != '') $scope.pickerFindWatcher(vm.watcherName);
-                }
+                    if(index > -1){
+                        $log.debug("중복")
+                    }else{
+                        vm.DuplicationWatcherIds.push(Number(watcher.id));
+                        //setCurrentSearchWatcher(watcher) // 최근 선택한 사용자 저장
+                        angular.forEach(vm.watcherList, function(value){
+                            if(value.id == watcher.id){
+                                $scope.watchers.push(value);
+                            }
+                        });
+                    }
 
+                }
+                if(vm.watcherName != '') $scope.pickerFindWatcher(vm.watcherName);
             }
 
             // 참조자 데이터 제거

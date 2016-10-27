@@ -3412,7 +3412,7 @@
         customPreviewTags: {},
         previewSettings: defaultPreviewSettings,
         fileTypeSettings: defaultFileTypeSettings,
-        previewFileIcon: '<i class="glyphicon glyphicon-file" style="width:96px; height:60px; display: table-cell; vertical-align: middle"></i>',
+        previewFileIcon: '<i class="glyphicon glyphicon-file file-input-default-icon"></i>',
         previewFileIconClass: 'file-other-icon',
         previewFileIconSettings: {},
         previewFileExtSettings: {},
