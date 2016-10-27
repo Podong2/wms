@@ -21,10 +21,12 @@ public class ProjectTaskManageDTO {
 
     private Long cancelCount;
 
+    private Integer progressRate;
+
     public ProjectTaskManageDTO() {
     }
 
-    public ProjectTaskManageDTO(ProjectDTO projectDTO, List<TaskDTO> tasks) {
+    public ProjectTaskManageDTO(ProjectDTO projectDTO, List<TaskDTO> tasks, int progressRate) {
         this.tasks = tasks;
         this.project = projectDTO;
 
@@ -58,6 +60,8 @@ public class ProjectTaskManageDTO {
         this.delayedCount = delayedCount;
         this.cancelCount = cancelCount;
         this.inProgressCount = inProgressCount;
+
+        this.progressRate = progressRate;
     }
 
     public List<TaskDTO> getTasks() {
@@ -114,5 +118,13 @@ public class ProjectTaskManageDTO {
 
     public void setCancelCount(Long cancelCount) {
         this.cancelCount = cancelCount;
+    }
+
+    public Integer getProgressRate() {
+        return progressRate;
+    }
+
+    public void setProgressRate(Integer progressRate) {
+        this.progressRate = progressRate;
     }
 }

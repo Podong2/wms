@@ -476,7 +476,14 @@ public class ProjectService {
 
         List<TaskDTO> taskDTOs = this.taskDAO.getProjectManagedTasks(condition);
 
-        return new ProjectTaskManageDTO(projectDTO, taskDTOs);
+        Map<String, Object> progressCounts = this.projectDAO.getProjectProgressCounts(condition);
+
+        Long completeCount = (Long) progressCounts.get("completeCount");
+        Long totalCount = (Long) progressCounts.get("totalCount");
+
+        int progressRate = (int)(completeCount * 100.0 / totalCount + 0.5);
+
+        return new ProjectTaskManageDTO(projectDTO, taskDTOs, progressRate);
     }
 
     @Transactional(readOnly = true)

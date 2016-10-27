@@ -29,7 +29,8 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 holdCount : 0,
                 inProgressCount : 0,
                 completeCount : 0,
-                cancelCount : 0
+                cancelCount : 0,
+                progressRate : 0
             };
 
             // page 파라미터
@@ -231,6 +232,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 vm.counts.inProgressCount = data.inProgressCount;
                 vm.counts.completeCount = data.completeCount;
                 vm.counts.cancelCount = data.cancelCount;
+                vm.counts.progressRate = data.progressRate;
                 if(!vm.firstLoding){
                     $state.go("my-project.detail", {project : vm.project});
                 }
@@ -260,10 +262,6 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 var btDay = (endDate.getTime() - day.getTime()) / (1000*60*60*24) ;
                 vm.dDay = btDay > 0 ? Math.round(btDay) <= 0 ? 0 : Math.round(btDay) : '0';
 
-
-                vm.coumplatePercent= {
-                    width : vm.tasks.length == 0 ? '0%' : Math.floor(vm.info.completeCount / vm.tasks.length * 100) + '%'
-                };
 
                 $log.debug("vm.counts ", vm.counts)
                 $scope.pieData = [

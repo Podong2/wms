@@ -30,6 +30,11 @@ public class ProjectDAO {
         return sqlSession.selectList("kr.wisestone.wms.domain.Project.getProjects", condition);
     }
 
+    public Map<String, Object> getProjectProgressCounts(Map<String, Object> condition) {
+
+        return sqlSession.selectOne("kr.wisestone.wms.domain.Project.getProjectProgressCounts", condition);
+    }
+
     public ProjectDTO getProject(Long id) {
         return sqlSession.selectOne("kr.wisestone.wms.domain.Project.getProject", id);
     }

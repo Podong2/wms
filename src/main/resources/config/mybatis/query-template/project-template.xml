@@ -5,6 +5,11 @@
 <mapper namespace="kr.wisestone.wms.domain.Project">
 
 
+    <resultMap id="projectProgressCountsResultMap" type="java.util.HashMap">
+        <result property="completeCount" column="completeCount" />
+        <result property="totalCount" column="totalCount"/>
+    </resultMap>
+
     <resultMap id="projectHistoryListResultMap" type="kr.wisestone.wms.web.rest.dto.ProjectHistoryListDTO">
         <id property="id" column="id" />
         <result property="taskId" column="taskId" />
@@ -405,6 +410,33 @@
                 OFFSET 0 LIMIT #{limit}
             </if>
         )
+    </select>
+
+    <select id="getProjectProgressCounts" resultType="java.util.HashMap" resultMap="projectProgressCountsResultMap" parameterType="java.util.HashMap">
+        SELECT (SELECT COUNT(1) as completeCount
+        FROM owl_task t
+            LEFT OUTER JOIN owl_task_project tpr ON tpr.task_id = t.id
+        WHERE 1=1
+        <if test="projectIds != null">
+            AND tpr.project_id IN
+            <foreach item="item" index="index" collection="projectIds"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        AND t.status_id = 2) as completeCount
+        , (SELECT COUNT(1) as totalCount
+        FROM owl_task t
+            LEFT OUTER JOIN owl_task_project tpr ON tpr.task_id = t.id
+        WHERE 1=1
+        <if test="projectIds != null">
+            AND tpr.project_id IN
+            <foreach item="item" index="index" collection="projectIds"
+                     open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+        AND t.status_id IN (1, 2)) as totalCount
     </select>
 
 </mapper>
