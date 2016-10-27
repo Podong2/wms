@@ -66,8 +66,6 @@ wmsMenu.$inject=['$state', '$rootScope', '$timeout'];
 
                     $li.on('click', '>a', function (e) {
 
-                        console.log("123123"+new Date());
-
                         // collapse all open siblings
                         $li.siblings('.open').smartCollapseToggle();
 
