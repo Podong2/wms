@@ -113,7 +113,7 @@
                                 <ol class="nya-bs-select task-openYn-select" ng-model="vm.task.statusId" style="width: 90px;" disabled="!vm.task.modifyYn">
                                     <li nya-bs-option="option in vm.codes track by $index" title="{{option.name}}" data-value="option.id">
                                         <a>
-                                            {{ option.name }}
+                                            <span>{{ option.name }}</span>
                                             <span class="glyphicon glyphicon-ok check-mark"></span>
                                         </a>
                                     </li>
@@ -195,7 +195,7 @@
                             <ol class="nya-bs-select task-openYn-select" ng-model="vm.task.privateYn" disabled="!vm.task.modifyYn">
                                 <li nya-bs-option="option in vm.privateYns" title="{{option.name}}" data-value="option.id" style="width: 105px;">
                                     <a>
-                                        <span class="fa" ng-class="option.icon"></span> {{ option.name }}
+                                        <span class="fa" ng-class="option.icon"> {{ option.name }}</span>
                                         <span class="glyphicon glyphicon-ok check-mark"></span>
                                     </a>
                                 </li>
@@ -399,7 +399,7 @@
                                                 <div class="form-group" style="margin-bottom: 0">
 
                                                     <span class="input-group wms-form">
-                                                        <label class="input" ng-show="list.startDate != '' || list.startDate != ''">
+                                                        <label class="input">
                                                             <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="subTaskEndDate" style="height: 30px; width: 100%; border : 0">
                                                         </label>
 
@@ -755,7 +755,7 @@
                         </summernote>
                     </td>
                     <td>
-                        <button type="button" class="btn btn_icon btn_customs" ng-click="vm.createComment()" owl-btn-save></button>
+                        <button type="button" class="btn btn_icon btn_customs" ng-click="vm.createComment()" owl-btn-add></button>
                     </td>
                 </tr>
             </tbody>

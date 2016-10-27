@@ -128,7 +128,7 @@
         vm.date = '';
         vm.assigneeUsers = [];
         vm.logArrayData = [];
-        vm.codes = Code.query();
+        vm.codes = [{"id":1,"name":"활성"},{"id":2,"name":"완료"},{"id":3,"name":"보류"},{"id":4,"name":"취소"}];
         vm.commentList = [];
         vm.projectList=[];
         $scope.projectName = '';
@@ -894,8 +894,9 @@
                 vm.repeatClose(); // 반복설정 팝업 닫기
                 $scope.files = [];
                 if(vm.uploadType == '') {
-                    if($stateParams.parentType != undefined && $stateParams.parentType == 'project') $state.go("my-project.taskDetail", {}, {reload : 'my-project.taskDetail'});
-                    else $state.go("my-task.detail", {fileListType : vm.fileListType}, {reload : 'my-task.detail'});
+                    if($stateParams.parentType != undefined && $stateParams.parentType == 'project') $state.go("my-project.taskDetail", {fileListType : vm.fileListType, projectId : $stateParams.projectId}, {reload : 'my-project.taskDetail'});
+                    if($stateParams.parentType != undefined && $stateParams.parentType == 'notification') $state.go("my-notification.taskDetail", {fileListType : vm.fileListType}, {reload : 'my-notification.taskDetail'});
+                    else if($stateParams.parentType != undefined && $stateParams.parentType == 'task') $state.go("my-task.detail", {fileListType : vm.fileListType}, {reload : 'my-task.detail'});
                 }
                 else {
                     getTaskInfo();

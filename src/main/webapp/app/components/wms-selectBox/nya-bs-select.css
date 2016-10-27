@@ -232,6 +232,7 @@
     white-space: nowrap;
 }
 .nya-bs-select.btn-group .dropdown-menu li.selected a > span:first-child{
+    text-align: left;
     width: 94%;
     overflow: hidden;
     display: inline-block;

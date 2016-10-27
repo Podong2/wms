@@ -90,7 +90,7 @@
                         <ol class="nya-bs-select task-openYn-select" ng-model="vm.task.statusId" style="width: 90px;">
                             <li nya-bs-option="option in vm.codes" title="{{option.name}}" data-value="option.id">
                                 <a>
-                                    {{ option.name }}
+                                    <span>{{ option.name }}</span>
                                     <span class="glyphicon glyphicon-ok check-mark"></span>
                                 </a>
                             </li>
@@ -173,7 +173,7 @@
                         <ol class="nya-bs-select task-openYn-select" ng-model="vm.task.privateYn">
                             <li nya-bs-option="option in vm.privateYns" title="{{option.name}}" data-value="option.id" style="width: 105px;">
                                 <a>
-                                    <span class="fa" ng-class="option.icon"></span> {{ option.name }}
+                                    <span class="fa" ng-class="option.icon"> {{ option.name }}</span>
                                     <span class="glyphicon glyphicon-ok check-mark"></span>
                                 </a>
                             </li>

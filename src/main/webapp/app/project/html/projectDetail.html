@@ -3,7 +3,8 @@
         <div class="col-md-12">
             <div class="col-md-9">
                 <!--<i class="fa fa-exclamation-circle task-circle" ng-class="vm.project.importantYn ? 'on' : ''" ng-click="vm.project.importantYn = !vm.project.importantYn"></i>-->
-                <input type="text" class="taskAddInput" maxlength="30" ng-model="vm.project.name" enter-submit="vm.projectUpload()" wms-kr-update/>
+                <input type="text" class="taskAddInput" maxlength="30" ng-model="vm.project.name" enter-submit="vm.projectUpload()" ng-if="vm.project.adminYn" wms-kr-update/>
+                <div class="disabled-task-title" ng-show="!vm.project.adminYn">{{vm.project.name}}</div>
             </div>
             <div class="col-md-3">
                 <span class="pull-right taskOptionBtnArea">
@@ -63,7 +64,7 @@
                         </div>
                     </div>
                     <div class="task-project" ng-repeat="project in vm.project.projectParents">
-                        {{project.name}} <i class="fa fa-close" ng-click="vm.projectRemove(project.id)"></i>
+                        {{project.name}} <i class="fa fa-close" ng-if="vm.project.adminYn" ng-click="vm.projectRemove(project.id)"></i>
                     </div>
                 </div>
             </div>
@@ -334,7 +335,7 @@
                         <ol class="nya-bs-select task-openYn-select" ng-model="vm.project.statusId" style="width: 90px;" disabled="!vm.project.adminYn">
                             <li nya-bs-option="option in vm.codes track by $index" title="{{option.name}}" data-value="option.id">
                                 <a>
-                                    {{ option.name }}
+                                    <span>{{ option.name }}</span>
                                     <span class="glyphicon glyphicon-ok check-mark"></span>
                                 </a>
                             </li>
@@ -560,7 +561,7 @@
                     </summernote>
                 </td>
                 <td>
-                    <button type="button" class="btn btn_icon btn_customs" ng-click="vm.createComment()" owl-btn-save></button>
+                    <button type="button" class="btn btn_icon btn_customs" ng-click="vm.createComment()" owl-btn-add></button>
                 </td>
             </tr>
             </tbody>

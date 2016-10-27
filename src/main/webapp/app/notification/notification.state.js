@@ -66,7 +66,8 @@
                 title : '작업 상세'
             },
             params : {
-                parentType : 'notification'
+                parentType : 'notification',
+                fileListType : ''
             },
             views: {//
                 'notificationDetail': {//
