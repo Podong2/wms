@@ -330,7 +330,7 @@
         $scope.$watchCollection('vm.project.projectMembers', function(newValue, oldValue){
             if(newValue != undefined && oldValue !== newValue && oldValue.length < newValue.length) {
                 vm.uploadType = 'member';
-                projectUpload();
+                projectUpload(true);
             }
         });
         $scope.$watchCollection('vm.project.parentProjectIds', function(newValue, oldValue){
@@ -786,7 +786,6 @@
             vm.uploadType = 'member';
             vm.currentMemberIds.push(member.id)
             vm.project.projectMembers.push(member);
-            $scope.$apply();
             $scope.pickerFindMember(vm.memberName);
             //$rootScope.$broadcast('watcherPopupClose');
         }
