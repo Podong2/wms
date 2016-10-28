@@ -18,7 +18,9 @@
                 $body.hasClass('mobile-view-activated')
 
                 // toggle open
-                $this.toggleClass('open');
+                if($this.find("ul").length > 0) {
+                    $this.toggleClass('open');
+                }
 
                 // for minified menu collapse only second level
                 if ($body.hasClass('minified')) {
