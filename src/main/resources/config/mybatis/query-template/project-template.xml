@@ -412,7 +412,7 @@
             </if>
         )
         </if>
-        ORDER BY psaf.created_date ASC
+        ORDER BY createdDate ASC
     </select>
 
     <select id="getProjectFileHistoryDateCount" resultType="int" parameterType="java.util.HashMap">
