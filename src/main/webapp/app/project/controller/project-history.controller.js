@@ -5,8 +5,8 @@
 
 angular.module('wmsApp')
     .controller("projectHistoryCtrl", projectHistoryCtrl);
-projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$rootScope', '$state', 'ProjectHistoryTasksInfo', '$stateParams', 'toastr', 'TaskListSearch', '$sce', 'dataService', 'Principal', 'TaskEdit', '$cookies'];
-        function projectHistoryCtrl($scope, Code, $log, Task, AlertService, $rootScope, $state, ProjectHistoryTasksInfo, $stateParams, toastr, TaskListSearch, $sce, dataService, Principal, TaskEdit, $cookies) {
+projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$rootScope', '$state', 'ProjectHistoryTasksInfo', '$stateParams', 'toastr', 'TaskListSearch', '$sce', 'dataService', 'Principal', 'TaskEdit', '$cookies', 'ProjectFileHistoryList'];
+        function projectHistoryCtrl($scope, Code, $log, Task, AlertService, $rootScope, $state, ProjectHistoryTasksInfo, $stateParams, toastr, TaskListSearch, $sce, dataService, Principal, TaskEdit, $cookies, ProjectFileHistoryList) {
             var vm = this;
             vm.baseUrl = window.location.origin;
 
@@ -75,7 +75,7 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
                     });
                     $log.debug("vm.tasks : ", vm.tasks);
 
-                    taskHistoryOpen(0, vm.tasks[0].id, vm.tasks[0].historyArea);
+                    taskHistoryOpen(0, vm.tasks[0].id, vm.tasks[0].historyArea, vm.tasks[0].historyType);
 
                 }, function(reason) {
                     AlertService.error(reason);
@@ -98,29 +98,40 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
             }
 
             // 타스크 히스토리 오픈&클로즈 처리 및 로그 불러오기
-            function taskHistoryOpen(index, taskId, openYn){
+            function taskHistoryOpen(index, taskId, openYn, type){
                 angular.forEach(vm.tasks, function(value, key){
                     value.historyArea = false;
                     //value.TaskAuditLog = [];
                 });
                 if(!openYn) vm.tasks[index].historyArea = true;
                 if(vm.tasks[index].historyArea && vm.tasks[index].TaskAuditLog == undefined){
-                    TaskListSearch.TaskAudigLog({'entityId' : taskId, 'entityName' : 'Task', recentYn : true, offset : 0}).then(function(result){
-                        vm.tasks[index].TaskAuditLog = result;
-                        vm.tasks[index].offset = 2;
-                        vm.tasks[index].endDataYn = false;
-                        vm.tasks[index].endDataCloseYn = false;
-                        vm.tasks[index].recentYn = true;
-                        if(result.historyType == "SHARED_ATTACHED_FILE"){
-                            vm.tasks[index].TaskAuditLog.sharedAttachedFileId = vm.tasks[index].sharedAttachedFileId;
-                            vm.tasks[index].TaskAuditLog.sharedAttachedFileName = vm.tasks[index].sharedAttachedFileName;
-                            vm.tasks[index].TaskAuditLog.sharedAttachedFileSize = vm.tasks[index].sharedAttachedFileSize;
-                            vm.tasks[index].TaskAuditLog.historyType = vm.tasks[index].historyType;
-                        }
-                        vm.tasks[index].currentLogs = _.clone(vm.tasks[index].TaskAuditLog.data.traceLogs);
-                        $log.debug("최초 히스토리 불러오기 : ", vm.tasks)
-                        $log.debug("최초 히스토리 2일 로그 목록 : ", vm.tasks[index].currentLogs)
-                    });
+                    if(type == "SHARED_ATTACHED_FILE"){
+                        ProjectFileHistoryList.getFiles({projectId : vm.projectInfo.id, offset : 0, limit : 2}).then(function(result){
+                            vm.tasks[index].TaskAuditLog = result;
+                            vm.tasks[index].offset = 2;
+                            vm.tasks[index].endDataYn = false;
+                            vm.tasks[index].endDataCloseYn = false;
+                            vm.tasks[index].recentYn = true;
+
+                            vm.tasks[index].currentLogs = angular.copy(vm.tasks[index].TaskAuditLog.data.projectFiles);
+                            $log.debug("최초 히스토리 불러오기 : ", vm.tasks)
+                            $log.debug("최초 히스토리 2일 로그 목록 : ", vm.tasks[index].currentLogs)
+                        });
+
+                    }else{
+                        TaskListSearch.TaskAudigLog({'entityId' : taskId, 'entityName' : 'Task', recentYn : true, offset : 0}).then(function(result){ // recentYn : 최근데이터만 가져오는지 여부 체크
+                            vm.tasks[index].TaskAuditLog = result;
+                            vm.tasks[index].offset = 2;
+                            vm.tasks[index].endDataYn = false;
+                            vm.tasks[index].endDataCloseYn = false;
+                            vm.tasks[index].recentYn = true;
+
+                            vm.tasks[index].currentLogs = angular.copy(vm.tasks[index].TaskAuditLog.data.traceLogs);
+                            $log.debug("최초 히스토리 불러오기 : ", vm.tasks)
+                            $log.debug("최초 히스토리 2일 로그 목록 : ", vm.tasks[index].currentLogs)
+                        });
+                    }
+
 
                 }
             }
@@ -213,32 +224,55 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
             }
 
             /* 이전내용 가져오기 */
-            function getTaskTwoDateHistory(index, taskId, recentYn){
+            function getTaskTwoDateHistory(index, taskId, recentYn, type){
                 if(!recentYn){
                     vm.tasks[index].recentYn = recentYn;
                     vm.tasks[index].offset = 0;
                     vm.tasks[index].endDataYn = true;
                 }
-                TaskListSearch.TaskAudigLog({'entityId' : taskId, 'entityName' : 'Task', recentYn : vm.tasks[index].recentYn, offset : vm.tasks[index].offset}).then(function(result){
-                    $log.debug("이전 내용 더보기 결과 : ", result);
-                    if(result.data.length == 0){
-                        vm.tasks[index].endDataYn = true;
-                    }else{
-                        if(!recentYn){
-                            vm.tasks[index].TaskAuditLog.data.traceLogs = _.clone(result.data.traceLogs);
+                if(type == "SHARED_ATTACHED_FILE"){
+                    ProjectFileHistoryList.getFiles({projectId : vm.projectInfo.id, recentYn : vm.tasks[index].recentYn, offset : vm.tasks[index].offset}).then(function(result){
+                        $log.debug("이전 내용 더보기 결과 : ", result);
+                        if(result.data.length == 0){
+                            vm.tasks[index].endDataYn = true;
                         }else{
-                            angular.forEach(vm.tasks[index].TaskAuditLog.data.traceLogs, function(value){
-                                result.data.traceLogs.push(value)
-                            });
-                            vm.tasks[index].TaskAuditLog.data.traceLogs = _.clone(result.data.traceLogs);
-                            vm.tasks[index].offset += 1;
+                            if(!recentYn){
+                                vm.tasks[index].TaskAuditLog.data.projectFiles = _.clone(result.data.projectFiles);
+                            }else{
+                                angular.forEach(vm.tasks[index].TaskAuditLog.data.projectFiles, function(value){
+                                    result.data.projectFiles.push(value)
+                                });
+                                vm.tasks[index].TaskAuditLog.data.projectFiles = _.clone(result.data.projectFiles);
+                                vm.tasks[index].offset += 1;
+                            }
+
                         }
+                        $log.debug("이전 내용 더보기 결과 : ", vm.tasks[index].TaskAuditLog);
+                        $log.debug("이전 내용 최근 2일 : ", vm.tasks[index].currentLogs);
 
-                    }
-                    $log.debug("이전 내용 더보기 결과 : ", vm.tasks[index].TaskAuditLog);
-                    $log.debug("이전 내용 최근 2일 : ", vm.tasks[index].currentLogs);
+                    });
+                }else{
+                    TaskListSearch.TaskAudigLog({'entityId' : taskId, 'entityName' : 'Task', recentYn : vm.tasks[index].recentYn, offset : vm.tasks[index].offset}).then(function(result){
+                        $log.debug("이전 내용 더보기 결과 : ", result);
+                        if(result.data.length == 0){
+                            vm.tasks[index].endDataYn = true;
+                        }else{
+                            if(!recentYn){
+                                vm.tasks[index].TaskAuditLog.data.traceLogs = _.clone(result.data.traceLogs);
+                            }else{
+                                angular.forEach(vm.tasks[index].TaskAuditLog.data.traceLogs, function(value){
+                                    result.data.traceLogs.push(value)
+                                });
+                                vm.tasks[index].TaskAuditLog.data.traceLogs = _.clone(result.data.traceLogs);
+                                vm.tasks[index].offset += 1;
+                            }
 
-                });
+                        }
+                        $log.debug("이전 내용 더보기 결과 : ", vm.tasks[index].TaskAuditLog);
+                        $log.debug("이전 내용 최근 2일 : ", vm.tasks[index].currentLogs);
+
+                    });
+                }
             }
 
 
