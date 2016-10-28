@@ -141,7 +141,8 @@
                             <div class="row" ng-class="vm.project.adminYn? '' : 'margin-left-0'">
                                 <div class="col-md-6 padding-right-0" style="border-right: 1px solid #ddd; min-height: 219px;" ng-show="vm.project.adminYn">
                                     <div class="member-input-area" ng-if="vm.project.adminYn">
-                                        <input type="text" class="form-control member-input" ng-model="vm.memberName" maxlength="20" style="border-right: 0; border-left:0;"  placeholder="이름을 입력하세요." wms-kr-update wms-element-arrow-keys-move element-add="vm.memberAdd"/>
+                                        <input type="text" class="form-control member-input" ng-model="vm.memberName" maxlength="20" style="border-right: 0; border-left:0;"  placeholder="이름을 입력하세요."
+                                               wms-kr-update wms-element-arrow-keys-move element-add="vm.memberAdd" element-find="pickerFindMember" element-value="vm.memberName"/>
                                     </div>
                                     <div class="member-search-list-area watcher-search-list-area" ng-if="vm.project.adminYn">
                                         <div>

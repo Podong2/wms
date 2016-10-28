@@ -5,11 +5,11 @@
     'use strict';
 
     angular.module('wmsApp')
-        .directive('wmsElementArrowKeysMove', wmsElementArrowKeysMove);
+        .directive('wmsElementArrowKeysMoveArray', wmsElementArrowKeysMoveArray);
 
-    wmsElementArrowKeysMove.$inject = ['$log', '$timeout', '$rootScope'];
+    wmsElementArrowKeysMoveArray.$inject = ['$log', '$timeout', '$rootScope'];
 
-    function wmsElementArrowKeysMove($log, $timeout, $rootScope) {
+    function wmsElementArrowKeysMoveArray($log, $timeout, $rootScope) {
 
         return {
             restrict: 'A',
@@ -27,13 +27,13 @@
                 var $currElement = '';
                 $curr.css( "background", "#E1F2FF" );
 
-                $rootScope.$on("initArrows", function(){
+                $rootScope.$on("initArrayArrows", function(){
                     $log.debug($element)
                     var ele = $element;
                     $timeout(function(){
                         $log.debug(ele)
-                        $( ".arrow-event-li" ).css( "background", "" );
-                        $( ".arrow-event-li" ).removeClass( "active" );
+                        ele.parent().next().find( ".arrow-event-li" ).css( "background", "" );
+                        ele.parent().next().find( ".arrow-event-li" ).removeClass( "active" );
                         $curr.parents(".watcher-search-list-area").css('scrollTop', 0);
                         $curr.parents(".watcher-search-list-area").animate({ scrollTop: 0 }, 0);
                         $curr = ele.parent().next().find(".start-arrow" );
@@ -44,11 +44,34 @@
                 });
 
                 var watcherName = '';
-                scope.$watch('elementValue', function(value){
-                    if(value){
-                        if(watcherName != value) {
-                            watcherName = value;
-                            scope.elementFind()(value).then(function(result){
+                //scope.$watch('elementValue', function(value){
+                //    if(value){
+                //        if(watcherName != value) {
+                //            watcherName = value;
+                //            scope.elementFind()(value).then(function(result){
+                //                $timeout(function(){
+                //                    $log.debug(result)
+                //                    var ele = $element;
+                //                    $curr = ele.parent().next().find(".start-arrow" );
+                //                    $currElement = ele.parent().next().find(".start-arrow" );
+                //                    $( ".arrow-event-li" ).css( "background", "" );
+                //                    $( ".arrow-event-li" ).removeClass( "active" );
+                //                    $curr.css( "background", "#E1F2FF" );
+                //                    $currElement.css( "background", "#E1F2FF" );
+                //                }, 100)
+                //            });
+                //        }
+                //
+                //    }
+                //});
+
+
+                element.on("keyup", function (event) {
+                    $log.debug(event.target.value);
+                    if(event.target.value){
+                        if(watcherName != event.target.value) {
+                            watcherName = event.target.value;
+                            scope.elementFind()(event.target.value).then(function(result){
                                 $timeout(function(){
                                     $log.debug(result)
                                     var ele = $element;
@@ -63,8 +86,7 @@
                         }
 
                     }
-                });
-
+                })
 
                 element.on("keydown keypress", function (event) {
 

@@ -658,7 +658,7 @@
         $scope.$watchCollection('vm.userName', function(newValue){
             $log.debug("vm.userName : ", newValue);
             $scope.userName = newValue;
-            $scope.pickerFindUsers(newValue);
+            //$scope.pickerFindUsers(newValue);
         });
         // 참조자 명 실시간 검색
         var watcherName = '';
@@ -668,7 +668,7 @@
                     watcherName = newValue;
                     $log.debug("vm.watcherName : ", newValue);
                     $scope.watcherName = newValue;
-                    $scope.pickerFindWatcher(newValue);
+                    //$scope.pickerFindWatcher(newValue);
                 }
             }
         });
@@ -720,12 +720,14 @@
 
             $log.debug("subTask : ", subTask);
             vm.subTaskUpdateForm = subTask;
-            $scope.pickerFindUsers('');
+            $scope.pickerFindUsers('').then(function(){
+                $rootScope.$broadcast("initArrayArrows")
+            });
         }
 
         /* 하위 작업 저장 */
-        function subTaskUserAdd(userId){
-            vm.subTaskUpdateForm.assigneeIds = userId;
+        function subTaskUserAdd(user){
+            vm.subTaskUpdateForm.assigneeIds = user.id;
             subTaskUpdate();
         }
         function subTaskUserRemove(userId ,subTask){
@@ -776,11 +778,13 @@
             });
 
             var excludeUserIds = userIds.join(",");
-
+            var deferred = $q.defer();
             findUser.findByNameAndExcludeIds(name, excludeUserIds).then(function(result){
                 $log.debug("userList : ", result);
                 vm.userList = result;
+                deferred.resolve(result);
             }); //user search
+            return deferred.promise;
         };
         /* watcher picker */
         $scope.pickerFindWatcher = function(name, removeId) {
@@ -800,12 +804,15 @@
             var excludeUserIds = userIds.join(",");
             vm.DuplicationWatcherIds = excludeUserIds;
             $log.debug("excludeUserIds : ", excludeUserIds);
+            var deferred = $q.defer();
             findUser.findByNameAndExcludeIds(name, excludeUserIds).then(function(result){
                 vm.watcherList=[];
-                $log.debug("watcherList : ", result);
                 vm.watcherList = result;
-                $rootScope.$broadcast("initArrows")
+                $log.debug("watcherList : ", result);
+                //$rootScope.$broadcast("initArrows")
+                deferred.resolve(result);
             }); //user search
+            return deferred.promise;
         };
 
         /* task picker */

@@ -795,7 +795,7 @@
             if(newValue != '' && newValue != undefined){
                 $log.debug("vm.memberName : ", newValue);
                 vm.memberName = newValue;
-                if(vm.memberName != '') $scope.pickerFindMember(vm.memberName);
+                //if(vm.memberName != '') $scope.pickerFindMember(vm.memberName);
             }
         });
 
@@ -809,13 +809,15 @@
 
             var excludeUserIds = userIds.join(",");
             vm.DuplicationMemberIds = excludeUserIds;
-
+            var deferred = $q.defer();
             findUser.findByProjectMemberAndExcludeIds(name, vm.project.id, excludeUserIds).then(function(result){
                 vm.memberList=[];
                 $log.debug("memberList : ", result);
                 vm.memberList = result;
-                $rootScope.$broadcast("initArrows")
+                deferred.resolve(result);
+                //$rootScope.$broadcast("initArrows")
             }); //user search
+            return deferred.promise;
         };
 
         // 맴버 데이터 제거

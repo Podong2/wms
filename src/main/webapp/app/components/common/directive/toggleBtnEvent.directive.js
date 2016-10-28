@@ -526,6 +526,11 @@ function commonPopupToggle($rootScope, $timeout) {
             var $element = element;
             element.on('click', function() {
                 $($element.next()).addClass("on");
+
+                $timeout(function(){
+                    $(".picker-input").val('')
+                    $(".picker-input").focus();
+                }, 100);
             });
             $rootScope.$on('commonPopupClose', function(){
                 $timeout(function(){
