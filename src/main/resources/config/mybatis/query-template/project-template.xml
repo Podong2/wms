@@ -392,6 +392,7 @@
         LEFT JOIN owl_attached_file af ON psaf.attached_file_id = af.id
         LEFT JOIN owl_user cu ON psaf.created_by = cu.login
         WHERE psaf.project_id = #{projectId}
+        <if test="recentYn != null and recentYn == true">
         AND to_char(psaf.created_date, 'YYYY-MM-DD') IN (
             SELECT to_char(ipsaf.created_date, 'YYYY-MM-DD') as createdDate
             FROM owl_project_shared_attached_file ipsaf
@@ -410,6 +411,8 @@
                 OFFSET 0 LIMIT #{limit}
             </if>
         )
+        </if>
+        ORDER BY psaf.created_date ASC
     </select>
 
     <select id="getProjectFileHistoryDateCount" resultType="int" parameterType="java.util.HashMap">

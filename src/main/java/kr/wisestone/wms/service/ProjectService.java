@@ -532,6 +532,10 @@ public class ProjectService {
             condition.put("offset", projectTaskCondition.getOffset());
         }
 
+        if(projectTaskCondition.getRecentYn() != null) {
+            condition.put("recentYn", projectTaskCondition.getRecentYn());
+        }
+
         List<ProjectHistoryListDTO> historyFiles = projectDAO.getProjectFileHistoryList(condition);
 
         Integer dateCount = projectDAO.getProjectFileHistoryDateCount(condition);

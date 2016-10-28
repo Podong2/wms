@@ -29,6 +29,8 @@ public class ProjectTaskCondition {
 
     private Boolean importantYn;
 
+    private Boolean recentYn = Boolean.TRUE;
+
     private Long statusId;
 
     private String orderType;
