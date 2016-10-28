@@ -676,8 +676,18 @@ tagsInput.directive('autoComplete', ["$document", "$timeout", "$sce", "$q", "tag
             }
             self.visible = true;
         };
+        var prevQuery = ''; // hsy 이전 조회값
         self.load = tiUtil.debounce(function(query, tags) {
             self.query = query;
+
+            /* hsy 최초 아래 키 누를 시 재조회 막기 */
+            console.log("prevQuery : ", prevQuery)
+            console.log("query : ", query)
+            if(prevQuery == query){
+                return false;
+            }
+            prevQuery = query;
+
 
             var promise = $q.when(loadFn({ $query: query }));
             lastPromise = promise;
@@ -692,7 +702,7 @@ tagsInput.directive('autoComplete', ["$document", "$timeout", "$sce", "$q", "tag
                 self.items = items.slice(0, options.maxResultsToShow);
 
                 if (self.items.length > 0) {
-                    self.show();
+                        self.show();
                 }
                 else {
                     self.reset();

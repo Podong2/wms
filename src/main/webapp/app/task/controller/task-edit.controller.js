@@ -340,11 +340,13 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 });
 
                 var excludeUserIds = userIds.join(",");
-
+                var deferred = $q.defer();
                 findUser.findByNameAndExcludeIds(name, excludeUserIds).then(function(result){
                     $log.debug("userList : ", result);
                     vm.userList = result;
+                    deferred.resolve(result);
                 }); //user search
+                return deferred.promise;
             };
             $scope.pickerFindWatcher = function(name) {
 
@@ -498,7 +500,9 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
 
                 $log.debug("subTask : ", subTask);
                 vm.subTaskUpdateForm = subTask;
-                $scope.pickerFindUsers('');
+                $scope.pickerFindUsers('').then(function(){
+                    $rootScope.$broadcast("initArrayArrows")
+                });
             }
 
             /* 타스크의 서브타스크 등록 */

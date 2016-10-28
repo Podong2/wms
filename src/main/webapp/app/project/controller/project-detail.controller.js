@@ -261,6 +261,7 @@
                 vm.files.push(value)
             });
             $log.debug("파일 목록 : ", vm.files);
+            vm.fileListType = vm.fileListYn ? 'list' : 'image';
             projectUpload();
         });
         // 파일 목록 라이브러리에서 가져오기
@@ -329,7 +330,7 @@
         $scope.$watchCollection('vm.project.projectMembers', function(newValue, oldValue){
             if(newValue != undefined && oldValue !== newValue && oldValue.length < newValue.length) {
                 vm.uploadType = 'member';
-                projectUpload();
+                projectUpload(true);
             }
         });
         $scope.$watchCollection('vm.project.parentProjectIds', function(newValue, oldValue){
@@ -655,7 +656,7 @@
             }).on('fileuploaded', function(e, params) {
                 console.log('File uploaded params', params);
             }).on('detailReload', function(e, params) {
-                $state.go("my-project.detail", {}, {reload : 'my-project.detail'});
+                $state.go("my-project.detail", {}, {reload : true});
             })
         }
 
@@ -785,7 +786,6 @@
             vm.uploadType = 'member';
             vm.currentMemberIds.push(member.id)
             vm.project.projectMembers.push(member);
-            $scope.$apply();
             $scope.pickerFindMember(vm.memberName);
             //$rootScope.$broadcast('watcherPopupClose');
         }
@@ -815,7 +815,7 @@
                 $log.debug("memberList : ", result);
                 vm.memberList = result;
                 deferred.resolve(result);
-                //$rootScope.$broadcast("initArrows")
+                $rootScope.$broadcast("initArrows")
             }); //user search
             return deferred.promise;
         };
