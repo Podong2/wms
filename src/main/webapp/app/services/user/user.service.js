@@ -40,7 +40,7 @@
             $http({
                 url :'/api/users/findByName',
                 params : {name : name}
-            }).success(function (result) {
+            }, {ignoreLoadingBar: true}).success(function (result) {
                 deferred.resolve(result);
                 $log.debug("find by Users : ", result);
             });
@@ -52,7 +52,7 @@
             $http({
                 url :'/api/users/findByNameAndEntityId',
                 params : {name : name, excludeIds : excludeIds}
-            }).success(function (result) {
+            }, {ignoreLoadingBar: true}).success(function (result) {
                 deferred.resolve(result);
                 $log.debug("find by Tasks : ", result);
             });
@@ -64,7 +64,7 @@
             $http({
                 url :'/api/users/findProjectMember',
                 params : {name : name, projectId : projectId, excludeIds : excludeIds}
-            }).success(function (result) {
+            }, {ignoreLoadingBar: true}).success(function (result) {
                 deferred.resolve(result);
                 $log.debug("find by project members : ", result);
             });
