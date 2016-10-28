@@ -494,6 +494,25 @@ public class ProjectService {
         return taskDTOs;
     }
 
+    @Transactional(readOnly = true)
+    public List<ProjectHistoryListDTO> findProjectFileHistoryList(ProjectTaskCondition projectTaskCondition) {
+
+        Map<String, Object> condition = Maps.newHashMap();
+        condition.put("projectId", projectTaskCondition.getProjectId());
+
+        if(projectTaskCondition.getLimit() != null) {
+            condition.put("limit", projectTaskCondition.getLimit());
+        }
+
+        if(projectTaskCondition.getOffset() != null) {
+            condition.put("offset", projectTaskCondition.getOffset());
+        }
+
+        List<ProjectHistoryListDTO> taskDTOs = projectDAO.getProjectFileHistoryList(condition);
+
+        return taskDTOs;
+    }
+
     private List<Long> getChildProjectIds(Project project) {
         List<Long> projectIds = Lists.newArrayList();
 

@@ -352,7 +352,7 @@
                 </foreach>
             </if>
             UNION ALL
-            SELECT psaf.id as id
+            (SELECT psaf.id as id
                 , null as taskId, '' as name, '' as startDate, '' as endDate, null as statusId, '' as statusName
                 , psaf.created_by as createdBy, cu.name as createdByName, cu.profile_image_id as createdByImageId, psaf.created_date as createdDate
                 , psaf.last_modified_by as lastModifiedBy, psaf.last_modified_date as lastModifiedDate
@@ -360,11 +360,45 @@
                 , af.id as sharedAttachedFileId, af.name as sharedAttachedFileName, af.content_type as sharedAttachedFileContentType, af.size as sharedAttachedFileSize
                 , 'SHARED_ATTACHED_FILE' as historyType
             FROM owl_project_shared_attached_file psaf
-                LEFT JOIN owl_attached_file af ON psaf.attached_file_id = af.id
-                LEFT JOIN owl_user cu ON psaf.created_by = cu.login
+            LEFT JOIN owl_attached_file af ON psaf.attached_file_id = af.id
+            LEFT JOIN owl_user cu ON psaf.created_by = cu.login
             WHERE psaf.project_id = #{projectId}
+            ORDER BY createdDate DESC
+            OFFSET 0 LIMIT 1)
         ) as h
         ORDER BY h.lastModifiedDate DESC
+    </select>
+
+    <select id="getProjectFileHistoryList" resultType="java.util.ArrayList" resultMap="projectHistoryListResultMap" parameterType="java.util.HashMap">
+        SELECT psaf.id as id
+            , null as taskId, '' as name, '' as startDate, '' as endDate, null as statusId, '' as statusName
+            , psaf.created_by as createdBy, cu.name as createdByName, cu.profile_image_id as createdByImageId, psaf.created_date as createdDate
+            , psaf.last_modified_by as lastModifiedBy, psaf.last_modified_date as lastModifiedDate
+            , null as parentId
+            , af.id as sharedAttachedFileId, af.name as sharedAttachedFileName, af.content_type as sharedAttachedFileContentType, af.size as sharedAttachedFileSize
+            , 'SHARED_ATTACHED_FILE' as historyType
+        FROM owl_project_shared_attached_file psaf
+        LEFT JOIN owl_attached_file af ON psaf.attached_file_id = af.id
+        LEFT JOIN owl_user cu ON psaf.created_by = cu.login
+        WHERE psaf.project_id = #{projectId}
+        AND to_char(psaf.created_date, 'YYYY-MM-DD') IN (
+            SELECT to_char(ipsaf.created_date, 'YYYY-MM-DD') as createdDate
+            FROM owl_project_shared_attached_file ipsaf
+            WHERE ipsaf.project_id = #{projectId}
+            GROUP BY createdDate
+            ORDER BY createdDate DESC
+            <if test="limit == null or limit == 0">
+                <if test="offset == null or offset == 0">
+                    OFFSET 0 LIMIT 2
+                </if>
+                <if test="offset != null and offset > 0">
+                    OFFSET #{offset} LIMIT 1
+                </if>
+            </if>
+            <if test="limit != null and limit > 0">
+                OFFSET 0 LIMIT #{limit}
+            </if>
+        )
     </select>
 
 </mapper>
