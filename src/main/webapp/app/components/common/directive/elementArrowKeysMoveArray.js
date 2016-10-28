@@ -17,7 +17,8 @@
                 inputValue : '=inputValue',
                 elementValue : '=elementValue',
                 elementAdd : '&',
-                elementFind : '&'
+                elementFind : '&',
+                pageType : '@'
             },
             replace: false,
             link: function (scope, element, attrs) {
@@ -126,10 +127,17 @@
                         }
                         var active = $curr[0];
                         elementValues.id = active.getAttribute('value');
-                        scope.elementAdd()(elementValues).then(function(result){
-                            $log.debug(result)
-                        });
-                        scope.$apply()
+
+                        if(scope.pageType != undefined && scope.pageType == 'edit'){
+                            var uploadBtnClickEvent = $.Event('click');
+                            $(active).trigger(uploadBtnClickEvent);
+                        }else {
+                            scope.elementAdd()(elementValues).then(function(result){
+                                $log.debug(result)
+                            });
+                            scope.$apply()
+                        }
+
                         event.preventDefault();
                     }else if(event.keyCode !== undefined && event.keyCode !== null && event.keyCode !== 40 && event.keyCode !== 13 && event.keyCode !== 38){
                         //var ele = $element;

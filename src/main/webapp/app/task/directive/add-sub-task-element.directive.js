@@ -10,7 +10,7 @@ angular.module('wmsApp')
     .directive('wmsRelatedTaskUserRemove', wmsRelatedTaskUserRemove)
     .directive('wmsSubTaskDateAdd', wmsSubTaskDateAdd);
 wmsAddSubTaskElement.$inject=['$log', '$compile', '$rootScope'];
-wmsSubTaskUserAdd.$inject=['$log'];
+wmsSubTaskUserAdd.$inject=['$log', '$rootScope'];
 wmsSubTaskUserRemove.$inject=['$log'];
 wmsRelatedTaskUserRemove.$inject=['$log'];
 wmsSubTaskDateAdd.$inject=['$log'];
@@ -76,12 +76,14 @@ function wmsAddSubTaskElement($log, $compile, $rootScope) {
  * @param $log
  * @returns {{restrict: string, scope: {user: string, subTask: string}, controller: *[], link: link}}
  */
-function wmsSubTaskUserAdd($log) {
+function wmsSubTaskUserAdd($log, $rootScope) {
         return {
             restrict: 'A',
             scope : {
                 user : '=user',
-                subTask : '=subTask'
+                subTask : '=subTask',
+                elementValue : '=elementValue',
+                elementFind : '&'
             },
             controller : ['$scope', function ($scope) {
             }],
@@ -96,6 +98,9 @@ function wmsSubTaskUserAdd($log) {
                             subTask.assignees.push(subTaskUser);
                             subTask.duplicateUserIds.push(subTaskUser.id);
                             scope.$apply();
+                            scope.elementFind()(scope.elementValue).then(function(){
+                                $rootScope.$broadcast("initArrayArrows")
+                            })
                         }
                 });
 

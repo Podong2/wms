@@ -815,7 +815,7 @@
                 $log.debug("memberList : ", result);
                 vm.memberList = result;
                 deferred.resolve(result);
-                //$rootScope.$broadcast("initArrows")
+                $rootScope.$broadcast("initArrows")
             }); //user search
             return deferred.promise;
         };
@@ -878,7 +878,6 @@
         function initMemberFilter(){
             vm.memberFilter = '';
             vm.memberSearchYn = false;
-            $('.filter-input').focus();
         }
 
 

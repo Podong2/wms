@@ -32,8 +32,8 @@
                     var ele = $element;
                     $timeout(function(){
                         $log.debug(ele)
-                        $( ".arrow-event-li" ).css( "background", "" );
-                        $( ".arrow-event-li" ).removeClass( "active" );
+                        ele.parent().next().find( ".arrow-event-li" ).css( "background", "" );
+                        ele.parent().next().find( ".arrow-event-li" ).removeClass( "active" );
                         $curr.parents(".watcher-search-list-area").css('scrollTop', 0);
                         $curr.parents(".watcher-search-list-area").animate({ scrollTop: 0 }, 0);
                         $curr = ele.parent().next().find(".start-arrow" );
@@ -104,9 +104,7 @@
                         }
                         var active = $curr[0];
                         elementValues.id = active.getAttribute('value');
-                        scope.elementAdd()(elementValues).then(function(result){
-                            $log.debug(result)
-                        });
+                        scope.elementAdd()(elementValues)
                         scope.$apply()
                         event.preventDefault();
                     }else if(event.keyCode !== undefined && event.keyCode !== null && event.keyCode !== 40 && event.keyCode !== 13 && event.keyCode !== 38){
