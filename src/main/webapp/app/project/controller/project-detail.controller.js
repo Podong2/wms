@@ -878,6 +878,7 @@
         function initMemberFilter(){
             vm.memberFilter = '';
             vm.memberSearchYn = false;
+            $('.filter-input').focus();
         }
 
 
