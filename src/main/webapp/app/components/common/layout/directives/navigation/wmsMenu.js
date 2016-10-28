@@ -18,7 +18,9 @@
                 $body.hasClass('mobile-view-activated')
 
                 // toggle open
-                $this.toggleClass('open');
+                if($this.find("ul").length > 0) {
+                    $this.toggleClass('open');
+                }
 
                 // for minified menu collapse only second level
                 if ($body.hasClass('minified')) {
@@ -65,8 +67,6 @@ wmsMenu.$inject=['$state', '$rootScope', '$timeout'];
                     $li.unbind('click');
 
                     $li.on('click', '>a', function (e) {
-
-                        console.log("123123"+new Date());
 
                         // collapse all open siblings
                         $li.siblings('.open').smartCollapseToggle();
