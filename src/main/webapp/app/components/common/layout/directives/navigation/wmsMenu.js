@@ -86,7 +86,7 @@ wmsMenu.$inject=['$state', '$rootScope', '$timeout'];
                     // initialization toggle
                     if ($li.find('li.active').length) {
                         $li.smartCollapseToggle();
-                        $li.find('li.active').parents('li').addClass('active');
+                        // $li.find('li.active').parents('li').addClass('active');
                     }
                 });
             }

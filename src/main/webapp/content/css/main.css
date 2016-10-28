@@ -3611,6 +3611,12 @@ body.wms-body.modal-open {
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+.side-menu-child-title-length{
+    max-width: 125px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 
 h1, h2, h3, h4, h5, h6 {
     font-family: "나눔 고딕", Helvetica, Arial, sans-serif !important;

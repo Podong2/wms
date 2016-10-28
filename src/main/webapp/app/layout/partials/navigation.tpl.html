@@ -144,17 +144,17 @@
                     <!--</li>-->
                 <!--</ul>-->
             <!--</li>-->
-            <li data-ui-sref-active="active">
+            <li data-ui-sref-active="active" onclick="$('li.open').smartCollapseToggle();">
                 <a ui-sref="my-notification" class="menu-item-parent">
                     <i class="fa fa-lg fa-fw fa-bell"></i> <span class="menu-item-parent" translate="알림"></span> <span class="menu-item-parent">{{vm.notificationCount}}</span>
                 </a>
             </li>
-            <li data-ui-sref-active="active">
+            <li data-ui-sref-active="active" onclick="$('li.open').smartCollapseToggle();">
                 <a ui-sref="my-task({type : first})" class="menu-item-parent">
                     <i class="fa fa-lg fa-fw fa-tasks"></i> <span class="menu-item-parent" translate="내 작업"></span>
                 </a>
             </li>
-            <li data-ui-sref-active="active">
+            <li data-ui-sref-active="active" onclick="$('li.open').smartCollapseToggle();">
                 <a ui-sref="my-dashboard" class="menu-item-parent">
                     <i class="fa fa-lg fa-fw fa-line-chart"></i> <span class="menu-item-parent" translate="대시보드"></span>
                 </a>
@@ -183,7 +183,7 @@
                 </div>
             </li>
 
-            <li data-ui-sref-active="active">
+            <li data-ui-sref-active="active" onclick="$('li.open').smartCollapseToggle();">
                 <a ui-sref="my-project-list" class="menu-item-parent">
                     <i class="fa fa-lg fa-fw fa-th-large"></i> <span class="menu-item-parent" translate="프로젝트"></span>
                 </a>
@@ -245,11 +245,11 @@
 
         <script type="text/ng-template" id="nodes_renderer.html">
             <a class="lnb-menu-btn" data-ui-sref="my-project.detail({id : child.id})" >
-                <span class="fa fa-list" ng-show="!child.folderYn"></span>&nbsp;
-                <span class="side-menu-title-length" translate="{{child.name}}" >{{child.name}}</span>
+                <i class="fa fa-list" ng-show="!child.folderYn"></i>
+                <span class="side-menu-title-length">{{child.name}}</span>
                 <span class="collapse-sign" ng-show="child.projectChilds.length > 0"><em class="fa fa-plus-square-o"></em></span>
             </a>
-            <ul uib-dropdown-menu>
+            <ul uib-dropdown-menu ng-if="child.projectChilds.length > 0">
                 <li data-ui-sref-active="active" ng-repeat="child in child.projectChilds track by $index" ng-include="'nodes_renderer.html'"  style="list-style: none;">
 
                 </li>

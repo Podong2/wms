@@ -8192,7 +8192,7 @@ nav ul span.menu-item-parent {
 }
 
 nav ul li.open > a, nav ul li.open > a b {
-    color: #fff !important
+    /*color: #fff !important*/
 }
 
 nav > ul > li > a b {
