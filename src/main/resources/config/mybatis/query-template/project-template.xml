@@ -412,6 +412,15 @@
         )
     </select>
 
+    <select id="getProjectFileHistoryDateCount" resultType="int" parameterType="java.util.HashMap">
+        SELECT count(uniqueDate.createdDate)
+        FROM (SELECT to_char(ipsaf.created_date, 'YYYY-MM-DD') as createdDate
+        FROM owl_project_shared_attached_file ipsaf
+        WHERE ipsaf.project_id = #{projectId}
+        GROUP BY createdDate
+        ORDER BY createdDate DESC) uniqueDate
+    </select>
+
     <select id="getProjectProgressCounts" resultType="java.util.HashMap" resultMap="projectProgressCountsResultMap" parameterType="java.util.HashMap">
         SELECT (SELECT COUNT(1) as completeCount
         FROM owl_task t

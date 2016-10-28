@@ -519,7 +519,7 @@ public class ProjectService {
     }
 
     @Transactional(readOnly = true)
-    public List<ProjectHistoryListDTO> findProjectFileHistoryList(ProjectTaskCondition projectTaskCondition) {
+    public ProjectHistoryFileDTO findProjectFileHistoryList(ProjectTaskCondition projectTaskCondition) {
 
         Map<String, Object> condition = Maps.newHashMap();
         condition.put("projectId", projectTaskCondition.getProjectId());
@@ -532,9 +532,11 @@ public class ProjectService {
             condition.put("offset", projectTaskCondition.getOffset());
         }
 
-        List<ProjectHistoryListDTO> taskDTOs = projectDAO.getProjectFileHistoryList(condition);
+        List<ProjectHistoryListDTO> historyFiles = projectDAO.getProjectFileHistoryList(condition);
 
-        return taskDTOs;
+        Integer dateCount = projectDAO.getProjectFileHistoryDateCount(condition);
+
+        return new ProjectHistoryFileDTO(historyFiles, dateCount);
     }
 
     private List<Long> getChildProjectIds(Project project) {

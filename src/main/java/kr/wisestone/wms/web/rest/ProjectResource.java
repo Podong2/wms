@@ -193,11 +193,11 @@ public class ProjectResource {
         method = RequestMethod.GET,
         produces = MediaType.APPLICATION_JSON_VALUE)
     @Timed
-    public ResponseEntity<List<ProjectHistoryListDTO>> findProjectFileHistoryList(@ModelAttribute ProjectTaskCondition projectTaskCondition) {
+    public ResponseEntity<ProjectHistoryFileDTO> findProjectFileHistoryList(@ModelAttribute ProjectTaskCondition projectTaskCondition) {
         log.debug("REST request to get Project : {}", projectTaskCondition.getProjectId());
-        List<ProjectHistoryListDTO> taskDTOs = projectService.findProjectFileHistoryList(projectTaskCondition);
+        ProjectHistoryFileDTO projectFileInfo = projectService.findProjectFileHistoryList(projectTaskCondition);
 
-        return Optional.ofNullable(taskDTOs)
+        return Optional.ofNullable(projectFileInfo)
             .map(result -> new ResponseEntity<>(
                 result,
                 HttpStatus.OK))

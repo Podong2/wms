@@ -38,4 +38,8 @@ public class ProjectDAO {
     public ProjectDTO getProject(Long id) {
         return sqlSession.selectOne("kr.wisestone.wms.domain.Project.getProject", id);
     }
+
+    public Integer getProjectFileHistoryDateCount(Map<String, Object> condition) {
+        return sqlSession.selectOne("kr.wisestone.wms.domain.Project.getProjectFileHistoryDateCount", condition);
+    }
 }
