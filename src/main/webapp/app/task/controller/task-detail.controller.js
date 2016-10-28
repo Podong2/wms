@@ -459,6 +459,7 @@
                 $scope.files.push(value)
             });
             $log.debug("파일 목록 : ", $scope.files);
+            vm.fileListType = vm.fileListYn ? 'list' : 'image';
             taskUpload();
         });
         // 파일 목록 라이브러리에서 가져오기

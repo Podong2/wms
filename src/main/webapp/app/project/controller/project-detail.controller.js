@@ -261,6 +261,7 @@
                 vm.files.push(value)
             });
             $log.debug("파일 목록 : ", vm.files);
+            vm.fileListType = vm.fileListYn ? 'list' : 'image';
             projectUpload();
         });
         // 파일 목록 라이브러리에서 가져오기
@@ -655,7 +656,7 @@
             }).on('fileuploaded', function(e, params) {
                 console.log('File uploaded params', params);
             }).on('detailReload', function(e, params) {
-                $state.go("my-project.detail", {}, {reload : 'my-project.detail'});
+                $state.go("my-project.detail", {}, {reload : true});
             })
         }
 
