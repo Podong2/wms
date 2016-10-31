@@ -10,8 +10,6 @@ projectListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$roo
             var vm = this;
             vm.baseUrl = window.location.origin;
 
-            $log.debug("$stateParams : ", $stateParams)
-
             vm.codes = [{"id":'', "name":"전체"},{"id":1,"name":"활성"},{"id":2,"name":"완료"},{"id":3,"name":"보류"},{"id":4,"name":"취소"}];
             vm.orderTypes = [{"id":'MODIFIED_DATE', "name":"최근 업데이트순"},{"id":'TEXT_DESC',"name":"텍스트 내림차순"},{"id":'TEXT_ASC',"name":"텍스트 오름차순"}];
             vm.projectTeam = [];// 프로젝트 팀원 (중복제거)

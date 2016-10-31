@@ -213,7 +213,23 @@ public class ProjectService {
             put("userId", login).
         build());
 
-        if(excludeIds != null && !excludeIds.isEmpty()) {
+        if(projectId != null) {
+
+            Project project = projectRepository.findOne(projectId);
+
+            if(project == null)
+                throw new CommonRuntimeException("error.project.notFound");
+
+            List<Long> childProjectIds = this.getChildProjectIds(project);
+
+            if(excludeIds != null) {
+                excludeIds.addAll(childProjectIds);
+            } else {
+                excludeIds = Lists.newArrayList(childProjectIds);
+            }
+        }
+
+        if(!excludeIds.isEmpty()) {
             condition.put("excludeIds", excludeIds);
         }
 
@@ -228,6 +244,24 @@ public class ProjectService {
         List<ProjectDTO> projectDTOs = this.projectDAO.getProjectByName(condition);
 
         return projectDTOs;
+    }
+
+    private List<Long> getChildProjectIds(Project project) {
+        List<Long> projectIds = Lists.newArrayList();
+
+        projectIds.add(project.getId());
+        this.crawlingChildProjectIds(project.getProjectChilds(), projectIds);
+        return projectIds;
+    }
+
+    private void crawlingChildProjectIds(Set<ProjectRelation> childProjects, List<Long> projectIds) {
+
+        for(ProjectRelation projectRelation : childProjects) {
+
+            projectIds.add(projectRelation.getChild().getId());
+
+            this.crawlingChildProjectIds(projectRelation.getChild().getProjectChilds(), projectIds);
+        }
     }
 
     @Transactional(readOnly = true)
