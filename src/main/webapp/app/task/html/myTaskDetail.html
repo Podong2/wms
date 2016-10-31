@@ -395,11 +395,13 @@
                                         <span class="pull-right" style="width: 80px;">
                                             <!--{{list.createdDate | date : 'yyyy-MM-dd'}}-->
                                             <div id="subTaskEditSection">
+
                                                 <i class="icon-append fa fa-calendar cursor" ng-if="list.modifyYn" style="float: left; padding: 16px 10px;" sub-task-picker-toggle ng-click="vm.setDatePickerInput(list)"></i>
                                                 <i class="icon-append fa fa-calendar" ng-if="!list.modifyYn" style="float: left; padding: 16px 10px;"></i>
-                                                <div class="form-group" style="margin-bottom: 0">
 
+                                                <div class="form-group" style="margin-bottom: 0">
                                                     <span class="input-group wms-form">
+
                                                         <label class="input">
                                                             <input type="text" class="form-control col-xs-2"  ng-model="vm.endDate" id="subTaskEndDate" style="height: 30px; width: 100%; border : 0">
                                                         </label>
@@ -420,7 +422,7 @@
                                         </div>
 
                                         <!-- 사용자 아이콘 -->
-                                        <div class="sub-task-user-list position-relative">
+                                        <div class="sub-task-user-list position-relative" style="margin-right:80px;">
                                             <!-- 사용자 검색 -->
                                             <button class="btn taskUserValueSection pull-left sub-task-user-plus-btn" id="assigneeAddBtn" ng-click="vm.updateSubTaskForm(list)" ng-if="list.modifyYn" common-popup-toggle>+</button>
 
