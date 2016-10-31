@@ -251,12 +251,8 @@
             RIGHT JOIN owl_project_attached_file paf ON p.id = paf.project_id
             LEFT JOIN owl_attached_file af ON paf.attached_file_id = af.id
         WHERE 1=1
-        <if test="projectIds != null">
-            AND p.id IN
-            <foreach item="item" index="index" collection="projectIds"
-                     open="(" separator="," close=")">
-                #{item}
-            </foreach>
+        <if test="projectId != null">
+            AND p.id = #{projectId}
         </if>
         UNION ALL
         SELECT p.name as location, 'PROJECT_SHARED' as locationType, p.id as locationId
@@ -268,12 +264,8 @@
             RIGHT JOIN owl_project_shared_attached_file psaf ON p.id = psaf.project_id
             LEFT JOIN owl_attached_file af ON psaf.attached_file_id = af.id
         WHERE 1=1
-        <if test="projectIds != null">
-            AND p.id IN
-            <foreach item="item" index="index" collection="projectIds"
-                     open="(" separator="," close=")">
-                #{item}
-            </foreach>
+        <if test="projectId != null">
+            AND p.id = #{projectId}
         </if>
         UNION ALL
         SELECT t.name as location, 'TASK' as locationType, t.id as locationId
@@ -286,12 +278,8 @@
             RIGHT JOIN owl_task_attached_file taf ON t.id = taf.task_id
             LEFT JOIN owl_attached_file af ON taf.attached_file_id = af.id
         WHERE 1=1
-        <if test="projectIds != null">
-            AND tp.project_id IN
-            <foreach item="item" index="index" collection="projectIds"
-                     open="(" separator="," close=")">
-                #{item}
-            </foreach>
+        <if test="projectId != null">
+            AND tp.project_id = #{projectId}
         </if>
         UNION ALL
         SELECT t.name as location, 'TASK_REPLY' as locationType, t.id as locationId
@@ -308,12 +296,8 @@
             FROM owl_task it
             RIGHT JOIN owl_task_project itp ON itp.task_id = it.id
             WHERE 1=1
-            <if test="projectIds != null">
-                AND itp.project_id IN
-                <foreach item="item" index="index" collection="projectIds"
-                         open="(" separator="," close=")">
-                    #{item}
-                </foreach>
+            <if test="projectId != null">
+                AND itp.project_id = #{projectId}
             </if>
         )
         AND tl.reply_yn = 'Y'
@@ -328,12 +312,8 @@
             RIGHT JOIN owl_trace_log_attached_file tlaf ON tl.id = tlaf.trace_log_id
             LEFT JOIN owl_attached_file af ON tlaf.attached_file_id = af.id
         WHERE 1=1
-        <if test="projectIds != null">
-            AND tl.project_id IN
-            <foreach item="item" index="index" collection="projectIds"
-                     open="(" separator="," close=")">
-                #{item}
-            </foreach>
+        <if test="projectId != null">
+            AND tl.project_id = #{projectId}
         </if>
         AND tl.reply_yn = 'Y'
     </select>
@@ -355,12 +335,8 @@
                 LEFT JOIN owl_project tp ON tp.id = tpr.project_id
                 INNER JOIN owl_user cu ON t.created_by = cu.login
             WHERE 1=1
-            <if test="projectIds != null">
-                AND tpr.project_id IN
-                <foreach item="item" index="index" collection="projectIds"
-                         open="(" separator="," close=")">
-                    #{item}
-                </foreach>
+            <if test="projectId != null">
+                AND tpr.project_id = #{projectId}
             </if>
             UNION ALL
             (SELECT psaf.id as id
@@ -429,24 +405,16 @@
         FROM owl_task t
             LEFT OUTER JOIN owl_task_project tpr ON tpr.task_id = t.id
         WHERE 1=1
-        <if test="projectIds != null">
-            AND tpr.project_id IN
-            <foreach item="item" index="index" collection="projectIds"
-                     open="(" separator="," close=")">
-                #{item}
-            </foreach>
+        <if test="projectId != null">
+            AND tpr.project_id = #{projectId}
         </if>
         AND t.status_id = 2) as completeCount
         , (SELECT COUNT(1) as totalCount
         FROM owl_task t
             LEFT OUTER JOIN owl_task_project tpr ON tpr.task_id = t.id
         WHERE 1=1
-        <if test="projectIds != null">
-            AND tpr.project_id IN
-            <foreach item="item" index="index" collection="projectIds"
-                     open="(" separator="," close=")">
-                #{item}
-            </foreach>
+        <if test="projectId != null">
+            AND tpr.project_id = #{projectId}
         </if>
         AND t.status_id IN (1, 2)) as totalCount
     </select>

@@ -21,9 +21,7 @@ import kr.wisestone.wms.web.rest.mapper.AttachedFileMapper;
 import kr.wisestone.wms.web.rest.mapper.ProjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -281,7 +279,7 @@ public class ProjectService {
 
             ProjectDTO projectDTO = this.findOne(project.getId());
 
-            List<TaskDTO> taskDTOs = this.findTasksByProjectIdsIncludePrivate(Lists.newArrayList(project.getId()));
+            List<TaskDTO> taskDTOs = this.findTasksByProjectIdIncludePrivate(project.getId());
 
             Long taskCompleteCount = taskDTOs.stream().filter(taskDTO -> taskDTO.getStatusId().equals(Task.STATUS_COMPLETE)).count();
             Long taskTotalCount = taskDTOs.stream().count();
@@ -298,22 +296,28 @@ public class ProjectService {
 
     private void getChildProjectWithStatistics(ProjectStatisticsDTO parent, Set<ProjectRelation> projectChilds, String orderType) {
 
-        String login = SecurityUtils.getCurrentUserLogin();
+        User loginUser = SecurityUtils.getCurrentUser();
 
         List<ProjectStatisticsDTO> childProjectDTOs = Lists.newArrayList();
 
         for(ProjectRelation projectRelation : projectChilds) {
 
-            ProjectDTO projectDTO = this.findOne(projectRelation.getChild().getId());
+            Project project = projectRelation.getChild();
 
-            List<TaskDTO> taskDTOs = this.findTasksByProjectIdsIncludePrivate(Lists.newArrayList(projectDTO.getId()));
+            if(!project.checkRelatedProjectUser(loginUser)) {
+                continue;
+            }
+
+            ProjectDTO projectDTO = this.findOne(project.getId());
+
+            List<TaskDTO> taskDTOs = this.findTasksByProjectIdIncludePrivate(projectDTO.getId());
 
             Long taskCompleteCount = taskDTOs.stream().filter(taskDTO -> taskDTO.getStatusId().equals(Task.STATUS_COMPLETE)).count();
             Long taskTotalCount = taskDTOs.stream().count();
 
-            ProjectStatisticsDTO projectStatisticsDTO = new ProjectStatisticsDTO(projectDTO, 0L, 0L, taskCompleteCount, taskTotalCount, login);
+            ProjectStatisticsDTO projectStatisticsDTO = new ProjectStatisticsDTO(projectDTO, 0L, 0L, taskCompleteCount, taskTotalCount, loginUser.getLogin());
 
-            this.getChildProjectWithStatistics(projectStatisticsDTO, projectRelation.getChild().getProjectChilds(), orderType);
+            this.getChildProjectWithStatistics(projectStatisticsDTO, project.getProjectChilds(), orderType);
 
             childProjectDTOs.add(projectStatisticsDTO);
         }
@@ -422,15 +426,8 @@ public class ProjectService {
 
         User user = SecurityUtils.getCurrentUser();
 
-        Project project = projectRepository.findOne(projectTaskCondition.getProjectId());
-
-        if(project == null)
-            throw new CommonRuntimeException("error.project.notFound");
-
-        List<Long> projectIds = getChildProjectIds(project);
-
         Map<String, Object> condition = Maps.newHashMap(ImmutableMap.<String, Object>builder().
-            put("projectIds", projectIds).
+            put("projectId", projectTaskCondition.getProjectId()).
             put("offset", pageable.getOffset()).
             put("limit", pageable.getPageSize()).
             build());
@@ -462,15 +459,8 @@ public class ProjectService {
 
         ProjectDTO projectDTO = this.findOne(projectTaskCondition.getProjectId());
 
-        Project project = projectRepository.findOne(projectTaskCondition.getProjectId());
-
-        if(project == null)
-            throw new CommonRuntimeException("error.project.notFound");
-
-        List<Long> projectIds = getChildProjectIds(project);
-
         Map<String, Object> condition = Maps.newHashMap(ImmutableMap.<String, Object>builder().
-            put("projectIds", projectIds).
+            put("projectId", projectTaskCondition.getProjectId()).
             build());
 
         if(projectTaskCondition.getStatusId() != null)
@@ -502,15 +492,7 @@ public class ProjectService {
     @Transactional(readOnly = true)
     public List<ProjectHistoryListDTO> findHistoryTasks(Long projectId) {
 
-        Project project = projectRepository.findOne(projectId);
-
-        if(project == null)
-            throw new CommonRuntimeException("error.project.notFound");
-
-        List<Long> projectIds = getChildProjectIds(project);
-
         Map<String, Object> condition = Maps.newHashMap();
-        condition.put("projectIds", projectIds);
         condition.put("projectId", projectId);
 
         List<ProjectHistoryListDTO> taskDTOs = projectDAO.getProjectHistoryLists(condition);
@@ -543,36 +525,11 @@ public class ProjectService {
         return new ProjectHistoryFileDTO(historyFiles, dateCount);
     }
 
-    private List<Long> getChildProjectIds(Project project) {
-        List<Long> projectIds = Lists.newArrayList();
-
-        projectIds.add(project.getId());
-        this.crawlingChildProjectIds(project.getProjectChilds(), projectIds);
-        return projectIds;
-    }
-
-    private void crawlingChildProjectIds(Set<ProjectRelation> childProjects, List<Long> projectIds) {
-
-        for(ProjectRelation projectRelation : childProjects) {
-
-            projectIds.add(projectRelation.getChild().getId());
-
-            this.crawlingChildProjectIds(projectRelation.getChild().getProjectChilds(), projectIds);
-        }
-    }
-
     @Transactional(readOnly = true)
     public List<ProjectManagedAttachedFileDTO> findAllProjectFiles(Long id) {
 
-        Project project = projectRepository.findOne(id);
-
-        if(project == null)
-            throw new CommonRuntimeException("error.project.notFound");
-
-        List<Long> projectIds = getChildProjectIds(project);
-
         Map<String, Object> condition = Maps.newHashMap(ImmutableMap.<String, Object>builder().
-            put("projectIds", projectIds).
+            put("projectId", id).
             build());
 
         List<ProjectManagedAttachedFileDTO> projectManagedAttachedFileDTOs = this.projectDAO.getProjectManagedAttachedFile(condition);
@@ -653,10 +610,10 @@ public class ProjectService {
         return this.attachedFileMapper.attachedFilesToAttachedFileDTOs(project.getPlainProjectSharedAttachedFiles());
     }
 
-    private List<TaskDTO> findTasksByProjectIdsIncludePrivate(List<Long> projectIds) {
+    private List<TaskDTO> findTasksByProjectIdIncludePrivate(Long projectId) {
 
         Map<String, Object> condition = Maps.newHashMap();
-        condition.put("projectIds", projectIds);
+        condition.put("projectId", projectId);
 
         List<TaskDTO> taskDTOs = taskDAO.getProjectTasksByIncludePrivate(condition);
 

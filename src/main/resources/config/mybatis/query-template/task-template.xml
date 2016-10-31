@@ -471,12 +471,8 @@
             LEFT JOIN owl_user u ON tu.user_id = u.id
             LEFT OUTER JOIN owl_task_repeat_schedule trs ON trs.task_id = t.id
         WHERE 1=1
-        <if test="projectIds != null">
-            AND tpr.project_id IN
-            <foreach item="item" index="index" collection="projectIds"
-                     open="(" separator="," close=")">
-                #{item}
-            </foreach>
+        <if test="projectId != null">
+            AND tpr.project_id = #{projectId}
         </if>
     </select>
 
@@ -514,12 +510,8 @@
             LEFT JOIN owl_user u ON tu.user_id = u.id
             LEFT OUTER JOIN owl_task_repeat_schedule trs ON trs.task_id = t.id
         WHERE 1=1
-        <if test="projectIds != null">
-            AND tpr.project_id IN
-            <foreach item="item" index="index" collection="projectIds"
-                     open="(" separator="," close=")">
-                #{item}
-            </foreach>
+        <if test="projectId != null">
+            AND tpr.project_id = #{projectId}
         </if>
         <if test="taskName != null">
             AND LOWER(t.name) LIKE LOWER('%'||#{taskName}||'%')
