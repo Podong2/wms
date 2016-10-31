@@ -1467,7 +1467,7 @@
             $log.debug("파일 삭제 id 목록 : ", vm.task.removeTargetFiles);
             var iframe = $("<iframe/>").hide().appendTo("body").load(function() {
                 iframe.remove();
-            }).attr("src", "/api/attachedFile?targetIds=" + vm.task.downloadFiles + "&name=task");
+            }).attr("src", "/api/attachedFile?targetIds=" + vm.task.downloadFiles + "&name="+vm.task.name);
         }
 
         vm.tableConfigs = [];

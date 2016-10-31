@@ -256,7 +256,7 @@ projectFileCtrl.$inject=['$scope', 'Code', '$log', 'AlertService', '$rootScope',
                 $log.debug("파일 삭제 id 목록 : ", vm.project.removeTargetFiles);
                 var iframe = $("<iframe/>").hide().appendTo("body").load(function() {
                     iframe.remove();
-                }).attr("src", "/api/attachedFile?targetIds=" + vm.project.downloadFiles + "&name=project");
+                }).attr("src", "/api/attachedFile?targetIds=" + vm.project.downloadFiles + "&name="+vm.project.name);
             }
 
             vm.removeImages = [];

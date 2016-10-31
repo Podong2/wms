@@ -102,7 +102,11 @@ public class AttachedFileResource {
                                     , @RequestParam(value = "name") String name
                                     , Model model) {
 
-        if(targetIds != null && targetIds.size() == 1) {
+        if(targetIds == null || targetIds.size() == 0) {
+            return null;
+        }
+
+        if(targetIds.size() == 1) {
             AttachedFile attachedFile = attachedFileRepository.findOne(targetIds.get(0));
 
             model.addAttribute(Constants.FILE_DOWNLOAD_TARGET, attachedFile);

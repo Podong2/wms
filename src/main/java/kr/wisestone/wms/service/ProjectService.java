@@ -313,7 +313,7 @@ public class ProjectService {
             List<TaskDTO> taskDTOs = this.findTasksByProjectIdIncludePrivate(projectDTO.getId());
 
             Long taskCompleteCount = taskDTOs.stream().filter(taskDTO -> taskDTO.getStatusId().equals(Task.STATUS_COMPLETE)).count();
-            Long taskTotalCount = taskDTOs.stream().count();
+            Long taskTotalCount = (long) taskDTOs.size();
 
             ProjectStatisticsDTO projectStatisticsDTO = new ProjectStatisticsDTO(projectDTO, 0L, 0L, taskCompleteCount, taskTotalCount, loginUser.getLogin());
 
