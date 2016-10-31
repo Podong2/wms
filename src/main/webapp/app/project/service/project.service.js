@@ -6,6 +6,7 @@
         .factory('ProjectInfo', ProjectInfo)
         .factory('ProjectTasks', ProjectTasks)
         .factory('ProjectHistoryTasksInfo', ProjectHistoryTasksInfo)
+        .factory('ProjectFileHistoryList', ProjectFileHistoryList)
         .factory('ProjectFind', ProjectFind)
         .factory('ProjectFindByName', ProjectFindByName)
         .factory('ProjectAttachedList', ProjectAttachedList)
@@ -17,6 +18,7 @@
     ProjectInfo.$inject = ['$resource'];
     ProjectTasks.$inject = ['$resource'];
     ProjectHistoryTasksInfo.$inject = ['$http', '$log', '$q'];
+    ProjectFileHistoryList.$inject = ['$http', '$log', '$q'];
     ProjectFind.$inject = ['$resource'];
     ProjectFindByName.$inject = ['$resource'];
     ProjectAttachedList.$inject = ['$resource'];
@@ -92,10 +94,29 @@
                 params : {projectId : projectId}
             }).success(function (result) {
                 deferred.resolve(result);
-                $log.debug("find by Tasks : ", result);
+                $log.debug("find by ProjectHistoryTasksInfo : ", result);
             });
             return deferred.promise;
         }
+    }
+
+    function ProjectFileHistoryList($http, $log, $q) {
+
+        var service = {
+            getFiles : getFiles
+        };
+        return service;
+
+        function getFiles(params){
+            var deferred = $q.defer();
+            $http.get( '/api/projects/findProjectFileHistoryList', {
+                params : params
+            } ).then(function (result) {
+                deferred.resolve(result);
+            });
+            return deferred.promise;
+        }
+
     }
 
     function ProjectFind ($resource) {

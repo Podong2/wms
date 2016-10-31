@@ -824,7 +824,7 @@
         function removeMember(member){
             vm.uploadType = 'member';
             vm.project.removeProjectMemberIds = member.id;
-            projectUpload();
+            projectUpload(true);
             //$scope.pickerFindMember(vm.memberName);
         }
 
