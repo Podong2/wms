@@ -18,6 +18,10 @@ public class ProjectDAO {
         return sqlSession.selectList("kr.wisestone.wms.domain.Project.getProjectManagedAttachedFile", condition);
     }
 
+    public List<ProjectDTO> getLNBProjectList(Map<String, Object> condition) {
+        return sqlSession.selectList("kr.wisestone.wms.domain.Project.getLNBProjectList", condition);
+    }
+
     public List<ProjectHistoryListDTO> getProjectHistoryLists(Map<String, Object> condition) {
         return sqlSession.selectList("kr.wisestone.wms.domain.Project.getProjectHistoryLists", condition);
     }

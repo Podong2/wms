@@ -45,7 +45,7 @@ public class TraceLogInterceptor extends EmptyInterceptor {
 
             List<TraceLog> taskRepeatScheduleChanges = Lists.newArrayList();
 
-            String[] ignoreFields = new String[] { "id", "taskRepeatSchedule", "taskAttachedFiles", "attachedFiles", "createdBy", "createdDate", "lastModifiedBy", "lastModifiedDate"};
+            String[] ignoreFields = new String[] { "id", "taskRepeatSchedule", "taskAttachedFiles", "projectAttachedFiles", "projectSharedAttachedFiles", "attachedFiles", "createdBy", "createdDate", "lastModifiedBy", "lastModifiedDate"};
             Field[] allFields = this.getAllFields(entity.getClass(), null);
 
             fieldIteration: for (Field field : allFields) {
