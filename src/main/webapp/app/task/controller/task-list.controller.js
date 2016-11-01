@@ -5,8 +5,8 @@
 
 angular.module('wmsApp')
     .controller("taskListCtrl", taskListCtrl);
-taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLinks', '$rootScope', '$state', 'MyTaskStatistics', '$stateParams', 'PaginationUtil', 'ModalService', 'TaskInfo'];
-        function taskListCtrl($scope, Code, $log, Task, AlertService, ParseLinks, $rootScope, $state, MyTaskStatistics, $stateParams, PaginationUtil, ModalService, TaskInfo) {
+taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLinks', '$rootScope', '$state', 'MyTaskStatistics', '$stateParams', 'PaginationUtil', 'ModalService', 'TaskInfo', 'ngProgressFactory'];
+        function taskListCtrl($scope, Code, $log, Task, AlertService, ParseLinks, $rootScope, $state, MyTaskStatistics, $stateParams, PaginationUtil, ModalService, TaskInfo, ngProgressFactory) {
             var vm = this;
             vm.baseUrl = window.location.origin;
             vm.tabDisplay = tabDisplay;
@@ -15,6 +15,7 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
             vm.openTaskPopup = openTaskPopup;
             vm.filterSearch = filterSearch;
             //vm.showDetail = showDetail;
+            //$scope.progressbar = ngProgressFactory.createInstance();
             vm.pageType = 'task';
 
             // page 파라미터
@@ -136,6 +137,7 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
                     $log.debug("검색 필터 vm.statusId : ", vm.statusId)
                     $log.debug("검색 필터 vm.orderType : ", vm.orderType)
                     $log.debug("검색 필터 vm.page : ", vm.page)
+                    //$scope.progressbar.start();// 프로그래스 바 작업 시 진행
                     Task.query({
                         listType : vm.listType,
                         filterType : vm.filterType,
@@ -152,6 +154,7 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
             $rootScope.$on("taskReload", function(event, args){
                 vm.reloadYn = true;
                 vm.scrollLoderYn = true;
+                //$scope.progressbar.start();// 프로그래스 바 작업 시 진행
                 Task.query({
                     listType : vm.listType,
                     filterType : vm.filterType,
@@ -167,6 +170,7 @@ taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLi
             //}
 
             function onSuccess(data, headers) {
+                //$scope.progressbar.complete();// 프로그래스 바 작업 시 진행
                 if(vm.page == 1 || vm.reloadYn) vm.tasks=[];
 
                 angular.forEach(data, function(task){
