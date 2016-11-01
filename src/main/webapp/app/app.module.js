@@ -16,7 +16,7 @@
             'ui.router',
             'infinite-scroll',
             // jhipster-needle-angularjs-add-module JHipster will add new module here
-            'angular-loading-bar',
+            'angular-loading-bar', /////
             'nya.bootstrap.select',
             'ngAnimate',
             'toastr',
@@ -70,7 +70,8 @@
             'mgcrea.ngStrap',
             'mgcrea.ngStrap.collapse',
             'dndLists',
-            'bgDirectives'
+            'bgDirectives',
+            //'ngProgress' // 프로그래스 바 개선 시 작업 할것
         ])
         .config(config)
         .run(run);

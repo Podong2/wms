@@ -59,7 +59,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
 
             vm.tasks=[]; // 총 목록
             vm.projectTeam = [];// 프로젝트 팀원 (중복제거)
-            vm.statusId = 1;
+            vm.statusId = '';
             vm.taskAdd = false;
             vm.taskSearch = false;
             vm.orderType = '';
@@ -97,6 +97,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                     vm.page = 1;
                     vm.tasks=[];
                     vm.scrollLoderYn = true;
+                    vm.statusType = '';
                     getList();
                 }
             });
@@ -321,7 +322,6 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                         labelSunbeamLayout: false, // 그래프 내 텍스트 회전 옵션
                         showLegend: false,
                         growOnHover : false,
-                        donutLabelsOutside : true,
                         zoom: {
                             enabled: true,
                             useFixedDomain: false,
@@ -365,20 +365,26 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 $scope.completeYn = false;
                 $scope.delayYn = false;
                 vm.scrollLoderYn = true;
+                vm.statusType = type;
+
                 if(type == 'DELAYED'){
                     $scope.delayYn = true;
+                    vm.statusId = 1;
                 }else if(type == 'COMPLETE'){
                     $scope.completeYn = true;
+                    vm.statusId = 2;
                 }else if(type == 'HOLD'){
                     $scope.holdYn = true;
+                    vm.statusId = 3;
                 }else if(type == 'IN_PROGRESS'){
                     $scope.inProgressYn = true;
+                    vm.statusId = 1;
                 }else if(type == 'CANCEL'){
                     $scope.cancelYn = true;
+                    vm.statusId = 4;
                 }
-                vm.statusType = type;
                 $scope.$apply();
-                getList();
+                //getList();
             }
 
             vm.task = {

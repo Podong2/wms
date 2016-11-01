@@ -29,7 +29,7 @@
                                 <ul>
                                     <li><a class="cursor" style="font-size: 16px;font-weight: bold;" ng-click="vm.getTaskListInProjectFilter('TOTAL')">전체</a></li>
                                     <li><a class="cursor" style="font-size: 16px;font-weight: bold;" ng-click="vm.getTaskListInProjectFilter('WEEK')">이번주</a></li>
-                                    <li><a class="cursor" style="font-size: 16px;font-weight: bold;" ng-click="vm.getTaskListInProjectFilter('DELAYED')">지연된 작업</a></li>
+                                    <!--<li><a class="cursor" style="font-size: 16px;font-weight: bold;" ng-click="vm.getTaskListInProjectFilter('DELAYED')">지연된 작업</a></li>-->
                                 </ul>
                             </div>
                             <div class="col-md-4 project-info-count-area">
@@ -97,6 +97,9 @@
                                 </a>
                             </li>
                         </ol>
+                        <span class="position-relative" ng-if="vm.listType == 'WEEK'" wms-close-btn-display>
+                            이번주 <i class="fa fa-close project-filter-close-btn close-btn cursor" ng-click="vm.getTaskListInProjectFilter('TOTAL')"></i>
+                        </span>
                     </div>
                     <div ng-show="vm.taskAdd">
                         <input type="text" class="taskAddInput" ng-model="vm.task.name" enter-submit="vm.projectTaskAdd()" style="width: 100%; border-top: 1px solid #ddd" placeholder="생성할 작업명을 입력하세요."/>
@@ -114,9 +117,9 @@
                                         <div class="task-list-item-header">
                                             <div class="pull-right">
                                                 <div>
-                                                    <i class="fa fa-hourglass-end" style="padding: 2px; color:red;" ng-if="data.delayYn"></i>
+                                                    <i class="fa fa-hourglass-end" style="padding: 2px; color:red;" ng-if="data.delayYn && data.statusId != 3 && data.statusId != 4"></i>
                                                     <i class="icon-append glyphicon glyphicon-retweet" ng-if="data.taskRepeatSchedule.repeatType != '' && data.taskRepeatSchedule != null " style="padding: 2px;"></i>
-                                                    <span ng-class="data.delayYn ? 'delay-color' : ''">{{data.endDate | date : 'MM-dd'}}</span>
+                                                    <span ng-class="data.delayYn && data.statusId != 3 && data.statusId != 4 ? 'delay-color' : ''">{{data.endDate | date : 'MM-dd'}}</span>
                                                 </div>
                                             </div>
                                             <i class="fa fa-exclamation-circle float-left" style="padding:5px 2px; color:red;" ng-if="data.importantYn"></i>

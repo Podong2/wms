@@ -606,6 +606,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
 
                 $log.debug("vm.task ;::::::", vm.task);
                 $log.debug("파일 목록 ;::::::", $scope.files);
+                $scope.progressbar.start(); // 프로그래스 바 작업 시 진행
                 TaskEdit.saveTask({
                     method : "POST",
                     file : $scope.files,
@@ -613,6 +614,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                     fields : vm.task,
                     fileFormDataName : "file"
                 }).then(function (response) {
+                    //$scope.progressbar.complete(); // 프로그래스 바 작업 시 진행
                     toastr.success('작업 생성 완료', '작업 생성 완료');
                     $timeout(function(){ // state reload 명령과 충돌하는 문제 때문에 설정
                         $uibModalInstance.close();
