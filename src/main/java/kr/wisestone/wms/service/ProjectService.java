@@ -462,9 +462,11 @@ public class ProjectService {
 
         Map<String, Object> condition = Maps.newHashMap(ImmutableMap.<String, Object>builder().
             put("projectId", projectTaskCondition.getProjectId()).
+            put("loginUserId", user.getId()).
+            put("loginUserLogin", user.getLogin()).
             put("offset", pageable.getOffset()).
             put("limit", pageable.getPageSize()).
-            build());
+        build());
 
         if(projectTaskCondition.getStatusId() != null)
             condition.put("statusId", projectTaskCondition.getStatusId());
@@ -480,9 +482,6 @@ public class ProjectService {
             condition.put("weekEndDate", DateUtil.getWeekEndDate());
         }
 
-        condition.put("loginUserId", user.getId());
-        condition.put("loginUserLogin", user.getLogin());
-
         List<TaskDTO> taskDTOs = this.taskDAO.getProjectManagedTasks(condition);
 
         return taskDTOs;
@@ -493,9 +492,13 @@ public class ProjectService {
 
         ProjectDTO projectDTO = this.findOne(projectTaskCondition.getProjectId());
 
+        User user = SecurityUtils.getCurrentUser();
+
         Map<String, Object> condition = Maps.newHashMap(ImmutableMap.<String, Object>builder().
             put("projectId", projectTaskCondition.getProjectId()).
-            build());
+            put("loginUserId", user.getId()).
+            put("loginUserLogin", user.getLogin()).
+        build());
 
         if(projectTaskCondition.getStatusId() != null)
             condition.put("statusId", projectTaskCondition.getStatusId());
