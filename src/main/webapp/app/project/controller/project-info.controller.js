@@ -134,10 +134,10 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
 
             function getList(){
                 $log.debug("검색 필터 projectId : ", $stateParams.id)
-                $log.debug("검색 필터 vm.listType : ", vm.listType)
-                $log.debug("검색 필터 vm.statusId : ", vm.statusId)
-                $log.debug("검색 필터 vm.statusType : ", vm.statusType)
-                $log.debug("검색 필터 vm.orderType : ", vm.orderType)
+                $log.debug("검색 필터 vm.listType : ", vm.listType) // 목록 타입 필터
+                $log.debug("검색 필터 vm.statusId : ", vm.statusId) // 상태 필터
+                $log.debug("검색 필터 vm.statusType : ", vm.statusType) // chart filter
+                $log.debug("검색 필터 vm.orderType : ", vm.orderType) // 정렬 필터
                 $log.debug("검색 필터 vm.page : ", vm.page)
                 ProjectInfo.get({
                     projectId : $stateParams.id,
@@ -313,14 +313,22 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                         height: 200,
                         x: function(d){return d.key;},
                         y: function(d){return d.y;},
-                        showLabels: true, //그래프 내에 표시될 텍스트 노출 유무
+                        showLabels: false, //그래프 내에 표시될 텍스트 노출 유무
                         duration: 500,
                         donut : true,
                         title: "총 "+(vm.counts.delayedCount + vm.counts.holdCount + vm.counts.inProgressCount + vm.counts.completeCount + vm.counts.cancelCount)+"건",
                         labelThreshold: 0.01,
                         labelSunbeamLayout: false, // 그래프 내 텍스트 회전 옵션
                         showLegend: false,
-                        growOnHover : false
+                        growOnHover : false,
+                        donutLabelsOutside : true,
+                        zoom: {
+                            enabled: true,
+                            useFixedDomain: false,
+                            useNiceScale: false,
+                            horizontalOff: false,
+                            verticalOff: true,
+                        }
                         // legend: {
                         //     margin: {
                         //         top: 5,
@@ -409,6 +417,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
                 vm.tasks=[];
                 vm.page = 1;
                 vm.scrollLoderYn = true;
+                vm.statusType = '';
                 if(vm.statusId != '' || vm.orderType != ''){
                     vm.listType = 'TOTAL';
                     vm.statusId = '';

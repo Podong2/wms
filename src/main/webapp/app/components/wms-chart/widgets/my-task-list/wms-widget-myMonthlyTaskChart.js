@@ -85,15 +85,18 @@ angular.module('wms.widget.myMonthlyTaskChart', ['adf.provider', 'nvd3', 'wms.pi
         $scope.pieData = [
             {
                 key: "담당",
-                y: vm.taskCountInfo.assignedTaskTotalCount
+                y: vm.taskCountInfo.assignedTaskTotalCount,
+                color : '#5B79FF'
             },
             {
                 key: "요청",
-                y: vm.taskCountInfo.createdTaskTotalCount
+                y: vm.taskCountInfo.createdTaskTotalCount,
+                color : '#D0D0FF'
             },
             {
-                key: "참조",
-                y: vm.taskCountInfo.watchedTaskTotalCount
+                key: "공유",
+                y: vm.taskCountInfo.watchedTaskTotalCount,
+                color : '#E663FF'
             }
         ];
 
@@ -103,7 +106,7 @@ angular.module('wms.widget.myMonthlyTaskChart', ['adf.provider', 'nvd3', 'wms.pi
                 height: 250,
                 x: function(d){return d.key;},
                 y: function(d){return d.y;},
-                showLabels: true, //그래프 내에 표시될 텍스트 노출 유무
+                showLabels: false, //그래프 내에 표시될 텍스트 노출 유무
                 duration: 500,
                 donut : true,
                 title: "총 "+(vm.taskCountInfo.assignedTaskTotalCount+vm.taskCountInfo.createdTaskTotalCount+vm.taskCountInfo.watchedTaskTotalCount)+"건",
