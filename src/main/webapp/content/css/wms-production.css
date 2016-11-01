@@ -12760,11 +12760,11 @@ label input[type=checkbox][disabled].checkbox + span:before, label input[type=ch
 }
 
 .bg-color-assignee {
-    background-color: #5B79FF !important
+    background-color: #8CA1FF !important
 }
 
 .bg-color-created {
-    background-color: #a65858 !important
+    background-color: #ED92FF !important
 }
 
 .bg-color-watcher {
