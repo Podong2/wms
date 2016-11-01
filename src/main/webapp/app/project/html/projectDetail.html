@@ -300,7 +300,7 @@
                         <div class="" ng-class="!vm.project.adminYn ? 'btn-none' : ''">
                             <p class="input-group" wms-close-btn-display>
                                 <input type="text" class="form-control startDate" edit-state="true" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.dueDateFrom.date" is-open="vm.dueDateFrom.open"
-                                       datepicker-options="vm.dueDateFrom.datepickerOptions" close-text="Close" style="border: 0px none;" ng-show="vm.project.adminYn"/>
+                                       datepicker-options="vm.dueDateFrom.datepickerOptions" close-text="Close" style="border: 0px none;" ng-show="vm.project.adminYn" ng-keyup="vm.datepickerInvalidCheck($event, 'start')"/>
                                 <span ng-show="!vm.project.adminYn">
                                     {{vm.dueDateFrom.date | date : 'yyyy-MM-dd'}}
                                 </span>
@@ -318,7 +318,7 @@
                         <div class=""  ng-class="!vm.project.adminYn ? 'btn-none' : ''">
                             <p class="input-group" wms-close-btn-display>
                                 <input type="text" class="form-control" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.dueDateTo.date" is-open="vm.dueDateTo.open"
-                                       datepicker-options="vm.dueDateTo.datepickerOptions" close-text="Close" style="border: 0px none;" ng-show="vm.project.adminYn"/>
+                                       datepicker-options="vm.dueDateTo.datepickerOptions" close-text="Close" style="border: 0px none;" ng-show="vm.project.adminYn" ng-keyup="vm.datepickerInvalidCheck($event, 'end')"/>
                                 <span ng-show="!vm.project.adminYn">
                                     {{vm.dueDateTo.date | date : 'yyyy-MM-dd'}}
                                 </span>

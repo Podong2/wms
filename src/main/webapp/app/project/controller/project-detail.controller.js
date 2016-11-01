@@ -289,9 +289,30 @@
         // -------------------  broadcast end ------------------- //
 
         // date 포멧 변경
+        $scope.dueDateFrom = '';
+        $scope.dueDateTo = '';
         $scope.$watch("vm.dueDateFrom.date", function(newValue, oldValue){
             if(oldValue != newValue && newValue != '' && newValue != undefined){
+
+                if(vm.dueDateTo.date != undefined && vm.dueDateTo.date != '' && newValue > vm.dueDateTo.date) {
+                    toastr.warning('시작일이 종료일보다 큽니다.', '경고');
+                    vm.dueDateFrom.date = $scope.dueDateFrom;
+                    return;
+                }
+
+                $scope.dueDateFrom = newValue;
+
                 var formatDate = new Date(newValue).format("yyyy-MM-dd");
+
+                var regex = /[^0-9]/g;
+                var validate = /^(19[7-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/;
+                var val = formatDate.replace(regex, '');
+                $log.debug(val.length);
+                if (!validate.test(val)){
+                    vm.dueDateFrom.date = $scope.dueDateFrom;
+                    return;
+                }
+
                 vm.project.startDate= formatDate;
             }else if(newValue == '' || newValue == null && newValue != undefined){
                 vm.project.startDate= '';
@@ -301,7 +322,23 @@
         // date 포멧 변경
         $scope.$watch("vm.dueDateTo.date", function(newValue, oldValue){
             if(oldValue != newValue && newValue != '' && newValue != undefined){
+                if(vm.dueDateFrom.date != undefined && vm.dueDateFrom.date != '' && newValue < vm.dueDateFrom.date) {
+                    toastr.warning('종료일이 시작일보다 작습니다.', '경고');
+                    vm.dueDateTo.date = $scope.dueDateTo;
+                    return;
+                }
+                $scope.dueDateTo = newValue;
                 var formatDate = new Date(newValue).format("yyyy-MM-dd");
+
+                var regex = /[^0-9]/g;
+                var validate = /^(19[7-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/;
+                var val = formatDate.replace(regex, '');
+                $log.debug(val.length);
+                if (!validate.test(val)){
+                    vm.dueDateTo.date = $scope.dueDateTo;
+                    return;
+                }
+
                 vm.project.endDate = formatDate;
             }else if(newValue == '' || newValue == null && newValue != undefined){
                 vm.project.endDate = '';
@@ -880,6 +917,22 @@
             vm.memberSearchYn = false;
         }
 
+        /* 날짜 validation 체크 */
+        vm.datepickerInvalidCheck = datepickerInvalidCheck;
+        function datepickerInvalidCheck(event, type){
+            var val = event.target.value;
+            var regex = /[^0-9]/g;
+            var validate = /^(19[7-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/;
+            val = val.replace(regex, '');
+            $log.debug(val.length);
+            if(val.length == 8){
+                if (!validate.test(val)){
+                    if(type == 'start') vm.dueDateFrom.date = DateUtils.toDate(vm.project.startDate == null ? '' : vm.project.startDate);
+                    else vm.dueDateTo.date = DateUtils.toDate(vm.project.endDate == null ? '' : vm.project.endDate);
+                    toastr.warning('잘못된 날짜를 입력하였습니다.', '경고');
+                }
+            }
+        }
 
 
         // 프로젝트 파일첨부 테이블 정보
