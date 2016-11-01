@@ -560,7 +560,12 @@
             OR (t.private_yn = 'Y' AND t.created_by = #{loginUserLogin})
         )
         ORDER BY t.created_date DESC
-        OFFSET #{offset} LIMIT #{limit}
+        <if test="offset != null">
+            OFFSET #{offset}
+        </if>
+        <if test="limit != null">
+            LIMIT #{limit}
+        </if>
     </select>
 
     <select id="getTask" resultType="kr.wisestone.wms.web.rest.dto.TaskDTO" resultMap="taskDetailResultMap" parameterType="java.lang.Long">
