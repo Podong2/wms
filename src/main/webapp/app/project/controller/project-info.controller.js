@@ -64,7 +64,7 @@ projectInfoCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'Pars
             vm.taskSearch = false;
             vm.orderType = '';
             vm.listType = '';
-            vm.statusType = '';
+            vm.statusType = 'ALL';
             vm.dDay = '';
             vm.scrollLoderYn = true; // 스크롤 시 결과값이 있으면 true 결과 값이 없으면 false를 주어 반복로딩을 막는다.
 

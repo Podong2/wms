@@ -35,6 +35,7 @@
                     return ProjectInfo.get({
                         projectId : $stateParams.id,
                         statusId : '',
+                        statusType : 'ALL',
                         listType : 'TOTAL',
                     }).$promise;
                 },
@@ -42,6 +43,7 @@
                     return ProjectTasks.query({
                         projectId : $stateParams.id,
                         statusId : '',
+                        statusType : 'ALL',
                         listType : 'TOTAL',
                         page: 0,
                         size: 15,
