@@ -116,6 +116,27 @@
         <result property="lastModifiedDate" column="lastModifiedDate"/>
     </resultMap>
 
+    <resultMap id="projectLNBResultMap" type="kr.wisestone.wms.web.rest.dto.ProjectDTO">
+        <id property="id" column="id" />
+        <result property="name" column="name"/>
+        <collection property="projectChilds" select="getChildProjects" column="{parentId=id,userId=userId}" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.ProjectDTO" />
+    </resultMap>
+
+    <resultMap id="projectChildResultMap" type="kr.wisestone.wms.web.rest.dto.ProjectDTO">
+        <id property="id" column="id" />
+        <result property="name" column="name"/>
+        <collection property="projectChilds" select="getChildProjects" column="{parentId=id,userId=userId}" javaType="java.util.ArrayList" ofType="kr.wisestone.wms.web.rest.dto.ProjectDTO" />
+    </resultMap>
+
+    <select id="getChildProjects" resultMap="projectChildResultMap" parameterType="java.util.Map">
+        SELECT p.id as id, p.name as name, #{userId} as userId
+        FROM owl_project p
+        WHERE p.id IN (SELECT pr.child_id FROM owl_project_relation pr WHERE pr.parent_id = #{parentId})
+        AND p.id IN (SELECT pu.project_id
+                 FROM owl_project_user pu
+                 WHERE pu.user_id = #{userId})
+    </select>
+
     <select id="getTaskProjects" resultMap="projectResultMap">
         SELECT p.id as id, p.name as name
         , CASE
@@ -417,6 +438,41 @@
             AND tpr.project_id = #{projectId}
         </if>
         AND t.status_id IN (1, 2)) as totalCount
+    </select>
+
+    <select id="getLNBProjectList" resultType="java.util.ArrayList" resultMap="projectLNBResultMap" parameterType="java.util.HashMap">
+        SELECT p.id as id, p.name as name, p.status_id as statusId, #{userId} as userId
+        FROM owl_project p
+        WHERE 1=1
+        AND p.id IN (SELECT pu.project_id
+                 FROM owl_project_user pu
+                 WHERE pu.user_id = #{userId})
+        AND (NOT EXISTS (
+            SELECT pr.id
+            FROM owl_project_relation pr
+            WHERE pr.child_id = p.id
+             ) OR EXISTS (
+            SELECT ip.id
+            FROM owl_project ip
+            WHERE ip.id IN (SELECT pr.parent_id
+                FROM owl_project_relation pr
+                WHERE pr.child_id = p.id)
+            AND ip.id IN (SELECT pu.project_id
+                    FROM owl_project_user pu
+                    WHERE pu.user_id != #{userId})
+             )
+        )
+        AND NOT EXISTS (
+            SELECT ip.id
+            FROM owl_project ip
+            WHERE ip.id IN (SELECT pr.parent_id
+                FROM owl_project_relation pr
+                WHERE pr.child_id = p.id)
+            AND ip.id IN (SELECT pu.project_id
+                FROM owl_project_user pu
+                WHERE pu.user_id = #{userId})
+        )
+        ORDER BY p.id ASC
     </select>
 
 </mapper>

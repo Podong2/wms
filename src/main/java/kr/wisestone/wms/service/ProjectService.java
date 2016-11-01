@@ -381,32 +381,38 @@ public class ProjectService {
     @Transactional(readOnly = true)
     public List<ProjectDTO> findActiveProjects() {
 
-        String login = SecurityUtils.getCurrentUserLogin();
+        User login = SecurityUtils.getCurrentUser();
 
-        QProject $project = QProject.project;
-
-        BooleanBuilder predicate = new BooleanBuilder();
+//        QProject $project = QProject.project;
+//
+//        BooleanBuilder predicate = new BooleanBuilder();
 //        predicate.and($project.status.id.eq(Project.STATUS_ACTIVE));
-        predicate.and($project.projectUsers.any().user.login.eq(login));
+//        predicate.and($project.projectUsers.any().user.login.eq(login.getLogin()));
+//
+//        predicate.and($project.projectParents.isEmpty()
+//                    .or($project.projectParents.any().parent.projectUsers.any().user.login.ne(login.getLogin()))
+//        );
+//
+//        List<Project> projects = Lists.newArrayList(projectRepository.findAll(predicate, QProject.project.id.asc()));
+//
+//        List<ProjectDTO> projectDTOs = Lists.newArrayList();
+//
+//        for(Project project : projects) {
+//
+//            if(isParentRelatedToLoginUser(project)) continue;
+//
+//            ProjectDTO projectDTO = new ProjectDTO(project);
+//
+//            this.bindChildProjects(projectDTO, project.getProjectChilds());
+//
+//            projectDTOs.add(projectDTO);
+//        }
 
-        predicate.and($project.projectParents.isEmpty()
-                    .or($project.projectParents.any().parent.projectUsers.any().user.login.ne(login))
-        );
+        Map<String, Object> condition = Maps.newHashMap(ImmutableMap.<String, Object>builder().
+            put("userId", login.getId()).
+            build());
 
-        List<Project> projects = Lists.newArrayList(projectRepository.findAll(predicate, QProject.project.id.asc()));
-
-        List<ProjectDTO> projectDTOs = Lists.newArrayList();
-
-        for(Project project : projects) {
-
-            if(isParentRelatedToLoginUser(project)) continue;
-
-            ProjectDTO projectDTO = new ProjectDTO(project);
-
-            this.bindChildProjects(projectDTO, project.getProjectChilds());
-
-            projectDTOs.add(projectDTO);
-        }
+        List<ProjectDTO> projectDTOs = projectDAO.getLNBProjectList(condition);
 
         return projectDTOs;
     }
