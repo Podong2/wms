@@ -5,8 +5,8 @@
 
 angular.module('wmsApp')
     .controller("taskListCtrl", taskListCtrl);
-taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLinks', '$rootScope', '$state', 'MyTaskStatistics', '$stateParams', 'PaginationUtil', 'ModalService', 'TaskInfo', 'ngProgressFactory'];
-        function taskListCtrl($scope, Code, $log, Task, AlertService, ParseLinks, $rootScope, $state, MyTaskStatistics, $stateParams, PaginationUtil, ModalService, TaskInfo, ngProgressFactory) {
+taskListCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', 'ParseLinks', '$rootScope', '$state', 'MyTaskStatistics', '$stateParams', 'PaginationUtil', 'ModalService', 'TaskInfo'];
+        function taskListCtrl($scope, Code, $log, Task, AlertService, ParseLinks, $rootScope, $state, MyTaskStatistics, $stateParams, PaginationUtil, ModalService, TaskInfo) {
             var vm = this;
             vm.baseUrl = window.location.origin;
             vm.tabDisplay = tabDisplay;
