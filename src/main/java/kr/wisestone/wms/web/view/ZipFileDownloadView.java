@@ -92,7 +92,7 @@ public class ZipFileDownloadView extends AbstractView {
                     Integer count = duplicateCountMap.get(attachedFile.getName()) + 1;
                     duplicateCountMap.put(attachedFile.getName(), count);
 
-                    fileName = fileName + " (" + count + ")";
+                    fileName = fileName + "_(" + count + ")";
                 }
 
                 ZipEntry entry = new ZipEntry(fileName + "." + extension);
