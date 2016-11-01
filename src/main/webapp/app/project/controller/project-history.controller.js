@@ -107,6 +107,9 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
                 if(vm.tasks[index].historyArea && vm.tasks[index].TaskAuditLog == undefined){
                     if(type == "SHARED_ATTACHED_FILE"){
                         ProjectFileHistoryList.getFiles({projectId : vm.projectInfo.id, offset : 0, limit : 2}).then(function(result){
+                            angular.forEach(result.data.projectFiles, function(value, index){
+                                value.sharedAttachedFileSize = byteCalculation(value.sharedAttachedFileSize);
+                            });
                             vm.tasks[index].TaskAuditLog = result;
                             vm.tasks[index].offset = 2;
                             vm.tasks[index].endDataYn = false;
@@ -134,6 +137,17 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
 
 
                 }
+            }
+
+            //byte를 용량 계산해서 반환
+            function byteCalculation(bytes) {
+                var bytes = parseInt(bytes);
+                var s = ['bytes', 'KB', 'MB', 'GB', 'TB', 'PB'];
+                var e = Math.floor(Math.log(bytes)/Math.log(1024));
+
+                if(e == "-Infinity") return "0 "+s[0];
+                else
+                    return (bytes/Math.pow(1024, Math.floor(e))).toFixed(2)+" "+s[e];
             }
 
             //설명 html 형식으로 표현
@@ -236,6 +250,9 @@ projectHistoryCtrl.$inject=['$scope', 'Code', '$log', 'Task', 'AlertService', '$
                         if(result.data.length == 0){
                             vm.tasks[index].endDataYn = true;
                         }else{
+                            angular.forEach(result.data.projectFiles, function(value, index){
+                                value.sharedAttachedFileSize = byteCalculation(value.sharedAttachedFileSize);
+                            });
                             if(!recentYn){
                                 vm.tasks[index].TaskAuditLog.data.projectFiles = _.clone(result.data.projectFiles);
                             }else{

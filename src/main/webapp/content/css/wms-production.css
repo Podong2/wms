@@ -12755,6 +12755,27 @@ label input[type=checkbox][disabled].checkbox + span:before, label input[type=ch
     background-color: #a65858 !important
 }
 
+.bg-color-inProgress {
+    background-color: #D0D0FF !important
+}
+
+.bg-color-assignee {
+    background-color: #5B79FF !important
+}
+
+.bg-color-created {
+    background-color: #a65858 !important
+}
+
+.bg-color-watcher {
+    background-color: #E663FF !important
+}
+
+.bg-color-cancel {
+    background-color: #a65858 !important
+}
+
+
 .colorblind-friendly .alert, .colorblind-friendly .btn-primary {
     color: #FFF
 }

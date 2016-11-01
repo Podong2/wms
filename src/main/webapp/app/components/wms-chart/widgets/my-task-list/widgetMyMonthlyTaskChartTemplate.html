@@ -10,15 +10,15 @@
                     <h4 class="title">#작업 진척률</h4>
                     <div>- 내가 담당자인 작업</div>
                     <div class="progress">
-                        <div class="progress-bar bg-color-blueLight" role="progressbar" ng-style="vm.assignedPercent">{{vm.assignedPercent.width}}</div><span>{{vm.taskCountInfo.assignedTaskCompleteCount}}/{{vm.taskCountInfo.assignedTaskTotalCount}}</span>
+                        <div class="progress-bar bg-color-assignee" role="progressbar" ng-style="vm.assignedPercent">{{vm.assignedPercent.width}}</div><span>{{vm.taskCountInfo.assignedTaskCompleteCount}}/{{vm.taskCountInfo.assignedTaskTotalCount}}</span>
                     </div>
                     <div>- 내가 요청한 작업</div>
                     <div class="progress">
-                        <div class="progress-bar bg-color-greenLight" role="progressbar" ng-style="vm.createdPercent">{{vm.createdPercent.width}}</div><span>{{vm.taskCountInfo.createdTaskCompleteCount}}/{{vm.taskCountInfo.createdTaskTotalCount}}</span>
+                        <div class="progress-bar bg-color-inProgress" role="progressbar" ng-style="vm.createdPercent">{{vm.createdPercent.width}}</div><span>{{vm.taskCountInfo.createdTaskCompleteCount}}/{{vm.taskCountInfo.createdTaskTotalCount}}</span>
                     </div>
                     <div>- 공유된 작업</div>
                     <div class="progress">
-                        <div class="progress-bar bg-color-yellow" role="progressbar" ng-style="vm.watchedPercent">{{vm.watchedPercent.width}}</div><span>{{vm.taskCountInfo.watchedTaskCompleteCount}}/{{vm.taskCountInfo.watchedTaskTotalCount}}</span>
+                        <div class="progress-bar bg-color-watcher" role="progressbar" ng-style="vm.watchedPercent">{{vm.watchedPercent.width}}</div><span>{{vm.taskCountInfo.watchedTaskCompleteCount}}/{{vm.taskCountInfo.watchedTaskTotalCount}}</span>
                     </div>
                 </div>
             </div>
