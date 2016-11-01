@@ -19,13 +19,13 @@
                     날짜
                 </li>
                 <li class="input-group date-picker-calendar-li">
-                    <input type="text" class="form-control" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.dueDateFrom.date"/>
+                    <input type="text" class="form-control" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.dueDateFrom.date" ng-keyup="vm.datepickerInvalidCheck($event, 'start')"/>
                 </li>
                 <li class="input-group date-picker-calendar-li date-picker-calendar-center">
                     ~
                 </li>
                 <li class="input-group date-picker-calendar-li">
-                    <input type="text" class="form-control" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.dueDateTo.date"/>
+                    <input type="text" class="form-control" ui-mask="9999-99-99" uib-datepicker-popup="yyyyMMdd" ng-model="vm.dueDateTo.date" ng-keyup="vm.datepickerInvalidCheck($event, 'end')"/>
                 </li>
                 <li class="input-group date-picker-calendar-li" style="width:50px;">
                     {{vm.dayRange}} 일

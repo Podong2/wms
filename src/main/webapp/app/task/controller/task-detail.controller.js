@@ -497,10 +497,18 @@
                     vm.dueDateFrom.date = $scope.dueDateFrom;
                     return;
                 }
+
                 $scope.dueDateFrom = newValue;
-                var d = newValue;
-                var formatDate =
-                    DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' +  DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
+                var formatDate = new Date(newValue).format("yyyy-MM-dd");
+
+                var regex = /[^0-9]/g;
+                var validate = /^(19[7-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/;
+                var val = formatDate.replace(regex, '');
+                $log.debug(val.length);
+                if (!validate.test(val)){
+                    vm.dueDateFrom.date = $scope.dueDateFrom;
+                    return;
+                }
                 vm.task.startDate= formatDate;
             }
 
@@ -514,33 +522,36 @@
                     return;
                 }
                 $scope.dueDateTo = newValue;
-                var d = newValue;
-                var formatDate =
-                    DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
+                var formatDate = new Date(newValue).format("yyyy-MM-dd");
+
+                var regex = /[^0-9]/g;
+                var validate = /^(19[7-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/;
+                var val = formatDate.replace(regex, '');
+                $log.debug(val.length);
+                if (!validate.test(val)){
+                    vm.dueDateTo.date = $scope.dueDateTo;
+                    return;
+                }
                 vm.task.endDate = formatDate;
             }
         });
         // 반복작업 시작 시간 포멧 변경(기간)
         $scope.$watch("vm.repeatDueDateFrom.date", function(newValue, oldValue){
             if(oldValue != newValue){
-                var d = newValue;
-                var formatDate =
-                    DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
+                var formatDate = new Date(newValue).format("yyyy-MM-dd");
                 vm.taskRepeatSchedule.startDate = formatDate;
             }
         });
         // 반복작업 종료 시간 포멧 변경(기간)
         $scope.$watch("vm.repeatDueDateTo.date", function(newValue, oldValue){
             if(oldValue != newValue){
-                var d = newValue;
-                if(newValue != '') var formatDate = DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
+                if(newValue != '') var formatDate = new Date(newValue).format("yyyy-MM-dd");
                 vm.taskRepeatSchedule.endDate = formatDate;
             }
         });
         // 반복작업 시작 시간 포멧 변경
         $scope.$watch("vm.adventStartTime.date", function(newValue, oldValue){
             if(oldValue != newValue){
-                var d = newValue;
                 var formatDate = DateUtils.datePickerFormat(d.getHours(), 2) + ':' + DateUtils.datePickerFormat(d.getMinutes(), 2);
                 vm.taskRepeatSchedule.adventDateStartTime = formatDate;
             }
@@ -556,9 +567,7 @@
                     return;
                 }
                 $scope.subTaskDueDateFrom = newValue;
-                var d = newValue;
-                var formatDate =
-                    DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
+                var formatDate = new Date(newValue).format("yyyy-MM-dd");
                 vm.subTaskUpdateForm.startDate = _.clone(formatDate);
             }
         });
@@ -571,8 +580,7 @@
                     return;
                 }
                 $scope.subTaskDueDateTo = newValue;
-                var d = newValue;
-                if(newValue != '') var formatDate = DateUtils.datePickerFormat(d.getFullYear(), 4) + '-' + DateUtils.datePickerFormat(d.getMonth() + 1, 2) + '-' + DateUtils.datePickerFormat(d.getDate(), 2)
+                if(newValue != '') var formatDate = new Date(newValue).format("yyyy-MM-dd");
                 vm.subTaskUpdateForm.endDate = _.clone(formatDate);
             }
         });
@@ -1511,6 +1519,25 @@
         function cancel () {
             $scope.$close(true);
         }
+
+        /* 날짜 validation 체크 */
+        vm.datepickerInvalidCheck = datepickerInvalidCheck;
+        function datepickerInvalidCheck(event, type){
+            var val = event.target.value;
+            var regex = /[^0-9]/g;
+            var validate = /^(19[7-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/;
+            val = val.replace(regex, '');
+            $log.debug(val.length);
+            if(val.length == 8){
+                if (!validate.test(val)){
+                    if(type == 'start') vm.dueDateFrom.date = DateUtils.toDate(vm.task.startDate == null ? '' : vm.task.startDate);
+                    else vm.dueDateTo.date = DateUtils.toDate(vm.task.endDate == null ? '' : vm.task.endDate);
+                    toastr.warning('잘못된 날짜를 입력하였습니다.', '경고');
+                }
+            }
+        }
+
+
 
     }
 

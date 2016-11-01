@@ -1057,6 +1057,23 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
                 vm.relatedTaskEmptyYn = false;
             }
 
+            /* 날짜 validation 체크 */
+            vm.datepickerInvalidCheck = datepickerInvalidCheck;
+            function datepickerInvalidCheck(event, type){
+                var val = event.target.value;
+                var regex = /[^0-9]/g;
+                var validate = /^(19[7-9][0-9]|20\d{2})(0[0-9]|1[0-2])(0[1-9]|[1-2][0-9]|3[0-1])$/;
+                val = val.replace(regex, '');
+                $log.debug(val.length);
+                if(val.length == 8){
+                    if (!validate.test(val)){
+                        if(type == 'start') vm.dueDateFrom.date = '';
+                        else vm.dueDateTo.date = '';
+                        toastr.warning('잘못된 날짜를 입력하였습니다.', '경고');
+                    }
+                }
+            }
+
             /* localStorage 에서 최근 검색한 사용자 가져오기 */
             //function getCurrentWatchers(){
             //    vm.watcherName='';
