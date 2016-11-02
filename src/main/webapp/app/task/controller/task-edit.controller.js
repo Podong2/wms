@@ -606,7 +606,7 @@ taskEditCtrl.$inject=['$rootScope', '$scope', '$uibModalInstance', 'Code', '$log
 
                 $log.debug("vm.task ;::::::", vm.task);
                 $log.debug("파일 목록 ;::::::", $scope.files);
-                $scope.progressbar.start(); // 프로그래스 바 작업 시 진행
+                //$scope.progressbar.start(); // 프로그래스 바 작업 시 진행
                 TaskEdit.saveTask({
                     method : "POST",
                     file : $scope.files,

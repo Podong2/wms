@@ -5,7 +5,7 @@ public enum UserType {
     ASSIGNEE("assignee", "담당자"),
     WATCHER("watcher", "참조자"),
     ADMIN("admin", "관리자"),
-    SHARER("sharer", "공유자"),
+    SHARER("sharer", "공유"),
     MEMBER("member", "멤버"),
     ;
 

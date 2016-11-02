@@ -68,7 +68,7 @@
             </div>
         </div>
 
-        <!-- task 상태, 담당자, 공유자 선택 영역 -->
+        <!-- task 상태, 담당자, 공유 선택 영역 -->
         <div class="task-options-area task-status-user-aera">
             <table class="table table-bordered" style="border-top: 0; border-bottom: 0;">
                 <colgroup>
@@ -104,13 +104,13 @@
                     </td>
                     <td style="position: relative;">
 
-                        <label for="watcher" class="cursor task-label-btn" ng-click="vm.getCurrentWatchers()" watcher-picker-btn-toggle><span id="watcher"><i class="fa fa-user"></i> 공유자 {{watchers.length == 0 ? '' : watchers.length}}</span></label>
+                        <label for="watcher" class="cursor task-label-btn" ng-click="vm.getCurrentWatchers()" watcher-picker-btn-toggle><span id="watcher"><i class="fa fa-user"></i> 공유 {{watchers.length == 0 ? '' : watchers.length}}</span></label>
 
-                        <!-- 공유자 검색 및 등록 팝업 -->
+                        <!-- 공유 검색 및 등록 팝업 -->
                         <div class="watcher-popup-area text-left">
                             <div class="padding-5 watcher-popup-header">
                                 <span class="pull-right fa fa-close cursor picker-popup-close-btn" ng-click="vm.watcherPopupClose()"></span>
-                                공유자 {{watchers.length}}명
+                                공유 {{watchers.length}}명
                             </div>
                             <div class="watcher-list-area padding-10" ng-show="watchers.length > 0">
                                 <ul class="list-inline friends-list" style="margin-bottom: 0">
